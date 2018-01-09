@@ -1,0 +1,187 @@
+/*
+ * @Author: daihanqiao@126.com 
+ * @Date: 2018-01-01 15:37:11 
+ * @Last Modified by: daihanqiao@126.com
+ * @Last Modified time: 2018-01-01 23:36:06
+ * 基础工具类，组件基类
+ */
+import {action,observable,useStrict} from 'mobx';
+import {observer} from 'mobx-react';
+import {Component} from 'react';
+// import {PubSub} from 'pubsub-js';
+import Global from './global';
+import { Toast } from 'antd-mobile';
+// import 'whatwg-fetch';
+useStrict(true);
+
+export const Base = {
+	//打开页面
+	push(path,params){
+		if(!path){
+            return;
+        }
+        let urlParam = "";
+        for (const key in params) {
+            if (params.hasOwnProperty(key)) {
+                const value = params[key];
+                urlParam += (key+"="+escape(value)+"&");
+            }
+        }
+        urlParam = urlParam.replace(/&$/,"");
+		path = urlParam?(path+"?"+urlParam):path;
+		if(/http(s?):\/\//.test(path)){
+            return window.location.href = path;
+        }
+		window.Router.history.push(path);
+	},
+	//返回上一页
+	goBack(){
+		window.Router.history.goBack();
+	},
+	//获取页面传来的参数
+	getPageParams(keyStr,url){
+		url = url || window.document.location.href;
+		const str = url.split("?")[1];
+		if(typeof(str) === 'undefined'){
+			return keyStr ? '' : {};
+		}
+		const result = {};
+		str.split("&").forEach((item)=>{
+			const arr = item.split("=");
+			result[arr[0]] = unescape(arr[1]);
+		})
+		return keyStr?result[keyStr]:result;
+	},
+	//处理请求参数
+	_handlerParams(o_param={},s_method='GET'){
+		if(!o_param['act'] || ! o_param['op']){
+			return console.error("未传入act或op");
+		}
+		let s_requestUrl = Global.API_URL + o_param['act'] +'/' + o_param['op'];
+		delete o_param['act'];
+   	 	delete o_param['op'];
+		let o_body = null;
+		let s_url = '';
+		for(let [key,value] of Object.entries(o_param)){
+			s_url += key+'='+value+'&';
+		}
+		s_url = s_url.replace(/&$/,'');
+		const b_get = s_method.toLocaleLowerCase() === 'get';
+		if(b_get){
+            s_url && (s_requestUrl += '?'+s_url);
+		}else{
+			o_body = s_url;
+		}
+		const o_fetchData = {
+		  	method: s_method,
+		  	headers: {
+		    	'Accept': 'application/json',
+		    	'Content-Type': b_get?'application/json':'application/x-www-form-urlencoded',
+		  	},
+			timeout:10000,
+		  	body: o_body
+		}
+		return {s_requestUrl,o_fetchData};
+	},
+	_request(o_param={},f_succBack=null,s_method='GET',f_failBack=null){
+		let self = this;
+		Toast.loading('加载中',0);
+		const {s_requestUrl,o_fetchData} = this._handlerParams(o_param,s_method);
+		fetch(s_requestUrl,o_fetchData).then((response) => {self.DEBUG && console.log(response);return response.json()}).then((res) => {
+			self.DEBUG && console.log(res);
+			Toast.hide();
+			switch(res.code){
+				case 0:
+					f_succBack && action(f_succBack)(res);
+				break;
+				case -1:
+					self.openWin('userLogin');
+				break;
+				default:
+					Toast.fail(res.msg);
+				break;
+			}
+      	}).catch((error) => {
+			self.DEBUG && console.log(error);
+			Toast.offline('网络连接异常，请重新尝试');
+      	});
+    },
+    GET(o_param,f_succBack=null,f_failBack=null){
+        this._request(o_param,f_succBack,"GET",f_failBack);
+    },
+    POST(o_param,f_succBack=null,f_failBack=null){
+        this._request(o_param,f_succBack,"POST",f_failBack);
+    },
+	//多个异步操作处理
+    promiseAll(f_succBack,...promiseParams){
+		let self = this;
+		Toast.loading('加载中',0);
+		let promiseList = promiseParams.map((item)=>{
+			let [o_param,s_method='GET'] = item;
+			const {s_requestUrl,o_fetchData} = self._handlerParams(o_param,s_method);
+			return fetch(s_requestUrl,o_fetchData);
+		});
+		const catchFuc = (error) => {
+			self.DEBUG && console.log(error);
+			Toast.offline('网络连接异常，请重新尝试');
+      	};
+		Promise.all([...promiseList]).then((responses) => {
+			const responseList = responses.map((response)=>{
+				return response.json();
+			});
+			Promise.all(responseList).then((responseJsons)=>{
+				let b_needLogin = false;
+				let s_errorCode = '';
+				let dataList = [];
+				responseJsons.forEach((res)=>{
+					switch(res.code){
+						case 0:
+							dataList.push(res.data);
+						break;
+						case -1:
+							b_needLogin = true;
+							self.openWin('userLogin');
+						break;
+						default:
+							s_errorCode = res.msg;
+						break;
+					}
+				});
+				Toast.hide();
+				if(b_needLogin){
+					self.openWin('userLogin');
+				}else if(s_errorCode){
+					Toast.fail(s_errorCode);
+				}else{
+					self.DEBUG && console.log(dataList);
+					f_succBack && action(f_succBack)(dataList);
+				}
+			}).catch(catchFuc);
+      	}).catch(catchFuc);
+    }
+	// //监听事件
+	// addEvt(name,func){
+	// 	PubSub.subscribe(name,func);
+	// },
+	// //移除事件
+	// removeEvt(name){
+	// 	PubSub.unsubscribe(name);
+	// },
+	// //发送事件
+	// sendEvt(name,data){
+	// 	PubSub.publish(name,data);
+	// }
+}
+
+//基础组件，内置store
+@observer
+export class BaseComponent extends Component {
+	set store(obj){
+        if(!this._store){
+            this._store = observable(obj);
+        }
+	}
+	get store(){
+		return this._store;
+	}
+}
