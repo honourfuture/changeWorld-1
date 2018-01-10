@@ -25,8 +25,24 @@ a{
 html,body,.App{
 	height:100%;
 	width:100%;
+	background: #f3f3f3;
 }
 
+//基础
+.base-line{
+	position: relative;
+	&:after{
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		height: 1px;
+		content: '';
+		background-color: #f5f5f5;
+	}
+}
+
+//覆盖am
 .am-navbar{
 	img{
 		height: 20px;
