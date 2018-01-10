@@ -16,7 +16,7 @@ class Panels extends Component {
 						<Route path={item.path} exact key={item.path} component={item.component} />
 					)
 				}
-				<Redirect exact from="/" to="/panel1" />
+				<Redirect exact from="/" to="/shopIndex" />
 				</Switch>
 			</DocumentTitle>
 		)

@@ -6,14 +6,14 @@
  * 面板组件，脚本生成面板文件时，自动修改，无需手动维护
  */
 
-import Panel1 from './Panel1';
+import ShopIndex from './ShopIndex';
 import Panel2 from './Panel2';
 
 export const panelsList =  [
     {
-        path:'/panel1',
-        component:Panel1,
-        title:'面板1',
+        path:'/shopIndex',
+        component:ShopIndex,
+        title:'商城',
     },
     {
         path:'/panel2',
