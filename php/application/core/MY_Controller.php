@@ -54,7 +54,7 @@ class MY_Controller extends CI_Controller
         }
         $ret['data'] = $data;
         $ret['status'] = $status;
-        $ret['message'] = $message;
+        $ret['message'] = empty($message) ? '成功' : $message;
         echo json_encode($ret);exit();
     }
 
@@ -63,7 +63,7 @@ class MY_Controller extends CI_Controller
     {
         $config = array();
         $this->load->model('Config_model');
-        $rows = $this->Config_model->get_list(array(), 1000, 0);
+        $rows = $this->Config_model->get_all();
         if($rows){
             foreach($rows as $item){
                 $config[$item['name']] = $item['value'];
@@ -78,9 +78,69 @@ class MY_Controller extends CI_Controller
 //API端Controller
 class API_Controller extends MY_Controller
 {
+    private $_user_key = '9U4dpSMh9l6o';
     public function __construct()
     {
         parent::__construct();
+        if(! in_array($this->router->class, array('login'))){
+            $this->check_sign();
+        }
+    }
+
+    /*
+     * @admin_id 登录ID
+     * @account 登录账号
+     * @sign 签名字段
+     */
+    protected function check_sign()
+    {
+        $this->user_id = $this->input->get_post('user_id');
+        $this->account = $this->input->get_post('account');
+        $sign = $this->input->get_post('sign');
+        $token = $this->get_token();
+        if(empty($token)){
+            $this->ajaxReturn('', LOGIN_STATUS, '授权token为空');
+        }
+        if($sign != $this->get_sign($token)){
+            $this->ajaxReturn('', LOGIN_STATUS, '签名校验错误');
+        }
+    }
+
+    protected function get_sign($token)
+    {
+        return md5($this->_user_key.$this->user_id.$token.$this->_user_key);
+    }
+
+    protected function set_token($is_single = false)
+    {
+        if(! $this->user_id){
+            return '';
+        }
+        $token = '';
+        $this->load->model('Users_token_model');
+        $info = $this->Users_token_model->get_by('user_id', $this->user_id);
+        if($is_single){
+            $this->Users_token_model->delete($info['id']);
+        }else{
+            if($info){
+                $token = $info['token'];
+                $this->Users_token_model->update($info['id'], array('token' => $token));
+            }
+        }
+
+        if(empty($token)){
+            $token = md5(microtime());
+            $this->Users_token_model->insert(array('user_id' => $this->user_id, 'token' => $token));
+        }
+
+        return $token;
+    }
+
+    protected function get_token()
+    {
+        $this->load->model('Users_token_model');
+        $info = $this->Users_token_model->get_by('user_id', $this->user_id);
+        return $info ? $info['token'] : '';
     }
 }
 
@@ -110,10 +170,10 @@ class Admin_Controller extends API_Controller
         $sign = $this->input->get_post('sign');
         $token = $this->get_token();
         if(empty($token)){
-            $this->ajaxReturn('', LOGIN_STATUS, '登录授权token为空');
+            $this->ajaxReturn('', LOGIN_STATUS, '授权token为空');
         }
         if($sign != $this->get_sign($token)){
-            $this->ajaxReturn('', LOGIN_STATUS, '登录签名校验错误');
+            $this->ajaxReturn('', LOGIN_STATUS, '签名校验错误');
         }
     }
 
