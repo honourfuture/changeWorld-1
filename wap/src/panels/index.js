@@ -9,6 +9,7 @@
 import ShopIndex from './ShopIndex';
 import PayState from './PayState';
 import Pay from './Pay';
+import NewAddress from './NewAddress';
 import GoodDetail from './GoodDetail';
 
 export const panelsList =  [
@@ -26,6 +27,11 @@ export const panelsList =  [
         path:'/PayState',
         component:PayState,
         title:'支付结果',
+    },
+    {
+        path:'/NewAddress',
+        component:NewAddress,
+        title:'新增地址',
     },
     {
         path:'/GoodDetail',
