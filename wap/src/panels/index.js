@@ -7,19 +7,25 @@
  */
 
 import ShopIndex from './ShopIndex';
-import Panel2 from './Panel2';
+import PayState from './PayState';
+import Pay from './Pay';
 import GoodDetail from './GoodDetail';
 
 export const panelsList =  [
     {
-        path:'/shopIndex',
+        path:'/ShopIndex',
         component:ShopIndex,
         title:'商城',
     },
     {
-        path:'/panel2',
-        component:Panel2,
-        title:'面板2',
+        path:'/Pay',
+        component:Pay,
+        title:'支付',
+    },
+    {
+        path:'/PayState',
+        component:PayState,
+        title:'支付结果',
     },
     {
         path:'/GoodDetail',

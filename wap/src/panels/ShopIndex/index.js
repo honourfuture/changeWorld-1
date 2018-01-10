@@ -1,7 +1,9 @@
 import React from 'react';
 import {BaseComponent} from '../../common';
 import {Flex,Tabs,SearchBar,NavBar,Icon,Badge} from 'antd-mobile';
-import './shopIndex.less';
+import './ShopIndex.less';
+
+import {icon} from '../../images';
 import {Hots} from '../../components/Hots';
 import {Vanity} from '../../components/Vanity';
 
@@ -27,13 +29,13 @@ export default class ShopIndex extends BaseComponent{
                 <NavBar
                     className="search_con"
                     mode="light"
-                    icon={<Icon type="left" />}
+                    icon={<img src={icon.email}/>}
                     leftContent={<Badge dot>
                         <span style={{  display: 'inline-block' }} />
                     </Badge>}
                     onLeftClick={() => console.log('onLeftClick')}
                     rightContent={[
-                        <Icon key="0" type="search" />,
+                        <img src={icon.indexCart}/>,
                         <Badge text={1} overflowCount={99}>
                             <span style={{  display: 'inline-block' }}  />
                         </Badge>
@@ -43,7 +45,7 @@ export default class ShopIndex extends BaseComponent{
                     />
                 </NavBar>
                 <div className="nav_tabs">
-                    <Tabs className="nav_tabs" tabs={tabs} initialPage={1}>
+                    <Tabs className="nav_tabs" tabs={tabs} initialPage={0}>
                         {this.renderContent}
                     </Tabs>
                 </div>

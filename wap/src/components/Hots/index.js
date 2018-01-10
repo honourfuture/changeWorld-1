@@ -1,7 +1,7 @@
 import React from 'react';
 import {BaseComponent,Base} from '../../common';
 import {Flex, WhiteSpace, Button} from 'antd-mobile';
-import './hots.less';
+import './Hots.less';
 
 import {Carousel_Img} from '../../components/Carousel_Img';
 
