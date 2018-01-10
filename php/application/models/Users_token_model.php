@@ -2,6 +2,7 @@
 /*
  * 会员用户授权token
  * @author sz.ljx
+ * @author webljx@163.com
  * @link www.aicode.org.cn
  */
 

@@ -1,9 +1,9 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-/**
- *
+/*
  * 通用的Controller函数
- * @author Teamtweaks
- *
+ * @author sz.ljx
+ * @author webljx@163.com
+ * @link www.aicode.org.cn
  */
 date_default_timezone_set('Asia/Shanghai');
 

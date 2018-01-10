@@ -1,6 +1,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+/*
+ * @author sz.ljx
+ * @author webljx@163.com
+ * @link www.aicode.org.cn
+ */
 class Login extends Admin_Controller {
 
 	public function __construct()
