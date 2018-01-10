@@ -12,9 +12,9 @@ export class Hots extends BaseComponent{
         return (
             <div className='Hots'>
                 <Carousel_Img />
-                <WhiteSpace size="lg" />
+                <WhiteSpace size="md" />
                 <div className="anchor_recommend"><span>主播推荐</span></div>
-                <WhiteSpace size="lg" />
+                <WhiteSpace size="md" />
 
                 <Flex wrap="wrap" className="recommend_goods">
                     <div className="recommend_goodsItem">
@@ -74,34 +74,6 @@ export class Hots extends BaseComponent{
                         </div>
                     </div>
                 </Flex>
-
-
-                {/*<div className="recommend_goods">
-                    <div className="recommend_goodsItem">
-                        <div className="recommend_goodsItem_img">
-                            <img src="https://zos.alipayobjects.com/rmsportal/dKbkpPXKfvZzWCM.png" alt=""/>
-                        </div>
-                        <div className="recommend_goodsItem_title">
-                            不是所有的兼职汪都需要风吹日晒
-                        </div>
-                        <div className="recommend_goodsItem_opera">
-                            <span className="goodsPrice"></span>
-                            <Button type="warning" inline size="small">购买</Button>
-                        </div>
-                    </div>
-                    <div className="recommend_goodsItem">
-                        <div className="recommend_goodsItem_img">
-                            <img src="https://zos.alipayobjects.com/rmsportal/dKbkpPXKfvZzWCM.png" alt=""/>
-                        </div>
-                        <div className="recommend_goodsItem_title">
-                            不是所有的兼职汪都需要风吹日晒
-                        </div>
-                        <div className="recommend_goodsItem_opera">
-                            <span className="goodsPrice"></span>
-                            <Button type="warning" inline size="small">购买</Button>
-                        </div>
-                    </div>
-                </div>*/}
             </div>
         )
     }

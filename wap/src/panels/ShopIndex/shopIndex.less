@@ -1,14 +1,20 @@
 @import '../../common/theme.less';
 .ShopIndex{
 	//覆盖tabs组件
-	.am-tabs-default-bar{
-		background: transparent !important;
-	}
-	.am-tabs-default-bar-tab-active{
-		color: @brand-primary;
-	}
-	.am-tabs-default-bar-underline{
-		border-color: @brand-primary;
+	.nav_tabs{
+		// background: transparent !important;
+		.am-tabs-default-bar{
+			background: transparent !important;
+		}
+		.am-tabs-default-bar-tab{
+			color: #333;
+		}
+		.am-tabs-default-bar-tab-active{
+			color: @brand-primary;
+		}
+		.am-tabs-default-bar-underline{
+			border-color: @brand-primary;
+		}
 	}
 	//首页搜索框
 	.search_con{

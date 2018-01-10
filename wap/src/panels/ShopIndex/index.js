@@ -42,9 +42,11 @@ export default class ShopIndex extends BaseComponent{
                         placeholder="请输入昵称或ID"
                     />
                 </NavBar>
-                <Tabs tabs={tabs} initialPage={0}>
-                    {this.renderContent}
-                </Tabs>
+                <div className="nav_tabs">
+                    <Tabs className="nav_tabs" tabs={tabs} initialPage={1}>
+                        {this.renderContent}
+                    </Tabs>
+                </div>
             </div>
         )
     }
