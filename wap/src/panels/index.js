@@ -8,6 +8,7 @@
 
 import ShopIndex from './ShopIndex';
 import Panel2 from './Panel2';
+import GoodDetail from './GoodDetail';
 
 export const panelsList =  [
     {
@@ -19,6 +20,11 @@ export const panelsList =  [
         path:'/panel2',
         component:Panel2,
         title:'面板2',
+    },
+    {
+        path:'/GoodDetail',
+        component:GoodDetail,
+        title:'商品详情',
     }
 ]
 
