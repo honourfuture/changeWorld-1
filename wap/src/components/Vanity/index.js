@@ -7,7 +7,6 @@ import {Carousel_Img} from '../../components/Carousel_Img';
 
 export class Vanity extends BaseComponent{
     render(){
-    	// const imgData = ['AiyWuByWklrrUDlFignR', 'TekJlZRVCjLFexlOCuWn', 'IJOtIlfsYdTyaDTRVrLI'];
         return (
             <div className='Vanity'>
                 <Carousel_Img />
