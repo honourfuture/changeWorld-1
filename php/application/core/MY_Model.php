@@ -502,6 +502,15 @@ class MY_Model extends CI_Model
         }
         return $row;
     }
+    public function updated_valid($row)
+    {
+        foreach($row as $key=>$val){
+            if($val == UPDATE_VALID || $val === ''){
+                unset($row[$key]);
+            }
+        }
+        return $row;
+    }
     /**
      * Serialises data for you automatically, allowing you to pass
      * through objects and let it handle the serialisation in the background

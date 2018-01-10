@@ -2,6 +2,7 @@
 /*
  * 系统管理员
  * @author sz.ljx
+ * @author webljx@163.com
  * @link www.aicode.org.cn
  */
 
@@ -10,7 +11,7 @@ class Admin_model extends MY_Model
     public $_table        = 'admin';
     public $primary_key   = 'id';
     public $before_create = array('created_at', 'updated_at');
-    public $before_update = array('updated_at');
+    public $before_update = array('updated_at', 'updated_valid');
     public $protected_attributes = array('id');
 
     private $_pwd_key = '2h7FlFUtQSIm';
