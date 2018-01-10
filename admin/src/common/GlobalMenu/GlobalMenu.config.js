@@ -1,21 +1,12 @@
 const menuData = [
     {
-        name: 'dashboard',
-        icon: 'dashboard',
-        path: 'dashboard',
+        name: '商城',
+        icon: 'shop',
+        path: 'shop',
         children: [
             {
-                name: '分析页',
-                path: 'analysis',
-            }, 
-            {
-                name: '监控页',
-                path: 'monitor',
-            }, 
-            {
-                name: '工作台',
-                path: 'workplace',
-                // hideInMenu: true,
+                name: '导航',
+                path: 'setNav',
             }
         ],
     }, 
