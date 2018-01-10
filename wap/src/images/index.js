@@ -8,4 +8,14 @@ export const icon = {
     payFail:require('./icon/payFail.png'),
     payZfb:require('./icon/payZfb.png'),
     payWx:require('./icon/payWx.png'),
+};
+
+export const test = {
+    test1:require('./test/1.jpg'),
+    test2:require('./test/2.jpg'),
+    test3:require('./test/3.jpg'),
+    test4:require('./test/4.png'),
+    test5:require('./test/5.png'),
+    test6:require('./test/6.png'),
+    test7:require('./test/7.png'),
 }

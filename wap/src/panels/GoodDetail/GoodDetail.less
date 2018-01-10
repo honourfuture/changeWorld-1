@@ -1,23 +1,27 @@
+@import '../../common/theme.less';
 .GoodDetail{
     .am-carousel{
-        .am-carousel-wrap-dot{
-            span{
-                background: #f18c8b;
-                margin: 0px 6px;
-                height: 6px;
-            }
-            &.am-carousel-wrap-dot-active{
+        .am-carousel-wrap{
+            margin-bottom: 10px;
+            .am-carousel-wrap-dot{
                 span{
-                    background: #e21b18;
-                    width: 20px;
-                    border-radius: 5px;
+                    background: #f18c8b;
+                    margin: 0px 6px;
+                    height: 6px;
+                }
+                &.am-carousel-wrap-dot-active{
+                    span{
+                        background: @brand-primary;
+                        width: 20px;
+                        border-radius: 5px;
+                    }
                 }
             }
         }
     }
     .infoCon{
         background: #fff;
-        border-top: 1px solid #d0d0d0;
+        border-top: 1px solid #eee;
         padding: 15px;
         margin-bottom: 10px;
         .price{
@@ -53,7 +57,123 @@
             }
         }
     }
+    .flexItem{
+        padding: 15px;
+        .title{
+            color:#8d8d8d;
+            width:60px;
+        }
+        .des{
+            color:#333;
+        }
+        &:after{
+            left: 15px;
+        }
+    }
     .discountsCon{
-        
+        background: #fff;
+        margin-bottom: 10px;
+        .flexItem{
+            em{
+                color:red;
+            }
+        }
+    }
+    .distributionInfoCOn{
+        background: #fff;
+        margin-bottom: 10px;
+    }
+    .evaluateCon{
+        margin-bottom: 10px;
+        background: #fff;
+        .titleCon{
+            padding: 15px;
+            padding-bottom: 0;
+            .title{
+                font-size: 16px;
+                font-weight: 555;
+            }
+        }
+        .evaluateItem{
+            padding: 15px;
+            img{
+                height: 35px;
+                width: 35px;
+                border-radius: 50%;
+                margin: 0 15px;
+            }
+        }
+    }
+    .lecturerStoreCon{
+        background: #fff;
+        margin-bottom: 10px;
+        .lecturerInfo{
+            padding: 15px;
+            img{
+                width:40px;
+                height: 40px;
+                border-radius: 50%;
+                margin-right: 15px;
+            }
+            .name{
+                font-size: 16px;
+                font-weight: 555;
+                margin-bottom: 10px;
+            }
+            .goodsNum{
+                font-size: 14px;
+                color: #999;
+                em{
+                    color:@brand-primary;
+                }
+            }
+            .rightDes{
+                font-size: 16px;
+                color:@brand-primary;
+                margin-right: 5px;
+            }
+        }
+        .storeDes{
+            font-size: 14px;
+            color:#999;
+            padding: 15px;
+            padding-top: 5px;
+            border-bottom: 1px solid #eee;
+            line-height: 22px;
+        }
+        .goodsCon{
+            overflow:scroll;
+            -webkit-overflow-scrolling: touch;
+            .goodItem{
+                text-align: center;
+                padding: 15px;
+                img{
+                    width:100px;
+                    height: 100px;
+                }
+                .title{
+                    font-size: 14px;
+                    color:#333;
+                    margin-bottom: 10px;
+                }
+                .price{
+                    font-size: 13px;
+                    color: @brand-primary;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+    .imageTextCon{
+        background: #fff;
+        padding: 15px;
+        .titleCon{
+            padding-bottom: 15px;
+            font-size: 16px;
+        }
+        img{
+            width:100%;
+            display: block;
+        }
     }
 }
