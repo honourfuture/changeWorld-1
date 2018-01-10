@@ -1,7 +1,7 @@
 import React from 'react';
 import {BaseComponent} from '../../common';
 import {Carousel} from 'antd-mobile';
-import './carousel_img.less';
+import './Carousel_Img.less';
 
 export class Carousel_Img extends BaseComponent{
     render(){

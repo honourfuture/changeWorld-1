@@ -1,0 +1,104 @@
+@import '../../common/theme.less';
+.Pay{
+	padding: 15px;
+	&_box{
+		background: #fff;
+		border-radius: 8px;
+		&_goods{
+			padding: 20px 15px;
+			.goodsImg{
+				width: 66px;
+				height: 66px;
+				img{
+					width: 100%;
+					display: block;
+				}
+			}
+			.goodsInfo{
+				width: calc(~'100% - 76px');
+				height: 66px;
+				&_tit{
+
+					line-height: 20px;
+					font-size: 13px;
+					color: #181818;
+					.ellipsis;
+				}
+				&_num{
+					margin-top: 10px;
+					line-height: 13px;
+					span{
+						font-size: 13px;
+						color: #999;
+						&:first-of-type{
+							font-size: 14px;
+							color: @brand-primary;
+						}
+					}
+				}
+			}
+		}
+		&_mode{
+			padding: 20px 15px;
+			background: #fbfbfb; 
+			.pay_check{
+				margin-top: 23px;
+				.am-flexbox{
+					margin-bottom: 19px;
+				}
+				.am-flexbox-item{
+					font-size: 13px;
+					&:last-of-type{
+						flex: inherit;
+						text-align: right;
+					}
+					img{
+						height: 22px;
+					}
+					span{
+						line-height: 13px;
+					}
+					.pay_gold{
+						letter-spacing: 0;
+						color: #404143;
+					}
+					.account_money{
+						margin-left: 10px;
+						color: #999;
+					}
+					.payMoney{
+						margin-right: 8px;
+						color: @brand-primary;
+					}
+				}
+				.am-radio {
+					padding: 2.5px;
+					border: 1px solid #ccc;
+					border-radius: 50%;
+					&.am-radio-checked{
+						border: 1px solid @brand-primary;
+						background: @brand-primary;
+						.am-radio-inner::after{
+							width: 5px;
+							height: 10px;
+							top: -1px;
+							right: 7px;
+							border-color: #fff;
+						}
+					}
+				}
+			}
+		}
+		&_opear{
+			padding: 30px 15px;
+			.am-button{
+				width: 100%;
+				height: 40px;
+				line-height: 40px;
+				span{
+					font-size: 16px;
+				}
+			}
+		}
+	}
+}

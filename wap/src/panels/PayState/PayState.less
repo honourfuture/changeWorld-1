@@ -1,0 +1,50 @@
+@import '../../common/theme.less';
+.PayState{
+	background: #fff;
+	&_box{
+		padding: 12px 0;
+		box-shadow: inset 0 0 0 0 #F0F0F0;
+		text-align: center;
+		img{
+			height: 60px;
+		}
+		&_tips{
+			margin-top: 12px;
+			font-size: 16px;
+			color: @brand-primary;
+		}
+	}
+	&_order{
+		border-top: 1px solid #f1f1f1;
+		border-bottom: 1px solid #f1f1f1;
+		padding: 20px;
+		.orderItem{
+			line-height: 16px;
+			letter-spacing: 0;
+			font-size: 13px;
+			color: #999;
+			&:nth-child(2){
+				margin: 10px 0;
+			}
+			span{
+				color: #151515;
+			}
+		}
+	}
+	&_opear{
+		height: 110px;
+		.am-button{
+			height: 36px;
+			line-height: 36px;
+			font-size: 14px;
+			&.payBtn{
+				margin-right: 80px;
+				border:1px solid @brand-primary;
+				color: @brand-primary;
+				&::before{
+					border: none;
+				}
+			}
+		}
+	}
+}
