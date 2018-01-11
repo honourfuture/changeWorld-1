@@ -1,48 +1,71 @@
 import React from 'react';
 import {BaseComponent} from '../../common';
-import {Flex, WhiteSpace, Button,Tabs} from 'antd-mobile';
+import {Flex,Tabs,Carousel} from 'antd-mobile';
 import './Vanity.less';
+import {test} from '../../images';
 
-import {Carousel_Img} from '../../components/Carousel_Img';
+const testNum = [{
+    num:118823,
+    price:100
+},{
+    num:525223,
+    price:100
+},{
+    num:166623,
+    price:100
+},{
+    num:668823,
+    price:200
+},{
+    num:122223,
+    price:200
+},{
+    num:778823,
+    price:200
+}];
+
+class VanityItem extends BaseComponent {
+    render(){
+        const {num,price} = this.props;
+        return(
+            <div className="listItem">
+                <div className="listItem-num">{num}</div>
+                <div className="listItem-price">一口价：<em>￥{price}</em></div>
+            </div>
+        )
+    }
+}
 
 export class Vanity extends BaseComponent{
     render(){
     	const tabs = [
-          { title: '靓号'},
-          { title: '六位号'},
-          { title: '七位号'},
-          { title: '八位号'}
+            { title: '靓号'},
+            { title: '六位号'},
+            { title: '七位号'},
+            { title: '八位号'}
         ];
+        var vanifyNum =testNum.map((item,index)=>{
+            return <VanityItem key={index} {...item} />;
+        });
         return (
             <div className='Vanity'>
-                <Carousel_Img />
-                <div className="vanity_num">
+                <Carousel
+                    autoplay={false}
+                    infinite
+                    dots={false}
+                    >
+                    {[test.banner2].map(val => (
+                        <img
+                            key={val}
+                            src={val}
+                            style={{ width: '100%'}}
+                        />
+                    ))}
+                </Carousel>
+                <div className="vanity-num">
                 	<Tabs tabs={tabs} initialPage={1}>
-                		<Flex wrap="wrap" className="vanity_num_list">
-                			<div className="listItem">
-                				<div className="listItem_num"><em>1188</em>23</div>
-                				<div className="listItem_price">一口价：<em>￥100</em></div>
-                			</div>
-                			<div className="listItem">
-                				<div className="listItem_num"><em>1188</em>23</div>
-                				<div className="listItem_price">一口价：<em>￥100</em></div>
-                			</div>
-                			<div className="listItem">
-                				<div className="listItem_num"><em>1188</em>23</div>
-                				<div className="listItem_price">一口价：<em>￥100</em></div>
-                			</div>
-                			<div className="listItem">
-                				<div className="listItem_num"><em>1188</em>23</div>
-                				<div className="listItem_price">一口价：<em>￥100</em></div>
-                			</div>
-                			<div className="listItem">
-                				<div className="listItem_num"><em>1188</em>23</div>
-                				<div className="listItem_price">一口价：<em>￥100</em></div>
-                			</div>
-                			<div className="listItem">
-                				<div className="listItem_num"><em>1188</em>23</div>
-                				<div className="listItem_price">一口价：<em>￥100</em></div>
-                			</div>
+                		<Flex wrap="wrap" className="vanity-num-list">
+                			{vanifyNum}
                 		</Flex>
                 	</Tabs>
                 </div>

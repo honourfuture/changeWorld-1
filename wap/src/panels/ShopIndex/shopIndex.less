@@ -1,7 +1,7 @@
 @import '../../common/theme.less';
 .ShopIndex{
 	//覆盖tabs组件
-	.nav_tabs{
+	.nav-tabs{
 		// background: transparent !important;
 		.am-tabs-default-bar{
 			background: transparent !important;
@@ -17,11 +17,18 @@
 		}
 	}
 	//首页搜索框
-	.search_con{
+	.search-con{
 		justify-content: space-between;
 		.am-navbar-left,.am-navbar-right{
 			width: 7%;
 			flex: none;
+			span{
+				display: inline-block;
+			}
+			.rightCont{
+				width: 100%;
+				height: 100%;
+			}
 		}
 		.am-navbar-left{
 			.am-navbar-left-icon{

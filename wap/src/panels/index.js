@@ -11,6 +11,7 @@ import PayState from './PayState';
 import Pay from './Pay';
 import NewAddress from './NewAddress';
 import GoodsDetail from './GoodsDetail';
+import SelectAddress from './SelectAddress';
 export const panelsList =  [
     {
         path:'/ShopIndex',
@@ -31,6 +32,11 @@ export const panelsList =  [
         path:'/NewAddress',
         component:NewAddress,
         title:'新增地址',
+    },
+    {
+        path:'/SelectAddress',
+        component:SelectAddress,
+        title:'选择地址',
     },
     {
         path:'/GoodsDetail',

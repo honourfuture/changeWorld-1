@@ -1,6 +1,6 @@
 import React from 'react';
 import {BaseComponent} from '../../common';
-import {Flex,Tabs,SearchBar,NavBar,Icon,Badge} from 'antd-mobile';
+import {Flex,Tabs,SearchBar,NavBar,Badge} from 'antd-mobile';
 import './ShopIndex.less';
 
 import {icon} from '../../images';
@@ -15,37 +15,33 @@ export default class ShopIndex extends BaseComponent{
         const tabs = [
           { title: '热门', component:<Hots /> },
           { title: '靓号', component:<Vanity /> },
-          { title: '图书', component:<div>3</div> },
-          { title: '知识', component:<div>2</div> },
-          { title: '外卖', component:<div>2</div> },
-          { title: '直播', component:<div>2</div> },
-          { title: '家居', component:<div>2</div> },
-          { title: '图片', component:<div>2</div> },
-          { title: '段子', component:<div>2</div> },
+          { title: '图书', component:<Hots /> },
+          { title: '知识', component:<Hots /> },
+          { title: '外卖', component:<Hots /> },
+          { title: '直播', component:<Hots /> },
+          { title: '家居', component:<Hots /> },
+          { title: '图片', component:<Hots /> },
+          { title: '段子', component:<Hots /> },
         ];
 
         return (
             <div className='ShopIndex'>
                 <NavBar
-                    className="search_con"
+                    className="search-con"
                     mode="light"
                     icon={<img src={icon.email}/>}
                     leftContent={<Badge dot>
-                        <span style={{  display: 'inline-block' }} />
+                        <span />
                     </Badge>}
                     onLeftClick={() => console.log('onLeftClick')}
-                    rightContent={[
-                        <img src={icon.indexCart}/>,
-                        <Badge text={1} overflowCount={99}>
-                            <span style={{  display: 'inline-block' }}  />
-                        </Badge>
-                    ]}>
-                    <SearchBar
-                        placeholder="请输入昵称或ID"
-                    />
+                    rightContent={<Flex className="rightCont">
+                        <img src={icon.indexCart}/>
+                        <Badge text={1} overflowCount={99}><span /></Badge>
+                    </Flex>}>
+                    <SearchBar placeholder="请输入昵称或ID" />
                 </NavBar>
-                <div className="nav_tabs">
-                    <Tabs className="nav_tabs" tabs={tabs} initialPage={0}>
+                <div className="nav-tabs">
+                    <Tabs className="nav-tabs" tabs={tabs} initialPage={0}>
                         {this.renderContent}
                     </Tabs>
                 </div>
