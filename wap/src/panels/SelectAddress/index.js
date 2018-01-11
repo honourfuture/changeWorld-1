@@ -1,7 +1,7 @@
 import React from 'react';
 import {action} from 'mobx';
 import {BaseComponent} from '../../common';
-import {Button,List,Radio,Picker,Switch,WhiteSpace,WingBlank} from 'antd-mobile';
+import {Button,List,Radio,WhiteSpace,WingBlank} from 'antd-mobile';
 import './SelectAddress.less';
 
 const Item = List.Item;
@@ -14,7 +14,7 @@ class AddressItem extends BaseComponent {
         callBack && callBack(index);
     }
     render(){
-        const {name,tel,address,index,checked} = this.props;
+        const {name,tel,address,checked} = this.props;
         return(
             <div>
                 <List className="addressItem">

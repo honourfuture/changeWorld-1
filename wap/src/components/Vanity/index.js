@@ -59,6 +59,7 @@ export class Vanity extends BaseComponent{
                             key={val}
                             src={val}
                             style={{ width: '100%'}}
+                            alt=""
                         />
                     ))}
                 </Carousel>
