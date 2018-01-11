@@ -9,7 +9,7 @@ class EvaluateItem extends BaseComponent{
         const {header,name,des} = this.props;
         return (
             <Flex className='evaluate-item base-line'>
-                <img src={header}/>
+                <img src={header} alt=''/>
                 <div className="info">
                     <div className="name">{name}</div>
                     <div className="des">{des}</div>
@@ -24,7 +24,7 @@ class GoodsItem extends BaseComponent {
         const {img,title,price} = this.props;
         return(
             <div className="goods-item">
-                <img src={img}/>
+                <img src={img} alt=''/>
                 <div className="title">
                     {title}
                 </div>
@@ -102,11 +102,11 @@ export default class GoodDetail extends BaseComponent{
             <div className='GoodDetail'>
                <NavBar
                     mode="light"
-                    icon={<img src={icon.back}/>}
+                    icon={<img src={icon.back} alt=''/>}
                     onLeftClick={Base.goBack}
                     rightContent={[
-                        <img src={icon.cart} style={{ marginRight: '16px' }}/>,
-                        <img src={icon.share}/>
+                        <img src={icon.cart} style={{ marginRight: '16px' }} alt=''/>,
+                        <img src={icon.share} alt=''/>
                     ]}
                 ></NavBar>
                 <Carousel
@@ -117,6 +117,7 @@ export default class GoodDetail extends BaseComponent{
                         <img
                             src={val}
                             style={{ width: '100%', verticalAlign: 'top' }}
+                            alt=''
                         />
                     ))}
                 </Carousel>
@@ -179,7 +180,7 @@ export default class GoodDetail extends BaseComponent{
                 <div className="lecturer-store-con">
                     <Flex justify='between' className='lecturer-info'>
                         <Flex>
-                            <img src={test.test3}/>
+                            <img src={test.test3} alt=''/>
                             <div>
                                 <div className="name">文贝袄</div>
                                 <div className="goods-num">
@@ -203,9 +204,9 @@ export default class GoodDetail extends BaseComponent{
                     <div className="title-con">
                         图文详情
                     </div>
-                    <img src={test.test5}/>
-                    <img src={test.test6}/>
-                    <img src={test.test7}/>
+                    <img src={test.test5} alt=''/>
+                    <img src={test.test6} alt=''/>
+                    <img src={test.test7} alt=''/>
                 </div>
             </div>
         )
