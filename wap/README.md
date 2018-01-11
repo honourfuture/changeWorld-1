@@ -2227,3 +2227,19 @@ In the future, we might start automatically compiling incompatible third-party m
 ## Something Missing?
 
 If you have ideas for more “How To” recipes that should be on this page, [let us know](https://github.com/facebookincubator/create-react-app/issues) or [contribute some!](https://github.com/facebookincubator/create-react-app/edit/master/packages/react-scripts/template/README.md)
+
+
+### 代码规范
+```
+1.文件及变量命名，驼峰式，className命名'-'
+2.组件，面板文件及其less文件命名，首字母大写
+3.写静态页面时，本地测试图片放到images/test中，以test命名，方便后面删除
+4.图片引用放入images/index.js,目录区分方式，icon中放入小图标，common中放入公共图片（一般图片很少有公共的），其他以模块分，比如address，cart等等
+5.为防止单次使用的组件过多，commponents目录下文件太多，组件的提取，依照的原则为：首次使用，提取在当前文件下，第二次遇到使用，再创建组件文件，
+例如：GoodDetail面板中，EvaluateItem组件和GoodItem组件，放入该面板文件，当遇到第二次使用时，创建相应组件文件，放入components中
+6.列表类ui，统一使用数据控制渲染ui的方式，方便后面接口数据的渲染
+
+7.尽量使用皮肤控制设置颜色之类的
+8.App.less中写了两个公共样式，margin,padding这种不建议写入公共样式，因为多年项目经验表明，margin,padding样式单独使用比较少
+
+```
