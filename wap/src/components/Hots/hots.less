@@ -1,7 +1,15 @@
 @import '../../common/theme.less';
 .Hots{
+    
+    .slider-decorator-0{
+        padding-right: 15px;
+        bottom: 10px !important;
+        .am-carousel-wrap{
+            text-align: right;
+        }
+    }
 
-    .anchor_recommend{
+    .anchor-recommend{
         padding: 15px 0;
         background: #fff;
         -webkit-box-shadow: inset 0 0 0 0 #F3F3F3;
@@ -29,25 +37,25 @@
         }
     }
 
-    .recommend_goods{
+    .recommend-goods{
         &Item{
             margin-bottom: 10px;
             width: calc(~'50% - 5px'); //48%;
             &:nth-child(2n){
                 margin-left: 10px;
             }
-            &_img{
+            &-img{
                 img{
                     width: 100%;
                     display: block;
                 }
             }
-            &_body{
+            &-body{
                 padding: 10px 15px;
                 background: #f7f7f7;
                 box-shadow: inset 0 0 0 0 #F0F0F0;
             }
-            &_title{
+            &-title{
                 margin-bottom: 5px;
                 line-height: 21px;
                 font-size: 14px;

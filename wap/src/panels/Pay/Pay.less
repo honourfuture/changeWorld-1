@@ -1,10 +1,10 @@
 @import '../../common/theme.less';
 .Pay{
 	padding: 15px;
-	&_box{
+	&-box{
 		background: #fff;
 		border-radius: 8px;
-		&_goods{
+		&-goods{
 			padding: 20px 15px;
 			.goodsImg{
 				width: 66px;
@@ -17,14 +17,14 @@
 			.goodsInfo{
 				width: calc(~'100% - 76px');
 				height: 66px;
-				&_tit{
+				&-tit{
 
 					line-height: 20px;
 					font-size: 13px;
 					color: #181818;
 					.ellipsis;
 				}
-				&_num{
+				&-num{
 					margin-top: 10px;
 					line-height: 13px;
 					span{
@@ -38,13 +38,16 @@
 				}
 			}
 		}
-		&_mode{
+		&-mode{
 			padding: 20px 15px;
 			background: #fbfbfb; 
-			.pay_check{
+			.pay-check{
 				margin-top: 23px;
 				.am-flexbox{
 					margin-bottom: 19px;
+					&:last-of-type{
+						margin-bottom: 0;
+					}
 				}
 				.am-flexbox-item{
 					font-size: 13px;
@@ -58,11 +61,11 @@
 					span{
 						line-height: 13px;
 					}
-					.pay_gold{
+					.pay-gold{
 						letter-spacing: 0;
 						color: #404143;
 					}
-					.account_money{
+					.account-money{
 						margin-left: 10px;
 						color: #999;
 					}
@@ -89,7 +92,7 @@
 				}
 			}
 		}
-		&_opear{
+		&-opear{
 			padding: 30px 15px;
 			.am-button{
 				width: 100%;

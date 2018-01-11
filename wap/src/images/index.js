@@ -18,4 +18,6 @@ export const test = {
     test5:require('./test/5.png'),
     test6:require('./test/6.png'),
     test7:require('./test/7.png'),
+    banner1:require('./test/banner1.jpg'),
+    banner2:require('./test/banner2.jpg'),
 }
