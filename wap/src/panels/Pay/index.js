@@ -1,12 +1,10 @@
 import React from 'react';
 import {action} from 'mobx';
 import {BaseComponent} from '../../common';
-import {Flex,Button,List,Radio} from 'antd-mobile';
+import {Flex,Button,Radio} from 'antd-mobile';
 import './Pay.less';
 import {icon,test} from '../../images';
 
-const Item = List.Item;
-const RadioItem = Radio.RadioItem;
 const payIconDic = {
     'alipay':icon.payZfb,
     'wechat':icon.payWx,
@@ -81,7 +79,7 @@ export default class Pay extends BaseComponent{
                 return (
                     <Flex justify="between" key={type}>
                         <Flex.Item>
-                            <img src={payIconDic[type]}/>
+                            <img src={payIconDic[type]} alt=""/>
                         </Flex.Item>
                         <Flex.Item>
                             <Radio checked={curIndex === index} name={type} onChange={()=>this.changeHandler(index)}></Radio>

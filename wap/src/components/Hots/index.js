@@ -65,6 +65,7 @@ export class Hots extends BaseComponent{
                             key={val}
                             src={val}
                             style={{ width: '100%'}}
+                            alt=""
                         />
                     ))}
                 </Carousel>

@@ -1,44 +1,35 @@
 @import '../../common/theme.less';
-.NewAddress{
+.SelectAddress{
+	.am-radio {
+		padding: 2.5px;
+		border: 1px solid #ccc;
+		border-radius: 50%;
+		&.am-radio-checked{
+			border: 1px solid @brand-primary;
+			background: @brand-primary;
+			.am-radio-inner::after{
+				width: 5px;
+				height: 10px;
+				top: -1px;
+				right: 7px;
+				border-color: #fff;
+			}
+		}
+	}
 	.am-list-item{
-		padding-left: 0;
-		.am-list-line{
-			padding-left: 15px;
-		}
-		.am-input-label,.am-list-content{
-			font-size: 14px;
-			color: #999;
-		}
-		.am-input-control,.am-input-control input{
-			font-size: 14px;
-			color: #333;
-			::-webkit-input-placeholder,.fake-input-placeholder{
-				font-size: 14px;
-				color: #E0E0E0;
-			}
-		}
-	}
-	.take-region{
-		&.check-address{
-			.am-list-extra{
-				color: #333;
-			}
-		}
 		.am-list-content{
-			margin-right: 5px;
-			width: 85px;
-			flex: initial;
-		}
-		.am-list-extra{
-			flex: 1 1;
 			font-size: 14px;
-			text-align: left;
-			color: #E0E0E0;
+			color: #181818;
+			span{
+				float: right;
+			}
+			.am-list-brief{
+				line-height: 18px;
+				// -webkit-line-clamp: 2;
+				white-space: initial;
+				font-size: 12px;
+				color: #666;
+			}
 		}
-	}
-	.save-address{
-		height: 44px;
-		line-height: 44px;
-		font-size: 16px;
 	}
 }
