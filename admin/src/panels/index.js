@@ -11,8 +11,13 @@ import Login from './Login';
 import Exception403 from './Exception/403';
 import Exception404 from './Exception/404';
 import Exception500 from './Exception/500';
-
+import ShopNavList from './ShopNavList';
 export const panelsList =  [
+    {
+        path:'/shop/ShopNavList',
+        component:ShopNavList,
+        title:'导航',
+    },
     {
         path:'/dashboard/analysis',
         component:Analysis,
@@ -36,7 +41,6 @@ export const panelsList =  [
         component:Exception500,
     }
 ]
-
 export const getPanelName = (path)=>{
     const item = panelsList.find((item)=>item.path === path);
     const title = item?item.title:'';

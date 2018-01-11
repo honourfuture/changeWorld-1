@@ -5,9 +5,7 @@ import './Test1.less';
 
 export class Test1 extends BaseComponent{
     componentDidMount(){
-        Base.GET({act:'v2',op:'index2'},(res)=>{
-            
-        },this);
+        // this.refs.spin.setState({spinning:false});
     }
     render(){
         return (

@@ -9,7 +9,7 @@
 import React from 'react';
 import { Layout, Menu, Icon, Spin, Dropdown, Avatar } from 'antd';
 import Debounce from 'lodash-decorators/debounce';
-import {Global,BaseComponent} from '../../common';
+import {Base,Global,BaseComponent} from '../../common';
 import {action} from 'mobx';
 import './GlobalHeader.less';
 
@@ -30,10 +30,21 @@ export class GlobalHeader extends BaseComponent {
         event.initEvent('resize', true, false);
         window.dispatchEvent(event);
     }
+    @action.bound
+    menuItemHandler({key}){
+        switch(key){
+            case 'logout':
+                Base.GET({act:'login_out',op:'index',mod:'admin'},(res)=>{
+                    Base.setLocalData('verifyData',null);
+                    Base.push('/user/login');
+                })
+            break;
+        }
+    }
     render() {
         const {account,header} = Global.userInfo;
         const menu = (
-            <Menu className='menu' selectedKeys={[]}>
+            <Menu onClick={this.menuItemHandler} className='menu' selectedKeys={[]}>
                 <Menu.Item disabled><Icon type="user" />个人中心</Menu.Item>
                 <Menu.Item disabled><Icon type="setting" />设置</Menu.Item>
                 <Menu.Divider />

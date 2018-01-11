@@ -22,7 +22,9 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test --env=jsdom",
-    "eject": "react-app-rewired eject"
+    "eject": "react-app-rewired eject",
+    "panel": "node ./bin/bin_createPanel.js",
+    "component": "node ./bin/bin_createComponent.js"
   },
   "devDependencies": {
     "babel-plugin-import": "^1.6.3",

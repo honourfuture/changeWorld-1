@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Tabs, Button, Icon, Alert } from 'antd';
+import { Form, Input, Tabs, Button, Icon, Alert, message } from 'antd';
 import {Base,Global} from '../../common';
 import './Login.less';
 
@@ -41,14 +41,15 @@ export default class Login extends Component {
 				if (!err) {
 					const {type} = this.state;
 					this.setState({login:{submitting:true,type}});
-					Base.POST({act:'login',op:'index',mod:'admin',...values},(res)=>{
-						if(res.status === 0){
-							const {auth,account,header} = res;
-							Base.setLocalData('verifyData',auth);
-							Global.userInfo = {account,header};
-							this.setState({login:{submitting:false,type}});
-							Base.push('/');
-						}
+					Base.GET({act:'login',op:'index',mod:'admin',...values},(res)=>{
+						const {auth,account,header} = res.data;
+						Base.setLocalData('verifyData',auth);
+						Global.userInfo = {account,header:header || Global.userInfo.header};
+						this.setState({login:{submitting:false,type}});
+						Base.push('/');
+					},null,(res)=>{
+						message.error(res.message);
+						this.setState({login:{submitting:false,type}});
 					})
 				}
 			}
@@ -88,7 +89,7 @@ export default class Login extends Component {
 							})(
 							<Input
 								size="large"
-								prefix={<Icon type="user" className='prefixIcon' />}
+								prefix={<Icon type="user" className='prefix-icon' />}
 								placeholder="请输入账户名"
 							/>
 							)}
@@ -101,7 +102,7 @@ export default class Login extends Component {
 							})(
 							<Input
 								size="large"
-								prefix={<Icon type="lock" className='prefixIcon' />}
+								prefix={<Icon type="lock" className='prefix-icon' />}
 								type="password"
 								placeholder="请输入密码"
 							/>
@@ -125,7 +126,7 @@ export default class Login extends Component {
 							})(
 							<Input
 								size="large"
-								prefix={<Icon type="mobile" className='prefixIcon' />}
+								prefix={<Icon type="mobile" className='prefix-icon' />}
 								placeholder="手机号"
 							/>
 							)}
@@ -140,7 +141,7 @@ export default class Login extends Component {
 								})(
 								<Input
 									size="large"
-									prefix={<Icon type="mail" className='prefixIcon' />}
+									prefix={<Icon type="mail" className='prefix-icon' />}
 									placeholder="验证码"
 								/>
 								)}
@@ -148,7 +149,7 @@ export default class Login extends Component {
 							<Col span={8}>
 								<Button
 								disabled={count}
-								className='getCaptcha'
+								className='get-captcha'
 								size="large"
 								onClick={this.onGetCaptcha}
 								>
@@ -174,9 +175,9 @@ export default class Login extends Component {
 			</Form>
 			{/* <div className='other'>
 				其他登录方式
-				<span className='iconAlipay' />
-				<span className='iconTaobao' />
-				<span className='iconWeibo' />
+				<span className='icon-alipay' />
+				<span className='icon-taobao' />
+				<span className='icon-weibo' />
 				<Link className='register' to="/user/register">注册账户</Link>
 			</div> */}
 		</div>

@@ -16,6 +16,7 @@ import 'whatwg-fetch';
 useStrict(true);
 
 export const Base = {
+	DEBUG:process.env.NODE_ENV !== 'production',
 	//打开页面
 	push(path,params){
 		if(!path){
@@ -93,6 +94,7 @@ export const Base = {
 		const self = this;
 		fetch(requestUrl,fetchData).then(response => response.json())
 		.then(res => {
+			self.DEBUG && console.log(res);
 			switch(res.status){
 				case 0:
 					callBack && action(callBack)(res);
@@ -101,10 +103,13 @@ export const Base = {
 					self.push('/user/login');
 				break;
 				default:
-					message.error(res.msg);
+					if(failBack){
+						failBack(res);
+					}else{
+						message.error(res.message);
+					}
 				break;
 			}
-			// failBack && action(failBack)(res);
 			Spin && Spin.setState({spinning:false});
 		}).catch(ex => Base.push('/Exception/500'));
 	},

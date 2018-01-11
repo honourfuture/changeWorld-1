@@ -59,7 +59,7 @@ export class BasicLayout extends React.PureComponent {
 										<Route path={item.path} exact key={item.path} component={item.component} />
 									)
 								}
-								<Redirect exact from="/" to="/dashboard/analysis" />
+								<Redirect exact from="/" to="/shop/ShopNavList" />
 								<Route render={NotFound} />
 							</Switch>
 						</div>
