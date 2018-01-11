@@ -12,7 +12,13 @@ import Pay from './Pay';
 import NewAddress from './NewAddress';
 import GoodsDetail from './GoodsDetail';
 import SelectAddress from './SelectAddress';
+import ShopCart from './ShopCart';
 export const panelsList =  [
+    {
+        path:'/ShopCart',
+        component:ShopCart,
+        title:'购物车',
+    },
     {
         path:'/ShopIndex',
         component:ShopIndex,

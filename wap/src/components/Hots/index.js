@@ -33,7 +33,7 @@ class HotsItem extends BaseComponent {
                     <img src={goodsImg} alt=""/>
                 </div>
                 <div className="recommend-goodsItem-body">
-                    <div className="recommend-goodsItem-title">
+                    <div className="recommend-goodsItem-title ellipsis">
                         {goodsTit}
                     </div>
                     <Flex justify="between" className="recommend-goodsItem-opera">

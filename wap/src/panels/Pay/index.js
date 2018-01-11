@@ -98,7 +98,7 @@ export default class Pay extends BaseComponent{
                             <img src={goodsInfo.goodsImg} alt=""/>
                         </div>
                         <div className="goodsInfo">
-                            <div className="goodsInfo-tit">{goodsInfo.goodsTitle}</div>
+                            <div className="goodsInfo-tit ellipsis">{goodsInfo.goodsTitle}</div>
                             <Flex justify="between" className="goodsInfo-num">
                                 <span>￥{goodsInfo.price}</span>
                                 <span>x {goodsInfo.num}</span>

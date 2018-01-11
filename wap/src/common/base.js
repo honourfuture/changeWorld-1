@@ -158,7 +158,12 @@ export const Base = {
 				}
 			}).catch(catchFuc);
       	}).catch(catchFuc);
-    }
+	},
+	//格式化数字，比如：0->0.00
+	getNumFormat(n_num,i_len=2){
+		n_num = parseFloat(n_num) || 0;
+		return n_num.toFixed(i_len);
+	},
 	// //监听事件
 	// addEvt(name,func){
 	// 	PubSub.subscribe(name,func);

@@ -4,7 +4,7 @@ module.exports = function override(config, env) {
     config = injectBabelPlugin(['import', { libraryName: 'antd-mobile', style: 'css' }], config);
     config = injectBabelPlugin(['transform-decorators-legacy'], config);
     config = rewireLess.withLoaderOptions({
-        // modifyVars: { "@hd": "2px" },
+        modifyVars: { "@brand-primary": "#e21b1a" },
     })(config, env);
     return config;
 };
