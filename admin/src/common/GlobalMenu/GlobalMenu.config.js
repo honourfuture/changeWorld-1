@@ -1,75 +1,140 @@
 const menuData = [
     {
+        name: '用户',
+        icon: 'user',
+        path: 'user',
+        children: [
+            {
+                name: '讲师认证',
+                path: 'UserLecturerCertification',
+            },
+            {
+                name: 'V认证',
+                path: 'UserVCertification',
+            },
+            {
+                name: '普通用户',
+                path: 'UserOrdinary',
+            },
+            {
+                name: '讲师用户',
+                path: 'UserLecturer',
+            },
+            {
+                name: '等级管理',
+                path: 'UserLvManager',
+            },
+            {
+                name: '贵族管理',
+                path: 'LecturerNobleManager',
+            },
+        ],
+    }, 
+    {
+        name: '交易',
+        icon: 'trademark',
+        path: 'trade',
+        children: [
+            {
+                name: '订单列表',
+                path: 'OrderList',
+            }
+        ],
+    }, 
+    {
         name: '商城',
         icon: 'shop',
         path: 'shop',
         children: [
             {
-                name: '导航',
-                path: 'setNav',
-            }
+                name: '商品管理',
+                path: 'GoodsManager',
+            }, 
+            {
+                name: '靓号管理',
+                path: 'CodeManager',
+            }, 
         ],
-    }, 
+    },
     {
-        name: '表单页',
-        icon: 'form',
-        path: 'form',
+        name: '运营',
+        icon: 'picture',
+        path: 'operation',
         children: [
             {
-                name: '基础表单',
-                path: 'basic-form',
-            }, 
-            {
-                name: '分步表单',
-                path: 'step-form',
-            }, 
-            {
-                name: '高级表单',
-                path: 'advanced-form',
-            }
-        ],
-    }, 
-    {
-        name: '账户',
-        icon: 'user',
-        path: 'user',
-        children: [
-            {
-                name: '登录',
-                path: 'login',
-            }, 
-            {
-                name: '注册',
-                path: 'register',
-            }, 
-            {
-                name: '注册结果',
-                path: 'register-result',
+                name: '广告图',
+                path: 'AdManager',
             }
         ],
     },
     {
-        name: '异常页',
-        icon: 'warning',
-        path: 'exception',
-        children: [
-            {
-                name: '403',
-                path: '403',
-            }, {
-                name: '404',
-                path: '404',
-            }, {
-                name: '500',
-                path: '500',
-            }
-        ],
-    },
-    {
-        name: '使用文档',
+        name: '文章',
         icon: 'book',
-        path: 'http://pro.ant.design/docs/getting-started',
-        target: '_blank',
+        path: 'article',
+        children: [
+            {
+                name: '文章类',
+                path: 'ArticleCategory',
+            },
+            {
+                name: '文章列表',
+                path: 'ArticleList',
+            },
+            {
+                name: '单页管理',
+                path: 'ArticleManager',
+            },
+            {
+                name: '帮助中心',
+                path: 'ArticleHelper',
+            }
+        ],
+    },
+    {
+        name: '系统',
+        icon: 'laptop',
+        path: 'system',
+        children: [
+            {
+                name: '设置',
+                path: 'SystemSet',
+            },
+            {
+                name: '账号',
+                path: 'SystemAccount',
+            },
+            {
+                name: '日志',
+                path: 'SystemLog',
+            },
+            {
+                name: 'APP版本',
+                path: 'SystemAppVersion',
+            },
+            {
+                name: '密保问题',
+                path: 'SystemEncrypted',
+            }
+        ],
+    },
+    {
+        name: '消息',
+        icon: 'message',
+        path: 'msg',
+        children: [
+            {
+                name: '反馈建议',
+                path: 'MsgFeedBack',
+            },
+            {
+                name: '站内信',
+                path: 'MsgInstation',
+            },
+            {
+                name: '公共',
+                path: 'MsgAnnouncement',
+            }
+        ],
     }
 ];
   
