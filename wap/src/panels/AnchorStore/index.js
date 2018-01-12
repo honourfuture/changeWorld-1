@@ -1,6 +1,6 @@
 import React from 'react';
 import {BaseComponent,Base} from '../../common';
-import {Flex,Button,NavBar,Tabs} from 'antd-mobile';
+import {Flex,NavBar,Tabs} from 'antd-mobile';
 import './AnchorStore.less';
 
 import {icon,test} from '../../images';

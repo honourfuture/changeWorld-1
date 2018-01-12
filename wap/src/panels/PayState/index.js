@@ -1,6 +1,6 @@
 import React from 'react';
 import {BaseComponent,Base} from '../../common';
-import {Flex,Button,NavBar,Icon} from 'antd-mobile';
+import {Flex,Button,NavBar} from 'antd-mobile';
 import './PayState.less';
 import {icon} from '../../images';
 

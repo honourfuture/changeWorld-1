@@ -17,7 +17,7 @@ class CartItem extends BaseComponent{
 	}
 	render(){
 		const {isEdit} = this.props;
-		const {title,img,spec,price,goodsId,checked,num} = this.props.item;
+		const {title,img,spec,price,checked,num} = this.props.item;
 		return (
 			<Flex className='cart-item'>
 				<Checkbox checked={checked} onChange={this.changeHandler} className='check'/>
@@ -31,7 +31,9 @@ class CartItem extends BaseComponent{
 							</Flex>
 							<Flex justify='between' className='bottom-info'>
 								<div className="spec">{spec}</div>
-								{isEdit?<Stepper onChange={this.stepperHandler} showNumber className='stepper' min={1} max={99} value={num}/>:null}
+								{isEdit?<Stepper onChange={this.stepperHandler} showNumber className='stepper' min={1} max={99} value={num}/>:
+								<div className="num">x{num}</div>
+								}
 							</Flex>
 						</Flex.Item>
 					</Flex>
@@ -130,7 +132,7 @@ export default class ShopCart extends BaseComponent{
 			storeItem.goods.forEach((item)=>{
 				const {checked,price,num} = item;
 				if(checked){
-					value += parseFloat(item.price)*parseInt(num);
+					value += parseFloat(price)*parseInt(num,10);
 				}
 			})
 		})
