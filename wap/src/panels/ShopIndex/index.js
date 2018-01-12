@@ -1,5 +1,5 @@
 import React from 'react';
-import {BaseComponent} from '../../common';
+import {BaseComponent,Base} from '../../common';
 import {Flex,Tabs,SearchBar,NavBar,Badge} from 'antd-mobile';
 import './ShopIndex.less';
 
@@ -34,7 +34,7 @@ export default class ShopIndex extends BaseComponent{
                         <span />
                     </Badge>}
                     onLeftClick={() => console.log('onLeftClick')}
-                    rightContent={<Flex className="rightCont">
+                    rightContent={<Flex className="rightCont" onClick={()=>Base.push('ShopCart')}>
                         <img src={icon.indexCart} alt=""/>
                         <Badge text={1} overflowCount={99}><span /></Badge>
                     </Flex>}>

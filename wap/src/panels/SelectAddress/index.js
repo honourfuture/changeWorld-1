@@ -61,7 +61,7 @@ export default class SelectAddress extends BaseComponent{
     }
     render(){
         const {curIndex,addressDate} = this.store;
-       const addressItem = addressDate.map((item,index)=>{
+        const addressItem = addressDate.map((item,index)=>{
             return <AddressItem key={index} checked={curIndex === index} index={index} {...item} callBack={this.changeHandler}/>;
         });
         return (
@@ -71,6 +71,7 @@ export default class SelectAddress extends BaseComponent{
                     mode="light"
                     icon={<img src={icon.back} alt=''/>}
                     onLeftClick={Base.goBack}
+                    rightContent={<div onClick={()=>Base.push('NewAddress')} className='right-label'>添加</div>}
                 >支付</NavBar>
                 <div className="base-content">
                     <div className="SelectAddress-box">

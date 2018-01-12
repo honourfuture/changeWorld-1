@@ -13,7 +13,13 @@ import NewAddress from './NewAddress';
 import GoodsDetail from './GoodsDetail';
 import SelectAddress from './SelectAddress';
 import ShopCart from './ShopCart';
+import AnchorStore from './AnchorStore';
 export const panelsList =  [
+    {
+        path:'/AnchorStore',
+        component:AnchorStore,
+        title:'商城',
+    },
     {
         path:'/ShopCart',
         component:ShopCart,
