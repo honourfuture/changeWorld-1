@@ -1,6 +1,7 @@
 import React from 'react';
+import {action} from 'mobx';
 import {BaseComponent,Base} from '../../common';
-import {Flex, NavBar, Icon, Carousel, Badge} from 'antd-mobile';
+import {Flex, NavBar, Icon, Carousel, Badge, Checkbox,Stepper,Button} from 'antd-mobile';
 import './GoodsDetail.less';
 import {icon,test} from '../../images';
 
@@ -30,6 +31,42 @@ class GoodsItem extends BaseComponent {
                 </div>
                 <div className="price">￥{price}</div>
             </div>
+        )
+    }
+}
+
+class AddressItem extends BaseComponent {
+    @action.bound
+    checkHandler(){
+        const {onCheckHandler,index} = this.props;
+        onCheckHandler(index);
+    }
+    render(){
+        const {isDefault,address,checked} = this.props;
+        return (
+            <Flex className='address-item' onClick={this.checkHandler}>
+                <img src={icon.addressIcon} alt=""/>
+                <Flex.Item className='ellipsis'>{`${isDefault?'[默认]':''}${address}`}</Flex.Item>
+                <Checkbox checked={checked}/>
+            </Flex>
+        )
+    }
+}
+
+class SelectItem extends BaseComponent{
+    @action.bound
+    selectItemHandler(){
+        const {selectItemHandler,index,disable} = this.props;
+        !disable && selectItemHandler(index)
+    }
+    render(){
+        const {name,disable,selected} = this.props;
+        return (
+            <Flex.Item className="select-item-con" onClick={this.selectItemHandler}>
+                <div className={`select-item ${disable?'disable':''} ${selected?'selected':''}`}>
+                    {name}
+                </div>
+            </Flex.Item>
         )
     }
 }
@@ -87,16 +124,116 @@ const testGoods = [
         title:'RE:CIPE 雪花防晒瓶喷雾 3瓶',
         price:'155'
     },
-]
+];
+
+const addressList = [
+    {
+        isDefault:true,
+        address:'浙江省 杭州市 余杭区 荆长大道顺帆科技园A座',
+    },
+    {
+        isDefault:false,
+        address:'浙江省 杭州市 西湖区 西溪花园10幢308室',
+    },
+    {
+        isDefault:false,
+        address:'浙江省 杭州市 西湖区 华星时代广场A座801',
+    },
+    {
+        isDefault:false,
+        address:'辽宁省 大连市 普湾新区 铁西街道（国泰街）绿都花园3栋4单元401',
+    },
+    {
+        isDefault:false,
+        address:'辽宁省 大连市 普湾新区 铁西街道（国泰街）绿都花园1栋4单元405',
+    },
+];
+
+const specList = [
+    {
+        name:'水晶防晒喷雾',
+        disable:false,
+    },
+    {
+        name:'雪花防晒喷雾',
+        disable:false,
+    },
+    {
+        name:'补水防晒喷雾',
+        disable:true,
+    },
+];
+
+const classifyList = [
+    {
+        name:'50ML',
+        disable:false,
+    },
+    {
+        name:'150ML',
+        disable:true,
+    },
+    {
+        name:'300Ml',
+        disable:false,
+    },
+];
 export default class GoodsDetail extends BaseComponent{
+    store={
+        isCollect:false,
+        isAddressModal:false,
+        curAddressIndex:0,
+        isBuyModal:false,
+        selectSpecIndex:-1,
+        selectClassifyIndex:-1,
+    }
     componentDidMount(){
     }
+    @action.bound
+    collectHandler(){
+        this.store.isCollect = !this.store.isCollect;
+    }
+    @action.bound
+    addressHandler(){
+        this.store.isAddressModal = !this.store.isAddressModal;
+    }
+    @action.bound
+    onCheckHandler(index){
+        this.store.curAddressIndex = index;
+        this.addressHandler()
+    }
+    @action.bound
+    buyModalHandler(){
+        this.store.isBuyModal = !this.store.isBuyModal;
+    }
+    @action.bound
+    stepperHandler(){
+
+    }
+    @action.bound
+    specItemHandler(index){
+        this.store.selectSpecIndex = index;
+    }
+    @action.bound
+    classifyItemHandler(index){
+        this.store.selectClassifyIndex = index;
+    }
     render(){
+        const {isCollect,isAddressModal,curAddressIndex,isBuyModal,selectSpecIndex,selectClassifyIndex} = this.store;
         const evaluateItems = testEvaluates.map((item,index)=>{
             return <EvaluateItem key={index} {...item}/>;
         });
         const goodsItems = testGoods.map((item,index)=>{
             return <GoodsItem key={index} {...item}/>;
+        });
+        const addressItems = addressList.map((item,index)=>{
+            return <AddressItem key={index} {...item} index={index} checked={curAddressIndex === index} onCheckHandler={this.onCheckHandler}/>
+        });
+        const specItems = specList.map((item,index)=>{
+            return <SelectItem key={index} index={index} selected={index===selectSpecIndex} {...item} selectItemHandler={this.specItemHandler}/>;
+        });
+        const classifyItems = classifyList.map((item,index)=>{
+            return <SelectItem key={index} index={index} selected={index===selectClassifyIndex} {...item} selectItemHandler={this.classifyItemHandler}/>;
         })
         return (
             <div className='GoodsDetail'>
@@ -149,10 +286,10 @@ export default class GoodsDetail extends BaseComponent{
                     </div>
                     <div className="distribution-info-con">
                         <div className="flex-item base-line">
-                            <Flex justify='between'>
+                            <Flex justify='between' onClick={this.addressHandler}>
                                 <Flex>
                                     <div className="title">配送</div>
-                                    <div className="des">至 杭州西湖五常大道翡翠城梧桐郡公寓</div>
+                                    <Flex.Item className="des ellipsis">至 {addressList[curAddressIndex].address}</Flex.Item>
                                 </Flex>
                                 <Icon type='right' color='#c9c9c9'/>
                             </Flex>
@@ -211,6 +348,68 @@ export default class GoodsDetail extends BaseComponent{
                         <img src={test.test7} alt=''/>
                     </div>
                 </div>
+                <Flex className="footer">
+                    <Flex.Item>
+                        <Flex>
+                            <Flex.Item>
+                                <img src={icon.storeIcon} alt=""/>
+                                <div className='label'>店铺</div>
+                            </Flex.Item>
+                            <Flex.Item>
+                                <img src={icon.customerIcon} alt=""/>
+                                <div className='label'>客服</div>
+                            </Flex.Item>
+                            <Flex.Item onClick={this.collectHandler}>
+                                <img src={isCollect?icon.collectIcon1:icon.collectIcon0} alt=""/>
+                                <div className='label'>收藏</div>
+                            </Flex.Item>
+                        </Flex>
+                    </Flex.Item>
+                    <Flex.Item className='add-shop-cart' onClick={()=>Base.push('ShopCart')}>
+                        加入购物车
+                    </Flex.Item>
+                    <Flex.Item className='buy-btn' onClick={this.buyModalHandler}>
+                        立即购买
+                    </Flex.Item>
+                </Flex>
+                {isAddressModal?<div className="modal-address">
+                    <Flex className="title-con" justify='between'>
+                        <div>配送至</div>
+                        <img onClick={this.addressHandler} src={icon.closeIcon} alt=""/>
+                    </Flex>
+                    <div className="address-list">
+                        {addressItems}
+                    </div>
+                </div>:null}
+                {isBuyModal?<div className="modal-buy">
+                    <Flex className="info-con" justify='between' align='start'>
+                        <Flex align='start'>
+                            <img className='goods-img' src={test.test4} alt=""/>
+                            <div className='info'>
+                                <div className="price">￥369</div>
+                                <div className="tips">请选择型号</div>
+                            </div>
+                        </Flex>
+                        <img className='close-img' onClick={this.buyModalHandler} src={icon.closeIcon} alt=""/>
+                    </Flex>
+                    <div className="select-con">
+                        <div className="title">型号</div>
+                        <Flex className='select-group base-line' wrap='wrap'>
+                            {specItems}
+                        </Flex>
+                    </div>
+                    <div className="select-con">
+                        <div className="title">分类</div>
+                        <Flex className='select-group base-line' wrap='wrap'>
+                            {classifyItems}
+                        </Flex>
+                    </div>
+                    <Flex className="buy-num-con" justify='between'>
+                        <div className="buy-num-title">购买数量</div>
+                        <Stepper onChange={this.stepperHandler} showNumber className='stepper' min={1} max={99} defaultValue={1}/>
+                    </Flex>
+                    <Button className='buy-step-btn'>下一步</Button>
+                </div>:null}
             </div>
         )
     }

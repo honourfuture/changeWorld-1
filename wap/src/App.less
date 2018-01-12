@@ -48,20 +48,15 @@ html,body,.App{
 	overflow:scroll;
 }
 .ellipsis{
-	display: -webkit-box;
-	// eslint-disable-next-line
-    /* autoprefixer: off*/
-	-webkit-box-orient: vertical;
-    /* autoprefixer: on*/
-    -webkit-line-clamp: 2;
-    overflow: hidden;
+	overflow: hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;
 }
 .ellipsis2{
 	overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
 	-webkit-line-clamp: 2;
-	// eslint-disable-next-line
 	/* autoprefixer: off*/
 	-webkit-box-orient: vertical;
 	/* autoprefixer: on*/

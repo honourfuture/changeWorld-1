@@ -9,17 +9,17 @@ class Item extends BaseComponent {
     render(){
         const {goodsImg,goodsTit,goodsPrice,goodsNum} = this.props;
         return (
-            <div className="recommend-goodsItem">
+            <div className="recommend-goodsItem" onClick={() => Base.push('GoodsDetail', {goodsNum})}>
                 <div className="recommend-goodsItem-img">
                     <img src={goodsImg} alt=""/>
                 </div>
                 <div className="recommend-goodsItem-body">
-                    <div className="recommend-goodsItem-title ellipsis">
+                    <div className="recommend-goodsItem-title ellipsis2">
                         {goodsTit}
                     </div>
                     <Flex justify="between" className="recommend-goodsItem-opera">
                         <span className="goodsPrice">￥ {goodsPrice}</span>
-                        <Button type="warning" inline size="small" onClick={() => Base.push('GoodsDetail', {goodsNum})}>购买</Button>
+                        <Button type="warning" inline size="small">购买</Button>
                     </Flex>
                 </div>
             </div>
