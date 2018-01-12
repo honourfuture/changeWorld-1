@@ -15,7 +15,13 @@ import SelectAddress from './SelectAddress';
 import ShopCart from './ShopCart';
 import AnchorStore from './AnchorStore';
 import OrderDetail from './OrderDetail';
+import ConfirmOrder from './ConfirmOrder';
 export const panelsList =  [
+    {
+        path:'/ConfirmOrder',
+        component:ConfirmOrder,
+        title:'确认订单',
+    },
     {
         path:'/OrderDetail',
         component:OrderDetail,

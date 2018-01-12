@@ -15,6 +15,8 @@ export const icon = {
     closeIcon:require('./icon/closeIcon.png'),
     addressIcon:require('./icon/addressIcon.png'),
     address: require('./icon/addRess.png'),
+    orderTopLine: require('./icon/orderTopLine.png'),
+    addRessBg: require('./icon/addRessBg.png'),
 };
 
 export const test = {
