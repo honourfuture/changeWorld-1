@@ -14,7 +14,13 @@ import GoodsDetail from './GoodsDetail';
 import SelectAddress from './SelectAddress';
 import ShopCart from './ShopCart';
 import AnchorStore from './AnchorStore';
+import OrderDetail from './OrderDetail';
 export const panelsList =  [
+    {
+        path:'/OrderDetail',
+        component:OrderDetail,
+        title:'订单详情',
+    },
     {
         path:'/AnchorStore',
         component:AnchorStore,

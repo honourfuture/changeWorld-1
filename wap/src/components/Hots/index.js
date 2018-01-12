@@ -1,6 +1,6 @@
 import React from 'react';
-import {BaseComponent,Base} from '../../common';
-import {Flex, WhiteSpace, Button,Carousel} from 'antd-mobile';
+import {BaseComponent} from '../../common';
+import { WhiteSpace,Carousel} from 'antd-mobile';
 import './Hots.less';
 
 import {GoodsList} from '../../components/GoodsList';

@@ -1,0 +1,118 @@
+@import '../../common/theme.less';
+.OrderDetail{
+    .base-content{
+        height: calc(~"100vh - 95px");
+        .order-item{
+            background: #fff;
+        }
+        .flex-item{
+            padding: 15px 15px 0;
+            &:last-of-type{
+                padding-bottom: 15px;
+            }
+            .labelItem{
+                font-size: 13px;
+                color: #b0b0b0;
+                &.orderCon{
+                    font-size: 14px;
+                }
+                &.orderPrice{
+                    color: @brand-primary;
+                }
+            }
+            &.orderTit{
+                font-size: 16px;
+                color: @brand-primary;
+            }
+        }
+        .order-address{
+            padding: 15px;
+            .addr-icon{
+                margin-right: 20px;
+                .addrIco{
+                    margin-top: -15px;
+                    height: 20px;
+                }
+            }
+            .addr-info{
+                line-height: 18px;
+                font-size: 16px;
+                .addr-ess{
+                    margin-top: 10px;
+                    line-height: 13px;
+                    font-size: 13px;
+                    color: #333;
+                }
+            }
+        }
+        .goods-info{
+            border-bottom: 1px solid #eee;
+            padding: 10px;
+            .goods-img{
+                width:75px;
+                height: 75px;
+                margin-right: 2px;
+            }
+            .title{
+                padding-top: 5px;
+                // height: 40px;
+                line-height: 20px;
+                flex: 1;
+                font-size: 14px;
+                color:#333;
+            }
+            .bottom-info{
+                margin-top: 15px;
+                .spec{
+                    font-size: 14px;
+                    color:#999;
+                    height: 22px;
+                    line-height: 22px;
+                }
+            }
+            .goods-refurn{
+                margin-top: 8px;
+                .am-button{
+                    border-radius: 2px;
+                    color: #333;
+                    &::before{
+                        border: 1px solid #f5f5f5;
+                    }
+                }
+            }
+            .price{
+                padding-top: 8px;
+                font-size: 13px;
+                font-weight: 600;
+                text-align: right;
+                color: #333;
+                // padding-left: 10px;
+                // padding-right: 5px;
+            }
+        }
+    }
+    .footer{
+        padding: 0 15px;
+        height: 49px;
+        background: #fff;
+        border-top: 1px solid #f1f1f1;
+        .am-button-ghost{
+            border-radius: 2px;
+            color: #000;
+            &::before{
+                border: 1px solid #f5f5f5;
+                border-radius: 2px;
+            }
+        }
+        .contact,.look-log,.eva-order{
+            margin-left: 15px;
+        }
+        .eva-order{
+            color: @brand-primary;
+            &::before{
+                border: 1px solid @brand-primary;
+                border-radius: 2px;
+            }   
+        }
+    }
+}
