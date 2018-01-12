@@ -1,3 +1,17 @@
+/*
+ * @Author: daihanqiao@126.com 
+ * @Date: 2018-01-01 15:39:24 
+ * @Last Modified by: daihanqiao@126.com
+ * @Last Modified time: 2018-01-01 15:39:54
+ * 样式配置，默认采用antd皮肤
+ */
+ 
+//皮肤配置
+@import "~antd-mobile/lib/style/themes/default.less";
+@brand-primary: #e21b1a;
+
+
+//全局样式
 *{
 	outline: none !important;
 	font-family: '微软雅黑';
@@ -7,11 +21,6 @@
 	-webkit-touch-callout:none;
 	user-select:none;
  	-webkit-text-size-adjust:none;
-}
-textarea{
-	user-select: text;
-	-webkit-user-select: text;
-	resize: none;
 }
 ul,ol,dl,li{
 	list-style: none;
@@ -28,7 +37,7 @@ html,body,.App{
 	background: #f3f3f3;
 }
 
-//基础
+//基础样式
 .base-line{
 	position: relative;
 	&:after{
@@ -66,3 +75,8 @@ html,body,.App{
 		height: 20px;
 	}
 }
+.am-checkbox.am-checkbox-checked .am-checkbox-inner{
+    border-color: @brand-primary;
+    background: @brand-primary;
+}
+

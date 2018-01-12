@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 import DocumentTitle from 'react-document-title';
 import { panelsList, getPanelName } from './panels';
 import 'normalize.css';
-import './App.less';
 
 class Panels extends Component {
 	render() {
