@@ -27,9 +27,11 @@ const testNum = [{
 class VanityItem extends BaseComponent {
     render(){
         const {num,price} = this.props;
+        const numRed = num.toString().slice(0,4);
+        const numLast = num.toString().slice(4,num.toString().length);
         return(
             <div className="listItem">
-                <div className="listItem-num">{num}</div>
+                <div className="listItem-num"><em>{numRed}</em>{numLast}</div>
                 <div className="listItem-price">一口价：<em>￥{price}</em></div>
             </div>
         )
