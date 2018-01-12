@@ -9,6 +9,8 @@ export const icon = {
     payZfb:require('./icon/payZfb.png'),
     payWx:require('./icon/payWx.png'),
     address: require('./icon/addRess.png'),
+    orderTopLine: require('./icon/orderTopLine.png'),
+    addRessBg: require('./icon/addRessBg.png'),
 };
 
 export const test = {

@@ -9,7 +9,6 @@ export default class OrderDetail extends BaseComponent{
 		return (
 			<div className='OrderDetail'>
 				<NavBar
-					className="base-line"
 					mode="light"
 					icon={<img src={icon.back} alt='' />}
 					onLeftClick={Base.goBack}
@@ -40,24 +39,22 @@ export default class OrderDetail extends BaseComponent{
 					</div>
 					<WhiteSpace size="lg" />
 					<div className="order-item">
-						<Flex.Item>
-							<Flex align='start' className='goods-info'>
-								<img className='goods-img' src={test.test4} alt="" />
-								<Flex.Item>
-									<Flex justify='between' align='start'>
-										<div className="title ellipsis2">RE:CIPE 水晶防晒喷雾 150毫升/瓶 3瓶</div>
-										<div className="price">￥ 369</div>
-									</Flex>
-									<Flex justify='between' className='bottom-info'>
-										<div className="spec">型号 150ml</div>
-										<div className="spec">x1</div>
-									</Flex>
-									<Flex justify='end' className='goods-refurn'>
-										<Button type="ghost" inline size="small" className="am-button-borderfix">申请退款</Button>
-									</Flex>
-								</Flex.Item>
-							</Flex>
-						</Flex.Item>
+						<Flex align='start' className='goods-info base-line'>
+							<img className='goods-img' src={test.test4} alt="" />
+							<Flex.Item>
+								<Flex justify='between' align='start'>
+									<div className="title ellipsis">RE:CIPE 水晶防晒喷雾 150毫升/瓶 3瓶</div>
+									<div className="price">￥ 369</div>
+								</Flex>
+								<Flex justify='between' className='bottom-info'>
+									<div className="spec">型号 150ml</div>
+									<div className="spec">x1</div>
+								</Flex>
+								<Flex justify='end' className='goods-refurn'>
+									<Button type="ghost" inline size="small" className="am-button-borderfix">申请退款</Button>
+								</Flex>
+							</Flex.Item>
+						</Flex>
 						<Flex className="flex-item" justify="between">
 							<div className="labelItem">商品总价</div>
 							<div className="labelItem">￥ 369</div>

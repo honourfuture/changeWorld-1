@@ -1,0 +1,242 @@
+@import '../../common/theme.less';
+.ConfirmOrder{
+    .base-content{
+        height:calc(~'100vh - 95px');
+        .img-line{
+            width: 100%;
+            height: 5px;
+            display: block;
+            vertical-align: top;
+        }
+        .order-address{
+            padding: 20px 15px;
+            background: #fff;
+            .addr-info{
+                font-size: 14px;
+                color: #333;
+                .addr-ess{
+                    margin-top: 10px;
+                    line-height: 20px;
+                    font-size: 13px;
+                }
+            }
+            .add-addr{
+                text-align: center;
+                .addr-img{
+                    width: 60px;
+                    height: 60px;
+                    line-height: 70px;
+                    display: inline-block;
+                    background: url('../../images/icon/addRessBg.png');
+                    background-size: contain;
+                    background-position: center;
+                    .addIco-img{
+                        vertical-align: bottom;
+                        height: 35px;
+                    }
+                    
+                }
+                .add-tips{
+                    margin-top: 24px;
+                    line-height: 18px;
+                    font-size: 13px;
+                    color: #333;
+                    em{
+                        color: @brand-primary;
+                    }
+                }
+            }
+        }
+        .store-info{
+            padding: 10px 15px;
+            background: #fff;
+            img{
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                margin-right: 10px;
+            }
+            .store-name{
+                font-size: 14px;
+            }
+        }
+        .goods-info{
+            padding: 10px;
+            background: #fff;
+            .goods-img{
+                width:75px;
+                height: 75px;
+                margin-right: 2px;
+            }
+            .title{
+                padding-top: 5px;
+                line-height: 20px;
+                flex: 1;
+                font-size: 14px;
+                color:#333;
+            }
+            .bottom-info{
+                margin-top: 15px;
+                .spec{
+                    font-size: 14px;
+                    color:#999;
+                    height: 22px;
+                    line-height: 22px;
+                }
+            }
+            .price{
+                padding-top: 8px;
+                font-size: 13px;
+                font-weight: 600;
+                text-align: right;
+                color: #333;
+            }
+        }
+        .buy-num{
+            padding: 13px 15px;
+            background: #fff;
+            font-size: 13px;
+            color: #333;
+            .am-stepper{
+                width: 100px;
+                height: 22px;
+                line-height: 22px;
+                padding: 0;
+                &-input-wrap{
+                    height: 22px;
+                    line-height: 22px;
+                    .am-stepper-input{
+                        width: 30px;
+                    }
+                }
+                &-handler{
+                    border-radius: 50%;
+                    width: 20px;
+                    height: 20px;
+                    line-height: 20px;
+                    &-up{
+                        svg{
+                            fill:#333;//@brand-primary;
+                        }
+                    }
+                }
+            }
+        }
+        .discount-item{
+            padding: 13px 15px;
+            background: #fff;
+            .am-flexbox-item{
+                font-size: 13px;
+                em{
+                    margin-left: 8px;
+                    color: #999;
+                }
+                &:last-of-type{
+                    font-size: 16px;
+                    text-align: right;
+                    color: @brand-primary;
+                }
+            }
+            .am-radio {
+                margin-left: 8px;
+                padding: 2.5px;
+                border: 1px solid #ccc;
+                border-radius: 50%;
+                &.am-radio-checked{
+                    border: 1px solid @brand-primary;
+                    background: @brand-primary;
+                    .am-radio-inner::after{
+                        width: 5px;
+                        height: 10px;
+                        top: -1px;
+                        right: 7px;
+                        border-color: #fff;
+                    }
+                }
+            }
+            .am-list-item{
+                padding-left: 0;
+                height: auto;
+                min-height: auto;
+                flex: 1;
+                .am-list-line{
+                    padding-left: 0;
+                }
+                .am-input-label{
+                    font-size: 13px;
+                    color: #333;
+                }
+                input{
+                    padding: 1px 0;
+                    font-size: 14px;
+                }
+                ::-webkit-input-placeholder{
+                    font-size: 14px;
+                    color: #e0e0e0;
+                }
+            }
+        }
+        .order-invoice{
+            font-size: 13px;
+            color: #333;
+            &-check{
+                span{
+                    margin-left: 15px;
+                }
+                .am-radio {
+                    &.am-radio-checked{
+                        border: 1px solid #ccc;
+                        background: transparent;
+                        .am-radio-inner::after{
+                            width: 10px;
+                            height: 10px;
+                            background: @brand-primary;
+                            top: 1px;
+                            right: 5px;
+                            border-color: @brand-primary;
+                            border-radius: 50%;
+                        }
+                    }
+                }
+            }
+        }
+        .order-remark{
+            padding: 10px;
+            background: #fff;
+            .am-textarea-item{
+                border-radius: 4px;
+                background: #e0e0e0;
+                font-size: 12px;
+                color: #999;
+            }
+            ::-webkit-input-placeholder{
+                    font-size: 12px;
+                    color: #999;
+                }
+        }
+    }
+    .footer{
+        height: 50px;
+        background: #fff;
+        padding: 0 15px;
+        color:#666;
+        .goodsNum{
+            font-size: 12px;
+            color: #999;
+        }
+        .total{
+            font-size: 12px;
+            color: #333;
+            em{
+                font-size: 16px;
+                color: @brand-primary;
+            }
+        }
+        .pay-btn{
+            background: @brand-primary;
+            color:#fff;
+            height: 36px;
+            line-height: 36px;
+        }
+    }
+}
