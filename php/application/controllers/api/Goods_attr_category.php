@@ -2,34 +2,33 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  * @author sz.ljx
- * @author webljx@163.com
+ * @email webljx@163.com
  * @link www.aicode.org.cn
  */
-class Shop_class extends Admin_Controller {
+class Goods_attr_category extends API_Controller {
 
 	public function __construct()
     {
         parent::__construct();
-        $this->load->model('Shop_class_model');
+        $this->load->model('Goods_attr_category_model');
     }
 
     /**
-	 * @api {get} /api/admin/shop_class 商城导航类-列表
+	 * @api {get} /api/goods_attr_category 商品属性类-列表
 	 * @apiVersion 1.0.0
-	 * @apiName shop_class
-	 * @apiGroup admin
+	 * @apiName goods_attr_category
+	 * @apiGroup api
 	 *
-	 * @apiSampleRequest /api/admin/shop_class
+	 * @apiSampleRequest /api/goods_attr_category
 	 *
-	 * @apiParam {Number} admin_id 管理员唯一ID
-	 * @apiParam {String} account 登录账号
+	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
 	 * @apiSuccess {Object[]} data 接口数据集
-	 * @apiSuccess {String} data.id 商城导航类唯一ID
-	 * @apiSuccess {String} data.name 商城导航类名称
+	 * @apiSuccess {String} data.id 商品属性类唯一ID
+	 * @apiSuccess {String} data.name 商品属性类名称
 	 *
 	 * @apiSuccessExample {json} Success-Response:
 	 * {
@@ -58,7 +57,7 @@ class Shop_class extends Admin_Controller {
 	{
 		$this->db->select('id,name');
 		$order_by = array('sort' => 'asc', 'id' => 'asc');
-		$ret = $this->Shop_class_model->order_by($order_by)->get_many_by('enable', 1);
+		$ret = $this->Goods_attr_category_model->order_by($order_by)->get_many_by('enable', 1);
 		$this->ajaxReturn($ret);
 	}
 
@@ -69,12 +68,12 @@ class Shop_class extends Admin_Controller {
 	}
 
 	/**
-	 * @api {post} /api/admin/shop_class/save 商城导航类-编辑 OR 新增
+	 * @api {post} /api/goods_attr_category/save 商品属性类-编辑 OR 新增
 	 * @apiVersion 1.0.0
-	 * @apiName shop_class_save
+	 * @apiName goods_attr_category_save
 	 * @apiGroup admin
 	 *
-	 * @apiSampleRequest /api/admin/shop_class/save
+	 * @apiSampleRequest /api/goods_attr_category/save
 	 *
 	 * @apiParam {Number} admin_id 管理员唯一ID
 	 * @apiParam {String} account 登录账号
@@ -105,6 +104,7 @@ class Shop_class extends Admin_Controller {
 	 */
 	public function save()
 	{
+		$this->check_operation();
 		$id = (int)$this->input->get_post('id');
 		if($id){
 			$params = elements(
@@ -114,15 +114,16 @@ class Shop_class extends Admin_Controller {
 				$this->input->post(),
 				UPDATE_VALID
 			);
+			$this->check_params($params);
 			if($params['deleted'] == 1){
 				$update = array('deleted' => 1, 'enable' => 0);
-				$flag = $this->Shop_class_model->update($id, $update);
+				$flag = $this->Goods_attr_category_model->update($id, $update);
 			}else{
 				unset($params['deleted']);
 				if(isset($params['enable']) && $params['enable']){
 					$params['deleted'] = 0;
 				}
-				$flag = $this->Shop_class_model->update($id, $params);
+				$flag = $this->Goods_attr_category_model->update($id, $params);
 			}
 		}else{
 			$params = elements(
@@ -132,7 +133,8 @@ class Shop_class extends Admin_Controller {
 				$this->input->post(),
 				''
 			);
-			$flag = $this->Shop_class_model->insert($params);
+			$this->check_params($params);
+			$flag = $this->Goods_attr_category_model->insert($params);
 		}
 
 		if($flag){
@@ -143,5 +145,12 @@ class Shop_class extends Admin_Controller {
 			$message = '失败';
 		}
 		$this->ajaxReturn('', $status, '操作'.$message);
+	}
+
+	protected function check_params($params)
+	{
+		if(!isset($params['name']) || empty($params['name']) || $params['name'] == UPDATE_VALID){
+			$this->ajaxReturn('', 501, '名称参数错误');
+		}
 	}
 }

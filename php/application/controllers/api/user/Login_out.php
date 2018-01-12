@@ -2,10 +2,10 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  * @author sz.ljx
- * @author webljx@163.com
+ * @email webljx@163.com
  * @link www.aicode.org.cn
  */
-class Login_out extends WAP_Controller {
+class Login_out extends API_Controller {
 
 	public function __construct()
     {

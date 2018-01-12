@@ -88,7 +88,7 @@ const testGoods = [
         price:'155'
     },
 ]
-export default class GoodDetail extends BaseComponent{
+export default class GoodsDetail extends BaseComponent{
     componentDidMount(){
     }
     render(){
@@ -105,8 +105,8 @@ export default class GoodDetail extends BaseComponent{
                     icon={<img src={icon.back} alt=''/>}
                     onLeftClick={Base.goBack}
                     rightContent={[
-                        <img src={icon.cart} style={{ marginRight: '16px' }} alt=''/>,
-                        <img src={icon.share} alt=''/>
+                        <img key='0' src={icon.cart} style={{ marginRight: '16px' }} alt=''/>,
+                        <img key='1' src={icon.share} alt=''/>
                     ]}
                 ></NavBar>
                 <div className="base-content">
@@ -114,8 +114,9 @@ export default class GoodDetail extends BaseComponent{
                         autoplay={false}
                         infinite
                         >
-                        {[test.test4,test.test4,test.test4].map(val => (
+                        {[test.test4,test.test4,test.test4].map((val,index) => (
                             <img
+                                key={index}
                                 src={val}
                                 style={{ width: '100%', verticalAlign: 'top' }}
                                 alt=''

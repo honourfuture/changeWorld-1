@@ -2,10 +2,10 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  * @author sz.ljx
- * @author webljx@163.com
+ * @email webljx@163.com
  * @link www.aicode.org.cn
  */
-class Login extends Admin_Controller {
+class Login extends API_Controller {
 
 	public function __construct()
     {
@@ -69,7 +69,7 @@ class Login extends Admin_Controller {
 		if($info){
 			if($info['password'] == $this->Admin_model->get_password($password)){
 				if($info['enable']){
-					$this->log($info['id'], $info['account'], '登录');
+					$this->log_admin($info['id'], $info['account'], '登录');
 					$this->login_success($info);
 				}else{
 					if($info['deleted']){
@@ -89,11 +89,11 @@ class Login extends Admin_Controller {
 	protected function login_success($admin_info)
     {
         $this->admin_id = $admin_info['id'];
-        $token = $this->set_token();
+        $token = $this->set_admin_token();
         if(empty($token)){
         	$this->ajaxReturn('', 6, '获取授权token失败');
         }
-        $sign = $this->get_sign($token);
+        $sign = $this->get_sign($this->admin_id, $token, $this->_admin_key);
 
         $ret = array(
         	'auth' => array('admin_id' => $this->admin_id, 'sign' => $sign, 'account' => $admin_info['account']),
