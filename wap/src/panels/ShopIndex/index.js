@@ -40,10 +40,12 @@ export default class ShopIndex extends BaseComponent{
                     </Flex>}>
                     <SearchBar placeholder="请输入昵称或ID" />
                 </NavBar>
-                <div className="nav-tabs">
-                    <Tabs className="nav-tabs" tabs={tabs} initialPage={0}>
-                        {this.renderContent}
-                    </Tabs>
+                <div className="base-content">
+                    <div className="nav-tabs">
+                        <Tabs className="nav-tabs" tabs={tabs} initialPage={0}>
+                            {this.renderContent}
+                        </Tabs>
+                    </div>
                 </div>
             </div>
         )

@@ -1,7 +1,7 @@
 import React from 'react';
 import {action} from 'mobx';
-import {BaseComponent} from '../../common';
-import {Flex,Button,Radio} from 'antd-mobile';
+import {BaseComponent,Base} from '../../common';
+import {Flex,Button,Radio,NavBar} from 'antd-mobile';
 import './Pay.less';
 import {icon,test} from '../../images';
 
@@ -90,28 +90,36 @@ export default class Pay extends BaseComponent{
         })
         return (
             <div className='Pay'>
-                <div className="Pay-box">
-                    <Flex justify="between" className="Pay-box-goods">
-                        <div className="goodsImg">
-                            <img src={goodsInfo.goodsImg} alt=""/>
+                <NavBar
+                    className="base-line"
+                    mode="light"
+                    icon={<img src={icon.back} alt=''/>}
+                    onLeftClick={Base.goBack}
+                >支付</NavBar>
+                <div className="base-content">
+                    <div className="Pay-box">
+                        <Flex justify="between" className="Pay-box-goods">
+                            <div className="goodsImg">
+                                <img src={goodsInfo.goodsImg} alt=""/>
+                            </div>
+                            <div className="goodsInfo">
+                                <div className="goodsInfo-tit ellipsis">{goodsInfo.goodsTitle}</div>
+                                <Flex justify="between" className="goodsInfo-num">
+                                    <span>￥{goodsInfo.price}</span>
+                                    <span>x {goodsInfo.num}</span>
+                                </Flex>
+                            </div>
+                        </Flex>
+                        <div className="Pay-box-mode">
+                            <h4 className="pay-h4">支付方式</h4>
+                            <div className="pay-check">
+                                {payTypes}
+                            </div>
                         </div>
-                        <div className="goodsInfo">
-                            <div className="goodsInfo-tit ellipsis">{goodsInfo.goodsTitle}</div>
-                            <Flex justify="between" className="goodsInfo-num">
-                                <span>￥{goodsInfo.price}</span>
-                                <span>x {goodsInfo.num}</span>
-                            </Flex>
-                        </div>
-                    </Flex>
-                    <div className="Pay-box-mode">
-                        <h4 className="pay-h4">支付方式</h4>
-                        <div className="pay-check">
-                            {payTypes}
-                        </div>
+                        <Flex justify="center" align="center" className="Pay-box-opear">
+                            <Button onClick={this.payHandler} type="warning">下一步</Button>
+                        </Flex>
                     </div>
-                    <Flex justify="center" align="center" className="Pay-box-opear">
-                        <Button onClick={this.payHandler} type="warning">下一步</Button>
-                    </Flex>
                 </div>
             </div>
         )

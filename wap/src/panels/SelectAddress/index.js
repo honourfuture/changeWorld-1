@@ -1,8 +1,10 @@
 import React from 'react';
 import {action} from 'mobx';
-import {BaseComponent} from '../../common';
-import {Button,List,Radio,WhiteSpace,WingBlank} from 'antd-mobile';
+import {BaseComponent,Base} from '../../common';
+import {Button,List,Radio,WhiteSpace,WingBlank,NavBar} from 'antd-mobile';
 import './SelectAddress.less';
+
+import {icon} from '../../images';
 
 const Item = List.Item;
 const Brief = Item.Brief;
@@ -64,13 +66,21 @@ export default class SelectAddress extends BaseComponent{
         });
         return (
             <div className='SelectAddress'>
-                <div className="SelectAddress-box">
-                    {addressItem}
+                <NavBar
+                    className="base-line"
+                    mode="light"
+                    icon={<img src={icon.back} alt=''/>}
+                    onLeftClick={Base.goBack}
+                >支付</NavBar>
+                <div className="base-content">
+                    <div className="SelectAddress-box">
+                        {addressItem}
+                    </div>
+                    <WhiteSpace size="xl" />
+                    <WingBlank>
+                        <Button type="warning" className="save-address">+ 新增地址</Button>
+                    </WingBlank>
                 </div>
-                <WhiteSpace size="xl" />
-                <WingBlank>
-                    <Button type="warning" className="save-address">+ 新增地址</Button>
-                </WingBlank>
             </div>
         )
     }
