@@ -14,6 +14,7 @@ export const icon = {
     collectIcon1:require('./icon/collectIcon1.png'),
     closeIcon:require('./icon/closeIcon.png'),
     addressIcon:require('./icon/addressIcon.png'),
+    address: require('./icon/addRess.png'),
 };
 
 export const test = {
@@ -28,4 +29,6 @@ export const test = {
     test9:require('./test/9.jpg'),
     banner1:require('./test/banner1.jpg'),
     banner2:require('./test/banner2.jpg'),
+    u1: require('./test/u1.png'),
+    
 }

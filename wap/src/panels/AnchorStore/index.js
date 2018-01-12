@@ -55,7 +55,7 @@ export default class AnchorStore extends BaseComponent{
                         <img src={icon.share} alt=''/>
                     }
                 >
-                    <Flex><img src={icon.share} alt='' />汪朵朵</Flex>
+                    <Flex><img src={test.u1} className="anchore-img" alt='' />汪朵朵</Flex>
                 </NavBar>
 				<div className="base-content">
 					<div className="nav-tabs">
