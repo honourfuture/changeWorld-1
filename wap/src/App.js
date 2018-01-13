@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
+import { HashRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 import DocumentTitle from 'react-document-title';
 import { panelsList, getPanelName } from './panels';
 import 'normalize.css';
