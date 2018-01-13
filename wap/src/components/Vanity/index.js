@@ -50,7 +50,7 @@ export class Vanity extends BaseComponent{
             return <VanityItem key={index} {...item} />;
         });
         return (
-            <div className='Vanity'>
+            <div className='Vanity base-content'>
                 <Carousel
                     autoplay={false}
                     infinite
