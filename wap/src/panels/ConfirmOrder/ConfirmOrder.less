@@ -149,19 +149,24 @@
                 // padding: 2.5px;
                 border: 1px solid #ccc;
                 border-radius: 50%;
+                .am-radio-inner{
+                    width: 20px;
+                    height: 20px;
+                    border-width: 1px;
+                }
                 &.am-radio-checked{
-                    border: 1px solid #ccc;
-                    background: transparent;
-                    .am-radio-inner{
-                        &::after{
-                            width: 10px;
-                            height: 10px;
-                            background: @brand-primary;
-                            border-radius: 50%;
-                            top: 4px;
-                            right: 5px;
-                            border-color: @brand-primary;
-                        }
+                    // border: 1px solid #ccc;
+                    // background: transparent;
+                    .am-radio-inner::after{
+                        width: 10px;
+                        height: 10px;
+                        background: @brand-primary;
+                        border-radius: 50%;
+                        top: 50% !important;
+                        right: 50% !important;
+                        border-color: @brand-primary;
+                        border-width: inherit;
+                        transform: translate(50%,-50%);
                     }
                 }
             }
