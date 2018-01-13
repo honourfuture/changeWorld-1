@@ -144,18 +144,24 @@
             }
             .am-radio {
                 margin-left: 8px;
-                padding: 2.5px;
+                width: 20px;
+                height: 20px;
+                // padding: 2.5px;
                 border: 1px solid #ccc;
                 border-radius: 50%;
                 &.am-radio-checked{
-                    border: 1px solid @brand-primary;
-                    background: @brand-primary;
-                    .am-radio-inner::after{
-                        width: 5px;
-                        height: 10px;
-                        top: -1px;
-                        right: 7px;
-                        border-color: #fff;
+                    border: 1px solid #ccc;
+                    background: transparent;
+                    .am-radio-inner{
+                        &::after{
+                            width: 10px;
+                            height: 10px;
+                            background: @brand-primary;
+                            border-radius: 50%;
+                            top: 4px;
+                            right: 5px;
+                            border-color: @brand-primary;
+                        }
                     }
                 }
             }
@@ -191,21 +197,21 @@
                 span{
                     margin-left: 15px;
                 }
-                .am-radio {
-                    &.am-radio-checked{
-                        border: 1px solid #ccc;
-                        background: transparent;
-                        .am-radio-inner::after{
-                            width: 10px;
-                            height: 10px;
-                            background: @brand-primary;
-                            top: 1px;
-                            right: 5px;
-                            border-color: @brand-primary;
-                            border-radius: 50%;
-                        }
-                    }
-                }
+                // .am-radio {
+                //     &.am-radio-checked{
+                //         border: 1px solid #ccc;
+                //         background: transparent;
+                //         .am-radio-inner::after{
+                //             width: 10px;
+                //             height: 10px;
+                //             background: @brand-primary;
+                //             top: 1px;
+                //             right: 5px;
+                //             border-color: @brand-primary;
+                //             border-radius: 50%;
+                //         }
+                //     }
+                // }
             }
         }
         .order-remark{
