@@ -15,7 +15,7 @@ export default class ShopIndex extends BaseComponent{
         const tabs = [
           { title: '热门', component:<Hots /> },
           { title: '靓号', component:<Vanity /> },
-          { title: '图书', component:<Hots /> },
+          { title: '图书', component:<Hots/> },
           { title: '知识', component:<Hots /> },
           { title: '外卖', component:<Hots /> },
           { title: '直播', component:<Hots /> },
@@ -42,7 +42,7 @@ export default class ShopIndex extends BaseComponent{
                 </NavBar>
                 <div className="base-content">
                     <div className="nav-tabs">
-                        <Tabs className="nav-tabs" tabs={tabs} initialPage={0}>
+                        <Tabs className="nav-tabs" tabs={tabs} initialPage={0} swipeable={false}>
                             {this.renderContent}
                         </Tabs>
                     </div>

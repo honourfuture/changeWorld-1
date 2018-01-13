@@ -107,23 +107,23 @@ export default class ShopCart extends BaseComponent{
 	}
 	@action.bound
 	payHandler(){
-
+		Base.push('ConfirmOrder');
 	}
 	@action.bound
 	delHandler(){
-		console.log(212);
 		const {storeList} = this.store;
-		storeList.forEach((storeItem,storeIndex)=>{
-			storeItem.goods.forEach((item,index)=>{
+		for(let len=storeList.length,i=len-1;i>=0;i--){
+			const storeItem = storeList[i];
+			for(let goodsLen = storeItem.goods.length,j=goodsLen-1;j>=0;j--){
+				const item = storeItem.goods[j];
 				if(item.checked){
-					storeItem.goods.splice(index,1);
+					storeItem.goods.splice(j,1);
 				}
-			})
-			if(storeItem.goods.length === 0){
-				storeList.splice(storeIndex,1);
 			}
-		})
-		console.log(storeList);
+			if(storeItem.goods.length === 0){
+				storeList.splice(i,1);
+			}
+		}
 	}
 	@computed get total(){
 		let value = 0;
@@ -143,7 +143,7 @@ export default class ShopCart extends BaseComponent{
 		const storeItems = storeList.map((storeItem)=>{
 			const {img,storeId,storeName,goods} = storeItem;
 			return <div className='store-item' key={storeId}>
-				<Flex className='store-info base-line'>
+				<Flex className='store-info base-line' onClick={()=>Base.push('AnchorStore')}>
 					<img src={img} alt=""/>
 					<div className='store-name'>{storeName}</div>
 					<Icon type='right' color='#c9c9c9'/>
@@ -163,16 +163,16 @@ export default class ShopCart extends BaseComponent{
                     rightContent={<div onClick={this.rightHandler} className='right-label'>{isEdit?'完成':'编辑'}</div>}
                 >购物车</NavBar>
 				<div className="base-content">
-					{storeItems}
+					{storeItems.length>0?storeItems:<div className='nodata'>暂无数据</div>}
 				</div>
-				<Flex className='footer' justify='between'>
+				{storeItems.length>0?<Flex className='footer' justify='between'>
 					<Checkbox checked={isAllSelect} onChange={this.allCheckHandler} className='check'>全选</Checkbox>
 					{isEdit?<Button className='del-btn' size='small' onClick={this.delHandler}>删除</Button>
 					:<Flex>
 						<div className='total'>合计 <em>￥{Base.getNumFormat(this.total)}</em></div>
 						<Button className='pay-btn' size='small' onClick={this.payHandler}>去结算</Button>
 					</Flex>}
-				</Flex>
+				</Flex>:null}
 			</div>
 		)
 	}

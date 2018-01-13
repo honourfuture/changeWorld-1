@@ -9,13 +9,13 @@ class EvaluateItem extends BaseComponent{
     render(){
         const {header,name,des} = this.props;
         return (
-            <Flex className='evaluate-item base-line'>
+            <div className='evaluate-item base-line'>
                 <img src={header} alt=''/>
                 <div className="info">
                     <div className="name">{name}</div>
                     <div className="des">{des}</div>
                 </div>
-            </Flex>
+            </div>
         )
     }
 }
@@ -62,11 +62,11 @@ class SelectItem extends BaseComponent{
     render(){
         const {name,disable,selected} = this.props;
         return (
-            <Flex.Item className="select-item-con" onClick={this.selectItemHandler}>
+            <Flex className="select-item-con" onClick={this.selectItemHandler}>
                 <div className={`select-item ${disable?'disable':''} ${selected?'selected':''}`}>
                     {name}
                 </div>
-            </Flex.Item>
+            </Flex>
         )
     }
 }
@@ -186,6 +186,7 @@ export default class GoodsDetail extends BaseComponent{
         isBuyModal:false,
         selectSpecIndex:-1,
         selectClassifyIndex:-1,
+        selectNum:1,
     }
     componentDidMount(){
     }
@@ -207,8 +208,8 @@ export default class GoodsDetail extends BaseComponent{
         this.store.isBuyModal = !this.store.isBuyModal;
     }
     @action.bound
-    stepperHandler(){
-
+    stepperHandler(value){
+        this.store.selectNum  = value;
     }
     @action.bound
     specItemHandler(index){
@@ -219,7 +220,7 @@ export default class GoodsDetail extends BaseComponent{
         this.store.selectClassifyIndex = index;
     }
     render(){
-        const {isCollect,isAddressModal,curAddressIndex,isBuyModal,selectSpecIndex,selectClassifyIndex} = this.store;
+        const {isCollect,isAddressModal,curAddressIndex,isBuyModal,selectSpecIndex,selectClassifyIndex,selectNum} = this.store;
         const evaluateItems = testEvaluates.map((item,index)=>{
             return <EvaluateItem key={index} {...item}/>;
         });
@@ -242,7 +243,7 @@ export default class GoodsDetail extends BaseComponent{
                     icon={<img src={icon.back} alt=''/>}
                     onLeftClick={Base.goBack}
                     rightContent={[
-                        <img key='0' src={icon.cart} style={{ marginRight: '16px' }} alt=''/>,
+                        <img onClick={()=>Base.push('ShopCart')} key='0' src={icon.cart} style={{ marginRight: '16px' }} alt=''/>,
                         <img key='1' src={icon.share} alt=''/>
                     ]}
                 ></NavBar>
@@ -351,7 +352,7 @@ export default class GoodsDetail extends BaseComponent{
                 <Flex className="footer">
                     <Flex.Item>
                         <Flex>
-                            <Flex.Item>
+                            <Flex.Item onClick={()=>Base.push('AnchorStore')}>
                                 <img src={icon.storeIcon} alt=""/>
                                 <div className='label'>店铺</div>
                             </Flex.Item>
@@ -406,9 +407,9 @@ export default class GoodsDetail extends BaseComponent{
                     </div>
                     <Flex className="buy-num-con" justify='between'>
                         <div className="buy-num-title">购买数量</div>
-                        <Stepper onChange={this.stepperHandler} showNumber className='stepper' min={1} max={99} defaultValue={1}/>
+                        <Stepper onChange={this.stepperHandler} showNumber className='stepper' min={1} max={99} value={selectNum}/>
                     </Flex>
-                    <Button className='buy-step-btn'>下一步</Button>
+                    <Button className='buy-step-btn' onClick={()=>Base.push('ConfirmOrder')}>下一步</Button>
                 </div>:null}
             </div>
         )

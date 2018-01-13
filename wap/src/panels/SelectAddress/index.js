@@ -19,10 +19,10 @@ class AddressItem extends BaseComponent {
         const {name,tel,address,checked} = this.props;
         return(
             <div>
-                <List className="addressItem">
+                <List className="addressItem" onClick={this.changeHandler}>
                     <Item
                         thumb={
-                            <Radio checked={checked} key={name} onChange={this.changeHandler}></Radio>
+                            <Radio checked={checked} key={name}></Radio>
                         }
                         multipleLine
                     >
@@ -79,7 +79,7 @@ export default class SelectAddress extends BaseComponent{
                     </div>
                     <WhiteSpace size="xl" />
                     <WingBlank>
-                        <Button type="warning" className="save-address">+ 新增地址</Button>
+                        <Button type="warning" className="save-address" onClick={()=>Base.push('NewAddress')}>+ 新增地址</Button>
                     </WingBlank>
                 </div>
             </div>

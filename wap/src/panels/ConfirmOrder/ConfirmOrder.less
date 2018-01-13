@@ -1,7 +1,7 @@
 @import '../../common/base.less';
 .ConfirmOrder{
     .base-content{
-        height:calc(~'100vh - 95px');
+        height:calc(~'100vh - 100px');
         .img-line{
             width: 100%;
             height: 5px;
@@ -17,7 +17,12 @@
                 .addr-ess{
                     margin-top: 10px;
                     line-height: 20px;
-                    font-size: 13px;
+                    font-size: 14px;
+                }
+                .addr-user{
+                    font-size: 14px;
+                    color: #000;
+                    font-weight: 500;
                 }
             }
             .add-addr{
@@ -205,24 +210,29 @@
             background: #fff;
             .am-textarea-item{
                 border-radius: 4px;
-                background: #e0e0e0;
+                background: #f0f0f0;
                 font-size: 12px;
                 color: #999;
             }
+            textarea{
+                height: 50px;
+            }
             ::-webkit-input-placeholder{
-                    font-size: 12px;
-                    color: #999;
-                }
+                font-size: 12px;
+                color: #999;
+            }
         }
     }
     .footer{
-        height: 50px;
+        height: 54px;
         background: #fff;
         padding: 0 15px;
         color:#666;
+        border-top: 1px solid #eee;
         .goodsNum{
             font-size: 12px;
             color: #999;
+            margin-bottom: 3px;
         }
         .total{
             font-size: 12px;
@@ -237,6 +247,7 @@
             color:#fff;
             height: 36px;
             line-height: 36px;
+            font-size: 14px;
         }
     }
 }

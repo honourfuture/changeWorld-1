@@ -1,4 +1,5 @@
 import React from 'react';
+import {action} from 'mobx';
 import {BaseComponent} from '../../common';
 import { WhiteSpace,Carousel} from 'antd-mobile';
 import './Hots.less';
@@ -28,24 +29,31 @@ export class Hots extends BaseComponent{
             goodsTit:"MARTINELLI'S 无酒精香槟气泡苹果汁 750毫升…",
             goodsPrice:69,
             goodsNum: 69,
-        }]
+        }],
+        imgHeight:160,
     }
     componentDidMount(){
     }
+    @action.bound
+    imgLoadHandler(){
+        window.dispatchEvent(new Event('resize'));
+        this.store.imgHeight = 'auto';
+    }
     render(){
-        const {hotData} = this.store;
+        const {hotData,imgHeight} = this.store;
         return (
             <div className='Hots'>
                 <Carousel
                     autoplay={false}
                     infinite
                     >
-                    {[test.banner1].map(val => (
+                    {[test.banner1,test.banner1].map(val => (
                         <img
                             key={val}
                             src={val}
-                            style={{ width: '100%'}}
+                            style={{ width: '100%',height:imgHeight}}
                             alt=""
+                            onLoad={this.imgLoadHandler}
                         />
                     ))}
                 </Carousel>

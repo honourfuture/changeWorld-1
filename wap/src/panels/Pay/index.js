@@ -66,23 +66,23 @@ export default class Pay extends BaseComponent{
             const {type,total,price} = item;
             if(type === 'money'){
                 return (
-                    <Flex justify="between" key={type}>
+                    <Flex justify="between" key={type} onClick={()=>this.changeHandler(index)}>
                         <Flex.Item>
                             <span className="pay-gold">金币支付</span><span className="account-money">账户余额：{total}金币</span>
                         </Flex.Item>
                         <Flex.Item>
-                            <span className="payMoney">-￥{price}</span><Radio checked={curIndex === index} onChange={()=>this.changeHandler(index)} name={type}></Radio>
+                            <span className="payMoney">-￥{price}</span><Radio checked={curIndex === index} name={type}></Radio>
                         </Flex.Item>
                     </Flex>
                 )
             }else{
                 return (
-                    <Flex justify="between" key={type}>
+                    <Flex justify="between" key={type} onClick={()=>this.changeHandler(index)}>
                         <Flex.Item>
                             <img src={payIconDic[type]} alt=""/>
                         </Flex.Item>
                         <Flex.Item>
-                            <Radio checked={curIndex === index} name={type} onChange={()=>this.changeHandler(index)}></Radio>
+                            <Radio checked={curIndex === index} name={type}></Radio>
                         </Flex.Item>
                     </Flex>
                 )
@@ -117,7 +117,7 @@ export default class Pay extends BaseComponent{
                             </div>
                         </div>
                         <Flex justify="center" align="center" className="Pay-box-opear">
-                            <Button onClick={this.payHandler} type="warning">下一步</Button>
+                            <Button onClick={this.payHandler} type="warning" onClick={()=>Base.push('PayState')}>下一步</Button>
                         </Flex>
                     </div>
                 </div>

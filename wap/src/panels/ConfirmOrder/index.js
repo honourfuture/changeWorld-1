@@ -1,6 +1,6 @@
 import React from 'react';
 import {BaseComponent,Base} from '../../common';
-import { Flex, Button, NavBar, WhiteSpace, Icon, Stepper, Radio, List, InputItem, TextareaItem} from 'antd-mobile';
+import { Flex, Button, NavBar, WhiteSpace, Icon, Stepper, Radio, InputItem, TextareaItem} from 'antd-mobile';
 import './ConfirmOrder.less';
 
 import { test, icon } from '../../images';
@@ -16,23 +16,23 @@ export default class ConfirmOrder extends BaseComponent{
 				>确认订单</NavBar>
 				<div className="base-content">
 					<img src={icon.orderTopLine} className="img-line" alt=""/>
-					<Flex className="order-address">
+					{true?<Flex className="order-address" onClick={()=>Base.push('SelectAddress')}>
 						<div className="addr-info">
-							<div className="addr-user">收件人：*彤 185****8158</div>
+							<div className="addr-user">*彤 185****8158</div>
 							<div className="addr-ess">浙江省-杭州市-西湖区 春申街西溪花园凌波苑</div>
 						</div>
-					</Flex>
-					<Flex className="order-address" justify="center" align="center">
+					</Flex>:
+					<Flex className="order-address" justify="center" align="center" onClick={()=>Base.push('NewAddress')}>
 						<div className="add-addr">
 							<div className="addr-img">
 								<img src={icon.address} className="addIco-img" alt="" />
 							</div>
 							<div className="add-tips">还没收货地址，<em>去添加</em></div>
 						</div>
-					</Flex>
+					</Flex>}
 					<WhiteSpace />
 					<div className="order-detail">
-						<Flex className='store-info'>
+						<Flex className='store-info' onClick={()=>Base.push('AnchorStore')}>
 							<img src={test.u1} alt="" />
 							<div className='store-name'>文贝袄的店铺</div>
 							<Icon type='right' color='#c9c9c9' />
@@ -98,9 +98,9 @@ export default class ConfirmOrder extends BaseComponent{
 					</div>
 					<div className="order-remark">
 						<TextareaItem
-							placeholder='计数功能,我的意见是...'
+							placeholder='备注留言'
 							rows={5}
-							count={100}
+							// count={100}
 						/>
 					</div>
 					<WhiteSpace />
@@ -111,7 +111,7 @@ export default class ConfirmOrder extends BaseComponent{
 						<div className='total'>合计 <em>￥ 349.00</em></div>
 					</div>
 					<div>
-							<Button type='warning' inline className='pay-btn'>去结算</Button>
+						<Button onClick={()=>Base.push('Pay')} type='warning' inline className='pay-btn'>提交订单</Button>
 					</div>
 				</Flex>
 			</div>

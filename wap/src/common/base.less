@@ -20,7 +20,7 @@
 	-webkit-tap-highlight-color: rgba(255,255,255,0);
 	-webkit-touch-callout:none;
 	user-select:none;
- 	-webkit-text-size-adjust:none;
+	-webkit-text-size-adjust:none;
 }
 ul,ol,dl,li{
 	list-style: none;
@@ -31,7 +31,7 @@ em{
 a{
 	text-decoration: none;
 }
-html,body,.App{
+html,body,#root,.App{
 	height:100%;
 	width:100%;
 	background: #f3f3f3;
@@ -80,5 +80,13 @@ html,body,.App{
 .am-checkbox.am-checkbox-checked .am-checkbox-inner{
     border-color: @brand-primary;
     background: @brand-primary;
+}
+.nav-tabs{
+	.am-tabs-default-bar-tab-active{
+		color: @brand-primary;
+	}
+	.am-tabs-default-bar-underline{
+		border-color: @brand-primary;
+	}
 }
 

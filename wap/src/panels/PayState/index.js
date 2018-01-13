@@ -27,8 +27,8 @@ export default class PayState extends BaseComponent{
                     	<div className="orderItem">支付方式：<span>微信支付</span></div>
                     </div>
                     <Flex align="center" justify="center" className="PayState-opear">
-                    	<Button type="ghost" inline className="am-button-borderfix payBtn">订单详情</Button>
-                    	<Button type="warning" inline >回到首页</Button>
+                    	<Button onClick={()=>Base.push('OrderDetail')} type="ghost" inline className="am-button-borderfix payBtn">订单详情</Button>
+                    	<Button onClick={()=>Base.push('ShopIndex')} type="warning" inline>回到首页</Button>
                     </Flex>
                 </div>
             </div>
