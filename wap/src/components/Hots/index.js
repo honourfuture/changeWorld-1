@@ -42,7 +42,7 @@ export class Hots extends BaseComponent{
     render(){
         const {hotData,imgHeight} = this.store;
         return (
-            <div className='Hots'>
+            <div className='Hots base-content'>
                 <Carousel
                     autoplay={false}
                     infinite
