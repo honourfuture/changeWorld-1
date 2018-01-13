@@ -10,7 +10,7 @@ class StoreItem extends BaseComponent{
 	render(){
 		const { title, img, spec, price, checked, num } = this.props.item;
 		return (
-			<Flex align='start' className='goods-info'>
+			<Flex align='start' className='goods-info base-line'>
 				<img className='goods-img' src={img} alt="" />
 				<Flex.Item>
 					<Flex justify='between' align='start'>
@@ -69,7 +69,7 @@ export default class ConfirmOrder extends BaseComponent{
 		const orderItem = storeList.map((item,index)=>{
 			const {storeName,storeId,img,goods} = item;
 			return <div className="order-detail" key={storeId}>
-				<Flex className='store-info' onClick={() => Base.push('AnchorStore')}>
+				<Flex className='store-info base-line' onClick={() => Base.push('AnchorStore')}>
 					<img src={img} alt="" />
 					<div className='store-name'>{storeName}</div>
 					<Icon type='right' color='#c9c9c9' />
@@ -89,6 +89,7 @@ export default class ConfirmOrder extends BaseComponent{
 		return (
 			<div className='ConfirmOrder'>
 				<NavBar
+					className="base-line"
 					mode="light"
 					icon={<img src={icon.back} alt='' />}
 					onLeftClick={Base.goBack}
@@ -139,7 +140,7 @@ export default class ConfirmOrder extends BaseComponent{
 					</div> */}
 					<WhiteSpace />
 					<div className="order-detail">
-						<Flex justify="between" align="center" className="discount-item">
+						<Flex justify="between" align="center" className="discount-item base-line">
 							<Flex.Item>
 								优惠券
 							</Flex.Item>
@@ -147,7 +148,7 @@ export default class ConfirmOrder extends BaseComponent{
 								<span className="payMoney">-￥{10}</span><Checkbox checked={isCoupon} onChange={this.couponHandler} />
 							</Flex.Item>
 						</Flex>
-						<Flex justify="between" align="center" className="discount-item">
+						<Flex justify="between" align="center" className="discount-item base-line">
 							<Flex.Item>
 								积分抵扣 <em>100积分=1元</em>
 							</Flex.Item>
@@ -157,7 +158,7 @@ export default class ConfirmOrder extends BaseComponent{
 						</Flex>
 					</div>
 					<div className="order-invoice">
-						<Flex justify="between" align="center" className="discount-item">
+						<Flex justify="between" align="center" className="discount-item base-line">
 							<div>
 								发票抬头
 							</div>
@@ -171,13 +172,13 @@ export default class ConfirmOrder extends BaseComponent{
 						</Flex>
 						{
 							isPerson ? <div>
-								<Flex align="center" className="discount-item">
+								<Flex align="center" className="discount-item base-line">
 									<InputItem placeholder="请输入抬头名称或开票六位代码">名称</InputItem>
 								</Flex>
-								<Flex align="center" className="discount-item">
+								<Flex align="center" className="discount-item base-line">
 									<InputItem placeholder="请输入纳税人识别号或社会统一征信代码">税号</InputItem>
 								</Flex>
-							</div>:<Flex align="center" className="discount-item">
+							</div>:<Flex align="center" className="discount-item base-line">
 									<InputItem placeholder="请输入抬头名称">名称</InputItem>
 								</Flex>
 						}
