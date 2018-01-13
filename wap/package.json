@@ -2,7 +2,7 @@
   "name": "antd-mobile-lib",
   "version": "0.1.0",
   "private": true,
-  "homepage": ".",
+  "homepage": "http://aiping.qichebaby.com/wap",
   "dependencies": {
     "antd-mobile": "^2.1.3",
     "mobx": "^3.4.1",
