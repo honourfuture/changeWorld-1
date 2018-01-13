@@ -4,7 +4,7 @@ import {Button,List,InputItem,Picker,Switch,WhiteSpace,WingBlank,NavBar} from 'a
 import './NewAddress.less';
 
 import {icon} from '../../images';
-import { district } from 'antd-mobile-demo-data';
+import { district } from '../../common/cityData';
 
 const Item = List.Item;
 export default class NewAddress extends BaseComponent{
