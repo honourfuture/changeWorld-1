@@ -69,5 +69,6 @@ const editFile = (url,re,replaceStr)=>{
     fs.writeFileSync(path,content);
 }
 editFile("./build/index.html",/\=\"\//g,'="./');
+editFile("./build/service-worker.js",/\=\"\//g,'="./');
 //复制到php/wap/build
 exists( './build', newAppFilePath , copy);
