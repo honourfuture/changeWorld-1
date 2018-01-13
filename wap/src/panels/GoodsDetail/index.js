@@ -271,7 +271,7 @@ export default class GoodsDetail extends BaseComponent{
                     <div className="info-con">
                         <Flex>
                             <div className='price'>￥369</div>
-                            <div className='old-price'>原价<em>￥489</em></div>
+                            {/* <div className='old-price'>原价<em>￥489</em></div> */}
                         </Flex>
                         <div className='title'>
                             <Badge className='badge' text="包邮"/>
@@ -354,6 +354,7 @@ export default class GoodsDetail extends BaseComponent{
                         <img src={test.test5} alt=''/>
                         <img src={test.test6} alt=''/>
                         <img src={test.test7} alt=''/>
+                        <div className='bottom-tips'>别再拉了~=￣ω￣=~没有了</div>
                     </div>
                 </div>
                 <Flex className="footer">
