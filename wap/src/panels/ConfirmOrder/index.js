@@ -1,12 +1,91 @@
 import React from 'react';
+import { action } from 'mobx';
 import {BaseComponent,Base} from '../../common';
-import { Flex, Button, NavBar, WhiteSpace, Icon, Stepper, Radio, InputItem, TextareaItem} from 'antd-mobile';
+import { Flex, Button, NavBar, WhiteSpace, Icon, Stepper, Radio, Checkbox, InputItem, TextareaItem} from 'antd-mobile';
 import './ConfirmOrder.less';
 
 import { test, icon } from '../../images';
 
-export default class ConfirmOrder extends BaseComponent{
+class StoreItem extends BaseComponent{
 	render(){
+		const { title, img, spec, price, checked, num } = this.props.item;
+		return (
+			<Flex align='start' className='goods-info'>
+				<img className='goods-img' src={img} alt="" />
+				<Flex.Item>
+					<Flex justify='between' align='start'>
+						<div className="title ellipsis">{title}</div>
+						<div className="price">￥ {price}</div>
+					</Flex>
+					<Flex justify='between' className='bottom-info'>
+						<div className="spec">{spec}</div>
+						<div className="spec">x{num}</div>
+					</Flex>
+				</Flex.Item>
+			</Flex>
+		)
+	}
+}
+
+export default class ConfirmOrder extends BaseComponent{
+	store = {
+		storeList: [
+			{
+				storeName: '文贝袄的店铺',
+				storeId: '1',
+				img: test.u1,
+				goods: [
+					{
+						img: test.test4,
+						title: 'RE:CIPE 水晶防晒喷雾 150毫升/瓶 3瓶',
+						spec: '型号 150ml',
+						price: '369',
+						goodsId: '1',
+						num: 1,
+					}
+				]
+			}
+		],
+		isCoupon:false,
+		isInt:false,
+		isPerson:true,
+		curIndex: 0,
+	}
+	@action.bound
+	couponHandler(){
+		this.store.isCoupon = !this.store.isCoupon;
+	}
+	@action.bound
+	intHandler(){
+		this.store.isInt = !this.store.isInt;
+	}
+	@action.bound
+	invoiceHandler(e){
+		this.store.isPerson = e === 0 ? true : false;
+		this.store.curIndex = e;
+	}
+	render(){
+		const { storeList, isCoupon, isInt, isPerson, curIndex} = this.store;
+		const orderItem = storeList.map((item,index)=>{
+			const {storeName,storeId,img,goods} = item;
+			return <div className="order-detail" key={storeId}>
+				<Flex className='store-info' onClick={() => Base.push('AnchorStore')}>
+					<img src={img} alt="" />
+					<div className='store-name'>{storeName}</div>
+					<Icon type='right' color='#c9c9c9' />
+				</Flex>
+				{
+					goods.map((item)=> <StoreItem key={item.goodsId} item={item} />)
+				}
+				<Flex justify='between' align='center' className='buy-num'>
+					<div>购买数量</div>
+					<div>
+						<Stepper showNumber className='stepper' min={1} max={99} value={1} />
+					</div>
+				</Flex>
+			</div>
+		})
+
 		return (
 			<div className='ConfirmOrder'>
 				<NavBar
@@ -31,7 +110,8 @@ export default class ConfirmOrder extends BaseComponent{
 						</div>
 					</Flex>}
 					<WhiteSpace />
-					<div className="order-detail">
+					{orderItem}
+					{/* <div className="order-detail">
 						<Flex className='store-info' onClick={()=>Base.push('AnchorStore')}>
 							<img src={test.u1} alt="" />
 							<div className='store-name'>文贝袄的店铺</div>
@@ -56,7 +136,7 @@ export default class ConfirmOrder extends BaseComponent{
 								<Stepper showNumber className='stepper' min={1} max={99} value={1} />
 							</div>
 						</Flex>
-					</div>
+					</div> */}
 					<WhiteSpace />
 					<div className="order-detail">
 						<Flex justify="between" align="center" className="discount-item">
@@ -64,7 +144,7 @@ export default class ConfirmOrder extends BaseComponent{
 								优惠券
 							</Flex.Item>
 							<Flex.Item align="center">
-								<span className="payMoney">-￥{10}</span><Radio></Radio>
+								<span className="payMoney">-￥{10}</span><Checkbox checked={isCoupon} onChange={this.couponHandler} />
 							</Flex.Item>
 						</Flex>
 						<Flex justify="between" align="center" className="discount-item">
@@ -72,7 +152,7 @@ export default class ConfirmOrder extends BaseComponent{
 								积分抵扣 <em>100积分=1元</em>
 							</Flex.Item>
 							<Flex.Item align="center">
-								<span className="payMoney">-￥{10}</span><Radio></Radio>
+								<span className="payMoney">-￥{10}</span><Checkbox checked={isInt} onChange={this.intHandler} />
 							</Flex.Item>
 						</Flex>
 					</div>
@@ -81,20 +161,26 @@ export default class ConfirmOrder extends BaseComponent{
 							<div>
 								发票抬头
 							</div>
-							<div className="order-invoice-check">
-								<span className="payMoney">企业</span><Radio defaultChecked={true}></Radio>
-								<span className="payMoney">个人</span><Radio></Radio>
-							</div>
+							<Flex className="order-invoice-check">
+								{
+									["企业","个人"].map((item,key)=>{
+										return <Flex key={key} onClick={() => this.invoiceHandler(key)}><span className="payMoney">{item}</span><Radio checked={curIndex === key}></Radio></Flex>	
+									})
+								}
+							</Flex>
 						</Flex>
-						<Flex align="center" className="discount-item">
-							<InputItem placeholder="请输入抬头名称或开票六位代码">名称</InputItem>
-						</Flex>
-						<Flex align="center" className="discount-item">
-							<InputItem placeholder="请输入纳税人识别号或社会统一征信代码">税号</InputItem>
-						</Flex>
-						<Flex align="center" className="discount-item">
-							<InputItem placeholder="请输入抬头名称">名称</InputItem>
-						</Flex>
+						{
+							isPerson ? <div>
+								<Flex align="center" className="discount-item">
+									<InputItem placeholder="请输入抬头名称或开票六位代码">名称</InputItem>
+								</Flex>
+								<Flex align="center" className="discount-item">
+									<InputItem placeholder="请输入纳税人识别号或社会统一征信代码">税号</InputItem>
+								</Flex>
+							</div>:<Flex align="center" className="discount-item">
+									<InputItem placeholder="请输入抬头名称">名称</InputItem>
+								</Flex>
+						}
 					</div>
 					<div className="order-remark">
 						<TextareaItem
