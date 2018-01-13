@@ -187,6 +187,7 @@ export default class GoodsDetail extends BaseComponent{
         selectSpecIndex:-1,
         selectClassifyIndex:-1,
         selectNum:1,
+        imgHeight:160
     }
     componentDidMount(){
     }
@@ -219,8 +220,13 @@ export default class GoodsDetail extends BaseComponent{
     classifyItemHandler(index){
         this.store.selectClassifyIndex = index;
     }
+    @action.bound
+    imgLoadHandler(){
+        window.dispatchEvent(new Event('resize'));
+        this.store.imgHeight = 'auto';
+    }
     render(){
-        const {isCollect,isAddressModal,curAddressIndex,isBuyModal,selectSpecIndex,selectClassifyIndex,selectNum} = this.store;
+        const {isCollect,isAddressModal,curAddressIndex,isBuyModal,selectSpecIndex,selectClassifyIndex,selectNum,imgHeight} = this.store;
         const evaluateItems = testEvaluates.map((item,index)=>{
             return <EvaluateItem key={index} {...item}/>;
         });
@@ -256,8 +262,9 @@ export default class GoodsDetail extends BaseComponent{
                             <img
                                 key={index}
                                 src={val}
-                                style={{ width: '100%', verticalAlign: 'top' }}
+                                style={{ width: '100%', verticalAlign: 'top',height:imgHeight}}
                                 alt=''
+                                onLoad={this.imgLoadHandler}
                             />
                         ))}
                     </Carousel>
