@@ -6,11 +6,6 @@
  * 样式配置，默认采用antd皮肤
  */
  
-//皮肤配置
-@import "~antd-mobile/lib/style/themes/default.less";
-@brand-primary: #e21b1a;
-
-
 //全局样式
 *{
 	outline: none !important;
@@ -54,7 +49,9 @@ html,body,#root,.App{
 }
 .base-content{
 	height:calc(~'100vh - 45px');
-	overflow:scroll;
+	overflow-x:hidden;
+	overflow-y:auto;
+	-webkit-overflow-scrolling: touch;
 }
 .ellipsis{
 	overflow: hidden;

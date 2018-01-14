@@ -29,7 +29,7 @@ export default class ${panelName} extends BaseComponent{
 };
 `;
 
-	const LessTem = `@import '../../common/base.less';
+	const LessTem = `@import '../../common/theme.less';
 .${panelName}{
 
 }

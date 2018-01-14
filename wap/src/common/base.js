@@ -12,6 +12,7 @@ import {Component} from 'react';
 import Global from './global';
 import { Toast } from 'antd-mobile';
 // import 'whatwg-fetch';
+import './base.less';
 useStrict(true);
 
 export const Base = {

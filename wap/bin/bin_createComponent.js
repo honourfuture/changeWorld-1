@@ -28,7 +28,7 @@ export class ${componentName} extends BaseComponent{
 };
 `;
 
-	const LessTem = `@import '../../common/base.less';
+	const LessTem = `@import '../../common/theme.less';
 .${componentName}{
 
 }

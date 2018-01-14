@@ -41,7 +41,7 @@ export default class AnchorStore extends BaseComponent{
             { title: "直播", component: <Hots /> }, 
             { title: "专辑", component: <Vanity /> }, 
             { title: "简介", component: <Hots /> }, 
-            { title: "商店", component: <div className="lecturer"><GoodsList goodslist={hotData} /></div> }
+            { title: "商店", component: <div className="lecturer base-content"><GoodsList goodslist={hotData} /></div> }
         ];
        
 		return (
@@ -57,13 +57,11 @@ export default class AnchorStore extends BaseComponent{
                 >
                     <Flex><img src={test.u1} className="anchore-img" alt='' />汪朵朵</Flex>
                 </NavBar>
-				<div className="base-content">
-					<div className="nav-tabs">
-                        <Tabs className="nav-tabs" tabs={tabs} initialPage={3}>
-                            {this.renderContent}
-                        </Tabs>
-                    </div>
-				</div>
+                <div className="nav-tabs">
+                    <Tabs className="nav-tabs" tabs={tabs} initialPage={3} swipeable={false}>
+                        {this.renderContent}
+                    </Tabs>
+                </div>
 			</div>
 		)
 	}
