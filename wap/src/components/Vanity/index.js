@@ -1,5 +1,5 @@
 import React from 'react';
-import {BaseComponent} from '../../common';
+import {BaseComponent,NetImg} from '../../common';
 import {Flex,Tabs,Carousel} from 'antd-mobile';
 import './Vanity.less';
 import {test} from '../../images';
@@ -57,11 +57,10 @@ export class Vanity extends BaseComponent{
                     dots={false}
                     >
                     {[test.banner2].map(val => (
-                        <img
+                        <NetImg
                             key={val}
                             src={val}
                             style={{ width: '100%'}}
-                            alt=""
                         />
                     ))}
                 </Carousel>

@@ -1,6 +1,6 @@
 import React from 'react';
 import {action} from 'mobx';
-import {BaseComponent} from '../../common';
+import {BaseComponent,NetImg} from '../../common';
 import { WhiteSpace,Carousel} from 'antd-mobile';
 import './Hots.less';
 
@@ -30,17 +30,11 @@ export class Hots extends BaseComponent{
             goodsPrice:69,
             goodsNum: 69,
         }],
-        imgHeight:160,
     }
     componentDidMount(){
     }
-    @action.bound
-    imgLoadHandler(){
-        window.dispatchEvent(new Event('resize'));
-        this.store.imgHeight = 'auto';
-    }
     render(){
-        const {hotData,imgHeight} = this.store;
+        const {hotData} = this.store;
         return (
             <div className='Hots base-content'>
                 <Carousel
@@ -48,12 +42,10 @@ export class Hots extends BaseComponent{
                     infinite
                     >
                     {[test.banner1,test.banner1].map(val => (
-                        <img
+                        <NetImg
                             key={val}
                             src={val}
-                            style={{ width: '100%',height:imgHeight}}
-                            alt=""
-                            onLoad={this.imgLoadHandler}
+                            style={{ width: '100%'}}
                         />
                     ))}
                 </Carousel>

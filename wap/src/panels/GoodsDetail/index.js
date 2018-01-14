@@ -1,6 +1,6 @@
 import React from 'react';
 import {action} from 'mobx';
-import {BaseComponent,Base} from '../../common';
+import {BaseComponent,Base,NetImg} from '../../common';
 import {Flex, NavBar, Icon, Carousel, Badge, Checkbox,Stepper,Button} from 'antd-mobile';
 import './GoodsDetail.less';
 import {icon,test} from '../../images';
@@ -187,7 +187,6 @@ export default class GoodsDetail extends BaseComponent{
         selectSpecIndex:-1,
         selectClassifyIndex:-1,
         selectNum:1,
-        imgHeight:160
     }
     componentDidMount(){
     }
@@ -219,11 +218,6 @@ export default class GoodsDetail extends BaseComponent{
     @action.bound
     classifyItemHandler(index){
         this.store.selectClassifyIndex = index;
-    }
-    @action.bound
-    imgLoadHandler(){
-        window.dispatchEvent(new Event('resize'));
-        this.store.imgHeight = 'auto';
     }
     render(){
         const {isCollect,isAddressModal,curAddressIndex,isBuyModal,selectSpecIndex,selectClassifyIndex,selectNum,imgHeight} = this.store;
@@ -259,12 +253,10 @@ export default class GoodsDetail extends BaseComponent{
                         infinite
                         >
                         {[test.test4,test.test4,test.test4].map((val,index) => (
-                            <img
+                            <NetImg
                                 key={index}
                                 src={val}
-                                style={{ width: '100%', verticalAlign: 'top',height:imgHeight}}
-                                alt=''
-                                onLoad={this.imgLoadHandler}
+                                style={{ width: '100%', verticalAlign: 'top'}}
                             />
                         ))}
                     </Carousel>
