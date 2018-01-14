@@ -1,5 +1,5 @@
 import React from 'react';
-import {action,observable} from 'mobx';
+import {action} from 'mobx';
 import {BaseComponent,Base} from '../../common';
 import { Table, Input,Popconfirm,Switch,Button } from 'antd';
 import './ShopNavList.less';
@@ -119,14 +119,16 @@ export default class ShopNavList extends BaseComponent{
 	cancel(id) {
 		this.store.list = this.cacheData.map(item => ({ ...item }));
 	}
+	//删除
 	@action.bound
 	onDelete(id){
-		console.log(id);
-		// const list = this.store.list.slice();
-		// const itemData = list.find(item=>id === item.id);
-		// itemData.deleted = 1;
-		// Base.POST({act:'shop_class',op:'save',...item});
+		const list = this.store.list.slice();
+		const index = list.findIndex(item=>id === item.id);
+		list.splice(index,1);
+		this.store.list = list;
+		Base.POST({act:'shop_class',op:'save',id,deleted:1});
 	}
+	//添加
 	@action.bound
 	addHandler(){
 		const list = this.store.list.slice();
