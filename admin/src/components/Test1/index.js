@@ -1,5 +1,5 @@
 import React from 'react';
-import {BaseComponent,Base} from '../../common';
+import {BaseComponent} from '../../common';
 import {Spin} from 'antd';
 import './Test1.less';
 

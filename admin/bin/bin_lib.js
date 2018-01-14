@@ -11,9 +11,11 @@ let fs = require('fs');
 let path = require('path');
 //[npm run panel userLogin 登录]
 //[npm run component userLogin]
-let npm_config_argv = JSON.parse(process.env.npm_config_argv);
 let com = {
-	args:npm_config_argv.original,
+	get args(){
+		let npm_config_argv = JSON.parse(process.env.npm_config_argv);
+		return npm_config_argv.original;	
+	},
 	//获取绝对路径
 	getPath(url){
 	    return path.resolve('./', url);
@@ -32,6 +34,23 @@ let com = {
 	    if(!fs.existsSync(this.getPath(path))){
 	        fs.mkdirSync(this.getPath(path));
 	    }
+	},
+	//遍历文件
+	walk:function(path, handleFile){
+		var self = this;
+		self.files = fs.readdirSync(path);
+		self.files.forEach(function(item) {
+			var tmpPath = path + '/' + item;
+			var stats = fs.statSync(tmpPath);
+			if (stats.isDirectory()) {
+				if(item === '.svn'){
+					return false;
+				}
+				self.walk(tmpPath,handleFile);
+			} else {
+				handleFile(tmpPath,stats);
+			}
+		});
 	}
 }
 com.mkdir('src/panels/');

@@ -47,6 +47,10 @@ const menuData = [
         path: 'shop',
         children: [
             {
+                name: '商城导航',
+                path: 'ShopNavList',
+            },
+            {
                 name: '商品管理',
                 path: 'GoodsManager',
             }, 

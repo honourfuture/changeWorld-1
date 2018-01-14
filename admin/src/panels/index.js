@@ -44,5 +44,5 @@ export const panelsList =  [
 export const getPanelName = (path)=>{
     const item = panelsList.find((item)=>item.path === path);
     const title = item?item.title:'';
-    return title?`${title}-ant测试`:'ant测试';
+    return title?`${title}-直播`:'直播';
 }

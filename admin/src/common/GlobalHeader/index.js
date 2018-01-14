@@ -39,6 +39,7 @@ export class GlobalHeader extends BaseComponent {
                     Base.push('/user/login');
                 })
             break;
+            default:break;
         }
     }
     render() {
