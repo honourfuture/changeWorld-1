@@ -1,7 +1,7 @@
 import React from 'react';
 import {action} from 'mobx';
 import {BaseComponent,Base} from '../../common';
-import { Table, Input,Popconfirm,Switch,Button } from 'antd';
+import { Table, Input,Popconfirm,Switch,Button,Spin } from 'antd';
 import './ShopNavList.less';
 
 const EditableCell = ({ editable, value, onChange }) => (
@@ -88,7 +88,7 @@ export default class ShopNavList extends BaseComponent{
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
 		itemData.enable = value?1:0;
-		Base.POST({act:'shop_class',op:'save',...itemData});
+		Base.POST({act:'shop_class',op:'save',...itemData},null,this);
 	}
 	@action.bound
 	handleChange(value, id, column) {
@@ -113,7 +113,7 @@ export default class ShopNavList extends BaseComponent{
 			//需要返回id，然后将id赋值给itemData
 			this.store.list = list;
 			this.cacheData = list.map(item => ({ ...item }));
-		});
+		},this);
 	}
 	@action.bound
 	cancel(id) {
@@ -126,7 +126,7 @@ export default class ShopNavList extends BaseComponent{
 		const index = list.findIndex(item=>id === item.id);
 		list.splice(index,1);
 		this.store.list = list;
-		Base.POST({act:'shop_class',op:'save',id,deleted:1});
+		Base.POST({act:'shop_class',op:'save',id,deleted:1},null,this);
 	}
 	//添加
 	@action.bound
@@ -139,15 +139,15 @@ export default class ShopNavList extends BaseComponent{
 		Base.GET({act:'shop_class',op:'index'},(res)=>{
 			this.store.list = res.data;
 			this.cacheData = res.data.map(item => ({ ...item }));
-		})
+		},this);
 	}
 	render(){
 		let {list} = this.store;
 		return (
-			<div className='ShopNavList'>
+			<Spin ref='spin' wrapperClassName='ShopNavList'>
 				<Button className="editable-add-btn" onClick={this.addHandler}>新增+</Button>
 				<Table bordered dataSource={list.slice()} rowKey='id' columns={this.columns} pagination={false}/>
-			</div>
+			</Spin>
 		)
 	}
 };
