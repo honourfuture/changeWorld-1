@@ -249,7 +249,7 @@ export default class GoodsDetail extends BaseComponent{
                 ></NavBar>
                 <div className="base-content">
                     <Carousel
-                        autoplay={false}
+                        autoplay={true}
                         infinite
                         >
                         {[test.test4,test.test4,test.test4].map((val,index) => (

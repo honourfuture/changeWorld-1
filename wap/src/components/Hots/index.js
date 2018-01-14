@@ -38,7 +38,7 @@ export class Hots extends BaseComponent{
         return (
             <div className='Hots base-content'>
                 <Carousel
-                    autoplay={false}
+                    autoplay={true}
                     infinite
                     >
                     {[test.banner1,test.banner1].map(val => (
