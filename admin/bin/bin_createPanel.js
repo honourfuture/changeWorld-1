@@ -12,7 +12,8 @@ let fs = require('fs');
 let lib = require('./bin_lib.js');
 
 if(lib.args[1] === 'panel'){
-	let panelName = lib.args[2];
+	const urlPath = lib.args[2].split('/')[0];
+	let panelName = lib.args[2].split('/')[1];
 	let title = lib.args[3];
 	let path = "src/panels/"+panelName;
 	const PanelTem = `import React from 'react';
@@ -80,7 +81,7 @@ export const getPanelName = (path)=>{
 			contentText = insStrIndex(contentText,'export const panelsList =  [',insStr,panelName);
             let insStr_component = `
     {
-        path:'/${panelName}',
+        path:'/${urlPath}',
         component:${panelName},
         title:'${title}',
     },`;
