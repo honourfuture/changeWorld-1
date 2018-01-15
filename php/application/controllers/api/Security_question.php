@@ -70,9 +70,12 @@ class Security_question extends API_Controller {
 			$user = $this->Users_model->get($this->user_id);
 			$ret['security'] = $user['security_question'];
 		}
-		$this->db->select('id,title');
+		$deleted = (int)$this->input->get('deleted');
+		if($this->user_id){
+			$this->db->select('id,title');
+		}
 		$order_by = array('sort' => 'asc', 'id' => 'asc');
-		$ret['question'] = $this->Security_question_model->order_by($order_by)->get_many_by('enable', 1);
+		$ret['question'] = $this->Security_question_model->order_by($order_by)->get_many_by('deleted', $deleted);
 		$this->ajaxReturn($ret);
 	}
 
@@ -200,7 +203,9 @@ class Security_question extends API_Controller {
 				''
 			);
 			$this->check_params($params);
-			$flag = $this->Security_question_model->insert($params);
+			if($flag = $this->Security_question_model->insert($params)){
+				$id = $flag;
+			}
 		}
 
 		if($flag){
@@ -210,7 +215,7 @@ class Security_question extends API_Controller {
 			$status = 1;
 			$message = '失败';
 		}
-		$this->ajaxReturn('', $status, '操作'.$message);
+		$this->ajaxReturn(array('id' => $id), $status, '操作'.$message);
 	}
 
 	protected function check_params($params)
