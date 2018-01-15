@@ -3,6 +3,7 @@ import {action} from 'mobx';
 import {BaseComponent,Base} from '../../common';
 import { Table, Input,Popconfirm,Switch,Button,Spin } from 'antd';
 import './ShopNavList.less';
+const Search = Input.Search;
 
 const EditableCell = ({ editable, value, onChange }) => (
 	<div>
@@ -14,7 +15,10 @@ const EditableCell = ({ editable, value, onChange }) => (
 );
 
 export default class ShopNavList extends BaseComponent{
-	store={list:[]}
+	store={
+		list:[],
+		searchStr:''
+	}
 	constructor(props) {
 		super(props);
 		this.columns = [
@@ -59,7 +63,7 @@ export default class ShopNavList extends BaseComponent{
 							<span>
 								<a onClick={() => this.edit(id)}>编辑</a>
 								<Popconfirm title="确认删除?" okText='确定' cancelText='取消' onConfirm={() => this.onDelete(id)}>
-									<a className='right-btn' href="#">删除</a>
+									<a className='right-btn'>删除</a>
 								</Popconfirm>
 							</span>
 						}
@@ -80,16 +84,18 @@ export default class ShopNavList extends BaseComponent{
 	}
 	renderSwitch(text,record,column){
 		return (
-			<Switch defaultChecked onChange={(value)=>this.enableHandler(record.id,value)} />
+			<Switch checked={parseInt(record.enable,10)===1} onChange={(value)=>this.enableHandler(record.id,value)} />
 		)
 	}
+	//是否启用
 	@action.bound
 	enableHandler(id,value){
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
 		itemData.enable = value?1:0;
-		Base.POST({act:'shop_class',op:'save',...itemData},null,this);
+		Base.POST({act:'shop_class',op:'save',...itemData},()=>this.store.list = list,this);
 	}
+	//编辑文本更改
 	@action.bound
 	handleChange(value, id, column) {
 		const list = this.store.list.slice();
@@ -97,6 +103,7 @@ export default class ShopNavList extends BaseComponent{
 		itemData[column] = value;
 		this.store.list = list;
 	}
+	//编辑
 	@action.bound
 	edit(id) {
 		const list = this.store.list.slice();
@@ -104,17 +111,19 @@ export default class ShopNavList extends BaseComponent{
 		itemData.editable = true;
 		this.store.list = list;
 	}
+	//保存
 	@action.bound
 	save(id) {
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
 		itemData.editable = false;
 		Base.POST({act:'shop_class',op:'save',...itemData},(res)=>{
-			//需要返回id，然后将id赋值给itemData
+			itemData.id === 0 && (itemData.id = res.data.id);
 			this.store.list = list;
 			this.cacheData = list.map(item => ({ ...item }));
 		},this);
 	}
+	//取消
 	@action.bound
 	cancel(id) {
 		this.store.list = this.cacheData.map(item => ({ ...item }));
@@ -126,14 +135,19 @@ export default class ShopNavList extends BaseComponent{
 		const index = list.findIndex(item=>id === item.id);
 		list.splice(index,1);
 		this.store.list = list;
-		Base.POST({act:'shop_class',op:'save',id,deleted:1},null,this);
+		Base.POST({act:'shop_class',op:'save',id,deleted:"1"},null,this);
 	}
 	//添加
 	@action.bound
 	addHandler(){
 		const list = this.store.list.slice();
-		list.unshift({id:0,name:'',editable:true});
+		list.unshift({id:0,name:'',editable:true,deleted:'0',enable:'1'});
 		this.store.list = list;
+	}
+	//搜索
+	@action.bound
+	searchChangeHandler(e){
+		this.store.searchStr = e.target.value;
 	}
 	componentDidMount() {
 		Base.GET({act:'shop_class',op:'index'},(res)=>{
@@ -142,11 +156,21 @@ export default class ShopNavList extends BaseComponent{
 		},this);
 	}
 	render(){
-		let {list} = this.store;
+		let {list,searchStr} = this.store;
+		const showList = list.filter(item=>{
+			return parseInt(item.deleted,10) === 0 && (!searchStr || item.name.indexOf(searchStr) !== -1);
+		})
 		return (
-			<Spin ref='spin' wrapperClassName='ShopNavList'>
-				<Button className="editable-add-btn" onClick={this.addHandler}>新增+</Button>
-				<Table bordered dataSource={list.slice()} rowKey='id' columns={this.columns} pagination={false}/>
+			<Spin ref='spin' wrapperClassName='ShopNavList' spinning={false}>
+				<div className='bt10'>
+					<Button onClick={this.addHandler}>新增+</Button>
+					<Search
+						placeholder="快速搜索"
+						onChange={this.searchChangeHandler}
+						style={{ width: 130,marginLeft:10 }}
+					/>
+				</div>
+				<Table bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={false}/>
 			</Spin>
 		)
 	}
