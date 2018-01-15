@@ -16,7 +16,13 @@ import ShopCart from './ShopCart';
 import AnchorStore from './AnchorStore';
 import OrderDetail from './OrderDetail';
 import ConfirmOrder from './ConfirmOrder';
+import ExLog from './ExLog';
 export const panelsList =  [
+    {
+        path:'/ExLog',
+        component:ExLog,
+        title:'查看物流',
+    },
     {
         path:'/ConfirmOrder',
         component:ConfirmOrder,

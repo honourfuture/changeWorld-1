@@ -1,0 +1,60 @@
+@import '../../common/theme.less';
+.ExLog{
+	
+	.exBank{
+		padding: 15px;
+		background: #fff;
+		.exCarImg{
+			margin-right: 15px;
+			width: 36px;
+			height: 36px;
+		}
+		.exInfo{
+			font-size: 12px;
+			color: #151515;
+			&Item{
+				margin-bottom: 10px;
+				&:last-of-type{
+					margin-bottom: 0;
+				}
+				span{
+					color: #999;
+				}
+			}
+		}
+	}
+	.exStep{
+		padding: 15px;
+		background: #fff;
+		//覆盖步骤
+		.am-steps-item-icon{
+			position: relative;
+			&::before{
+				content: "";
+				width: 5px;
+				height: 5px;
+				background: #999;
+				border-radius: 50%;
+				position: absolute;
+				left: 7px;
+				top: 5px;
+			}
+			.am-icon{
+				display: none;
+			}
+		}
+		.am-steps-item-title{
+			margin-bottom: 10px;
+			font-size: 12px;
+			color: #333;
+		}
+		.last{
+			.am-steps-item-title,.am-steps-item-description{
+				color: @brand-primary;
+			}
+			.am-steps-item-icon::before{
+				background: @brand-primary;
+			}
+		}
+	}
+}
