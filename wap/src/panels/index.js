@@ -17,7 +17,13 @@ import AnchorStore from './AnchorStore';
 import OrderDetail from './OrderDetail';
 import ConfirmOrder from './ConfirmOrder';
 import ExLog from './ExLog';
+import addressManage from './addressManage';
 export const panelsList =  [
+    {
+        path:'/addressManage',
+        component:addressManage,
+        title:'地址管理',
+    },
     {
         path:'/ExLog',
         component:ExLog,
