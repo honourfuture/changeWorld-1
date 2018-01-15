@@ -32,7 +32,7 @@ export default class ExLog extends BaseComponent{
                 	<div className="exStep">
                 		<Steps size="small">
 					      	<Step status="error" className="last" title="【杭州市】已签收，签收人：前台代收" description="2017-04-14 03:52:12" />
-					      	<Step status="process" title={<div>【杭州市】五常揽投站安排投递，预计13:00:00前投递（投递员 姓名：周文进；联系电话：<a href={'tel:'+tel}>{tel}</a></div>} description="2017-04-14 03:52:12" />
+					      	<Step status="process" title={<div>【杭州市】五常揽投站安排投递，预计13:00:00前投递（投递员 姓名：周文进；联系电话：<a href={'tel:'+tel}>{tel}</a>）</div>} description="2017-04-14 03:52:12" />
 					      	<Step status="process" title="【杭州市】离开杭州处理中心 发往五常揽投站" description="2017-04-14 03:52:12" />
 					      	<Step status="process" title="【杭州市】已揽收" description="2017-04-14 03:52:12" />
 					      	<Step status="process" title="包裹已出库来自：杭州报税1号仓" description="2017-04-14 03:52:12" />
