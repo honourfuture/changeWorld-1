@@ -11,7 +11,7 @@ export default class ExLog extends BaseComponent{
 			addr:"【杭州市】已签收，签收人：前台代收",
 			time:"2017-04-14 03:52:12"
 		},{
-			addr:"【杭州市】五常揽投站安排投递，预计13:00:00前投递（投递员 姓名：周文进；联系电话：tel:18058769605）",
+			addr:"【杭州市】五常揽投站安排投递，预计13:00:00前投递（投递员 姓名：周文进；联系电话：18058769605）",
 			time:"2017-04-14 03:52:12"
 		},{
 			addr:"【杭州市】离开杭州处理中心 发往五常揽投站",
@@ -22,14 +22,16 @@ export default class ExLog extends BaseComponent{
 		},{
 			addr:"包裹已出库来自：杭州报税1号仓",
 			time:"2017-04-14 03:52:12"
-		}]
+		}],
+		orderNo:2017072719315,
+		exName:"顺丰快递"
 	}
 	render(){
-		const {listLog} = this.store;
+		const {listLog,orderNo,exName} = this.store;
 		const listsLog = listLog.map((item,key)=>{
 			console.log(key)
 			if(key === 0 ){
-				return <Step key={key} status="error" className="list" title={item.addr} description={item.time} />
+				return <Step key={key} status="error" className="last" title={item.addr} description={item.time} />
 			}else{
 				return <Step key={key} status="process" title={item.addr} description={item.time} />
 			}
@@ -48,10 +50,10 @@ export default class ExLog extends BaseComponent{
 						<img src={icon.exCar} className="exCarImg" alt=""/>
 						<div className="exInfo">
 							<div className="exInfoItem">
-								<span>订单编号：</span>顺丰快递
+								<span>订单编号：</span>{exName}
 							</div>
 							<div className="exInfoItem">
-								<span>物流编号：</span>2017072719315
+								<span>物流编号：</span>{orderNo}
 							</div>
 						</div>
                 	</Flex>
