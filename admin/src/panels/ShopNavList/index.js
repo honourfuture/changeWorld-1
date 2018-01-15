@@ -5,10 +5,10 @@ import { Table, Input,Popconfirm,Switch,Button,Spin } from 'antd';
 import './ShopNavList.less';
 const Search = Input.Search;
 
-const EditableCell = ({ editable, value, onChange }) => (
+const EditableCell = ({ editable, value, onChange, type}) => (
 	<div>
 		{editable
-			? <Input style={{ margin: '-5px 0' }} value={value} onChange={e => onChange(e.target.value)} />
+			? <Input style={{ margin: '-5px 0' }} value={value} type={type} onChange={e => onChange(e.target.value)} />
 			: value
 		}
 	</div>
@@ -78,6 +78,7 @@ export default class ShopNavList extends BaseComponent{
 			<EditableCell
 				editable={record.editable}
 				value={text}
+				type={column==='sort'?'number':'text'}
 				onChange={value => this.handleChange(value, record.id, column)}
 			/>
 		);
@@ -141,7 +142,7 @@ export default class ShopNavList extends BaseComponent{
 	@action.bound
 	addHandler(){
 		const list = this.store.list.slice();
-		list.unshift({id:0,name:'',editable:true,deleted:'0',enable:'1'});
+		list.unshift({id:0,name:'',editable:true,deleted:'0',enable:'1',sort:0});
 		this.store.list = list;
 	}
 	//搜索
@@ -170,7 +171,7 @@ export default class ShopNavList extends BaseComponent{
 						style={{ width: 130,marginLeft:10 }}
 					/>
 				</div>
-				<Table bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={false}/>
+				<Table bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={true}/>
 			</Spin>
 		)
 	}
