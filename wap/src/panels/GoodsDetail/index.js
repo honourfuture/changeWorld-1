@@ -220,7 +220,7 @@ export default class GoodsDetail extends BaseComponent{
         this.store.selectClassifyIndex = index;
     }
     render(){
-        const {isCollect,isAddressModal,curAddressIndex,isBuyModal,selectSpecIndex,selectClassifyIndex,selectNum,imgHeight} = this.store;
+        const {isCollect,isAddressModal,curAddressIndex,isBuyModal,selectSpecIndex,selectClassifyIndex,selectNum} = this.store;
         const evaluateItems = testEvaluates.map((item,index)=>{
             return <EvaluateItem key={index} {...item}/>;
         });

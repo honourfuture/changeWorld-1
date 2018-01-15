@@ -1,5 +1,5 @@
 import React from 'react';
-import {action} from 'mobx';
+// import {action} from 'mobx';
 import {BaseComponent,NetImg} from '../../common';
 import { WhiteSpace,Carousel} from 'antd-mobile';
 import './Hots.less';

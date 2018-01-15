@@ -8,7 +8,7 @@ import { test, icon } from '../../images';
 
 class StoreItem extends BaseComponent{
 	render(){
-		const { title, img, spec, price, checked, num } = this.props.item;
+		const { title, img, spec, price, num } = this.props.item;
 		return (
 			<Flex align='start' className='goods-info base-line'>
 				<img className='goods-img' src={img} alt="" />

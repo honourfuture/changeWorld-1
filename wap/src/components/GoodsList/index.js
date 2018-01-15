@@ -1,5 +1,5 @@
 import React from 'react';
-import {action} from 'mobx';
+// import {action} from 'mobx';
 import {BaseComponent,Base,NetImg} from '../../common';
 import {Flex,Button} from 'antd-mobile';
 import './GoodsList.less';

@@ -12,7 +12,13 @@ import Exception403 from './Exception/403';
 import Exception404 from './Exception/404';
 import Exception500 from './Exception/500';
 import ShopNavList from './ShopNavList';
+import AdManager from './AdManager';
 export const panelsList =  [
+    {
+        path:'/operation/AdManager',
+        component:AdManager,
+        title:'广告管理',
+    },
     {
         path:'/shop/ShopNavList',
         component:ShopNavList,

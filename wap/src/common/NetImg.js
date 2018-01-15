@@ -1,6 +1,6 @@
 import React from 'react';
 import {action} from 'mobx';
-import {BaseComponent,Base} from './base';
+import {BaseComponent} from './base';
 export class NetImg extends BaseComponent{
     store={height:this.props.height || 'auto'}
     @action.bound
