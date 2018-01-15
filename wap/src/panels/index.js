@@ -17,11 +17,11 @@ import AnchorStore from './AnchorStore';
 import OrderDetail from './OrderDetail';
 import ConfirmOrder from './ConfirmOrder';
 import ExLog from './ExLog';
-import addressManage from './addressManage';
+import AddressManage from './AddressManage';
 export const panelsList =  [
     {
-        path:'/addressManage',
-        component:addressManage,
+        path:'/AddressManage',
+        component:AddressManage,
         title:'地址管理',
     },
     {
