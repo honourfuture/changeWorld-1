@@ -1,9 +1,21 @@
 import React from 'react';
 import {action} from 'mobx';
 import {BaseComponent,Base} from '../../common';
-import { Table, Input,Popconfirm,Switch,Button,Spin } from 'antd';
+import { Table, Input,Popconfirm,Switch,Button,Spin,Select } from 'antd';
 import './ShopNavList.less';
 const Search = Input.Search;
+const Option = Select.Option;
+
+const LinkConfig = [
+	{
+		key:'Hots',
+		name:'热门',
+	},
+	{
+		key:'Vanity',
+		name:'靓号',
+	},
+]
 
 const EditableCell = ({ editable, value, onChange, type}) => (
 	<div>
@@ -38,7 +50,8 @@ export default class ShopNavList extends BaseComponent{
 				title: '链接',
 				dataIndex: 'link',
 				width: '25%',
-				render: (text, record) => this.renderColumns(text, record, 'link'),
+				// render: (text, record) => this.renderColumns(text, record, 'link'),
+				render: (text, record) => this.renderLink(text, record, 'link'),
 			}, 
 			{
 				title: '启用',
@@ -87,6 +100,27 @@ export default class ShopNavList extends BaseComponent{
 		return (
 			<Switch checked={parseInt(record.enable,10)===1} onChange={(value)=>this.enableHandler(record.id,value)} />
 		)
+	}
+	renderLink(text,record,column){
+		const value = record.link;
+		let curIndex = LinkConfig.findIndex((item)=>item.key === value);
+		curIndex = curIndex >= 0?curIndex:0;
+		return (
+			<div>
+				{record.editable?<Select defaultValue={record.link || LinkConfig[0].key} style={{ width: 120 }} onChange={(value)=>this.linkChangeHandler(value,record.id,column)}>
+					{
+						LinkConfig.map(({key,name})=><Option key={key} value={key}>{name}</Option>)
+					}
+				</Select>:LinkConfig[curIndex].name}
+			</div>
+		)
+	}
+	@action.bound
+	linkChangeHandler(value, id, column){
+		const list = this.store.list.slice();
+		const itemData = list.find(item=>id === item.id);
+		itemData[column] = value;
+		this.store.list = list;
 	}
 	//是否启用
 	@action.bound
@@ -142,7 +176,7 @@ export default class ShopNavList extends BaseComponent{
 	@action.bound
 	addHandler(){
 		const list = this.store.list.slice();
-		list.unshift({id:0,name:'',editable:true,deleted:'0',enable:'1',sort:0});
+		list.unshift({id:0,name:'',editable:true,deleted:'0',enable:'1',sort:0,link:LinkConfig[0].key});
 		this.store.list = list;
 	}
 	//搜索
