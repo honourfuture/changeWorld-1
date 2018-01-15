@@ -208,6 +208,18 @@ class MY_Controller extends CI_Controller
             $this->ajaxReturn('', ACCESS_REQUEST, '非法操作');
         }
     }
+
+    protected function get_user()
+    {
+        $this->load->model('Users_model');
+        return $this->Users_model->get($this->user_id);
+    }
+
+    protected function age($birth)
+    {
+        $age = 0;
+        return $age;
+    }
 }
 
 

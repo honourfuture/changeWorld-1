@@ -55,9 +55,12 @@ class Goods_attr_category extends API_Controller {
 	 */
 	public function index()
 	{
-		$this->db->select('id,name');
+		$deleted = (int)$this->input->get('deleted');
+		if($this->user_id){
+			$this->db->select('id,name');
+		}
 		$order_by = array('sort' => 'asc', 'id' => 'asc');
-		$ret = $this->Goods_attr_category_model->order_by($order_by)->get_many_by('enable', 1);
+		$ret = $this->Goods_attr_category_model->order_by($order_by)->get_many_by('deleted', $deleted);
 		$this->ajaxReturn($ret);
 	}
 
@@ -134,7 +137,9 @@ class Goods_attr_category extends API_Controller {
 				''
 			);
 			$this->check_params($params);
-			$flag = $this->Goods_attr_category_model->insert($params);
+			if($flag = $this->Goods_attr_category_model->insert($params)){
+				$id = $flag;
+			}
 		}
 
 		if($flag){
@@ -144,7 +149,7 @@ class Goods_attr_category extends API_Controller {
 			$status = 1;
 			$message = '失败';
 		}
-		$this->ajaxReturn('', $status, '操作'.$message);
+		$this->ajaxReturn(array('id' => $id), $status, '操作'.$message);
 	}
 
 	protected function check_params($params)
