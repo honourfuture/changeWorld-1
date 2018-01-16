@@ -43,7 +43,7 @@ export default class ShopNavList extends BaseComponent{
 			{
 				title: '更新时间',
 				dataIndex: 'updated_at',
-				width: '15%',
+				width: '20%',
 				render: (text, record) => this.renderText(text, record, 'updated_at'),
 			}, 
 			{
@@ -55,7 +55,7 @@ export default class ShopNavList extends BaseComponent{
 			{
 				title: '链接',
 				dataIndex: 'link',
-				width: '25%',
+				width: '15%',
 				render: (text, record) => this.renderSelect(text, record, 'link'),
 			}, 
 			{
@@ -221,7 +221,7 @@ export default class ShopNavList extends BaseComponent{
 						style={{ width: 130,marginLeft:10 }}
 					/>
 				</div>
-				<Table bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={true}/>
+				<Table bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={{hideOnSinglePage:true}}/>
 			</Spin>
 		)
 	}

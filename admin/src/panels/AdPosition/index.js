@@ -188,7 +188,7 @@ export default class AdPosition extends BaseComponent{
 						style={{ width: 130,marginLeft:10 }}
 					/>
 				</div>
-				<Table bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={true}/>
+				<Table bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={{hideOnSinglePage:true}}/>
 			</Spin>
 		)
 	}

@@ -20,7 +20,6 @@ const EditableCell = ({ editable, value, onChange, type}) => (
 export default class AdManager extends BaseComponent{
 	store={
 		list:[],
-		searchStr:'',
 		positionList:[]
 	}
 	constructor(props) {
@@ -250,10 +249,19 @@ export default class AdManager extends BaseComponent{
 	}
 	//搜索
 	@action.bound
-	onSearch(e){
-		this.store.searchStr = e.target.value;
+	onSearch(value){
+		this.current = 1;
+		this.searchStr = value;
+		this.requestData();
 	}
-	componentDidMount() {
+	@action.bound
+	onTableHandler({current,pageSize}){
+		this.current = current;
+		this.requestData();
+	}
+	current = 1
+	@action.bound
+	requestData(){
 		Base.GET({act:'ad',op:'index',mod:'admin'},(res)=>{
 			const {ad,ad_position} = res.data;
 			this.store.list = ad.list;
@@ -261,22 +269,25 @@ export default class AdManager extends BaseComponent{
 			this.cacheData = ad.list.map(item => ({ ...item }));
 		},this);
 	}
+	componentDidMount() {
+		this.requestData();
+	}
 	render(){
-		let {list,searchStr} = this.store;
+		let {list} = this.store;
 		const showList = list.filter(item=>{
-			return parseInt(item.deleted,10) === 0 && (!searchStr || item.title.indexOf(searchStr) !== -1);
+			return parseInt(item.deleted,10) === 0;
 		})
 		return (
-			<Spin ref='spin' wrapperClassName='AdManager' spinning={false}>
+			<Spin ref='spin' wrapperClassName='AdManager'>
 				<div className='pb10'>
 					<Button onClick={this.onAdd}>新增+</Button>
 					<Search
 						placeholder="搜索标题"
-						onChange={this.onSearch}
+						onSearch={this.onSearch}
 						style={{ width: 130,marginLeft:10 }}
 					/>
 				</div>
-				<Table bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={true}/>
+				<Table onChange={this.onTableHandler} bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={true}/>
 			</Spin>
 		)
 	}
