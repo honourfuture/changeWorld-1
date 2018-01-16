@@ -1,0 +1,29 @@
+@import '../../common/theme.less';
+.MyProduct{
+	.recommend-goods{
+	    &Item{
+	        position: relative;
+	        .productEdit,.productAbled{
+				width: 50px;
+				height: 28px;
+				line-height: 28px;
+				border-radius: 4px;
+				text-align: center;
+				font-size: 12px;
+				position: absolute;
+				left: 10px;
+				top: 10px;
+			}
+			.productEdit{
+				border:1px solid @brand-primary;
+				color: @brand-primary;
+			}
+			.productAbled{
+				border:1px solid #C4C4C4;
+				background: #C4C4C4;
+				color: #fff;
+			}
+	    }
+	}
+
+}

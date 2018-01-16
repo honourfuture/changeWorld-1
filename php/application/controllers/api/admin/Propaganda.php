@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @email webljx@163.com
  * @link www.aicode.org.cn
  */
-class Ad extends API_Controller {
+class Propaganda extends API_Controller {
 
 	public function __construct()
     {
@@ -14,12 +14,12 @@ class Ad extends API_Controller {
     }
 
     /**
-	 * @api {get} /api/admin/ad 广告-列表
+	 * @api {get} /api/admin/propaganda 广告-列表
 	 * @apiVersion 1.0.0
-	 * @apiName ad
+	 * @apiName propaganda
 	 * @apiGroup admin
 	 *
-	 * @apiSampleRequest /api/admin/ad
+	 * @apiSampleRequest /api/admin/propaganda
 	 *
 	 * @apiParam {Number} admin_id 管理员唯一ID
 	 * @apiParam {String} account 登录账号
@@ -59,15 +59,29 @@ class Ad extends API_Controller {
 	 */
 	public function index()
 	{
-		$ret = array('ad_position' => array(), 'ad' => array());
+		$ret = array('ad_position' => array(), 'ad' => array('count' => 0, 'list' => array()));
 		$this->load->model('Ad_position_model');
 		$order_by = array('id' => 'desc');
 		$ret['ad_position'] = $this->Ad_position_model->order_by($order_by)->get_many_by('deleted', 0);
 
 		$deleted = (int)$this->input->get('deleted');
-		$order_by = array('sort' => 'desc', 'id' => 'desc');
-		$ret['ad'] = $this->Ad_model->order_by($order_by)->get_many_by('deleted', $deleted);
+		$where = array('deleted' => $deleted);
+		$this->search();
+		$ret['ad']['count'] = $this->Ad_model->count_by($where);
+		if($ret['ad']['count']){
+			$order_by = array('sort' => 'desc', 'id' => 'desc');
+			$this->search();
+			$ret['ad']['list'] = $this->Ad_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
+		}
 		$this->ajaxReturn($ret);
+	}
+
+	protected function search()
+	{
+		$title = $this->input->get_post('title');
+		if(! empty($title)){
+			$this->db->like('title', $title);
+		}
 	}
 
 	// 查看
@@ -77,12 +91,12 @@ class Ad extends API_Controller {
 	}
 
 	/**
-	 * @api {post} /api/admin/ad/save 广告-编辑 OR 新增
+	 * @api {post} /api/admin/propaganda/save 广告-编辑 OR 新增
 	 * @apiVersion 1.0.0
-	 * @apiName ad_save
+	 * @apiName propaganda_save
 	 * @apiGroup admin
 	 *
-	 * @apiSampleRequest /api/admin/ad/save
+	 * @apiSampleRequest /api/admin/propaganda/save
 	 *
 	 * @apiParam {Number} admin_id 管理员唯一ID
 	 * @apiParam {String} account 登录账号
@@ -166,8 +180,8 @@ class Ad extends API_Controller {
 	{
 		switch($act){
 			case 'add':
-				if($params['title'] == UPDATE_VALID){
-					$this->ajaxReturn('', 501, '名称参数错误');
+				if((empty($params['title']) || $params['title'] == UPDATE_VALID) && (empty($params['image']) || $params['image'] == UPDATE_VALID)){
+					$this->ajaxReturn('', 501, '标题或图片必须传一个');
 				}
 				if($params['ad_position_id'] == UPDATE_VALID){
 					$this->ajaxReturn('', 501, '广告位参数错误');
