@@ -26,11 +26,11 @@ class AddrItem extends BaseComponent {
                         {name} <span>{tel}</span>
                         <Brief>{address}</Brief>
                     </Item>
+                    <Flex className="addrOpera" justify="between">
+	                	<Flex.Item className="defaultAddr"><Radio checked={checked} key={name}></Radio>默认地址</Flex.Item>
+	                	<Flex.Item className="addrEdit"><span>编辑</span><span className="spa">|</span><span>删除</span></Flex.Item>
+	                </Flex>
                 </List>
-                <Flex className="addrOpera" justify="between">
-                	<Flex.Item className="defaultAddr"><Radio checked={checked} key={name}></Radio>默认地址</Flex.Item>
-                	<Flex.Item className="addrEdit"><span>编辑</span><span className="spa">|</span><span>删除</span></Flex.Item>
-                </Flex>
                 <WhiteSpace size="lg" />
             </div>
         )
@@ -53,6 +53,10 @@ export default class AddressManage extends BaseComponent{
             tel:"134****2587",
             address:"浙江省-杭州市-西湖区 春申街西溪花园凌波苑春申街西溪花园凌波苑春申街西溪花园凌波苑"
         }]
+    }
+    @action.bound
+    changeHandler(index){
+        this.store.curIndex = index;
     }
 	render(){
 		const {curIndex,addressDate} = this.store;
