@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @email webljx@163.com
  * @link www.aicode.org.cn
  */
-class Ad extends API_Controller {
+class Propaganda extends API_Controller {
 
 	public function __construct()
     {
@@ -14,12 +14,12 @@ class Ad extends API_Controller {
     }
 
     /**
-	 * @api {get} /api/admin/ad 广告-列表
+	 * @api {get} /api/admin/propaganda 广告-列表
 	 * @apiVersion 1.0.0
-	 * @apiName ad
+	 * @apiName propaganda
 	 * @apiGroup admin
 	 *
-	 * @apiSampleRequest /api/admin/ad
+	 * @apiSampleRequest /api/admin/propaganda
 	 *
 	 * @apiParam {Number} admin_id 管理员唯一ID
 	 * @apiParam {String} account 登录账号
@@ -91,12 +91,12 @@ class Ad extends API_Controller {
 	}
 
 	/**
-	 * @api {post} /api/admin/ad/save 广告-编辑 OR 新增
+	 * @api {post} /api/admin/propaganda/save 广告-编辑 OR 新增
 	 * @apiVersion 1.0.0
-	 * @apiName ad_save
+	 * @apiName propaganda_save
 	 * @apiGroup admin
 	 *
-	 * @apiSampleRequest /api/admin/ad/save
+	 * @apiSampleRequest /api/admin/propaganda/save
 	 *
 	 * @apiParam {Number} admin_id 管理员唯一ID
 	 * @apiParam {String} account 登录账号
