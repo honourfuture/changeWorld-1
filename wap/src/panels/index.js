@@ -18,7 +18,13 @@ import OrderDetail from './OrderDetail';
 import ConfirmOrder from './ConfirmOrder';
 import ExLog from './ExLog';
 import AddressManage from './AddressManage';
+import WriteExInfo from './WriteExInfo';
 export const panelsList =  [
+    {
+        path:'/WriteExInfo',
+        component:WriteExInfo,
+        title:'快递信息',
+    },
     {
         path:'/AddressManage',
         component:AddressManage,
