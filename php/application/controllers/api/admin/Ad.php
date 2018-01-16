@@ -66,12 +66,22 @@ class Ad extends API_Controller {
 
 		$deleted = (int)$this->input->get('deleted');
 		$where = array('deleted' => $deleted);
+		$this->search();
 		$ret['ad']['count'] = $this->Ad_model->count_by($where);
 		if($ret['ad']['count']){
 			$order_by = array('sort' => 'desc', 'id' => 'desc');
+			$this->search();
 			$ret['ad']['list'] = $this->Ad_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 		}
 		$this->ajaxReturn($ret);
+	}
+
+	protected function search()
+	{
+		$title = $this->input->get_post('title');
+		if(! empty($title)){
+			$this->db->like('title', $title);
+		}
 	}
 
 	// 查看
