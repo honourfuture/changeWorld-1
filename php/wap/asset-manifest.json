@@ -1,8 +1,8 @@
 {
-  "main.css": "static/css/main.ef6cb46c.css",
-  "main.css.map": "static/css/main.ef6cb46c.css.map",
-  "main.js": "static/js/main.32ee5b31.js",
-  "main.js.map": "static/js/main.32ee5b31.js.map",
+  "main.css": "static/css/main.d44bd188.css",
+  "main.css.map": "static/css/main.d44bd188.css.map",
+  "main.js": "static/js/main.c88c2d94.js",
+  "main.js.map": "static/js/main.c88c2d94.js.map",
   "static/media/2.jpg": "static/media/2.2740ce84.jpg",
   "static/media/4.png": "static/media/4.0cf18bc0.png",
   "static/media/5.png": "static/media/5.b49990ba.png",
@@ -13,7 +13,9 @@
   "static/media/addRessBg.png": "static/media/addRessBg.67282e6e.png",
   "static/media/banner1.jpg": "static/media/banner1.8214bbf3.jpg",
   "static/media/banner2.jpg": "static/media/banner2.c78860db.jpg",
+  "static/media/exCar.png": "static/media/exCar.741af54f.png",
   "static/media/payFail.png": "static/media/payFail.59c6df40.png",
   "static/media/paySuccess.png": "static/media/paySuccess.d7f74c59.png",
-  "static/media/u1.png": "static/media/u1.0481f5e1.png"
+  "static/media/u1.png": "static/media/u1.0481f5e1.png",
+  "static/media/uBg.png": "static/media/uBg.88ee006a.png"
 }
