@@ -13,6 +13,7 @@ import Global from './global';
 import { message } from 'antd';
 import Cookies from 'js-cookie';
 import 'whatwg-fetch';
+import './base.less';
 useStrict(true);
 
 export const Base = {

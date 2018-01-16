@@ -21,7 +21,13 @@ import AddressManage from './AddressManage';
 import WriteExInfo from './WriteExInfo';
 import MyOrder from './MyOrder';
 import EvaluateOrder from './EvaluateOrder';
+import UserCenter from './UserCenter';
 export const panelsList =  [
+    {
+        path:'/UserCenter',
+        component:UserCenter,
+        title:'我的商城',
+    },
     {
         path:'/EvaluateOrder',
         component:EvaluateOrder,

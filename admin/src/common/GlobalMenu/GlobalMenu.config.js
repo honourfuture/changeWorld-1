@@ -70,7 +70,7 @@ const menuData = [
                 path: 'AdPosition',
             },
             {
-                name: '广告图',
+                name: '广告管理',
                 path: 'AdManager',
             }
         ],

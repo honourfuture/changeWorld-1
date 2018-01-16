@@ -8,7 +8,6 @@ import {icon,test} from '../../images';
 import {GoodsItem} from '../../components/GoodsItem';
 class OrderItem extends BaseComponent{
 	render(){
-		console.log(this.props.data)
 		const renderOrderItem = (this.props.data || []).map((item,key)=>{
 			const {orderNum,evaluate,goods,total,storeId,orderType} = item;
 			return 	<div className="orderItem" key={key}>
@@ -16,19 +15,47 @@ class OrderItem extends BaseComponent{
 							<span>订单编号：{orderNum}</span>
 							<span>{evaluate}</span>
 						</Flex>
-						<GoodsItem item={goods} />
+						{
+							(goods || []).map((item,key)=>{
+								return <GoodsItem key={key} item={item} />
+							})
+						}
 						<div className="orderItemType">
 							<div className="totalItem">共1件 合计 <span className="priceTotal">￥ {total}</span></div>
 							{
 								parseInt(orderType,10) === 1 ? <Flex className='typeBtn' justify='end' align="center">
 									<Button type="ghost" inline size="small" className="am-button-borderfix contact">删除订单</Button>
-									<Button type="ghost" inline size="small" className="am-button-borderfix look-log" onClick={()=>Base.push('ExLog',storeId)}>查看物流</Button>
-									<Button type="ghost" inline size="small" className="am-button-borderfix eva-order" onClick={()=>Base.push('EvaluateOrder',storeId)}>评价订单</Button>
+									<Button type="ghost" inline size="small" className="am-button-borderfix look-log" onClick={()=>Base.push('ExLog',{storeId})}>查看物流</Button>
+									<Button type="ghost" inline size="small" className="am-button-borderfix eva-order" onClick={()=>Base.push('EvaluateOrder',{storeId})}>评价订单</Button>
 								</Flex> : null
 							}
 							{
 								parseInt(orderType,10) === 2 ? <Flex className='typeBtn' justify='end' align="center">
 									<Button type="ghost" inline size="small" className="am-button-borderfix contact">删除订单</Button>
+								</Flex> : null
+							}
+							{
+								parseInt(orderType,10) === 3 ? <Flex className='typeBtn' justify='end' align="center">
+									<Button type="ghost" inline size="small" className="am-button-borderfix look-log" onClick={()=>Base.push('ExLog',{storeId})}>取消订单</Button>
+									<Button type="ghost" inline size="small" className="am-button-borderfix eva-order" onClick={()=>Base.push('EvaluateOrder',{storeId})}>去付款</Button>
+								</Flex> : null
+							}
+							{
+								parseInt(orderType,10) === 4 ? <Flex className='typeBtn' justify='end' align="center">
+									<Button type="ghost" inline size="small" className="am-button-borderfix look-log" onClick={()=>Base.push('ExLog',{storeId})}>取消订单</Button>
+									<Button type="ghost" inline size="small" className="am-button-borderfix eva-order" onClick={()=>Base.push('EvaluateOrder',{storeId})}>催发货</Button>
+								</Flex> : null
+							}
+							{
+								parseInt(orderType,10) === 5 ? <Flex className='typeBtn' justify='end' align="center">
+									<Button type="ghost" inline size="small" className="am-button-borderfix look-log" onClick={()=>Base.push('ExLog',{storeId})}>查看物流</Button>
+									<Button type="ghost" inline size="small" className="am-button-borderfix eva-order" onClick={()=>Base.push('EvaluateOrder',{storeId})}>确认收货</Button>
+								</Flex> : null
+							}
+							{
+								parseInt(orderType,10) === 6 ? <Flex className='typeBtn' justify='end' align="center">
+									<Button type="ghost" inline size="small" className="am-button-borderfix look-log" onClick={()=>Base.push('ExLog',{storeId})}>查看物流</Button>
+									<Button type="ghost" inline size="small" className="am-button-borderfix eva-order" onClick={()=>Base.push('EvaluateOrder',{storeId})}>取消售后</Button>
 								</Flex> : null
 							}
 
@@ -79,13 +106,76 @@ export default class MyOrder extends BaseComponent{
 					num: 1,
 				}
 			]
+        },{
+            orderNum: '2017072719315492902513994461',
+			storeId: '3',
+			evaluate:"待付款",
+			total:"369",
+			orderType:"3",
+			goods: [
+				{
+					img: test.test4,
+					title: 'RE:CIPE 水晶防晒喷雾 150毫升/瓶 3瓶',
+					spec: '型号 150ml',
+					price: '369',
+					goodsId: '1',
+					num: 1,
+				}
+			]
+        },{
+            orderNum: '2017072719315492902513994461',
+			storeId: '4',
+			evaluate:"待发货",
+			total:"369",
+			orderType:"4",
+			goods: [
+				{
+					img: test.test4,
+					title: 'RE:CIPE 水晶防晒喷雾 150毫升/瓶 3瓶',
+					spec: '型号 150ml',
+					price: '369',
+					goodsId: '1',
+					num: 1,
+				}
+			]
+        },{
+            orderNum: '2017072719315492902513994461',
+			storeId: '5',
+			evaluate:"待收货",
+			total:"369",
+			orderType:"5",
+			goods: [
+				{
+					img: test.test4,
+					title: 'RE:CIPE 水晶防晒喷雾 150毫升/瓶 3瓶',
+					spec: '型号 150ml',
+					price: '369',
+					goodsId: '1',
+					num: 1,
+				}
+			]
+        },{
+            orderNum: '2017072719315492902513994461',
+			storeId: '6',
+			evaluate:"售后中",
+			total:"369",
+			orderType:"6",
+			goods: [
+				{
+					img: test.test4,
+					title: 'RE:CIPE 水晶防晒喷雾 150毫升/瓶 3瓶',
+					spec: '型号 150ml',
+					price: '369',
+					goodsId: '1',
+					num: 1,
+				}
+			]
         }]
     }
 	
 	renderContent = tab => tab.component;
 	render(){
 		const {storeList} = this.store;
-		console.log(storeList,"!11")
 		const tabs = [
             { title: '全部', component:<OrderItem data={storeList} /> },
             { title: '待付款', component:<OrderItem data={storeList} />},

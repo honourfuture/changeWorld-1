@@ -3,7 +3,6 @@ import { HashRouter as Router, Route, Switch } from 'react-router-dom'
 
 import { BasicLayout } from './layouts/BasicLayout';
 import { UserLayout } from './layouts/UserLayout';
-import './App.less';
 
 class App extends Component {
     render() {
