@@ -1,21 +1,9 @@
 import React from 'react';
 import {action} from 'mobx';
 import {BaseComponent,Base} from '../../common';
-import { Table, Input,Popconfirm,Switch,Button,Spin,Select,message } from 'antd';
-import './ShopNavList.less';
+import { Table, Input,Popconfirm,Switch,Button,Spin,message } from 'antd';
+import './AdPosition.less';
 const Search = Input.Search;
-const Option = Select.Option;
-
-const linkConfig = [
-	{
-		key:'Hots',
-		name:'热门',
-	},
-	{
-		key:'Vanity',
-		name:'靓号',
-	},
-]
 
 const EditableCell = ({ editable, value, onChange, type}) => (
 	<div>
@@ -26,7 +14,7 @@ const EditableCell = ({ editable, value, onChange, type}) => (
 	</div>
 );
 
-export default class ShopNavList extends BaseComponent{
+export default class AdPosition extends BaseComponent{
 	store={
 		list:[],
 		searchStr:''
@@ -35,15 +23,9 @@ export default class ShopNavList extends BaseComponent{
 		super(props);
 		this.columns = [
 			{
-				title: '排序',
-				dataIndex: 'sort',
-				width: '10%',
-				render: (text, record) => this.renderColumns(text, record, 'sort'),
-			},
-			{
 				title: '更新时间',
 				dataIndex: 'updated_at',
-				width: '15%',
+				width: '20%',
 				render: (text, record) => this.renderText(text, record, 'updated_at'),
 			}, 
 			{
@@ -53,10 +35,10 @@ export default class ShopNavList extends BaseComponent{
 				render: (text, record) => this.renderColumns(text, record, 'name'),
 			}, 
 			{
-				title: '链接',
-				dataIndex: 'link',
-				width: '25%',
-				render: (text, record) => this.renderLink(text, record, 'link'),
+				title: '宽高',
+				dataIndex: 'size',
+				width: '20%',
+				render: (text, record) => this.renderColumns(text, record, 'size'),
 			}, 
 			{
 				title: '启用',
@@ -113,34 +95,13 @@ export default class ShopNavList extends BaseComponent{
 			<Switch checked={parseInt(record.enable,10)===1} onChange={(value)=>this.onSwitch(record.id,value)} />
 		)
 	}
-	renderLink(text,record,column){
-		const value = record.link;
-		let curIndex = linkConfig.findIndex((item)=>item.key === value);
-		curIndex = curIndex >= 0?curIndex:0;
-		return (
-			<div>
-				{record.editable?<Select defaultValue={record.link || linkConfig[0].key} style={{ width: 120 }} onChange={(value)=>this.onLinkChange(value,record.id,column)}>
-					{
-						linkConfig.map(({key,name})=><Option key={key} value={key}>{name}</Option>)
-					}
-				</Select>:linkConfig[curIndex].name}
-			</div>
-		)
-	}
-	@action.bound
-	onLinkChange(value, id, column){
-		const list = this.store.list.slice();
-		const itemData = list.find(item=>id === item.id);
-		itemData[column] = value;
-		this.store.list = list;
-	}
 	//是否启用
 	@action.bound
 	onSwitch(id,value){
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
 		itemData.enable = value?1:0;
-		Base.POST({act:'shop_class',op:'save',...itemData},()=>this.store.list = list,this);
+		Base.POST({act:'ad_position',op:'save',mod:'admin',...itemData},()=>this.store.list = list,this);
 	}
 	//编辑文本更改
 	@action.bound
@@ -164,7 +125,7 @@ export default class ShopNavList extends BaseComponent{
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
 		itemData.editable = false;
-		Base.POST({act:'shop_class',op:'save',...itemData,sort:parseInt(itemData.sort,10)},(res)=>{
+		Base.POST({act:'ad_position',op:'save',mod:'admin',...itemData},(res)=>{
 			itemData.updated_at = Base.getTimeFormat(new Date().getTime()/1000,2);
 			itemData.id === 0 && (itemData.id = res.data.id);
 			this.store.list = list;
@@ -183,7 +144,7 @@ export default class ShopNavList extends BaseComponent{
 		const index = list.findIndex(item=>id === item.id);
 		list.splice(index,1);
 		this.store.list = list;
-		Base.POST({act:'shop_class',op:'save',id,deleted:"1"},null,this);
+		Base.POST({act:'ad_position',op:'save',mod:'admin',id,deleted:"1"},null,this);
 	}
 	//添加
 	@action.bound
@@ -192,7 +153,7 @@ export default class ShopNavList extends BaseComponent{
 		if(list.find(item=>item.id === 0)){
 			return message.info('请保存后再新建');
 		}
-		list.unshift({id:0,name:'',editable:true,deleted:'0',enable:'1',sort:0,link:linkConfig[0].key});
+		list.unshift({id:0,name:'',editable:true,deleted:'0',enable:'1',size:''});
 		this.store.list = list;
 	}
 	//搜索
@@ -201,7 +162,7 @@ export default class ShopNavList extends BaseComponent{
 		this.store.searchStr = e.target.value;
 	}
 	componentDidMount() {
-		Base.GET({act:'shop_class',op:'index'},(res)=>{
+		Base.GET({act:'ad_position',op:'index',mod:'admin'},(res)=>{
 			this.store.list = res.data;
 			this.cacheData = res.data.map(item => ({ ...item }));
 		},this);
@@ -212,7 +173,7 @@ export default class ShopNavList extends BaseComponent{
 			return parseInt(item.deleted,10) === 0 && (!searchStr || item.name.indexOf(searchStr) !== -1);
 		})
 		return (
-			<Spin ref='spin' wrapperClassName='ShopNavList' spinning={false}>
+			<Spin ref='spin' wrapperClassName='AdPosition' spinning={false}>
 				<div className='bt10'>
 					<Button onClick={this.onAdd}>新增+</Button>
 					<Search
