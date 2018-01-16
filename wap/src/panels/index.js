@@ -20,7 +20,13 @@ import ExLog from './ExLog';
 import AddressManage from './AddressManage';
 import WriteExInfo from './WriteExInfo';
 import MyOrder from './MyOrder';
+import EvaluateOrder from './EvaluateOrder';
 export const panelsList =  [
+    {
+        path:'/EvaluateOrder',
+        component:EvaluateOrder,
+        title:'评价订单',
+    },
     {
         path:'/MyOrder',
         component:MyOrder,

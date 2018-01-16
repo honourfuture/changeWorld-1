@@ -20,14 +20,14 @@ class OrderItem extends BaseComponent{
 						<div className="orderItemType">
 							<div className="totalItem">共1件 合计 <span className="priceTotal">￥ {total}</span></div>
 							{
-								parseInt(orderType) === 1 ? <Flex className='typeBtn' justify='end' align="center">
+								parseInt(orderType,10) === 1 ? <Flex className='typeBtn' justify='end' align="center">
 									<Button type="ghost" inline size="small" className="am-button-borderfix contact">删除订单</Button>
 									<Button type="ghost" inline size="small" className="am-button-borderfix look-log" onClick={()=>Base.push('ExLog',storeId)}>查看物流</Button>
-									<Button type="ghost" inline size="small" className="am-button-borderfix eva-order">评价订单</Button>
+									<Button type="ghost" inline size="small" className="am-button-borderfix eva-order" onClick={()=>Base.push('EvaluateOrder',storeId)}>评价订单</Button>
 								</Flex> : null
 							}
 							{
-								parseInt(orderType) === 2 ? <Flex className='typeBtn' justify='end' align="center">
+								parseInt(orderType,10) === 2 ? <Flex className='typeBtn' justify='end' align="center">
 									<Button type="ghost" inline size="small" className="am-button-borderfix contact">删除订单</Button>
 								</Flex> : null
 							}

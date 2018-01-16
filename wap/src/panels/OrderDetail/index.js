@@ -122,7 +122,7 @@ export default class OrderDetail extends BaseComponent{
 				<Flex className='footer' justify='end' align="center">
 					<Button type="ghost" inline size="small" className="am-button-borderfix contact">联系客服</Button>
 					<Button type="ghost" inline size="small" className="am-button-borderfix look-log" onClick={()=>Base.push('ExLog')}>查看物流</Button>
-					<Button type="ghost" inline size="small" className="am-button-borderfix eva-order">评价订单</Button>
+					<Button type="ghost" inline size="small" className="am-button-borderfix eva-order" onClick={()=>Base.push('EvaluateOrder')}>评价订单</Button>
 				</Flex>
 			</div>
 		)
