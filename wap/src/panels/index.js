@@ -22,7 +22,19 @@ import WriteExInfo from './WriteExInfo';
 import MyOrder from './MyOrder';
 import EvaluateOrder from './EvaluateOrder';
 import UserCenter from './UserCenter';
+import MyProduct from './MyProduct';
+import SalesLog from './SalesLog';
 export const panelsList =  [
+    {
+        path:'/SalesLog',
+        component:SalesLog,
+        title:'销售统计',
+    },
+    {
+        path:'/MyProduct',
+        component:MyProduct,
+        title:'我的产品',
+    },
     {
         path:'/UserCenter',
         component:UserCenter,
