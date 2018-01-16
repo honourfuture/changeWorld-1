@@ -12,6 +12,7 @@ export default {
     get UPLOAD_URL(){
         return `${this.API_URL}/common/fileUpload`;
     },
+    PAGE_SIZE:10,//默认pagesize
     store: observable({
         isCollapsed: false, // menu是否收起
     }),

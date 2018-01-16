@@ -4,7 +4,7 @@ import {BaseComponent,Base,Global} from '../../common';
 import { Table, Input,Popconfirm,Switch,Button,Spin,message,Upload,Icon,Select,DatePicker } from 'antd';
 import moment from 'moment';
 import './AdManager.less';
-const { MonthPicker, RangePicker } = DatePicker;
+const { RangePicker } = DatePicker;
 const Search = Input.Search;
 const Option = Select.Option;
 
@@ -20,7 +20,8 @@ const EditableCell = ({ editable, value, onChange, type}) => (
 export default class AdManager extends BaseComponent{
 	store={
 		list:[],
-		positionList:[]
+		positionList:[],
+		total:1,
 	}
 	constructor(props) {
 		super(props);
@@ -248,6 +249,7 @@ export default class AdManager extends BaseComponent{
 		this.store.list = list;
 	}
 	//搜索
+	searchStr = ''
 	@action.bound
 	onSearch(value){
 		this.current = 1;
@@ -262,10 +264,11 @@ export default class AdManager extends BaseComponent{
 	current = 1
 	@action.bound
 	requestData(){
-		Base.GET({act:'ad',op:'index',mod:'admin'},(res)=>{
+		Base.GET({act:'ad',op:'index',mod:'admin',title:this.searchStr || '',cur_page:this.current || 1,per_size:Global.PAGE_SIZE},(res)=>{
 			const {ad,ad_position} = res.data;
 			this.store.list = ad.list;
-			this.store.positionList = res.data.ad_position;
+			this.store.positionList = ad_position;
+			this.store.total = ad.count;
 			this.cacheData = ad.list.map(item => ({ ...item }));
 		},this);
 	}
@@ -273,7 +276,7 @@ export default class AdManager extends BaseComponent{
 		this.requestData();
 	}
 	render(){
-		let {list} = this.store;
+		let {list,total} = this.store;
 		const showList = list.filter(item=>{
 			return parseInt(item.deleted,10) === 0;
 		})
@@ -287,7 +290,7 @@ export default class AdManager extends BaseComponent{
 						style={{ width: 130,marginLeft:10 }}
 					/>
 				</div>
-				<Table onChange={this.onTableHandler} bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={true}/>
+				<Table onChange={this.onTableHandler} bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={{total,current:this.current,defaultPageSize:Global.PAGE_SIZE}}/>
 			</Spin>
 		)
 	}
