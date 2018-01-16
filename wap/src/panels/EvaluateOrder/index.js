@@ -9,7 +9,6 @@ import {GoodsItem} from '../../components/GoodsItem';
 const AgreeItem = Checkbox.AgreeItem;
 export default class EvaluateOrder extends BaseComponent{
 	store={
-		curIndex:0,
 		files:[],
         storeList:[{
 			img: test.test4,
@@ -26,7 +25,11 @@ export default class EvaluateOrder extends BaseComponent{
 	    this.store.files = files;
 	}
 	render(){
-		const {storeList,files,curIndex} = this.store;
+		const {storeList,files} = this.store;
+		const goodsItem = storeList.map((item,key)=>{
+			return <GoodsItem key={key} item={item} />
+		})
+
 		return (
 			<div className='EvaluateOrder'>
 				<NavBar
@@ -36,7 +39,7 @@ export default class EvaluateOrder extends BaseComponent{
                     onLeftClick={Base.goBack}
                 >我的订单</NavBar>
                 <div className="base-content">
-					<GoodsItem item={storeList} />
+					{goodsItem}
 					<WhiteSpace />
 					<div className="evaluateBox">
 						<TextareaItem

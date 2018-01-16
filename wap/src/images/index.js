@@ -18,6 +18,14 @@ export const icon = {
     orderTopLine: require('./icon/addr/orderTopLine.png'),
     addRessBg: require('./icon/addr/addRessBg.png'),
     exCar: require('./icon/exCar.png'),
+    dfkIco: require('./icon/userCenter/dfkIco.png'),
+    dfhIco: require('./icon/userCenter/dfhIco.png'),
+    dshIco: require('./icon/userCenter/dshIco.png'),
+    dpjIco: require('./icon/userCenter/dpjIco.png'),
+    ywcIco: require('./icon/userCenter/ywcIco.png'),
+    thIco: require('./icon/userCenter/thIco.png'),
+    uDefaultImg: require('./icon/userCenter/uDefaultImg.png'),
+    // uBg: require('./icon/userCenter/uBg.png'),
 };
 
 export const test = {
