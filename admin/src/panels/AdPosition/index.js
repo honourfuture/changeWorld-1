@@ -2,7 +2,7 @@ import React from 'react';
 import {action} from 'mobx';
 import {BaseComponent,Base} from '../../common';
 import { Table, Input,Popconfirm,Switch,Button,Spin,message } from 'antd';
-import './AdPosition.less';
+// import './AdPosition.less';
 const Search = Input.Search;
 
 const EditableCell = ({ editable, value, onChange, type}) => (
@@ -22,6 +22,12 @@ export default class AdPosition extends BaseComponent{
 	constructor(props) {
 		super(props);
 		this.columns = [
+			{
+				title: 'id',
+				dataIndex: 'id',
+				width: '10%',
+				render: (text, record) => this.renderText(text, record, 'id'),
+			}, 
 			{
 				title: '更新时间',
 				dataIndex: 'updated_at',
@@ -57,13 +63,13 @@ export default class AdPosition extends BaseComponent{
 						editable ?
 							<span>
 								<a onClick={() => this.onSave(id)}>保存</a>
-								<a className='right-btn' onClick={() => this.onCancel(id)}>取消</a>
+								<a className='ml10 gray' onClick={() => this.onCancel(id)}>取消</a>
 							</span>
 							:
 							<span>
 								<a onClick={() => this.onEdit(id)}>编辑</a>
 								<Popconfirm title="确认删除?" okText='确定' cancelText='取消' onConfirm={() => this.onDelete(id)}>
-									<a className='right-btn'>删除</a>
+									<a className='ml10 gray'>删除</a>
 								</Popconfirm>
 							</span>
 						}
@@ -174,7 +180,7 @@ export default class AdPosition extends BaseComponent{
 		})
 		return (
 			<Spin ref='spin' wrapperClassName='AdPosition' spinning={false}>
-				<div className='bt10'>
+				<div className='pb10'>
 					<Button onClick={this.onAdd}>新增+</Button>
 					<Search
 						placeholder="搜索标题"

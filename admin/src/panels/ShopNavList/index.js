@@ -2,7 +2,7 @@ import React from 'react';
 import {action} from 'mobx';
 import {BaseComponent,Base} from '../../common';
 import { Table, Input,Popconfirm,Switch,Button,Spin,Select,message } from 'antd';
-import './ShopNavList.less';
+// import './ShopNavList.less';
 const Search = Input.Search;
 const Option = Select.Option;
 
@@ -56,7 +56,7 @@ export default class ShopNavList extends BaseComponent{
 				title: '链接',
 				dataIndex: 'link',
 				width: '25%',
-				render: (text, record) => this.renderLink(text, record, 'link'),
+				render: (text, record) => this.renderSelect(text, record, 'link'),
 			}, 
 			{
 				title: '启用',
@@ -75,13 +75,13 @@ export default class ShopNavList extends BaseComponent{
 						editable ?
 							<span>
 								<a onClick={() => this.onSave(id)}>保存</a>
-								<a className='right-btn' onClick={() => this.onCancel(id)}>取消</a>
+								<a className='ml10 gray' onClick={() => this.onCancel(id)}>取消</a>
 							</span>
 							:
 							<span>
 								<a onClick={() => this.onEdit(id)}>编辑</a>
 								<Popconfirm title="确认删除?" okText='确定' cancelText='取消' onConfirm={() => this.onDelete(id)}>
-									<a className='right-btn'>删除</a>
+									<a className='ml10 gray'>删除</a>
 								</Popconfirm>
 							</span>
 						}
@@ -113,13 +113,13 @@ export default class ShopNavList extends BaseComponent{
 			<Switch checked={parseInt(record.enable,10)===1} onChange={(value)=>this.onSwitch(record.id,value)} />
 		)
 	}
-	renderLink(text,record,column){
-		const value = record.link;
+	renderSelect(text,record,column){
+		const value = record[column];
 		let curIndex = linkConfig.findIndex((item)=>item.key === value);
 		curIndex = curIndex >= 0?curIndex:0;
 		return (
 			<div>
-				{record.editable?<Select defaultValue={record.link || linkConfig[0].key} style={{ width: 120 }} onChange={(value)=>this.onLinkChange(value,record.id,column)}>
+				{record.editable?<Select defaultValue={value || linkConfig[0].key} style={{ width: 120 }} onChange={(value)=>this.onSelectChange(value,record.id,column)}>
 					{
 						linkConfig.map(({key,name})=><Option key={key} value={key}>{name}</Option>)
 					}
@@ -128,7 +128,7 @@ export default class ShopNavList extends BaseComponent{
 		)
 	}
 	@action.bound
-	onLinkChange(value, id, column){
+	onSelectChange(value, id, column){
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
 		itemData[column] = value;
@@ -213,7 +213,7 @@ export default class ShopNavList extends BaseComponent{
 		})
 		return (
 			<Spin ref='spin' wrapperClassName='ShopNavList' spinning={false}>
-				<div className='bt10'>
+				<div className='pb10'>
 					<Button onClick={this.onAdd}>新增+</Button>
 					<Search
 						placeholder="搜索标题"
