@@ -5,41 +5,45 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @email webljx@163.com
  * @link www.aicode.org.cn
  */
-class Shop_class extends API_Controller {
+class Ad_position extends API_Controller {
 
 	public function __construct()
     {
         parent::__construct();
-        $this->load->model('Shop_class_model');
+        $this->load->model('Ad_position_model');
     }
 
     /**
-	 * @api {get} /api/shop_class 商城导航类-列表
+	 * @api {get} /api/admin/ad_position 广告位-列表
 	 * @apiVersion 1.0.0
-	 * @apiName shop_class
-	 * @apiGroup api
+	 * @apiName ad_position
+	 * @apiGroup admin
 	 *
-	 * @apiSampleRequest /api/shop_class
+	 * @apiSampleRequest /api/admin/ad_position
 	 *
-	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {Number} admin_id 管理员唯一ID
+	 * @apiParam {String} account 登录账号
 	 * @apiParam {String} sign 校验签名
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
 	 * @apiSuccess {Object[]} data 接口数据集
-	 * @apiSuccess {String} data.id 商城导航类唯一ID
-	 * @apiSuccess {String} data.name 商城导航类名称
+	 * @apiSuccess {String} data.id 广告位唯一ID
+	 * @apiSuccess {String} data.name 广告位名称
+	 * @apiSuccess {String} data.size 广告位尺寸
 	 *
 	 * @apiSuccessExample {json} Success-Response:
 	 * {
 	 *	    "data": [
 	 *	        {
 	 *	            "id": "1",
-	 *	            "name": "热门"
+	 *	            "name": "热门",
+	 				"size": "300 X 400",
 	 *	        },
 	 *	        {
 	 *	            "id": "2",
-	 *	            "name": "靓号"
+	 *	            "name": "靓号",
+	 *	            "size": "300 X 400",
 	 *	        }
 	 *	    ],
 	 *	    "status": 0,
@@ -56,11 +60,8 @@ class Shop_class extends API_Controller {
 	public function index()
 	{
 		$deleted = (int)$this->input->get('deleted');
-		if($this->user_id){
-			$this->db->select('id,name');
-		}
-		$order_by = array('sort' => 'desc', 'id' => 'desc');
-		$ret = $this->Shop_class_model->order_by($order_by)->get_many_by('deleted', $deleted);
+		$order_by = array('id' => 'desc');
+		$ret = $this->Ad_position_model->order_by($order_by)->get_many_by('deleted', $deleted);
 		$this->ajaxReturn($ret);
 	}
 
@@ -71,21 +72,21 @@ class Shop_class extends API_Controller {
 	}
 
 	/**
-	 * @api {post} /api/shop_class/save 商城导航类-编辑 OR 新增
+	 * @api {post} /api/admin/ad_position/save 广告位-编辑 OR 新增
 	 * @apiVersion 1.0.0
-	 * @apiName shop_class_save
+	 * @apiName ad_position_save
 	 * @apiGroup admin
 	 *
-	 * @apiSampleRequest /api/shop_class/save
+	 * @apiSampleRequest /api/admin/ad_position/save
 	 *
 	 * @apiParam {Number} admin_id 管理员唯一ID
 	 * @apiParam {String} account 登录账号
 	 * @apiParam {String} sign 校验签名
 	 * @apiParam {Number} id 记录唯一ID 0表示新增 其他表示编辑
-	 * @apiParam {String} name 导航类名称
-	 * @apiParam {Number} sort 排序 降序排列
+	 * @apiParam {String} name 广告位名称
 	 * @apiParam {Number} enable 启用 1是 0否
 	 * @apiParam {Number} deleted 是否删除 1是 0否（为1时其他字段可不传）
+	 * @apiParam {String} size 广告位尺寸
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -111,7 +112,7 @@ class Shop_class extends API_Controller {
 		if($id){
 			$params = elements(
 				array(
-					'name', 'sort', 'deleted', 'enable', 'link'
+					'name', 'deleted', 'enable', 'size'
 				),
 				$this->input->post(),
 				UPDATE_VALID
@@ -119,24 +120,24 @@ class Shop_class extends API_Controller {
 			$this->check_params('edit', $params);
 			if($params['deleted'] == 1){
 				$update = array('deleted' => 1, 'enable' => 0);
-				$flag = $this->Shop_class_model->update($id, $update);
+				$flag = $this->Ad_position_model->update($id, $update);
 			}else{
 				unset($params['deleted']);
 				if(isset($params['enable']) && $params['enable']){
 					$params['deleted'] = 0;
 				}
-				$flag = $this->Shop_class_model->update($id, $params);
+				$flag = $this->Ad_position_model->update($id, $params);
 			}
 		}else{
 			$params = elements(
 				array(
-					'name', 'sort', 'link'
+					'name', 'size'
 				),
 				$this->input->post(),
 				UPDATE_VALID
 			);
 			$this->check_params('add', $params);
-			if($flag = $this->Shop_class_model->insert($params)){
+			if($flag = $this->Ad_position_model->insert($params)){
 				$id = $flag;
 			}
 		}
@@ -157,9 +158,6 @@ class Shop_class extends API_Controller {
 			case 'add':
 				if($params['name'] == UPDATE_VALID){
 					$this->ajaxReturn('', 501, '名称参数错误');
-				}
-				if($params['link'] == UPDATE_VALID){
-					$this->ajaxReturn('', 501, '链接地址参数错误');
 				}
 				break;
 			case 'edit':

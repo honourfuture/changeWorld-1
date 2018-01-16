@@ -1,117 +1,283 @@
 import React from 'react';
 import {action} from 'mobx';
-import {BaseComponent,Base} from '../../common';
-import { Form,Row, Col, Input,DatePicker,Button,Select,Table, Divider ,Modal} from 'antd';
+import {BaseComponent,Base,Global} from '../../common';
+import { Table, Input,Popconfirm,Switch,Button,Spin,message,Upload,Icon,Select,DatePicker } from 'antd';
+import moment from 'moment';
 import './AdManager.less';
-
-const FormItem = Form.Item;
+const { MonthPicker, RangePicker } = DatePicker;
+const Search = Input.Search;
 const Option = Select.Option;
 
-
-const columns = [{
-	title: '略缩图',
-	dataIndex: 'pic',
-	key: 'pic',
-	render: text => <a href="#">{text}</a>,
-}, {
-	title: '标题',
-	dataIndex: 'name',
-	key: 'name',
-}, {
-	title: '广告类型',
-	dataIndex: 'type',
-	key: 'type',
-}, {
-	title: '链接',
-	dataIndex: 'href',
-	key: 'href',
-}, {
-	title: '备注',
-	dataIndex: 'remask',
-	key: 'remask',
-}, {
-	title: 'Action',
-	key: 'action',
-	render: (text, record) => (
-		<span>
-			<a href="#">编辑</a>
-			<Divider type="vertical" />
-			<a href="#">删除</a>
-		</span>
-		),
-}];
-
-const data = [{
-	key: '1',
-	pic: 'John Brown',
-	name: 'John Brown',
-	type: 'John Brown',
-	href: 32,
-	enable: true,
-	remask: 'New York No. 1 Lake Park',
-}, {
-	key: '2',
-	pic: 'Jim Green',
-	name: 'Jim Green',
-	type: 'Jim Green',
-	href: 32,
-	enable: true,
-	remask: 'New York No. 1 Lake Park',
-}, {
-	key: '3',
-	pic: 'Joe Black',
-	name: 'Joe Black',
-	type: 'Joe Black',
-	href: 32,
-	enable: true,
-	remask: 'New York No. 1 Lake Park',
-}];
-
-
+const EditableCell = ({ editable, value, onChange, type}) => (
+	<div>
+		{editable
+			? <Input style={{ margin: '-5px 0' }} value={value} type={type} onChange={e => onChange(e.target.value)} />
+			: value
+		}
+	</div>
+);
 
 export default class AdManager extends BaseComponent{
-	render(){
+	store={
+		list:[],
+		searchStr:'',
+		positionList:[]
+	}
+	constructor(props) {
+		super(props);
+		this.columns = [
+			{
+				title: 'sort',
+				dataIndex: 'id',
+				width: '5%',
+				render: (text, record) => this.renderColumns(text, record, 'sort'),
+			}, 
+			{
+				title: '标题',
+				dataIndex: 'title',
+				width: '8%',
+				render: (text, record) => this.renderColumns(text, record, 'title'),
+			},
+			{
+				title: '广告图',
+				dataIndex: 'image',
+				width: '12%',
+				render: (text, record) => this.renderImg(text, record, 'image'),
+			}, 
+			{
+				title: '广告位',
+				dataIndex: 'ad_position_id',
+				width: '12%',
+				render: (text, record) => this.renderSelect(text, record, 'ad_position_id'),
+			}, 
+			{
+				title: '开始结束时间',
+				dataIndex: 'date',
+				width: '25%',
+				render: (text, record) => this.renderDate(text, record, 'date'),
+			}, 
+			{
+				title: '启用',
+				dataIndex: 'enable',
+				width: '8%',
+				render: (text, record) => this.renderSwitch(text, record, 'enable'),
+			}, 
+			{
+				title: '操作',
+				dataIndex: 'operation',
+				render: (text, record) => {
+					const { editable,id } = record;
+					return (
+					<div className="editable-row-operations">
+						{
+						editable ?
+							<span>
+								<a onClick={() => this.onSave(id)}>保存</a>
+								<a className='ml10 gray' onClick={() => this.onCancel(id)}>取消</a>
+							</span>
+							:
+							<span>
+								<a onClick={() => this.onEdit(id)}>编辑</a>
+								<Popconfirm title="确认删除?" okText='确定' cancelText='取消' onConfirm={() => this.onDelete(id)}>
+									<a className='ml10 gray'>删除</a>
+								</Popconfirm>
+							</span>
+						}
+					</div>
+					);
+				},
+			}
+		];
+	}
+	renderImg(text,record,column){
+		const {editable,image,loading} = record;
+		return <div>
+			{editable?<Upload
+				name="field"
+				data={{'field':'field'}}
+				listType="picture-card"
+				showUploadList={false}
+				action={Global.UPLOAD_URL}
+				onChange={(e)=>this.onUploadChange(e,record.id)}
+			>
+				{image?<img className='img-uploader' src={image} alt=''/>:<div>
+					<Icon type={loading ? 'loading' : 'plus'} />
+					<div className="ant-upload-text">上传</div>
+				</div>}
+			</Upload>:<img className='img-uploader' src={image} alt=''/>}
+		</div>
+	}
+	renderText(text, record, column) {
 		return (
-				<div className='AdManager'>
-					<Form className="ant-advanced-search-form">
-						<Row gutter={24}>
-							<Col span={8}>
-								<FormItem label="类型">
-					              	<Select
-					              		style={{ width: 171 }}
-									    showSearch
-									    placeholder="Select a person"
-									    optionFilterProp="children"
-									    filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-									  >
-									    <Option value="jack">Jack</Option>
-									    <Option value="lucy">Lucy</Option>
-									    <Option value="tom">Tom</Option>
-									  </Select>
-					          	</FormItem>
-							</Col>
-							<Col span={8}>
-								<FormItem label="时间">
-					              	<DatePicker />
-					          	</FormItem>
-							</Col>
-							<Col span={8}>
-								<FormItem>
-					              	<Button type="default">查询</Button>
-					          	</FormItem>
-							</Col>
-						</Row>
-						<Row>
-							<Col>
-								<Button type="primary">新增</Button>
-							</Col>
-						</Row>
-					</Form>
-					<Table style={{marginTop: 16}} columns={columns} dataSource={data} pagination={false} />
-
-
-
+			<div>
+				{record[column]}
+			</div>
+		);
+	}
+	renderSelect(text,record,column){
+		const value = record[column];
+		const {positionList} = this.store;
+		let curIndex = positionList.findIndex((item)=>item.id === value);
+		curIndex = curIndex >= 0?curIndex:0;
+		return <div>
+				{record.editable?<Select defaultValue={value|| positionList[0].id} style={{ width: 120 }} onChange={(value)=>this.onSelectChange(value,record.id,column)}>
+					{
+						positionList.map(({id,name})=><Option key={id} value={id}>{name}</Option>)
+					}
+				</Select>:positionList[curIndex].name}
+			</div>
+	}
+	renderDate(text,record,column){
+		let {editable,start_time,end_time} = record;
+		const formatStr = 'YYYY-MM-DD';
+		start_time = start_time*1000;
+		end_time = end_time*1000;
+		return <div>
+			{editable?<RangePicker
+				defaultValue={[moment(start_time), moment(end_time)]}
+				format={formatStr}
+				onChange={(e)=>this.onDateChange(e,record.id)}
+			/>:<div>{moment(start_time).format(formatStr)} 至 {moment(end_time).format(formatStr)}</div>}
+		</div>
+	}
+	renderColumns(text, record, column) {
+		return (
+			<EditableCell
+				editable={record.editable}
+				value={text}
+				type={column==='sort'?'number':'text'}
+				onChange={value => this.onInputChange(value, record.id, column)}
+			/>
+		);
+	}
+	renderSwitch(text,record,column){
+		return (
+			<Switch checked={parseInt(record.enable,10)===1} onChange={(value)=>this.onSwitch(record.id,value)} />
+		)
+	}
+	@action.bound
+	onSelectChange(value, id, column){
+		const list = this.store.list.slice();
+		const itemData = list.find(item=>id === item.id);
+		itemData[column] = value;
+		this.store.list = list;
+	}
+	//日期范围选择
+	@action.bound
+	onDateChange(e,id){
+		const list = this.store.list.slice();
+		const itemData = list.find(item=>id === item.id);
+		itemData.start_time = e[0].unix();
+		itemData.end_time = e[1].unix();
+		this.store.list = list;
+	}
+	//上传
+	@action.bound
+	onUploadChange(info,id){
+		const list = this.store.list.slice();
+		const itemData = list.find(item=>id === item.id);
+		if (info.file.status === 'uploading') {
+			itemData.loading = true;
+			return this.store.list = list;
+		}
+		if (info.file.status === 'done') {
+			itemData.loading = false;
+			itemData.image = info.file.response.data.file_url;
+			return this.store.list = list;
+		}
+	}
+	//是否启用
+	@action.bound
+	onSwitch(id,value){
+		const list = this.store.list.slice();
+		const itemData = list.find(item=>id === item.id);
+		itemData.enable = value?1:0;
+		Base.POST({act:'ad',op:'save',mod:'admin',...itemData},()=>this.store.list = list,this);
+	}
+	//编辑文本更改
+	@action.bound
+	onInputChange(value, id, column) {
+		const list = this.store.list.slice();
+		const itemData = list.find(item=>id === item.id);
+		itemData[column] = value;
+		this.store.list = list;
+	}
+	//编辑
+	@action.bound
+	onEdit(id) {
+		const list = this.store.list.slice();
+		const itemData = list.find(item=>id === item.id);
+		itemData.editable = true;
+		this.store.list = list;
+	}
+	//保存
+	@action.bound
+	onSave(id) {
+		const list = this.store.list.slice();
+		const itemData = list.find(item=>id === item.id);
+		itemData.editable = false;
+		Base.POST({act:'ad',op:'save',mod:'admin',...itemData},(res)=>{
+			itemData.id === 0 && (itemData.id = res.data.id);
+			this.store.list = list;
+			this.cacheData = list.map(item => ({ ...item }));
+		},this);
+	}
+	//取消
+	@action.bound
+	onCancel(id) {
+		this.store.list = this.cacheData.map(item => ({ ...item }));
+	}
+	//删除
+	@action.bound
+	onDelete(id){
+		const list = this.store.list.slice();
+		const index = list.findIndex(item=>id === item.id);
+		list.splice(index,1);
+		this.store.list = list;
+		Base.POST({act:'ad',op:'save',mod:'admin',id,deleted:"1"},null,this);
+	}
+	//添加
+	@action.bound
+	onAdd(){
+		const list = this.store.list.slice();
+		if(list.find(item=>item.id === 0)){
+			return message.info('请保存后再新建');
+		}
+		const {positionList} = this.store;
+		const ad_position_id =  positionList.length > 0 ? positionList[0].id:''
+		list.unshift({id:0,title:'',editable:true,deleted:'0',enable:'1',sort:0,link:'',image:'',start_time:moment().unix(),end_time:moment().add('year',5).unix(),ad_position_id});
+		this.store.list = list;
+	}
+	//搜索
+	@action.bound
+	onSearch(e){
+		this.store.searchStr = e.target.value;
+	}
+	componentDidMount() {
+		Base.GET({act:'ad',op:'index',mod:'admin'},(res)=>{
+			const {ad,ad_position} = res.data;
+			this.store.list = ad.list;
+			this.store.positionList = res.data.ad_position;
+			this.cacheData = ad.list.map(item => ({ ...item }));
+		},this);
+	}
+	render(){
+		let {list,searchStr} = this.store;
+		const showList = list.filter(item=>{
+			return parseInt(item.deleted,10) === 0 && (!searchStr || item.title.indexOf(searchStr) !== -1);
+		})
+		return (
+			<Spin ref='spin' wrapperClassName='AdManager' spinning={false}>
+				<div className='pb10'>
+					<Button onClick={this.onAdd}>新增+</Button>
+					<Search
+						placeholder="搜索标题"
+						onChange={this.onSearch}
+						style={{ width: 130,marginLeft:10 }}
+					/>
 				</div>
+				<Table bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={true}/>
+			</Spin>
 		)
 	}
 };
