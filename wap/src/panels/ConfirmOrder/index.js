@@ -4,28 +4,29 @@ import {BaseComponent,Base} from '../../common';
 import { Flex, Button, NavBar, WhiteSpace, Icon, Stepper, Radio, Checkbox, InputItem, TextareaItem} from 'antd-mobile';
 import './ConfirmOrder.less';
 
+import {GoodsItem} from '../../components/GoodsItem';
 import { test, icon } from '../../images';
 
-class StoreItem extends BaseComponent{
-	render(){
-		const { title, img, spec, price, num } = this.props.item;
-		return (
-			<Flex align='start' className='goods-info base-line'>
-				<img className='goods-img' src={img} alt="" />
-				<Flex.Item>
-					<Flex justify='between' align='start'>
-						<div className="title ellipsis">{title}</div>
-						<div className="price">￥ {price}</div>
-					</Flex>
-					<Flex justify='between' className='bottom-info'>
-						<div className="spec">{spec}</div>
-						<div className="spec">x{num}</div>
-					</Flex>
-				</Flex.Item>
-			</Flex>
-		)
-	}
-}
+// class StoreItem extends BaseComponent{
+// 	render(){
+// 		const { title, img, spec, price, num } = this.props.item;
+// 		return (
+// 			<Flex align='start' className='goods-info base-line'>
+// 				<img className='goods-img' src={img} alt="" />
+// 				<Flex.Item>
+// 					<Flex justify='between' align='start'>
+// 						<div className="title ellipsis">{title}</div>
+// 						<div className="price">￥ {price}</div>
+// 					</Flex>
+// 					<Flex justify='between' className='bottom-info'>
+// 						<div className="spec">{spec}</div>
+// 						<div className="spec">x{num}</div>
+// 					</Flex>
+// 				</Flex.Item>
+// 			</Flex>
+// 		)
+// 	}
+// }
 
 export default class ConfirmOrder extends BaseComponent{
 	store = {
@@ -75,7 +76,7 @@ export default class ConfirmOrder extends BaseComponent{
 					<Icon type='right' color='#c9c9c9' />
 				</Flex>
 				{
-					goods.map((item)=> <StoreItem key={item.goodsId} item={item} />)
+					goods.map((item)=> <GoodsItem key={item.goodsId} item={item} />)
 				}
 				<Flex justify='between' align='center' className='buy-num'>
 					<div>购买数量</div>

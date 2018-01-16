@@ -29,7 +29,6 @@ export default class ExLog extends BaseComponent{
 	render(){
 		const {listLog,orderNo,exName} = this.store;
 		const listsLog = listLog.map((item,key)=>{
-			console.log(key)
 			if(key === 0 ){
 				return <Step key={key} status="error" className="last" title={item.addr} description={item.time} />
 			}else{

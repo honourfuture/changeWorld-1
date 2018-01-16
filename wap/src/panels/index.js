@@ -19,7 +19,13 @@ import ConfirmOrder from './ConfirmOrder';
 import ExLog from './ExLog';
 import AddressManage from './AddressManage';
 import WriteExInfo from './WriteExInfo';
+import MyOrder from './MyOrder';
 export const panelsList =  [
+    {
+        path:'/MyOrder',
+        component:MyOrder,
+        title:'我的订单',
+    },
     {
         path:'/WriteExInfo',
         component:WriteExInfo,
