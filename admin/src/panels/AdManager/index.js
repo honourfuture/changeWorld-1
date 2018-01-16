@@ -1,7 +1,7 @@
 import React from 'react';
 import {action} from 'mobx';
 import {BaseComponent,Base} from '../../common';
-import { Form,Row, Col, Input,DatePicker,Button,Select,Table, Divider } from 'antd';
+import { Form,Row, Col, Input,DatePicker,Button,Select,Table, Divider ,Modal} from 'antd';
 import './AdManager.less';
 
 const FormItem = Form.Item;
