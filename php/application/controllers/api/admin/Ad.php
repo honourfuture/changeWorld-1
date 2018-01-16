@@ -59,14 +59,18 @@ class Ad extends API_Controller {
 	 */
 	public function index()
 	{
-		$ret = array('ad_position' => array(), 'ad' => array());
+		$ret = array('ad_position' => array(), 'ad' => array('count' => 0, 'list' => array()));
 		$this->load->model('Ad_position_model');
 		$order_by = array('id' => 'desc');
 		$ret['ad_position'] = $this->Ad_position_model->order_by($order_by)->get_many_by('deleted', 0);
 
 		$deleted = (int)$this->input->get('deleted');
-		$order_by = array('sort' => 'desc', 'id' => 'desc');
-		$ret['ad'] = $this->Ad_model->order_by($order_by)->get_many_by('deleted', $deleted);
+		$where = array('deleted' => $deleted);
+		$ret['ad']['count'] = $this->Ad_model->count_by($where);
+		if($ret['ad']['count']){
+			$order_by = array('sort' => 'desc', 'id' => 'desc');
+			$ret['ad']['list'] = $this->Ad_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
+		}
 		$this->ajaxReturn($ret);
 	}
 
@@ -166,8 +170,8 @@ class Ad extends API_Controller {
 	{
 		switch($act){
 			case 'add':
-				if($params['title'] == UPDATE_VALID){
-					$this->ajaxReturn('', 501, '名称参数错误');
+				if((empty($params['title']) || $params['title'] == UPDATE_VALID) && (empty($params['image']) || $params['image'] == UPDATE_VALID)){
+					$this->ajaxReturn('', 501, '标题或图片必须传一个');
 				}
 				if($params['ad_position_id'] == UPDATE_VALID){
 					$this->ajaxReturn('', 501, '广告位参数错误');
