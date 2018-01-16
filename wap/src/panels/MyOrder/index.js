@@ -36,26 +36,26 @@ class OrderItem extends BaseComponent{
 							}
 							{
 								parseInt(orderType,10) === 3 ? <Flex className='typeBtn' justify='end' align="center">
-									<Button type="ghost" inline size="small" className="am-button-borderfix look-log" onClick={()=>Base.push('ExLog',storeId)}>取消订单</Button>
-									<Button type="ghost" inline size="small" className="am-button-borderfix eva-order" onClick={()=>Base.push('EvaluateOrder',storeId)}>去付款</Button>
+									<Button type="ghost" inline size="small" className="am-button-borderfix look-log" onClick={()=>Base.push('ExLog',{storeId})}>取消订单</Button>
+									<Button type="ghost" inline size="small" className="am-button-borderfix eva-order" onClick={()=>Base.push('EvaluateOrder',{storeId})}>去付款</Button>
 								</Flex> : null
 							}
 							{
 								parseInt(orderType,10) === 4 ? <Flex className='typeBtn' justify='end' align="center">
-									<Button type="ghost" inline size="small" className="am-button-borderfix look-log" onClick={()=>Base.push('ExLog',storeId)}>取消订单</Button>
-									<Button type="ghost" inline size="small" className="am-button-borderfix eva-order" onClick={()=>Base.push('EvaluateOrder',storeId)}>催发货</Button>
+									<Button type="ghost" inline size="small" className="am-button-borderfix look-log" onClick={()=>Base.push('ExLog',{storeId})}>取消订单</Button>
+									<Button type="ghost" inline size="small" className="am-button-borderfix eva-order" onClick={()=>Base.push('EvaluateOrder',{storeId})}>催发货</Button>
 								</Flex> : null
 							}
 							{
 								parseInt(orderType,10) === 5 ? <Flex className='typeBtn' justify='end' align="center">
-									<Button type="ghost" inline size="small" className="am-button-borderfix look-log" onClick={()=>Base.push('ExLog',storeId)}>查看物流</Button>
-									<Button type="ghost" inline size="small" className="am-button-borderfix eva-order" onClick={()=>Base.push('EvaluateOrder',storeId)}>确认收货</Button>
+									<Button type="ghost" inline size="small" className="am-button-borderfix look-log" onClick={()=>Base.push('ExLog',{storeId})}>查看物流</Button>
+									<Button type="ghost" inline size="small" className="am-button-borderfix eva-order" onClick={()=>Base.push('EvaluateOrder',{storeId})}>确认收货</Button>
 								</Flex> : null
 							}
 							{
 								parseInt(orderType,10) === 6 ? <Flex className='typeBtn' justify='end' align="center">
-									<Button type="ghost" inline size="small" className="am-button-borderfix look-log" onClick={()=>Base.push('ExLog',storeId)}>查看物流</Button>
-									<Button type="ghost" inline size="small" className="am-button-borderfix eva-order" onClick={()=>Base.push('EvaluateOrder',storeId)}>取消售后</Button>
+									<Button type="ghost" inline size="small" className="am-button-borderfix look-log" onClick={()=>Base.push('ExLog',{storeId})}>查看物流</Button>
+									<Button type="ghost" inline size="small" className="am-button-borderfix eva-order" onClick={()=>Base.push('EvaluateOrder',{storeId})}>取消售后</Button>
 								</Flex> : null
 							}
 
