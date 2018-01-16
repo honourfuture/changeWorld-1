@@ -149,7 +149,7 @@ class Security_question extends API_Controller {
 	 * @apiParam {String} sign 校验签名
 	 * @apiParam {Number} id 记录唯一ID 0表示新增 其他表示编辑
 	 * @apiParam {String} title 密保名称
-	 * @apiParam {Number} sort 排序 数值小在前
+	 * @apiParam {Number} sort 排序 降序排列
 	 * @apiParam {Number} enable 启用 1是 0否
 	 * @apiParam {Number} deleted 是否删除 1是 0否（为1时其他字段可不传）
 	 *

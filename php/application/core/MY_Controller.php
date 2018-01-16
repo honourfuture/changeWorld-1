@@ -284,6 +284,17 @@ class API_Controller extends MY_Controller
 
         $this->ajaxReturn($ret);
     }
+
+    // 广告
+    protected function ad($ad_position_id, $limit = 1)
+    {
+        $this->load->model('Ad_model');
+        $order_by = array('sort' => 'desc', 'id' => 'desc');
+        $now_time = time();
+        $where = array('ad_position_id' => $ad_position_id, 'enable' => 1, 'start_time <=' => $now_time, 'end_time >' => $now_time);
+        $this->db->select('title,link,image');
+        return $this->Ad_model->order_by($order_by)->limit($limit)->get_many_by($where);
+    }
 }
 
 

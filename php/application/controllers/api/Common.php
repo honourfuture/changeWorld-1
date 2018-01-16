@@ -28,18 +28,113 @@ class Common extends API_Controller
         exit();
     }
 
-    //图片上传
-    public function ajaxFileUpload()
+    protected function init_upload()
+    {
+        $config['upload_path'] = FCPATH.'uploads/';
+        $config['allowed_types'] = 'gif|jpg|png|jpeg';
+        $config['max_size'] = 2048;//K
+        $config['file_ext_tolower'] = TRUE;
+        $config['encrypt_name'] = TRUE;
+
+        $relative_path = date("Y/m/d/");
+        $config['upload_path'] .= $relative_path;
+
+        $this->load->library('upload', $config);
+        if(! $this->upload->validate_upload_path()){
+            mkdir($this->upload->upload_path, 0700, true);
+        }
+    }
+
+    /**
+     * @api {post} /api/common/fileUpload File文件上传
+     * @apiVersion 1.0.0
+     * @apiName common_fileUpload
+     * @apiGroup api
+     *
+     * @apiSampleRequest /api/common/fileUpload
+     *
+     * @apiParam {String} field file控件名称
+     *
+     * @apiSuccess {Number} status 接口状态 0成功 其他异常
+     * @apiSuccess {String} message 接口信息描述
+     * @apiSuccess {Object} data 接口数据集
+     * @apiSuccess {String} data.file_url 文件相对网络路径
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * {
+     *      "data": "",
+     *      "status": 0,
+     *      "message": "成功"
+     *  }
+     *
+     * @apiErrorExample {json} Error-Response:
+     * {
+     *     "data": "",
+     *     "status": 1,
+     *     "message": ""
+     * }
+     */
+    public function fileUpload()
     {
         $ret = array();
-        $config['filepath']  = './uploads/';
-        $config['allowtype'] = array('gif', 'jpg', 'png', 'jpeg');
-        $this->load->library('Myupload', $config);
-        if (!$this->myupload->uploadFile('upload_file')) {
-            $this->ajaxReturn('', 1, $this->myupload->getErrorMsg(), true);
-        } else {
-            $data = array('file' => '/uploads/'.$this->myupload->getNewFileName());
-            $this->ajaxReturn($data, 0, '', true);
+        $field = $this->input->get_post('field');
+        $this->init_upload();
+        if($this->upload->do_upload($field)){
+            $data = $this->upload->data();
+            $ret['file_url'] = '/'.substr($data['full_path'], strpos($data['full_path'], 'uploads'));
+            $this->ajaxReturn($ret, 0, '', true);
+        }else{
+            $this->ajaxReturn($ret, 1, $this->upload->display_errors('', ''), true);
+        }
+    }
+
+    /**
+     * @api {post} /api/common/base64FileUpload base64File文件上传
+     * @apiVersion 1.0.0
+     * @apiName common_base64FileUpload
+     * @apiGroup api
+     *
+     * @apiSampleRequest /api/common/base64FileUpload
+     *
+     * @apiParam {String} base64_image_content base64文件编码
+     *
+     * @apiSuccess {Number} status 接口状态 0成功 其他异常
+     * @apiSuccess {String} message 接口信息描述
+     * @apiSuccess {Object} data 接口数据集
+     * @apiSuccess {String} data.file_url 文件相对网络路径
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * {
+     *      "data": "",
+     *      "status": 0,
+     *      "message": "成功"
+     *  }
+     *
+     * @apiErrorExample {json} Error-Response:
+     * {
+     *     "data": "",
+     *     "status": 1,
+     *     "message": ""
+     * }
+     */
+    public function base64FileUpload()
+    {
+        $ret = array();
+        $this->init_upload();
+        $$base64_image_content = $this->input->get_post('base64_image_content');
+        //正则匹配出图片的格式
+        if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64_image_content, $result)) {
+            $this->upload->file_ext = '.'.strtolower($result[2]);//图片后缀
+            $filename = ''; //文件名
+            $filename = $this->upload->set_filename($this->upload->upload_path, $filename);
+            $new_file = $this->upload->upload_path.$filename;
+            //写入操作
+            if (file_put_contents($new_file, base64_decode(str_replace($result[1], '', $base64_image_content)))) {
+                $ret['file_url'] = '/'.substr($new_file, strpos($new_file, 'uploads'));
+                $this->ajaxReturn($ret);
+            } else {
+                $this->ajaxReturn($ret, 1, '保存失败');
+            }
         }
     }
 
