@@ -18,7 +18,25 @@ import OrderDetail from './OrderDetail';
 import ConfirmOrder from './ConfirmOrder';
 import ExLog from './ExLog';
 import AddressManage from './AddressManage';
+import WriteExInfo from './WriteExInfo';
+import MyOrder from './MyOrder';
+import EvaluateOrder from './EvaluateOrder';
 export const panelsList =  [
+    {
+        path:'/EvaluateOrder',
+        component:EvaluateOrder,
+        title:'评价订单',
+    },
+    {
+        path:'/MyOrder',
+        component:MyOrder,
+        title:'我的订单',
+    },
+    {
+        path:'/WriteExInfo',
+        component:WriteExInfo,
+        title:'快递信息',
+    },
     {
         path:'/AddressManage',
         component:AddressManage,

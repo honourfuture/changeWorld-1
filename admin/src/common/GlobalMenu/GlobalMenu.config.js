@@ -66,6 +66,10 @@ const menuData = [
         path: 'operation',
         children: [
             {
+                name: '广告位管理',
+                path: 'AdPosition',
+            },
+            {
                 name: '广告图',
                 path: 'AdManager',
             }

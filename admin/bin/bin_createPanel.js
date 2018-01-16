@@ -12,7 +12,7 @@ let fs = require('fs');
 let lib = require('./bin_lib.js');
 
 if(lib.args[1] === 'panel'){
-	const urlPath = lib.args[2].split('/')[0];
+	const urlPath = lib.args[2];
 	let panelName = lib.args[2].split('/')[1] || urlPath;
 	let title = lib.args[3];
 	let path = "src/panels/"+panelName;
