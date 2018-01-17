@@ -27,12 +27,8 @@ class NewAddress extends BaseComponent{
                 const cityData = provinceData.children.find(item=>sValue[1] === item.value);
                 const areaData = sValue.length === 3 ? cityData.children.find(item=>sValue[2] === item.value) : "";
                 let isDefault = checked?1:0;
-                Base.GET({act:'address',op:'save',mod:'',id:'0',is_default:isDefault,username:values.userName,mobi:values.userPhone,province_id:provinceData.value,province:provinceData.label,city_id:cityData.value,city:cityData.label,area_id:areaData.value || 0,area:areaData.label || "",address:values.userAddress},(res)=>{
-                    if(res.status === 0){
-                        Toast.success(res.message, 1);
-                    }else{
-                        Toast.offline(res.message, 1);
-                    }
+                Base.POST({act:'address',op:'save',mod:'',id:0,is_default:isDefault,username:values.userName,mobi:values.userPhone,province_id:provinceData.value,province:provinceData.label,city_id:cityData.value,city:cityData.label,area_id:areaData.value || 0,area:areaData.label || "",address:values.userAddress},(res)=>{
+                    Toast.success(res.message, 1);
                 });
             }
         });
@@ -43,7 +39,7 @@ class NewAddress extends BaseComponent{
     // }
     render(){
         const { getFieldProps, getFieldError } = this.props.form;
-        const {sValue,visible,checked,sName,sPhone,sAddress} = this.state;
+        const {sValue,visible,checked} = this.state;
         let takeRegion = visible ? "take-region check-address" : "take-region";
         return (
             <div className='NewAddress'>
