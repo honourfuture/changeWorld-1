@@ -89,11 +89,15 @@ export const Base = {
 		if(!o_param['act'] || ! o_param['op']){
 			return console.error("未传入act或op");
 		}
-		let s_requestUrl = Global.API_URL + o_param['act'] +'/' + o_param['op'];
+		const mod = params['mod']?`${params['mod']}/`:'';
+		let requestUrl = `${Global.API_URL}/${mod}${params['act']}/${params['op']}`;
 		o_param.sign = '51409079b103509bed505b276f27717c';
 		o_param.user_id = 1;
 		delete o_param['act'];
-   	 	delete o_param['op'];
+		delete o_param['op'];
+		if(params.mod){
+			delete params['mod'];
+		}
 		let o_body = null;
 		let s_url = '';
 		for(let [key,value] of Object.entries(o_param)){
