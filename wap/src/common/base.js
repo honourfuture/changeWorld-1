@@ -32,12 +32,40 @@ export const Base = {
 		path = urlParam?(path+"?"+urlParam):path;
 		if(/http(s?):\/\//.test(path)){
             return window.location.href = path;
-        }
-		window.Router.history.push(path);
+		}
+		if(window.Router.history.location.pathname === '/ShopIndex'){
+			const url = window.location.href;
+			const newUrl = url.replace('ShopIndex',path);
+			//打开原生页面，传入url
+			if(window.webkit && window.webkit.messageHandlers){
+				window.app_indexUrl = newUrl;
+				window.webkit.messageHandlers.pushNewViewController.postMessage(newUrl);
+			}else if(window.Native){
+				window.app_indexUrl = newUrl;
+				window.Native.pushNewViewController(newUrl)
+			}else{
+				window.Router.history.push(path);
+			}
+		}else{
+			window.Router.history.push(path);
+		}
 	},
 	//返回上一页
 	goBack(){
-		window.Router.history.goBack();
+		if(window.location.href === window.app_indexUrl){
+			//关闭原生页面
+			if(window.webkit && window.webkit.messageHandlers){
+				window.app_indexUrl = '';
+				window.webkit.messageHandlers.popViewController.postMessage(null);
+			}else if(window.Native){
+				window.app_indexUrl = '';
+				window.Native.finish();
+			}else{
+				window.Router.history.goBack();
+			}
+		}else{
+			window.Router.history.goBack();
+		}
 	},
 	//获取页面传来的参数
 	getPageParams(keyStr,url){

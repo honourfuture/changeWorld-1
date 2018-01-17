@@ -34,7 +34,7 @@ export const Base = {
 		path = urlParam?(path+"?"+urlParam):path;
 		if(/http(s?):\/\//.test(path)){
             return window.location.href = path;
-        }
+		}
 		window.Router.history.push(path);
 	},
 	//返回上一页

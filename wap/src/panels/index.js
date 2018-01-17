@@ -24,7 +24,13 @@ import EvaluateOrder from './EvaluateOrder';
 import UserCenter from './UserCenter';
 import MyProduct from './MyProduct';
 import SalesLog from './SalesLog';
+import ProductIssue from './ProductIssue';
 export const panelsList =  [
+    {
+        path:'/ProductIssue',
+        component:ProductIssue,
+        title:'产品发布',
+    },
     {
         path:'/SalesLog',
         component:SalesLog,
