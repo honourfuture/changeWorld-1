@@ -87,6 +87,8 @@ export const Base = {
 			return console.error("未传入act或op");
 		}
 		let s_requestUrl = Global.API_URL + o_param['act'] +'/' + o_param['op'];
+		o_param.sign = '51409079b103509bed505b276f27717c';
+		o_param.user_id = 1;
 		delete o_param['act'];
    	 	delete o_param['op'];
 		let o_body = null;
