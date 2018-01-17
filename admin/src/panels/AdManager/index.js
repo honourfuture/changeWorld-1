@@ -4,7 +4,8 @@ import {BaseComponent,Base,Global} from '../../common';
 import { Table, Input,Popconfirm,Switch,Button,Spin,message,Upload,Icon,Select,DatePicker } from 'antd';
 import moment from 'moment';
 import './AdManager.less';
-const { MonthPicker, RangePicker } = DatePicker;
+import {remove} from 'lodash';
+const { RangePicker } = DatePicker;
 const Search = Input.Search;
 const Option = Select.Option;
 
@@ -20,7 +21,8 @@ const EditableCell = ({ editable, value, onChange, type}) => (
 export default class AdManager extends BaseComponent{
 	store={
 		list:[],
-		positionList:[]
+		positionList:[],
+		total:1,
 	}
 	constructor(props) {
 		super(props);
@@ -76,7 +78,7 @@ export default class AdManager extends BaseComponent{
 							</span>
 							:
 							<span>
-								<a onClick={() => this.onEdit(id)}>编辑</a>
+								<a onClick={() => this.onEditChange(id,true,'editable')}>编辑</a>
 								<Popconfirm title="确认删除?" okText='确定' cancelText='取消' onConfirm={() => this.onDelete(id)}>
 									<a className='ml10 gray'>删除</a>
 								</Popconfirm>
@@ -119,7 +121,7 @@ export default class AdManager extends BaseComponent{
 		let curIndex = positionList.findIndex((item)=>item.id === value);
 		curIndex = curIndex >= 0?curIndex:0;
 		return <div>
-				{record.editable?<Select defaultValue={value|| positionList[0].id} style={{ width: 120 }} onChange={(value)=>this.onSelectChange(value,record.id,column)}>
+				{record.editable?<Select defaultValue={value|| positionList[0].id} style={{ width: 120 }} onChange={(value)=>this.onEditChange(record.id,value,column)}>
 					{
 						positionList.map(({id,name})=><Option key={id} value={id}>{name}</Option>)
 					}
@@ -145,17 +147,17 @@ export default class AdManager extends BaseComponent{
 				editable={record.editable}
 				value={text}
 				type={column==='sort'?'number':'text'}
-				onChange={value => this.onInputChange(value, record.id, column)}
+				onChange={value => this.onEditChange(record.id, value, column)}
 			/>
 		);
 	}
 	renderSwitch(text,record,column){
 		return (
-			<Switch checked={parseInt(record.enable,10)===1} onChange={(value)=>this.onSwitch(record.id,value)} />
+			<Switch checked={parseInt(record.enable,10)===1} onChange={(value)=>this.onSwitch(record.id,value?1:0,column)} />
 		)
 	}
 	@action.bound
-	onSelectChange(value, id, column){
+	onEditChange(id, value, column){
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
 		itemData[column] = value;
@@ -187,27 +189,11 @@ export default class AdManager extends BaseComponent{
 	}
 	//是否启用
 	@action.bound
-	onSwitch(id,value){
-		const list = this.store.list.slice();
-		const itemData = list.find(item=>id === item.id);
-		itemData.enable = value?1:0;
-		Base.POST({act:'ad',op:'save',mod:'admin',...itemData},()=>this.store.list = list,this);
-	}
-	//编辑文本更改
-	@action.bound
-	onInputChange(value, id, column) {
+	onSwitch(id,value,column){
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
 		itemData[column] = value;
-		this.store.list = list;
-	}
-	//编辑
-	@action.bound
-	onEdit(id) {
-		const list = this.store.list.slice();
-		const itemData = list.find(item=>id === item.id);
-		itemData.editable = true;
-		this.store.list = list;
+		Base.POST({act:'ad',op:'save',mod:'admin',...itemData},()=>this.store.list = list,this);
 	}
 	//保存
 	@action.bound
@@ -229,25 +215,20 @@ export default class AdManager extends BaseComponent{
 	//删除
 	@action.bound
 	onDelete(id){
-		const list = this.store.list.slice();
-		const index = list.findIndex(item=>id === item.id);
-		list.splice(index,1);
-		this.store.list = list;
-		Base.POST({act:'ad',op:'save',mod:'admin',id,deleted:"1"},null,this);
+		Base.POST({act:'ad',op:'save',mod:'admin',id,deleted:"1"},()=>remove(this.store.list,item=>id === item.id),this);
 	}
 	//添加
 	@action.bound
 	onAdd(){
-		const list = this.store.list.slice();
-		if(list.find(item=>item.id === 0)){
+		if(this.store.list.find(item=>item.id === 0)){
 			return message.info('请保存后再新建');
 		}
 		const {positionList} = this.store;
 		const ad_position_id =  positionList.length > 0 ? positionList[0].id:''
-		list.unshift({id:0,title:'',editable:true,deleted:'0',enable:'1',sort:0,link:'',image:'',start_time:moment().unix(),end_time:moment().add('year',5).unix(),ad_position_id});
-		this.store.list = list;
+		this.store.list.unshift({id:0,title:'',editable:true,deleted:'0',enable:'1',sort:0,link:'',image:'',start_time:moment().unix(),end_time:moment().add('year',5).unix(),ad_position_id});
 	}
 	//搜索
+	searchStr = ''
 	@action.bound
 	onSearch(value){
 		this.current = 1;
@@ -262,10 +243,11 @@ export default class AdManager extends BaseComponent{
 	current = 1
 	@action.bound
 	requestData(){
-		Base.GET({act:'ad',op:'index',mod:'admin'},(res)=>{
+		Base.GET({act:'ad',op:'index',mod:'admin',title:this.searchStr || '',cur_page:this.current || 1,per_page:Global.PAGE_SIZE},(res)=>{
 			const {ad,ad_position} = res.data;
 			this.store.list = ad.list;
-			this.store.positionList = res.data.ad_position;
+			this.store.positionList = ad_position;
+			this.store.total = ad.count;
 			this.cacheData = ad.list.map(item => ({ ...item }));
 		},this);
 	}
@@ -273,12 +255,12 @@ export default class AdManager extends BaseComponent{
 		this.requestData();
 	}
 	render(){
-		let {list} = this.store;
+		let {list,total} = this.store;
 		const showList = list.filter(item=>{
 			return parseInt(item.deleted,10) === 0;
 		})
 		return (
-			<Spin ref='spin' wrapperClassName='AdManager'>
+			<Spin ref='spin' wrapperClassName='AdManager' spinning={false}>
 				<div className='pb10'>
 					<Button onClick={this.onAdd}>新增+</Button>
 					<Search
@@ -287,7 +269,7 @@ export default class AdManager extends BaseComponent{
 						style={{ width: 130,marginLeft:10 }}
 					/>
 				</div>
-				<Table onChange={this.onTableHandler} bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={true}/>
+				<Table onChange={this.onTableHandler} bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={{total,current:this.current,defaultPageSize:Global.PAGE_SIZE}}/>
 			</Spin>
 		)
 	}

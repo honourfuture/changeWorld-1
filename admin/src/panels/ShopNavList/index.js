@@ -2,6 +2,7 @@ import React from 'react';
 import {action} from 'mobx';
 import {BaseComponent,Base} from '../../common';
 import { Table, Input,Popconfirm,Switch,Button,Spin,Select,message } from 'antd';
+import {remove} from 'lodash';
 // import './ShopNavList.less';
 const Search = Input.Search;
 const Option = Select.Option;
@@ -79,7 +80,7 @@ export default class ShopNavList extends BaseComponent{
 							</span>
 							:
 							<span>
-								<a onClick={() => this.onEdit(id)}>编辑</a>
+								<a onClick={() => this.onEditChange(id,true,'editable')}>编辑</a>
 								<Popconfirm title="确认删除?" okText='确定' cancelText='取消' onConfirm={() => this.onDelete(id)}>
 									<a className='ml10 gray'>删除</a>
 								</Popconfirm>
@@ -104,13 +105,13 @@ export default class ShopNavList extends BaseComponent{
 				editable={record.editable}
 				value={text}
 				type={column==='sort'?'number':'text'}
-				onChange={value => this.onInputChange(value, record.id, column)}
+				onChange={value => this.onEditChange(record.id, value, column)}
 			/>
 		);
 	}
 	renderSwitch(text,record,column){
 		return (
-			<Switch checked={parseInt(record.enable,10)===1} onChange={(value)=>this.onSwitch(record.id,value)} />
+			<Switch checked={parseInt(record.enable,10)===1} onChange={(value)=>this.onSwitch(record.id,value?1:0,column)} />
 		)
 	}
 	renderSelect(text,record,column){
@@ -119,7 +120,7 @@ export default class ShopNavList extends BaseComponent{
 		curIndex = curIndex >= 0?curIndex:0;
 		return (
 			<div>
-				{record.editable?<Select defaultValue={value || linkConfig[0].key} style={{ width: 120 }} onChange={(value)=>this.onSelectChange(value,record.id,column)}>
+				{record.editable?<Select defaultValue={value || linkConfig[0].key} style={{ width: 120 }} onChange={(value)=>this.onEditChange(record.id,value,column)}>
 					{
 						linkConfig.map(({key,name})=><Option key={key} value={key}>{name}</Option>)
 					}
@@ -127,42 +128,27 @@ export default class ShopNavList extends BaseComponent{
 			</div>
 		)
 	}
-	@action.bound
-	onSelectChange(value, id, column){
-		const list = this.store.list.slice();
-		const itemData = list.find(item=>id === item.id);
-		itemData[column] = value;
-		this.store.list = list;
-	}
 	//是否启用
 	@action.bound
-	onSwitch(id,value){
-		const list = this.store.list.slice();
-		const itemData = list.find(item=>id === item.id);
-		itemData.enable = value?1:0;
-		Base.POST({act:'shop_class',op:'save',...itemData},()=>this.store.list = list,this);
-	}
-	//编辑文本更改
-	@action.bound
-	onInputChange(value, id, column) {
+	onSwitch(id,value,column){
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
 		itemData[column] = value;
-		this.store.list = list;
+		Base.POST({act:'shop_class',op:'save',...itemData},()=>this.store.list = list,this);
 	}
-	//编辑
+	//内容编辑
 	@action.bound
-	onEdit(id) {
+	onEditChange(id, value, column) {
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
-		itemData.editable = true;
+		itemData[column] = value;
 		this.store.list = list;
 	}
 	//保存
 	@action.bound
 	onSave(id) {
 		const list = this.store.list.slice();
-		const itemData = list.find(item=>id === item.id);
+		const itemData = this.store.list.find(item=>id === item.id);
 		itemData.editable = false;
 		Base.POST({act:'shop_class',op:'save',...itemData,sort:parseInt(itemData.sort,10)},(res)=>{
 			itemData.updated_at = Base.getTimeFormat(new Date().getTime()/1000,2);
@@ -179,21 +165,15 @@ export default class ShopNavList extends BaseComponent{
 	//删除
 	@action.bound
 	onDelete(id){
-		const list = this.store.list.slice();
-		const index = list.findIndex(item=>id === item.id);
-		list.splice(index,1);
-		this.store.list = list;
-		Base.POST({act:'shop_class',op:'save',id,deleted:"1"},null,this);
+		Base.POST({act:'shop_class',op:'save',id,deleted:"1"},()=>remove(this.store.list,item=>id === item.id),this);
 	}
 	//添加
 	@action.bound
 	onAdd(){
-		const list = this.store.list.slice();
-		if(list.find(item=>item.id === 0)){
+		if(this.store.list.find(item=>item.id === 0)){
 			return message.info('请保存后再新建');
 		}
-		list.unshift({id:0,name:'',editable:true,deleted:'0',enable:'1',sort:0,link:linkConfig[0].key});
-		this.store.list = list;
+		this.store.list.unshift({id:0,name:'',editable:true,deleted:'0',enable:'1',sort:0,link:linkConfig[0].key});
 	}
 	//搜索
 	@action.bound

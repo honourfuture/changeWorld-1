@@ -9,8 +9,8 @@ const goodsImgHeight = (document.body.offsetWidth-10)/2;
 class Item extends BaseComponent {
 	@action.bound
 	onEditHandle(e){
-		const {callBack,goodsId} = this.props;
-		callBack && callBack(goodsId);
+		const {callBack,goodsNum} = this.props;
+		callBack && callBack(goodsNum);
 		e.stopPropagation();
 	}
     render(){
@@ -46,28 +46,24 @@ export default class MyProduct extends BaseComponent{
             goodsTit:"THE NORTH FACE 2017春夏新款北面男款…",
             goodsPrice:69,
             goodsNum: 69,
-            goodsId: 69,
             goodsTypes: 1,
         },{
             goodsImg:test.test4,
             goodsTit:"RE:CIPE 水晶防晒喷雾 150毫升/瓶 3瓶",
             goodsPrice:69,
             goodsNum: 69,
-            goodsId: 619,
             goodsTypes: 2,
         },{
             goodsImg:test.test4,
             goodsTit:"Bioré 碧柔 水活防晒保湿凝露防晒霜 50克 2017…",
             goodsPrice:69,
             goodsNum: 69,
-            goodsId: 639,
             goodsTypes: 2,
         },{
             goodsImg:test.test4,
             goodsTit:"MARTINELLI'S 无酒精香槟气泡苹果汁 750毫升…",
             goodsPrice:69,
             goodsNum: 69,
-            goodsId: 629,
             goodsTypes: 1,
         }]
     }
