@@ -1,6 +1,6 @@
 import React from 'react';
 import {BaseComponent,Base,NetImg} from '../../common';
-import {Flex,Button,NavBar,WhiteSpace,List} from 'antd-mobile';
+import {Flex,NavBar,WhiteSpace,List} from 'antd-mobile';
 import './SalesLog.less';
 import {icon,test} from '../../images';
 
@@ -8,7 +8,7 @@ const Item = List.Item;
 const goodsImgHeight = (document.body.offsetWidth-10)/2;
 class GoodItem extends BaseComponent {
     render(){
-        const {goodsImg,goodsTit,goodsPrice,goodsNum,goodsTypes} = this.props;
+        const {goodsImg,goodsTit,goodsPrice,goodsNum} = this.props;
         return (
             <div className="recommend-goodsItem" onClick={() => Base.push('GoodsDetail', {goodsNum})}>
                 <div className="recommend-goodsItem-img">

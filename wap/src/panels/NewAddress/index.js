@@ -34,7 +34,7 @@ export default class NewAddress extends BaseComponent{
                         >收货人</InputItem>
                         <InputItem 
                             clear
-                            type="money"
+                            type="phone"
                             placeholder="请输入收货人的手机号码"
                             moneyKeyboardAlign="left"
                         >手机号码
