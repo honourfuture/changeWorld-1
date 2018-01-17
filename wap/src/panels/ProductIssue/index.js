@@ -1,5 +1,6 @@
 import React from 'react';
 import { action } from 'mobx';
+import { createForm } from 'rc-form';
 import {BaseComponent,Base} from '../../common';
 import {Flex,Button,NavBar,WhiteSpace,List,InputItem,Switch,ImagePicker,TextareaItem,WingBlank} from 'antd-mobile';
 import './ProductIssue.less';
@@ -34,7 +35,7 @@ class ImgItem extends BaseComponent {
     }
 }
 
-export default class ProductIssue extends BaseComponent{
+class ProductIssue extends BaseComponent{
 	state={
 		checked: false,
 	}
@@ -49,10 +50,19 @@ export default class ProductIssue extends BaseComponent{
 	@action.bound
     onChangeDetailImg = (files, type, index) => {
 	    this.store.productDetail = files;
-	}
+    }
+    @action.bound
+    onSubmit(){
+        this.props.form.validateFields((err, values) => {
+            if(!err){
+
+            }
+        });
+    }
 	render(){
 		const {checked} = this.state;
-		const {productImg,productDetail} = this.store;
+        const {productImg,productDetail} = this.store;
+        const { getFieldProps, getFieldError } = this.props.form;
 		return (
 			<div className='ProductIssue'>
 				<NavBar
@@ -65,16 +75,28 @@ export default class ProductIssue extends BaseComponent{
                		<WhiteSpace />
                 	<List className="productBasic">
                         <InputItem
+                            error={!!getFieldError('name')}
+                            {...getFieldProps('name', {
+                                rules: [{ required: true}],
+                            })}
                             clear
                             placeholder="请输入产品名称"
                         >产品名称<em>*</em></InputItem>
                         <InputItem 
+                            error={!!getFieldError('stock')}
+                            {...getFieldProps('stock', {
+                                rules: [{ required: true,pattern: /^\d+$/}],
+                            })}
                             clear
                             type="number"
                             placeholder="请输入产品总量"
                             moneyKeyboardAlign="right"
                         >总量<em>*</em></InputItem>
-                        <InputItem 
+                        <InputItem
+                            error={!!getFieldError('sale_price')}
+                            {...getFieldProps('sale_price', {
+                                rules: [{ required: true,pattern: /^(([1-9]\d*)|0)(\.\d{0,2}?)?$/}],
+                            })}
                             clear
                             type="money"
                             placeholder="￥0.00"
@@ -84,6 +106,10 @@ export default class ProductIssue extends BaseComponent{
                     <WhiteSpace />
                     <List className="productBasic">
                         <InputItem
+                            error={!!getFieldError('freight_fee')}
+                            {...getFieldProps('freight_fee', {
+                                rules: [{ required: true,pattern: /^(([1-9]\d*)|0)(\.\d{0,2}?)?$/}],
+                            })}
                             clear
                             type="money"
                             placeholder="￥0.00"
@@ -133,7 +159,7 @@ export default class ProductIssue extends BaseComponent{
                     <ImgItem title={'产品详情'} isTextArea={true} fileName={productDetail} callBack={this.onChangeDetailImg} />
                     <WhiteSpace size="xl" />
                     <WingBlank>
-                        <Button type="warning" className="save-address">提交</Button>
+                        <Button onClick={this.onSubmit} type="warning" className="save-address">提交</Button>
                     </WingBlank>
                     <WhiteSpace size="xl" />
                 </div>
@@ -141,3 +167,4 @@ export default class ProductIssue extends BaseComponent{
 		)
 	}
 };
+export default createForm()(ProductIssue);

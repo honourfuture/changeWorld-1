@@ -60,17 +60,13 @@ class NewAddress extends BaseComponent{
                             moneyKeyboardAlign="left"
                             error={!!getFieldError('username')}
                             {...getFieldProps('username', {
-                                rules: [
-                                  { required: true, message: '请输入收货人姓名' },
-                                ],
+                                rules: [{ required: true }],
                             })}
                         >收货人</InputItem>
                         <InputItem 
                             error={getFieldError('mobi')}
                             {...getFieldProps('mobi', {
-                                rules: [
-                                  { required: true, message: '请输入收货人的手机号码',pattern:/^1(3|4|5|7|8)\d( )?\d{4}( )?\d{4}$/ },
-                                ],
+                                rules: [{ required: true,pattern:/^1(3|4|5|7|8)\d( )?\d{4}( )?\d{4}$/}],
                             })}
                             clear
                             type="phone"
@@ -94,9 +90,7 @@ class NewAddress extends BaseComponent{
                             moneyKeyboardAlign="left"
                             error={getFieldError('address')}
                             {...getFieldProps('address', {
-                                    rules: [
-                                      { required: true, message: '请输入收货人的详细地址' },
-                                    ],
+                                    rules: [{ required: true}],
                                 })}
                         >详细地址
                         </InputItem>
