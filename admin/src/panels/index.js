@@ -19,7 +19,7 @@ export const panelsList =  [
     {
         path:'/shop/GoodsProperty',
         component:GoodsProperty,
-        title:'产品属性',
+        title:'商品属性',
     },
     {
         path:'/operation/AdPosition',

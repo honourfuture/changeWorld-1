@@ -24,10 +24,10 @@ export default class GoodsProperty extends BaseComponent{
 		super(props);
 		this.columns = [
 			{
-				title: 'id',
-				dataIndex: 'id',
+				title: '排序',
+				dataIndex: 'sort',
 				width: '10%',
-				render: (text, record) => this.renderText(text, record, 'id'),
+				render: (text, record) => this.renderColumns(text, record, 'sort'),
 			}, 
 			{
 				title: '更新时间',
@@ -40,12 +40,6 @@ export default class GoodsProperty extends BaseComponent{
 				dataIndex: 'name',
 				width: '15%',
 				render: (text, record) => this.renderColumns(text, record, 'name'),
-			}, 
-			{
-				title: '宽高',
-				dataIndex: 'size',
-				width: '20%',
-				render: (text, record) => this.renderColumns(text, record, 'size'),
 			}, 
 			{
 				title: '启用',
@@ -116,7 +110,7 @@ export default class GoodsProperty extends BaseComponent{
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
 		itemData[column] = value;
-		Base.POST({act:'ad_position',op:'save',mod:'admin',...itemData},()=>this.store.list = list,this);
+		Base.POST({act:'goods_attr_category',op:'save',...itemData},()=>this.store.list = list,this);
 	}
 	//保存
 	@action.bound
@@ -124,7 +118,7 @@ export default class GoodsProperty extends BaseComponent{
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
 		itemData.editable = false;
-		Base.POST({act:'ad_position',op:'save',mod:'admin',...itemData},(res)=>{
+		Base.POST({act:'goods_attr_category',op:'save',...itemData},(res)=>{
 			itemData.updated_at = Base.getTimeFormat(new Date().getTime()/1000,2);
 			itemData.id === 0 && (itemData.id = res.data.id);
 			this.store.list = list;
@@ -139,7 +133,7 @@ export default class GoodsProperty extends BaseComponent{
 	//删除
 	@action.bound
 	onDelete(id){
-		Base.POST({act:'ad_position',op:'save',mod:'admin',id,deleted:"1"},()=>remove(this.store.list,item=>id === item.id),this);
+		Base.POST({act:'goods_attr_category',op:'save',id,deleted:"1"},()=>remove(this.store.list,item=>id === item.id),this);
 		
 	}
 	//添加
@@ -148,7 +142,7 @@ export default class GoodsProperty extends BaseComponent{
 		if(this.store.list.find(item=>item.id === 0)){
 			return message.info('请保存后再新建');
 		}
-		this.store.list.unshift({id:0,name:'',editable:true,deleted:'0',enable:'1',size:''});
+		this.store.list.unshift({sort:'0',name:'',editable:true,deleted:'0',enable:'1'});
 	}
 	//搜索
 	@action.bound
