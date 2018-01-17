@@ -20,7 +20,7 @@ class MY_Controller extends CI_Controller
     );
 
     protected $cur_page = 0;//当前页
-    protected $per_page = 2;//每页显示条数
+    protected $per_page = 20;//每页显示条数
     protected $offset = 0;//偏移量
 
     function __construct()
