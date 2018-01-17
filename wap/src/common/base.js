@@ -89,14 +89,14 @@ export const Base = {
 		if(!o_param['act'] || ! o_param['op']){
 			return console.error("未传入act或op");
 		}
-		const mod = params['mod']?`${params['mod']}/`:'';
-		let requestUrl = `${Global.API_URL}/${mod}${params['act']}/${params['op']}`;
+		const mod = o_param['mod']?`${o_param['mod']}/`:'';
+		let s_requestUrl = `${Global.API_URL}/${mod}${o_param['act']}/${o_param['op']}`;
 		o_param.sign = '51409079b103509bed505b276f27717c';
 		o_param.user_id = 1;
 		delete o_param['act'];
 		delete o_param['op'];
-		if(params.mod){
-			delete params['mod'];
+		if(o_param.mod){
+			delete o_param['mod'];
 		}
 		let o_body = null;
 		let s_url = '';
