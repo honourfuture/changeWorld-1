@@ -37,7 +37,11 @@ export const Base = {
 	},
 	//返回上一页
 	goBack(){
-		window.Router.history.goBack();
+		if(window.webkit){
+			window.webkit.messageHandlers.popViewController.postMessage(null);
+		}else{
+			window.Router.history.goBack();
+		}
 	},
 	//获取页面传来的参数
 	getPageParams(keyStr,url){

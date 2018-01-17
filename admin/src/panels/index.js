@@ -14,7 +14,13 @@ import Exception500 from './Exception/500';
 import ShopNavList from './ShopNavList';
 import AdManager from './AdManager';
 import AdPosition from './AdPosition';
+import GoodsProperty from './GoodsProperty';
 export const panelsList =  [
+    {
+        path:'/shop/GoodsProperty',
+        component:GoodsProperty,
+        title:'产品属性',
+    },
     {
         path:'/operation/AdPosition',
         component:AdPosition,

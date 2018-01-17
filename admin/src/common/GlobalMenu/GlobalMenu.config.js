@@ -51,6 +51,10 @@ const menuData = [
                 path: 'ShopNavList',
             },
             {
+                name: '产品属性',
+                path: 'GoodsProperty',
+            },
+            {
                 name: '商品管理',
                 path: 'GoodsManager',
             }, 
