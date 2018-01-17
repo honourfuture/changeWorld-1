@@ -14,13 +14,14 @@ import { Toast } from 'antd-mobile';
 // import 'whatwg-fetch';
 import './base.less';
 useStrict(true);
-
+window.HISTORY_LENGHT = 0;
 export const Base = {
 	//打开页面
 	push(path,params){
 		if(!path){
             return;
-        }
+		}
+		window.APP_INDEX ++;
         let urlParam = "";
         for (const key in params) {
             if (params.hasOwnProperty(key)) {
@@ -38,10 +39,8 @@ export const Base = {
 			const newUrl = url.replace('ShopIndex',path);
 			//打开原生页面，传入url
 			if(window.webkit && window.webkit.messageHandlers){
-				window.app_indexUrl = newUrl;
 				window.webkit.messageHandlers.pushNewViewController.postMessage(newUrl);
 			}else if(window.Native){
-				window.app_indexUrl = newUrl;
 				window.Native.pushNewViewController(newUrl)
 			}else{
 				window.Router.history.push(path);
@@ -49,10 +48,11 @@ export const Base = {
 		}else{
 			window.Router.history.push(path);
 		}
+		window.HISTORY_LENGHT ++;
 	},
 	//返回上一页
 	goBack(){
-		if(window.location.href === window.app_indexUrl){
+		if(window.HISTORY_LENGHT === 0){
 			//关闭原生页面
 			if(window.webkit && window.webkit.messageHandlers){
 				window.app_indexUrl = '';
@@ -65,6 +65,9 @@ export const Base = {
 			}
 		}else{
 			window.Router.history.goBack();
+		}
+		if(window.HISTORY_LENGHT > 0){
+			window.HISTORY_LENGHT --;
 		}
 	},
 	//获取页面传来的参数
