@@ -59,7 +59,7 @@ class Goods_attr_category extends API_Controller {
 		if($this->user_id){
 			$this->db->select('id,name');
 		}
-		$order_by = array('sort' => 'asc', 'id' => 'asc');
+		$order_by = array('sort' => 'desc', 'id' => 'desc');
 		$ret = $this->Goods_attr_category_model->order_by($order_by)->get_many_by('deleted', $deleted);
 		$this->ajaxReturn($ret);
 	}
@@ -117,7 +117,7 @@ class Goods_attr_category extends API_Controller {
 				$this->input->post(),
 				UPDATE_VALID
 			);
-			$this->check_params($params);
+			$this->check_params('edit', $params);
 			if($params['deleted'] == 1){
 				$update = array('deleted' => 1, 'enable' => 0);
 				$flag = $this->Goods_attr_category_model->update($id, $update);
@@ -136,7 +136,7 @@ class Goods_attr_category extends API_Controller {
 				$this->input->post(),
 				''
 			);
-			$this->check_params($params);
+			$this->check_params('add', $params);
 			if($flag = $this->Goods_attr_category_model->insert($params)){
 				$id = $flag;
 			}
@@ -152,10 +152,16 @@ class Goods_attr_category extends API_Controller {
 		$this->ajaxReturn(array('id' => $id), $status, '操作'.$message);
 	}
 
-	protected function check_params($params)
+	protected function check_params($act, $params)
 	{
-		if(!isset($params['name']) || empty($params['name']) || $params['name'] == UPDATE_VALID){
-			$this->ajaxReturn('', 501, '名称参数错误');
+		switch($act){
+			case 'add':
+				if(empty($params['name']) || $params['name'] == UPDATE_VALID){
+					$this->ajaxReturn('', 501, '名称参数错误');
+				}
+				break;
+			case 'edit':
+				break;
 		}
 	}
 }
