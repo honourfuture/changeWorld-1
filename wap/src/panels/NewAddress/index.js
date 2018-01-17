@@ -14,13 +14,18 @@ class NewAddress extends BaseComponent{
     @action.bound
     onSave(){
         this.props.form.validateFields((err, values) => {
+            const {username,mobi,address,userArea} = values;
+            if( username && mobi && address && userArea == undefined){
+                Toast.fail('请选择区域');
+            }
             if (!err) {
                 const {sValue,checked} = this.store;
-                const provinceData = district.find(item=>sValue[0] === item.value);
-                const cityData = provinceData.children.find(item=>sValue[1] === item.value);
-                const areaData = sValue.length === 3 ? cityData.children.find(item=>sValue[2] === item.value) : "";
-                let isDefault = checked?1:0;
-                Base.POST({act:'address',op:'save',mod:'',...values,id:0,is_default:isDefault,province_id:provinceData.value,province:provinceData.label,city_id:cityData.value,city:cityData.label,area_id:areaData.value || 0,area:areaData.label || ""},(res)=>{
+                const [province_id,city_id,area_id] = sValue;
+                const provinceData = district.find(item=>province_id === item.value);
+                const cityData = provinceData.children.find(item=>city_id === item.value);
+                const areaData = area_id ? cityData.children.find(item=>area_id === item.value) : "";
+                let is_default = checked?1:0;
+                Base.POST({act:'address',op:'save',mod:'',...values,id:0,is_default,province_id,province:provinceData.label,city_id,city:cityData.label,area_id:area_id || 0,area:areaData.label || ""},(res)=>{
                     Toast.success(res.message);
                 });
             }
