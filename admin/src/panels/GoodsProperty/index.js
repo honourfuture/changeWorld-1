@@ -156,7 +156,7 @@ export default class GoodsProperty extends BaseComponent{
 		this.store.searchStr = e.target.value;
 	}
 	componentDidMount() {
-		Base.GET({act:'ad_position',op:'index',mod:'admin'},(res)=>{
+		Base.GET({act:'goods_attr_category',op:'index'},(res)=>{
 			this.store.list = res.data;
 			this.cacheData = res.data.map(item => ({ ...item }));
 		},this);

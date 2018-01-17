@@ -35,15 +35,33 @@ export const Base = {
 		}
 		if(window.Router.history.location.pathname === '/ShopIndex'){
 			const url = window.location.href;
+			const newUrl = url.replace('ShopIndex',path);
 			//打开原生页面，传入url
-			window.webkit.messageHandlers.pushNewViewController.postMessage(url.replace('ShopIndex',path));
+			if(window.webkit && window.webkit.messageHandlers){
+				window.webkit.messageHandlers.pushNewViewController.postMessage(newUrl);
+			}else if(window.Native){
+				window.Native.pushNewViewController(newUrl)
+			}else{
+				window.Router.history.push(path);
+			}
 		}else{
 			window.Router.history.push(path);
 		}
 	},
 	//返回上一页
 	goBack(){
-		window.Router.history.goBack();
+		if(window.Router.history.location.pathname === '/UserCenter' && window.Router.history.location.length === 1){
+			//关闭原生页面
+			if(window.webkit && window.webkit.messageHandlers){
+				window.webkit.messageHandlers.popViewController.postMessage(null);
+			}else if(window.Native){
+				window.Native.finish();
+			}else{
+				window.Router.history.goBack();
+			}
+		}else{
+			window.Router.history.goBack();
+		}
 	},
 	//获取页面传来的参数
 	getPageParams(keyStr,url){
