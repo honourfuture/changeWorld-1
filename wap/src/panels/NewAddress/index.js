@@ -14,18 +14,19 @@ class NewAddress extends BaseComponent{
     @action.bound
     onSave(){
         this.props.form.validateFields((err, values) => {
-            const {username,mobi,address,userArea} = values;
-            if( username && mobi && address && userArea == undefined){
-                Toast.fail('请选择区域');
-            }
             if (!err) {
+                let {mobi} = values;
+                mobi = mobi.replace(/ /g,'');
                 const {sValue,checked} = this.store;
+                if( sValue.length === 0 ){
+                    return Toast.fail('请选择区域');
+                }
                 const [province_id,city_id,area_id] = sValue;
                 const provinceData = district.find(item=>province_id === item.value);
                 const cityData = provinceData.children.find(item=>city_id === item.value);
                 const areaData = area_id ? cityData.children.find(item=>area_id === item.value) : "";
                 let is_default = checked?1:0;
-                Base.POST({act:'address',op:'save',mod:'',...values,id:0,is_default,province_id,province:provinceData.label,city_id,city:cityData.label,area_id:area_id || 0,area:areaData.label || ""},(res)=>{
+                Base.POST({act:'address',op:'save',...values,mobi,id:0,is_default,province_id,province:provinceData.label,city_id,city:cityData.label,area_id:area_id || 0,area:areaData.label || ""},(res)=>{
                     Toast.success(res.message);
                 });
             }
@@ -68,7 +69,7 @@ class NewAddress extends BaseComponent{
                             error={getFieldError('mobi')}
                             {...getFieldProps('mobi', {
                                 rules: [
-                                  { required: true, message: '请输入收货人的手机号码',pattern:/^1(3|4|5|7|8)\d(\ )?\d{4}(\ )?\d{4}$/ },
+                                  { required: true, message: '请输入收货人的手机号码',pattern:/^1(3|4|5|7|8)\d( )?\d{4}( )?\d{4}$/ },
                                 ],
                             })}
                             clear
@@ -80,15 +81,9 @@ class NewAddress extends BaseComponent{
                         <div className={takeRegion}>
                             <Picker extra="请选择"
                                 data={district}
-                                error={getFieldError('userArea')}
-                                {...getFieldProps('userArea', {
-                                    rules: [
-                                      { required: true, message: '请选择区域' },
-                                    ],
-                                })}
                                 dismissText=" "
                                 onOk={this.onSelect}
-                                value={sValue}
+                                value={sValue.slice()}
                                 >
                                 <Item arrow="horizontal">省市区</Item>
                             </Picker>
