@@ -32,16 +32,18 @@ export const Base = {
 		path = urlParam?(path+"?"+urlParam):path;
 		if(/http(s?):\/\//.test(path)){
             return window.location.href = path;
-        }
-		window.Router.history.push(path);
+		}
+		if(window.Router.history.location.pathname === '/ShopIndex'){
+			const url = window.location.href;
+			//打开原生页面，传入url
+			window.webkit.messageHandlers.pushNewViewController.postMessage(url.replace('ShopIndex',path));
+		}else{
+			window.Router.history.push(path);
+		}
 	},
 	//返回上一页
 	goBack(){
-		if(window.webkit){
-			window.webkit.messageHandlers.popViewController.postMessage(null);
-		}else{
-			window.Router.history.goBack();
-		}
+		window.Router.history.goBack();
 	},
 	//获取页面传来的参数
 	getPageParams(keyStr,url){
