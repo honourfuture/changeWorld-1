@@ -50,7 +50,7 @@ export const Base = {
 	},
 	//返回上一页
 	goBack(){
-		if(window.Router.history.location.pathname === '/UserCenter' && window.Router.history.location.length === 1){
+		if(window.Router.history.location.pathname === '/UserCenter' && window.Router.history.length === 1){
 			//关闭原生页面
 			if(window.webkit && window.webkit.messageHandlers){
 				window.webkit.messageHandlers.popViewController.postMessage(null);
