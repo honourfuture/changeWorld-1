@@ -2,6 +2,7 @@ import React from 'react';
 import {action} from 'mobx';
 import {BaseComponent,Base} from '../../common';
 import { Table, Input,Popconfirm,Switch,Button,Spin,message } from 'antd';
+import {remove} from 'lodash';
 // import './AdPosition.less';
 const Search = Input.Search;
 
@@ -67,7 +68,7 @@ export default class AdPosition extends BaseComponent{
 							</span>
 							:
 							<span>
-								<a onClick={() => this.onEdit(id)}>编辑</a>
+								<a onClick={() => this.onEditChange(id,true,'editable')}>编辑</a>
 								<Popconfirm title="确认删除?" okText='确定' cancelText='取消' onConfirm={() => this.onDelete(id)}>
 									<a className='ml10 gray'>删除</a>
 								</Popconfirm>
@@ -92,38 +93,30 @@ export default class AdPosition extends BaseComponent{
 				editable={record.editable}
 				value={text}
 				type={column==='sort'?'number':'text'}
-				onChange={value => this.onInputChange(value, record.id, column)}
+				onChange={value => this.onEditChange(record.id, value, column)}
 			/>
 		);
 	}
 	renderSwitch(text,record,column){
 		return (
-			<Switch checked={parseInt(record.enable,10)===1} onChange={(value)=>this.onSwitch(record.id,value)} />
+			<Switch checked={parseInt(record.enable,10)===1} onChange={(value)=>this.onSwitch(record.id,value?1:0,column)} />
 		)
 	}
-	//是否启用
+	//编辑
 	@action.bound
-	onSwitch(id,value){
-		const list = this.store.list.slice();
-		const itemData = list.find(item=>id === item.id);
-		itemData.enable = value?1:0;
-		Base.POST({act:'ad_position',op:'save',mod:'admin',...itemData},()=>this.store.list = list,this);
-	}
-	//编辑文本更改
-	@action.bound
-	onInputChange(value, id, column) {
+	onEditChange(id,value,column) {
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
 		itemData[column] = value;
 		this.store.list = list;
 	}
-	//编辑
+	//是否启用
 	@action.bound
-	onEdit(id) {
+	onSwitch(id,value,column){
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
-		itemData.editable = true;
-		this.store.list = list;
+		itemData[column] = value;
+		Base.POST({act:'ad_position',op:'save',mod:'admin',...itemData},()=>this.store.list = list,this);
 	}
 	//保存
 	@action.bound
@@ -146,21 +139,16 @@ export default class AdPosition extends BaseComponent{
 	//删除
 	@action.bound
 	onDelete(id){
-		const list = this.store.list.slice();
-		const index = list.findIndex(item=>id === item.id);
-		list.splice(index,1);
-		this.store.list = list;
-		Base.POST({act:'ad_position',op:'save',mod:'admin',id,deleted:"1"},null,this);
+		Base.POST({act:'ad_position',op:'save',mod:'admin',id,deleted:"1"},()=>remove(this.store.list,item=>id === item.id),this);
+		
 	}
 	//添加
 	@action.bound
 	onAdd(){
-		const list = this.store.list.slice();
-		if(list.find(item=>item.id === 0)){
+		if(this.store.list.find(item=>item.id === 0)){
 			return message.info('请保存后再新建');
 		}
-		list.unshift({id:0,name:'',editable:true,deleted:'0',enable:'1',size:''});
-		this.store.list = list;
+		this.store.list.unshift({id:0,name:'',editable:true,deleted:'0',enable:'1',size:''});
 	}
 	//搜索
 	@action.bound

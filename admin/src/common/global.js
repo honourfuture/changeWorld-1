@@ -7,12 +7,12 @@
  */
 import { observable } from 'mobx';
 export default {
-    API_URL:'http://aiping.qichebaby.com/api',
-    // API_URL:'http://192.168.1.138/project/taskusbipowggnphe/php/index.php/api',
+    // API_URL:'http://aiping.qichebaby.com/api',
+    API_URL:'http://192.168.1.138/project/taskusbipowggnphe/php/index.php/api',
     get UPLOAD_URL(){
         return `${this.API_URL}/common/fileUpload`;
     },
-    PAGE_SIZE:10,//默认pagesize
+    PAGE_SIZE:1,//默认pagesize
     store: observable({
         isCollapsed: false, // menu是否收起
     }),
