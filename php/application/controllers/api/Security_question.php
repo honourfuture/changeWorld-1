@@ -74,7 +74,7 @@ class Security_question extends API_Controller {
 		if($this->user_id){
 			$this->db->select('id,title');
 		}
-		$order_by = array('sort' => 'asc', 'id' => 'asc');
+		$order_by = array('sort' => 'desc', 'id' => 'desc');
 		$ret['question'] = $this->Security_question_model->order_by($order_by)->get_many_by('deleted', $deleted);
 		$this->ajaxReturn($ret);
 	}

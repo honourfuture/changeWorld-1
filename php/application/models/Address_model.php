@@ -1,14 +1,14 @@
 <?php
 /*
- * 广告
+ * 地址管理
  * @author sz.ljx
  * @author webljx@163.com
  * @link www.aicode.org.cn
  */
 
-class Ad_model extends MY_Model
+class Address_model extends MY_Model
 {
-    public $_table        = 'ad';
+    public $_table        = 'address';
     public $primary_key   = 'id';
     public $before_create = array('created_at', 'updated_at', 'updated_valid');
     public $before_update = array('updated_at', 'updated_valid');
