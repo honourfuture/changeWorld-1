@@ -1253,6 +1253,13 @@
             "group": "Parameter",
             "type": "Number",
             "optional": false,
+            "field": "deleted",
+            "description": "<p>是否删除 1是 0否（为1时其他字段可不传）</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
             "field": "is_default",
             "description": "<p>默认设置 1是 0否</p>"
           },
@@ -2102,7 +2109,7 @@
             "type": "String",
             "optional": false,
             "field": "goods_detail",
-            "description": "<p>商品详情</p>"
+            "description": "<p>商品详情 json [&quot;/uploads/2018/01/17/09c4a26e54ab231b734870b510771265.png&quot;]</p>"
           }
         ]
       }
@@ -2151,6 +2158,98 @@
       ]
     },
     "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Goods.php",
+    "groupTitle": "api"
+  },
+  {
+    "type": "get",
+    "url": "/api/normal/images",
+    "title": "通用-广告图",
+    "version": "1.0.0",
+    "name": "normal_images",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/normal/images"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "job",
+            "description": "<p>应用区间{guid: '引导页', startup: '启动页'}</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Objet[]",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.title",
+            "description": "<p>标题</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.link",
+            "description": "<p>链接</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.image",
+            "description": "<p>图片</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n   \"data\": [\n       {\n           \"title\": \"22\",\n           \"link\": \"\",\n           \"image\": \"\"\n       }\n   ],\n   \"status\": 0,\n   \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n    \"data\": \"\",\n    \"status\": 1,\n    \"message\": \"验证码发送频率为: 180秒/次\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Normal.php",
     "groupTitle": "api"
   },
   {

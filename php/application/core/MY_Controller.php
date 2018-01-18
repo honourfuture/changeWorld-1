@@ -229,7 +229,7 @@ class API_Controller extends MY_Controller
     public function __construct()
     {
         parent::__construct();
-        if(! in_array($this->router->class, array('login', 'common', 'register', 'forget'))){
+        if(! in_array($this->router->class, array('login', 'common', 'register', 'forget', 'normal'))){
             $this->check_sign();
         }
     }

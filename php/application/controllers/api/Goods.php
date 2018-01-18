@@ -130,12 +130,15 @@ class Goods extends API_Controller {
 	public function init()
 	{
 		$ret = array();
+		//发货模式
 		$ret['send_mode'] = $this->Goods_model->init_send_mode();
-
+		//商品属性
 		$this->load->model('Goods_attr_category_model');
 		$order_by = array('sort' => 'desc', 'id' => 'desc');
 		$this->db->select('id,name');
 		$ret['goods_attr'] = $this->Goods_attr_category_model->order_by($order_by)->get_many_by('deleted', 0);
+		//积分兑换比例
+		$ret['point_rate'] = 10;
 
 		$this->ajaxReturn($ret);
 	}
@@ -169,7 +172,7 @@ class Goods extends API_Controller {
 	 * @apiParam {Number} two_level_rate 二级分销比例
 	 * @apiParam {String} goods_image 商品主图 json ["\/uploads\/2018\/01\/17\/09c4a26e54ab231b734870b510771265.png"]
 	 * @apiParam {String} goods_attr 商品属性 json {"9":["M","X","S","L"],"8":["红色","蓝色"]}
-	 * @apiParam {String} goods_detail 商品详情
+	 * @apiParam {String} goods_detail 商品详情 json ["\/uploads\/2018\/01\/17\/09c4a26e54ab231b734870b510771265.png"]
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -191,7 +194,6 @@ class Goods extends API_Controller {
 	 */
 	public function save()
 	{
-		$this->check_operation();
 		$id = (int)$this->input->get_post('id');
 		if($id){
 			$params = elements(
@@ -206,14 +208,14 @@ class Goods extends API_Controller {
 			$this->check_params('edit', $params);
 			if($params['deleted'] == 1){
 				$update = array('deleted' => 1, 'enable' => 0);
-				$flag = $this->Goods_model->update($id, $update);
+				$flag = $this->Goods_model->update_by(array('seller_uid' => $this->user_id, 'id' => $id), $update);
 			}else{
 				unset($params['deleted']);
 				if(isset($params['enable']) && $params['enable']){
 					$params['deleted'] = 0;
 				}
-				$params['original_price'] = $params['sale_price'];
-				$flag = $this->Goods_model->update($id, $params);
+				$this->setGoodsInfo($params);
+				$flag = $this->Goods_model->update_by(array('seller_uid' => $this->user_id, 'id' => $id), $params);
 			}
 		}else{
 			$params = elements(
@@ -226,7 +228,8 @@ class Goods extends API_Controller {
 				''
 			);
 			$this->check_params('add', $params);
-			$params['original_price'] = $params['sale_price'];
+			$this->setGoodsInfo($params);
+			$params['seller_uid'] = $this->user_id;
 			if($flag = $this->Goods_model->insert($params)){
 				$id = $flag;
 			}
@@ -240,6 +243,13 @@ class Goods extends API_Controller {
 			$message = '失败';
 		}
 		$this->ajaxReturn(array('id' => $id), $status, '操作'.$message);
+	}
+
+	protected function setGoodsInfo(&$params = array())
+	{
+		$params['original_price'] = $params['sale_price'];
+		$goods_image = json_decode($params['goods_image'], true);
+		$params['default_image'] = $goods_image[0];
 	}
 
 	protected function check_params($act, $params)
