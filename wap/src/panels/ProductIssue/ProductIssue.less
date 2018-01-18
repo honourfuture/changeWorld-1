@@ -70,6 +70,29 @@
 		.city-rate-item .am-input-label{
 			width:140px;
 		}
+		&.attr-con{
+			margin-bottom: 10px;
+			.attr-item{
+				.am-list-extra{
+					-ms-flex-preferred-size: 50px;
+					flex-basis: 50px;
+					.add-btn{
+						color:@brand-primary;
+						padding: 0;
+						&::before{
+							border-color: @brand-primary;
+						}
+					}
+				}
+				em{
+					color:#999;
+					margin-left: 10px;
+				}
+			}
+			.am-input-control input{
+				text-align: left;
+			}
+		}
 	}
 	.productImg{
 		padding: 20px 15px;
