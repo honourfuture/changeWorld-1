@@ -1,7 +1,7 @@
 import React from 'react';
 import {action} from 'mobx';
 import {BaseComponent,Base} from '../../common';
-import {Flex,Button,List,Radio,WhiteSpace,WingBlank,NavBar} from 'antd-mobile';
+import {Flex,Button,List,Radio,WhiteSpace,WingBlank,NavBar,Toast} from 'antd-mobile';
 
 import './AddressManage.less';
 import {icon} from '../../images';
@@ -12,23 +12,32 @@ const Brief = Item.Brief;
 class AddrItem extends BaseComponent {
     @action.bound
     changeHandler(){
-        const {index,callBack} = this.props;
-        callBack && callBack(index);
+        const {item,callBack} = this.props;
+        callBack && callBack(item.id);
+    }
+    @action.bound
+    onDelete(){
+        const {item,delCallBack} = this.props;
+        delCallBack && delCallBack(item.id);
     }
     render(){
-        const {name,tel,address,checked} = this.props;
+        const {item} = this.props;
+        const {id,username,mobi,province,city,area,address,is_default,province_id,city_id,area_id} = item;
+        const areaData = area ? ("-"+area) : ""; 
+        const addRes = province+"-"+city+areaData+"-"+address;
+        const isDefault = parseInt(is_default,10) === 1 ? true : false;
         return(
             <div>
-                <List className="addrItem" onClick={this.changeHandler}>
+                <List className="addrItem">
                     <Item
                         multipleLine
                     >
-                        {name} <span>{tel}</span>
-                        <Brief>{address}</Brief>
+                        {username} <span>{mobi}</span>
+                        <Brief>{addRes}</Brief>
                     </Item>
                     <Flex className="addrOpera" justify="between">
-	                	<Flex.Item className="defaultAddr"><Radio checked={checked} key={name}></Radio>默认地址</Flex.Item>
-	                	<Flex.Item className="addrEdit"><span>编辑</span><span className="spa">|</span><span>删除</span></Flex.Item>
+	                	<Flex.Item className="defaultAddr" onClick={this.changeHandler} ><Radio checked={isDefault} key={id}></Radio>默认地址</Flex.Item>
+	                	<Flex.Item className="addrEdit"><span onClick={()=>Base.push('NewAddress',{...item})}>编辑</span><span className="spa">|</span><span onClick={this.onDelete}>删除</span></Flex.Item>
 	                </Flex>
                 </List>
                 <WhiteSpace size="lg" />
@@ -39,29 +48,32 @@ class AddrItem extends BaseComponent {
 
 export default class AddressManage extends BaseComponent{
 	store={
-		curIndex:0,
-        addressDate:[{
-            name:"李娟",
-            tel:"182****3679",
-            address:"浙江省-杭州市-西湖区 春申街西溪花园凌波苑春申街西溪花园凌波苑春申街西溪花园凌波苑"
-        },{
-            name:"Kaden McCullough",
-            tel:"134****2587",
-            address:"浙江省-杭州市-西湖区 春申街西溪花园凌波苑春申街西溪花园凌波苑春申街西溪花园凌波苑"
-        },{
-            name:"万莎莎",
-            tel:"134****2587",
-            address:"浙江省-杭州市-西湖区 春申街西溪花园凌波苑春申街西溪花园凌波苑春申街西溪花园凌波苑"
-        }]
+        addList:[],
+    }
+    componentDidMount(){
+        Base.POST({act:'address',op:'index'},(res)=>{
+            this.store.addList = res.data;
+        });
     }
     @action.bound
-    changeHandler(index){
-        this.store.curIndex = index;
+    changeHandler(id){
+        Base.POST({act:'address',op:'save',id,is_default:1},(res)=>{
+            const {addList} = this.store;
+            addList.forEach((item)=>{
+                id === item.id ? item.is_default = 1 : item.is_default = 0;
+            });
+            Toast.success(res.message,2,null,false);
+        });
+    }
+    @action.bound
+    onDelete(id){
+        console.log(id);
     }
 	render(){
-		const {curIndex,addressDate} = this.store;
-        const addrItem = addressDate.map((item,index)=>{
-            return <AddrItem key={index} checked={curIndex === index} index={index} {...item} callBack={this.changeHandler}/>;
+		const {curId,addList} = this.store;
+        const addrItem = addList.map((item,index)=>{
+            const {id} = item;
+            return <AddrItem key={index} item={item} delCallBack={this.onDelete} callBack={this.changeHandler}/>;
         });
 		return (
 			<div className='AddressManage'>
@@ -76,11 +88,12 @@ export default class AddressManage extends BaseComponent{
                     <div className="SelectAddress-box">
                         {addrItem}
                     </div>
-                    <WhiteSpace size="xl" />
-                    <WingBlank>
-                        <Button type="warning" className="save-address" onClick={()=>Base.push('NewAddress')}>+ 新增地址</Button>
-                    </WingBlank>
+                    
                 </div>
+                <WingBlank>
+                    <WhiteSpace />
+                    <Button type="warning" className="save-address" onClick={()=>Base.push('NewAddress')}>+ 新增地址</Button>
+                </WingBlank>
 			</div>
 		)
 	}

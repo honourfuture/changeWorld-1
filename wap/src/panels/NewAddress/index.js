@@ -10,7 +10,7 @@ import { district } from '../../common/cityData';
 
 const Item = List.Item;
 class NewAddress extends BaseComponent{
-    store={sValue:[],visible:false,checked:false}
+    store={sValue:[],visible:false,checked:false,isEdit:false}
     @action.bound
     onSave(){
         this.props.form.validateFields((err, values) => {
@@ -41,10 +41,27 @@ class NewAddress extends BaseComponent{
     onChange(){
         this.store.checked=!this.store.checked;
     }
+    @action.bound
+    componentDidMount(){
+        if(Base.getPageParams("id")){
+            this.store.isEdit = true;
+            // initialValue: ['340000', '341500', '341502'],
+        }else{
+            console.log(2222)
+        }
+    }
     render(){
         const { getFieldProps, getFieldError } = this.props.form;
-        const {sValue,visible,checked} = this.store;
+        const {sValue,visible,checked,isEdit} = this.store;
         const takeRegion = visible ? "take-region check-address" : "take-region";
+        // if(isEdit){
+            // const username = isEdit?Base.getPageParams("username"):null;
+            // const mobi = isEdit?Base.getPageParams("mobi"):null;
+            // const address = isEdit?Base.getPageParams("address"):null;
+            // const province_id = isEdit?Base.getPageParams("province_id"):null;
+            // const city_id = isEdit?Base.getPageParams("city_id") : null;
+            // const area_id =  isEdit? Base.getPageParams("area_id") : null;
+        // }
         return (
             <div className='NewAddress'>
                 <NavBar
@@ -61,12 +78,14 @@ class NewAddress extends BaseComponent{
                             error={!!getFieldError('username')}
                             {...getFieldProps('username', {
                                 rules: [{ required: true }],
+                                // initialValue: {isEdit?Base.getPageParams("username"):""}
                             })}
                         >收货人</InputItem>
                         <InputItem 
                             error={getFieldError('mobi')}
                             {...getFieldProps('mobi', {
                                 rules: [{ required: true,pattern:/^1(3|4|5|7|8)\d( )?\d{4}( )?\d{4}$/}],
+                                // initialValue: { isEdit ? Base.getPageParams("mobi") : null}
                             })}
                             clear
                             type="phone"
@@ -80,6 +99,9 @@ class NewAddress extends BaseComponent{
                                 dismissText=" "
                                 onOk={this.onSelect}
                                 value={sValue.slice()}
+                                // {isEdit ? {...getFieldProps('area',{
+                                //     initialValue: [Base.getPageParams("province_id"),Base.getPageParams("city_id"),Base.getPageParams("area_id")]
+                                // })} : null }
                                 >
                                 <Item arrow="horizontal">省市区</Item>
                             </Picker>
@@ -91,6 +113,7 @@ class NewAddress extends BaseComponent{
                             error={getFieldError('address')}
                             {...getFieldProps('address', {
                                     rules: [{ required: true}],
+                                    // initialValue: { isEdit ? Base.getPageParams("address") : null}
                                 })}
                         >详细地址
                         </InputItem>
