@@ -37,16 +37,21 @@ class Welcome extends Web_Controller {
         			break;
         		case 2:
         			$pid = $item['pid'];
-        			$rows[$pid]['children'][] = array('value' => $item['id'], 'label' => $item['fullname'], 'children' => array());
+        			$rows[$pid]['children'][$item['id']] = array('value' => $item['id'], 'label' => $item['fullname'], 'children' => array());
         			break;
         		case 3:
         			$o_pid = str_pad(substr($item['pid'], 0, 2), 6, 0);
         			$pid = str_pad(substr($item['pid'], 0, 4), 6, 0);
-        			$rows[$o_pid][$pid] = array('value' => $item['id'], 'label' => $item['fullname'], 'children' => array());
+        			$rows[$o_pid]['children'][$pid]['children'][] = array('value' => $item['id'], 'label' => $item['fullname'], 'children' => array());
         			break;
         	}
         }
 
-        echo json_encode(array_values($rows), JSON_UNESCAPED_UNICODE);
+        $rows = array_values($rows);
+        foreach($rows as $key=>$item){
+        	$item['children'] && $rows[$key]['children'] = array_values($item['children']);
+        }
+
+        echo json_encode($rows, JSON_UNESCAPED_UNICODE);
 	}
 }

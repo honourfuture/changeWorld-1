@@ -137,14 +137,14 @@ class Address extends API_Controller {
 			$this->check_params('edit', $params);
 			if($params['deleted'] == 1){
 				$update = array('deleted' => 1, 'enable' => 0);
-				$flag = $this->Address_model->update($id, $update);
+				$flag = $this->Address_model->update_by(array('user_id' => $this->user_id, 'id' => $id), $update);
 			}else{
 				unset($params['deleted']);
 				if(isset($params['enable']) && $params['enable']){
 					$params['deleted'] = 0;
 				}
 				$this->set_default($params);
-				$flag = $this->Address_model->update($id, $params);
+				$flag = $this->Address_model->update_by(array('user_id' => $this->user_id, 'id' => $id), $params);
 			}
 		}else{
 			$params = elements(
