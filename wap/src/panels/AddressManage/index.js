@@ -22,9 +22,9 @@ class AddrItem extends BaseComponent {
     }
     render(){
         const {item} = this.props;
-        const {id,username,mobi,province,city,area,address,is_default,province_id,city_id,area_id} = item;
-        const areaData = area ? ("-"+area) : ""; 
-        const addRes = province+"-"+city+areaData+"-"+address;
+        const {id,username,mobi,province,city,area,address,is_default} = item;
+        const areaData = area ? `- ${area}` : ""; 
+        const addRes = `${province} - ${city} ${areaData} - ${address}`;
         const isDefault = parseInt(is_default,10) === 1 ? true : false;
         return(
             <div>
@@ -67,12 +67,16 @@ export default class AddressManage extends BaseComponent{
     }
     @action.bound
     onDelete(id){
-        console.log(id);
+        Base.POST({act:'address',op:'save',id,deleted:1},(res)=>{
+            const {addList} = this.store;
+            const index = addList.findIndex((item)=>id === item.id);
+            addList.splice(index,1);
+            Toast.success(res.message,2,null,false);
+        });
     }
 	render(){
-		const {curId,addList} = this.store;
+		const {addList} = this.store;
         const addrItem = addList.map((item,index)=>{
-            const {id} = item;
             return <AddrItem key={index} item={item} delCallBack={this.onDelete} callBack={this.changeHandler}/>;
         });
 		return (
@@ -83,7 +87,7 @@ export default class AddressManage extends BaseComponent{
                     icon={<img src={icon.back} alt=''/>}
                     onLeftClick={Base.goBack}
                     rightContent={<div onClick={()=>Base.push('NewAddress')} className='right-label'>添加</div>}
-                >支付</NavBar>
+                >地址管理</NavBar>
                 <div className="base-content">
                     <div className="SelectAddress-box">
                         {addrItem}
