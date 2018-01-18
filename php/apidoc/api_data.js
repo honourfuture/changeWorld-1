@@ -2177,13 +2177,6 @@ define({ "api": [
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "images_id",
-            "description": "<p>短信模板 0注册</p>"
-          },
-          {
-            "group": "Parameter",
             "type": "String",
             "optional": false,
             "field": "job",

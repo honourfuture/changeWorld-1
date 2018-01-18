@@ -130,12 +130,15 @@ class Goods extends API_Controller {
 	public function init()
 	{
 		$ret = array();
+		//发货模式
 		$ret['send_mode'] = $this->Goods_model->init_send_mode();
-
+		//商品属性
 		$this->load->model('Goods_attr_category_model');
 		$order_by = array('sort' => 'desc', 'id' => 'desc');
 		$this->db->select('id,name');
 		$ret['goods_attr'] = $this->Goods_attr_category_model->order_by($order_by)->get_many_by('deleted', 0);
+		//积分兑换比例
+		$ret['point_rate'] = 10;
 
 		$this->ajaxReturn($ret);
 	}

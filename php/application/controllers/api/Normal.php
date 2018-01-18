@@ -23,7 +23,6 @@ class Normal extends API_Controller
      *
      * @apiSampleRequest /api/normal/images
      *
-     * @apiParam {Number} images_id 短信模板 0注册
      * @apiParam {String} job 应用区间{guid: '引导页', startup: '启动页'}
      *
      * @apiSuccess {Number} status 接口状态 0成功 其他异常
