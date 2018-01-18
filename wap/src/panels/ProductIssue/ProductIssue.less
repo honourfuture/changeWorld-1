@@ -35,6 +35,41 @@
 			font-size: 14px;
 			color: #333;
 		}
+		.pick-item{
+			.am-list-extra{
+				font-size: 13px;
+			}
+			em{
+				color: @brand-primary;
+			}
+		}
+		.discounts-item{
+			.am-list-line{
+				-webkit-box-pack: justify;
+				justify-content:space-between;
+			}
+			.am-list-extra{
+				-webkit-box-pack:end;
+				justify-content:flex-end;
+				-ms-flex-preferred-size: 70%;
+				flex-basis: 70%;
+				.am-input-item{
+					.am-list-line{
+						&:after{
+							height:0;
+						}
+					}
+					.am-list-line{
+						.fake-input-container{
+							width: 40px;
+						}
+					}
+				}
+			}
+		}
+		.city-rate-item .am-input-label{
+			width:140px;
+		}
 	}
 	.productImg{
 		padding: 20px 15px;

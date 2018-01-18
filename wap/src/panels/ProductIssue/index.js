@@ -2,7 +2,7 @@ import React from 'react';
 import { action } from 'mobx';
 import { createForm } from 'rc-form';
 import {BaseComponent,Base} from '../../common';
-import {Flex,Button,NavBar,WhiteSpace,List,InputItem,Switch,ImagePicker,TextareaItem,WingBlank,Toast} from 'antd-mobile';
+import {Flex,Button,NavBar,WhiteSpace,List,InputItem,Switch,ImagePicker,TextareaItem,WingBlank,Toast,Picker} from 'antd-mobile';
 import './ProductIssue.less';
 import {icon} from '../../images';
 
@@ -11,8 +11,14 @@ const Item = List.Item;
 class ImgItem extends BaseComponent {
 	@action.bound
 	onChangeImg(files, type, index){
-		const {callBack} = this.props;
-		callBack && callBack(files);
+		// const {callBack} = this.props;
+        // callBack && callBack(files,type, index);
+        console.log(files);
+        if(type === 'add'){
+            Base.POST({act:'common',op:'base64FileUpload',base64_image_content:files[files.length - 1].url},(res)=>{
+                
+            })
+        }
 	}
     render(){
     	const {title,fileName,isTextArea} = this.props;
@@ -40,28 +46,40 @@ class ProductIssue extends BaseComponent{
 		checked: false,
 	}
 	store={
-		productImg:[],
-		productDetail:[],
-	}
+		goods_image:[],
+        productDetail:[],
+        send_mode:[],
+        goods_attr:[],
+    }
+    // _request
 	@action.bound
 	onChangeMainImg = (files, type, index) => {
-	    this.store.productImg = files;
+        console.log(files, type, index);
+	    this.store.goods_image = files;
 	}
 	@action.bound
     onChangeDetailImg = (files, type, index) => {
+        console.log(files, type, index);
 	    this.store.productDetail = files;
     }
     @action.bound
     onSubmit(){
         this.props.form.validateFields((err, values) => {
             if(!err){
+                console.log(values);
+                const {send_mode} = values;
+                if(!send_mode){
+                    return Toast.fail('请选择发货模式');
+                }
+                Base.POST({act:'goods',op:'save',...values,send_mode:send_mode[0]},(res)=>{
 
+                })
             }else{
                 for (const key in err) {
                     if (err.hasOwnProperty(key)) {
                         const errInfo = err[key];
                         if(errInfo && errInfo.errors && errInfo.errors[0] && errInfo.errors[0].message){
-                            return Toast.fail(errInfo.errors[0].message)
+                            return Toast.fail(errInfo.errors[0].message,2);
                         }
                     }
                 }
@@ -70,12 +88,16 @@ class ProductIssue extends BaseComponent{
     }
     componentDidMount(){
         Base.GET({act:'goods',op:'init'},(res)=>{
-            
+            const {goods_attr,send_mode} = res.data;
+            this.store.goods_attr = goods_attr;
+            this.store.send_mode = send_mode.map((label,value)=>{
+                return {label,value};
+            });
         })
     }
 	render(){
 		const {checked} = this.state;
-        const {productImg,productDetail} = this.store;
+        const {goods_image,productDetail,send_mode} = this.store;
         const { getFieldProps, getFieldError } = this.props.form;
 		return (
 			<div className='ProductIssue'>
@@ -130,38 +152,61 @@ class ProductIssue extends BaseComponent{
                             type="money"
                             placeholder="￥0.00"
                         >邮费<em>*</em></InputItem>
-                        <InputItem 
-                            clear
-                            type="number"
-                            placeholder="请输入产品总量"
-                            moneyKeyboardAlign="right"
-                        >发货模式<em>*</em></InputItem>
+                        <Picker data={send_mode} cols={1} {...getFieldProps('send_mode')}>
+                            <Item className='pick-item' arrow="horizontal">发货模式<em>*</em></Item>
+                        </Picker>
                     </List>
                     <WhiteSpace />
                     <List className="productBasic">
+                        <Item className='discounts-item'
+                            extra={
+                                <Flex>
+                                    <InputItem
+                                        {...getFieldProps('full_amount')}
+                                        labelNumber={2}
+                                        clear
+                                        type="money"
+                                        placeholder="￥0.00"
+                                    >满</InputItem>
+                                    <InputItem
+                                        error={!!getFieldError('free_amount')}
+                                        {...getFieldProps('free_amount')}
+                                        labelNumber={2}
+                                        clear
+                                        type="money"
+                                        placeholder="￥0.00"
+                                    >减</InputItem>
+                                </Flex>
+                            }
+                        >
+                        发货模式</Item>
                         <InputItem
-                            clear
-                            placeholder="请输入产品名称"
-                        >优惠券</InputItem>
-                        <InputItem 
+                            {...getFieldProps('use_point_rate')}
                             clear
                             type="number"
                             placeholder="0%"
                             moneyKeyboardAlign="right"
                         >积分使用比例</InputItem>
                         <Item
-                          extra={<Switch onClick={() => this.setState({checked:!checked})} size="small" checked={checked} color="red" />}
+                          extra={<Switch 
+                                {...getFieldProps('e_invoice')}
+                                onClick={() => this.setState({checked:!checked})} 
+                                size="small" checked={checked} 
+                                color="red" 
+                            />}
                         >是否支持电子发票</Item>
                     </List>
                     <WhiteSpace />
                     <List className="productBasic">
-                       <InputItem 
+                       <InputItem className='city-rate-item'
+                            {...getFieldProps('city_partner_rate')}
                             clear
                             type="number"
                             placeholder="0%"
                             moneyKeyboardAlign="right"
                         >城市合伙人分销比例</InputItem>
                         <InputItem 
+                            {...getFieldProps('two_level_rate')}
                             clear
                             type="number"
                             placeholder="0%"
@@ -169,7 +214,7 @@ class ProductIssue extends BaseComponent{
                         >二级分销比例</InputItem>
                     </List>
                     <WhiteSpace />
-                    <ImgItem title={'产品主图'} fileName={productImg} callBack={this.onChangeMainImg} />
+                    <ImgItem title={'产品主图'} fileName={goods_image} callBack={this.onChangeMainImg} />
                     <WhiteSpace />
                     <Flex align="center" justify="center" style={{padding:20}}>预留产品属性</Flex>
                     <ImgItem title={'产品详情'} isTextArea={true} fileName={productDetail} callBack={this.onChangeDetailImg} />
