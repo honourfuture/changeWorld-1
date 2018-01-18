@@ -10,7 +10,8 @@ import { district } from '../../common/cityData';
 
 const Item = List.Item;
 class NewAddress extends BaseComponent{
-    store={sValue:[],visible:false,checked:false,isEdit:false}
+    store={sValue:[],visible:false,checked:false}
+    pageData={}
     @action.bound
     onSave(){
         this.props.form.validateFields((err, values) => {
@@ -19,14 +20,14 @@ class NewAddress extends BaseComponent{
                 mobi = mobi.replace(/ /g,'');
                 const {sValue,checked} = this.store;
                 if( sValue.length === 0 ){
-                    return Toast.fail('请选择区域');
+                    return Toast.fail('请选择区域',2,null,false);
                 }
                 const [province_id,city_id,area_id] = sValue;
                 const provinceData = district.find(item=>province_id === item.value);
                 const cityData = provinceData.children.find(item=>city_id === item.value);
-                const areaData = area_id ? cityData.children.find(item=>area_id === item.value) : "";
+                const areaData = cityData.children.find(item=>area_id === item.value) || {};
                 let is_default = checked?1:0;
-                const id = Base.getPageParams("id") ? Base.getPageParams("id") : 0;
+                const id = this.pageData.id || 0;
                 Base.POST({act:'address',op:'save',...values,mobi,id,is_default,province_id,province:provinceData.label,city_id,city:cityData.label,area_id:area_id || 0,area:areaData.label || ""},(res)=>{
                     Toast.success(res.message);
                     Base.push('AddressManage');
@@ -40,31 +41,25 @@ class NewAddress extends BaseComponent{
         this.store.visible = true;
     }
     @action.bound
-    onChange(){
+    onChange(){ 
         this.store.checked=!this.store.checked;
     }
     @action.bound
     componentDidMount(){
         if(Base.getPageParams("id")){
-            this.store.isEdit = true;
-            this.store.checked = parseInt(Base.getPageParams("is_default"),10) === 1 ? true : false;
-            this.store.sValue=[Base.getPageParams("province_id"),Base.getPageParams("city_id"),Base.getPageParams("area_id")];
+            this.pageData= Base.getPageParams();
+            const {province_id,city_id,area_id,is_default} = this.pageData;
+            this.store.sValue=[province_id,city_id,area_id];
+            this.store.checked = parseInt(is_default,10) === 1
         }
     }
     render(){
         const { getFieldProps, getFieldError } = this.props.form;
-        const {sValue,visible,checked,isEdit} = this.store;
+        const {sValue,visible,checked} = this.store;
         const takeRegion = visible ? "take-region check-address" : "take-region";
-        const panelTit = isEdit ? "编辑地址" : "新增地址";
-        // if(isEdit){
-        const username = isEdit?Base.getPageParams("username"):null;
-        const mobi = isEdit?Base.getPageParams("mobi"):null;
-        const address = isEdit?Base.getPageParams("address"):null;
-        const province_id = isEdit?Base.getPageParams("province_id"):null;
-        const city_id = isEdit?Base.getPageParams("city_id") : null;
-        const area_id =  isEdit? Base.getPageParams("area_id") : null;
-        const editClass = isEdit ? "editArea" : "";
-        // }
+        let {username=null,mobi=null,address=null,province_id=null,city_id=null,area_id=null,id=null} = this.pageData;
+        const editClass = id ? "editArea" : "";
+        const panelTit = id ? "编辑地址" : "新增地址";
         return (
             <div className='NewAddress'>
                 <NavBar
