@@ -121,7 +121,7 @@ class Common extends API_Controller
     {
         $ret = array();
         $this->init_upload();
-        $$base64_image_content = $this->input->get_post('base64_image_content');
+        $base64_image_content = $this->input->get_post('base64_image_content');
         //正则匹配出图片的格式
         if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64_image_content, $result)) {
             $this->upload->file_ext = '.'.strtolower($result[2]);//图片后缀

@@ -93,6 +93,7 @@ class Address extends API_Controller {
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
 	 * @apiParam {Number} id 记录唯一ID 0表示新增 其他表示编辑
+	 * @apiParam {Number} deleted 是否删除 1是 0否（为1时其他字段可不传）
 	 * @apiParam {Number} is_default 默认设置 1是 0否
 	 * @apiParam {String} username 收货人
 	 * @apiParam {String} mobi 联系电话
@@ -136,13 +137,10 @@ class Address extends API_Controller {
 			);
 			$this->check_params('edit', $params);
 			if($params['deleted'] == 1){
-				$update = array('deleted' => 1, 'enable' => 0);
+				$update = array('deleted' => 1);
 				$flag = $this->Address_model->update_by(array('user_id' => $this->user_id, 'id' => $id), $update);
 			}else{
 				unset($params['deleted']);
-				if(isset($params['enable']) && $params['enable']){
-					$params['deleted'] = 0;
-				}
 				$this->set_default($params);
 				$flag = $this->Address_model->update_by(array('user_id' => $this->user_id, 'id' => $id), $params);
 			}
