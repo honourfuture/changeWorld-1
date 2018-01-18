@@ -16,6 +16,7 @@ import './base.less';
 useStrict(true);
 window.HISTORY_LENGHT = 0;
 export const Base = {
+	DEBUG:process.env.NODE_ENV !== 'production',
 	//打开页面
 	push(path,params){
 		if(!path){
@@ -125,10 +126,10 @@ export const Base = {
 		let self = this;
 		Toast.loading('加载中',0);
 		const {s_requestUrl,o_fetchData} = this._handlerParams(o_param,s_method);
-		fetch(s_requestUrl,o_fetchData).then((response) => {self.DEBUG && console.log(response);return response.json()}).then((res) => {
+		fetch(s_requestUrl,o_fetchData).then((response) => response.json()).then((res) => {
 			self.DEBUG && console.log(res);
 			Toast.hide();
-			switch(res.code){
+			switch(res.status){
 				case 0:
 					f_succBack && action(f_succBack)(res);
 				break;
@@ -136,7 +137,7 @@ export const Base = {
 					self.openWin('userLogin');
 				break;
 				default:
-					Toast.fail(res.msg);
+					Toast.fail(res.message);
 				break;
 			}
       	}).catch((error) => {
@@ -172,7 +173,7 @@ export const Base = {
 				let s_errorCode = '';
 				let dataList = [];
 				responseJsons.forEach((res)=>{
-					switch(res.code){
+					switch(res.status){
 						case 0:
 							dataList.push(res.data);
 						break;
@@ -181,7 +182,7 @@ export const Base = {
 							self.openWin('userLogin');
 						break;
 						default:
-							s_errorCode = res.msg;
+							s_errorCode = res.message;
 						break;
 					}
 				});

@@ -2,7 +2,7 @@ import React from 'react';
 import { action } from 'mobx';
 import { createForm } from 'rc-form';
 import {BaseComponent,Base} from '../../common';
-import {Flex,Button,NavBar,WhiteSpace,List,InputItem,Switch,ImagePicker,TextareaItem,WingBlank} from 'antd-mobile';
+import {Flex,Button,NavBar,WhiteSpace,List,InputItem,Switch,ImagePicker,TextareaItem,WingBlank,Toast} from 'antd-mobile';
 import './ProductIssue.less';
 import {icon} from '../../images';
 
@@ -56,8 +56,22 @@ class ProductIssue extends BaseComponent{
         this.props.form.validateFields((err, values) => {
             if(!err){
 
+            }else{
+                for (const key in err) {
+                    if (err.hasOwnProperty(key)) {
+                        const errInfo = err[key];
+                        if(errInfo && errInfo.errors && errInfo.errors[0] && errInfo.errors[0].message){
+                            return Toast.fail(errInfo.errors[0].message)
+                        }
+                    }
+                }
             }
         });
+    }
+    componentDidMount(){
+        Base.GET({act:'goods',op:'init'},(res)=>{
+            
+        })
     }
 	render(){
 		const {checked} = this.state;
@@ -77,7 +91,7 @@ class ProductIssue extends BaseComponent{
                         <InputItem
                             error={!!getFieldError('name')}
                             {...getFieldProps('name', {
-                                rules: [{ required: true}],
+                                rules: [{ required: true, message:'请输入产品名称'}],
                             })}
                             clear
                             placeholder="请输入产品名称"
@@ -85,7 +99,7 @@ class ProductIssue extends BaseComponent{
                         <InputItem 
                             error={!!getFieldError('stock')}
                             {...getFieldProps('stock', {
-                                rules: [{ required: true,pattern: /^\d+$/}],
+                                rules: [{ required: true,pattern: /^\d+$/, message:'请输入正确的产品总量'}],
                             })}
                             clear
                             type="number"
@@ -95,7 +109,9 @@ class ProductIssue extends BaseComponent{
                         <InputItem
                             error={!!getFieldError('sale_price')}
                             {...getFieldProps('sale_price', {
-                                rules: [{ required: true,pattern: /^(([1-9]\d*)|0)(\.\d{0,2}?)?$/}],
+                                rules: [
+                                    { required: true,pattern: /^(([1-9]\d*)|0)(\.\d{0,2}?)?$/, message:'请输入正确的产品价格'},
+                                ],
                             })}
                             clear
                             type="money"
@@ -108,7 +124,7 @@ class ProductIssue extends BaseComponent{
                         <InputItem
                             error={!!getFieldError('freight_fee')}
                             {...getFieldProps('freight_fee', {
-                                rules: [{ required: true,pattern: /^(([1-9]\d*)|0)(\.\d{0,2}?)?$/}],
+                                rules: [{ required: true,pattern: /^(([1-9]\d*)|0)(\.\d{0,2}?)?$/, message:'请输入邮费'}],
                             })}
                             clear
                             type="money"
