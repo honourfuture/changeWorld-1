@@ -22,7 +22,7 @@ export default class MemberEncrypted extends BaseComponent{
 		super(props);
 		this.columns = [
 			{
-				title: 'sort',
+				title: '序号',
 				dataIndex: 'id',
 				width: '10%',
 				render: (text, record) => this.renderText(text, record, 'id'),
@@ -78,7 +78,7 @@ export default class MemberEncrypted extends BaseComponent{
 			<EditableCell
 				editable={record.editable}
 				value={text}
-				type={column==='sort'?'number':'text'}
+				type={column==='id'?'number':'text'}
 				onChange={value => this.onEditChange(record.id, value, column)}
 			/>
 		);
@@ -128,7 +128,7 @@ export default class MemberEncrypted extends BaseComponent{
 		if(this.store.list.find(item=>item.id === 0)){
 			return message.info('请保存后再新建');
 		}
-		this.store.list.unshift({id:0,title:'',sort:0,editable:true,deleted:'0',enable:'1'});
+		this.store.list.unshift({id:'',title:'',editable:true,deleted:'0',enable:'1'});
 	}
 	//删除
 	@action.bound

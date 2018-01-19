@@ -3,7 +3,7 @@ import {action} from 'mobx';
 import {BaseComponent,Base} from '../../common';
 import { Table, Input,Popconfirm,Switch,Button,Spin,message } from 'antd';
 import {remove} from 'lodash';
-// import './AdPosition.less';
+import './AdPosition.less';
 const Search = Input.Search;
 
 const EditableCell = ({ editable, value, onChange, type}) => (
@@ -176,7 +176,7 @@ export default class AdPosition extends BaseComponent{
 						style={{ width: 130,marginLeft:10 }}
 					/>
 				</div>
-				<Table bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={{hideOnSinglePage:true}}/>
+				<Table className='mt16' bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={{hideOnSinglePage:true}}/>
 			</Spin>
 		)
 	}

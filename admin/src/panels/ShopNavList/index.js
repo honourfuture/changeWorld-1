@@ -3,7 +3,7 @@ import {action} from 'mobx';
 import {BaseComponent,Base} from '../../common';
 import { Table, Input,Popconfirm,Switch,Button,Spin,Select,message } from 'antd';
 import {remove} from 'lodash';
-// import './ShopNavList.less';
+import './ShopNavList.less';
 const Search = Input.Search;
 const Option = Select.Option;
 
@@ -201,7 +201,7 @@ export default class ShopNavList extends BaseComponent{
 						style={{ width: 130,marginLeft:10 }}
 					/>
 				</div>
-				<Table bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={{hideOnSinglePage:true}}/>
+				<Table className="mt16" bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={{hideOnSinglePage:true}}/>
 			</Spin>
 		)
 	}
