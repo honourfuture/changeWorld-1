@@ -25,7 +25,7 @@ class AddrItem extends BaseComponent {
         const {id,username,mobi,province,city,area,address,is_default} = item;
         const areaData = area ? `- ${area}` : ""; 
         const addRes = `${province} - ${city} ${areaData} - ${address}`;
-        const isDefault = parseInt(is_default,10) === 1 ? true : false;
+        const isDefault = parseInt(is_default,10) === 1;
         return(
             <div>
                 <List className="addrItem">

@@ -50,7 +50,7 @@ class NewAddress extends BaseComponent{
             this.pageData= Base.getPageParams();
             const {province_id,city_id,area_id,is_default} = this.pageData;
             this.store.sValue=[province_id,city_id,area_id];
-            this.store.checked = parseInt(is_default,10) === 1
+            this.store.checked = parseInt(is_default,10) === 1;
         }
     }
     render(){
@@ -98,7 +98,7 @@ class NewAddress extends BaseComponent{
                                 onOk={this.onSelect}
                                 value={sValue.slice()}
                                 {...getFieldProps('area',{
-                                    initialValue: [Base.getPageParams("province_id"),Base.getPageParams("city_id"),Base.getPageParams("area_id")]
+                                    initialValue: [province_id,city_id,area_id]
                                 })}
                                 >
                                 <Item arrow="horizontal">省市区</Item>

@@ -5,7 +5,6 @@ import './GoodsItem.less';
 
 export class GoodsItem extends BaseComponent{
 	render(){
-		console.log(this.props.item,"111")
 		const { title, img, spec, price, num } = this.props.item;
 		return (
 			<Flex align='start' className='GoodsItem goods-info base-line'>
