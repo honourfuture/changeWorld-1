@@ -28,23 +28,58 @@ class Goods extends API_Controller {
 	 * @apiSuccess {String} message 接口信息描述
 	 * @apiSuccess {Object[]} data 接口数据集
 	 * @apiSuccess {String} data.id 商品唯一ID
+	 * @apiSuccess {String} data.created_at 创建时间
+	 * @apiSuccess {String} data.updated_at 更新时间
+	 * @apiSuccess {String} data.status 状态 0初始化 1下架 其他
+	 * @apiSuccess {String} data.enable 启用 1是 0否
+	 * @apiSuccess {String} data.sort 排序 降序
 	 * @apiSuccess {String} data.name 商品名称
+	 * @apiSuccess {String} data.stock 库存
+	 * @apiSuccess {String} data.sale_price 销售价
+	 * @apiSuccess {String} data.freight_fee 邮费
+	 * @apiSuccess {String} data.send_mode 发货模式
+	 * @apiSuccess {String} data.use_point_rate 最大积分使用量
+	 * @apiSuccess {String} data.e_invoice 支持电子发票 0否 1是
+	 * @apiSuccess {String} data.city_partner_rate 城市合伙人分销比例
+	 * @apiSuccess {String} data.goods_detail 商品详情
+	 * @apiSuccess {String} data.goods_image 商品主图
+	 * @apiSuccess {String} data.goods_attr 商品属性
+	 * @apiSuccess {String} data.goods_ticket 优惠券
+	 * @apiSuccess {String} data.shop_class_id 商品分类ID
 	 *
 	 * @apiSuccessExample {json} Success-Response:
 	 * {
-	 *	    "data": [
-	 *	        {
-	 *	            "id": "1",
-	 *	            "name": "热门"
-	 *	        },
-	 *	        {
-	 *	            "id": "2",
-	 *	            "name": "靓号"
-	 *	        }
-	 *	    ],
-	 *	    "status": 0,
-	 *	    "message": "成功"
-	 *	}
+	 *    "data": [
+	 *       {
+	 *           "id": "2",
+	 *           "created_at": "2018-01-18 16:44:33",
+	 *           "updated_at": "2018-01-18 16:44:33",
+	 *           "deleted": "0",
+	 *           "status": "0",
+	 *           "enable": "1",
+	 *           "sort": "0",
+	 *           "name": "商品名称",
+	 *           "stock": "1999",
+	 *           "original_price": "55.00",
+	 *           "sale_price": "55.00",
+	 *           "freight_fee": "6.00",
+	 *           "send_mode": "1",
+	 *           "use_point_rate": "100.00",
+	 *           "e_invoice": "0",
+	 *           "city_partner_rate": "0.00",
+	 *            "two_level_rate": "0.00",
+	 *            "goods_detail": "[]",
+	 *            "seller_uid": "1",
+	 *            "goods_image": "[\"/uploads/2018/01/18/f619795f7f2eb345645a67f7a7df4b78.png\"]",
+	 *            "goods_attr": "{}",
+	 *            "goods_ticket": "[{\"full_amount\":\"66\",\"free_amount\":\"3\"}]",
+	 *            "default_image": "/uploads/2018/01/18/f619795f7f2eb345645a67f7a7df4b78.png",
+	 *            "shop_class_id": "0"
+	 *        }
+	 *    ],
+	 *    "status": 0,
+	 *    "message": "成功"
+	 * }
 	 *
 	 * @apiErrorExample {json} Error-Response:
 	 * {
@@ -56,11 +91,12 @@ class Goods extends API_Controller {
 	public function index()
 	{
 		$deleted = (int)$this->input->get('deleted');
+		$where = array('deleted' => $deleted);
 		if($this->user_id){
-			$this->db->select('id,name');
+			$where['seller_uid'] = $this->user_id;
 		}
 		$order_by = array('sort' => 'desc', 'id' => 'desc');
-		$ret = $this->Goods_model->order_by($order_by)->get_many_by('deleted', $deleted);
+		$ret = $this->Goods_model->order_by($order_by)->get_many_by($where);
 		$this->ajaxReturn($ret);
 	}
 
