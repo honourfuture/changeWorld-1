@@ -46,10 +46,11 @@ class ProductIssue extends BaseComponent{
         goods_detail:[],
         send_mode:[],
         goods_attr:[],
+        point_rate:0,
+        use_point_rate:0,
     }
 	@action.bound
 	onChangeMainImg = (files) => {
-        console.log(files);
 	    this.store.goods_image = files;
 	}
 	@action.bound
@@ -64,7 +65,7 @@ class ProductIssue extends BaseComponent{
                 if(!send_mode){
                     return Toast.fail('请选择发货模式',2,null,false);
                 }
-                const {goods_image,goods_detail} = this.store;
+                const {goods_image,goods_detail,use_point_rate} = this.store;
                 if(goods_image.length === 0){
                     return Toast.fail('请上传产品主图',2,null,false);
                 }
@@ -86,7 +87,7 @@ class ProductIssue extends BaseComponent{
                 delete values['full_amount'];
                 delete values['free_amount'];
                 delete values['e_invoice'];
-                Base.POST({act:'goods',op:'save',...values,e_invoice,send_mode:send_mode[0],goods_ticket,goods_image:JSON.stringify(goods_imageUrl),goods_detail:JSON.stringify(goods_detailUrl),goods_attr:JSON.stringify(goods_attr)},(res)=>{
+                Base.POST({act:'goods',op:'save',...values,use_point_rate,e_invoice,send_mode:send_mode[0],goods_ticket,goods_image:JSON.stringify(goods_imageUrl),goods_detail:JSON.stringify(goods_detailUrl),goods_attr:JSON.stringify(goods_attr)},(res)=>{
 
                 })
             }else{
@@ -105,19 +106,24 @@ class ProductIssue extends BaseComponent{
     onAddAttr(index){
         this.store.goods_attr[index].list.push('');
     }
+    @action.bound
+    onPointChange(value){
+        this.store.use_point_rate = value;
+    }
     componentDidMount(){
         Base.GET({act:'goods',op:'init'},(res)=>{
-            const {goods_attr,send_mode} = res.data;
+            const {goods_attr,send_mode,point_rate} = res.data;
             this.store.goods_attr = goods_attr.map((item)=>{
                 return {...item,list:[]};
             });
             this.store.send_mode = send_mode.map((label,value)=>{
                 return {label,value};
             });
+            this.store.point_rate = point_rate;
         })
     }
 	render(){
-        const {goods_image,goods_detail,send_mode,goods_attr} = this.store;
+        const {goods_image,goods_detail,send_mode,goods_attr,point_rate,use_point_rate} = this.store;
         const { getFieldProps, getFieldError } = this.props.form;
         const goodsAttrItems = goods_attr.map((item,index)=>{
             const {id,name,list} = item;
@@ -222,14 +228,19 @@ class ProductIssue extends BaseComponent{
                             }
                         >
                         优惠</Item>
+                        <Item 
+                        className='use-point-item'
+                        extra={<div>最高抵扣：￥ <em>{parseInt(point_rate)?parseInt(use_point_rate,10)/parseInt(point_rate):'0'}</em></div>}
+                        >积分兑换比例{` ${point_rate}:1`}
+                        </Item>
                         <InputItem
-                            {...getFieldProps('use_point_rate')}
                             clear
                             type="number"
                             placeholder="0"
                             moneyKeyboardAlign="right"
-                            extra="%"
-                        >积分使用比例</InputItem>
+                            onChange={this.onPointChange}
+                            labelNumber={7}
+                        >最高可使用积分</InputItem>
                         <Item
                           extra={<Switch 
                                 {...getFieldProps('e_invoice',{valuePropName: 'checked'})}

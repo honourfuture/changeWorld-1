@@ -2,7 +2,7 @@ const menuData = [
     {
         name: '用户',
         icon: 'user',
-        path: 'user',
+        path: 'member',
         children: [
             {
                 name: '讲师认证',
@@ -27,6 +27,10 @@ const menuData = [
             {
                 name: '贵族管理',
                 path: 'LecturerNobleManager',
+            },
+            {
+                name: '密保问题',
+                path: 'MemberEncrypted',
             },
         ],
     }, 

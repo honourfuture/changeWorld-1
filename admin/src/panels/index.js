@@ -15,7 +15,13 @@ import ShopNavList from './ShopNavList';
 import AdManager from './AdManager';
 import AdPosition from './AdPosition';
 import GoodsProperty from './GoodsProperty';
+import MemberEncrypted from './MemberEncrypted';
 export const panelsList =  [
+    {
+        path:'/member/MemberEncrypted',
+        component:MemberEncrypted,
+        title:'密保问题',
+    },
     {
         path:'/shop/GoodsProperty',
         component:GoodsProperty,

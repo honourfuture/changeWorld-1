@@ -245,6 +245,7 @@ export default class AdManager extends BaseComponent{
 	requestData(){
 		Base.GET({act:'ad',op:'index',mod:'admin',title:this.searchStr || '',cur_page:this.current || 1,per_page:Global.PAGE_SIZE},(res)=>{
 			const {ad,ad_position} = res.data;
+			console.log(ad,"ad");
 			this.store.list = ad.list;
 			this.store.positionList = ad_position;
 			this.store.total = ad.count;
@@ -256,6 +257,7 @@ export default class AdManager extends BaseComponent{
 	}
 	render(){
 		let {list,total} = this.store;
+		console.log(list,"list")
 		const showList = list.filter(item=>{
 			return parseInt(item.deleted,10) === 0;
 		})
