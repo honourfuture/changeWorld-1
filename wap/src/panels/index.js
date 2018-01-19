@@ -25,7 +25,19 @@ import UserCenter from './UserCenter';
 import MyProduct from './MyProduct';
 import SalesLog from './SalesLog';
 import ProductIssue from './ProductIssue';
+import MessAgeCenter from './MessAgeCenter';
+import MessageDetail from './MessageDetail';
 export const panelsList =  [
+    {
+        path:'/MessageDetail',
+        component:MessageDetail,
+        title:'消息详情',
+    },
+    {
+        path:'/MessAgeCenter',
+        component:MessAgeCenter,
+        title:'消息中心',
+    },
     {
         path:'/ProductIssue',
         component:ProductIssue,
