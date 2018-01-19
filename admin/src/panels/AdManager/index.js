@@ -271,7 +271,7 @@ export default class AdManager extends BaseComponent{
 						style={{ width: 130,marginLeft:10 }}
 					/>
 				</div>
-				<Table onChange={this.onTableHandler} bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={{total,current:this.current,defaultPageSize:Global.PAGE_SIZE}}/>
+				<Table className='mt16' onChange={this.onTableHandler} bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={{total,current:this.current,defaultPageSize:Global.PAGE_SIZE}}/>
 			</Spin>
 		)
 	}
