@@ -118,7 +118,7 @@ class Security_question extends API_Controller {
 	public function query()
 	{
 		$security_question = $this->input->get_post('security_question');
-		if($this->user_id && $a_Users_model = json_decode($security_question, true)){
+		if($this->user_id && $a_security_question = json_decode($security_question, true)){
 			$this->load->model('Users_model');
 			$flag = $this->Users_model->update($this->user_id, array('security_question' => $security_question));
 			if($flag){
@@ -183,7 +183,7 @@ class Security_question extends API_Controller {
 				$this->input->post(),
 				UPDATE_VALID
 			);
-			$this->check_params($params);
+			$this->check_params('edit', $params);
 			if($params['deleted'] == 1){
 				$update = array('deleted' => 1, 'enable' => 0);
 				$flag = $this->Security_question_model->update($id, $update);
@@ -202,7 +202,7 @@ class Security_question extends API_Controller {
 				$this->input->post(),
 				''
 			);
-			$this->check_params($params);
+			$this->check_params('add', $params);
 			if($flag = $this->Security_question_model->insert($params)){
 				$id = $flag;
 			}
@@ -218,10 +218,16 @@ class Security_question extends API_Controller {
 		$this->ajaxReturn(array('id' => $id), $status, '操作'.$message);
 	}
 
-	protected function check_params($params)
+	protected function check_params($act, $params)
 	{
-		if(!isset($params['title']) || empty($params['title']) || $params['title'] == UPDATE_VALID){
-			$this->ajaxReturn('', 501, '标题参数错误');
+		switch($act){
+			case 'add':
+				if(empty($params['title']) || $params['title'] == UPDATE_VALID){
+					$this->ajaxReturn('', 501, '名称参数错误');
+				}
+				break;
+			case 'edit':
+				break;
 		}
 	}
 }
