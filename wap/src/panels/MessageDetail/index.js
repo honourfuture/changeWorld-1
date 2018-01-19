@@ -1,6 +1,6 @@
 import React from 'react';
 import {BaseComponent,Base} from '../../common';
-import {NavBar,Flex} from 'antd-mobile';
+import {NavBar} from 'antd-mobile';
 import './MessageDetail.less';
 import {icon} from '../../images';
 

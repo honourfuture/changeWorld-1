@@ -33,7 +33,7 @@ export default class ShopIndex extends BaseComponent{
                     leftContent={<Badge dot>
                         <span />
                     </Badge>}
-                    onLeftClick={() => console.log('onLeftClick')}
+                    onLeftClick={() => Base.push('MessAgeCenter')}
                     rightContent={<Flex className="right-cont" onClick={()=>Base.push('ShopCart')}>
                         <img src={icon.indexCart} alt=""/>
                         <Badge text={1} overflowCount={99}><span /></Badge>
