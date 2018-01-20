@@ -155,7 +155,7 @@ class Shop_class extends API_Controller {
 	{
 		switch($act){
 			case 'add':
-				if(empty($params['name']) || $params['name'] == UPDATE_VALID){
+				if($params['name'] === '' || $params['name'] == UPDATE_VALID){
 					$this->ajaxReturn('', 501, '名称参数错误');
 				}
 				if($params['link'] == UPDATE_VALID){
