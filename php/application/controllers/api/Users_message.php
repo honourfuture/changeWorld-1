@@ -27,6 +27,7 @@ class Users_message extends API_Controller {
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
 	 * @apiSuccess {Object} data 接口数据集
+	 * @apiSuccess {String} data.read_ids 阅读记录ID集 ,1,2,
 	 * @apiSuccess {String} data.count 文章数量
 	 * @apiSuccess {Object[]} data.list 接口数据集
 	 * @apiSuccess {String} data.list.id 唯一ID
@@ -62,10 +63,14 @@ class Users_message extends API_Controller {
 	 */
 	public function index()
 	{
-		$ret = array('count' => 0, 'list' => array());
+		$ret = array('count' => 0, 'list' => array(), 'read_ids' => '');
 
 		$where = array();
 		if($this->user_id){
+			$this->load->model('Users_read_model');
+			$info = $this->Users_read_model->get_by(array('user_id' => $this->user_id, 'type' => 1));
+			$info && $ret['read_ids'] = $info['ids'];
+
 			$where['enable'] = 1;
 			$this->db->select('id,title,summary,updated_at');
 		}else{
@@ -133,7 +138,10 @@ class Users_message extends API_Controller {
 	{
 		$id = (int)$this->input->get('id');
 		$this->db->select('id,updated_at,title,content,summary');
-		$info = $this->Users_message_model->get($id);
+		if($info = $this->Users_message_model->get($id)){
+			$this->load->model('Users_read_model');
+			$this->Users_read_model->save($this->user_id, 1, $id);
+		}
 
 		$this->ajaxReturn($info);
 	}
