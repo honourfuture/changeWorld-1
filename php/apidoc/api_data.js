@@ -2517,7 +2517,7 @@ define({ "api": [
             "type": "Number",
             "optional": false,
             "field": "use_point_rate",
-            "description": "<p>积分使用比例</p>"
+            "description": "<p>最大积分使用量</p>"
           },
           {
             "group": "Parameter",
@@ -2560,6 +2560,34 @@ define({ "api": [
             "optional": false,
             "field": "goods_detail",
             "description": "<p>商品详情 json [&quot;/uploads/2018/01/17/09c4a26e54ab231b734870b510771265.png&quot;]</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "enable",
+            "description": "<p>启用 1是 0否</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "deleted",
+            "description": "<p>是否删除 1是 0否（为1时其他字段可不传）</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "sort",
+            "description": "<p>排序 降序排列</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "shop_class_id",
+            "description": "<p>商品分类ID</p>"
           }
         ]
       }
