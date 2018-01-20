@@ -17,11 +17,18 @@ import AdPosition from './AdPosition';
 import GoodsProperty from './GoodsProperty';
 import MemberEncrypted from './MemberEncrypted';
 import GoodsManager from './GoodsManager';
+import ArticleList from './ArticleList';
+
 export const panelsList =  [
     {
         path:'/shop/GoodsManager',
         component:GoodsManager,
         title:'商品管理',
+    },
+    {
+        path:'/article/ArticleList',
+        component:ArticleList,
+        title:'文章列表',
     },
     {
         path:'/member/MemberEncrypted',

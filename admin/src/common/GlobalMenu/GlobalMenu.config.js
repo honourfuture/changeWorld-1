@@ -147,7 +147,7 @@ const menuData = [
                 path: 'MsgInstation',
             },
             {
-                name: '公共',
+                name: '公告',
                 path: 'MsgAnnouncement',
             }
         ],

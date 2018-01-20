@@ -22,7 +22,7 @@ export default class MemberEncrypted extends BaseComponent{
 		super(props);
 		this.columns = [
 			{
-				title: '序号',
+				title: 'id',
 				dataIndex: 'id',
 				width: '10%',
 				render: (text, record) => this.renderText(text, record, 'id'),

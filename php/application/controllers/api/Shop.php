@@ -10,7 +10,7 @@ class Shop extends API_Controller {
 	public function __construct()
     {
         parent::__construct();
-        $this->load->model('Shop_model');
+        // $this->load->model('Shop_model');
     }
 
     /**
@@ -27,31 +27,25 @@ class Shop extends API_Controller {
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
-	 * @apiSuccess {Object{}} data 接口数据集
+	 * @apiSuccess {Object} data 接口数据集
 	 * @apiSuccess {Object[]} data.anchor 推荐主播
 	 * @apiSuccess {Object[]} data.goods 推荐商品
 	 *
 	 * @apiSuccessExample {json} Success-Response:
 	 * {
-	 *	    "data": [
-	 *	        {
-	 *	            "id": "1",
-	 *	            "name": "热门"
-	 *	        },
-	 *	        {
-	 *	            "id": "2",
-	 *	            "name": "靓号"
-	 *	        }
-	 *	    ],
-	 *	    "status": 0,
-	 *	    "message": "成功"
-	 *	}
+	 *    "data": {
+	 *        "anchor": [],
+	 *        "goods": []
+	 *    },
+	 *    "status": 0,
+	 *    "message": "成功"
+	 * }
 	 *
 	 * @apiErrorExample {json} Error-Response:
 	 * {
-	 * 	   "data": "",
-	 *     "status": -1,
-	 *     "message": "签名校验错误"
+	 *    "data": "",
+	 *    "status": 1,
+	 *    "message": "商城分类ID错误"
 	 * }
 	 */
 	public function index()
@@ -87,7 +81,7 @@ class Shop extends API_Controller {
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
-	 * @apiSuccess {Object{}} data 接口数据集 推荐商品
+	 * @apiSuccess {Object} data 接口数据集 推荐商品
 	 * @apiSuccess {Object[]} data.goods 推荐商品
 	 *
 	 * @apiSuccessExample {json} Success-Response:
