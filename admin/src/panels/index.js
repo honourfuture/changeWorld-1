@@ -16,7 +16,13 @@ import AdManager from './AdManager';
 import AdPosition from './AdPosition';
 import GoodsProperty from './GoodsProperty';
 import MemberEncrypted from './MemberEncrypted';
+import GoodsManager from './GoodsManager';
 export const panelsList =  [
+    {
+        path:'/shop/GoodsManager',
+        component:GoodsManager,
+        title:'商品管理',
+    },
     {
         path:'/member/MemberEncrypted',
         component:MemberEncrypted,
