@@ -1,7 +1,7 @@
 import React from 'react';
 import {action} from 'mobx';
 import {BaseComponent,Base} from '../../common';
-import { Table, Input,Popconfirm,Switch,Button,Spin,message,Select,Modal,Row, Col} from 'antd';
+import { Table, Input,Popconfirm,Switch,Button,Spin,Select} from 'antd';
 import './GoodsManager.less';
 import {remove} from 'lodash';
 
@@ -19,7 +19,7 @@ const EditableCell = ({ editable, value, onChange, type}) => (
 export default class GoodsManager extends BaseComponent{
 	store={
 		list:[],
-		user:{},
+		user:"",
 		goodsClass:[],
 		visible:false,
 		readId:"",
@@ -108,11 +108,10 @@ export default class GoodsManager extends BaseComponent{
 		];
 	}
 	renderStoreInfo(text,record,column){
-		console.log(text,"texttexttexttexttext")
 		const {user} = this.store;
 		return (
 			<div>
-				{user[text].nickname}
+				{user}
 			</div>
 		)
 	}
@@ -140,13 +139,12 @@ export default class GoodsManager extends BaseComponent{
 		);
 	}
 	renderSelect(text, record, column) {
-		const {editable} = record;
 		const {goodsClass} = this.store;
 		const value = record[column];
 		let curIndex = goodsClass.findIndex((item)=>item.id === value);
 		curIndex = curIndex >= 0?curIndex:0;
 		return <div>
-				{editable?<Select defaultValue={value|| goodsClass[0].id} style={{ width: 120 }} onChange={(value)=>this.onEditChange(record.id,value,column)}>
+				{record.editable?<Select defaultValue={value|| goodsClass[0].id} style={{ width: 120 }} onChange={(value)=>this.onEditChange(record.id,value,column)}>
 					{
 						goodsClass.map(({id,name})=><Option key={id} value={id}>{name}</Option>)
 					}
@@ -213,7 +211,7 @@ export default class GoodsManager extends BaseComponent{
 		Base.GET({act:'goods',op:'index'},(res)=>{
 			const {goods,user} = res.data;
 			this.store.list = goods.list;
-			this.store.user = user;
+			this.store.user = user[1].nickname;
 			this.cacheData = goods.list.map(item => ({ ...item }));
 		},this);
 		Base.GET({act:'shop_class',op:'index'},(res)=>{
@@ -221,15 +219,14 @@ export default class GoodsManager extends BaseComponent{
 		},this);
 	}
 	render(){
-		let {list,readId,user,visible} = this.store;
+		let {list,readId,user,visible,goodsClass} = this.store;
 		const showList = list.filter(item=>{
 			return parseInt(item.deleted,10) === 0;
 		});
 		return (
 			<div className='GoodsManager'>
 				<Table className="mt16" bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={false} />
-				{/*<GoodModal visible={visible} item={list} user={user} rId={readId} callBack={this.onCloseWindow}/>*/}
-				<Test2 visible={visible} item={list} user={user} rId={readId} callBack={this.onCloseWindow} />
+				<Test2 visible={visible} item={list} goodClass={goodsClass} user={user} rId={readId} callBack={this.onCloseWindow} />
 			</div>
 		)
 	}
