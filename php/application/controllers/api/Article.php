@@ -27,9 +27,11 @@ class Article extends API_Controller {
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
-	 * @apiSuccess {Object[]} data 接口数据集
-	 * @apiSuccess {String} data.id 文章唯一ID
-	 * @apiSuccess {String} data.title 文章标题
+	 * @apiSuccess {Object} data 接口数据集
+	 * @apiSuccess {String} data.count 文章数量
+	 * @apiSuccess {Object[]} data.list 接口数据集
+	 * @apiSuccess {String} data.list.id 文章唯一ID
+	 * @apiSuccess {String} data.list.title 文章标题
 	 *
 	 * @apiSuccessExample {json} Success-Response:
 	 * {
