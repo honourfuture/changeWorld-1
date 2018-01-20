@@ -285,9 +285,13 @@ class Goods extends API_Controller {
 				UPDATE_VALID
 			);
 			$this->check_params('edit', $params);
+			$where = array('seller_uid' => $this->user_id, 'id' => $id);
+			if($this->admin_id){
+				unset($where['seller_uid']);
+			}
 			if($params['deleted'] == 1){
 				$update = array('deleted' => 1, 'enable' => 0);
-				$flag = $this->Goods_model->update_by(array('seller_uid' => $this->user_id, 'id' => $id), $update);
+				$flag = $this->Goods_model->update_by($where, $update);
 			}else{
 				unset($params['deleted']);
 				if(isset($params['enable'])){
@@ -299,7 +303,7 @@ class Goods extends API_Controller {
 					}
 				}
 				$this->setGoodsInfo($params);
-				$flag = $this->Goods_model->update_by(array('seller_uid' => $this->user_id, 'id' => $id), $params);
+				$flag = $this->Goods_model->update_by($where, $params);
 			}
 		}else{
 			$params = elements(
