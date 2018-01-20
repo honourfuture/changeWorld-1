@@ -180,10 +180,10 @@ class Ad extends API_Controller {
 	{
 		switch($act){
 			case 'add':
-				if((empty($params['title']) || $params['title'] == UPDATE_VALID) && (empty($params['image']) || $params['image'] == UPDATE_VALID)){
+				if(($params['title'] === '' || $params['title'] == UPDATE_VALID) && ($params['image'] === '' || $params['image'] == UPDATE_VALID)){
 					$this->ajaxReturn('', 501, '标题或图片必须传一个');
 				}
-				if($params['ad_position_id'] == UPDATE_VALID){
+				if($params['ad_position_id'] === '' || $params['ad_position_id'] == UPDATE_VALID){
 					$this->ajaxReturn('', 501, '广告位参数错误');
 				}
 				break;
