@@ -488,6 +488,345 @@ define({ "api": [
   },
   {
     "type": "post",
+    "url": "/api/article_class/save",
+    "title": "文章类-编辑 OR 新增",
+    "version": "1.0.0",
+    "name": "article_class_save",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/article_class/save"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "admin_id",
+            "description": "<p>管理员唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account",
+            "description": "<p>登录账号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>记录唯一ID 0表示新增 其他表示编辑</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>文章类名称</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "sort",
+            "description": "<p>排序 降序排列</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "enable",
+            "description": "<p>启用 1是 0否</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "deleted",
+            "description": "<p>是否删除 1是 0否（为1时其他字段可不传）</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": \"\",\n\t    \"status\": 0,\n\t    \"message\": \"\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Article_class.php",
+    "groupTitle": "admin"
+  },
+  {
+    "type": "get",
+    "url": "/api/article/page",
+    "title": "文章-单页",
+    "version": "1.0.0",
+    "name": "article_page",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/article/page"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集 键名既是别名参数alias</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"about_us\": \"关于我们\",\n        \"join_us\": \"加入我们\",\n        \"contact_us\": \"联系我们\",\n        \"protocol\": \"用户协议\",\n        \"copyright\": \"版权申明\"\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Article.php",
+    "groupTitle": "admin"
+  },
+  {
+    "type": "post",
+    "url": "/api/article/save",
+    "title": "文章-编辑 OR 新增",
+    "version": "1.0.0",
+    "name": "article_save",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/article/save"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "admin_id",
+            "description": "<p>管理员唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account",
+            "description": "<p>登录账号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>记录唯一ID 0表示新增 其他表示编辑</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>文章标题</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "article_class_id",
+            "description": "<p>文章文章类ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "content",
+            "description": "<p>文章标题</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "alias",
+            "description": "<p>别名 发布文章为空 单页需要传递</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "sort",
+            "description": "<p>排序 降序排列</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "enable",
+            "description": "<p>启用 1是 0否</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "deleted",
+            "description": "<p>是否删除 1是 0否（为1时其他字段可不传）</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": \"\",\n\t    \"status\": 0,\n\t    \"message\": \"\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Article.php",
+    "groupTitle": "admin"
+  },
+  {
+    "type": "post",
     "url": "/api/goods_attr_category/save",
     "title": "商品属性类-编辑 OR 新增",
     "version": "1.0.0",
@@ -1704,6 +2043,409 @@ define({ "api": [
       ]
     },
     "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Address.php",
+    "groupTitle": "api"
+  },
+  {
+    "type": "get",
+    "url": "/api/article",
+    "title": "文章-列表",
+    "version": "1.0.0",
+    "name": "article",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/article"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "article_class_id",
+            "description": "<p>文章类ID 0表示所有</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.id",
+            "description": "<p>文章唯一ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.title",
+            "description": "<p>文章标题</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": [\n\t        {\n\t            \"id\": \"1\",\n\t            \"title\": \"热门\"\n\t        },\n\t        {\n\t            \"id\": \"2\",\n\t            \"title\": \"靓号\"\n\t        }\n\t    ],\n\t    \"status\": 0,\n\t    \"message\": \"成功\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Article.php",
+    "groupTitle": "api"
+  },
+  {
+    "type": "get",
+    "url": "/api/article_class",
+    "title": "文章类-列表",
+    "version": "1.0.0",
+    "name": "article_class",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/article_class"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.id",
+            "description": "<p>文章类唯一ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.name",
+            "description": "<p>文章类名称</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": [\n\t        {\n\t            \"id\": \"1\",\n\t            \"name\": \"热门\"\n\t        },\n\t        {\n\t            \"id\": \"2\",\n\t            \"name\": \"靓号\"\n\t        }\n\t    ],\n\t    \"status\": 0,\n\t    \"message\": \"成功\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Article_class.php",
+    "groupTitle": "api"
+  },
+  {
+    "type": "get",
+    "url": "/api/article/page_view",
+    "title": "文章-单页查看",
+    "version": "1.0.0",
+    "name": "article_page_view",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/article/page_view"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "alias",
+            "description": "<p>别名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.id",
+            "description": "<p>文章唯一ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.title",
+            "description": "<p>文章标题</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.content",
+            "description": "<p>文章详情</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": {\n\t        \"id\": \"1\",\n\t        \"title\": \"热门\",\n\t        \"content\": \"热门\"\n\t    },\n\t    \"status\": 0,\n\t    \"message\": \"成功\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Article.php",
+    "groupTitle": "api"
+  },
+  {
+    "type": "get",
+    "url": "/api/article/view",
+    "title": "文章-查看",
+    "version": "1.0.0",
+    "name": "article_view",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/article/view"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>文章ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.id",
+            "description": "<p>文章唯一ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.title",
+            "description": "<p>文章标题</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.content",
+            "description": "<p>文章详情</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": {\n\t        \"id\": \"1\",\n\t        \"title\": \"热门\",\n\t        \"content\": \"热门\"\n\t    },\n\t    \"status\": 0,\n\t    \"message\": \"成功\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Article.php",
     "groupTitle": "api"
   },
   {
@@ -3249,6 +3991,98 @@ define({ "api": [
   {
     "type": "get",
     "url": "/api/shop/pretty_index",
+    "title": "商城-靓号其他",
+    "version": "1.0.0",
+    "name": "shop_pretty_index",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/shop/pretty_index"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pretty_count",
+            "description": "<p>靓号位数 0表示默认靓号</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "data.pretty",
+            "description": "<p>靓号列表</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"pretty\": [\n            {\n                \"id\": \"1\",\n                \"pretty_id\": \"10000\",\n                \"price\": \"5000.00\"\n            }\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Shop.php",
+    "groupTitle": "api"
+  },
+  {
+    "type": "get",
+    "url": "/api/shop/pretty_index",
     "title": "商城-靓号首页",
     "version": "1.0.0",
     "name": "shop_pretty_index",
@@ -3336,98 +4170,6 @@ define({ "api": [
         {
           "title": "Success-Response:",
           "content": "{\n    \"data\": {\n        \"ad\": [\n            {\n                \"title\": \"22\",\n                \"link\": \"\",\n                \"image\": \"\"\n            },\n            {\n                \"title\": \"1\",\n                \"link\": \"\",\n                \"image\": \"\"\n            }\n        ],\n        \"pretty\": [\n            {\n                \"id\": \"1\",\n                \"pretty_id\": \"10000\",\n                \"price\": \"5000.00\"\n            }\n        ],\n        \"pretty_count\": [\n            {\n                \"pretty_count\": \"3\"\n            },\n            {\n                \"pretty_count\": \"4\"\n            },\n            {\n                \"pretty_count\": \"5\"\n            }\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "examples": [
-        {
-          "title": "Error-Response:",
-          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Shop.php",
-    "groupTitle": "api"
-  },
-  {
-    "type": "get",
-    "url": "/api/shop/pretty_index",
-    "title": "商城-靓号其他",
-    "version": "1.0.0",
-    "name": "shop_pretty_index",
-    "group": "api",
-    "sampleRequest": [
-      {
-        "url": "/api/shop/pretty_index"
-      }
-    ],
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "user_id",
-            "description": "<p>用户唯一ID</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "sign",
-            "description": "<p>校验签名</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "pretty_count",
-            "description": "<p>靓号位数 0表示默认靓号</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "status",
-            "description": "<p>接口状态 0成功 其他异常</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>接口信息描述</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Object",
-            "optional": false,
-            "field": "data",
-            "description": "<p>接口数据集</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Object[]",
-            "optional": false,
-            "field": "data.pretty",
-            "description": "<p>靓号列表</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "{\n    \"data\": {\n        \"pretty\": [\n            {\n                \"id\": \"1\",\n                \"pretty_id\": \"10000\",\n                \"price\": \"5000.00\"\n            }\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
