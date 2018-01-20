@@ -819,6 +819,337 @@ define({ "api": [
     "groupTitle": "admin"
   },
   {
+    "type": "get",
+    "url": "/api/admin/pretty",
+    "title": "靓号-列表",
+    "version": "1.0.0",
+    "name": "pretty",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/admin/pretty"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "admin_id",
+            "description": "<p>管理员唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account",
+            "description": "<p>登录账号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "data.pretty",
+            "description": "<p>靓号列表</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.pretty.id",
+            "description": "<p>靓号序号</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.pretty.created_at",
+            "description": "<p>靓号创建时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.pretty.updated_at",
+            "description": "<p>靓号更新时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.pretty.deleted",
+            "description": "<p>删除 0否 1是</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.pretty.status",
+            "description": "<p>状态 0初始化 其他</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.pretty.enable",
+            "description": "<p>启用 1是 0否</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.pretty.sort",
+            "description": "<p>排序 降序</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.pretty.pretty_id",
+            "description": "<p>靓号</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.pretty.pretty_count",
+            "description": "<p>靓号位数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.pretty.price",
+            "description": "<p>价格</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.pretty.buyer_id",
+            "description": "<p>购买用户ID 0表示未卖出 同用户字段序号</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.pretty.is_pretty",
+            "description": "<p>是否靓号 0否 1是</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "data.user",
+            "description": "<p>靓号购买用户</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.user.nickname",
+            "description": "<p>用户昵称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.user.header",
+            "description": "<p>用户头像</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"user\": {\n            \"1\": {\n                \"nickname\": \"aicode\",\n                \"header\": \"\"\n            }\n        },\n        \"pretty\": {\n            \"count\": 1,\n            \"list\": [\n                {\n                    \"id\": \"1\",\n                    \"created_at\": \"2018-01-20 12:42:49\",\n                    \"updated_at\": \"2018-01-20 12:45:41\",\n                    \"deleted\": \"0\",\n                    \"status\": \"0\",\n                    \"enable\": \"1\",\n                    \"sort\": \"0\",\n                    \"pretty_id\": \"10000\",\n                    \"pretty_count\": \"5\",\n                    \"price\": \"5000.00\",\n                    \"buyer_id\": \"1\",\n                    \"is_pretty\": \"1\"\n                }\n            ]\n        }\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Pretty.php",
+    "groupTitle": "admin"
+  },
+  {
+    "type": "post",
+    "url": "/api/admin/pretty/save",
+    "title": "靓号-编辑 OR 新增",
+    "version": "1.0.0",
+    "name": "pretty_save",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/admin/pretty/save"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "admin_id",
+            "description": "<p>管理员唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account",
+            "description": "<p>登录账号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>记录唯一ID 0表示新增 其他表示编辑</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "sort",
+            "description": "<p>排序 降序排列</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "pretty_id",
+            "description": "<p>靓号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "price",
+            "description": "<p>价格</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "is_pretty",
+            "description": "<p>是否靓号 0否 1是</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "enable",
+            "description": "<p>启用 1是 0否</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "deleted",
+            "description": "<p>是否删除 1是 0否（为1时其他字段可不传）</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": \"\",\n\t    \"status\": 0,\n\t    \"message\": \"\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Pretty.php",
+    "groupTitle": "admin"
+  },
+  {
     "type": "post",
     "url": "/api/security_question/save",
     "title": "密保-编辑 OR 新增",
@@ -1759,142 +2090,184 @@ define({ "api": [
           },
           {
             "group": "Success 200",
-            "type": "Object[]",
+            "type": "Object",
             "optional": false,
             "field": "data",
             "description": "<p>接口数据集</p>"
           },
           {
             "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data.user",
+            "description": "<p>发布用户</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.id",
+            "field": "data.user.nickname",
+            "description": "<p>用户昵称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.user.header",
+            "description": "<p>用户头像</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data.goods",
+            "description": "<p>商品</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "data.goods.count",
+            "description": "<p>商品总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "data.goods.list",
+            "description": "<p>商品列表</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.goods.list.id",
             "description": "<p>商品唯一ID</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.created_at",
+            "field": "data.goods.list.created_at",
             "description": "<p>创建时间</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.updated_at",
+            "field": "data.goods.list.updated_at",
             "description": "<p>更新时间</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.status",
+            "field": "data.goods.list.status",
             "description": "<p>状态 0初始化 1下架 其他</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.enable",
+            "field": "data.goods.list.enable",
             "description": "<p>启用 1是 0否</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.sort",
+            "field": "data.goods.list.sort",
             "description": "<p>排序 降序</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.name",
+            "field": "data.goods.list.name",
             "description": "<p>商品名称</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.stock",
+            "field": "data.goods.list.stock",
             "description": "<p>库存</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.sale_price",
+            "field": "data.goods.list.sale_price",
             "description": "<p>销售价</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.freight_fee",
+            "field": "data.goods.list.freight_fee",
             "description": "<p>邮费</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.send_mode",
+            "field": "data.goods.list.send_mode",
             "description": "<p>发货模式</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.use_point_rate",
+            "field": "data.goods.list.use_point_rate",
             "description": "<p>最大积分使用量</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.e_invoice",
+            "field": "data.goods.list.e_invoice",
             "description": "<p>支持电子发票 0否 1是</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.city_partner_rate",
+            "field": "data.goods.list.city_partner_rate",
             "description": "<p>城市合伙人分销比例</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.goods_detail",
+            "field": "data.goods.list.goods_detail",
             "description": "<p>商品详情</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.goods_image",
+            "field": "data.goods.list.goods_image",
             "description": "<p>商品主图</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.goods_attr",
+            "field": "data.goods.list.goods_attr",
             "description": "<p>商品属性</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.goods_ticket",
+            "field": "data.goods.list.goods_ticket",
             "description": "<p>优惠券</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.shop_class_id",
+            "field": "data.goods.list.shop_class_id",
             "description": "<p>商品分类ID</p>"
           }
         ]
@@ -1902,7 +2275,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n   \"data\": [\n      {\n          \"id\": \"2\",\n          \"created_at\": \"2018-01-18 16:44:33\",\n          \"updated_at\": \"2018-01-18 16:44:33\",\n          \"deleted\": \"0\",\n          \"status\": \"0\",\n          \"enable\": \"1\",\n          \"sort\": \"0\",\n          \"name\": \"商品名称\",\n          \"stock\": \"1999\",\n          \"original_price\": \"55.00\",\n          \"sale_price\": \"55.00\",\n          \"freight_fee\": \"6.00\",\n          \"send_mode\": \"1\",\n          \"use_point_rate\": \"100.00\",\n          \"e_invoice\": \"0\",\n          \"city_partner_rate\": \"0.00\",\n           \"two_level_rate\": \"0.00\",\n           \"goods_detail\": \"[]\",\n           \"seller_uid\": \"1\",\n           \"goods_image\": \"[\\\"/uploads/2018/01/18/f619795f7f2eb345645a67f7a7df4b78.png\\\"]\",\n           \"goods_attr\": \"{}\",\n           \"goods_ticket\": \"[{\\\"full_amount\\\":\\\"66\\\",\\\"free_amount\\\":\\\"3\\\"}]\",\n           \"default_image\": \"/uploads/2018/01/18/f619795f7f2eb345645a67f7a7df4b78.png\",\n           \"shop_class_id\": \"0\"\n       }\n   ],\n   \"status\": 0,\n   \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": {\n        \"user\": {\n            \"1\": {\n                \"nickname\": \"aicode\",\n                \"header\": \"\"\n            }\n        },\n        \"goods\": {\n            \"count\": 2,\n            \"list\": [\n                {\n                    \"id\": \"1\",\n                    \"created_at\": \"2018-01-18 15:56:27\",\n                    \"updated_at\": \"2018-01-18 15:56:27\",\n                    \"deleted\": \"0\",\n                    \"status\": \"0\",\n                    \"enable\": \"1\",\n                    \"sort\": \"0\",\n                    \"name\": \"测试商品\",\n                    \"stock\": \"1000\",\n                    \"original_price\": \"198.00\",\n                    \"sale_price\": \"198.00\",\n                    \"freight_fee\": \"6.00\",\n                    \"send_mode\": \"1\",\n                    \"use_point_rate\": \"1.00\",\n                    \"e_invoice\": \"1\",\n                    \"city_partner_rate\": \"2.00\",\n                    \"two_level_rate\": \"3.00\",\n                    \"goods_detail\": \"[\\\"/uploads/2018/01/18/2ea459123697d30c36a707e155dc23da.png\\\"]\",\n                    \"seller_uid\": \"1\",\n                    \"goods_image\": \"[\\\"/uploads/2018/01/18/3e14d5652673b8a225d4772f13441ab1.jpeg\\\"]\",\n                    \"goods_attr\": \"{\\\"6\\\":[\\\"XL\\\",\\\"L\\\"],\\\"8\\\":[\\\"白色\\\",\\\"绿色\\\"]}\",\n                    \"goods_ticket\": \"[{\\\"full_amount\\\":\\\"100\\\",\\\"free_amount\\\":\\\"6\\\"}]\",\n                    \"default_image\": \"/uploads/2018/01/18/3e14d5652673b8a225d4772f13441ab1.jpeg\",\n                    \"shop_class_id\": \"0\"\n                }\n            ]\n        }\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
@@ -2186,7 +2559,7 @@ define({ "api": [
             "type": "Number",
             "optional": false,
             "field": "use_point_rate",
-            "description": "<p>积分使用比例</p>"
+            "description": "<p>最大积分使用量</p>"
           },
           {
             "group": "Parameter",
@@ -2229,6 +2602,34 @@ define({ "api": [
             "optional": false,
             "field": "goods_detail",
             "description": "<p>商品详情 json [&quot;/uploads/2018/01/17/09c4a26e54ab231b734870b510771265.png&quot;]</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "enable",
+            "description": "<p>启用 1是 0否</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "deleted",
+            "description": "<p>是否删除 1是 0否（为1时其他字段可不传）</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "sort",
+            "description": "<p>排序 降序排列</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "shop_class_id",
+            "description": "<p>商品分类ID</p>"
           }
         ]
       }
@@ -2565,7 +2966,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/api/shop",
-    "title": "商城-类型查商品",
+    "title": "商城-首页",
     "version": "1.0.0",
     "name": "shop",
     "group": "api",
@@ -2756,7 +3157,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/api/shop/goods",
-    "title": "商城-获取商品",
+    "title": "商城-商品",
     "version": "1.0.0",
     "name": "shop_goods",
     "group": "api",
@@ -2847,14 +3248,14 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/api/shop/pretty",
-    "title": "商城-靓号",
+    "url": "/api/shop/pretty_index",
+    "title": "商城-靓号首页",
     "version": "1.0.0",
-    "name": "shop_pretty",
+    "name": "shop_pretty_index",
     "group": "api",
     "sampleRequest": [
       {
-        "url": "/api/shop/pretty"
+        "url": "/api/shop/pretty_index"
       }
     ],
     "parameter": {
@@ -2873,6 +3274,13 @@ define({ "api": [
             "optional": false,
             "field": "sign",
             "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pretty_count",
+            "description": "<p>靓号位数 0表示默认靓号</p>"
           }
         ]
       }
@@ -2896,31 +3304,130 @@ define({ "api": [
           },
           {
             "group": "Success 200",
-            "type": "Object[]",
+            "type": "Object",
             "optional": false,
             "field": "data",
             "description": "<p>接口数据集</p>"
           },
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "Object[]",
             "optional": false,
-            "field": "data.id",
-            "description": "<p>商城唯一ID</p>"
+            "field": "data.ad",
+            "description": "<p>广告集</p>"
           },
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "Object[]",
             "optional": false,
-            "field": "data.name",
-            "description": "<p>商城名称</p>"
+            "field": "data.pretty",
+            "description": "<p>靓号列表</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "data.pretty_count",
+            "description": "<p>靓号位数</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n\t    \"data\": [\n\t        {\n\t            \"id\": \"1\",\n\t            \"name\": \"热门\"\n\t        },\n\t        {\n\t            \"id\": \"2\",\n\t            \"name\": \"靓号\"\n\t        }\n\t    ],\n\t    \"status\": 0,\n\t    \"message\": \"成功\"\n\t}",
+          "content": "{\n    \"data\": {\n        \"ad\": [\n            {\n                \"title\": \"22\",\n                \"link\": \"\",\n                \"image\": \"\"\n            },\n            {\n                \"title\": \"1\",\n                \"link\": \"\",\n                \"image\": \"\"\n            }\n        ],\n        \"pretty\": [\n            {\n                \"id\": \"1\",\n                \"pretty_id\": \"10000\",\n                \"price\": \"5000.00\"\n            }\n        ],\n        \"pretty_count\": [\n            {\n                \"pretty_count\": \"3\"\n            },\n            {\n                \"pretty_count\": \"4\"\n            },\n            {\n                \"pretty_count\": \"5\"\n            }\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Shop.php",
+    "groupTitle": "api"
+  },
+  {
+    "type": "get",
+    "url": "/api/shop/pretty_index",
+    "title": "商城-靓号其他",
+    "version": "1.0.0",
+    "name": "shop_pretty_index",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/shop/pretty_index"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pretty_count",
+            "description": "<p>靓号位数 0表示默认靓号</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "data.pretty",
+            "description": "<p>靓号列表</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"pretty\": [\n            {\n                \"id\": \"1\",\n                \"pretty_id\": \"10000\",\n                \"price\": \"5000.00\"\n            }\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
