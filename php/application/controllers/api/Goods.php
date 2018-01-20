@@ -202,13 +202,17 @@ class Goods extends API_Controller {
 	 * @apiParam {Number} freight_fee 邮费
 	 * @apiParam {Number} send_mode 发货模式
 	 * @apiParam {String} goods_ticket 优惠券 json [{full_amount: 500, free_amount: 50}, {full_amount: 1000, free_amount: 150}]
-	 * @apiParam {Number} use_point_rate 积分使用比例
+	 * @apiParam {Number} use_point_rate 最大积分使用量
 	 * @apiParam {Number} e_invoice 是否支持发票
 	 * @apiParam {Number} city_partner_rate 城市合伙人分销比例
 	 * @apiParam {Number} two_level_rate 二级分销比例
 	 * @apiParam {String} goods_image 商品主图 json ["\/uploads\/2018\/01\/17\/09c4a26e54ab231b734870b510771265.png"]
 	 * @apiParam {String} goods_attr 商品属性 json {"9":["M","X","S","L"],"8":["红色","蓝色"]}
 	 * @apiParam {String} goods_detail 商品详情 json ["\/uploads\/2018\/01\/17\/09c4a26e54ab231b734870b510771265.png"]
+	 * @apiParam {Number} enable 启用 1是 0否
+	 * @apiParam {Number} deleted 是否删除 1是 0否（为1时其他字段可不传）
+	 * @apiParam {Number} sort 排序 降序排列
+	 * @apiParam {Number} shop_class_id 商品分类ID
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -236,7 +240,7 @@ class Goods extends API_Controller {
 				array(
 					'name', 'stock', 'sale_price', 'freight_fee', 'send_mode',
 					'goods_ticket', 'use_point_rate', 'e_invoice', 'city_partner_rate', 'two_level_rate',
-					'goods_image', 'goods_attr', 'goods_detail'
+					'goods_image', 'goods_attr', 'goods_detail', 'deleted', 'enable', 'sort', 'shop_class_id'
 				),
 				$this->input->post(),
 				UPDATE_VALID
@@ -247,8 +251,13 @@ class Goods extends API_Controller {
 				$flag = $this->Goods_model->update_by(array('seller_uid' => $this->user_id, 'id' => $id), $update);
 			}else{
 				unset($params['deleted']);
-				if(isset($params['enable']) && $params['enable']){
+				if(isset($params['enable'])){
 					$params['deleted'] = 0;
+					if($params['enable']){
+						$params['status'] = 0;
+					}else{
+						$params['status'] = 1;
+					}
 				}
 				$this->setGoodsInfo($params);
 				$flag = $this->Goods_model->update_by(array('seller_uid' => $this->user_id, 'id' => $id), $params);
@@ -283,9 +292,13 @@ class Goods extends API_Controller {
 
 	protected function setGoodsInfo(&$params = array())
 	{
-		$params['original_price'] = $params['sale_price'];
-		$goods_image = json_decode($params['goods_image'], true);
-		$params['default_image'] = $goods_image[0];
+		if($params['sale_price'] !== '' || $params['sale_price'] != UPDATE_VALID){
+			$params['original_price'] = $params['sale_price'];
+		}
+		if($params['goods_image'] !== '' || $params['goods_image'] != UPDATE_VALID){
+			$goods_image = json_decode($params['goods_image'], true);
+			$params['default_image'] = $goods_image[0];
+		}
 	}
 
 	protected function check_params($act, $params)
