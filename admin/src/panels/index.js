@@ -19,11 +19,16 @@ import MemberEncrypted from './MemberEncrypted';
 import GoodsManager from './GoodsManager';
 import ArticleList from './ArticleList';
 import ArticleCategory from './ArticleCategory';
+import ArticleSingleManager from './ArticleSingleManager';
 export const panelsList =  [
     {
         path:'/shop/GoodsManager',
         component:GoodsManager,
         title:'商品管理',
+    },{
+        path:'/article/ArticleSingleManager',
+        component:ArticleSingleManager,
+        title:'单页管理',
     },
     {
         path:'/article/ArticleCategory',

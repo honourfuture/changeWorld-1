@@ -3,10 +3,10 @@ import {action} from 'mobx';
 import {BaseComponent,Base} from '../../common';
 import { Table, Input,Popconfirm,Switch,Button,Spin,message } from 'antd';
 import {remove} from 'lodash';
-import './GoodsProperty.less';
+import './ArticleSingleManager.less';
 const Search = Input.Search;
 
-export default class GoodsProperty extends BaseComponent{
+export default class ArticleSingleManager extends BaseComponent{
 	store={
 		list:[],
 		searchStr:''
@@ -19,7 +19,7 @@ export default class GoodsProperty extends BaseComponent{
 				dataIndex: 'sort',
 				width: '10%',
 				render: (text, record) => this.renderInput(text, record, 'sort'),
-			}, 
+			},
 			{
 				title: '更新时间',
 				dataIndex: 'updated_at',
@@ -88,14 +88,6 @@ export default class GoodsProperty extends BaseComponent{
 			<Switch checked={parseInt(record.enable,10)===1} onChange={(value)=>this.onSwitch(record.id,value?1:0,column)} />
 		)
 	}
-	//编辑
-	@action.bound
-	onEditChange(id,value,column) {
-		const list = this.store.list.slice();
-		const itemData = list.find(item=>id === item.id);
-		itemData[column] = value;
-		this.store.list = list;
-	}
 	//是否启用
 	@action.bound
 	onSwitch(id,value,column){
@@ -104,12 +96,20 @@ export default class GoodsProperty extends BaseComponent{
 		itemData[column] = value;
 		this.onSave(id);
 	}
+	//内容编辑
+	@action.bound
+	onEditChange(id, value, column) {
+		const list = this.store.list.slice();
+		const itemData = list.find(item=>id === item.id);
+		itemData[column] = value;
+		this.store.list = list;
+	}
 	//保存
 	@action.bound
 	onSave(id) {
 		const list = this.store.list.slice();
-		const itemData = list.find(item=>id === item.id);
-		Base.POST({act:'goods_attr_category',op:'save',...itemData},(res)=>{
+		const itemData = this.store.list.find(item=>id === item.id);
+		Base.POST({act:'shop_class',op:'save',...itemData,sort:parseInt(itemData.sort,10)},(res)=>{
 			itemData.editable = false;
 			itemData.updated_at = Base.getTimeFormat(new Date().getTime()/1000,2);
 			itemData.id === 0 && (itemData.id = res.data.id);
@@ -125,8 +125,7 @@ export default class GoodsProperty extends BaseComponent{
 	//删除
 	@action.bound
 	onDelete(id){
-		Base.POST({act:'goods_attr_category',op:'save',id,deleted:"1"},()=>remove(this.store.list,item=>id === item.id),this);
-		
+		Base.POST({act:'shop_class',op:'save',id,deleted:"1"},()=>remove(this.store.list,item=>id === item.id),this);
 	}
 	//添加
 	@action.bound
@@ -134,7 +133,7 @@ export default class GoodsProperty extends BaseComponent{
 		if(this.store.list.find(item=>item.id === 0)){
 			return message.info('请保存后再新建');
 		}
-		this.store.list.unshift({sort:'0',name:'',editable:true,deleted:'0',enable:'1'});
+		this.store.list.unshift({id:0,name:'',editable:true,deleted:'0',enable:'1',sort:0});
 	}
 	//搜索
 	@action.bound
@@ -142,7 +141,7 @@ export default class GoodsProperty extends BaseComponent{
 		this.store.searchStr = e.target.value;
 	}
 	componentDidMount() {
-		Base.GET({act:'goods_attr_category',op:'index'},(res)=>{
+		Base.GET({act:'shop_class',op:'index'},(res)=>{
 			this.store.list = res.data;
 			this.cacheData = res.data.map(item => ({ ...item }));
 		},this);
@@ -153,7 +152,7 @@ export default class GoodsProperty extends BaseComponent{
 			return parseInt(item.deleted,10) === 0 && (!searchStr || item.name.indexOf(searchStr) !== -1);
 		})
 		return (
-			<Spin ref='spin' wrapperClassName='GoodsProperty' spinning={false}>
+			<Spin ref='spin' wrapperClassName='ArticleSingleManager' spinning={false}>
 				<div className='pb10'>
 					<Button onClick={this.onAdd}>新增+</Button>
 					<Search
@@ -162,7 +161,7 @@ export default class GoodsProperty extends BaseComponent{
 						style={{ width: 130,marginLeft:10 }}
 					/>
 				</div>
-				<Table className='mt16' bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={{hideOnSinglePage:true}}/>
+				<Table className="mt16" bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={{hideOnSinglePage:true}}/>
 			</Spin>
 		)
 	}

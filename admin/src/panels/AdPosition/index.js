@@ -115,8 +115,8 @@ export default class AdPosition extends BaseComponent{
 	onSave(id) {
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
-		itemData.editable = false;
 		Base.POST({act:'ad_position',op:'save',mod:'admin',...itemData},(res)=>{
+			itemData.editable = false;
 			itemData.updated_at = Base.getTimeFormat(new Date().getTime()/1000,2);
 			itemData.id === 0 && (itemData.id = res.data.id);
 			this.store.list = list;

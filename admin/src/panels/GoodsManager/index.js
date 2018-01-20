@@ -4,75 +4,9 @@ import {BaseComponent,Base} from '../../common';
 import { Table, Input,Popconfirm,Switch,Button,Spin,message,Select,Modal,Row, Col} from 'antd';
 import './GoodsManager.less';
 import {remove} from 'lodash';
+
+import {Test2} from '../../components/Test2';
 const Option = Select.Option;
-
-class GoodModal extends BaseComponent{
-	@action.bound
-	hideModal(){
-		const {callBack} = this.props;
-		callBack && callBack();
-	}
-	render(){
-		const {item,visible} = this.props;
-		console.log(item);
-		return (
-			<Modal
-	          	title="商品详情"
-	          	visible={visible}
-	          	onOk={this.hideModal}
-          		onCancel={this.hideModal}
-          		closable={false}
-	          	okText="确认"
-	          	cancelText="取消"
-	        >
-	          	<Row gutter={24}>
-	          		<Col className="gutter-row" span={6}>
-				        <div className="gutter-box">测试</div>
-				    </Col>
-				    <Col className="gutter-row" span={18}>
-				        <div className="gutter-box">测试</div>
-				    </Col>
-	          	</Row>
-	          	<Row gutter={24}>
-	          		<Col className="gutter-row" span={6}>
-				        <div className="gutter-box">测试</div>
-				    </Col>
-				    <Col className="gutter-row" span={18}>
-				        <div className="gutter-box">测试</div>
-				    </Col>
-	          	</Row>
-	          	<Row gutter={24}>
-	          		<Col className="gutter-row" span={6}>
-				        <div className="gutter-box">测试</div>
-				    </Col>
-				    <Col className="gutter-row" span={18}>
-				        <div className="gutter-box">测试</div>
-				    </Col>
-	          	</Row>
-	          	<Row gutter={24}>
-	          		<Col className="gutter-row" span={6}>
-				        <div className="gutter-box">测试</div>
-				    </Col>
-				    <Col className="gutter-row" span={18}>
-				        <div className="gutter-box">测试</div>
-				    </Col>
-	          	</Row>
-	          	<Row gutter={24}>
-	          		<Col className="gutter-row" span={6}>
-				        <div className="gutter-box">测试</div>
-				    </Col>
-				    <Col className="gutter-row" span={18}>
-				        <div className="gutter-box">测试</div>
-				    </Col>
-	          	</Row>
-	        </Modal>
-		)
-	}
-}
-
-
-
-
 
 const EditableCell = ({ editable, value, onChange, type}) => (
 	<div>
@@ -88,7 +22,7 @@ export default class GoodsManager extends BaseComponent{
 		user:{},
 		goodsClass:[],
 		visible:false,
-		testList:[],
+		readId:"",
 	}
 	constructor(props) {
 		super(props);
@@ -161,7 +95,7 @@ export default class GoodsManager extends BaseComponent{
 							:
 							<span>
 								<a onClick={() => this.onEditChange(id,true,'editable')}>编辑</a>&nbsp;&nbsp;
-								<a onClick={() => this.onRead(record)}>查看</a>
+								<a onClick={() => this.onRead(id)}>查看</a>
 								<Popconfirm title="确认删除?" okText='确定' cancelText='取消' onConfirm={() => this.onDelete(id)}>
 									<a className='ml10 gray'>删除</a>
 								</Popconfirm>
@@ -174,6 +108,7 @@ export default class GoodsManager extends BaseComponent{
 		];
 	}
 	renderStoreInfo(text,record,column){
+		console.log(text,"texttexttexttexttext")
 		const {user} = this.store;
 		return (
 			<div>
@@ -246,9 +181,8 @@ export default class GoodsManager extends BaseComponent{
 	}
 	//查看
 	@action.bound
-	onRead(value){
-		console.log(value);
-		this.store.testList = value;
+	onRead(id){
+		this.store.readId = id;
 		this.store.visible = true;
 	}
 	//是否启用
@@ -257,7 +191,8 @@ export default class GoodsManager extends BaseComponent{
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
 		itemData[column] = value;
-		Base.POST({act:'goods',op:'save',...itemData},()=>this.store.list = list,this);
+		this.onSave(id);
+		// Base.POST({act:'goods',op:'save',...itemData},()=>this.store.list = list,this);
 	}
 	//取消
 	@action.bound
@@ -286,14 +221,15 @@ export default class GoodsManager extends BaseComponent{
 		},this);
 	}
 	render(){
-		let {list,testList,visible} = this.store;
+		let {list,readId,user,visible} = this.store;
 		const showList = list.filter(item=>{
 			return parseInt(item.deleted,10) === 0;
 		});
 		return (
 			<div className='GoodsManager'>
 				<Table className="mt16" bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={false} />
-				<GoodModal visible={visible} item={testList} callBack={this.onCloseWindow}/>
+				{/*<GoodModal visible={visible} item={list} user={user} rId={readId} callBack={this.onCloseWindow}/>*/}
+				<Test2 visible={visible} item={list} user={user} rId={readId} callBack={this.onCloseWindow} />
 			</div>
 		)
 	}

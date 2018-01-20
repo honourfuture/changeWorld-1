@@ -1,7 +1,7 @@
 import React from 'react';
 import {action} from 'mobx';
 import {BaseComponent,Base} from '../../common';
-import { Table, Input,Popconfirm,Switch,Button,Spin,message,DatePicker } from 'antd';
+import { Table, Input,Popconfirm,Switch,Button,Spin,message } from 'antd';
 import './MemberEncrypted.less';
 import {remove} from 'lodash';
 
@@ -93,8 +93,8 @@ export default class MemberEncrypted extends BaseComponent{
 	onSave(id) {
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
-		itemData.editable = false;
 		Base.POST({act:'security_question',op:'save',...itemData},(res)=>{
+			itemData.editable = false;
 			itemData.updated_at = Base.getTimeFormat(new Date().getTime()/1000,2);
 			itemData.id === 0 && (itemData.id = res.data.id);
 			this.store.list = list;
@@ -140,10 +140,10 @@ export default class MemberEncrypted extends BaseComponent{
 			return parseInt(item.deleted,10) === 0;
 		})
 		return (
-			<div className='MemberEncrypted'>
+			<Spin ref='spin' wrapperClassName='MemberEncrypted' spinning={false}>
 				<Button onClick={this.onAdd}>新增+</Button>
 				<Table className="mt16" bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={false} />
-			</div>
+			</Spin>
 		)
 	}
 };

@@ -141,8 +141,8 @@ export default class ShopNavList extends BaseComponent{
 	onSave(id) {
 		const list = this.store.list.slice();
 		const itemData = this.store.list.find(item=>id === item.id);
-		itemData.editable = false;
 		Base.POST({act:'shop_class',op:'save',...itemData,sort:parseInt(itemData.sort,10)},(res)=>{
+			itemData.editable = false;
 			itemData.updated_at = Base.getTimeFormat(new Date().getTime()/1000,2);
 			itemData.id === 0 && (itemData.id = res.data.id);
 			this.store.list = list;
