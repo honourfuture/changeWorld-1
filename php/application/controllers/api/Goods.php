@@ -114,6 +114,8 @@ class Goods extends API_Controller {
 		if($this->user_id){
 			$where['seller_uid'] = $this->user_id;
 		}
+
+		$this->search();
 		$ret['goods']['count'] = $this->Goods_model->count_by($where);
 		if($ret['goods']['count']){
 			$order_by = array('updated_at' => 'desc', 'id' => 'desc');

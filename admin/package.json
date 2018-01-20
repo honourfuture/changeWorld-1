@@ -5,6 +5,7 @@
   "dependencies": {
     "antd": "^3.0.3",
     "draftjs-to-html": "^0.8.2",
+    "html-to-draftjs": "^1.1.2",
     "js-cookie": "^2.2.0",
     "lodash": "^4.17.4",
     "lodash-decorators": "^4.5.0",

@@ -89,7 +89,7 @@ const menuData = [
         path: 'article',
         children: [
             {
-                name: '文章类',
+                name: '文章分类',
                 path: 'ArticleCategory',
             },
             {

@@ -3221,6 +3221,10 @@ html-minifier@^3.2.3:
     relateurl "0.2.x"
     uglify-js "3.3.x"
 
+html-to-draftjs@^1.1.2:
+  version "1.1.2"
+  resolved "http://registry.npm.taobao.org/html-to-draftjs/download/html-to-draftjs-1.1.2.tgz#33bb652df9e2dc24646a064c03b895628704cace"
+
 html-webpack-plugin@2.29.0:
   version "2.29.0"
   resolved "http://registry.npm.taobao.org/html-webpack-plugin/download/html-webpack-plugin-2.29.0.tgz#e987f421853d3b6938c8c4c8171842e5fd17af23"
