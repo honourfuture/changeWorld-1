@@ -2090,142 +2090,184 @@ define({ "api": [
           },
           {
             "group": "Success 200",
-            "type": "Object[]",
+            "type": "Object",
             "optional": false,
             "field": "data",
             "description": "<p>接口数据集</p>"
           },
           {
             "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data.user",
+            "description": "<p>发布用户</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.id",
+            "field": "data.user.nickname",
+            "description": "<p>用户昵称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.user.header",
+            "description": "<p>用户头像</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data.goods",
+            "description": "<p>商品</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "data.goods.count",
+            "description": "<p>商品总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "data.goods.list",
+            "description": "<p>商品列表</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.goods.list.id",
             "description": "<p>商品唯一ID</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.created_at",
+            "field": "data.goods.list.created_at",
             "description": "<p>创建时间</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.updated_at",
+            "field": "data.goods.list.updated_at",
             "description": "<p>更新时间</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.status",
+            "field": "data.goods.list.status",
             "description": "<p>状态 0初始化 1下架 其他</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.enable",
+            "field": "data.goods.list.enable",
             "description": "<p>启用 1是 0否</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.sort",
+            "field": "data.goods.list.sort",
             "description": "<p>排序 降序</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.name",
+            "field": "data.goods.list.name",
             "description": "<p>商品名称</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.stock",
+            "field": "data.goods.list.stock",
             "description": "<p>库存</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.sale_price",
+            "field": "data.goods.list.sale_price",
             "description": "<p>销售价</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.freight_fee",
+            "field": "data.goods.list.freight_fee",
             "description": "<p>邮费</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.send_mode",
+            "field": "data.goods.list.send_mode",
             "description": "<p>发货模式</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.use_point_rate",
+            "field": "data.goods.list.use_point_rate",
             "description": "<p>最大积分使用量</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.e_invoice",
+            "field": "data.goods.list.e_invoice",
             "description": "<p>支持电子发票 0否 1是</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.city_partner_rate",
+            "field": "data.goods.list.city_partner_rate",
             "description": "<p>城市合伙人分销比例</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.goods_detail",
+            "field": "data.goods.list.goods_detail",
             "description": "<p>商品详情</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.goods_image",
+            "field": "data.goods.list.goods_image",
             "description": "<p>商品主图</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.goods_attr",
+            "field": "data.goods.list.goods_attr",
             "description": "<p>商品属性</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.goods_ticket",
+            "field": "data.goods.list.goods_ticket",
             "description": "<p>优惠券</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.shop_class_id",
+            "field": "data.goods.list.shop_class_id",
             "description": "<p>商品分类ID</p>"
           }
         ]
@@ -2233,7 +2275,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n   \"data\": [\n      {\n          \"id\": \"2\",\n          \"created_at\": \"2018-01-18 16:44:33\",\n          \"updated_at\": \"2018-01-18 16:44:33\",\n          \"deleted\": \"0\",\n          \"status\": \"0\",\n          \"enable\": \"1\",\n          \"sort\": \"0\",\n          \"name\": \"商品名称\",\n          \"stock\": \"1999\",\n          \"original_price\": \"55.00\",\n          \"sale_price\": \"55.00\",\n          \"freight_fee\": \"6.00\",\n          \"send_mode\": \"1\",\n          \"use_point_rate\": \"100.00\",\n          \"e_invoice\": \"0\",\n          \"city_partner_rate\": \"0.00\",\n           \"two_level_rate\": \"0.00\",\n           \"goods_detail\": \"[]\",\n           \"seller_uid\": \"1\",\n           \"goods_image\": \"[\\\"/uploads/2018/01/18/f619795f7f2eb345645a67f7a7df4b78.png\\\"]\",\n           \"goods_attr\": \"{}\",\n           \"goods_ticket\": \"[{\\\"full_amount\\\":\\\"66\\\",\\\"free_amount\\\":\\\"3\\\"}]\",\n           \"default_image\": \"/uploads/2018/01/18/f619795f7f2eb345645a67f7a7df4b78.png\",\n           \"shop_class_id\": \"0\"\n       }\n   ],\n   \"status\": 0,\n   \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": {\n        \"user\": {\n            \"1\": {\n                \"nickname\": \"aicode\",\n                \"header\": \"\"\n            }\n        },\n        \"goods\": {\n            \"count\": 2,\n            \"list\": [\n                {\n                    \"id\": \"1\",\n                    \"created_at\": \"2018-01-18 15:56:27\",\n                    \"updated_at\": \"2018-01-18 15:56:27\",\n                    \"deleted\": \"0\",\n                    \"status\": \"0\",\n                    \"enable\": \"1\",\n                    \"sort\": \"0\",\n                    \"name\": \"测试商品\",\n                    \"stock\": \"1000\",\n                    \"original_price\": \"198.00\",\n                    \"sale_price\": \"198.00\",\n                    \"freight_fee\": \"6.00\",\n                    \"send_mode\": \"1\",\n                    \"use_point_rate\": \"1.00\",\n                    \"e_invoice\": \"1\",\n                    \"city_partner_rate\": \"2.00\",\n                    \"two_level_rate\": \"3.00\",\n                    \"goods_detail\": \"[\\\"/uploads/2018/01/18/2ea459123697d30c36a707e155dc23da.png\\\"]\",\n                    \"seller_uid\": \"1\",\n                    \"goods_image\": \"[\\\"/uploads/2018/01/18/3e14d5652673b8a225d4772f13441ab1.jpeg\\\"]\",\n                    \"goods_attr\": \"{\\\"6\\\":[\\\"XL\\\",\\\"L\\\"],\\\"8\\\":[\\\"白色\\\",\\\"绿色\\\"]}\",\n                    \"goods_ticket\": \"[{\\\"full_amount\\\":\\\"100\\\",\\\"free_amount\\\":\\\"6\\\"}]\",\n                    \"default_image\": \"/uploads/2018/01/18/3e14d5652673b8a225d4772f13441ab1.jpeg\",\n                    \"shop_class_id\": \"0\"\n                }\n            ]\n        }\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
