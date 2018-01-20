@@ -5,15 +5,6 @@ import { Table, Input,Popconfirm,Switch,Button,Spin,message,DatePicker } from 'a
 import './MemberEncrypted.less';
 import {remove} from 'lodash';
 
-const EditableCell = ({ editable, value, onChange, type}) => (
-	<div>
-		{editable
-			? <Input style={{ margin: '-5px 0' }} value={value} type={type} onChange={e => onChange(e.target.value)} />
-			: value
-		}
-	</div>
-);
-
 export default class MemberEncrypted extends BaseComponent{
 	store={
 		list:[],
@@ -30,7 +21,7 @@ export default class MemberEncrypted extends BaseComponent{
 			{
 				title: '题目',
 				dataIndex: 'title',
-				render: (text, record) => this.renderColumns(text, record, 'title'),
+				render: (text, record) => this.renderInput(text, record, 'title'),
 			}, 
 			{
 				title: '启用',
@@ -73,15 +64,16 @@ export default class MemberEncrypted extends BaseComponent{
 			</div>
 		);
 	}
-	renderColumns(text, record, column) {
+	renderInput(text, record, column){
+		const {editable} = record;
 		return (
-			<EditableCell
-				editable={record.editable}
-				value={text}
-				type={column==='id'?'number':'text'}
-				onChange={value => this.onEditChange(record.id, value, column)}
-			/>
-		);
+			<div>
+				{editable
+					? <Input style={{ margin: '-5px 0' }} value={text} type={column==='sort'?'number':'text'} onChange={e => this.onEditChange(record.id, e.target.value, column)} />
+					: text
+				}
+			</div>
+		)
 	}
 	renderSwitch(text,record,column){
 		return (

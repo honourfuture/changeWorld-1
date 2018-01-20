@@ -18,15 +18,6 @@ const linkConfig = [
 	},
 ]
 
-const EditableCell = ({ editable, value, onChange, type}) => (
-	<div>
-		{editable
-			? <Input style={{ margin: '-5px 0' }} value={value} type={type} onChange={e => onChange(e.target.value)} />
-			: value
-		}
-	</div>
-);
-
 export default class ShopNavList extends BaseComponent{
 	store={
 		list:[],
@@ -39,7 +30,7 @@ export default class ShopNavList extends BaseComponent{
 				title: '排序',
 				dataIndex: 'sort',
 				width: '10%',
-				render: (text, record) => this.renderColumns(text, record, 'sort'),
+				render: (text, record) => this.renderInput(text, record, 'sort'),
 			},
 			{
 				title: '更新时间',
@@ -51,7 +42,7 @@ export default class ShopNavList extends BaseComponent{
 				title: '标题',
 				dataIndex: 'name',
 				width: '15%',
-				render: (text, record) => this.renderColumns(text, record, 'name'),
+				render: (text, record) => this.renderInput(text, record, 'name'),
 			}, 
 			{
 				title: '链接',
@@ -99,15 +90,16 @@ export default class ShopNavList extends BaseComponent{
 			</div>
 		);
 	}
-	renderColumns(text, record, column) {
+	renderInput(text, record, column){
+		const {editable} = record;
 		return (
-			<EditableCell
-				editable={record.editable}
-				value={text}
-				type={column==='sort'?'number':'text'}
-				onChange={value => this.onEditChange(record.id, value, column)}
-			/>
-		);
+			<div>
+				{editable
+					? <Input style={{ margin: '-5px 0' }} value={text} type={column==='sort'?'number':'text'} onChange={e => this.onEditChange(record.id, e.target.value, column)} />
+					: text
+				}
+			</div>
+		)
 	}
 	renderSwitch(text,record,column){
 		return (
