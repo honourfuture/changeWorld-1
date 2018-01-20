@@ -9,15 +9,6 @@ const { RangePicker } = DatePicker;
 const Search = Input.Search;
 const Option = Select.Option;
 
-const EditableCell = ({ editable, value, onChange, type}) => (
-	<div>
-		{editable
-			? <Input style={{ margin: '-5px 0' }} value={value} type={type} onChange={e => onChange(e.target.value)} />
-			: value
-		}
-	</div>
-);
-
 export default class AdManager extends BaseComponent{
 	store={
 		list:[],
@@ -31,13 +22,13 @@ export default class AdManager extends BaseComponent{
 				title: 'sort',
 				dataIndex: 'id',
 				width: '5%',
-				render: (text, record) => this.renderColumns(text, record, 'sort'),
+				render: (text, record) => this.renderInput(text, record, 'sort'),
 			}, 
 			{
 				title: '标题',
 				dataIndex: 'title',
 				width: '8%',
-				render: (text, record) => this.renderColumns(text, record, 'title'),
+				render: (text, record) => this.renderInput(text, record, 'title'),
 			},
 			{
 				title: '广告图',
@@ -141,15 +132,16 @@ export default class AdManager extends BaseComponent{
 			/>:<div>{moment(start_time).format(formatStr)} 至 {moment(end_time).format(formatStr)}</div>}
 		</div>
 	}
-	renderColumns(text, record, column) {
+	renderInput(text, record, column){
+		const {editable} = record;
 		return (
-			<EditableCell
-				editable={record.editable}
-				value={text}
-				type={column==='sort'?'number':'text'}
-				onChange={value => this.onEditChange(record.id, value, column)}
-			/>
-		);
+			<div>
+				{editable
+					? <Input style={{ margin: '-5px 0' }} value={text} type={column==='sort'?'number':'text'} onChange={e => this.onEditChange(record.id, e.target.value, column)} />
+					: text
+				}
+			</div>
+		)
 	}
 	renderSwitch(text,record,column){
 		return (
@@ -193,7 +185,7 @@ export default class AdManager extends BaseComponent{
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
 		itemData[column] = value;
-		Base.POST({act:'ad',op:'save',mod:'admin',...itemData},()=>this.store.list = list,this);
+		this.onSave(id);
 	}
 	//保存
 	@action.bound
