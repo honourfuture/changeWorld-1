@@ -2,26 +2,35 @@ import React from 'react';
 import {action} from 'mobx';
 import {BaseComponent,Base} from '../../common';
 import { Table, Input,Popconfirm,Switch,Button,Spin,message } from 'antd';
-import './MemberEncrypted.less';
 import {remove} from 'lodash';
+import './ArticleSingleManager.less';
+const Search = Input.Search;
 
-export default class MemberEncrypted extends BaseComponent{
+export default class ArticleSingleManager extends BaseComponent{
 	store={
 		list:[],
+		searchStr:''
 	}
 	constructor(props) {
 		super(props);
 		this.columns = [
 			{
-				title: 'id',
-				dataIndex: 'id',
+				title: '排序',
+				dataIndex: 'sort',
 				width: '10%',
-				render: (text, record) => this.renderText(text, record, 'id'),
+				render: (text, record) => this.renderInput(text, record, 'sort'),
+			},
+			{
+				title: '更新时间',
+				dataIndex: 'updated_at',
+				width: '20%',
+				render: (text, record) => this.renderText(text, record, 'updated_at'),
 			}, 
 			{
-				title: '题目',
-				dataIndex: 'title',
-				render: (text, record) => this.renderInput(text, record, 'title'),
+				title: '标题',
+				dataIndex: 'name',
+				width: '15%',
+				render: (text, record) => this.renderInput(text, record, 'name'),
 			}, 
 			{
 				title: '启用',
@@ -32,7 +41,6 @@ export default class MemberEncrypted extends BaseComponent{
 			{
 				title: '操作',
 				dataIndex: 'operation',
-				width: '15%',
 				render: (text, record) => {
 					const { editable,id } = record;
 					return (
@@ -80,9 +88,17 @@ export default class MemberEncrypted extends BaseComponent{
 			<Switch checked={parseInt(record.enable,10)===1} onChange={(value)=>this.onSwitch(record.id,value?1:0,column)} />
 		)
 	}
-	//编辑
+	//是否启用
 	@action.bound
-	onEditChange(id,value,column) {
+	onSwitch(id,value,column){
+		const list = this.store.list.slice();
+		const itemData = list.find(item=>id === item.id);
+		itemData[column] = value;
+		this.onSave(id);
+	}
+	//内容编辑
+	@action.bound
+	onEditChange(id, value, column) {
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
 		itemData[column] = value;
@@ -92,8 +108,8 @@ export default class MemberEncrypted extends BaseComponent{
 	@action.bound
 	onSave(id) {
 		const list = this.store.list.slice();
-		const itemData = list.find(item=>id === item.id);
-		Base.POST({act:'security_question',op:'save',...itemData},(res)=>{
+		const itemData = this.store.list.find(item=>id === item.id);
+		Base.POST({act:'shop_class',op:'save',...itemData,sort:parseInt(itemData.sort,10)},(res)=>{
 			itemData.editable = false;
 			itemData.updated_at = Base.getTimeFormat(new Date().getTime()/1000,2);
 			itemData.id === 0 && (itemData.id = res.data.id);
@@ -101,18 +117,15 @@ export default class MemberEncrypted extends BaseComponent{
 			this.cacheData = list.map(item => ({ ...item }));
 		},this);
 	}
-	//是否启用
-	@action.bound
-	onSwitch(id,value,column){
-		const list = this.store.list.slice();
-		const itemData = list.find(item=>id === item.id);
-		itemData[column] = value;
-		this.onSave(id);
-	}
 	//取消
 	@action.bound
 	onCancel(id) {
 		this.store.list = this.cacheData.map(item => ({ ...item }));
+	}
+	//删除
+	@action.bound
+	onDelete(id){
+		Base.POST({act:'shop_class',op:'save',id,deleted:"1"},()=>remove(this.store.list,item=>id === item.id),this);
 	}
 	//添加
 	@action.bound
@@ -120,29 +133,35 @@ export default class MemberEncrypted extends BaseComponent{
 		if(this.store.list.find(item=>item.id === 0)){
 			return message.info('请保存后再新建');
 		}
-		this.store.list.unshift({id:'',title:'',editable:true,deleted:'0',enable:'1'});
+		this.store.list.unshift({id:0,name:'',editable:true,deleted:'0',enable:'1',sort:0});
 	}
-	//删除
+	//搜索
 	@action.bound
-	onDelete(id){
-		Base.POST({act:'security_question',op:'save',id,deleted:"1"},()=>remove(this.store.list,item=>id === item.id),this);
+	onSearch(e){
+		this.store.searchStr = e.target.value;
 	}
 	componentDidMount() {
-		Base.GET({act:'security_question',op:'index'},(res)=>{
-			const {question} = res.data;
-			this.store.list = question;
-			this.cacheData = question.map(item => ({ ...item }));
+		Base.GET({act:'shop_class',op:'index'},(res)=>{
+			this.store.list = res.data;
+			this.cacheData = res.data.map(item => ({ ...item }));
 		},this);
 	}
 	render(){
-		let {list} = this.store;
+		let {list,searchStr} = this.store;
 		const showList = list.filter(item=>{
-			return parseInt(item.deleted,10) === 0;
+			return parseInt(item.deleted,10) === 0 && (!searchStr || item.name.indexOf(searchStr) !== -1);
 		})
 		return (
-			<Spin ref='spin' wrapperClassName='MemberEncrypted' spinning={false}>
-				<Button onClick={this.onAdd}>新增+</Button>
-				<Table className="mt16" bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={false} />
+			<Spin ref='spin' wrapperClassName='ArticleSingleManager' spinning={false}>
+				<div className='pb10'>
+					<Button onClick={this.onAdd}>新增+</Button>
+					<Search
+						placeholder="搜索标题"
+						onChange={this.onSearch}
+						style={{ width: 130,marginLeft:10 }}
+					/>
+				</div>
+				<Table className="mt16" bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={{hideOnSinglePage:true}}/>
 			</Spin>
 		)
 	}

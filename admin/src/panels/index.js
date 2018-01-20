@@ -18,7 +18,13 @@ import GoodsProperty from './GoodsProperty';
 import MemberEncrypted from './MemberEncrypted';
 import ArticleList from './ArticleList';
 import ArticleCategory from './ArticleCategory';
+import ArticleSingleManager from './ArticleSingleManager';
 export const panelsList =  [
+    {
+        path:'/article/ArticleSingleManager',
+        component:ArticleSingleManager,
+        title:'单页管理',
+    },
     {
         path:'/article/ArticleCategory',
         component:ArticleCategory,

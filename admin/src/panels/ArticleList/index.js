@@ -1,7 +1,7 @@
 import React from 'react';
 import {action} from 'mobx';
 import {BaseComponent,Base,Global} from '../../common';
-import { Table, Input,Popconfirm,Switch,Button,Spin,message,Icon,Upload,Select } from 'antd';
+import { Table, Input,Popconfirm,Switch,Button,Spin,message,Select } from 'antd';
 import {remove} from 'lodash';
 import {EditorModal} from '../../components/EditorModal';
 import './ArticleList.less';
@@ -143,8 +143,8 @@ export default class ArticleList extends BaseComponent{
 			return message.info('请保存后再新建');
 		}
 		const {article_class} = this.store;
-		const ad_position_id =  article_class.length > 0 ? article_class[0].id:''
-		this.store.list.unshift({id:0,title:'',editable:true,deleted:'0',enable:'1',sort:0,content:'',image:'',article_class_id:0});
+		const article_class_id =  article_class.length > 0 ? article_class[0].id:''
+		this.store.list.unshift({id:0,title:'',editable:true,deleted:'0',enable:'1',sort:0,content:'',image:'',article_class_id});
 	}
 	//搜索
 	searchStr = ''

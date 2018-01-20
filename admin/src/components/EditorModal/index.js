@@ -1,6 +1,6 @@
 import React from 'react';
 import { action } from "mobx";
-import {Modal,message,Input} from 'antd';
+import {Modal,message} from 'antd';
 import {BaseComponent,Base} from '../../common';
 import { Editor } from 'react-draft-wysiwyg';
 import { EditorState,convertToRaw,ContentState } from 'draft-js';
