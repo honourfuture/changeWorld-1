@@ -17,7 +17,13 @@ import AdPosition from './AdPosition';
 import GoodsProperty from './GoodsProperty';
 import MemberEncrypted from './MemberEncrypted';
 import ArticleList from './ArticleList';
+import ArticleCategory from './ArticleCategory';
 export const panelsList =  [
+    {
+        path:'/article/ArticleCategory',
+        component:ArticleCategory,
+        title:'文章分类',
+    },
     {
         path:'/article/ArticleList',
         component:ArticleList,
