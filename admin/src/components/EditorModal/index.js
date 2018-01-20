@@ -22,7 +22,7 @@ export class EditorModal extends BaseComponent{
 		this.store.isEdit = true;
 		this.curId = id;
 
-		const html = content;
+		const html = content || '';
 		const contentBlock = htmlToDraft(html);
 		if (contentBlock) {
 			const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
@@ -63,7 +63,7 @@ export class EditorModal extends BaseComponent{
 		const {isEdit,editorState} = this.store;
 		return (
 			<Modal 
-				className='articleList-modal' 
+				className='editor-modal' 
 				title="" 
 				visible={isEdit}
 				onOk={this.onModalOk} 
@@ -74,6 +74,7 @@ export class EditorModal extends BaseComponent{
 				width='60%'
 				>
 				<Editor ref='editor'
+					wrapperClassName='editor-con'
 					editorState={editorState}
 					onEditorStateChange={this.onEditorStateChange}
 					toolbar={{

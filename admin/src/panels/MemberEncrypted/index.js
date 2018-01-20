@@ -93,8 +93,8 @@ export default class MemberEncrypted extends BaseComponent{
 	onSave(id) {
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
-		itemData.editable = false;
 		Base.POST({act:'security_question',op:'save',...itemData},(res)=>{
+			itemData.editable = false;
 			itemData.updated_at = Base.getTimeFormat(new Date().getTime()/1000,2);
 			itemData.id === 0 && (itemData.id = res.data.id);
 			this.store.list = list;
