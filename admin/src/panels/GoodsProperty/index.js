@@ -102,7 +102,7 @@ export default class GoodsProperty extends BaseComponent{
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
 		itemData[column] = value;
-		Base.POST({act:'goods_attr_category',op:'save',...itemData},()=>this.store.list = list,this);
+		this.onSave(id);
 	}
 	//保存
 	@action.bound

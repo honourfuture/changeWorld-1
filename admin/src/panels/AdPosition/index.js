@@ -108,7 +108,7 @@ export default class AdPosition extends BaseComponent{
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
 		itemData[column] = value;
-		Base.POST({act:'ad_position',op:'save',mod:'admin',...itemData},()=>this.store.list = list,this);
+		this.onSave(id);
 	}
 	//保存
 	@action.bound

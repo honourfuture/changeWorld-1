@@ -108,7 +108,7 @@ export default class ArticleCategory extends BaseComponent{
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
 		itemData[column] = value;
-		Base.POST({act:'article_class',op:'save',...itemData},()=>this.store.list = list,this);
+		this.onSave(id);
 	}
 	//保存
 	@action.bound

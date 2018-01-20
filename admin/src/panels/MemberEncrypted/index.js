@@ -107,7 +107,7 @@ export default class MemberEncrypted extends BaseComponent{
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
 		itemData[column] = value;
-		Base.POST({act:'security_question',op:'save',...itemData},()=>this.store.list = list,this);
+		this.onSave(id);
 	}
 	//取消
 	@action.bound

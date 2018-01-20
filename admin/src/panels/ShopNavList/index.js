@@ -126,7 +126,7 @@ export default class ShopNavList extends BaseComponent{
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
 		itemData[column] = value;
-		Base.POST({act:'shop_class',op:'save',...itemData},()=>this.store.list = list,this);
+		this.onSave(id);
 	}
 	//内容编辑
 	@action.bound
