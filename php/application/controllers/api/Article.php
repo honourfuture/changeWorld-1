@@ -176,12 +176,12 @@ class Article extends API_Controller {
 	{
 		$this->check_operation();
 
-		$ret = array('single_page' => array(), 'default_page' => array());
+		/*$ret = array('single_page' => array(), 'default_page' => array());
 		$ret['single_page'] = $this->Article_model->initSinglePage();
 		$a_alias = array_keys($ret['single_page']);
-		$ret['default_page'] = $this->single_page($a_alias[0]);
+		$ret['default_page'] = $this->single_page($a_alias[0]);*/
 
-		$this->ajaxReturn($ret);
+		$this->ajaxReturn($this->Article_model->initSinglePage());
 	}
 
 	/**
@@ -235,7 +235,7 @@ class Article extends API_Controller {
 	protected function single_page($alias)
 	{
 		$this->db->select('id,updated_at,title,content');
-		return $this->Article_model->get_many_by('alias', $alias);
+		return $this->Article_model->get_by('alias', $alias);
 	}
 
 	/**
