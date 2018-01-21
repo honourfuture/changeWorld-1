@@ -215,10 +215,10 @@ export default class GoodsManager extends BaseComponent{
 			return parseInt(item.deleted,10) === 0;
 		});
 		return (
-			<div className='GoodsManager'>
+			<Spin ref='spin' wrapperClassName='GoodsManager' spinning={false}>
 				<Table className="mt16" bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={false} />
 				<GoodsInfo ref='detail' item={list} goodClass={goodsClass} destroyOnClose />
-			</div>
+			</Spin>
 		)
 	}
 };
