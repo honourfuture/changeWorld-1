@@ -2,6 +2,7 @@
   "name": "antd-lib",
   "version": "0.1.0",
   "private": true,
+  "homepage":".",
   "dependencies": {
     "antd": "^3.0.3",
     "draftjs-to-html": "^0.8.2",
