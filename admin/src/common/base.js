@@ -129,7 +129,12 @@ export const Base = {
 	},
 	getLocalData(key){
 		return Cookies.getJSON(key)
-	},    
+	}, 
+	//格式化数字，比如：0->0.00
+	getNumFormat(n_num,i_len=2){
+		n_num = parseFloat(n_num) || 0;
+		return n_num.toFixed(i_len);
+	},
 	//格式化时间日期,time:秒数,type:0,输出年月日,1.输出时分秒,2.全部输出
     getTimeFormat(s_time,i_type=0){
         s_time = s_time ? new Date(parseInt(s_time,10)*1000) : new Date();

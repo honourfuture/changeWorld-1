@@ -20,7 +20,13 @@ import GoodsManager from './GoodsManager';
 import ArticleList from './ArticleList';
 import ArticleCategory from './ArticleCategory';
 import ArticleSingleManager from './ArticleSingleManager';
+import CodeManager from './CodeManager';
 export const panelsList =  [
+    {
+        path:'/shop/CodeManager',
+        component:CodeManager,
+        title:'靓号管理',
+    },
     {
         path:'/shop/GoodsManager',
         component:GoodsManager,

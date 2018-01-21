@@ -3,13 +3,13 @@ import {action} from 'mobx';
 import {BaseComponent,Base,Global} from '../../common';
 import { Table, Input,Popconfirm,Switch,Button,Spin,message,Upload,Icon,Select,DatePicker } from 'antd';
 import moment from 'moment';
-import './AdManager.less';
+import './CodeManager.less';
 import {remove} from 'lodash';
 const { RangePicker } = DatePicker;
 const Search = Input.Search;
 const Option = Select.Option;
 
-export default class AdManager extends BaseComponent{
+export default class CodeManager extends BaseComponent{
 	store={
 		list:[],
 		positionList:[],
@@ -25,34 +25,40 @@ export default class AdManager extends BaseComponent{
 				render: (text, record) => this.renderInput(text, record, 'sort'),
 			}, 
 			{
-				title: '标题',
-				dataIndex: 'title',
-				width: '8%',
-				render: (text, record) => this.renderInput(text, record, 'title'),
+				title: '靓号',
+				dataIndex: 'pretty_id',
+				width: '10%',
+				render: (text, record) => this.renderInput(text, record, 'pretty_id'),
 			},
 			{
-				title: '广告图',
-				dataIndex: 'image',
-				width: '12%',
-				render: (text, record) => this.renderImg(text, record, 'image'),
-			}, 
+				title: '更新时间',
+				dataIndex: 'updated_at',
+				width: '15%',
+				render: (text, record) => this.renderText(text, record, 'updated_at'),
+			},
 			{
-				title: '广告位',
-				dataIndex: 'ad_position_id',
-				width: '12%',
-				render: (text, record) => this.renderSelect(text, record, 'ad_position_id'),
-			}, 
+				title: '购买人',
+				dataIndex: 'buyer_id',
+				width: '10%',
+				render: (text, record) => this.renderBuyer(text, record, 'buyer_id'),
+			},
 			{
-				title: '开始结束时间',
-				dataIndex: 'date',
-				width: '25%',
-				render: (text, record) => this.renderDate(text, record, 'date'),
-			}, 
+				title: '销售价格',
+				dataIndex: 'price',
+				width: '12%',
+				render: (text, record) => this.renderInput(text, record, 'price'),
+			},
 			{
 				title: '启用',
 				dataIndex: 'enable',
 				width: '8%',
 				render: (text, record) => this.renderSwitch(text, record, 'enable'),
+			},
+			{
+				title: '是否靓号',
+				dataIndex: 'is_pretty',
+				width: '8%',
+				render: (text, record) => this.renderSwitch(text, record, 'is_pretty'),
 			}, 
 			{
 				title: '操作',
@@ -80,6 +86,16 @@ export default class AdManager extends BaseComponent{
 				},
 			}
 		];
+	}
+	renderBuyer(text,record,column){
+		const buyer_id = record[column];
+		const {user} = this.store;
+		const nickname = (user[buyer_id] || {}).nickname || '';
+		return (
+			<div>
+				{nickname}
+			</div>
+		);
 	}
 	renderImg(text,record,column){
 		const {editable,image,loading} = record;
@@ -137,7 +153,7 @@ export default class AdManager extends BaseComponent{
 		return (
 			<div>
 				{editable
-					? <Input style={{ margin: '-5px 0' }} value={text} type={column==='sort'?'number':'text'} onChange={e => this.onEditChange(record.id, e.target.value, column)} />
+					? <Input style={{ margin: '-5px 0' }} value={text} type={(column==='sort' || column==='pretty_id' || column==='price')?'number':'text'} onChange={e => this.onEditChange(record.id, e.target.value, column)} />
 					: text
 				}
 			</div>
@@ -145,7 +161,7 @@ export default class AdManager extends BaseComponent{
 	}
 	renderSwitch(text,record,column){
 		return (
-			<Switch checked={parseInt(record.enable,10)===1} onChange={(value)=>this.onSwitch(record.id,value?1:0,column)} />
+			<Switch checked={parseInt(record[column],10)===1} onChange={(value)=>this.onSwitch(record.id,value?1:0,column)} />
 		)
 	}
 	@action.bound
@@ -192,9 +208,11 @@ export default class AdManager extends BaseComponent{
 	onSave(id) {
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
-		Base.POST({act:'ad',op:'save',mod:'admin',...itemData},(res)=>{
+		Base.POST({act:'pretty',op:'save',mod:'admin',...itemData},(res)=>{
 			itemData.editable = false;
+			itemData.updated_at = Base.getTimeFormat(new Date().getTime()/1000,2);
 			itemData.id === 0 && (itemData.id = res.data.id);
+			itemData.price = Base.getNumFormat(itemData.price);
 			this.store.list = list;
 			this.cacheData = list.map(item => ({ ...item }));
 		},this);
@@ -207,7 +225,7 @@ export default class AdManager extends BaseComponent{
 	//删除
 	@action.bound
 	onDelete(id){
-		Base.POST({act:'ad',op:'save',mod:'admin',id,deleted:"1"},()=>remove(this.store.list,item=>id === item.id),this);
+		Base.POST({act:'pretty',op:'save',mod:'admin',id,deleted:"1"},()=>remove(this.store.list,item=>id === item.id),this);
 	}
 	//添加
 	@action.bound
@@ -215,9 +233,7 @@ export default class AdManager extends BaseComponent{
 		if(this.store.list.find(item=>item.id === 0)){
 			return message.info('请保存后再新建');
 		}
-		const {positionList} = this.store;
-		const ad_position_id =  positionList.length > 0 ? positionList[0].id:''
-		this.store.list.unshift({id:0,title:'',editable:true,deleted:'0',enable:'1',sort:0,link:'',image:'',start_time:moment().unix(),end_time:moment().add('year',5).unix(),ad_position_id});
+		this.store.list.unshift({id:0,pretty_id:'',editable:true,deleted:'0',enable:'1',sort:0,price:0,is_pretty:'0'});
 	}
 	//搜索
 	searchStr = ''
@@ -235,12 +251,12 @@ export default class AdManager extends BaseComponent{
 	current = 1
 	@action.bound
 	requestData(){
-		Base.GET({act:'ad',op:'index',mod:'admin',title:this.searchStr || '',cur_page:this.current || 1,per_page:Global.PAGE_SIZE},(res)=>{
-			const {ad,ad_position} = res.data;
-			this.store.list = ad.list;
-			this.store.positionList = ad_position;
-			this.store.total = ad.count;
-			this.cacheData = ad.list.map(item => ({ ...item }));
+		Base.GET({act:'pretty',op:'index',mod:'admin',title:this.searchStr || '',cur_page:this.current || 1,per_page:Global.PAGE_SIZE},(res)=>{
+			const {user,pretty} = res.data;
+			this.store.list = pretty.list;
+			this.store.user = user;
+			this.store.total = pretty.count;
+			this.cacheData = pretty.list.map(item => ({ ...item }));
 		},this);
 	}
 	componentDidMount() {
@@ -252,7 +268,7 @@ export default class AdManager extends BaseComponent{
 			return parseInt(item.deleted,10) === 0;
 		})
 		return (
-			<Spin ref='spin' wrapperClassName='AdManager' spinning={false}>
+			<Spin ref='spin' wrapperClassName='CodeManager' spinning={false}>
 				<div className='pb10'>
 					<Button onClick={this.onAdd}>新增+</Button>
 					<Search
