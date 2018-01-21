@@ -10,7 +10,6 @@ class Users_read_model extends MY_Model
 {
     public $_table        = 'users_read';
     public $primary_key   = 'id';
-    public $before_create = array();
     public $before_create = array('created_at', 'updated_at', 'updated_valid');
     public $before_update = array('updated_at', 'updated_valid');
     public $protected_attributes = array('id');
