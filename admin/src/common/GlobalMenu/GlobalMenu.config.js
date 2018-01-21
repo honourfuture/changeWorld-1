@@ -98,7 +98,7 @@ const menuData = [
             },
             {
                 name: '单页管理',
-                path: 'ArticleManager',
+                path: 'ArticleSingleManager',
             },
             {
                 name: '帮助中心',

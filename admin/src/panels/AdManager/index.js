@@ -19,9 +19,9 @@ export default class AdManager extends BaseComponent{
 		super(props);
 		this.columns = [
 			{
-				title: 'sort',
+				title: '排序',
 				dataIndex: 'id',
-				width: '5%',
+				width: '8%',
 				render: (text, record) => this.renderInput(text, record, 'sort'),
 			}, 
 			{
@@ -192,8 +192,8 @@ export default class AdManager extends BaseComponent{
 	onSave(id) {
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
-		itemData.editable = false;
 		Base.POST({act:'ad',op:'save',mod:'admin',...itemData},(res)=>{
+			itemData.editable = false;
 			itemData.id === 0 && (itemData.id = res.data.id);
 			this.store.list = list;
 			this.cacheData = list.map(item => ({ ...item }));
@@ -237,7 +237,6 @@ export default class AdManager extends BaseComponent{
 	requestData(){
 		Base.GET({act:'ad',op:'index',mod:'admin',title:this.searchStr || '',cur_page:this.current || 1,per_page:Global.PAGE_SIZE},(res)=>{
 			const {ad,ad_position} = res.data;
-			console.log(ad,"ad");
 			this.store.list = ad.list;
 			this.store.positionList = ad_position;
 			this.store.total = ad.count;
@@ -249,7 +248,6 @@ export default class AdManager extends BaseComponent{
 	}
 	render(){
 		let {list,total} = this.store;
-		console.log(list,"list")
 		const showList = list.filter(item=>{
 			return parseInt(item.deleted,10) === 0;
 		})
@@ -259,6 +257,7 @@ export default class AdManager extends BaseComponent{
 					<Button onClick={this.onAdd}>新增+</Button>
 					<Search
 						placeholder="搜索标题"
+						enterButton
 						onSearch={this.onSearch}
 						style={{ width: 130,marginLeft:10 }}
 					/>

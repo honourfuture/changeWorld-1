@@ -134,7 +134,7 @@ export const Base = {
 					f_succBack && action(f_succBack)(res);
 				break;
 				case -1:
-					self.openWin('userLogin');
+					self.push('userLogin');
 				break;
 				default:
 					Toast.fail(res.message);
@@ -179,7 +179,7 @@ export const Base = {
 						break;
 						case -1:
 							b_needLogin = true;
-							self.openWin('userLogin');
+							self.push('userLogin');
 						break;
 						default:
 							s_errorCode = res.message;
