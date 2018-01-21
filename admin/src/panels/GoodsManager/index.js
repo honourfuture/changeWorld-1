@@ -8,21 +8,11 @@ import {remove} from 'lodash';
 import {Test2} from '../../components/Test2';
 const Option = Select.Option;
 
-const EditableCell = ({ editable, value, onChange, type}) => (
-	<div>
-		{editable
-			? <Input style={{ margin: '-5px 0' }} value={value} type={type} onChange={e => onChange(e.target.value)} />
-			: value
-		}
-	</div>
-);
 export default class GoodsManager extends BaseComponent{
 	store={
 		list:[],
-		user:"",
+		user:{},
 		goodsClass:[],
-		visible:false,
-		readId:"",
 	}
 	constructor(props) {
 		super(props);
@@ -31,7 +21,7 @@ export default class GoodsManager extends BaseComponent{
 				title: 'sort',
 				dataIndex: 'sort',
 				width: '10%',
-				render: (text, record) => this.renderColumns(text, record, 'sort'),
+				render: (text, record) => this.renderInput(text, record, 'sort'),
 			}, 
 			{
 				title: '发布时间',
@@ -109,9 +99,10 @@ export default class GoodsManager extends BaseComponent{
 	}
 	renderStoreInfo(text,record,column){
 		const {user} = this.store;
+		const {seller_uid} = record;
 		return (
 			<div>
-				{user}
+				{user[seller_uid].nickname}
 			</div>
 		)
 	}
@@ -128,15 +119,16 @@ export default class GoodsManager extends BaseComponent{
 			<img className='goodsImg' src={default_image} alt=''/>
 		);
 	}
-	renderColumns(text, record, column) {
+	renderInput(text, record, column){
+		const {editable} = record;
 		return (
-			<EditableCell
-				editable={record.editable}
-				value={text}
-				type={column==='id'?'number':'text'}
-				onChange={value => this.onEditChange(record.id, value, column)}
-			/>
-		);
+			<div>
+				{editable
+					? <Input style={{ margin: '-5px 0' }} value={text} type={column==='sort'?'number':'text'} onChange={e => this.onEditChange(record.id, e.target.value, column)} />
+					: text
+				}
+			</div>
+		)
 	}
 	renderSelect(text, record, column) {
 		const {goodsClass} = this.store;
@@ -180,8 +172,7 @@ export default class GoodsManager extends BaseComponent{
 	//查看
 	@action.bound
 	onRead(id){
-		this.store.readId = id;
-		this.store.visible = true;
+		this.refs.detail.show(id);
 	}
 	//是否启用
 	@action.bound
@@ -190,7 +181,6 @@ export default class GoodsManager extends BaseComponent{
 		const itemData = list.find(item=>id === item.id);
 		itemData[column] = value;
 		this.onSave(id);
-		// Base.POST({act:'goods',op:'save',...itemData},()=>this.store.list = list,this);
 	}
 	//取消
 	@action.bound
@@ -202,20 +192,19 @@ export default class GoodsManager extends BaseComponent{
 	onDelete(id){
 		Base.POST({act:'goods',op:'save',id,deleted:"1"},()=>remove(this.store.list,item=>id === item.id),this);
 	}
-	//关闭窗口
 	@action.bound
-	onCloseWindow(){
-		this.store.visible = false;
-	}
-	componentDidMount() {
+	requestData(){
 		Base.GET({act:'goods',op:'index'},(res)=>{
 			const {goods,user} = res.data;
 			this.store.list = goods.list;
-			this.store.user = user[1].nickname;
+			this.store.user = user;
 			this.cacheData = goods.list.map(item => ({ ...item }));
 		},this);
+	}
+	componentDidMount() {
 		Base.GET({act:'shop_class',op:'index'},(res)=>{
 			this.store.goodsClass = res.data;
+			this.requestData();
 		},this);
 	}
 	render(){
@@ -226,7 +215,7 @@ export default class GoodsManager extends BaseComponent{
 		return (
 			<div className='GoodsManager'>
 				<Table className="mt16" bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={false} />
-				<Test2 visible={visible} item={list} goodClass={goodsClass} user={user} rId={readId} callBack={this.onCloseWindow} />
+				<Test2 ref='detail' item={list} goodClass={goodsClass} user={user} />
 			</div>
 		)
 	}
