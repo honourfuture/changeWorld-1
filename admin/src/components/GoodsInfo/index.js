@@ -20,7 +20,7 @@ export class GoodsInfo extends BaseComponent{
 	store={visible:false}
 	showProps=[
 		{key:'name',label:'商品名称'},
-		{key:'default_image',label:'商品图片',render:(value)=>this.renderGoodsImg(value)},
+		{key:'goods_image',label:'商品图片',render:(value)=>this.renderGoodsImg(value)},
 		{key:'goods_attr',label:'商品属性',render:(value)=>this.renderAttr(value)},
 		{key:'sale_price',label:'售价',render:(value)=>`${value} 元`},
 		{key:'stock',label:'库存'},
@@ -36,22 +36,24 @@ export class GoodsInfo extends BaseComponent{
 		{key:'updated_at',label:'发布时间'},
 	]
 	renderGoodsImg(value){
+		if(!value){
+			return '';
+		}
+		const imgList = JSON.parse(value);
 		return <div>
-			<img src={value} style={{height:60}} alt=""/>
+			{
+				imgList.map((item,index)=>{
+					return <img className='mr10 mb10' key={index} src={item} style={{height:60}} alt=""/>;
+				})
+			}
 		</div>
 	}
 	renderMod(value){
 		if(!value){
 			return '';
 		}
-		let mod = '';
-		const valObj = parseInt(value || '');
-		if(valObj === 1) mod = "卖家发货";
-		if(valObj === 2) mod = "上门自提";
-		if(valObj === 3) mod = "不用发货";
-		return (
-			<div>{mod}</div>
-		)
+		value = parseInt(value) || 0;
+		return <div>{['','卖家发货','上门自提','不用发货'][value]}</div>
 	}
 	renderClass(value){
 		const {goodClass} = this.props;
@@ -120,21 +122,12 @@ export class GoodsInfo extends BaseComponent{
 		const readItem = item.find((item)=>this.id === item.id) || {};
 		const items = this.showProps.map((item,index)=>{
 			const {key,label,render} = item;
-			let value = ''
-			if(!render){
-				value = readItem[key];
-			}else{
-				value = render(readItem[key]);
-			}
-			switch(key){
-				default:
-					return (
-						<FormItem key={index} {...formItemLayout} label={label}>
-							{value}
-						</FormItem>
-					)
-				break;
-			}
+			const value = !render?readItem[key]:render(readItem[key]);
+			return (
+				<FormItem key={index} {...formItemLayout} label={label}>
+					{value}
+				</FormItem>
+			)
 		})
         return (
             <Modal
