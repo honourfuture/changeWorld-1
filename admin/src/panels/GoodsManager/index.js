@@ -210,7 +210,7 @@ export default class GoodsManager extends BaseComponent{
 		},this);
 	}
 	render(){
-		let {list,user,goodsClass} = this.store;
+		let {list,goodsClass} = this.store;
 		const showList = list.filter(item=>{
 			return parseInt(item.deleted,10) === 0;
 		});

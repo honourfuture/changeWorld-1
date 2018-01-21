@@ -1,11 +1,9 @@
 import React from 'react';
 import {action} from 'mobx';
 import {BaseComponent,Base} from '../../common';
-import { Table, Input,Popconfirm,Switch,Button,Spin,message,Menu,Row,Col } from 'antd';
-import {remove} from 'lodash';
+import { Popconfirm,Button,Spin,Menu,Row } from 'antd';
 import {EditorModal} from '../../components/EditorModal';
 import './ArticleSingleManager.less';
-const SubMenu = Menu.SubMenu;
 
 export default class ArticleSingleManager extends BaseComponent{
 	store={

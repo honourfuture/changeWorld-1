@@ -52,7 +52,7 @@ export class GoodsInfo extends BaseComponent{
 		if(!value){
 			return '';
 		}
-		value = parseInt(value) || 0;
+		value = parseInt(value,10) || 0;
 		return <div>{['','卖家发货','上门自提','不用发货'][value]}</div>
 	}
 	renderClass(value){
