@@ -1,11 +1,11 @@
 import React from 'react';
 import {action} from 'mobx';
 import {BaseComponent,Base} from '../../common';
-import { Table, Input,Popconfirm,Switch,Button,Spin,Select} from 'antd';
+import { Table, Input,Popconfirm,Switch,Spin,Select} from 'antd';
 import './GoodsManager.less';
 import {remove} from 'lodash';
 
-import {Test2} from '../../components/Test2';
+import {GoodsInfo} from '../../components/GoodsInfo';
 const Option = Select.Option;
 
 export default class GoodsManager extends BaseComponent{
@@ -73,7 +73,7 @@ export default class GoodsManager extends BaseComponent{
 				dataIndex: 'operation',
 				width: '15%',
 				render: (text, record) => {
-					const { editable,id } = record;
+					const { editable,id,seller_uid} = record;
 					return (
 					<div className="editable-row-operations">
 						{
@@ -85,7 +85,7 @@ export default class GoodsManager extends BaseComponent{
 							:
 							<span>
 								<a onClick={() => this.onEditChange(id,true,'editable')}>编辑</a>&nbsp;&nbsp;
-								<a onClick={() => this.onRead(id)}>查看</a>
+								<a onClick={() => this.onRead(id,seller_uid)}>查看</a>
 								<Popconfirm title="确认删除?" okText='确定' cancelText='取消' onConfirm={() => this.onDelete(id)}>
 									<a className='ml10 gray'>删除</a>
 								</Popconfirm>
@@ -171,8 +171,10 @@ export default class GoodsManager extends BaseComponent{
 	}
 	//查看
 	@action.bound
-	onRead(id){
-		this.refs.detail.show(id);
+	onRead(id,uId){
+		const {user} = this.store;
+		const uName = user[uId].nickname;
+		this.refs.detail.show(id,uName);
 	}
 	//是否启用
 	@action.bound
@@ -208,14 +210,14 @@ export default class GoodsManager extends BaseComponent{
 		},this);
 	}
 	render(){
-		let {list,readId,user,visible,goodsClass} = this.store;
+		let {list,user,goodsClass} = this.store;
 		const showList = list.filter(item=>{
 			return parseInt(item.deleted,10) === 0;
 		});
 		return (
 			<div className='GoodsManager'>
 				<Table className="mt16" bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={false} />
-				<Test2 ref='detail' item={list} goodClass={goodsClass} user={user} />
+				<GoodsInfo ref='detail' item={list} goodClass={goodsClass} destroyOnClose />
 			</div>
 		)
 	}

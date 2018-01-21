@@ -1,8 +1,8 @@
 import React from 'react';
 import {action} from 'mobx';
 import {BaseComponent,Base} from '../../common';
-import { Modal,Form} from 'antd';
-import './Test2.less';
+import { Modal,Form,Button} from 'antd';
+import './GoodsInfo.less';
 
 const formItemLayout = {
   	labelCol: {
@@ -16,7 +16,7 @@ const formItemLayout = {
 };
 
 const FormItem = Form.Item;
-export class Test2 extends BaseComponent{
+export class GoodsInfo extends BaseComponent{
 	store={visible:false}
 	showProps=[
 		{key:'name',label:'商品名称'},
@@ -24,22 +24,49 @@ export class Test2 extends BaseComponent{
 		{key:'goods_attr',label:'商品属性',render:(value)=>this.renderAttr(value)},
 		{key:'sale_price',label:'售价',render:(value)=>`${value} 元`},
 		{key:'stock',label:'库存'},
-		{key:'shop_class_id',label:'分类'},
+		{key:'shop_class_id',label:'分类',render:(value)=>this.renderClass(value)},
 		{key:'enable',label:'商品状态',render:(value)=>parseInt(value,10) === 1?'已启用':'未启用'},
 		{key:'freight_fee',label:'邮费',render:(value)=>`${value} 元`},
-		{key:'goods_ticket',label:'优惠券'},
-		{key:'send_mode',label:'发货模式'},
+		{key:'goods_ticket',label:'优惠券',render:(value)=>this.renderTicket(value)},
+		{key:'send_mode',label:'发货模式',render:(value)=>this.renderMod(value)},
 		{key:'use_point_rate',label:'最大积分使用量'},
-		{key:'e_invoice',label:'电子发票'},
+		{key:'e_invoice',label:'电子发票',render:(value)=>parseInt(value,10) === 1?'支持':'不支持'},
 		{key:'city_partner_rate',label:'城市合伙人分销比例',render:(value)=>`${value}%`},
-		{key:'seller_uid',label:'发布人',render:(value)=>`${value}%`},
+		{key:'seller_uid',label:'发布人',render:(value)=>this.user},
 		{key:'updated_at',label:'发布时间'},
 	]
 	renderGoodsImg(value){
 		return <div>
-			{value}
-			<div>2222</div>
+			<img src={value} style={{height:60}} alt=""/>
 		</div>
+	}
+	renderMod(value){
+		if(!value){
+			return '';
+		}
+		let mod = '';
+		const valObj = parseInt(value || '');
+		if(valObj === 1) mod = "卖家发货";
+		if(valObj === 2) mod = "上门自提";
+		if(valObj === 3) mod = "不用发货";
+		return (
+			<div>{mod}</div>
+		)
+	}
+	renderClass(value){
+		const {goodClass} = this.props;
+		const cName = (goodClass.find(item=>item.id === value) || {}).name;
+		return <div>{cName}</div>
+	}
+	renderTicket(value){
+		if(!value){
+			return '';
+		}
+		const tickets = JSON.parse(value || '');
+		const ticket = `满 ${tickets[0].full_amount} 减 ${tickets[0].free_amount} `;
+		return (
+			<div>{ticket}</div>
+		)
 	}
 	@action.bound
 	renderAttr(value){
@@ -56,7 +83,7 @@ export class Test2 extends BaseComponent{
 				const title = (goods_attr_category.find(item=>item.id === key) || {}).name;
 				attr.push(
 					<div key={key}>
-						<div>{title}:</div>
+						<span className='mr10'>{title}:</span>
 						{
 							attrValue.map((item,index)=>{
 								return <span key={index} className='mr10'>{item}</span>
@@ -70,8 +97,9 @@ export class Test2 extends BaseComponent{
 		return list;
 	}
 	@action.bound
-	show(id){
+	show(id,uName){
 		this.id = id;
+		this.user = uName;
 		//无分类数据，则请求
 		if(!this.goods_attr_category){
 			Base.GET({act:'goods_attr_category',op:'index'},(res)=>{
@@ -88,7 +116,7 @@ export class Test2 extends BaseComponent{
 	}
     render(){
 		const {visible} = this.store;
-    	const {item,user,goodClass} = this.props;
+    	const {item} = this.props;
 		const readItem = item.find((item)=>this.id === item.id) || {};
 		const items = this.showProps.map((item,index)=>{
 			const {key,label,render} = item;
@@ -113,11 +141,12 @@ export class Test2 extends BaseComponent{
             	className="GoodsItems"
 	          	title="商品详情"
 	          	visible={visible}
-	          	onOk={this.hideModal}
-          		onCancel={this.hideModal}
           		closable={false}
-	          	okText="确认"
-	          	cancelText="取消"
+	          	footer={[
+		            <Button key="submit" type="primary" onClick={this.hideModal}>
+		              确认
+		            </Button>,
+		        ]}
 	        >
 				<Form>
 					{items}
