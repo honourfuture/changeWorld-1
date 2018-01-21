@@ -81,7 +81,8 @@ export class EditorModal extends BaseComponent{
 						'image':{
 							uploadCallback:this.onUploadCallback,
 							previewImage:true,
-						}
+						},
+						options: ['inline', 'blockType', 'fontSize', 'fontFamily', 'list', 'textAlign', 'colorPicker', 'link', 'embedded', 'emoji', 'image', 'remove', 'history'],
 					}}
 					localization={{
 						locale: 'zh',

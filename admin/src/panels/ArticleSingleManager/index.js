@@ -9,8 +9,7 @@ const SubMenu = Menu.SubMenu;
 
 export default class ArticleSingleManager extends BaseComponent{
 	store={
-		single_page:{},
-		default_page:{},
+		list:[],
 		curData:{}
 	}
 	constructor(props) {
@@ -69,19 +68,31 @@ export default class ArticleSingleManager extends BaseComponent{
 	}
 	componentDidMount() {
 		Base.GET({act:'article',op:'page'},(res)=>{
-			const {single_page,default_page} = res.data;
-			this.store.single_page = single_page;
-			if(default_page.id){
-				this.store.default_page = default_page;
-			}else{
-				// this.store.default_page = default_page;
+			// const {single_page,default_page} = res.data;
+			this.store.single_page = res.data;
+			const {data} = res;
+			const list = [];
+			for (const key in data) {
+				if (data.hasOwnProperty(key)) {
+					list.push({key,title:data[key]})
+				}
+			}
+			this.store.list = list;
+			if(list.length > 0){
+				this.requestData(list[0].key);
 			}
 		},this);
+	}
+	@action.bound
+	requestData(alias){
+		Base.GET({act:'article',op:'page_view',alias},(res)=>{
+			const data = res.data || {};
+			this.store.curData = data.id?res.data:this.getInitData(alias);
+		})
 	}
 	//设置内容
 	@action.bound
 	onCompleteEdit(content,id){
-		// console.log(content,id);
 		const curData = {...this.store.curData};
 		curData.content = content;
 		Base.POST({act:'article',op:'save',...curData},(res)=>{
@@ -95,40 +106,28 @@ export default class ArticleSingleManager extends BaseComponent{
 	}
 	@action.bound
 	getInitData(key){
-		const {single_page} = this.store;
-		return {id:0,title:single_page[key],content:'',alias:key};
+		const {list} = this.store;
+		const pageData = list.find(item=>item.key===key) || {}
+		return {id:0,title:pageData.title,content:'',alias:key};
 	}
 	@action.bound
 	onChange({key}){
-		Base.GET({act:'article',op:'page_view',alias:key},(res)=>{
-			const {data} = res;
-			if(data.id){
-				this.store.curData = res.data;
-			}else{
-				const {single_page} = this.store;
-				this.store.curData = this.getInitData(key);
-			}
-		})
+		const {list} = this.store;
+		this.requestData(list[key].key);
 	}
 	render(){
-		const {single_page,curData} = this.store;
-		const menuItems = [];
-		for (const key in single_page) {
-			if (single_page.hasOwnProperty(key)) {
-				const element = single_page[key];
-				menuItems.push(
-					<Menu.Item key={key}>
-						<span>{single_page[key]}</span>
-					</Menu.Item>
-				)
-			}
-		}
+		const {list,curData} = this.store;
+		const menuItems = list.map((item,index)=>{
+			return <Menu.Item key={index}>
+				<span>{item.title}</span>
+			</Menu.Item>
+		})
 		const content = curData.content || '';
 		return (
 			<Spin ref='spin' wrapperClassName='ArticleSingleManager' spinning={false}>
 				<Row type='flex'>
 					<Menu
-						defaultSelectedKeys={['about_us']}
+						defaultSelectedKeys={['0']}
 						className='menu-con'
 						onClick={this.onChange}
 						mode="inline"
