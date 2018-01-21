@@ -144,7 +144,7 @@ export default class ArticleList extends BaseComponent{
 		}
 		const {article_class} = this.store;
 		const article_class_id =  article_class.length > 0 ? article_class[0].id:''
-		this.store.list.unshift({id:0,title:'',editable:true,deleted:'0',enable:'1',sort:0,content:'',image:'',article_class_id});
+		this.store.list.unshift({id:0,title:'',editable:true,deleted:'0',enable:'1',sort:0,content:'',article_class_id});
 	}
 	//搜索
 	searchStr = ''

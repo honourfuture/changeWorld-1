@@ -1,4 +1,21 @@
 @import '../../common/theme.less';
 .ArticleSingleManager{
-
+    background: #fff;
+    .menu-con{
+        width:100px;
+        height: calc(~'100vh - 220px');
+    }
+    .ant-menu-item:first-of-type{
+        margin-top: 0;
+    }
+    .detail-con{
+        padding: 20px;
+        flex: 1;
+        position: relative;
+        .edit-btn{
+            position: absolute;
+            right:20px;
+            top:20px;
+        }
+    }
 }

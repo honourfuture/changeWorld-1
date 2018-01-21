@@ -1,15 +1,17 @@
 import React from 'react';
 import {action} from 'mobx';
 import {BaseComponent,Base} from '../../common';
-import { Table, Input,Popconfirm,Switch,Button,Spin,message } from 'antd';
+import { Table, Input,Popconfirm,Switch,Button,Spin,message,Menu,Row,Col } from 'antd';
 import {remove} from 'lodash';
+import {EditorModal} from '../../components/EditorModal';
 import './ArticleSingleManager.less';
-const Search = Input.Search;
+const SubMenu = Menu.SubMenu;
 
 export default class ArticleSingleManager extends BaseComponent{
 	store={
-		list:[],
-		searchStr:''
+		single_page:{},
+		default_page:{},
+		curData:{}
 	}
 	constructor(props) {
 		super(props);
@@ -65,103 +67,80 @@ export default class ArticleSingleManager extends BaseComponent{
 			}
 		];
 	}
-	renderText(text, record, column) {
-		return (
-			<div>
-				{record[column]}
-			</div>
-		);
-	}
-	renderInput(text, record, column){
-		const {editable} = record;
-		return (
-			<div>
-				{editable
-					? <Input style={{ margin: '-5px 0' }} value={text} type={column==='sort'?'number':'text'} onChange={e => this.onEditChange(record.id, e.target.value, column)} />
-					: text
-				}
-			</div>
-		)
-	}
-	renderSwitch(text,record,column){
-		return (
-			<Switch checked={parseInt(record.enable,10)===1} onChange={(value)=>this.onSwitch(record.id,value?1:0,column)} />
-		)
-	}
-	//是否启用
-	@action.bound
-	onSwitch(id,value,column){
-		const list = this.store.list.slice();
-		const itemData = list.find(item=>id === item.id);
-		itemData[column] = value;
-		this.onSave(id);
-	}
-	//内容编辑
-	@action.bound
-	onEditChange(id, value, column) {
-		const list = this.store.list.slice();
-		const itemData = list.find(item=>id === item.id);
-		itemData[column] = value;
-		this.store.list = list;
-	}
-	//保存
-	@action.bound
-	onSave(id) {
-		const list = this.store.list.slice();
-		const itemData = this.store.list.find(item=>id === item.id);
-		Base.POST({act:'shop_class',op:'save',...itemData,sort:parseInt(itemData.sort,10)},(res)=>{
-			itemData.editable = false;
-			itemData.updated_at = Base.getTimeFormat(new Date().getTime()/1000,2);
-			itemData.id === 0 && (itemData.id = res.data.id);
-			this.store.list = list;
-			this.cacheData = list.map(item => ({ ...item }));
-		},this);
-	}
-	//取消
-	@action.bound
-	onCancel(id) {
-		this.store.list = this.cacheData.map(item => ({ ...item }));
-	}
-	//删除
-	@action.bound
-	onDelete(id){
-		Base.POST({act:'shop_class',op:'save',id,deleted:"1"},()=>remove(this.store.list,item=>id === item.id),this);
-	}
-	//添加
-	@action.bound
-	onAdd(){
-		if(this.store.list.find(item=>item.id === 0)){
-			return message.info('请保存后再新建');
-		}
-		this.store.list.unshift({id:0,name:'',editable:true,deleted:'0',enable:'1',sort:0});
-	}
-	//搜索
-	@action.bound
-	onSearch(e){
-		this.store.searchStr = e.target.value;
-	}
 	componentDidMount() {
-		Base.GET({act:'shop_class',op:'index'},(res)=>{
-			this.store.list = res.data;
-			this.cacheData = res.data.map(item => ({ ...item }));
+		Base.GET({act:'article',op:'page'},(res)=>{
+			const {single_page,default_page} = res.data;
+			this.store.single_page = single_page;
+			if(default_page.id){
+				this.store.default_page = default_page;
+			}else{
+				// this.store.default_page = default_page;
+			}
 		},this);
+	}
+	//设置内容
+	@action.bound
+	onCompleteEdit(content,id){
+		// console.log(content,id);
+		const curData = {...this.store.curData};
+		curData.content = content;
+		Base.POST({act:'article',op:'save',...curData},(res)=>{
+			this.store.curData = {...curData,content,id:res.data.id};
+		},this)
+	}
+	@action.bound
+	onEdit(){
+		const {curData} = this.store;
+		this.refs.editor.show(curData.content,curData.alias)
+	}
+	@action.bound
+	getInitData(key){
+		const {single_page} = this.store;
+		return {id:0,title:single_page[key],content:'',alias:key};
+	}
+	@action.bound
+	onChange({key}){
+		Base.GET({act:'article',op:'page_view',alias:key},(res)=>{
+			const {data} = res;
+			if(data.id){
+				this.store.curData = res.data;
+			}else{
+				const {single_page} = this.store;
+				this.store.curData = this.getInitData(key);
+			}
+		})
 	}
 	render(){
-		let {list,searchStr} = this.store;
-		const showList = list.filter(item=>{
-			return parseInt(item.deleted,10) === 0 && (!searchStr || item.name.indexOf(searchStr) !== -1);
-		})
+		const {single_page,curData} = this.store;
+		const menuItems = [];
+		for (const key in single_page) {
+			if (single_page.hasOwnProperty(key)) {
+				const element = single_page[key];
+				menuItems.push(
+					<Menu.Item key={key}>
+						<span>{single_page[key]}</span>
+					</Menu.Item>
+				)
+			}
+		}
+		const content = curData.content || '';
 		return (
 			<Spin ref='spin' wrapperClassName='ArticleSingleManager' spinning={false}>
-				<div className='pb10'>
-					<Button onClick={this.onAdd}>新增+</Button>
-					<Search
-						placeholder="搜索标题"
-						onChange={this.onSearch}
-						style={{ width: 130,marginLeft:10 }}
-					/>
-				</div>
-				<Table className="mt16" bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={{hideOnSinglePage:true}}/>
+				<Row type='flex'>
+					<Menu
+						defaultSelectedKeys={['about_us']}
+						className='menu-con'
+						onClick={this.onChange}
+						mode="inline"
+					>
+						{menuItems}
+					</Menu>
+					<div className='detail-con'>
+						<div className='html-con' dangerouslySetInnerHTML={{__html:content}}/>
+						<Button onClick={this.onEdit} className='edit-btn' type="primary" shape='circle' size='large' icon="edit" />
+					</div>
+				</Row>
+				<EditorModal ref='editor' onComplete={this.onCompleteEdit}/>
 			</Spin>
 		)
 	}

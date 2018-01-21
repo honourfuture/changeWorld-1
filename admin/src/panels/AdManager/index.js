@@ -19,9 +19,9 @@ export default class AdManager extends BaseComponent{
 		super(props);
 		this.columns = [
 			{
-				title: 'sort',
+				title: '排序',
 				dataIndex: 'id',
-				width: '5%',
+				width: '8%',
 				render: (text, record) => this.renderInput(text, record, 'sort'),
 			}, 
 			{
