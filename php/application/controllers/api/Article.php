@@ -88,7 +88,10 @@ class Article extends API_Controller {
 
 	protected function search()
 	{
-		
+		$title = $this->input->get_post('title');
+		if(! empty($title)){
+			$this->db->like('title', $title);
+		}
 	}
 
 	/**

@@ -137,7 +137,7 @@ class Pretty extends API_Controller {
 	 * @apiParam {Number} admin_id 管理员唯一ID
 	 * @apiParam {String} account 登录账号
 	 * @apiParam {String} sign 校验签名
-	 * @apiParam {Number} id 记录唯一ID 0表示新增 其他表示编辑
+	 * @apiParam {Number} id 记录唯一ID 0表示新增 其他表示编辑(靓号禁止编辑)
 	 * @apiParam {Number} sort 排序 降序排列
 	 * @apiParam {String} pretty_id 靓号
 	 * @apiParam {Number} price 价格
@@ -169,7 +169,7 @@ class Pretty extends API_Controller {
 		if($id){
 			$params = elements(
 				array(
-					'sort', 'pretty_id', 'price', 'is_pretty', 'deleted', 'enable'
+					'sort', 'price', 'is_pretty', 'deleted', 'enable'
 				),
 				$this->input->post(),
 				UPDATE_VALID
@@ -200,6 +200,9 @@ class Pretty extends API_Controller {
 			);
 			$this->check_params('add', $params);
 			$this->setPrettyInfo($params);
+			if($this->Pretty_model->get_by('pretty_id', $params['pretty_id'])){
+				$this->ajaxReturn('', 1, '靓号已存在请勿重复提交');
+			}
 			if($flag = $this->Pretty_model->insert($params)){
 				$id = $flag;
 			}
