@@ -14,7 +14,7 @@ const menuData = [
             },
             {
                 name: '普通用户',
-                path: 'UserOrdinary',do
+                path: 'UserOrdinary',
             },
             {
                 name: '讲师用户',
