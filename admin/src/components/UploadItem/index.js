@@ -41,7 +41,7 @@ class UploadItem extends BaseComponent{
 		const items = showProps.map((item,index)=>{
 			const {key,label,render} = item;
 			if(!render){
-				return <FormItem className="baseForm" key={index} {...formItemLayout} label={label}>
+				return <FormItem className="baseForm" key={index} {...formItemLayout} extra={`多种格式请用"|"隔开`} label={label}>
 							{getFieldDecorator(key,{initialValue:readItem[key]})(<Input placeholder={`请输入${label}`} />)}
 						</FormItem>
 			}else{
