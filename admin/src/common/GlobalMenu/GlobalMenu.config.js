@@ -14,7 +14,7 @@ const menuData = [
             },
             {
                 name: '普通用户',
-                path: 'UserOrdinary',
+                path: 'UserOrdinary',do
             },
             {
                 name: '讲师用户',
@@ -114,6 +114,18 @@ const menuData = [
             {
                 name: '设置',
                 path: 'SystemSet',
+            },
+            {
+                name: '商城设置',
+                path: 'ShopSet',
+            },
+            {
+                name: '快递设置',
+                path: 'ExpressSet',
+            },
+            {
+                name: '权限设置',
+                path: 'AccessSet',
             },
             {
                 name: '账号',
