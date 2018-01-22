@@ -21,7 +21,31 @@ import ArticleList from './ArticleList';
 import ArticleCategory from './ArticleCategory';
 import ArticleSingleManager from './ArticleSingleManager';
 import CodeManager from './CodeManager';
+import SystemSet from './SystemSet';
+import AccessSet from './AccessSet';
+import ExpressSet from './ExpressSet';
+import ShopSet from './ShopSet';
 export const panelsList =  [
+    {
+        path:'/ShopSet',
+        component:ShopSet,
+        title:'商城设置',
+    },
+    {
+        path:'/ExpressSet',
+        component:ExpressSet,
+        title:'快递设置',
+    },
+    {
+        path:'/AccessSet',
+        component:AccessSet,
+        title:'权限设置',
+    },
+    {
+        path:'/system/SystemSet',
+        component:SystemSet,
+        title:'基础设置',
+    },
     {
         path:'/shop/CodeManager',
         component:CodeManager,

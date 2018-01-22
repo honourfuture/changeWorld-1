@@ -116,6 +116,18 @@ const menuData = [
                 path: 'SystemSet',
             },
             {
+                name: '商城设置',
+                path: 'ShopSet',
+            },
+            {
+                name: '快递设置',
+                path: 'ExpressSet',
+            },
+            {
+                name: '权限设置',
+                path: 'AccessSet',
+            },
+            {
                 name: '账号',
                 path: 'SystemAccount',
             },

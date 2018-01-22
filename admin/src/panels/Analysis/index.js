@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './Analysis.less';
 import {Base} from '../../common';
-import {Test3} from '../../components/Test3';
 import { Row, Col } from 'antd';
 export default class Analysis extends Component {
     componentDidMount(){
@@ -17,7 +16,6 @@ export default class Analysis extends Component {
                     <Col span={12}>
                     </Col>
                     <Col span={4}>
-                        <Test3/>
                     </Col>
                 </Row>
             </div>
