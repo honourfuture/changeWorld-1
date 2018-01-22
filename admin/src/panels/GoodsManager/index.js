@@ -1,18 +1,20 @@
 import React from 'react';
 import {action} from 'mobx';
-import {BaseComponent,Base} from '../../common';
+import {BaseComponent,Base,Global} from '../../common';
 import { Table, Input,Popconfirm,Switch,Spin,Select} from 'antd';
 import './GoodsManager.less';
 import {remove} from 'lodash';
 
 import {GoodsInfo} from '../../components/GoodsInfo';
 const Option = Select.Option;
+const Search = Input.Search;
 
 export default class GoodsManager extends BaseComponent{
 	store={
 		list:[],
 		user:{},
 		goodsClass:[],
+		total:1,
 	}
 	constructor(props) {
 		super(props);
@@ -194,12 +196,27 @@ export default class GoodsManager extends BaseComponent{
 	onDelete(id){
 		Base.POST({act:'goods',op:'save',id,deleted:"1"},()=>remove(this.store.list,item=>id === item.id),this);
 	}
+	//搜索
+	searchStr = ''
+	@action.bound
+	onSearch(value){
+		this.current = 1;
+		this.searchStr = value;
+		this.requestData();
+	}
+	@action.bound
+	onTableHandler({current,pageSize}){
+		this.current = current;
+		this.requestData();
+	}
+	current = 1
 	@action.bound
 	requestData(){
-		Base.GET({act:'goods',op:'index'},(res)=>{
+		Base.GET({act:'goods',op:'index',name:this.searchStr || '',cur_page:this.current || 1,per_page:Global.PAGE_SIZE},(res)=>{
 			const {goods,user} = res.data;
 			this.store.list = goods.list;
 			this.store.user = user;
+			this.store.total = goods.count;
 			this.cacheData = goods.list.map(item => ({ ...item }));
 		},this);
 	}
@@ -210,13 +227,21 @@ export default class GoodsManager extends BaseComponent{
 		},this);
 	}
 	render(){
-		let {list,goodsClass} = this.store;
+		let {list,goodsClass,total} = this.store;
 		const showList = list.filter(item=>{
 			return parseInt(item.deleted,10) === 0;
 		});
 		return (
 			<Spin ref='spin' wrapperClassName='GoodsManager' spinning={false}>
-				<Table className="mt16" bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={false} />
+				<div className='pb10'>
+					<Search
+						placeholder="搜索标题"
+						enterButton
+						onSearch={this.onSearch}
+						style={{ width: 130,marginLeft:10 }}
+					/>
+				</div>
+				<Table className="mt16" bordered onChange={this.onTableHandler} dataSource={showList} rowKey='id' columns={this.columns} pagination={{total,current:this.current,defaultPageSize:Global.PAGE_SIZE}} />
 				<GoodsInfo ref='detail' item={list} goodClass={goodsClass} destroyOnClose />
 			</Spin>
 		)

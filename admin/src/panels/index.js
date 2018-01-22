@@ -21,7 +21,13 @@ import ArticleList from './ArticleList';
 import ArticleCategory from './ArticleCategory';
 import ArticleSingleManager from './ArticleSingleManager';
 import CodeManager from './CodeManager';
+import SystemSet from './SystemSet';
 export const panelsList =  [
+    {
+        path:'/system/SystemSet',
+        component:SystemSet,
+        title:'基础设置',
+    },
     {
         path:'/shop/CodeManager',
         component:CodeManager,

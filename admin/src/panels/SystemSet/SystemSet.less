@@ -1,0 +1,17 @@
+@import '../../common/theme.less';
+.SystemSet{
+	 padding: 16px;
+	background: #fff;
+	.mt16{
+		margin-top: 16px;
+	}
+	.ant-form-item{
+		&:last-of-type{
+			.ant-form-item-label{
+				label::after{
+					display: none;
+				}
+			}
+		}
+	}
+}
