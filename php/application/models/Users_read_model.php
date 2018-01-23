@@ -22,7 +22,7 @@ class Users_read_model extends MY_Model
     public function initType()
     {
         return array(
-            1 => '会员消息'
+            1 => '站内信'
         );
     }
 
