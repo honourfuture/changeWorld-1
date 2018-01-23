@@ -22,15 +22,15 @@ class ShopSetItem extends BaseComponent{
 		{key:'logo_image',label:'网站Logo',render:(value,label)=>this.renderUpload(value,label)},
 		{key:'buyer_image',label:'会员中心Logo',render:(value,label)=>this.renderUpload(value,label)},
 		{key:'seller_image',label:'商家中心Logo',render:(value,label)=>this.renderUpload(value,label)},
-		{key:'phone',label:'客服联系电话'},
-		{key:'email',label:'电子邮件'},
+		{key:'phone',label:'客服联系电话',render:(value,label)=><Input placeholder={`请输入${label}`} />},
+		{key:'email',label:'电子邮件',render:(value,label)=><Input placeholder={`请输入${label}`} />},
 	]
 	renderUpload(value,label){
 		const {loading} = this.store;
 		return (
 			<Upload
-				name={label}
-				data={{label:label}}
+				name="field"
+				data={{'field':'field'}}
 		        listType="picture-card"
 		        showUploadList={false}
 		        action={Global.UPLOAD_URL}
@@ -71,15 +71,9 @@ class ShopSetItem extends BaseComponent{
 		const readItem = this.props.item || {};
 		const items = showProps.map((item,index)=>{
 			const {key,label,render} = item;
-			if(!render){
-				return <FormItem className="baseForm" key={index} {...formItemLayout} label={label}>
-							{getFieldDecorator(key,{initialValue:readItem[key]})(<Input placeholder={`请输入${label}`} />)}
-						</FormItem>
-			}else{
-				return <FormItem className="baseForm" key={index} {...formItemLayout} label={label}>
-							{getFieldDecorator(key,{initialValue:readItem[key]})(render(readItem[key],key))}
-						</FormItem>
-			}
+			return <FormItem className="baseForm" key={index} {...formItemLayout} label={label}>
+						{getFieldDecorator(key,{initialValue:readItem[key]})(render(readItem[key],key))}
+					</FormItem>
 		})
 		return (
 			<div className='ShopSetItem'>

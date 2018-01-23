@@ -15,6 +15,7 @@ export default class GoodsManager extends BaseComponent{
 		user:{},
 		goodsClass:[],
 		total:1,
+		curClass:'0',
 	}
 	constructor(props) {
 		super(props);
@@ -205,6 +206,12 @@ export default class GoodsManager extends BaseComponent{
 		this.requestData();
 	}
 	@action.bound
+	onSelectChange(value){
+		console.log(value);
+		this.requestData();
+		// this.store.curClass
+	}
+	@action.bound
 	onTableHandler({current,pageSize}){
 		this.current = current;
 		this.requestData();
@@ -235,7 +242,7 @@ export default class GoodsManager extends BaseComponent{
 		},this);
 	}
 	render(){
-		let {list,goodsClass,total} = this.store;
+		let {list,goodsClass,total,curClass} = this.store;
 		const showList = list.filter(item=>{
 			return parseInt(item.deleted,10) === 0;
 		});
@@ -248,6 +255,11 @@ export default class GoodsManager extends BaseComponent{
 						onSearch={this.onSearch}
 						style={{ width: 130,marginLeft:10 }}
 					/>
+					{goodsClass.length > 0?<Select className='search-select' defaultValue={curClass} style={{ width: 120 }} onChange={this.onSelectChange}>
+					{
+						goodsClass.map(({id,name})=><Option key={id} value={id}>{name}</Option>)
+					}
+					</Select>:null}
 				</div>
 				<Table className="mt16" bordered onChange={this.onTableHandler} dataSource={showList} rowKey='id' columns={this.columns} pagination={{total,current:this.current,defaultPageSize:Global.PAGE_SIZE}} />
 				<GoodsInfo ref='detail' item={list} goodClass={goodsClass} destroyOnClose />

@@ -260,7 +260,7 @@ export default class CodeManager extends BaseComponent{
 	current = 1
 	@action.bound
 	requestData(){
-		Base.GET({act:'pretty',op:'index',mod:'admin',title:this.searchStr || '',cur_page:this.current || 1,per_page:Global.PAGE_SIZE},(res)=>{
+		Base.GET({act:'pretty',op:'index',mod:'admin',pretty_id:this.searchStr || '',cur_page:this.current || 1,per_page:Global.PAGE_SIZE},(res)=>{
 			const {user,pretty} = res.data;
 			this.store.list = pretty.list;
 			this.store.user = user;

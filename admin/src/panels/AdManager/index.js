@@ -167,7 +167,6 @@ export default class AdManager extends BaseComponent{
 	//上传
 	@action.bound
 	onUploadChange(info,id){
-		console.log(info)
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
 		if (info.file.status === 'uploading') {
