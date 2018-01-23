@@ -6,6 +6,7 @@ export default class ShopSet extends BaseComponent{
 	render(){
 		return (
 			<div className='ShopSet'>
+				
 			</div>
 		)
 	}
