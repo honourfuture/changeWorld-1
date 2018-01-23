@@ -19,5 +19,15 @@ export default {
     userInfo: {
         account: 'admin',
         header: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png'
-    }
+    },
+    indexLinkConfig:[ //wap端商城首页版式配置
+        {
+            key:'Goods',
+            name:'商品',
+        },
+        {
+            key:'Code',
+            name:'靓号',
+        },
+    ]
 }

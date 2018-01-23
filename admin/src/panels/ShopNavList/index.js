@@ -1,22 +1,13 @@
 import React from 'react';
 import {action} from 'mobx';
-import {BaseComponent,Base} from '../../common';
+import {BaseComponent,Base,Global} from '../../common';
 import { Table, Input,Popconfirm,Switch,Button,Spin,Select,message } from 'antd';
 import {remove} from 'lodash';
 import './ShopNavList.less';
 const Search = Input.Search;
 const Option = Select.Option;
 
-const linkConfig = [
-	{
-		key:'Hots',
-		name:'热门',
-	},
-	{
-		key:'Vanity',
-		name:'靓号',
-	},
-]
+const linkConfig = Global.indexLinkConfig;
 
 export default class ShopNavList extends BaseComponent{
 	store={
@@ -45,7 +36,7 @@ export default class ShopNavList extends BaseComponent{
 				render: (text, record) => this.renderInput(text, record, 'name'),
 			}, 
 			{
-				title: '链接',
+				title: '版式',
 				dataIndex: 'link',
 				width: '15%',
 				render: (text, record) => this.renderSelect(text, record, 'link'),
