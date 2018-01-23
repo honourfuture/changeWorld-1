@@ -1,7 +1,6 @@
 import React from 'react';
-import {action} from 'mobx';
 import {BaseComponent,Base} from '../../common';
-import {Tabs,Spin} from 'antd';
+import {Tabs} from 'antd';
 
 import ShopSetItem from '../../components/ShopSetItem';
 import SearchItem from '../../components/SearchItem';
@@ -21,7 +20,6 @@ export default class ShopSet extends BaseComponent{
 	}
 	render(){
 		const {list} = this.store;
-		console.log(list)
 		const panes = [
 	      	{ title: '商城设置', content: <ShopSetItem item={list} />, key: '1' },
 	     	{ title: '默认搜索', content: <SearchItem item={list} />, key: '2' },

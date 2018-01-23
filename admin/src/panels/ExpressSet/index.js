@@ -101,8 +101,10 @@ export default class ExpressSet extends BaseComponent{
 	//保存
 	@action.bound
 	onSave(id) {
+		console.log(id)
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
+		console.log(itemData)
 		itemData.editable = false;
 		Base.POST({act:'express',op:'save',...itemData},(res)=>{
 			itemData.updated_at = Base.getTimeFormat(new Date().getTime()/1000,2);
