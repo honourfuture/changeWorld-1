@@ -1,7 +1,7 @@
 import React from 'react';
 import {action} from 'mobx';
 import {BaseComponent,Base} from '../../common';
-import { Form,Input,Button,Row,Col,message,Upload,Icon} from 'antd';
+import { Form,Input,Button,Row,Col,message} from 'antd';
 import './SearchItem.less';
 const formItemLayout = {
   	labelCol: {

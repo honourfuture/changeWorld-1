@@ -18,4 +18,17 @@ class Goods_attr_category_model extends MY_Model
     {
         parent::__construct();
     }
+
+    public function array_keys_value()
+    {
+    	$result = array();
+    	$rows = $this->get_all();
+    	if($rows){
+    		foreach($rows as $item){
+    			$result[$item['id']] = $item['name'];
+    		}
+    	}
+
+    	return $result;
+    }
 }

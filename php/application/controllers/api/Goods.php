@@ -228,10 +228,89 @@ class Goods extends API_Controller {
 		$this->ajaxReturn($ret);
 	}
 
-	// 查看
+	/**
+	 * @api {get} /api/goods/view 商品-详情
+	 * @apiVersion 1.0.0
+	 * @apiName goods_view
+	 * @apiGroup api
+	 *
+	 * @apiSampleRequest /api/goods/view
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 * @apiParam {Number} goods_id 商品ID
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集
+	 * @apiSuccess {Object} data.goods_info 商品详情
+	 * @apiSuccess {Object} data.goods_attr 商品属性
+	 * @apiSuccess {Object} data.evaluate 评论
+	 * @apiSuccess {Object} data.seller 商家信息
+	 * @apiSuccess {Object} data.goods 商家其他商品
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *	    "data": [
+	 *	        {
+	 *	            "id": "1",
+	 *	            "name": "热门"
+	 *	        },
+	 *	        {
+	 *	            "id": "2",
+	 *	            "name": "靓号"
+	 *	        }
+	 *	    ],
+	 *	    "status": 0,
+	 *	    "message": "成功"
+	 *	}
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
 	public function view()
 	{
+		$ret = array();
 
+		//详情
+		$goods_id = $this->input->get_post('goods_id');
+		$info = $this->Goods_model->get($goods_id);
+		if(!$info['enable']){
+			if($info['deleted']){
+				$this->ajaxReturn('', 1, '商品已删除');
+			}else{
+				$this->ajaxReturn('', 2, '商品已下架');
+			}
+		}
+		$ret['goods_info'] = $info;
+
+		//属性
+		$this->load->model('Goods_attr_category_model');
+		$ret['goods_attr'] = $this->Goods_attr_category_model->array_keys_value();
+
+		//评价
+		$this->load->model('Order_items_model');
+		$ret['evaluate'] = $this->Order_items_model->getGoodsEvaluate($goods_id, 5);
+
+		//店家
+		$this->load->model('Users_model');
+		$this->db->select('nickname,v,header,summary');
+		$ret['seller'] = $this->Users_model->get($info['seller_uid']);
+
+		//在售商品
+		$ret['goods'] = array('total' => 0, 'list' => array());
+		$where = array('enable' => 1, 'seller_uid' => $info['seller_uid']);
+		$ret['goods']['total'] = $this->Goods_model->count_by($where);
+		$order_by = array('updated_at' => 'desc', 'id' => 'desc');
+		$this->db->select('id,name,sale_price,default_image');
+		$ret['goods']['list'] = $this->Goods_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
+
+
+		$this->ajaxReturn($ret);
 	}
 
 	/**

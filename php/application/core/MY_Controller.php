@@ -288,6 +288,9 @@ class API_Controller extends MY_Controller
     // 广告
     protected function ad($ad_position_id, $limit = 1)
     {
+        if(!$ad_position_id || !$limit){
+            return array();
+        }
         $this->load->model('Ad_model');
         $order_by = array('sort' => 'desc', 'id' => 'desc');
         $now_time = time();

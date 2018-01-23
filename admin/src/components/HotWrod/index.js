@@ -1,7 +1,7 @@
 import React from 'react';
 import {action} from 'mobx';
 import {BaseComponent,Base} from '../../common';
-import { Table,Button,Input,Popconfirm,Switch,Spin,Select,message} from 'antd';
+import { Table,Button,Input,Popconfirm,Switch,Spin,message} from 'antd';
 import './HotWrod.less';
 import {remove} from 'lodash';
 export class HotWrod extends BaseComponent{
@@ -45,7 +45,7 @@ export class HotWrod extends BaseComponent{
 				dataIndex: 'operation',
 				width: '15%',
 				render: (text, record) => {
-					const { editable,id,seller_uid} = record;
+					const { editable,id} = record;
 					return (
 					<div className="editable-row-operations">
 						{
@@ -140,10 +140,10 @@ export class HotWrod extends BaseComponent{
 			return parseInt(item.deleted,10) === 0;
 		});
 		return (
-			<div className='HotWrod'>
+			<Spin ref='spin' wrapperClassName='HotWrod' spinning={false}>
 				<Button onClick={this.onAdd}>新增+</Button>
 				<Table className='mt16' bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={false}/>
-			</div>
+			</Spin>
 		)
 	}
 };

@@ -47,7 +47,7 @@ class EmailItem extends BaseComponent{
 		const {showProps} = this;
 		const readItem = this.props.item || {};
 		const items = showProps.map((item,index)=>{
-			const {key,label,render} = item;
+			const {key,label} = item;
 
 			return <FormItem className="baseForm" key={index} {...formItemLayout} label={label}>
 						{getFieldDecorator(key,{initialValue:readItem[key]})(<Input placeholder={`请输入${label}`} />)}

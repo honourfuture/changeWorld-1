@@ -1,12 +1,14 @@
 import React from 'react';
 import {action} from 'mobx';
-import {BaseComponent,Base} from '../../common';
-import { Table, Popconfirm,Spin,Modal,Button,message,Input } from 'antd';
+import {BaseComponent,Base,Global} from '../../common';
+import { Table, Popconfirm,Spin,Modal,Button } from 'antd';
 import {remove} from 'lodash';
 import './SysMsg.less';
 
+import {EditorMsg} from '../../components/EditorMsg'
+
 class MsgModal extends BaseComponent{
-	store={visible:false,detail:[]}
+	store={visible:false,detail:[],total:1}
 	@action.bound
 	show(id,uName){
 		this.id = id;
@@ -34,8 +36,8 @@ class MsgModal extends BaseComponent{
 		        ]}
 	        >
 				<div className="msgTit">{detail.title}</div>
-				<div className="msgTit">{detail.updated_at}</div>
-				<div className="msgTit">{detail.content}</div>
+				<div className="msgTime">{detail.updated_at}</div>
+				<div className="msgCont" dangerouslySetInnerHTML={{__html:detail.content}}></div>
 	        </Modal>
 		)
 	}
@@ -53,104 +55,69 @@ export default class SysMsg extends BaseComponent{
 			{
 				title: '标题',
 				dataIndex: 'title',
-				render: (text, record) => this.renderInput(text, record, 'title'),
+				// render: (text, record) => this.renderInput(text, record, 'title'),
 			},
-			{
-				title: '内容',
-				dataIndex: 'content',
-				render: (text, record) => this.renderInput(text, record, 'content'),
-			},
+			// {
+			// 	title: '内容',
+			// 	dataIndex: 'content',
+			// 	render: (text, record) => this.renderInput(text, record, 'content'),
+			// },
 			{
 				title: '时间',
 				dataIndex: 'updated_at',
-				width:'15%',
+				width:'20%',
 			},
 			{
 				title: '操作',
 				dataIndex: 'operation',
 				width:'15%',
 				render: (text, record) => {
-					const { editable,id } = record;
+					const {id } = record;
 					return (
 					<div className="editable-row-operations">
-						{
-						editable ?
-							<span>
-								<a onClick={() => this.onSave(id)}>保存</a>
-								<a className='ml10 gray' onClick={() => this.onCancel(id)}>取消</a>
-							</span>
-							:
 							<span>
 								<a onClick={() => this.onReadChange(id)}>查看</a>
 								<Popconfirm title="确认删除?" okText='确定' cancelText='取消' onConfirm={() => this.onDelete(id)}>
 									<a className='ml10 gray'>删除</a>
 								</Popconfirm>
 							</span>
-						}
 					</div>
 					);
 				},
 			}
 		];
 	}
-	renderInput(text, record, column){
-		const {editable} = record;
-		return (
-			<div>
-				{editable
-					? <Input style={{ margin: '-5px 0' }} value={text} type={column==='sort'?'number':'text'} onChange={e => this.onEditChange(record.id, e.target.value, column)} />
-					: text
-				}
-			</div>
-		)
-	}
-	//编辑
-	@action.bound
-	onEditChange(id,value,column) {
-		const list = this.store.list.slice();
-		const itemData = list.find(item=>id === item.id);
-		itemData[column] = value;
-		this.store.list = list;
-	}
 	//查看
 	@action.bound
 	onReadChange(id){
 		this.refs.detail.show(id);
 	}
-	//取消
-	@action.bound
-	onCancel(id) {
-		this.store.list = this.cacheData.map(item => ({ ...item }));
-	}
 	//删除
 	@action.bound
 	onDelete(id){
-		Base.POST({act:'ad',op:'save',mod:'admin',id,deleted:"1"},()=>remove(this.store.list,item=>id === item.id),this);
+		Base.POST({act:'mailbox',op:'save',id,deleted:"1"},()=>remove(this.store.list,item=>id === item.id),this);
 	}
 	//添加
 	@action.bound
-	onAdd(){
-		if(this.store.list.find(item=>item.id === 0)){
-			return message.info('请保存后再新建');
-		}
-		this.store.list.unshift({id:0,title:'',content:'',editable:true,deleted:'0',sort:0});
+	onOpen(){
+		this.refs.addMsg.show();
 	}
 	//保存
 	@action.bound
-	onSave(id) {
-		const list = this.store.list.slice();
-		const itemData = list.find(item=>id === item.id);
-		Base.POST({act:'mailbox',op:'save',...itemData},(res)=>{
-			itemData.editable = false;
-			itemData.updated_at = Base.getTimeFormat(new Date().getTime()/1000,2);
-			itemData.id === 0 && (itemData.id = res.data.id);
-			this.store.list = list;
-			this.cacheData = list.map(item => ({ ...item }));
+	onSave(content,title,id) {
+		Base.POST({act:'mailbox',op:'save',id,content,title},(res)=>{
+			this.requestData();
 		},this);
 	}
 	@action.bound
+	onTableHandler({current,pageSize}){
+		this.current = current;
+		this.requestData();
+	}
+	current = 1
+	@action.bound
 	requestData(){
-		Base.GET({act:'mailbox',op:'index'},(res)=>{
+		Base.GET({act:'mailbox',op:'index',cur_page:this.current || 1,per_page:Global.PAGE_SIZE},(res)=>{
 			console.log(res)
 			const {list,count} = res.data;
 			this.store.list = list;
@@ -167,11 +134,12 @@ export default class SysMsg extends BaseComponent{
 			return parseInt(item.deleted,10) === 0;
 		})
 		return (
-			<div className='SysMsg'>
-				<Button onClick={this.onAdd}>新增+</Button>
-				<Table className='mt16'bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={false}/>
+			<Spin ref='spin' wrapperClassName='SysMsg' spinning={false}>
+				<Button onClick={this.onOpen}>新增+</Button>
+				<Table className='mt16'  onChange={this.onTableHandler} bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={{total,current:this.current,defaultPageSize:Global.PAGE_SIZE}}/>
 				<MsgModal ref='detail' />
-			</div>
+				<EditorMsg ref='addMsg' onComplete={this.onSave} />
+			</Spin>
 		)
 	}
 };
