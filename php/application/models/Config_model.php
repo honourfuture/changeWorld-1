@@ -29,6 +29,8 @@ class Config_model extends MY_Model
 	    		'copyright' => '版权信息',
 	    		'site_status' => '站点状态',
 	    		'closed_reason' => '关闭原因',
+	    		'phone' => '客服联系电话',
+	    		'email' => '电子邮件',
     		),
     		'upload' => array(
     			'image_max_filesize' => '图片文件大小',
@@ -42,7 +44,14 @@ class Config_model extends MY_Model
     			'email_pass' => 'SMTP 身份验证密码',
     			'email_test' => '测试接收的邮件地址',
     		),
-    		// 'other' => array(),
+    		'search' => array(
+    			'search_words' => '默认搜索',
+    		),
+    		'logo' => array(
+    			'logo_image' => '网站Logo',
+    			'buyer_image' => '会员中心Logo',
+    			'seller_image' => '商家中心Logo',
+    		),
     	);
     }
 }
