@@ -1,57 +1,89 @@
 const menuData = [
     {
-        name: '用户',
+        name: '会员',
         icon: 'user',
         path: 'member',
         children: [
             {
                 name: '讲师认证',
-                path: 'UserLecturerCertification',
+                path: 'MemberLecturerCertification',
             },
             {
                 name: 'V认证',
-                path: 'UserVCertification',
+                path: 'MemberVCertification',
             },
             {
-                name: '普通用户',
-                path: 'UserOrdinary',
-            },
-            {
-                name: '讲师用户',
-                path: 'UserLecturer',
+                name: '会员管理',
+                path: 'MemberManager',
             },
             {
                 name: '等级管理',
-                path: 'UserLvManager',
+                path: 'MemberLvManager',
             },
             {
                 name: '贵族管理',
                 path: 'LecturerNobleManager',
             },
             {
+                name: '经验值管理',
+                path: 'MemberExpManager',
+            },
+            {
+                name: '积分管理',
+                path: 'MemberPointManager',
+            },
+            {
                 name: '密保问题',
                 path: 'MemberEncrypted',
+            },
+            {
+                name: '会员消息',
+                path: 'MemberMsgList',
             },
         ],
     }, 
     {
         name: '交易',
-        icon: 'trademark',
+        icon: 'pay-circle-o',
         path: 'trade',
         children: [
             {
-                name: '订单列表',
-                path: 'OrderList',
-            }
+                name: '商品订单',
+                path: 'GoodsOrderList',
+            },
+            {
+                name: '退款管理',
+                path: 'refundMananger',
+            },
+            {
+                name: '退货管理',
+                path: 'refundGoodsMananger',
+            },
+            {
+                name: '评价管理',
+                path: 'EvaluateMananger',
+            },
+            // {
+            //     name: '咨询管理',
+            //     path: 'ConsultMananger',
+            // },
+            // {
+            //     name: '举报管理',
+            //     path: 'ReportMananger',
+            // },
+            // {
+            //     name: '投诉管理',
+            //     path: 'ComplaintMananger',
+            // },
         ],
     }, 
     {
-        name: '商城',
-        icon: 'shop',
-        path: 'shop',
+        name: '商品',
+        icon: 'gift',
+        path: 'goods',
         children: [
             {
-                name: '商城导航',
+                name: '分类管理',
                 path: 'ShopNavList',
             },
             {
@@ -66,11 +98,34 @@ const menuData = [
                 name: '靓号管理',
                 path: 'CodeManager',
             }, 
+            {
+                name: '品牌管理',
+                path: 'BrandManager',
+            },
+        ],
+    },
+    {
+        name: '店铺',
+        icon: 'shop',
+        path: 'shop',
+        children: [
+            {
+                name: '店铺管理',
+                path: 'ShopManager',
+            },
+            // {
+            //     name: '店铺等级',
+            //     path: 'ShopLv',
+            // },
+            // {
+            //     name: '店铺分类',
+            //     path: 'ShopClassify',
+            // },
         ],
     },
     {
         name: '运营',
-        icon: 'picture',
+        icon: 'pie-chart',
         path: 'operation',
         children: [
             {
@@ -80,6 +135,10 @@ const menuData = [
             {
                 name: '广告管理',
                 path: 'AdManager',
+            },
+            {
+                name: '意见反馈',
+                path: 'FeedBack',
             }
         ],
     },
@@ -99,10 +158,6 @@ const menuData = [
             {
                 name: '单页管理',
                 path: 'ArticleSingleManager',
-            },
-            {
-                name: '帮助中心',
-                path: 'ArticleHelper',
             }
         ],
     },
@@ -112,7 +167,7 @@ const menuData = [
         path: 'system',
         children: [
             {
-                name: '设置',
+                name: '基础设置',
                 path: 'SystemSet',
             },
             {
@@ -120,7 +175,7 @@ const menuData = [
                 path: 'ShopSet',
             },
             {
-                name: '快递设置',
+                name: '快递公司',
                 path: 'ExpressSet',
             },
             {
@@ -128,39 +183,78 @@ const menuData = [
                 path: 'AccessSet',
             },
             {
-                name: '账号',
-                path: 'SystemAccount',
-            },
-            {
                 name: '日志',
                 path: 'SystemLog',
-            },
-            {
-                name: 'APP版本',
-                path: 'SystemAppVersion',
-            },
-            {
-                name: '密保问题',
-                path: 'SystemEncrypted',
             }
         ],
     },
     {
-        name: '消息',
-        icon: 'message',
-        path: 'msg',
+        name: '通讯',
+        icon: 'global',
+        path: 'net',
         children: [
             {
-                name: '反馈建议',
-                path: 'MsgFeedBack',
+                name: '短信',
+                path: 'NetSms',
             },
             {
-                name: '站内信',
-                path: 'MsgInstation',
+                name: '邮箱',
+                path: 'NetEmail',
             },
             {
-                name: '公告',
-                path: 'MsgAnnouncement',
+                name: 'apns',
+                path: 'NetApns',
+            }
+        ],
+    },
+    {
+        name: '促销',
+        icon: 'tag-o',
+        path: 'promotion',
+        children: [
+            {
+                name: '促销设定',
+                path: 'PromotionSet',
+            },
+            {
+                name: '团购管理',
+                path: 'PromotionGroup',
+            },
+            {
+                name: '限时折扣',
+                path: 'PromotionDiscount',
+            },
+            {
+                name: '满即送',
+                path: 'PromotionFullSend',
+            },
+            {
+                name: '积分兑换',
+                path: 'PointExchange',
+            },
+            {
+                name: '代金券',
+                path: 'PromotionVoucher',
+            },
+            {
+                name: '红包',
+                path: 'PromotionRedBag',
+            },
+            {
+                name: '拼团管理',
+                path: 'GroupBooking',
+            },
+
+        ],
+    },
+    {
+        name: '手机端',
+        icon: 'mobile',
+        path: 'mobile',
+        children: [
+            {
+                name: 'APP版本',
+                path: 'AppVersion',
             }
         ],
     }

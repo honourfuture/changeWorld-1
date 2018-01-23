@@ -47,12 +47,12 @@ export const panelsList =  [
         title:'基础设置',
     },
     {
-        path:'/shop/CodeManager',
+        path:'/goods/CodeManager',
         component:CodeManager,
         title:'靓号管理',
     },
     {
-        path:'/shop/GoodsManager',
+        path:'/goods/GoodsManager',
         component:GoodsManager,
         title:'商品管理',
     },{
@@ -76,7 +76,7 @@ export const panelsList =  [
         title:'密保问题',
     },
     {
-        path:'/shop/GoodsProperty',
+        path:'/goods/GoodsProperty',
         component:GoodsProperty,
         title:'商品属性',
     },
@@ -91,7 +91,7 @@ export const panelsList =  [
         title:'广告管理',
     },
     {
-        path:'/shop/ShopNavList',
+        path:'/goods/ShopNavList',
         component:ShopNavList,
         title:'导航',
     },
