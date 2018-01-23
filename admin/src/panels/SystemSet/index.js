@@ -1,7 +1,7 @@
 import React from 'react';
 import {action} from 'mobx';
 import {BaseComponent,Base} from '../../common';
-import {Tabs} from 'antd';
+import {Tabs,Spin} from 'antd';
 import './SystemSet.less';
 
 import BasicItem from '../../components/BasicItem';
@@ -38,11 +38,11 @@ export default class SystemSet extends BaseComponent{
 		})
 
 		return (
-			<div className='SystemSet'>
+			<Spin ref='spin' spinning={false} className='SystemSet'>
 				<Tabs>
 					{tabPan}
 				</Tabs>
-			</div>
+			</Spin>
 		)
 	}
 };

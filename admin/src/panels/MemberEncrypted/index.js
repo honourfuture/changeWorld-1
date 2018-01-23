@@ -56,13 +56,6 @@ export default class MemberEncrypted extends BaseComponent{
 			}
 		];
 	}
-	renderText(text, record, column) {
-		return (
-			<div>
-				{record[column]}
-			</div>
-		);
-	}
 	renderInput(text, record, column){
 		const {editable} = record;
 		return (
