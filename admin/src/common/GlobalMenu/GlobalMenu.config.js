@@ -35,11 +35,7 @@ const menuData = [
             {
                 name: '密保问题',
                 path: 'MemberEncrypted',
-            },
-            {
-                name: '会员消息',
-                path: 'MemberMsgList',
-            },
+            }
         ],
     },
     {
@@ -139,6 +135,10 @@ const menuData = [
             {
                 name: '意见反馈',
                 path: 'FeedBack',
+            },
+            {
+                name: '站内信',
+                path: 'SysMsg',
             }
         ],
     },
@@ -198,7 +198,11 @@ const menuData = [
             {
                 name: 'apns',
                 path: 'NetApns',
-            }
+            },
+            {
+                name: '会员消息',
+                path: 'MemberMsgList',
+            },
         ],
     },
     {
@@ -209,6 +213,14 @@ const menuData = [
             {
                 name: 'APP版本',
                 path: 'AppVersion',
+            },
+            {
+                name: '启动图',
+                path: 'AppStartManager',
+            },
+            {
+                name: '引导图',
+                path: 'AppGuideManager',
             }
         ],
     },
