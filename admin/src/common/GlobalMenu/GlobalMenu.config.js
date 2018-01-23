@@ -44,7 +44,7 @@ const menuData = [
         path: 'goods',
         children: [
             {
-                name: '分类管理',
+                name: '商品分类',
                 path: 'ShopNavList',
             },
             {
