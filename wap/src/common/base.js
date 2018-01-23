@@ -56,10 +56,8 @@ export const Base = {
 		if(window.HISTORY_LENGHT === 0){
 			//关闭原生页面
 			if(window.webkit && window.webkit.messageHandlers){
-				window.app_indexUrl = '';
 				window.webkit.messageHandlers.popViewController.postMessage(null);
 			}else if(window.Native){
-				window.app_indexUrl = '';
 				window.Native.finish();
 			}else{
 				window.Router.history.goBack();
@@ -216,7 +214,7 @@ export const Base = {
 	// 	PubSub.publish(name,data);
 	// }
 }
-
+window.goBack = Base.goBack;
 //基础组件，内置store
 @observer
 export class BaseComponent extends Component {
