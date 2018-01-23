@@ -26,11 +26,11 @@ class ShopSetItem extends BaseComponent{
 		{key:'email',label:'电子邮件'},
 	]
 	renderUpload(value,label){
-		console.log(label,"value");
 		const {loading} = this.store;
 		return (
 			<Upload
 				name={label}
+				data={{label:label}}
 		        listType="picture-card"
 		        showUploadList={false}
 		        action={Global.UPLOAD_URL}
