@@ -229,13 +229,7 @@ export default class GoodsManager extends BaseComponent{
 	}
 	componentDidMount() {
 		Base.GET({act:'shop_class',op:'index'},(res)=>{
-			const goodsClass = [];
-			res.data.forEach((item)=>{
-				const {link} = item;
-				if(link === Global.indexLinkConfig[0].key){
-					goodsClass.push(item);
-				}
-			})
+			const goodsClass = res.data;
 			goodsClass.unshift({id:"0",name:'请选择'});
 			this.store.goodsClass = goodsClass;
 			this.requestData();

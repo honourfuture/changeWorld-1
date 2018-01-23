@@ -7,8 +7,6 @@ import './ShopNavList.less';
 const Search = Input.Search;
 const Option = Select.Option;
 
-const linkConfig = Global.indexLinkConfig;
-
 export default class ShopNavList extends BaseComponent{
 	store={
 		list:[],
@@ -34,12 +32,6 @@ export default class ShopNavList extends BaseComponent{
 				dataIndex: 'name',
 				width: '15%',
 				render: (text, record) => this.renderInput(text, record, 'name'),
-			}, 
-			{
-				title: '版式',
-				dataIndex: 'link',
-				width: '15%',
-				render: (text, record) => this.renderSelect(text, record, 'link'),
 			}, 
 			{
 				title: '启用',
@@ -97,20 +89,6 @@ export default class ShopNavList extends BaseComponent{
 			<Switch checked={parseInt(record.enable,10)===1} onChange={(value)=>this.onSwitch(record.id,value?1:0,column)} />
 		)
 	}
-	renderSelect(text,record,column){
-		const value = record[column];
-		let curIndex = linkConfig.findIndex((item)=>item.key === value);
-		curIndex = curIndex >= 0?curIndex:0;
-		return (
-			<div>
-				{record.editable?<Select defaultValue={value || linkConfig[0].key} style={{ width: 120 }} onChange={(value)=>this.onEditChange(record.id,value,column)}>
-					{
-						linkConfig.map(({key,name})=><Option key={key} value={key}>{name}</Option>)
-					}
-				</Select>:linkConfig[curIndex].name}
-			</div>
-		)
-	}
 	//是否启用
 	@action.bound
 	onSwitch(id,value,column){
@@ -156,7 +134,7 @@ export default class ShopNavList extends BaseComponent{
 		if(this.store.list.find(item=>item.id === 0)){
 			return message.info('请保存后再新建');
 		}
-		this.store.list.unshift({id:0,name:'',editable:true,deleted:'0',enable:'1',sort:0,link:linkConfig[0].key});
+		this.store.list.unshift({id:0,name:'',editable:true,deleted:'0',enable:'1',sort:0});
 	}
 	//搜索
 	@action.bound
