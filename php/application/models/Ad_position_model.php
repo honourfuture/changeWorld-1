@@ -18,4 +18,22 @@ class Ad_position_model extends MY_Model
     {
         parent::__construct();
     }
+
+    public function init($control, $position_id = 0)
+    {
+    	$init = array(
+    		'shop' => array(//商城
+    			'1' => 1,
+    		),
+    	);
+
+    	if(isset($init[$control])){
+    		if($position_id){
+    			return isset($init[$control][$position_id]) ? $init[$control][$position_id] : 0;
+    		}else{
+    			return $init[$control];
+    		}
+    	}
+    	return 0;
+    }
 }
