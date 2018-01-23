@@ -8,22 +8,20 @@ import {Hots} from '../../components/Hots';
 import {Vanity} from '../../components/Vanity';
 
 export default class ShopIndex extends BaseComponent{
+    store={tabs:[]}
     componentDidMount(){
+        Base.GET({act:'goods_class',op:'index'},(res)=>{
+            const tabs = res.data.map((item)=>{
+                const {id,name} = item;
+                return {key:id,title:name,component:<Hots id={id}/>};
+            });
+            tabs.splice(1,0,{key:0,title:'靓号',component:<Vanity/>})
+            this.store.tabs = tabs;
+        })
     }
     renderContent = tab => tab.component;
     render(){
-        const tabs = [
-          { title: '热门', component:<Hots /> },
-          { title: '靓号', component:<Vanity /> },
-          { title: '图书', component:<Hots/> },
-          { title: '知识', component:<Hots /> },
-          { title: '外卖', component:<Hots /> },
-          { title: '直播', component:<Hots /> },
-          { title: '家居', component:<Hots /> },
-          { title: '图片', component:<Hots /> },
-          { title: '段子', component:<Hots /> },
-        ];
-
+        const {tabs} = this.store;
         return (
             <div className='ShopIndex'>
                 <NavBar

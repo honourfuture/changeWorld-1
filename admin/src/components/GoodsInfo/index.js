@@ -24,7 +24,7 @@ export class GoodsInfo extends BaseComponent{
 		{key:'goods_attr',label:'商品属性',render:(value)=>this.renderAttr(value)},
 		{key:'sale_price',label:'售价',render:(value)=>`${value} 元`},
 		{key:'stock',label:'库存'},
-		{key:'shop_class_id',label:'分类',render:(value)=>this.renderClass(value)},
+		{key:'goods_class_id',label:'分类',render:(value)=>this.renderClass(value)},
 		{key:'enable',label:'商品状态',render:(value)=>parseInt(value,10) === 1?'已启用':'未启用'},
 		{key:'freight_fee',label:'邮费',render:(value)=>`${value} 元`},
 		{key:'goods_ticket',label:'优惠券',render:(value)=>this.renderTicket(value)},

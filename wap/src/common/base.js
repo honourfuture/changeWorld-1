@@ -142,7 +142,7 @@ export const Base = {
 			}
       	}).catch((error) => {
 			self.DEBUG && console.log(error);
-			Toast.offline('网络连接异常，请重新尝试');
+			Toast.offline('连接异常，请重新尝试');
       	});
     },
     GET(o_param,f_succBack=null,f_failBack=null){

@@ -6,21 +6,21 @@ import './GoodsList.less';
 const goodsImgHeight = (document.body.offsetWidth-10)/2;
 class Item extends BaseComponent {
     render(){
-        const {goodsImg,goodsTit,goodsPrice,goodsNum} = this.props;
+        const {default_image,name,sale_price,id} = this.props;
         return (
-            <div className="recommend-goodsItem" onClick={() => Base.push('GoodsDetail', {goodsNum})}>
+            <div className="recommend-goodsItem" onClick={() => Base.push('GoodsDetail', {id})}>
                 <div className="recommend-goodsItem-img">
                     <NetImg 
-                    src={goodsImg}
+                    src={default_image}
                     height={goodsImgHeight}
                     />
                 </div>
                 <div className="recommend-goodsItem-body">
                     <div className="recommend-goodsItem-title ellipsis2">
-                        {goodsTit}
+                        {name}
                     </div>
                     <Flex justify="between" className="recommend-goodsItem-opera">
-                        <span className="goodsPrice">￥ {goodsPrice}</span>
+                        <span className="goodsPrice">￥ {sale_price}</span>
                         <Button type="warning" inline size="small">购买</Button>
                     </Flex>
                 </div>
@@ -31,8 +31,8 @@ class Item extends BaseComponent {
 
 export class GoodsList extends BaseComponent{
 	render(){
-		const {goodslist} = this.props;
-		const item = goodslist.map((item,index)=>{
+        const {goodsList} = this.props;
+		const item = goodsList.map((item,index)=>{
             return <Item key={index} {...item} />
         });
 		return (

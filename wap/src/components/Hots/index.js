@@ -1,6 +1,6 @@
 import React from 'react';
 // import {action} from 'mobx';
-import {BaseComponent,NetImg} from '../../common';
+import {Base,BaseComponent,NetImg} from '../../common';
 import { WhiteSpace,Carousel} from 'antd-mobile';
 import './Hots.less';
 
@@ -9,6 +9,7 @@ import {test} from '../../images';
 
 export class Hots extends BaseComponent{
     store = {
+        goods:[],
         hotData:[{
             goodsImg:test.test4,
             goodsTit:"THE NORTH FACE 2017春夏新款北面男款…",
@@ -32,9 +33,14 @@ export class Hots extends BaseComponent{
         }],
     }
     componentDidMount(){
+        const {id} = this.props;
+        Base.GET({act:'shop',op:'index',goods_class_id:id},(res)=>{
+            this.store.goods = res.data.goods;
+            this.store.anchor = res.data.anchor;
+        });
     }
     render(){
-        const {hotData} = this.store;
+        const {hotData,goods} = this.store;
         return (
             <div className='Hots base-content'>
                 <Carousel
@@ -52,7 +58,7 @@ export class Hots extends BaseComponent{
                 <WhiteSpace size="md" />
                 <div className="anchor-recommend"><span>主播推荐</span></div>
                 <WhiteSpace size="md" />
-                <GoodsList  goodslist={hotData} />
+                <GoodsList  goodsList={goods} />
             </div>
         )
     }
