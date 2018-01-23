@@ -138,6 +138,9 @@ class Goods_class extends API_Controller {
 			$this->check_params('add', $params);
 			if($flag = $this->Goods_class_model->insert($params)){
 				$id = $flag;
+				//商品类默认创建分类
+				$this->load->model('Ad_position_model');
+				$this->Ad_position_model->insert(array('name' => $params['name']));
 			}
 		}
 

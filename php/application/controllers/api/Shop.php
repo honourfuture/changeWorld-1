@@ -28,13 +28,13 @@ class Shop extends API_Controller {
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
 	 * @apiSuccess {Object} data 接口数据集
-	 * @apiSuccess {Object[]} data.anchor 推荐主播
+	 * @apiSuccess {Object[]} data.ad 推荐广告
 	 * @apiSuccess {Object[]} data.goods 推荐商品
 	 *
 	 * @apiSuccessExample {json} Success-Response:
 	 * {
 	 *    "data": {
-	 *        "anchor": [],
+	 *        "ad": [],
 	 *        "goods": []
 	 *    },
 	 *    "status": 0,
@@ -50,16 +50,14 @@ class Shop extends API_Controller {
 	 */
 	public function index()
 	{
-		$ret = array('anchor' => array(), 'goods' => array());
+		$ret = array('ad' => array(), 'goods' => array());
 		$goods_class_id = (int)$this->input->get_post('goods_class_id');
 		if($goods_class_id){
-			$this->load->model('Users_model');
-			$order_by = array('sort' => 'desc', 'updated_at' => 'desc');
-			$where = array('goods_class_id' => $goods_class_id);
-			$this->db->select('id,header,nickname');
-			$ret['anchor'] = $this->Users_model->order_by($order_by)->limit(5, 0)->get_many_by($where);
-
 			$ret['goods'] = $this->_goods($goods_class_id);
+
+			$this->load->model('Ad_position_model');
+			$ad_position_id = $this->Ad_position_model->init('shop', $goods_class_id);
+            $ret['ad'] = $this->ad($ad_position_id, 5);
 
 			$this->ajaxReturn($ret);
 		}else{
