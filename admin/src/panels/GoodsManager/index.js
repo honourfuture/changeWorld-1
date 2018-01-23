@@ -15,7 +15,7 @@ export default class GoodsManager extends BaseComponent{
 		user:{},
 		goodsClass:[],
 		total:1,
-		curClass:'0',
+		shop_class_id:'0',
 	}
 	constructor(props) {
 		super(props);
@@ -207,9 +207,8 @@ export default class GoodsManager extends BaseComponent{
 	}
 	@action.bound
 	onSelectChange(value){
-		console.log(value);
+		this.store.shop_class_id = value;
 		this.requestData();
-		// this.store.curClass
 	}
 	@action.bound
 	onTableHandler({current,pageSize}){
@@ -219,7 +218,8 @@ export default class GoodsManager extends BaseComponent{
 	current = 1
 	@action.bound
 	requestData(){
-		Base.GET({act:'goods',op:'index',name:this.searchStr || '',cur_page:this.current || 1,per_page:Global.PAGE_SIZE},(res)=>{
+		const {shop_class_id} = this.store;
+		Base.GET({act:'goods',op:'index',shop_class_id,name:this.searchStr || '',cur_page:this.current || 1,per_page:Global.PAGE_SIZE},(res)=>{
 			const {goods,user} = res.data;
 			this.store.list = goods.list;
 			this.store.user = user;
@@ -242,7 +242,7 @@ export default class GoodsManager extends BaseComponent{
 		},this);
 	}
 	render(){
-		let {list,goodsClass,total,curClass} = this.store;
+		let {list,goodsClass,total,shop_class_id} = this.store;
 		const showList = list.filter(item=>{
 			return parseInt(item.deleted,10) === 0;
 		});
@@ -255,7 +255,7 @@ export default class GoodsManager extends BaseComponent{
 						onSearch={this.onSearch}
 						style={{ width: 130,marginLeft:10 }}
 					/>
-					{goodsClass.length > 0?<Select className='search-select' defaultValue={curClass} style={{ width: 120 }} onChange={this.onSelectChange}>
+					{goodsClass.length > 0?<Select className='search-select' defaultValue={shop_class_id} style={{ width: 120 }} onChange={this.onSelectChange}>
 					{
 						goodsClass.map(({id,name})=><Option key={id} value={id}>{name}</Option>)
 					}
