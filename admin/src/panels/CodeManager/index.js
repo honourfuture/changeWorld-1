@@ -28,7 +28,7 @@ export default class CodeManager extends BaseComponent{
 				title: '靓号',
 				dataIndex: 'pretty_id',
 				width: '10%',
-				render: (text, record) => this.renderInput(text, record, 'pretty_id'),
+				render: (text, record) => this.renderPrettyId(text, record, 'pretty_id'),
 			},
 			{
 				title: '更新时间',
@@ -86,6 +86,15 @@ export default class CodeManager extends BaseComponent{
 				},
 			}
 		];
+	}
+	renderPrettyId(text,record,column){
+		const {id,editable} = record;
+		return <div>
+				{editable && parseInt(id,10)===0
+					? <Input style={{ margin: '-5px 0' }} value={text} type={(column==='sort' || column==='pretty_id' || column==='price')?'number':'text'} onChange={e => this.onEditChange(record.id, e.target.value, column)} />
+					: text
+				}
+			</div>
 	}
 	renderBuyer(text,record,column){
 		const buyer_id = record[column];
@@ -272,7 +281,7 @@ export default class CodeManager extends BaseComponent{
 				<div className='pb10'>
 					<Button onClick={this.onAdd}>新增+</Button>
 					<Search
-						placeholder="搜索标题"
+						placeholder="搜索靓号"
 						enterButton
 						onSearch={this.onSearch}
 						style={{ width: 130,marginLeft:10 }}

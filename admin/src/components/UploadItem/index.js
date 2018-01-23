@@ -16,8 +16,8 @@ const formItemLayout = {
 const FormItem = Form.Item;
 class UploadItem extends BaseComponent{
 	showProps=[
-		{key:'image_max_filesize',label:'图片文件大小',render:(value)=>this.renderImgSize(value)},
-		{key:'image_allow_ext',label:'文件扩展名'},
+		{key:'image_max_filesize',label:'图片文件大小',extra:`多种格式请用"|"隔开`,render:(value)=>this.renderImgSize(value)},
+		{key:'image_allow_ext',label:'文件扩展名',render:(value)=><Input placeholder='请输入文件扩展名' />},
 	]
 	renderImgSize(value){
 		return (
@@ -39,16 +39,10 @@ class UploadItem extends BaseComponent{
 		const {showProps} = this;
 		const readItem = this.props.item || {};
 		const items = showProps.map((item,index)=>{
-			const {key,label,render} = item;
-			if(!render){
-				return <FormItem className="baseForm" key={index} {...formItemLayout} extra={`多种格式请用"|"隔开`} label={label}>
-							{getFieldDecorator(key,{initialValue:readItem[key]})(<Input placeholder={`请输入${label}`} />)}
-						</FormItem>
-			}else{
-				return <FormItem className="baseForm" key={index} {...formItemLayout} label={label}>
-							{getFieldDecorator(key,{initialValue:readItem[key]})(render(readItem[key]))}
-						</FormItem>
-			}
+			const {key,label,render,extra} = item;
+			return <FormItem className="baseForm" key={index} {...formItemLayout} extra={extra} label={label}>
+				{getFieldDecorator(key,{initialValue:readItem[key]})(render(readItem[key]))}
+			</FormItem>;
 		})
 		return (
 			<div className='UploadItem'>

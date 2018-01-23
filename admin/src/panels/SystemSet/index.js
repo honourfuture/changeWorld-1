@@ -17,7 +17,6 @@ export default class SystemSet extends BaseComponent{
 	@action.bound
 	componentDidMount(){
 		Base.GET({act:'config',op:'index',mod:'admin'},(res)=>{
-			console.log(res)
 			this.store.baseInfo = res.data; 
 		},this);
 	}

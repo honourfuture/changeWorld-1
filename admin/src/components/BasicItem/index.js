@@ -4,7 +4,6 @@ import {BaseComponent,Base} from '../../common';
 import { Form,Input,Button,Row,Col,Switch,message} from 'antd';
 import './BasicItem.less';
 
-
 const formItemLayout = {
   	labelCol: {
     	xs: { span: 24 },
@@ -35,9 +34,7 @@ class BasicItem extends BaseComponent{
 	@action.bound
 	onSwitch(value){
 		const {callBack} = this.props;
-		Base.POST({act:'config',op:'save',mod:'admin',site_status:value},(res)=>{
-			callBack && callBack(value);
-		},this);
+		callBack && callBack(value);
 	}
 	@action.bound
 	onSaveBasic(value){
