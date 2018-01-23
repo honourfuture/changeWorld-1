@@ -42,7 +42,10 @@ class Config_model extends MY_Model
     			'email_pass' => 'SMTP 身份验证密码',
     			'email_test' => '测试接收的邮件地址',
     		),
-    		// 'other' => array(),
+    		'search' => array(
+    			'default_search' => '默认搜索',
+    			'hot_search' => '热门搜索',
+    		),
     	);
     }
 }
