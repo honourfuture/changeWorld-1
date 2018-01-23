@@ -41,42 +41,7 @@ const menuData = [
                 path: 'MemberMsgList',
             },
         ],
-    }, 
-    {
-        name: '交易',
-        icon: 'pay-circle-o',
-        path: 'trade',
-        children: [
-            {
-                name: '商品订单',
-                path: 'GoodsOrderList',
-            },
-            {
-                name: '退款管理',
-                path: 'refundMananger',
-            },
-            {
-                name: '退货管理',
-                path: 'refundGoodsMananger',
-            },
-            {
-                name: '评价管理',
-                path: 'EvaluateMananger',
-            },
-            // {
-            //     name: '咨询管理',
-            //     path: 'ConsultMananger',
-            // },
-            // {
-            //     name: '举报管理',
-            //     path: 'ReportMananger',
-            // },
-            // {
-            //     name: '投诉管理',
-            //     path: 'ComplaintMananger',
-            // },
-        ],
-    }, 
+    },
     {
         name: '商品',
         icon: 'gift',
@@ -124,6 +89,41 @@ const menuData = [
         ],
     },
     {
+        name: '交易',
+        icon: 'pay-circle-o',
+        path: 'trade',
+        children: [
+            {
+                name: '商品订单',
+                path: 'GoodsOrderList',
+            },
+            {
+                name: '退款管理',
+                path: 'refundMananger',
+            },
+            {
+                name: '退货管理',
+                path: 'refundGoodsMananger',
+            },
+            {
+                name: '评价管理',
+                path: 'EvaluateMananger',
+            },
+            // {
+            //     name: '咨询管理',
+            //     path: 'ConsultMananger',
+            // },
+            // {
+            //     name: '举报管理',
+            //     path: 'ReportMananger',
+            // },
+            // {
+            //     name: '投诉管理',
+            //     path: 'ComplaintMananger',
+            // },
+        ],
+    },
+    {
         name: '运营',
         icon: 'pie-chart',
         path: 'operation',
@@ -139,6 +139,76 @@ const menuData = [
             {
                 name: '意见反馈',
                 path: 'FeedBack',
+            }
+        ],
+    },
+    // {
+    //     name: '促销',
+    //     icon: 'tag-o',
+    //     path: 'promotion',
+    //     children: [
+    //         {
+    //             name: '促销设定',
+    //             path: 'PromotionSet',
+    //         },
+    //         {
+    //             name: '团购管理',
+    //             path: 'PromotionGroup',
+    //         },
+    //         {
+    //             name: '限时折扣',
+    //             path: 'PromotionDiscount',
+    //         },
+    //         {
+    //             name: '满即送',
+    //             path: 'PromotionFullSend',
+    //         },
+    //         {
+    //             name: '积分兑换',
+    //             path: 'PointExchange',
+    //         },
+    //         {
+    //             name: '代金券',
+    //             path: 'PromotionVoucher',
+    //         },
+    //         {
+    //             name: '红包',
+    //             path: 'PromotionRedBag',
+    //         },
+    //         {
+    //             name: '拼团管理',
+    //             path: 'GroupBooking',
+    //         },
+
+    //     ],
+    // },
+    {
+        name: '通讯',
+        icon: 'global',
+        path: 'net',
+        children: [
+            {
+                name: '短信',
+                path: 'NetSms',
+            },
+            {
+                name: '邮箱',
+                path: 'NetEmail',
+            },
+            {
+                name: 'apns',
+                path: 'NetApns',
+            }
+        ],
+    },
+    {
+        name: '手机端',
+        icon: 'mobile',
+        path: 'mobile',
+        children: [
+            {
+                name: 'APP版本',
+                path: 'AppVersion',
             }
         ],
     },
@@ -188,76 +258,6 @@ const menuData = [
             }
         ],
     },
-    {
-        name: '通讯',
-        icon: 'global',
-        path: 'net',
-        children: [
-            {
-                name: '短信',
-                path: 'NetSms',
-            },
-            {
-                name: '邮箱',
-                path: 'NetEmail',
-            },
-            {
-                name: 'apns',
-                path: 'NetApns',
-            }
-        ],
-    },
-    {
-        name: '促销',
-        icon: 'tag-o',
-        path: 'promotion',
-        children: [
-            {
-                name: '促销设定',
-                path: 'PromotionSet',
-            },
-            {
-                name: '团购管理',
-                path: 'PromotionGroup',
-            },
-            {
-                name: '限时折扣',
-                path: 'PromotionDiscount',
-            },
-            {
-                name: '满即送',
-                path: 'PromotionFullSend',
-            },
-            {
-                name: '积分兑换',
-                path: 'PointExchange',
-            },
-            {
-                name: '代金券',
-                path: 'PromotionVoucher',
-            },
-            {
-                name: '红包',
-                path: 'PromotionRedBag',
-            },
-            {
-                name: '拼团管理',
-                path: 'GroupBooking',
-            },
-
-        ],
-    },
-    {
-        name: '手机端',
-        icon: 'mobile',
-        path: 'mobile',
-        children: [
-            {
-                name: 'APP版本',
-                path: 'AppVersion',
-            }
-        ],
-    }
 ];
   
 function formatter(data, parentPath = '') {
