@@ -23,7 +23,7 @@ class Shop extends API_Controller {
 	 *
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
-	 * @apiParam {Number} shop_class_id 商城分类ID
+	 * @apiParam {Number} goods_class_id 商城分类ID
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -51,15 +51,15 @@ class Shop extends API_Controller {
 	public function index()
 	{
 		$ret = array('anchor' => array(), 'goods' => array());
-		$shop_class_id = (int)$this->input->get_post('shop_class_id');
-		if($shop_class_id){
+		$goods_class_id = (int)$this->input->get_post('goods_class_id');
+		if($goods_class_id){
 			$this->load->model('Users_model');
 			$order_by = array('sort' => 'desc', 'updated_at' => 'desc');
-			$where = array('shop_class_id' => $shop_class_id);
+			$where = array('goods_class_id' => $goods_class_id);
 			$this->db->select('id,header,nickname');
 			$ret['anchor'] = $this->Users_model->order_by($order_by)->limit(5, 0)->get_many_by($where);
 
-			$ret['goods'] = $this->_goods($shop_class_id);
+			$ret['goods'] = $this->_goods($goods_class_id);
 
 			$this->ajaxReturn($ret);
 		}else{
@@ -77,7 +77,7 @@ class Shop extends API_Controller {
 	 *
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
-	 * @apiParam {Number} shop_class_id 商城分类ID
+	 * @apiParam {Number} goods_class_id 商城分类ID
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -110,9 +110,9 @@ class Shop extends API_Controller {
 	public function goods()
 	{
 		$ret = array('goods' => array());
-		$shop_class_id = (int)$this->input->get_post('shop_class_id');
-		if($shop_class_id){
-			$ret['goods'] = $this->_goods($shop_class_id);
+		$goods_class_id = (int)$this->input->get_post('goods_class_id');
+		if($goods_class_id){
+			$ret['goods'] = $this->_goods($goods_class_id);
 
 			$this->ajaxReturn($ret);
 		}else{
@@ -120,11 +120,11 @@ class Shop extends API_Controller {
 		}
 	}
 
-	protected function _goods($shop_class_id)
+	protected function _goods($goods_class_id)
 	{
 		$this->load->model('Goods_model');
 		$order_by = array('sort' => 'desc', 'updated_at' => 'desc');
-		$where = array('shop_class_id' => $shop_class_id, 'enable' => 1);
+		$where = array('goods_class_id' => $goods_class_id, 'enable' => 1);
 		$this->db->select('id,default_image,name,sale_price');
 		return $this->Goods_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 	}

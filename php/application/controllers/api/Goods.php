@@ -51,7 +51,7 @@ class Goods extends API_Controller {
 	 * @apiSuccess {String} data.goods.list.goods_image 商品主图
 	 * @apiSuccess {String} data.goods.list.goods_attr 商品属性
 	 * @apiSuccess {String} data.goods.list.goods_ticket 优惠券
-	 * @apiSuccess {String} data.goods.list.shop_class_id 商品分类ID
+	 * @apiSuccess {String} data.goods.list.goods_class_id 商品分类ID
 	 *
 	 * @apiSuccessExample {json} Success-Response:
 	 * {
@@ -89,7 +89,7 @@ class Goods extends API_Controller {
 	 *                     "goods_attr": "{\"6\":[\"XL\",\"L\"],\"8\":[\"白色\",\"绿色\"]}",
 	 *                     "goods_ticket": "[{\"full_amount\":\"100\",\"free_amount\":\"6\"}]",
 	 *                     "default_image": "/uploads/2018/01/18/3e14d5652673b8a225d4772f13441ab1.jpeg",
-	 *                     "shop_class_id": "0"
+	 *                     "goods_class_id": "0"
 	 *                 }
 	 *             ]
 	 *         }
@@ -143,9 +143,9 @@ class Goods extends API_Controller {
 			$this->db->like('name', $name);
 		}
 
-		$shop_class_id = $this->input->get_post('shop_class_id');
-		if(! empty($shop_class_id)){
-			$this->db->like('shop_class_id', $shop_class_id);
+		$goods_class_id = $this->input->get_post('goods_class_id');
+		if(! empty($goods_class_id)){
+			$this->db->like('goods_class_id', $goods_class_id);
 		}
 	}
 
@@ -261,7 +261,7 @@ class Goods extends API_Controller {
 	 * @apiParam {Number} enable 启用 1是 0否
 	 * @apiParam {Number} deleted 是否删除 1是 0否（为1时其他字段可不传）
 	 * @apiParam {Number} sort 排序 降序排列
-	 * @apiParam {Number} shop_class_id 商品分类ID
+	 * @apiParam {Number} goods_class_id 商品分类ID
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -289,7 +289,7 @@ class Goods extends API_Controller {
 				array(
 					'name', 'stock', 'sale_price', 'freight_fee', 'send_mode',
 					'goods_ticket', 'use_point_rate', 'e_invoice', 'city_partner_rate', 'two_level_rate',
-					'goods_image', 'goods_attr', 'goods_detail', 'deleted', 'enable', 'sort', 'shop_class_id'
+					'goods_image', 'goods_attr', 'goods_detail', 'deleted', 'enable', 'sort', 'goods_class_id'
 				),
 				$this->input->post(),
 				UPDATE_VALID

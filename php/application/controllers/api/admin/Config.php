@@ -88,6 +88,7 @@ class Config extends API_Controller {
 	 */
 	public function save()
 	{
+		$this->check_operation();
 		$id = (int)$this->input->get_post('id');
 		$params = $this->input->post();
 		$this->check_params('add', $params);

@@ -1250,6 +1250,126 @@
     "groupTitle": "admin"
   },
   {
+    "type": "post",
+    "url": "/api/goods_class/save",
+    "title": "商品分类-编辑 OR 新增",
+    "version": "1.0.0",
+    "name": "goods_class_save",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/goods_class/save"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "admin_id",
+            "description": "<p>管理员唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account",
+            "description": "<p>登录账号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>记录唯一ID 0表示新增 其他表示编辑</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "nam",
+            "description": "<p>商品分类名称</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "sort",
+            "description": "<p>排序 降序排列</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "enable",
+            "description": "<p>启用 1是 0否</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "deleted",
+            "description": "<p>是否删除 1是 0否（为1时其他字段可不传）</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": \"\",\n\t    \"status\": 0,\n\t    \"message\": \"\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Goods_class.php",
+    "groupTitle": "admin"
+  },
+  {
     "type": "get",
     "url": "/api/admin/login",
     "title": "管理员登录",
@@ -1592,7 +1712,7 @@
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Users_message.php",
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Mailbox.php",
     "groupTitle": "admin"
   },
   {
@@ -2171,126 +2291,6 @@
       ]
     },
     "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Security_question.php",
-    "groupTitle": "admin"
-  },
-  {
-    "type": "post",
-    "url": "/api/shop_class/save",
-    "title": "商城导航类-编辑 OR 新增",
-    "version": "1.0.0",
-    "name": "shop_class_save",
-    "group": "admin",
-    "sampleRequest": [
-      {
-        "url": "/api/shop_class/save"
-      }
-    ],
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "admin_id",
-            "description": "<p>管理员唯一ID</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "account",
-            "description": "<p>登录账号</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "sign",
-            "description": "<p>校验签名</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "id",
-            "description": "<p>记录唯一ID 0表示新增 其他表示编辑</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "name",
-            "description": "<p>导航类名称</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "sort",
-            "description": "<p>排序 降序排列</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "enable",
-            "description": "<p>启用 1是 0否</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "deleted",
-            "description": "<p>是否删除 1是 0否（为1时其他字段可不传）</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "status",
-            "description": "<p>接口状态 0成功 其他异常</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>接口信息描述</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "data",
-            "description": "<p>接口数据集</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "{\n\t    \"data\": \"\",\n\t    \"status\": 0,\n\t    \"message\": \"\"\n\t}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "examples": [
-        {
-          "title": "Error-Response:",
-          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Shop_class.php",
     "groupTitle": "admin"
   },
   {
@@ -3687,7 +3687,7 @@
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.goods.list.shop_class_id",
+            "field": "data.goods.list.goods_class_id",
             "description": "<p>商品分类ID</p>"
           }
         ]
@@ -3695,7 +3695,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    \"data\": {\n        \"user\": {\n            \"1\": {\n                \"nickname\": \"aicode\",\n                \"header\": \"\"\n            }\n        },\n        \"goods\": {\n            \"count\": 2,\n            \"list\": [\n                {\n                    \"id\": \"1\",\n                    \"created_at\": \"2018-01-18 15:56:27\",\n                    \"updated_at\": \"2018-01-18 15:56:27\",\n                    \"deleted\": \"0\",\n                    \"status\": \"0\",\n                    \"enable\": \"1\",\n                    \"sort\": \"0\",\n                    \"name\": \"测试商品\",\n                    \"stock\": \"1000\",\n                    \"original_price\": \"198.00\",\n                    \"sale_price\": \"198.00\",\n                    \"freight_fee\": \"6.00\",\n                    \"send_mode\": \"1\",\n                    \"use_point_rate\": \"1.00\",\n                    \"e_invoice\": \"1\",\n                    \"city_partner_rate\": \"2.00\",\n                    \"two_level_rate\": \"3.00\",\n                    \"goods_detail\": \"[\\\"/uploads/2018/01/18/2ea459123697d30c36a707e155dc23da.png\\\"]\",\n                    \"seller_uid\": \"1\",\n                    \"goods_image\": \"[\\\"/uploads/2018/01/18/3e14d5652673b8a225d4772f13441ab1.jpeg\\\"]\",\n                    \"goods_attr\": \"{\\\"6\\\":[\\\"XL\\\",\\\"L\\\"],\\\"8\\\":[\\\"白色\\\",\\\"绿色\\\"]}\",\n                    \"goods_ticket\": \"[{\\\"full_amount\\\":\\\"100\\\",\\\"free_amount\\\":\\\"6\\\"}]\",\n                    \"default_image\": \"/uploads/2018/01/18/3e14d5652673b8a225d4772f13441ab1.jpeg\",\n                    \"shop_class_id\": \"0\"\n                }\n            ]\n        }\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": {\n        \"user\": {\n            \"1\": {\n                \"nickname\": \"aicode\",\n                \"header\": \"\"\n            }\n        },\n        \"goods\": {\n            \"count\": 2,\n            \"list\": [\n                {\n                    \"id\": \"1\",\n                    \"created_at\": \"2018-01-18 15:56:27\",\n                    \"updated_at\": \"2018-01-18 15:56:27\",\n                    \"deleted\": \"0\",\n                    \"status\": \"0\",\n                    \"enable\": \"1\",\n                    \"sort\": \"0\",\n                    \"name\": \"测试商品\",\n                    \"stock\": \"1000\",\n                    \"original_price\": \"198.00\",\n                    \"sale_price\": \"198.00\",\n                    \"freight_fee\": \"6.00\",\n                    \"send_mode\": \"1\",\n                    \"use_point_rate\": \"1.00\",\n                    \"e_invoice\": \"1\",\n                    \"city_partner_rate\": \"2.00\",\n                    \"two_level_rate\": \"3.00\",\n                    \"goods_detail\": \"[\\\"/uploads/2018/01/18/2ea459123697d30c36a707e155dc23da.png\\\"]\",\n                    \"seller_uid\": \"1\",\n                    \"goods_image\": \"[\\\"/uploads/2018/01/18/3e14d5652673b8a225d4772f13441ab1.jpeg\\\"]\",\n                    \"goods_attr\": \"{\\\"6\\\":[\\\"XL\\\",\\\"L\\\"],\\\"8\\\":[\\\"白色\\\",\\\"绿色\\\"]}\",\n                    \"goods_ticket\": \"[{\\\"full_amount\\\":\\\"100\\\",\\\"free_amount\\\":\\\"6\\\"}]\",\n                    \"default_image\": \"/uploads/2018/01/18/3e14d5652673b8a225d4772f13441ab1.jpeg\",\n                    \"goods_class_id\": \"0\"\n                }\n            ]\n        }\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
@@ -3802,6 +3802,98 @@
       ]
     },
     "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Goods_attr_category.php",
+    "groupTitle": "api"
+  },
+  {
+    "type": "get",
+    "url": "/api/goods_class",
+    "title": "商品分类-列表",
+    "version": "1.0.0",
+    "name": "goods_class",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/goods_class"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.id",
+            "description": "<p>商品分类唯一ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.name",
+            "description": "<p>商品分类名称</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": [\n\t        {\n\t            \"id\": \"1\",\n\t            \"name\": \"热门\"\n\t        },\n\t        {\n\t            \"id\": \"2\",\n\t            \"name\": \"靓号\"\n\t        }\n\t    ],\n\t    \"status\": 0,\n\t    \"message\": \"成功\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Goods_class.php",
     "groupTitle": "api"
   },
   {
@@ -4048,7 +4140,7 @@
             "group": "Parameter",
             "type": "Number",
             "optional": false,
-            "field": "shop_class_id",
+            "field": "goods_class_id",
             "description": "<p>商品分类ID</p>"
           }
         ]
@@ -4210,7 +4302,7 @@
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Users_message.php",
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Mailbox.php",
     "groupTitle": "api"
   },
   {
@@ -4316,7 +4408,7 @@
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Users_message.php",
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Mailbox.php",
     "groupTitle": "api"
   },
   {
@@ -4734,7 +4826,7 @@
             "group": "Parameter",
             "type": "Number",
             "optional": false,
-            "field": "shop_class_id",
+            "field": "goods_class_id",
             "description": "<p>商城分类ID</p>"
           }
         ]
@@ -4802,98 +4894,6 @@
   },
   {
     "type": "get",
-    "url": "/api/shop_class",
-    "title": "商城导航类-列表",
-    "version": "1.0.0",
-    "name": "shop_class",
-    "group": "api",
-    "sampleRequest": [
-      {
-        "url": "/api/shop_class"
-      }
-    ],
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "user_id",
-            "description": "<p>用户唯一ID</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "sign",
-            "description": "<p>校验签名</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "status",
-            "description": "<p>接口状态 0成功 其他异常</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>接口信息描述</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Object[]",
-            "optional": false,
-            "field": "data",
-            "description": "<p>接口数据集</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "data.id",
-            "description": "<p>商城导航类唯一ID</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "data.name",
-            "description": "<p>商城导航类名称</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "{\n\t    \"data\": [\n\t        {\n\t            \"id\": \"1\",\n\t            \"name\": \"热门\"\n\t        },\n\t        {\n\t            \"id\": \"2\",\n\t            \"name\": \"靓号\"\n\t        }\n\t    ],\n\t    \"status\": 0,\n\t    \"message\": \"成功\"\n\t}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "examples": [
-        {
-          "title": "Error-Response:",
-          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Shop_class.php",
-    "groupTitle": "api"
-  },
-  {
-    "type": "get",
     "url": "/api/shop/goods",
     "title": "商城-商品",
     "version": "1.0.0",
@@ -4925,7 +4925,7 @@
             "group": "Parameter",
             "type": "Number",
             "optional": false,
-            "field": "shop_class_id",
+            "field": "goods_class_id",
             "description": "<p>商城分类ID</p>"
           }
         ]

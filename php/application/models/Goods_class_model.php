@@ -1,14 +1,14 @@
 <?php
 /*
- * 商城导航类
+ * 商品分类
  * @author sz.ljx
  * @author webljx@163.com
  * @link www.aicode.org.cn
  */
 
-class Shop_class_model extends MY_Model
+class Goods_class_model extends MY_Model
 {
-    public $_table        = 'shop_class';
+    public $_table        = 'goods_class';
     public $primary_key   = 'id';
     public $before_create = array('created_at', 'updated_at', 'updated_valid');
     public $before_update = array('updated_at', 'updated_valid');
