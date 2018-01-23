@@ -138,7 +138,15 @@ class Goods extends API_Controller {
 
 	protected function search()
 	{
-		
+		$name = $this->input->get_post('name');
+		if(! empty($name)){
+			$this->db->like('name', $name);
+		}
+
+		$shop_class_id = $this->input->get_post('shop_class_id');
+		if(! empty($shop_class_id)){
+			$this->db->like('shop_class_id', $shop_class_id);
+		}
 	}
 
 	/**

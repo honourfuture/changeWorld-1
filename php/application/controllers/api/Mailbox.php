@@ -5,21 +5,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @email webljx@163.com
  * @link www.aicode.org.cn
  */
-class Users_message extends API_Controller {
+class Mailbox extends API_Controller {
 
 	public function __construct()
     {
         parent::__construct();
-        $this->load->model('Users_message_model');
+        $this->load->model('Mailbox_model');
     }
 
     /**
-	 * @api {get} /api/users_message 会员消息-列表
+	 * @api {get} /api/mailbox 站内信-列表
 	 * @apiVersion 1.0.0
-	 * @apiName users_message
+	 * @apiName mailbox
 	 * @apiGroup api
 	 *
-	 * @apiSampleRequest /api/users_message
+	 * @apiSampleRequest /api/mailbox
 	 *
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
@@ -47,7 +47,7 @@ class Users_message extends API_Controller {
 	 *           "city": "东城区",
 	 *           "area_id": "0",
 	 *           "area": "",
-	 *           "users_message": "清华园1024号",
+	 *           "mailbox": "清华园1024号",
 	 *       }
 	 *  ],
 	 *  "status": 0,
@@ -80,11 +80,11 @@ class Users_message extends API_Controller {
 		}
 
 		$this->search();
-		$ret['count'] = $this->Users_message_model->count_by($where);
+		$ret['count'] = $this->Mailbox_model->count_by($where);
 		if($ret['count']){
 			$order_by = array('sort' => 'desc', 'id' => 'desc');
 			$this->search();
-			$ret['list'] = $this->Users_message_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
+			$ret['list'] = $this->Mailbox_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 		}
 
 		$this->ajaxReturn($ret);
@@ -96,16 +96,16 @@ class Users_message extends API_Controller {
 	}
 
 	/**
-	 * @api {get} /api/users_message/view 会员消息-查看
+	 * @api {get} /api/mailbox/view 站内信-查看
 	 * @apiVersion 1.0.0
-	 * @apiName users_message_view
+	 * @apiName mailbox_view
 	 * @apiGroup api
 	 *
-	 * @apiSampleRequest /api/users_message/view
+	 * @apiSampleRequest /api/mailbox/view
 	 *
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
-	 * @apiParam {Number} id 会员消息ID
+	 * @apiParam {Number} id 站内信ID
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -138,7 +138,7 @@ class Users_message extends API_Controller {
 	{
 		$id = (int)$this->input->get('id');
 		$this->db->select('id,updated_at,title,content,summary');
-		if($info = $this->Users_message_model->get($id)){
+		if($info = $this->Mailbox_model->get($id)){
 			$this->load->model('Users_read_model');
 			$this->Users_read_model->save($this->user_id, 1, $id);
 		}
@@ -147,12 +147,12 @@ class Users_message extends API_Controller {
 	}
 
 	/**
-	 * @api {post} /api/users_message/save 会员消息-编辑 OR 新增
+	 * @api {post} /api/mailbox/save 站内信-编辑 OR 新增
 	 * @apiVersion 1.0.0
-	 * @apiName users_message_save
+	 * @apiName mailbox_save
 	 * @apiGroup admin
 	 *
-	 * @apiSampleRequest /api/users_message/save
+	 * @apiSampleRequest /api/mailbox/save
 	 *
 	 * @apiParam {Number} admin_id 管理员唯一ID
 	 * @apiParam {String} account 登录账号
@@ -198,13 +198,13 @@ class Users_message extends API_Controller {
 			$this->check_params('edit', $params);
 			if($params['deleted'] == 1){
 				$update = array('deleted' => 1);
-				$flag = $this->Users_message_model->update_by(array('id' => $id), $update);
+				$flag = $this->Mailbox_model->update_by(array('id' => $id), $update);
 			}else{
 				unset($params['deleted']);
 				if(isset($params['enable']) && $params['enable']){
 					$params['deleted'] = 0;
 				}
-				$flag = $this->Users_message_model->update_by(array('id' => $id), $params);
+				$flag = $this->Mailbox_model->update_by(array('id' => $id), $params);
 			}
 		}else{
 			$params = elements(
@@ -215,7 +215,7 @@ class Users_message extends API_Controller {
 				UPDATE_VALID
 			);
 			$this->check_params('add', $params);
-			if($flag = $this->Users_message_model->insert($params)){
+			if($flag = $this->Mailbox_model->insert($params)){
 				$id = $flag;
 			}
 		}

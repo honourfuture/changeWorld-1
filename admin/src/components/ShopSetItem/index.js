@@ -16,16 +16,16 @@ const formItemLayout = {
 const FormItem = Form.Item; 
 class ShopSetItem extends BaseComponent{
 	store={
-		loading:false,
+		loading:'',
 	}
 	showProps=[
-		{key:'logo_image',label:'网站Logo',render:(value,label)=>this.renderUpload(value,label)},
-		{key:'buyer_image',label:'会员中心Logo',render:(value,label)=>this.renderUpload(value,label)},
-		{key:'seller_image',label:'商家中心Logo',render:(value,label)=>this.renderUpload(value,label)},
-		{key:'phone',label:'客服联系电话',render:(value,label)=><Input placeholder={`请输入${label}`} />},
-		{key:'email',label:'电子邮件',render:(value,label)=><Input placeholder={`请输入${label}`} />},
+		{key:'logo_image',label:'网站Logo',render:(value,key,label)=>this.renderUpload(value,key,label)},
+		{key:'buyer_image',label:'会员中心Logo',render:(value,key,label)=>this.renderUpload(value,key,label)},
+		{key:'seller_image',label:'商家中心Logo',render:(value,key,label)=>this.renderUpload(value,key,label)},
+		{key:'phone',label:'客服联系电话',render:(value,key,label)=><Input placeholder={`请输入${label}`} />},
+		{key:'email',label:'电子邮件',render:(value,key,label)=><Input placeholder={`请输入${label}`} />},
 	]
-	renderUpload(value,label){
+	renderUpload(value,key,label){
 		const {loading} = this.store;
 		return (
 			<Upload
@@ -34,10 +34,10 @@ class ShopSetItem extends BaseComponent{
 		        listType="picture-card"
 		        showUploadList={false}
 		        action={Global.UPLOAD_URL}
-				onChange={(e)=>this.onUploadChange(e)}
+				onChange={(e)=>this.onUploadChange(e,key)}
 		    >
 		        {value?<img src={value} alt=''/>:<div>
-					<Icon type={ loading ? 'loading':'plus'} />
+					<Icon type={ loading===key ? 'loading':'plus'} />
 					<div className="ant-upload-text">上传</div>
 				</div>}
 		    </Upload>
@@ -45,20 +45,27 @@ class ShopSetItem extends BaseComponent{
 	}
 	//上传
 	@action.bound
-	onUploadChange(info){
-		console.log(info.file)
+	onUploadChange(info,key){
 		if (info.file.status === 'uploading') {
-			this.store.loading = true;
+			this.store.loading = key;
 		}
 		if (info.file.status === 'done') {
-			this.store.loading = false;
-			return info.file.response.data.file_url;
+			this.store.loading = '';
 		}
 	}
 	@action.bound
 	onSaveBasic(value){
 		this.props.form.validateFields((err, values) => {
+			console.log(values);
 			if(!err){
+				const setImgUrl = (key)=>{
+					if(values[key] && values[key].file && values[key].file.response){
+						values[key] = values[key].file.response.data.file_url;
+					}
+				}
+				setImgUrl('logo_image');
+				setImgUrl('buyer_image');
+				setImgUrl('seller_image');
 				Base.POST({act:'config',op:'save',mod:'admin',...values},(res)=>{
 					message.success(res.message);
 				},this);
@@ -72,7 +79,7 @@ class ShopSetItem extends BaseComponent{
 		const items = showProps.map((item,index)=>{
 			const {key,label,render} = item;
 			return <FormItem className="baseForm" key={index} {...formItemLayout} label={label}>
-						{getFieldDecorator(key,{initialValue:readItem[key]})(render(readItem[key],key))}
+						{getFieldDecorator(key,{initialValue:readItem[key]})(render(readItem[key],key,label))}
 					</FormItem>
 		})
 		return (

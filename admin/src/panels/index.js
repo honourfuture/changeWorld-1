@@ -25,7 +25,13 @@ import SystemSet from './SystemSet';
 import AccessSet from './AccessSet';
 import ExpressSet from './ExpressSet';
 import ShopSet from './ShopSet';
+import SysMsg from './SysMsg';
 export const panelsList =  [
+    {
+        path:'/operation/SysMsg',
+        component:SysMsg,
+        title:'站内信',
+    },
     {
         path:'/system/ShopSet',
         component:ShopSet,

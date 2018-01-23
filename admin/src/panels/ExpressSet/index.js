@@ -33,6 +33,11 @@ export default class ExpressSet extends BaseComponent{
 				render: (text, record) => this.renderSwitch(text, record, 'enable'),
 			}, 
 			{
+				title: '设置常用',
+				dataIndex: 'status',
+				render: (text, record) => this.renderSwitch(text, record, 'status'),
+			}, 
+			{
 				title: '操作',
 				dataIndex: 'operation',
 				render: (text, record) => {
@@ -71,8 +76,10 @@ export default class ExpressSet extends BaseComponent{
 		)
 	}
 	renderSwitch(text,record,column){
+		const {id,enable,status} = record;
+		let checkVal = column === 'enable' ? enable : status;
 		return (
-			<Switch checked={parseInt(record.enable,10)===1} onChange={(value)=>this.onSwitch(record.id,value?1:0,column)} />
+			<Switch checked={parseInt(checkVal,10)===1} onChange={(value)=>this.onSwitch(id,value?1:0,column)} />
 		)
 	}
 	//添加
@@ -81,7 +88,7 @@ export default class ExpressSet extends BaseComponent{
 		if(this.store.list.find(item=>item.id === 0)){
 			return message.info('请保存后再新建');
 		}
-		this.store.list.unshift({id:'',sort:'',name:'',pinyin:'',editable:true,deleted:'0',enable:'1'});
+		this.store.list.unshift({id:'',sort:'',name:'',pinyin:'',editable:true,deleted:'0',enable:'1',status:'1'});
 	}
 	//编辑
 	@action.bound
@@ -107,6 +114,7 @@ export default class ExpressSet extends BaseComponent{
 	//是否启用
 	@action.bound
 	onSwitch(id,value,column){
+		console.log(column,"111111111")
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
 		itemData[column] = value;

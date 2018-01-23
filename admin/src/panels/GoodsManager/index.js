@@ -15,7 +15,7 @@ export default class GoodsManager extends BaseComponent{
 		user:{},
 		goodsClass:[],
 		total:1,
-		curClass:'0',
+		goods_class_id:'0',
 	}
 	constructor(props) {
 		super(props);
@@ -52,8 +52,8 @@ export default class GoodsManager extends BaseComponent{
 			},
 			{
 				title: '分类',
-				dataIndex: 'shop_class_id',
-				render: (text, record) => this.renderSelect(text, record, 'shop_class_id'),
+				dataIndex: 'goods_class_id',
+				render: (text, record) => this.renderSelect(text, record, 'goods_class_id'),
 			}, 
 			{
 				title: '库存',
@@ -207,9 +207,8 @@ export default class GoodsManager extends BaseComponent{
 	}
 	@action.bound
 	onSelectChange(value){
-		console.log(value);
+		this.store.goods_class_id = value;
 		this.requestData();
-		// this.store.curClass
 	}
 	@action.bound
 	onTableHandler({current,pageSize}){
@@ -219,7 +218,8 @@ export default class GoodsManager extends BaseComponent{
 	current = 1
 	@action.bound
 	requestData(){
-		Base.GET({act:'goods',op:'index',name:this.searchStr || '',cur_page:this.current || 1,per_page:Global.PAGE_SIZE},(res)=>{
+		const {goods_class_id} = this.store;
+		Base.GET({act:'goods',op:'index',goods_class_id,name:this.searchStr || '',cur_page:this.current || 1,per_page:Global.PAGE_SIZE},(res)=>{
 			const {goods,user} = res.data;
 			this.store.list = goods.list;
 			this.store.user = user;
@@ -228,21 +228,15 @@ export default class GoodsManager extends BaseComponent{
 		},this);
 	}
 	componentDidMount() {
-		Base.GET({act:'shop_class',op:'index'},(res)=>{
-			const goodsClass = [];
-			res.data.forEach((item)=>{
-				const {link} = item;
-				if(link === Global.indexLinkConfig[0].key){
-					goodsClass.push(item);
-				}
-			})
+		Base.GET({act:'goods_class',op:'index'},(res)=>{
+			const goodsClass = res.data;
 			goodsClass.unshift({id:"0",name:'请选择'});
 			this.store.goodsClass = goodsClass;
 			this.requestData();
 		},this);
 	}
 	render(){
-		let {list,goodsClass,total,curClass} = this.store;
+		let {list,goodsClass,total,goods_class_id} = this.store;
 		const showList = list.filter(item=>{
 			return parseInt(item.deleted,10) === 0;
 		});
@@ -255,7 +249,7 @@ export default class GoodsManager extends BaseComponent{
 						onSearch={this.onSearch}
 						style={{ width: 130,marginLeft:10 }}
 					/>
-					{goodsClass.length > 0?<Select className='search-select' defaultValue={curClass} style={{ width: 120 }} onChange={this.onSelectChange}>
+					{goodsClass.length > 0?<Select className='search-select' defaultValue={goods_class_id} style={{ width: 120 }} onChange={this.onSelectChange}>
 					{
 						goodsClass.map(({id,name})=><Option key={id} value={id}>{name}</Option>)
 					}
