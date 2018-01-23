@@ -16,7 +16,6 @@ export default class MemberEncrypted extends BaseComponent{
 				title: 'id',
 				dataIndex: 'id',
 				width: '10%',
-				render: (text, record) => this.renderText(text, record, 'id'),
 			}, 
 			{
 				title: '题目',
@@ -56,13 +55,6 @@ export default class MemberEncrypted extends BaseComponent{
 				},
 			}
 		];
-	}
-	renderText(text, record, column) {
-		return (
-			<div>
-				{record[column]}
-			</div>
-		);
 	}
 	renderInput(text, record, column){
 		const {editable} = record;

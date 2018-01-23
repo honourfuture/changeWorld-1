@@ -1,31 +1,11 @@
 import React from 'react';
 import {action} from 'mobx';
 import {BaseComponent,Base} from '../../common';
-import { Table,Button, Input,Popconfirm,Switch,Spin,message} from 'antd';
-import {remove} from 'lodash';
-import './ExpressSet.less';
+import {Table,Button, Input,Popconfirm,Switch,Spin,Select,message} from 'antd';import {remove} from 'lodash';
 
-export default class ExpressSet extends BaseComponent{
-	store={
-		list:[{
-			id:1,
-			name:"顺丰",
-			des:"SF",
-			enable:1,
-		},
-		{
-			id:2,
-			name:"邮政",
-			des:"EMS",
-			enable:1,
-		},
-		{
-			id:3,
-			name:"德邦",
-			des:"DB",
-			enable:1,
-		}],
-	}
+import './UserAccessItem.less';
+const Option = Select.Option;
+export class UserAccessItem extends BaseComponent{
 	constructor(props) {
 		super(props);
 		this.columns = [
@@ -34,12 +14,12 @@ export default class ExpressSet extends BaseComponent{
 				dataIndex: 'id',
 			}, 
 			{
-				title: '快递公司',
+				title: '用户名',
 				dataIndex: 'name',
 				render: (text, record) => this.renderInput(text, record, 'name'),
 			},
 			{
-				title: '描述',
+				title: '权限组',
 				dataIndex: 'des',
 				render: (text, record) => this.renderInput(text, record, 'des'),
 			}, 
@@ -86,18 +66,23 @@ export default class ExpressSet extends BaseComponent{
 			</div>
 		)
 	}
+	renderSelect(text, record, column) {
+		const {goodsClass} = this.store;
+		const value = record[column];
+		let curIndex = goodsClass.findIndex((item)=>item.id === value);
+		curIndex = curIndex >= 0?curIndex:0;
+		return <div>
+				{record.editable?<Select defaultValue={value|| goodsClass[0].id} style={{ width: 120 }} onChange={(value)=>this.onEditChange(record.id,value,column)}>
+					{
+						goodsClass.map(({id,name})=><Option key={id} value={id}>{name}</Option>)
+					}
+				</Select>:goodsClass[curIndex].name}
+			</div>
+	}
 	renderSwitch(text,record,column){
 		return (
 			<Switch checked={parseInt(record.enable,10)===1} onChange={(value)=>this.onSwitch(record.id,value?1:0,column)} />
 		)
-	}
-	//添加
-	@action.bound
-	onAdd(){
-		if(this.store.list.find(item=>item.id === 0)){
-			return message.info('请保存后再新建');
-		}
-		this.store.list.unshift({id:'',name:'',des:'',editable:true,deleted:'0',enable:'1'});
 	}
 	//编辑
 	@action.bound
@@ -112,8 +97,8 @@ export default class ExpressSet extends BaseComponent{
 	onSave(id) {
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
-		itemData.editable = false;
-		Base.POST({act:'goods',op:'save',...itemData},(res)=>{
+		Base.POST({act:'security_question',op:'save',...itemData},(res)=>{
+			itemData.editable = false;
 			itemData.updated_at = Base.getTimeFormat(new Date().getTime()/1000,2);
 			itemData.id === 0 && (itemData.id = res.data.id);
 			this.store.list = list;
@@ -133,21 +118,28 @@ export default class ExpressSet extends BaseComponent{
 	onCancel(id) {
 		this.store.list = this.cacheData.map(item => ({ ...item }));
 	}
+	//添加
+	@action.bound
+	onAdd(){
+		if(this.store.list.find(item=>item.id === 0)){
+			return message.info('请保存后再新建');
+		}
+		this.store.list.unshift({id:'',name:'',des:'',editable:true,deleted:'0',enable:'1'});
+	}
 	//删除
 	@action.bound
 	onDelete(id){
-		Base.POST({act:'goods',op:'save',id,deleted:"1"},()=>remove(this.store.list,item=>id === item.id),this);
+		Base.POST({act:'security_question',op:'save',id,deleted:"1"},()=>remove(this.store.list,item=>id === item.id),this);
 	}
 	render(){
-		
-		const {list} = this.store;
-		const showList = list.filter(item=>{
-			return parseInt(item.deleted,10) === 0;
-		})
+		const {item} = this.props;
+		// const showList = item.filter(item=>{
+		// 	return parseInt(item.deleted,10) === 0;
+		// });
 		return (
-			<div className='ExpressSet'>
-				<Button onClick={this.onAdd}>新增+</Button>
-				<Table className="mt16" bordered  dataSource={list} rowKey='id' columns={this.columns} pagination={false} />
+			<div className='UserAccessItem'>
+				<Button onClick={()=>this.onAdd()}>新增+</Button>
+				<Table className="mt16" bordered dataSource={item} rowKey='id' columns={this.columns} pagination={false} />
 			</div>
 		)
 	}

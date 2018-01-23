@@ -27,17 +27,17 @@ import ExpressSet from './ExpressSet';
 import ShopSet from './ShopSet';
 export const panelsList =  [
     {
-        path:'/ShopSet',
+        path:'/system/ShopSet',
         component:ShopSet,
         title:'商城设置',
     },
     {
-        path:'/ExpressSet',
+        path:'/system/ExpressSet',
         component:ExpressSet,
         title:'快递设置',
     },
     {
-        path:'/AccessSet',
+        path:'/system/AccessSet',
         component:AccessSet,
         title:'权限设置',
     },
