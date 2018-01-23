@@ -1,11 +1,10 @@
 import React from 'react';
 import {action} from 'mobx';
 import {BaseComponent,Base} from '../../common';
-import { Table,Button, Input,Popconfirm,Switch,Spin,message} from 'antd';
+import { Table,Button,Input,Popconfirm,Switch,Spin,Select,message} from 'antd';
+import './HotWrod.less';
 import {remove} from 'lodash';
-import './ExpressSet.less';
-
-export default class ExpressSet extends BaseComponent{
+export class HotWrod extends BaseComponent{
 	store={
 		list:[],
 	}
@@ -15,28 +14,38 @@ export default class ExpressSet extends BaseComponent{
 			{
 				title: 'sort',
 				dataIndex: 'sort',
+				width: '10%',
 				render: (text, record) => this.renderInput(text, record, 'sort'),
-			}, 
-			{
-				title: '快递公司',
-				dataIndex: 'name',
-				render: (text, record) => this.renderInput(text, record, 'name'),
 			},
 			{
-				title: '简称',
-				dataIndex: 'pinyin',
-				render: (text, record) => this.renderInput(text, record, 'pinyin'),
-			}, 
+				title: '搜索词',
+				dataIndex: 'keyword',
+				width: '10%',
+				render: (text, record) => this.renderInput(text, record, 'keyword'),
+			},
 			{
-				title: '状态',
+				title: '显示词',
+				dataIndex: 'keyword_alias',
+				width: '10%',
+				render: (text, record) => this.renderInput(text, record, 'keyword_alias'),
+			},
+			{
+				title: '启用',
 				dataIndex: 'enable',
+				width: '10%',
 				render: (text, record) => this.renderSwitch(text, record, 'enable'),
 			}, 
+			// {
+			// 	title: '搜索次数',
+			// 	dataIndex: 'keyword_alias',
+			// 	width: '10%',
+			// }, 
 			{
 				title: '操作',
 				dataIndex: 'operation',
+				width: '15%',
 				render: (text, record) => {
-					const { editable,id} = record;
+					const { editable,id,seller_uid} = record;
 					return (
 					<div className="editable-row-operations">
 						{
@@ -75,34 +84,12 @@ export default class ExpressSet extends BaseComponent{
 			<Switch checked={parseInt(record.enable,10)===1} onChange={(value)=>this.onSwitch(record.id,value?1:0,column)} />
 		)
 	}
-	//添加
 	@action.bound
-	onAdd(){
-		if(this.store.list.find(item=>item.id === 0)){
-			return message.info('请保存后再新建');
-		}
-		this.store.list.unshift({id:'',sort:'',name:'',pinyin:'',editable:true,deleted:'0',enable:'1'});
-	}
-	//编辑
-	@action.bound
-	onEditChange(id,value,column) {
+	onEditChange(id, value, column){
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
 		itemData[column] = value;
 		this.store.list = list;
-	}
-	//保存
-	@action.bound
-	onSave(id) {
-		const list = this.store.list.slice();
-		const itemData = list.find(item=>id === item.id);
-		itemData.editable = false;
-		Base.POST({act:'express',op:'save',...itemData},(res)=>{
-			itemData.updated_at = Base.getTimeFormat(new Date().getTime()/1000,2);
-			itemData.id === 0 && (itemData.id = res.data.id);
-			this.store.list = list;
-			this.cacheData = list.map(item => ({ ...item }));
-		},this);
 	}
 	//是否启用
 	@action.bound
@@ -112,6 +99,18 @@ export default class ExpressSet extends BaseComponent{
 		itemData[column] = value;
 		this.onSave(id);
 	}
+	//保存
+	@action.bound
+	onSave(id) {
+		const list = this.store.list.slice();
+		const itemData = list.find(item=>id === item.id);
+		Base.POST({act:'search_words',op:'save',...itemData},(res)=>{
+			itemData.editable = false;
+			itemData.id === 0 && (itemData.id = res.data.id);
+			this.store.list = list;
+			this.cacheData = list.map(item => ({ ...item }));
+		},this);
+	}
 	//取消
 	@action.bound
 	onCancel(id) {
@@ -120,25 +119,31 @@ export default class ExpressSet extends BaseComponent{
 	//删除
 	@action.bound
 	onDelete(id){
-		Base.POST({act:'express',op:'save',id,deleted:"1"},()=>remove(this.store.list,item=>id === item.id),this);
+		Base.POST({act:'search_words',op:'save',id,deleted:"1"},()=>remove(this.store.list,item=>id === item.id),this);
+	}
+	//添加
+	@action.bound
+	onAdd(){
+		if(this.store.list.find(item=>item.id === 0)){
+			return message.info('请保存后再新建');
+		}
+		this.store.list.unshift({id:0,keyword:'',keyword_alias:'',editable:true,deleted:'0',enable:'1',sort:0});
 	}
 	componentDidMount(){
-		Base.POST({act:'express',op:'index'},(res)=>{
+		Base.GET({act:'search_words',op:'index'},(res)=>{
 			this.store.list = res.data; 
-			this.cacheData = res.data.map(item => ({ ...item }));
 		},this);
 	}
 	render(){
-		
-		const {list} = this.store;
+		let {list} = this.store;
 		const showList = list.filter(item=>{
 			return parseInt(item.deleted,10) === 0;
-		})
+		});
 		return (
-			<Spin ref='spin' spinning={false} className='ExpressSet'>
+			<div className='HotWrod'>
 				<Button onClick={this.onAdd}>新增+</Button>
-				<Table className="mt16" bordered  dataSource={showList} rowKey='id' columns={this.columns} pagination={false} />
-			</Spin>
+				<Table className='mt16' bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={false}/>
+			</div>
 		)
 	}
 };
