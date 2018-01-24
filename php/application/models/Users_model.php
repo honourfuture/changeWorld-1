@@ -45,4 +45,19 @@ class Users_model extends MY_Model
 
         return $ret;
     }
+
+    public function check_shop($seller_uid)
+    {
+        $result = array('status' => 0, 'message' => '', 'data' => array());
+        $this->db->select('id,nickname,header');
+        $user = $this->get($seller_uid);
+        if(! $user){
+            $result['status'] = 1;
+            $result['message'] = '店铺不存在';
+        }else{
+            $result['data'] = $user;
+        }
+
+        return $result;
+    }
 }
