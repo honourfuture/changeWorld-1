@@ -220,7 +220,7 @@ class Pretty extends API_Controller {
 
 	protected function setPrettyInfo(&$params = array())
 	{
-		$params['pretty_count'] = strlen($params['pretty_id']);
+		isset($params['pretty_id']) && $params['pretty_count'] = strlen($params['pretty_id']);
 	}
 
 	protected function check_params($act, $params)
