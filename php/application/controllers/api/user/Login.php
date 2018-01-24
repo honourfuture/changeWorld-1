@@ -60,7 +60,7 @@ class Login extends API_Controller {
 		$account = $this->input->get_post('account');
 		$password = $this->input->get_post('password');
 		if(!$account || !$password){
-			$this->ajaxReturn('', 1, '登录参数非法');
+			$this->ajaxReturn([], 1, '登录参数非法');
 		}
 		$this->load->model('Users_model');
 		//手机号 or 账号
@@ -70,10 +70,10 @@ class Login extends API_Controller {
 			if($info['password'] == $this->Users_model->get_password($password)){
 				$this->check_status($info);
 			}else{
-				$this->ajaxReturn('', 3, '登录密码错误');
+				$this->ajaxReturn([], 3, '登录密码错误');
 			}
 		}else{
-			$this->ajaxReturn('', 2, '登录账号错误');
+			$this->ajaxReturn([], 2, '登录账号错误');
 		}
 	}
 
@@ -124,7 +124,7 @@ class Login extends API_Controller {
     {
     	$guid = $this->input->get_post('guid');
 		if(!$guid){
-			$this->ajaxReturn('', 1, 'QQ登录参数非法');
+			$this->ajaxReturn([], 1, 'QQ登录参数非法');
 		}
 		$this->load->model('Users_model');
 		$info = $this->Users_model->get_by('qq_uid', $guid);
@@ -182,7 +182,7 @@ class Login extends API_Controller {
     {
     	$guid = $this->input->get_post('guid');
 		if(!$guid){
-			$this->ajaxReturn('', 1, '微信登录参数非法');
+			$this->ajaxReturn([], 1, '微信登录参数非法');
 		}
 		$this->load->model('Users_model');
 		$info = $this->Users_model->get_by('weixin_uid', $guid);
@@ -239,7 +239,7 @@ class Login extends API_Controller {
     {
     	$guid = $this->input->get_post('guid');
 		if(!$guid){
-			$this->ajaxReturn('', 1, '匿名登录参数非法');
+			$this->ajaxReturn([], 1, '匿名登录参数非法');
 		}
 		$this->load->model('Users_model');
 		$info = $this->Users_model->get_by('tourist_uid', $guid);
@@ -256,9 +256,9 @@ class Login extends API_Controller {
 			$this->user_login_success($info);
 		}else{
 			if($info['deleted']){
-				$this->ajaxReturn('', 4, '账号已删除');
+				$this->ajaxReturn([], 4, '账号已删除');
 			}else{
-				$this->ajaxReturn('', 5, '账号被冻结');
+				$this->ajaxReturn([], 5, '账号被冻结');
 			}
 		}
     }

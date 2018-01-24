@@ -70,7 +70,7 @@ class Seller extends API_Controller {
 			case 'live':
 				break;
 			default :
-				$this->ajaxReturn('', 1, '类型不支持');
+				$this->ajaxReturn([], 1, '类型不支持');
 				break;
 		}
 
@@ -150,7 +150,7 @@ class Seller extends API_Controller {
 
 			$this->ajaxReturn($ret);
 		}else{
-			$this->ajaxReturn('', 1, '店铺唯一ID错误');
+			$this->ajaxReturn([], 1, '店铺唯一ID错误');
 		}
 	}
 }

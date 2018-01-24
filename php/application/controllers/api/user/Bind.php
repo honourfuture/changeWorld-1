@@ -108,12 +108,12 @@ class Bind extends API_Controller {
 				$mobi = $this->input->get_post('mobi');
 				$code = $this->input->get_post('code');
 				if(!$mobi || !$code){
-					$this->ajaxReturn('', 1, '手机号绑定参数错误');
+					$this->ajaxReturn([], 1, '手机号绑定参数错误');
 				}
 				$this->load->model('Users_model');
 		        $user = $this->Users_model->get_by('mobi', $mobi);
 		        if($user){
-		            $this->ajaxReturn('', 2, '手机号已被注册');
+		            $this->ajaxReturn([], 2, '手机号已被注册');
 		        }
 
 		        $this->load->model('Sms_email_record_model');
@@ -122,10 +122,10 @@ class Bind extends API_Controller {
 					if($info['verify'] == $code){
 						$update = array('mobi' => $mobi);
 					}else{
-						$this->ajaxReturn('', 4, '验证码错误');
+						$this->ajaxReturn([], 4, '验证码错误');
 					}
 				}else{
-					$this->ajaxReturn('', 3, '先获取验证码绑定');
+					$this->ajaxReturn([], 3, '先获取验证码绑定');
 				}
 				break;
 			case 'qq':
@@ -138,7 +138,7 @@ class Bind extends API_Controller {
 				$update = array('weibo_uid' => $id);
 				break;
 			default :
-				$this->ajaxReturn('', 1, '未知操作');
+				$this->ajaxReturn([], 1, '未知操作');
 				break;
 		}
 
@@ -150,6 +150,6 @@ class Bind extends API_Controller {
 			$status = 1;
 			$message = '失败';
 		}
-		$this->ajaxReturn('', $status, '操作'.$message);
+		$this->ajaxReturn([], $status, '操作'.$message);
 	}
 }

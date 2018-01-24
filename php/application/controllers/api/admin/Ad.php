@@ -181,10 +181,10 @@ class Ad extends API_Controller {
 		switch($act){
 			case 'add':
 				if(($params['title'] === '' || $params['title'] == UPDATE_VALID) && ($params['image'] === '' || $params['image'] == UPDATE_VALID)){
-					$this->ajaxReturn('', 501, '标题或图片必须传一个');
+					$this->ajaxReturn([], 501, '标题或图片必须传一个');
 				}
 				if($params['ad_position_id'] === '' || $params['ad_position_id'] == UPDATE_VALID){
-					$this->ajaxReturn('', 501, '广告位参数错误');
+					$this->ajaxReturn([], 501, '广告位参数错误');
 				}
 				break;
 			case 'edit':

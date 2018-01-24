@@ -111,7 +111,7 @@ class Config extends API_Controller {
 			$status = 1;
 			$message = '失败';
 		}
-		$this->ajaxReturn('', $status, '操作'.$message);
+		$this->ajaxReturn([], $status, '操作'.$message);
 	}
 
 	protected function check_params($act, $params)

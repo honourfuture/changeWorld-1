@@ -92,7 +92,7 @@ class Collection extends API_Controller {
 				}
 				break;
 			default :
-				$this->ajaxReturn('', 1, '关联类型不存在');
+				$this->ajaxReturn([], 1, '关联类型不存在');
 				break;
 		}
 
@@ -137,13 +137,13 @@ class Collection extends API_Controller {
 		$topic = (int)$this->input->get_post('topic');
 		$sub_topic = (int)$this->input->get_post('sub_topic');
 		if(!$t_id || !$topic){
-			$this->ajaxReturn('', 1, '参数错误');
+			$this->ajaxReturn([], 1, '参数错误');
 		}
 		if($topic != 1 && !$sub_topic){
-			$this->ajaxReturn('', 1, '子类型参数错误');
+			$this->ajaxReturn([], 1, '子类型参数错误');
 		}
 		if($topic == 1 && $this->user_id == $t_id){
-			$this->ajaxReturn('', 1, '请勿关注自己');
+			$this->ajaxReturn([], 1, '请勿关注自己');
 		}
 
 		$this->load->model('Users_collection_model');
@@ -154,12 +154,12 @@ class Collection extends API_Controller {
 			'sub_topic' => $sub_topic
 		);
 		if($info = $this->Users_collection_model->get_by($where)){
-			$this->ajaxReturn('', 2, '已关联请勿重复操作');
+			$this->ajaxReturn([], 2, '已关联请勿重复操作');
 		}
 		if($this->Users_collection_model->insert($where)){
 			$this->ajaxReturn();
 		}else{
-			$this->ajaxReturn('', 3, '保存异常请重试');
+			$this->ajaxReturn([], 3, '保存异常请重试');
 		}
 	}
 }

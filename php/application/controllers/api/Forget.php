@@ -64,19 +64,19 @@ class Forget extends API_Controller {
 		$password = $this->input->get_post('password');
 		$confirm_password = $this->input->get_post('confirm_password');
 		if(!$mobi || !$code){
-			$this->ajaxReturn('', 1, '手机号验证码参数错误');
+			$this->ajaxReturn([], 1, '手机号验证码参数错误');
 		}
 		if(!$password){
-			$this->ajaxReturn('', 2, '请输入新密码');
+			$this->ajaxReturn([], 2, '请输入新密码');
 		}
 		if($password != $confirm_password){
-			$this->ajaxReturn('', 2, '确认密码不一致');
+			$this->ajaxReturn([], 2, '确认密码不一致');
 		}
 
 		$this->load->model('Users_model');
         $user = $this->Users_model->get_by('mobi', $mobi);
         if(!$user){
-            $this->ajaxReturn('', 3, '手机号未注册');
+            $this->ajaxReturn([], 3, '手机号未注册');
         }
 
         $this->load->model('Sms_email_record_model');
@@ -86,13 +86,13 @@ class Forget extends API_Controller {
 				if($this->Users_model->update($user['id'], array('password' => $this->Users_model->get_password($password)))){
 					$this->user_login_success($user);
 				}else{
-					$this->ajaxReturn('', 6, '保存新密码失败');
+					$this->ajaxReturn([], 6, '保存新密码失败');
 				}
 			}else{
-				$this->ajaxReturn('', 5, '验证码错误');
+				$this->ajaxReturn([], 5, '验证码错误');
 			}
 		}else{
-			$this->ajaxReturn('', 4, '先获取短信验证码');
+			$this->ajaxReturn([], 4, '先获取短信验证码');
 		}
 	}
 }

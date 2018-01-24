@@ -60,7 +60,7 @@ class Shop extends API_Controller {
 
 			$this->ajaxReturn($ret);
 		}else{
-			$this->ajaxReturn('', 1, '商城分类ID错误');
+			$this->ajaxReturn([], 1, '商城分类ID错误');
 		}
 	}
 
@@ -113,7 +113,7 @@ class Shop extends API_Controller {
 
 			$this->ajaxReturn($ret);
 		}else{
-			$this->ajaxReturn('', 1, '商城分类ID错误');
+			$this->ajaxReturn([], 1, '商城分类ID错误');
 		}
 	}
 
