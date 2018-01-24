@@ -157,7 +157,7 @@ class Ad_position extends API_Controller {
 		switch($act){
 			case 'add':
 				if($params['name'] === '' || $params['name'] == UPDATE_VALID){
-					$this->ajaxReturn('', 501, '名称参数错误');
+					$this->ajaxReturn([], 501, '名称参数错误');
 				}
 				break;
 			case 'edit':

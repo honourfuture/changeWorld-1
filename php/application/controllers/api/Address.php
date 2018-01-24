@@ -184,19 +184,19 @@ class Address extends API_Controller {
 		switch($act){
 			case 'add':
 				if($params['username'] === '' || $params['username'] == UPDATE_VALID){
-					$this->ajaxReturn('', 501, '输入收货人');
+					$this->ajaxReturn([], 501, '输入收货人');
 				}
 				if($params['mobi'] === '' || $params['mobi'] == UPDATE_VALID){
-					$this->ajaxReturn('', 501, '输入联系电话');
+					$this->ajaxReturn([], 501, '输入联系电话');
 				}
 				if($params['province_id'] === '' || $params['province_id'] == UPDATE_VALID){
-					$this->ajaxReturn('', 501, '选择省');
+					$this->ajaxReturn([], 501, '选择省');
 				}
 				if($params['city_id'] === '' || $params['city_id'] == UPDATE_VALID){
-					$this->ajaxReturn('', 501, '选择市');
+					$this->ajaxReturn([], 501, '选择市');
 				}
 				if($params['address'] === '' || $params['address'] == UPDATE_VALID){
-					$this->ajaxReturn('', 501, '输入详细地址');
+					$this->ajaxReturn([], 501, '输入详细地址');
 				}
 				break;
 			case 'edit':

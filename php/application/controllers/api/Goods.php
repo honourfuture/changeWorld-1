@@ -281,9 +281,9 @@ class Goods extends API_Controller {
 		$info = $this->Goods_model->get($goods_id);
 		if(!$info['enable']){
 			if($info['deleted']){
-				$this->ajaxReturn('', 1, '商品已删除');
+				$this->ajaxReturn([], 1, '商品已删除');
 			}else{
-				$this->ajaxReturn('', 2, '商品已下架');
+				$this->ajaxReturn([], 2, '商品已下架');
 			}
 		}
 		$ret['goods_info'] = $info;
@@ -438,19 +438,19 @@ class Goods extends API_Controller {
 		switch($act){
 			case 'add':
 				if($params['name'] === '' || $params['name'] == UPDATE_VALID){
-					$this->ajaxReturn('', 501, '输入产品名称');
+					$this->ajaxReturn([], 501, '输入产品名称');
 				}
 				if($params['stock'] === '' || $params['stock'] == UPDATE_VALID){
-					$this->ajaxReturn('', 501, '输入产品数量');
+					$this->ajaxReturn([], 501, '输入产品数量');
 				}
 				if($params['sale_price'] === '' || $params['sale_price'] == UPDATE_VALID){
-					$this->ajaxReturn('', 501, '输入产品销售价');
+					$this->ajaxReturn([], 501, '输入产品销售价');
 				}
 				if($params['goods_image'] === '' || !$goods_image = json_decode($params['goods_image'])){
-					$this->ajaxReturn('', 501, '上传产品主图');
+					$this->ajaxReturn([], 501, '上传产品主图');
 				}
 				if($params['goods_detail'] === '' || $params['goods_detail'] == UPDATE_VALID){
-					$this->ajaxReturn('', 501, '输入产品详情');
+					$this->ajaxReturn([], 501, '输入产品详情');
 				}
 				break;
 			case 'edit':

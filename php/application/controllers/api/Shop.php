@@ -10,7 +10,6 @@ class Shop extends API_Controller {
 	public function __construct()
     {
         parent::__construct();
-        // $this->load->model('Shop_model');
     }
 
     /**
@@ -61,12 +60,12 @@ class Shop extends API_Controller {
 
 			$this->ajaxReturn($ret);
 		}else{
-			$this->ajaxReturn('', 1, '商城分类ID错误');
+			$this->ajaxReturn([], 1, '商城分类ID错误');
 		}
 	}
 
 	/**
-	 * @api {get} /api/shop/goods 商城-商品
+	 * @api {get} /api/shop/goods 商城-更多商品
 	 * @apiVersion 1.0.0
 	 * @apiName shop_goods
 	 * @apiGroup api
@@ -114,7 +113,7 @@ class Shop extends API_Controller {
 
 			$this->ajaxReturn($ret);
 		}else{
-			$this->ajaxReturn('', 1, '商城分类ID错误');
+			$this->ajaxReturn([], 1, '商城分类ID错误');
 		}
 	}
 
@@ -207,12 +206,12 @@ class Shop extends API_Controller {
 	}
 
 	/**
-	 * @api {get} /api/shop/pretty_index 商城-靓号其他
+	 * @api {get} /api/shop/pretty 商城-靓号其他
 	 * @apiVersion 1.0.0
-	 * @apiName shop_pretty_index
+	 * @apiName shop_pretty
 	 * @apiGroup api
 	 *
-	 * @apiSampleRequest /api/shop/pretty_index
+	 * @apiSampleRequest /api/shop/pretty
 	 *
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名

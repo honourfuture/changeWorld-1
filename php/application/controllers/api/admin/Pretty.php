@@ -176,7 +176,7 @@ class Pretty extends API_Controller {
 			);
 			$info = $this->Pretty_model->get($id);
 			if(!$info || $info['buyer_id']){
-				$this->ajaxReturn('', 1, '已售卖靓号禁止编辑');
+				$this->ajaxReturn([], 1, '已售卖靓号禁止编辑');
 			}
 			$this->check_params('edit', $params);
 			$this->setPrettyInfo($params);
@@ -201,7 +201,7 @@ class Pretty extends API_Controller {
 			$this->check_params('add', $params);
 			$this->setPrettyInfo($params);
 			if($this->Pretty_model->get_by('pretty_id', $params['pretty_id'])){
-				$this->ajaxReturn('', 1, '靓号已存在请勿重复提交');
+				$this->ajaxReturn([], 1, '靓号已存在请勿重复提交');
 			}
 			if($flag = $this->Pretty_model->insert($params)){
 				$id = $flag;
@@ -228,10 +228,10 @@ class Pretty extends API_Controller {
 		switch($act){
 			case 'add':
 				if($params['pretty_id'] === '' || $params['pretty_id'] == UPDATE_VALID){
-					$this->ajaxReturn('', 501, '输入靓号');
+					$this->ajaxReturn([], 501, '输入靓号');
 				}
 				if($params['price'] === '' || $params['price'] == UPDATE_VALID){
-					$this->ajaxReturn('', 501, '输入价格');
+					$this->ajaxReturn([], 501, '输入价格');
 				}
 				break;
 			case 'edit':

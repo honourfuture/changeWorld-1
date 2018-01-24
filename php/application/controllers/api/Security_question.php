@@ -133,7 +133,7 @@ class Security_question extends API_Controller {
 			$message = '失败，参数错误';
 		}
 
-		$this->ajaxReturn('', $status, '操作'.$message);
+		$this->ajaxReturn([], $status, '操作'.$message);
 	}
 
 	/**
@@ -223,7 +223,7 @@ class Security_question extends API_Controller {
 		switch($act){
 			case 'add':
 				if(empty($params['title']) || $params['title'] == UPDATE_VALID){
-					$this->ajaxReturn('', 501, '名称参数错误');
+					$this->ajaxReturn([], 501, '名称参数错误');
 				}
 				break;
 			case 'edit':

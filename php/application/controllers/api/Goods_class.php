@@ -159,10 +159,10 @@ class Goods_class extends API_Controller {
 		switch($act){
 			case 'add':
 				if($params['name'] === '' || $params['name'] == UPDATE_VALID){
-					$this->ajaxReturn('', 501, '名称参数错误');
+					$this->ajaxReturn([], 501, '名称参数错误');
 				}
 				/*if($params['link'] == UPDATE_VALID){
-					$this->ajaxReturn('', 501, '链接地址参数错误');
+					$this->ajaxReturn([], 501, '链接地址参数错误');
 				}*/
 				break;
 			case 'edit':

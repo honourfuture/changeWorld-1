@@ -18,4 +18,9 @@ class Users_collection_model extends MY_Model
     {
         parent::__construct();
     }
+
+    public function check_fans($user_id, $t_id)
+    {
+    	return $this->get_by(array('user_id' => $user_id, 't_id' => $t_id)) ? 1 : 0;
+    }
 }

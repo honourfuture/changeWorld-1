@@ -66,7 +66,7 @@ class Normal extends API_Controller
                 $ret = $this->ad($ad_position_id);
                 break;
             default :
-                $this->ajaxReturn('', 1, '请求应用区间未知');
+                $this->ajaxReturn([], 1, '请求应用区间未知');
                 break;
         }
 

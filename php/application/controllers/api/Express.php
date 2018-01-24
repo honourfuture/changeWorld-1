@@ -173,10 +173,10 @@ class Express extends API_Controller {
 		switch($act){
 			case 'add':
 				if($params['name'] === '' || $params['name'] == UPDATE_VALID){
-					$this->ajaxReturn('', 501, '快递公司名称必填');
+					$this->ajaxReturn([], 501, '快递公司名称必填');
 				}
 				if($params['pinyin'] === '' || $params['pinyin'] == UPDATE_VALID){
-					$this->ajaxReturn('', 501, '拼音首字母必填');
+					$this->ajaxReturn([], 501, '拼音首字母必填');
 				}
 				break;
 			case 'edit':

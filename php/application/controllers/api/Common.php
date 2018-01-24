@@ -172,13 +172,13 @@ class Common extends API_Controller
         $sms_id = (int)$this->input->get_post('sms_id');
         $mobi = $this->input->get_post('mobi');
         if(!$mobi){
-            $this->ajaxReturn('', 1, '获取验证码手机号错误');
+            $this->ajaxReturn([], 1, '获取验证码手机号错误');
         }
         if($sms_id == 0){
             $this->load->model('Users_model');
             $user = $this->Users_model->get_by('mobi', $mobi);
             if($user){
-                $this->ajaxReturn('', 1, '手机号已注册');
+                $this->ajaxReturn([], 1, '手机号已注册');
             }
         }
 
@@ -203,14 +203,14 @@ class Common extends API_Controller
         $code = random_string('numeric', 4);
         $timeout = 120;
         if($this->Sms_model->getLastVerify($email, $timeout)){
-            $this->ajaxReturn('', 1, '发送邮件频率'.$timeout.'秒/次');
+            $this->ajaxReturn([], 1, '发送邮件频率'.$timeout.'秒/次');
         }
 
         $ret = $this->Sms_model->send_mail($email, $sms_id, array('code' => $code));
         if($ret['status'] == 0){
             $this->ajaxReturn();
         }else{
-            $this->ajaxReturn('', $ret['status'], $ret['message']);
+            $this->ajaxReturn([], $ret['status'], $ret['message']);
         }
     }
 

@@ -51,13 +51,13 @@ class Register extends API_Controller {
 		$mobi = $this->input->get_post('mobi');
 		$code = $this->input->get_post('code');
 		if(!$mobi || !$code){
-			$this->ajaxReturn('', 1, '手机号注册参数错误');
+			$this->ajaxReturn([], 1, '手机号注册参数错误');
 		}
 
 		$this->load->model('Users_model');
         $user = $this->Users_model->get_by('mobi', $mobi);
         if($user){
-            $this->ajaxReturn('', 2, '手机号已被注册');
+            $this->ajaxReturn([], 2, '手机号已被注册');
         }
 
         $this->load->model('Sms_email_record_model');
@@ -71,22 +71,22 @@ class Register extends API_Controller {
 					$password = $this->input->get_post('password');
 					$confirm_password = $this->input->get_post('confirm_password');
 					if(!$password){
-						$this->ajaxReturn('', 4, '请输入密码');
+						$this->ajaxReturn([], 4, '请输入密码');
 					}
 					if($password != $confirm_password){
-						$this->ajaxReturn('', 5, '确认密码不一致');
+						$this->ajaxReturn([], 5, '确认密码不一致');
 					}
 					$user = $this->Users_model->get_by('account', $account);
 			        if($user){
-			            $this->ajaxReturn('', 6, '账号已被注册');
+			            $this->ajaxReturn([], 6, '账号已被注册');
 			        }
 					$this->user_reg(array('mobi' => $mobi, 'account' => $account, 'password' => $password));
 				}
 			}else{
-				$this->ajaxReturn('', 4, '验证码错误');
+				$this->ajaxReturn([], 4, '验证码错误');
 			}
 		}else{
-			$this->ajaxReturn('', 3, '先获取验证码注册');
+			$this->ajaxReturn([], 3, '先获取验证码注册');
 		}
 	}
 

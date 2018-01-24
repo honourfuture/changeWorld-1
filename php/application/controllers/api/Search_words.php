@@ -163,10 +163,10 @@ class Search_words extends API_Controller {
 		switch($act){
 			case 'add':
 				if($params['keyword'] === '' || $params['keyword'] == UPDATE_VALID){
-					$this->ajaxReturn('', 501, '热搜词必填');
+					$this->ajaxReturn([], 501, '热搜词必填');
 				}
 				if($params['keyword_alias'] === '' || $params['keyword_alias'] == UPDATE_VALID){
-					$this->ajaxReturn('', 501, '显示词必填');
+					$this->ajaxReturn([], 501, '显示词必填');
 				}
 				break;
 			case 'edit':

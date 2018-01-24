@@ -228,7 +228,7 @@ class Article extends API_Controller {
 	{
 		$alias = trim($this->input->get('alias'));
 		if(empty($alias)){
-			$this->ajaxReturn('', 1, '查看单页参数错误');
+			$this->ajaxReturn([], 1, '查看单页参数错误');
 		}
 		$info = $this->single_page($alias);
 
@@ -331,7 +331,7 @@ class Article extends API_Controller {
 		switch($act){
 			case 'add':
 				if($params['title'] === '' || $params['title'] == UPDATE_VALID){
-					$this->ajaxReturn('', 501, '标题参数错误');
+					$this->ajaxReturn([], 501, '标题参数错误');
 				}
 				break;
 			case 'edit':

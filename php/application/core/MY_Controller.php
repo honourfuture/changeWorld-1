@@ -61,7 +61,7 @@ class MY_Controller extends CI_Controller
      * 接口/ajax返回
      * @param int $status 0表示成功 其他表示失败
      */
-    protected function ajaxReturn($data, $status = 0, $message='', $ajaxFileUpload = false)
+    protected function ajaxReturn($data = array(), $status = 0, $message='', $ajaxFileUpload = false)
     {
         if(! $ajaxFileUpload){
             header('Content-type: application/json; charset=utf-8');

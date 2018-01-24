@@ -62,7 +62,7 @@ class Login extends API_Controller {
 		$account = $this->input->get_post('account');
 		$password = $this->input->get_post('password');
 		if(!$account || !$password){
-			$this->ajaxReturn('', 1, '登录参数非法');
+			$this->ajaxReturn([], 1, '登录参数非法');
 		}
 		$this->load->model('Admin_model');
 		$info = $this->Admin_model->get_by('account', $account);
@@ -73,16 +73,16 @@ class Login extends API_Controller {
 					$this->login_success($info);
 				}else{
 					if($info['deleted']){
-						$this->ajaxReturn('', 4, '账号已删除');
+						$this->ajaxReturn([], 4, '账号已删除');
 					}else{
-						$this->ajaxReturn('', 5, '账号被冻结');
+						$this->ajaxReturn([], 5, '账号被冻结');
 					}
 				}
 			}else{
-				$this->ajaxReturn('', 3, '登录密码错误');
+				$this->ajaxReturn([], 3, '登录密码错误');
 			}
 		}else{
-			$this->ajaxReturn('', 2, '登录账号错误');
+			$this->ajaxReturn([], 2, '登录账号错误');
 		}
 	}
 
@@ -91,7 +91,7 @@ class Login extends API_Controller {
         $this->admin_id = $admin_info['id'];
         $token = $this->set_admin_token();
         if(empty($token)){
-        	$this->ajaxReturn('', 6, '获取授权token失败');
+        	$this->ajaxReturn([], 6, '获取授权token失败');
         }
         $sign = $this->get_sign($this->admin_id, $token, $this->_admin_key);
 

@@ -204,18 +204,18 @@ class Info extends API_Controller {
 				$new_password = $this->input->get_post('new_password');
 				$confirm_password = $this->input->get_post('confirm_password');
 				if(!$old_password){
-					$this->ajaxReturn('', 1, '请输入旧密码');
+					$this->ajaxReturn([], 1, '请输入旧密码');
 				}
 				if(!$new_password){
-					$this->ajaxReturn('', 1, '请输入新密码');
+					$this->ajaxReturn([], 1, '请输入新密码');
 				}
 				if($new_password != $confirm_password){
-					$this->ajaxReturn('', 2, '确认密码不一致');
+					$this->ajaxReturn([], 2, '确认密码不一致');
 				}
 
 				$user = $this->get_user();
 				if($user['password'] != $this->Users_model->get_password($old_password)){
-					$this->ajaxReturn('', 3, '旧密码错误');
+					$this->ajaxReturn([], 3, '旧密码错误');
 				}
 
 				$update = array('password' => $this->Users_model->get_password($new_password));
@@ -224,16 +224,16 @@ class Info extends API_Controller {
 				$pay_password = $this->input->get_post('pay_password');
 				$confirm_password = $this->input->get_post('confirm_password');
 				if(!$pay_password){
-					$this->ajaxReturn('', 1, '请输入支付密码');
+					$this->ajaxReturn([], 1, '请输入支付密码');
 				}
 				if($pay_password != $confirm_password){
-					$this->ajaxReturn('', 2, '确认密码不一致');
+					$this->ajaxReturn([], 2, '确认密码不一致');
 				}
 
 				$update = array('pay_password' => $this->Users_model->get_password($pay_password));
 				break;
 			default :
-				$this->ajaxReturn('', 1, '未知操作');
+				$this->ajaxReturn([], 1, '未知操作');
 				break;
 		}
 
@@ -245,6 +245,6 @@ class Info extends API_Controller {
 			$status = 1;
 			$message = '失败';
 		}
-		$this->ajaxReturn('', $status, '操作'.$message);
+		$this->ajaxReturn([], $status, '操作'.$message);
 	}
 }

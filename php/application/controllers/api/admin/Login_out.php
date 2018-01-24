@@ -45,6 +45,6 @@ class Login_out extends API_Controller {
 	public function index()
 	{
 		$this->log_admin($this->admin_id, $this->account, '退出');
-		$this->ajaxReturn('');
+		$this->ajaxReturn([]);
 	}
 }
