@@ -5,10 +5,17 @@ import './MessageDetail.less';
 import {icon} from '../../images';
 
 export default class MessageDetail extends BaseComponent{
-	pageData={}
+	store={
+		pageData:{}
+	}
+	componentDidMount(){
+		const {id} =  Base.getPageParams(id);
+		Base.GET({act:'mailbox',op:'view',id},(res)=>{
+            this.store.pageData = res.data;
+        });
+	}
 	render(){
-		this.pageData= Base.getPageParams();
-		const {title,content}  = this.pageData;
+		const {pageData}  = this.store;
 		return (
 			<div className='MessageDetail'>
 				<NavBar
@@ -19,8 +26,8 @@ export default class MessageDetail extends BaseComponent{
                 >消息详情</NavBar>
                 <div className="base-content">
                 	<div className="msgBox">
-                		<div className="msgTit">{title}</div>
-                		<div className="msgCont">{content}</div>
+                		<div className="msgTit">{pageData.title}</div>
+                		<div className="msgCont" dangerouslySetInnerHTML={{__html:pageData.content}}></div>
                 	</div>
                 </div>
 			</div>

@@ -6,57 +6,40 @@ import './MessAgeCenter.less';
 import {icon} from '../../images';
 
 const Item = List.Item;
-const Brief = Item.Brief;
 export default class MessAgeCenter extends BaseComponent{
 	store={
-		msglist:[{
-			id:1,
-			title:"活动精选",
-			content:"召唤好友一起来砍价，砍一刀就省钱，多看多优惠",
-			time:"昨天",
-			isRead:0,
-		},{
-			id:2,
-			title:"主播正在直播！",
-			content:"邀请好友一起来成为会员，一次购买终身赠送，好友越多赚得越多",
-			time:"2018-01-19",
-			isRead:0,
-		},{
-			id:3,
-			title:"你的好友邀请了你",
-			content:"召唤好友一起来砍价，砍一刀就省钱，多看多优惠",
-			time:"2018-01-18",
-			isRead:1,
-		},{
-			id:4,
-			title:"活动通知",
-			content:"邀请好友一起来成为会员，一次购买终身赠送，好友越多赚得越多",
-			time:"2018-01-17",
-			isRead:1,
-		}]
+		list:[],
+		isRead:"",
 	}
 	@action.bound
 	onRead(id){
-		const {msglist} = this.store;
-		msglist.forEach((item)=>{
-			id === item.id && (item.isRead = 1);
-		});
-		const item = msglist.find((item)=>id === item.id);
-		Base.push("MessageDetail",{...item});
+		Base.push("MessageDetail",{id});
 	}
+	componentDidMount(){
+        Base.POST({act:'mailbox',op:'index'},(res)=>{
+        	const {list,read_ids} = res.data;
+            this.store.list = list;
+            this.store.isRead = read_ids;
+        });
+    }
 	render(){
-		const {msglist} = this.store;
-		const msgItem = (msglist || {}).map((item,key)=>{
-			const {id,title,content,time,isRead} = item;
-			const read = isRead ? "title read":"title";
-			return <Item multipleLine key={id} onClick={()=>this.onRead(id)}>
+		const {list,isRead} = this.store;
+		const readList = isRead.split(',');
+		const msgItem = (list || {}).map((item,key)=>{
+			const {id,title,content,updated_at} = item;
+			let read = "title";
+			readList.forEach((value,key)=>{
+				value === id && (read = "title read");
+			});
+			return <Item className="base-line" multipleLine key={id} onClick={()=>this.onRead(id)}>
 				          	<Flex justify="between" align="center">
 				          		<span className={read}>{title}</span>
-				          		<span className="time">{time}</span>
+				          		<span className="time">{updated_at}</span>
 				          	</Flex>
-				          	<Brief className="content">{content}</Brief>
+				          	<div className="content" dangerouslySetInnerHTML={{__html:content}}></div>
 				        </Item>
 		});
+
 		return (
 			<div className='MessAgeCenter'>
 				<NavBar
