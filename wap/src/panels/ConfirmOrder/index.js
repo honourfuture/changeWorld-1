@@ -5,7 +5,7 @@ import { Flex, Button, NavBar, WhiteSpace, Icon, Stepper, Radio, Checkbox, Input
 import './ConfirmOrder.less';
 
 import {GoodsItem} from '../../components/GoodsItem';
-import { test, icon } from '../../images';
+import { test, addr, icon } from '../../images';
 
 // class StoreItem extends BaseComponent{
 // 	render(){
@@ -96,7 +96,7 @@ export default class ConfirmOrder extends BaseComponent{
 					onLeftClick={Base.goBack}
 				>确认订单</NavBar>
 				<div className="base-content">
-					<img src={icon.orderTopLine} className="img-line" alt=""/>
+					<img src={addr.orderTopLine} className="img-line" alt=""/>
 					{true?<Flex className="order-address" onClick={()=>Base.push('SelectAddress')}>
 						<div className="addr-info">
 							<div className="addr-user">*彤 185****8158</div>
@@ -106,7 +106,7 @@ export default class ConfirmOrder extends BaseComponent{
 					<Flex className="order-address" justify="center" align="center" onClick={()=>Base.push('NewAddress')}>
 						<div className="add-addr">
 							<div className="addr-img">
-								<img src={icon.address} className="addIco-img" alt="" />
+								<img src={addr.address} className="addIco-img" alt="" />
 							</div>
 							<div className="add-tips">还没收货地址，<em>去添加</em></div>
 						</div>

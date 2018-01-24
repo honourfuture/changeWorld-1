@@ -21,15 +21,20 @@ class EvaluateItem extends BaseComponent{
 }
 
 class GoodsItem extends BaseComponent {
+    @action.bound
+    onClick(){
+        const {id} = this.props;
+        Base.push('GoodsDetail', {id})
+    }
     render(){
-        const {img,title,price} = this.props;
+        const {default_image,name,sale_price} = this.props;
         return(
-            <div className="goods-item">
-                <img src={img} alt=''/>
+            <div className="goods-item" onClick={this.onClick}>
+                <NetImg src={default_image}/>
                 <div className="title">
-                    {title}
+                    {name}
                 </div>
-                <div className="price">￥{price}</div>
+                <div className="price">￥{sale_price}</div>
             </div>
         )
     }
@@ -42,11 +47,11 @@ class AddressItem extends BaseComponent {
         onCheckHandler(index);
     }
     render(){
-        const {isDefault,address,checked} = this.props;
+        const {is_default,address,checked} = this.props;
         return (
             <Flex className='address-item' onClick={this.checkHandler}>
                 <img src={icon.addressIcon} alt=""/>
-                <Flex.Item className='ellipsis'>{`${isDefault?'[默认]':''}${address}`}</Flex.Item>
+                <Flex.Item className='ellipsis'>{`${is_default?'[默认]':''}${address}`}</Flex.Item>
                 <Checkbox checked={checked}/>
             </Flex>
         )
@@ -81,71 +86,6 @@ const testEvaluates = [
         header:test.test2,
         name:'沈****星',
         des:'做工精致，面料舒服，建材有度，有设计感。心水。。。',
-    },
-];
-const testGoods = [
-    {
-        img:test.test4,
-        title:'RE:CIPE 水晶防晒瓶喷雾 3瓶',
-        price:'155'
-    },
-    {
-        img:test.test4,
-        title:'RE:CIPE 水晶防晒瓶喷雾 5瓶',
-        price:'229'
-    },
-    {
-        img:test.test4,
-        title:'RE:CIPE 雪花防晒瓶喷雾 1瓶',
-        price:'55'
-    },
-    {
-        img:test.test4,
-        title:'RE:CIPE 雪花防晒瓶喷雾 3瓶',
-        price:'155'
-    },
-    {
-        img:test.test4,
-        title:'RE:CIPE 水晶防晒瓶喷雾 3瓶',
-        price:'155'
-    },
-    {
-        img:test.test4,
-        title:'RE:CIPE 水晶防晒瓶喷雾 5瓶',
-        price:'229'
-    },
-    {
-        img:test.test4,
-        title:'RE:CIPE 雪花防晒瓶喷雾 1瓶',
-        price:'55'
-    },
-    {
-        img:test.test4,
-        title:'RE:CIPE 雪花防晒瓶喷雾 3瓶',
-        price:'155'
-    },
-];
-
-const addressList = [
-    {
-        isDefault:true,
-        address:'浙江省 杭州市 余杭区 荆长大道顺帆科技园A座',
-    },
-    {
-        isDefault:false,
-        address:'浙江省 杭州市 西湖区 西溪花园10幢308室',
-    },
-    {
-        isDefault:false,
-        address:'浙江省 杭州市 西湖区 华星时代广场A座801',
-    },
-    {
-        isDefault:false,
-        address:'辽宁省 大连市 普湾新区 铁西街道（国泰街）绿都花园3栋4单元401',
-    },
-    {
-        isDefault:false,
-        address:'辽宁省 大连市 普湾新区 铁西街道（国泰街）绿都花园1栋4单元405',
     },
 ];
 
@@ -187,16 +127,51 @@ export default class GoodsDetail extends BaseComponent{
         selectSpecIndex:-1,
         selectClassifyIndex:-1,
         selectNum:1,
+        evaluate:{},
+        goods:[],
+        goods_attr:{},
+        goods_info:{},
+        seller:{},
+        address:[]
     }
     componentDidMount(){
+        const {id} = Base.getPageParams();
+        Base.GET({act:'goods',op:'view',goods_id:id},(res)=>{
+            const {evaluate,goods={},goods_attr,goods_info,seller} = res.data;
+            this.store.evaluate = evaluate;
+            this.store.goods = goods;
+            this.store.goods_attr = goods_attr;
+            this.store.goods_info = goods_info;
+            this.store.seller = seller;
+            Base.GET({act:'address',op:'index'},(res)=>{
+                this.store.address = res.data.map((item,index)=>{
+                    let {province,city,address,id,is_default,area} = item;
+                    address = `${province} ${city} ${area} ${address}`;
+                    let checked = false;
+                    if(parseInt(item.is_default) === 1){
+                        checked = true;
+                        this.store.curAddressIndex = index;
+                    }
+                    return {id,address,is_default,checked:parseInt(item.is_default) === 1};
+                });
+            },null,true);
+        });
     }
     @action.bound
     collectHandler(){
-        this.store.isCollect = !this.store.isCollect;
+        const {id} = this.props;
+        Base.POST({act:'collection',op:'save',mod:'user',topic:2,sub_topic:40,t_id:id},(res)=>{
+            this.store.isCollect = !this.store.isCollect;
+        })
     }
     @action.bound
     addressHandler(){
-        this.store.isAddressModal = !this.store.isAddressModal;
+        const {address} = this.store;
+        if(address.length > 0){
+            this.store.isAddressModal = !this.store.isAddressModal;
+        }else{
+            Base.push('NewAddress');
+        }
     }
     @action.bound
     onCheckHandler(index){
@@ -220,14 +195,36 @@ export default class GoodsDetail extends BaseComponent{
         this.store.selectClassifyIndex = index;
     }
     render(){
-        const {isCollect,isAddressModal,curAddressIndex,isBuyModal,selectSpecIndex,selectClassifyIndex,selectNum} = this.store;
+        const {isCollect,isAddressModal,curAddressIndex,isBuyModal,selectSpecIndex,selectClassifyIndex,selectNum,evaluate,goods={},goods_attr,goods_info={},seller={},address=[]} = this.store;
+        let {goods_image='',sale_price='',name='',freight_fee='',goods_ticket='',use_point_rate='',e_invoice='',goods_detail='',seller_uid=''} = goods_info;
+        const {header='',nickname='',summary='',v=''} = seller;
+        const {list=[],total=''} = goods;
+        goods_image = goods_image?JSON.parse(goods_image):[];
+        const goodsImgs = goods_image.map((val,index)=>{
+            return <NetImg key={index} src={val} style={{ width: '100%', verticalAlign: 'top'}}/>;
+        });
+        freight_fee = parseFloat(freight_fee);
+        goods_ticket = goods_ticket?JSON.parse(goods_ticket):[];
+        const goodsTickets = goods_ticket.map((item,index)=>{
+            const {full_amount='',free_amount=''} = item;
+            return <div className="flex-item base-line" key={index}>
+                    <Flex>
+                        <div className="title">优惠券</div>
+                        <div className="des">满<em>{full_amount}</em>减<em>{free_amount}</em></div>
+                    </Flex>
+                </div>;
+        });
+        goods_detail = goods_detail?JSON.parse(goods_detail):[];
+        const goodsDetailImgs = goods_detail.map((item,index)=>{
+            return <img src={item} key={index} alt=''/>;
+        })
         const evaluateItems = testEvaluates.map((item,index)=>{
             return <EvaluateItem key={index} {...item}/>;
         });
-        const goodsItems = testGoods.map((item,index)=>{
+        const goodsItems = list.map((item,index)=>{
             return <GoodsItem key={index} {...item}/>;
         });
-        const addressItems = addressList.map((item,index)=>{
+        const addressItems = address.map((item,index)=>{
             return <AddressItem key={index} {...item} index={index} checked={curAddressIndex === index} onCheckHandler={this.onCheckHandler}/>
         });
         const specItems = specList.map((item,index)=>{
@@ -252,44 +249,35 @@ export default class GoodsDetail extends BaseComponent{
                         autoplay={true}
                         infinite
                         >
-                        {[test.test4,test.test4,test.test4].map((val,index) => (
-                            <NetImg
-                                key={index}
-                                src={val}
-                                style={{ width: '100%', verticalAlign: 'top'}}
-                            />
-                        ))}
+                        {goodsImgs}
                     </Carousel>
                     <div className="info-con">
                         <Flex>
-                            <div className='price'>￥369</div>
+                            <div className='price'>￥{Base.getNumFormat(sale_price)}</div>
                             {/* <div className='old-price'>原价<em>￥489</em></div> */}
                         </Flex>
                         <div className='title'>
-                            <Badge className='badge' text="包邮"/>
-                            【新客专享】RE:CIPE 水晶防晒喷雾 150毫升防晒喷雾 SPF50+
+                            {freight_fee===0?<Badge className='badge' text='包邮'/>:null}
+                            {name}
                         </div>
                     </div>
                     <div className="discounts-con">
-                        <div className="flex-item base-line">
-                            <Flex>
-                                <div className="title">优惠券</div>
-                                <div className="des">满<em>300</em>减<em>10</em></div>
-                            </Flex>
-                        </div>
-                        <div className="flex-item">
+                        {goodsTickets}
+                        {use_point_rate?<div className="flex-item">
                             <Flex>
                                 <div className="title">积分</div>
-                                <div className="des">该商品可使用<em>100</em>积分抵扣</div>
+                                <div className="des">该商品可使用<em>{use_point_rate}</em>积分抵扣</div>
                             </Flex>
-                        </div>
+                        </div>:null}
                     </div>
                     <div className="distribution-info-con">
                         <div className="flex-item base-line">
                             <Flex justify='between' onClick={this.addressHandler}>
                                 <Flex>
                                     <div className="title">配送</div>
-                                    <Flex.Item className="des ellipsis">至 {addressList[curAddressIndex].address}</Flex.Item>
+                                    {address.length>0
+                                    ?<Flex.Item className="des ellipsis">至 {address[curAddressIndex].address}</Flex.Item>
+                                    :<Flex.Item className="des ellipsis">新建配送地址</Flex.Item>}
                                 </Flex>
                                 <Icon type='right' color='#c9c9c9'/>
                             </Flex>
@@ -297,13 +285,13 @@ export default class GoodsDetail extends BaseComponent{
                         <div className="flex-item base-line">
                             <Flex>
                                 <div className="title">运费</div>
-                                <div className="des">包邮</div>
+                                <div className="des">{Base.getNumFormat(freight_fee)}</div>
                             </Flex>
                         </div>
                         <div className="flex-item">
                             <Flex>
                                 <div className="title">发票</div>
-                                <div className="des">可开电子发票</div>
+                                <div className="des">{parseInt(e_invoice)?'':'不'}可开电子发票</div>
                             </Flex>
                         </div>
                     </div>
@@ -319,11 +307,14 @@ export default class GoodsDetail extends BaseComponent{
                     <div className="lecturer-store-con">
                         <Flex justify='between' className='lecturer-info'>
                             <Flex>
-                                <img src={test.test3} alt=''/>
+                                <div className="seller-header">
+                                    <NetImg className='header' src={header}/>
+                                    {parseInt(v)?<img className='vip' src={icon.vipIcon} alt=""/>:null}
+                                </div>
                                 <div>
-                                    <div className="name">文贝袄</div>
+                                    <div className="name">{nickname}</div>
                                     <div className="goods-num">
-                                        在售商品：<em>9</em>个
+                                        在售商品：<em>{total}</em>个
                                     </div>
                                 </div>
                             </Flex>
@@ -332,27 +323,25 @@ export default class GoodsDetail extends BaseComponent{
                                 <Icon type='right' color='#c9c9c9'/>
                             </Flex>
                         </Flex>
-                        <div className="store-des">
-                            推崇自然，主要是用自然材质制造亲肤护肤品。这款高人气喷雾是14年推出的新品。一经推出，迅速火爆，成为韩国14年防晒单品销售冠军。
-                        </div>
+                        {summary?<div className="store-des">
+                            {summary}
+                        </div>:null}
                         <Flex className='goods-con'>
                             {goodsItems}
                         </Flex>
                     </div>
-                    <div className="image-text-con">
+                    {goodsDetailImgs.length>0?<div className="image-text-con">
                         <div className="title-con">
                             图文详情
                         </div>
-                        <img src={test.test5} alt=''/>
-                        <img src={test.test6} alt=''/>
-                        <img src={test.test7} alt=''/>
+                        {goodsDetailImgs}
                         <div className='bottom-tips'>别再拉了~=￣ω￣=~没有了</div>
-                    </div>
+                    </div>:null}
                 </div>
                 <Flex className="footer">
                     <Flex.Item>
                         <Flex>
-                            <Flex.Item onClick={()=>Base.push('AnchorStore')}>
+                            <Flex.Item onClick={()=>Base.pushApp('userStore',{shopid:seller_uid})}>
                                 <img src={icon.storeIcon} alt=""/>
                                 <div className='label'>店铺</div>
                             </Flex.Item>

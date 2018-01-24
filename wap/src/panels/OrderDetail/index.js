@@ -2,7 +2,7 @@ import React from 'react';
 import {BaseComponent,Base} from '../../common';
 import { Flex, Button, NavBar, WhiteSpace } from 'antd-mobile';
 import './OrderDetail.less';
-import { test, icon } from '../../images';
+import { test, icon,addr } from '../../images';
 
 export default class OrderDetail extends BaseComponent{
 	store = {
@@ -65,7 +65,7 @@ export default class OrderDetail extends BaseComponent{
 					<WhiteSpace size="lg" />
 					<div className="order-item">
 						<Flex className="order-address">
-							<div className="addr-icon"><img src={icon.address} className="addrIco" alt=""/></div>
+							<div className="addr-icon"><img src={addr.address} className="addrIco" alt=""/></div>
 							<div className="addr-info">
 								<div className="addr-user">收件人：{signee.name} {signee.tel}</div>
 								<div className="addr-ess">{signee.address}</div>

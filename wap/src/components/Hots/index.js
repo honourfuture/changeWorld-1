@@ -28,14 +28,8 @@ export class Hots extends BaseComponent{
             this.cur_page ++;
             this.store.goods = res.data.goods;
             this.store.anchor = res.data.anchor;
-            // this.store.height = document.documentElement.clientHeight - ReactDOM.findDOMNode(this.listView).offsetTop;
-            console.log(ReactDOM.findDOMNode(this.listView).offsetTop);
+            this.store.height = document.documentElement.clientHeight - ReactDOM.findDOMNode(this.listView).offsetTop - 88;
         });
-    }
-    @action.bound
-    onBannerLoaded(){
-        console.log(222);
-        this.store.height = document.documentElement.clientHeight - ReactDOM.findDOMNode(this.listView).offsetTop - 88;
     }
     @action.bound
     renderGoodsItem(rowData, sectionID, rowID){
@@ -82,7 +76,6 @@ export class Hots extends BaseComponent{
                             key={val}
                             src={val}
                             style={{ width: '100%'}}
-                            onLoad={this.onBannerLoaded}
                         />
                     ))}
                 </Carousel>
@@ -100,7 +93,7 @@ export class Hots extends BaseComponent{
                         onRefresh={this.onRefresh}
                     />}
                     onEndReached={this.onEndReached}
-                    pageSize={4}
+                    // pageSize={2}
                 >
                 </ListView>
             </div>

@@ -2,7 +2,7 @@ import React from 'react';
 import {BaseComponent,Base} from '../../common';
 import {Flex,NavBar,WhiteSpace,List,Badge} from 'antd-mobile';
 import './UserCenter.less';
-import {icon} from '../../images';
+import {icon,userCenter} from '../../images';
 const Item = List.Item;
 export default class UserCenter extends BaseComponent{
 	render(){
@@ -16,7 +16,7 @@ export default class UserCenter extends BaseComponent{
                 >我的商城</NavBar>
                 <div className="base-content">
                 	<Flex className="userInfo" align="start">
-                		<img src={icon.uDefaultImg} className="uImg" alt=""/>
+                		<img src={userCenter.uDefaultImg} className="uImg" alt=""/>
                 		<div className="userInfoName">史珲林</div>
                 	</Flex>
                 	<div className="uOrderItem">
@@ -24,32 +24,32 @@ export default class UserCenter extends BaseComponent{
                 			<Item extra={'全部订单'} arrow="horizontal" onClick={()=>Base.push('MyOrder')}>我买到的</Item>
                 			<Flex className="menuIco">
                 				<Flex.Item className="Item" align="center">
-            						<img src={icon.dfkIco} className="uIco" alt=""/>
+            						<img src={userCenter.dfkIco} className="uIco" alt=""/>
             						<Badge text={1} overflowCount={99}><span /></Badge>
                 					<div className="uTit">待付款</div>
                 				</Flex.Item>
                 				<Flex.Item className="Item" align="center">
-                					<img src={icon.dfhIco} className="uIco" alt=""/>
+                					<img src={userCenter.dfhIco} className="uIco" alt=""/>
                 					<Badge text={1} overflowCount={99}><span /></Badge>
                 					<div className="uTit">待发货</div>
                 				</Flex.Item>
                 				<Flex.Item className="Item" align="center">
-                					<img src={icon.dshIco} className="uIco" alt=""/>
+                					<img src={userCenter.dshIco} className="uIco" alt=""/>
                 					<Badge text={1} overflowCount={99}><span /></Badge>
                 					<div className="uTit">待收货</div>
                 				</Flex.Item>
                 				<Flex.Item className="Item" align="center">
-                					<img src={icon.dpjIco} className="uIco" alt=""/>
+                					<img src={userCenter.dpjIco} className="uIco" alt=""/>
                 					<Badge text={1} overflowCount={99}><span /></Badge>
                 					<div className="uTit">待评价</div>
                 				</Flex.Item>
                 				<Flex.Item className="Item" align="center">
-                					<img src={icon.ywcIco} className="uIco" alt=""/>
+                					<img src={userCenter.ywcIco} className="uIco" alt=""/>
                 					<Badge text={1} overflowCount={99}><span /></Badge>
                 					<div className="uTit">已完成</div>
                 				</Flex.Item>
                 				<Flex.Item className="Item" align="center">
-                					<img src={icon.thIco} className="uIco" alt=""/>
+                					<img src={userCenter.thIco} className="uIco" alt=""/>
                 					<Badge text={1} overflowCount={99}><span /></Badge>
                 					<div className="uTit">退货</div>
                 				</Flex.Item>
@@ -62,32 +62,32 @@ export default class UserCenter extends BaseComponent{
                 			<Item extra={'全部订单'} arrow="horizontal" onClick={()=>Base.push('MyOrder')}>我卖出的</Item>
                 			<Flex className="menuIco">
                 				<Flex.Item className="Item" align="center">
-                					<img src={icon.dfkIco} className="uIco" alt=""/>
+                					<img src={userCenter.dfkIco} className="uIco" alt=""/>
                 					<Badge text={1} overflowCount={99}><span /></Badge>
                 					<div className="uTit">待付款</div>
                 				</Flex.Item>
                 				<Flex.Item className="Item" align="center">
-                					<img src={icon.dfhIco} className="uIco" alt=""/>
+                					<img src={userCenter.dfhIco} className="uIco" alt=""/>
                 					<Badge text={1} overflowCount={99}><span /></Badge>
                 					<div className="uTit">待发货</div>
                 				</Flex.Item>
                 				<Flex.Item className="Item" align="center">
-                					<img src={icon.dshIco} className="uIco" alt=""/>
+                					<img src={userCenter.dshIco} className="uIco" alt=""/>
                 					<Badge text={1} overflowCount={99}><span /></Badge>
                 					<div className="uTit">待收货</div>
                 				</Flex.Item>
                 				<Flex.Item className="Item" align="center">
-                					<img src={icon.dpjIco} className="uIco" alt=""/>
+                					<img src={userCenter.dpjIco} className="uIco" alt=""/>
                 					<Badge text={0} overflowCount={99}><span /></Badge>
                 					<div className="uTit">待评价</div>
                 				</Flex.Item>
                 				<Flex.Item className="Item" align="center">
-                					<img src={icon.ywcIco} className="uIco" alt=""/>
+                					<img src={userCenter.ywcIco} className="uIco" alt=""/>
                 					<Badge text={1} overflowCount={99}><span /></Badge>
                 					<div className="uTit">已完成</div>
                 				</Flex.Item>
                 				<Flex.Item className="Item" align="center">
-                					<img src={icon.thIco} className="uIco" alt=""/>
+                					<img src={userCenter.thIco} className="uIco" alt=""/>
                 					<Badge text={0} overflowCount={99}><span /></Badge>
                 					<div className="uTit">退货</div>
                 				</Flex.Item>

@@ -69,6 +69,17 @@ export const Base = {
 			window.HISTORY_LENGHT --;
 		}
 	},
+	//进入App页面
+	pushApp(path,params){
+		if(window.webkit && window.webkit.messageHandlers){
+			window.webkit.messageHandlers.openModule.postMessage({
+				"moduleName":path,
+				"params":params || {}
+			});
+		}else{
+			this.push(path,params);
+		}
+	},
 	//获取页面传来的参数
 	getPageParams(keyStr,url){
 		url = url || window.document.location.href;

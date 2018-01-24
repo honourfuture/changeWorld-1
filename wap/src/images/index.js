@@ -4,29 +4,40 @@ export const icon = {
     share:require('./icon/shareIcon.png'),
     email:require('./icon/indexEmail.png'),
     indexCart:require('./icon/indexShopCart.png'),
-    paySuccess:require('./icon/pay/paySuccess.png'),
-    payFail:require('./icon/pay/payFail.png'),
-    payZfb:require('./icon/pay/payZfb.png'),
-    payWx:require('./icon/pay/payWx.png'),
     storeIcon:require('./icon/storeIcon.png'),
     customerIcon:require('./icon/customerIcon.png'),
     collectIcon0:require('./icon/collectIcon0.png'),
     collectIcon1:require('./icon/collectIcon1.png'),
     closeIcon:require('./icon/closeIcon.png'),
     addressIcon:require('./icon/addressIcon.png'),
-    address: require('./icon/addr/addRess.png'),
-    orderTopLine: require('./icon/addr/orderTopLine.png'),
-    addRessBg: require('./icon/addr/addRessBg.png'),
     exCar: require('./icon/exCar.png'),
-    dfkIco: require('./icon/userCenter/dfkIco.png'),
-    dfhIco: require('./icon/userCenter/dfhIco.png'),
-    dshIco: require('./icon/userCenter/dshIco.png'),
-    dpjIco: require('./icon/userCenter/dpjIco.png'),
-    ywcIco: require('./icon/userCenter/ywcIco.png'),
-    thIco: require('./icon/userCenter/thIco.png'),
-    uDefaultImg: require('./icon/userCenter/uDefaultImg.png'),
-    // uBg: require('./icon/userCenter/uBg.png'),
+    vipIcon: require('./icon/vipIcon.png'),
 };
+
+export const addr = {
+    address: require('./addr/addRess.png'),
+    orderTopLine: require('./addr/orderTopLine.png'),
+    addRessBg: require('./addr/addRessBg.png'),
+}
+
+export const userCenter = {
+    dfkIco: require('./userCenter/dfkIco.png'),
+    dfhIco: require('./userCenter/dfhIco.png'),
+    dshIco: require('./userCenter/dshIco.png'),
+    dpjIco: require('./userCenter/dpjIco.png'),
+    ywcIco: require('./userCenter/ywcIco.png'),
+    thIco: require('./userCenter/thIco.png'),
+    uDefaultImg: require('./userCenter/uDefaultImg.png'),
+}
+
+export const pay = {
+    paySuccess:require('./pay/paySuccess.png'),
+    payFail:require('./pay/payFail.png'),
+    payZfb:require('./pay/payZfb.png'),
+    payWx:require('./pay/payWx.png'),
+}
+
+export const defaultImg = require('./default.png');
 
 export const test = {
     test1:require('./test/1.jpg'),
@@ -41,5 +52,4 @@ export const test = {
     banner1:require('./test/banner1.jpg'),
     banner2:require('./test/banner2.jpg'),
     u1: require('./test/u1.png'),
-    
 }

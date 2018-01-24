@@ -1,19 +1,23 @@
 import React from 'react';
-// import {action} from 'mobx';
+import {action} from 'mobx';
 import {BaseComponent,Base,NetImg} from '../../common';
 import {Flex,Button} from 'antd-mobile';
 import {test} from '../../images';
 import './GoodsList.less';
 const goodsImgHeight = (document.body.offsetWidth-10)/2;
 export class GoodsItem extends BaseComponent {
+    @action.bound
+    onClick(){
+        const {id} = this.props;
+        Base.push('GoodsDetail', {id})
+    }
     render(){
-        const {default_image,name,sale_price,id} = this.props;
+        const {default_image,name,sale_price} = this.props;
         return (
-            <div className="recommend-goodsItem" onClick={() => Base.push('GoodsDetail', {id})}>
+            <div className="recommend-goodsItem" onClick={this.onClick}>
                 <div className="recommend-goodsItem-img">
                     <NetImg 
-                    // src={default_image}
-                    src={test.test1}
+                    src={default_image}
                     height={goodsImgHeight}
                     />
                 </div>

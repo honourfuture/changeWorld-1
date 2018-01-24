@@ -3,11 +3,11 @@ import {action} from 'mobx';
 import {BaseComponent,Base} from '../../common';
 import {Flex,Button,Radio,NavBar} from 'antd-mobile';
 import './Pay.less';
-import {icon,test} from '../../images';
+import {icon,test,pay} from '../../images';
 
 const payIconDic = {
-    'alipay':icon.payZfb,
-    'wechat':icon.payWx,
+    'alipay':pay.payZfb,
+    'wechat':pay.payWx,
 }
 export default class Pay extends BaseComponent{
     store={

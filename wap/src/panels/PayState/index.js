@@ -2,7 +2,7 @@ import React from 'react';
 import {BaseComponent,Base} from '../../common';
 import {Flex,Button,NavBar} from 'antd-mobile';
 import './PayState.less';
-import {icon} from '../../images';
+import {icon,pay} from '../../images';
 
 export default class PayState extends BaseComponent{
     componentDidMount(){
@@ -18,7 +18,7 @@ export default class PayState extends BaseComponent{
                 >支付结果</NavBar>
                 <div className="base-content">
                     <div className="PayState-box">
-                    	<img src={icon.paySuccess} alt=""/>
+                    	<img src={pay.paySuccess} alt=""/>
                     	<p className="PayState-box-tips">支付成功！</p>
                     </div>
                     <div className="PayState-order">

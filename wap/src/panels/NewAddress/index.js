@@ -30,7 +30,7 @@ class NewAddress extends BaseComponent{
                 const id = this.pageData.id || 0;
                 Base.POST({act:'address',op:'save',...values,mobi,id,is_default,province_id,province:provinceData.label,city_id,city:cityData.label,area_id:area_id || 0,area:areaData.label || ""},(res)=>{
                     Toast.success(res.message);
-                    Base.push('AddressManage');
+                    Base.goBack();
                 });
             }
         });
