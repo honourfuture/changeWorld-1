@@ -120,13 +120,13 @@ export const Base = {
 		}
 		return {s_requestUrl,o_fetchData};
 	},
-	_request(o_param={},f_succBack=null,s_method='GET',f_failBack=null){
+	_request(o_param={},f_succBack=null,s_method='GET',f_failBack=null,b_noToast=false){
 		let self = this;
-		Toast.loading('加载中',0);
+		!b_noToast && Toast.loading('加载中',0);
 		const {s_requestUrl,o_fetchData} = this._handlerParams(o_param,s_method);
 		fetch(s_requestUrl,o_fetchData).then((response) => response.json()).then((res) => {
 			self.DEBUG && console.log(res);
-			Toast.hide();
+			!b_noToast && Toast.hide();
 			switch(res.status){
 				case 0:
 					f_succBack && action(f_succBack)(res);
@@ -143,11 +143,11 @@ export const Base = {
 			Toast.offline('连接异常，请重新尝试');
       	});
     },
-    GET(o_param,f_succBack=null,f_failBack=null){
-        this._request(o_param,f_succBack,"GET",f_failBack);
+    GET(o_param,f_succBack=null,f_failBack=null,b_noToast=false){
+        this._request(o_param,f_succBack,"GET",f_failBack,b_noToast);
     },
-    POST(o_param,f_succBack=null,f_failBack=null){
-        this._request(o_param,f_succBack,"POST",f_failBack);
+    POST(o_param,f_succBack=null,f_failBack=null,b_noToast=false){
+        this._request(o_param,f_succBack,"POST",f_failBack,b_noToast);
     },
 	//多个异步操作处理
     promiseAll(f_succBack,...promiseParams){

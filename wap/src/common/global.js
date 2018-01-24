@@ -15,5 +15,6 @@ export default {
     userInfo: {
         name: '代汉桥',
         avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png'
-    }
+    },
+    PAGE_SIZE:4,
 }
