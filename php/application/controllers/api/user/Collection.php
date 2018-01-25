@@ -74,6 +74,16 @@ class Collection extends API_Controller {
 					foreach($rows as $item){
 						$a_id[] = $item['t_id'];
 					}
+
+					$this->load->model('Users_model');
+					$this->db->select('id,nickname,header,v,exp,summary');
+					$ret['list'] = $this->Users_model->get_many($a_id);
+					if($ret['list']){
+						$fans = $this->Users_collection_model->get_many_count_fans($a_id);
+						foreach($ret['list'] as $key=>$item){
+							$ret['list'][$key]['fans'] = isset($fans[$item['id']]) ? $fans[$item['id']] : 0;
+						}
+					}
 				}
 				break;
 			case 2:

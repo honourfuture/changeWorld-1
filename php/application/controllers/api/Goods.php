@@ -318,6 +318,55 @@ class Goods extends API_Controller {
 	}
 
 	/**
+	 * @api {get} /api/goods/evaluate 商品-更多评论
+	 * @apiVersion 1.0.0
+	 * @apiName goods_evaluate
+	 * @apiGroup api
+	 *
+	 * @apiSampleRequest /api/goods/evaluate
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 * @apiParam {Number} goods_id 商品ID
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object[]} data 接口数据集
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *	    "data": [
+	 *	        {
+	 *	            "id": "1",
+	 *	            "name": "热门"
+	 *	        },
+	 *	        {
+	 *	            "id": "2",
+	 *	            "name": "靓号"
+	 *	        }
+	 *	    ],
+	 *	    "status": 0,
+	 *	    "message": "成功"
+	 *	}
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+	public function evaluate()
+	{
+		$goods_id = $this->input->get_post('goods_id');
+		//评价
+		$this->load->model('Order_items_model');
+		$ret = $this->Order_items_model->getGoodsEvaluate($goods_id, $this->per_page, $this->offset);
+
+		$this->ajaxReturn($ret);
+	}
+
+	/**
 	 * @api {post} /api/goods/save 商品-编辑 OR 新增
 	 * @apiVersion 1.0.0
 	 * @apiName goods_save
