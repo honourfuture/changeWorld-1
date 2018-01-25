@@ -47,11 +47,12 @@ class Collection extends API_Controller {
 	public function index()
 	{
 		$ret = array('count' => 0, 'list' => array());
+		$topic = (int)$this->input->get_post('topic');
+
 		$this->load->model('Users_collection_model');
 		$field = 't_id';
 		$where = array('topic' => $topic, 'enable' => 1);
 
-		$topic = (int)$this->input->get_post('topic');
 		$a_id = array();
 		switch($topic){
 			case 1:
