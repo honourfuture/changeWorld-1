@@ -6206,12 +6206,12 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "act",
-            "description": "<p>操作动作 [修改密码:password, 支付密码:pay_password]</p>"
+            "description": "<p>操作动作 [修改密码:password, 支付密码:pay_password, 头像:header, 昵称:nickname, 性别:sex 0保密 1男 2女, 出生日期:birth 2018-01-12, 简介:summary]</p>"
           }
         ]
       }
     },
-    "description": "<p>password传递参数: old_password,new_password,confirm_password pay_password传递参数: pay_password,confirm_password</p>",
+    "description": "<p>password传递参数: old_password,new_password,confirm_password pay_password传递参数: pay_password,confirm_password header传递参数：header nickname传递参数：nickname sex传递参数：sex birth传递参数：birth 接口返回age summary传递参数：summary</p>",
     "success": {
       "fields": {
         "Success 200": [

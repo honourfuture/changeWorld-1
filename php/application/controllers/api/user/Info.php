@@ -171,11 +171,16 @@ class Info extends API_Controller {
 	 *
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
-	 * @apiParam {String} act 操作动作 [修改密码:password, 支付密码:pay_password]
+	 * @apiParam {String} act 操作动作 [修改密码:password, 支付密码:pay_password, 头像:header, 昵称:nickname, 性别:sex 0保密 1男 2女, 出生日期:birth 2018-01-12, 简介:summary]
 	 *
 	 * @apiDescription
 	 * password传递参数: old_password,new_password,confirm_password
 	 * pay_password传递参数: pay_password,confirm_password
+	 * header传递参数：header
+	 * nickname传递参数：nickname
+	 * sex传递参数：sex
+	 * birth传递参数：birth 接口返回age
+	 * summary传递参数：summary
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -197,6 +202,7 @@ class Info extends API_Controller {
 	 */
 	public function save()
 	{
+		$ret = array();
 		$act = $this->input->get_post('act');
 		switch($act){
 			case 'password':
@@ -232,6 +238,40 @@ class Info extends API_Controller {
 
 				$update = array('pay_password' => $this->Users_model->get_password($pay_password));
 				break;
+			case 'header':
+				$header = $this->input->get_post('header');
+				if(!$header){
+					$this->ajaxReturn([], 1, '请上传头像');
+				}
+				$update = array('header' => $header);
+				break;
+			case 'nickname':
+				$nickname = $this->input->get_post('nickname');
+				if(!$nickname){
+					$this->ajaxReturn([], 1, '请输入昵称');
+				}
+				$update = array('nickname' => $nickname);
+				break;
+			case 'sex':
+				$sex = $this->input->get_post('sex');
+				if(!in_array($sex, array(0, 1, 2))){
+					$this->ajaxReturn([], 1, '性别仅支持: 男女保密');
+				}
+				$update = array('sex' => $sex);
+				break;
+			case 'birth':
+				$birth = $this->input->get_post('birth');
+				if(!$birth){
+					$this->ajaxReturn([], 1, '请选择出生日期');
+				}
+				$update = array('birth' => $birth);
+
+				$ret['age'] = $this->age($birth);
+				break;
+			case 'summary':
+				$summary = $this->input->get_post('summary');
+				$update = array('summary' => $summary);
+				break;
 			default :
 				$this->ajaxReturn([], 1, '未知操作');
 				break;
@@ -245,6 +285,6 @@ class Info extends API_Controller {
 			$status = 1;
 			$message = '失败';
 		}
-		$this->ajaxReturn([], $status, '操作'.$message);
+		$this->ajaxReturn($ret, $status, '操作'.$message);
 	}
 }
