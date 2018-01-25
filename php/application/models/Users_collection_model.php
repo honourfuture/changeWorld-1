@@ -21,6 +21,30 @@ class Users_collection_model extends MY_Model
 
     public function check_fans($user_id, $t_id)
     {
-    	return $this->get_by(array('user_id' => $user_id, 't_id' => $t_id)) ? 1 : 0;
+    	return $this->get_by(array('user_id' => $user_id, 't_id' => $t_id, 'topic' => 1)) ? 1 : 0;
+    }
+
+    public function check_favorite($user_id, $t_id, $sub_topic)
+    {
+        return $this->get_by(array('user_id' => $user_id, 't_id' => $t_id, 'topic' => 2, 'sub_topic' => $sub_topic)) ? 1 : 0;
+    }
+
+    public function get_many_count_fans($a_user_id)
+    {
+        $this->db->select('t_id, COUNT(id) AS sum');
+        $this->db->from($this->_table);
+        $this->db->where('topic', 1);
+        $this->db->where_in('t_id', $a_user_id);
+        $this->db->group_by('t_id');
+        $rows = $this->db->get()->result_array();
+
+        $result = array();
+        if($rows){
+            foreach($rows as $item){
+                $result[$item['t_id']] = $item['sum'];
+            }
+        }
+
+        return $result;
     }
 }

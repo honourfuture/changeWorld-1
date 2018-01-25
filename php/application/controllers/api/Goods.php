@@ -248,6 +248,7 @@ class Goods extends API_Controller {
 	 * @apiSuccess {Object} data.evaluate 评论
 	 * @apiSuccess {Object} data.seller 商家信息
 	 * @apiSuccess {Object} data.goods 商家其他商品
+	 * @apiSuccess {Object} data.favorite 商品收藏 1已收藏 0未收藏
 	 *
 	 * @apiSuccessExample {json} Success-Response:
 	 * {
@@ -309,6 +310,58 @@ class Goods extends API_Controller {
 		$this->db->select('id,name,sale_price,default_image');
 		$ret['goods']['list'] = $this->Goods_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 
+		//收藏状态
+		$this->load->model('Users_collection_model');
+		$ret['favorite'] = $this->Users_collection_model->check_favorite($this->user_id, $goods_id, 40);
+
+		$this->ajaxReturn($ret);
+	}
+
+	/**
+	 * @api {get} /api/goods/evaluate 商品-更多评论
+	 * @apiVersion 1.0.0
+	 * @apiName goods_evaluate
+	 * @apiGroup api
+	 *
+	 * @apiSampleRequest /api/goods/evaluate
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 * @apiParam {Number} goods_id 商品ID
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object[]} data 接口数据集
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *	    "data": [
+	 *	        {
+	 *	            "id": "1",
+	 *	            "name": "热门"
+	 *	        },
+	 *	        {
+	 *	            "id": "2",
+	 *	            "name": "靓号"
+	 *	        }
+	 *	    ],
+	 *	    "status": 0,
+	 *	    "message": "成功"
+	 *	}
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+	public function evaluate()
+	{
+		$goods_id = $this->input->get_post('goods_id');
+		//评价
+		$this->load->model('Order_items_model');
+		$ret = $this->Order_items_model->getGoodsEvaluate($goods_id, $this->per_page, $this->offset);
 
 		$this->ajaxReturn($ret);
 	}

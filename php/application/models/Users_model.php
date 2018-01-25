@@ -31,7 +31,7 @@ class Users_model extends MY_Model
         return md5($this->_pwd_key.$password.$this->_pwd_key);
     }
 
-    public function get_many_user($a_user = array(), $select = 'id,nickname,header')
+    public function get_many_user($a_user = array(), $select = 'id,nickname,header,mobi')
     {
         $ret = array();
         $this->db->select($select);

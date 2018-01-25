@@ -47,11 +47,12 @@ class Collection extends API_Controller {
 	public function index()
 	{
 		$ret = array('count' => 0, 'list' => array());
+		$topic = (int)$this->input->get_post('topic');
+
 		$this->load->model('Users_collection_model');
 		$field = 't_id';
 		$where = array('topic' => $topic, 'enable' => 1);
 
-		$topic = (int)$this->input->get_post('topic');
 		$a_id = array();
 		switch($topic){
 			case 1:
@@ -72,6 +73,16 @@ class Collection extends API_Controller {
 				if($rows){
 					foreach($rows as $item){
 						$a_id[] = $item['t_id'];
+					}
+
+					$this->load->model('Users_model');
+					$this->db->select('id,nickname,header,v,exp,summary');
+					$ret['list'] = $this->Users_model->get_many($a_id);
+					if($ret['list']){
+						$fans = $this->Users_collection_model->get_many_count_fans($a_id);
+						foreach($ret['list'] as $key=>$item){
+							$ret['list'][$key]['fans'] = isset($fans[$item['id']]) ? $fans[$item['id']] : 0;
+						}
 					}
 				}
 				break;

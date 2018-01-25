@@ -45,6 +45,6 @@ class Login_out extends API_Controller {
 	{
 		$this->load->model('Users_token_model');
 		$this->Users_token_model->delete_by('user_id', $this->user_id);
-		$this->ajaxReturn('');
+		$this->ajaxReturn();
 	}
 }

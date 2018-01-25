@@ -72,7 +72,7 @@ class MY_Controller extends CI_Controller
         $ret['data'] = $data;
         $ret['status'] = $status;
         $ret['message'] = empty($message) ? '成功' : $message;
-        echo json_encode($ret);exit();
+        echo json_encode($ret, JSON_UNESCAPED_UNICODE);exit();
     }
 
     //站点设置
@@ -81,6 +81,36 @@ class MY_Controller extends CI_Controller
         $config = array();
         $this->load->model('Config_model');
         $rows = $this->Config_model->get_all();
+        if($rows){
+            foreach($rows as $item){
+                $config[$item['name']] = $item['value'];
+            }
+        }
+
+        return $config;
+    }
+
+    //等级经验规则
+    protected function siteGradeRule()
+    {
+        $config = array();
+        $this->load->model('Grade_rule_model');
+        $rows = $this->Grade_rule_model->get_all();
+        if($rows){
+            foreach($rows as $item){
+                $config[$item['name']] = $item['value'];
+            }
+        }
+
+        return $config;
+    }
+
+    //积分规则
+    protected function sitePointsRule()
+    {
+        $config = array();
+        $this->load->model('Points_rule_model');
+        $rows = $this->Points_rule_model->get_all();
         if($rows){
             foreach($rows as $item){
                 $config[$item['name']] = $item['value'];
