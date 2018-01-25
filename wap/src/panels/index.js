@@ -27,7 +27,13 @@ import SalesLog from './SalesLog';
 import ProductIssue from './ProductIssue';
 import MessAgeCenter from './MessAgeCenter';
 import MessageDetail from './MessageDetail';
+import EvaluateList from './EvaluateList';
 export const panelsList =  [
+    {
+        path:'/EvaluateList',
+        component:EvaluateList,
+        title:'评论列表',
+    },
     {
         path:'/MessageDetail',
         component:MessageDetail,

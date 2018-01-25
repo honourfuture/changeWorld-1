@@ -212,6 +212,10 @@ export const Base = {
 		n_num = parseFloat(n_num) || 0;
 		return n_num.toFixed(i_len);
 	},
+	getAnonymity(s_str){
+		if(!s_str)return;
+		return `${s_str[0] || ''}******${s_str[s_str.length - 1] || ''}`
+	}
 	// //监听事件
 	// addEvt(name,func){
 	// 	PubSub.subscribe(name,func);
