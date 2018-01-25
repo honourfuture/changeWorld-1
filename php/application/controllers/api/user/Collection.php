@@ -24,7 +24,7 @@ class Collection extends API_Controller {
 	 * @apiParam {String} sign 校验签名
 	 * @apiParam {Number} topic 主题类型 1关注 2收藏
 	 * @apiParam {Number} t_id 主题类型 = 1时传递 [0关注 1粉丝]
-	 * @apiParam {Number} sub_topic 主题类型 = 2时传递 10下载[10声音, 11专辑] 20已购[10声音, 11专辑] 30喜欢 40商品 50订阅
+	 * @apiParam {Number} sub_topic 主题类型 = 2时传递 10下载[10声音, 11专辑] 20已购[20声音, 21专辑] 30喜欢 40商品 50订阅
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -122,7 +122,7 @@ class Collection extends API_Controller {
 	 * @apiParam {String} sign 校验签名
 	 * @apiParam {Number} t_id 被关联唯一ID
 	 * @apiParam {Number} topic 主题类型 1关注 2收藏
-	 * @apiParam {Number} sub_topic 子主题类型(关注不用传) 10下载[10声音, 11专辑] 20已购[10声音, 11专辑] 30喜欢 40商品 50订阅
+	 * @apiParam {Number} sub_topic 子主题类型(关注不用传) 10下载[10声音, 11专辑] 20已购[20声音, 21专辑] 30喜欢 40商品 50订阅
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -165,12 +165,14 @@ class Collection extends API_Controller {
 			'sub_topic' => $sub_topic
 		);
 		if($info = $this->Users_collection_model->get_by($where)){
-			$this->ajaxReturn([], 2, '已关联请勿重复操作');
-		}
-		if($this->Users_collection_model->insert($where)){
-			$this->ajaxReturn();
+			$this->Users_collection_model->delete($info['id']);
+			$this->ajaxReturn([], 0, '取消成功');
 		}else{
-			$this->ajaxReturn([], 3, '保存异常请重试');
+			if($this->Users_collection_model->insert($where)){
+				$this->ajaxReturn();
+			}else{
+				$this->ajaxReturn([], 3, '保存异常请重试');
+			}
 		}
 	}
 }
