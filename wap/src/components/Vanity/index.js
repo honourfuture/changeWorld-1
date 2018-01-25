@@ -91,7 +91,6 @@ export class Vanity extends BaseComponent{
         ad:[],
         pretty:[],
         pretty_count:[],
-        curPrettyCount:0,
     }
     componentDidMount() {
         Base.GET({act:'shop',op:'pretty_index'},(res)=>{
@@ -99,27 +98,27 @@ export class Vanity extends BaseComponent{
             this.store.ad = ad;
             this.store.pretty = pretty;
             this.store.pretty_count = pretty_count;
-            this.store.curPrettyCount = pretty_count.length?parseInt(pretty_count[0].pretty_count,10):0;
         });
     }
     @action.bound
     onChange(tab,index){
-        this.store.curPrettyCount = parseInt(this.store.pretty_count[index].pretty_count,10);
+        const pretty_count = parseInt(this.store.pretty_count[index].pretty_count,10);
+        Base.GET({act:'shop',op:'pretty',pretty_count},(res)=>{
+            this.store.pretty = res.data.pretty;
+        });
     }
     render(){
-        const {ad,pretty_count,pretty,curPrettyCount} = this.store;
+        const {ad,pretty_count,pretty} = this.store;
     	const tabs = pretty_count.map((val)=>{
             return {title:`${Utils.numberToChinese(val.pretty_count)}位数`};
         });
+        tabs[0] = {title:'靓号'};
         const ads = ad.map((item,index)=>{
             const {image,link} = item;
             return <NetImg key={index} onClick={()=>Base.push(link)} src={image} style={{ width: '100%'}} />
         })
-        const vanifyNum = [];
-        pretty.forEach((item,index)=>{
-            if(item.pretty_id.length === curPrettyCount){
-                vanifyNum.push(<VanityItem key={index} {...item} />);
-            }
+        const vanifyNum = pretty.map((item,index)=>{
+            return <VanityItem key={index} {...item} />;
         });
         return (
             <div className='Vanity base-content'>

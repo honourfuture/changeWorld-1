@@ -7,13 +7,13 @@ import {icon,test} from '../../images';
 
 class EvaluateItem extends BaseComponent{
     render(){
-        const {header,name,des} = this.props;
+        const {header,nickname,remark} = this.props;
         return (
             <div className='evaluate-item base-line'>
-                <img src={header} alt=''/>
+                <NetImg src={header}/>
                 <div className="info">
-                    <div className="name">{name}</div>
-                    <div className="des">{des}</div>
+                    <div className="name">{Base.getAnonymity(nickname)}</div>
+                    <div className="des">{remark}</div>
                 </div>
             </div>
         )
@@ -58,66 +58,34 @@ class AddressItem extends BaseComponent {
     }
 }
 
-class SelectItem extends BaseComponent{
+class AttrSelect extends BaseComponent{
+    store={curIndex:-1}
     @action.bound
-    selectItemHandler(){
-        const {selectItemHandler,index,disable} = this.props;
-        !disable && selectItemHandler(index)
+    selectItemHandler(index){
+        this.store.curIndex = index;
     }
     render(){
-        const {name,disable,selected} = this.props;
-        return (
-            <Flex className="select-item-con" onClick={this.selectItemHandler}>
-                <div className={`select-item ${disable?'disable':''} ${selected?'selected':''}`}>
-                    {name}
+        const {curIndex} = this.store;
+        const {attrList,attrTitle} = this.props;
+        const attrItems = attrList.map((item,index)=>{
+            const disable = false;
+            return <Flex key={index} className="select-item-con" onClick={()=>this.selectItemHandler(index)}>
+                <div className={`select-item ${disable?'disable':''} ${curIndex===index?'selected':''}`}>
+                    {item}
                 </div>
             </Flex>
+        })
+        return (
+            <div className="select-con">
+                <div className="title">{attrTitle}</div>
+                <Flex className='select-group base-line' wrap='wrap'>
+                    {attrItems}
+                </Flex>
+            </div>
         )
     }
 }
 
-const testEvaluates = [
-    {
-        header:test.test1,
-        name:'S****n',
-        des:'很有趣，侧开口不解开的时候是另一种感觉'
-    },
-    {
-        header:test.test2,
-        name:'沈****星',
-        des:'做工精致，面料舒服，建材有度，有设计感。心水。。。',
-    },
-];
-
-const specList = [
-    {
-        name:'水晶防晒喷雾',
-        disable:false,
-    },
-    {
-        name:'雪花防晒喷雾',
-        disable:false,
-    },
-    {
-        name:'补水防晒喷雾',
-        disable:true,
-    },
-];
-
-const classifyList = [
-    {
-        name:'50ML',
-        disable:false,
-    },
-    {
-        name:'150ML',
-        disable:true,
-    },
-    {
-        name:'300Ml',
-        disable:false,
-    },
-];
 export default class GoodsDetail extends BaseComponent{
     store={
         isCollect:false,
@@ -195,8 +163,10 @@ export default class GoodsDetail extends BaseComponent{
         this.store.selectClassifyIndex = index;
     }
     render(){
-        const {isCollect,isAddressModal,curAddressIndex,isBuyModal,selectSpecIndex,selectClassifyIndex,selectNum,evaluate,goods={},goods_attr,goods_info={},seller={},address=[]} = this.store;
-        let {goods_image='',sale_price='',name='',freight_fee='',goods_ticket='',use_point_rate='',e_invoice='',goods_detail='',seller_uid=''} = goods_info;
+        const {isCollect,isAddressModal,curAddressIndex,isBuyModal,selectSpecIndex,selectClassifyIndex,selectNum,evaluate={},goods={},goods_info={},seller={},address=[]} = this.store;
+        let {goods_image='',sale_price='',name='',freight_fee='',goods_ticket='',use_point_rate='',e_invoice='',goods_detail='',seller_uid='',goods_attr='',id} = goods_info;
+        goods_attr = goods_attr?JSON.parse(goods_attr):{};
+        const goodsAttrDic = this.store.goods_attr;
         const {header='',nickname='',summary='',v=''} = seller;
         const {list=[],total=''} = goods;
         goods_image = goods_image?JSON.parse(goods_image):[];
@@ -218,8 +188,11 @@ export default class GoodsDetail extends BaseComponent{
         const goodsDetailImgs = goods_detail.map((item,index)=>{
             return <img src={item} key={index} alt=''/>;
         })
-        const evaluateItems = testEvaluates.map((item,index)=>{
-            return <EvaluateItem key={index} {...item}/>;
+        const evaluateList = evaluate.list || [];
+        const evaluateUser = evaluate.user || {};
+        const evaluateItems = evaluateList.map((item,index)=>{
+            const data = {...item,...evaluateUser[item.user_id]}
+            return <EvaluateItem key={index} {...data}/>;
         });
         const goodsItems = list.map((item,index)=>{
             return <GoodsItem key={index} {...item}/>;
@@ -227,12 +200,14 @@ export default class GoodsDetail extends BaseComponent{
         const addressItems = address.map((item,index)=>{
             return <AddressItem key={index} {...item} index={index} checked={curAddressIndex === index} onCheckHandler={this.onCheckHandler}/>
         });
-        const specItems = specList.map((item,index)=>{
-            return <SelectItem key={index} index={index} selected={index===selectSpecIndex} {...item} selectItemHandler={this.specItemHandler}/>;
-        });
-        const classifyItems = classifyList.map((item,index)=>{
-            return <SelectItem key={index} index={index} selected={index===selectClassifyIndex} {...item} selectItemHandler={this.classifyItemHandler}/>;
-        })
+        const goodsAttrItems = [];
+        for (const key in goods_attr) {
+            if (goods_attr.hasOwnProperty(key)) {
+                const attrTitle = goodsAttrDic[key];
+                const attrs = goods_attr[key];
+                goodsAttrItems.push(<AttrSelect attrList={attrs} attrTitle={attrTitle} key={key}/> );
+            }
+        }
         return (
             <div className='GoodsDetail'>
                 <NavBar
@@ -295,7 +270,7 @@ export default class GoodsDetail extends BaseComponent{
                             </Flex>
                         </div>
                     </div>
-                    {evaluateItems.length>0?<div className="evaluate-con">
+                    {evaluateItems.length>0?<div className="evaluate-con" onClick={()=>Base.push('EvaluateList',{id})}>
                         <Flex justify='between' className="title-con">
                             <div className="title">
                                 商品评价(2663)
@@ -382,18 +357,7 @@ export default class GoodsDetail extends BaseComponent{
                         </Flex>
                         <img className='close-img' onClick={this.buyModalHandler} src={icon.closeIcon} alt=""/>
                     </Flex>
-                    <div className="select-con">
-                        <div className="title">型号</div>
-                        <Flex className='select-group base-line' wrap='wrap'>
-                            {specItems}
-                        </Flex>
-                    </div>
-                    <div className="select-con">
-                        <div className="title">分类</div>
-                        <Flex className='select-group base-line' wrap='wrap'>
-                            {classifyItems}
-                        </Flex>
-                    </div>
+                    {goodsAttrItems}
                     <Flex className="buy-num-con" justify='between'>
                         <div className="buy-num-title">购买数量</div>
                         <Stepper onChange={this.stepperHandler} showNumber className='stepper' min={1} max={99} value={selectNum}/>
