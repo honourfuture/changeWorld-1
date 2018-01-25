@@ -88,12 +88,10 @@ class AttrSelect extends BaseComponent{
 
 export default class GoodsDetail extends BaseComponent{
     store={
-        isCollect:false,
+        favorite:false,
         isAddressModal:false,
         curAddressIndex:0,
         isBuyModal:false,
-        selectSpecIndex:-1,
-        selectClassifyIndex:-1,
         selectNum:1,
         evaluate:{},
         goods:[],
@@ -105,31 +103,30 @@ export default class GoodsDetail extends BaseComponent{
     componentDidMount(){
         const {id} = Base.getPageParams();
         Base.GET({act:'goods',op:'view',goods_id:id},(res)=>{
-            const {evaluate,goods={},goods_attr,goods_info,seller} = res.data;
+            const {evaluate,goods={},goods_attr,goods_info,seller,favorite} = res.data;
             this.store.evaluate = evaluate;
             this.store.goods = goods;
             this.store.goods_attr = goods_attr;
             this.store.goods_info = goods_info;
             this.store.seller = seller;
+            this.store.favorite = favorite;
             Base.GET({act:'address',op:'index'},(res)=>{
                 this.store.address = res.data.map((item,index)=>{
                     let {province,city,address,id,is_default,area} = item;
                     address = `${province} ${city} ${area} ${address}`;
-                    let checked = false;
-                    if(parseInt(item.is_default) === 1){
-                        checked = true;
+                    if(parseInt(item.is_default,10) === 1){
                         this.store.curAddressIndex = index;
                     }
-                    return {id,address,is_default,checked:parseInt(item.is_default) === 1};
+                    return {id,address,is_default,checked:parseInt(item.is_default,10) === 1};
                 });
             },null,true);
         });
     }
     @action.bound
     collectHandler(){
-        const {id} = this.props;
+        const {id} = Base.getPageParams();
         Base.POST({act:'collection',op:'save',mod:'user',topic:2,sub_topic:40,t_id:id},(res)=>{
-            this.store.isCollect = !this.store.isCollect;
+            this.store.favorite = !this.store.favorite;
         })
     }
     @action.bound
@@ -154,17 +151,9 @@ export default class GoodsDetail extends BaseComponent{
     stepperHandler(value){
         this.store.selectNum  = value;
     }
-    @action.bound
-    specItemHandler(index){
-        this.store.selectSpecIndex = index;
-    }
-    @action.bound
-    classifyItemHandler(index){
-        this.store.selectClassifyIndex = index;
-    }
     render(){
-        const {isCollect,isAddressModal,curAddressIndex,isBuyModal,selectSpecIndex,selectClassifyIndex,selectNum,evaluate={},goods={},goods_info={},seller={},address=[]} = this.store;
-        let {goods_image='',sale_price='',name='',freight_fee='',goods_ticket='',use_point_rate='',e_invoice='',goods_detail='',seller_uid='',goods_attr='',id} = goods_info;
+        const {favorite,isAddressModal,curAddressIndex,isBuyModal,selectNum,evaluate={},goods={},goods_info={},seller={},address=[]} = this.store;
+        let {goods_image='',sale_price='',name='',freight_fee='',goods_ticket='',use_point_rate='',e_invoice='',goods_detail='',seller_uid='',goods_attr='',id,default_image=''} = goods_info;
         goods_attr = goods_attr?JSON.parse(goods_attr):{};
         const goodsAttrDic = this.store.goods_attr;
         const {header='',nickname='',summary='',v=''} = seller;
@@ -266,14 +255,14 @@ export default class GoodsDetail extends BaseComponent{
                         <div className="flex-item">
                             <Flex>
                                 <div className="title">发票</div>
-                                <div className="des">{parseInt(e_invoice)?'':'不'}可开电子发票</div>
+                                <div className="des">{parseInt(e_invoice,10)?'':'不'}可开电子发票</div>
                             </Flex>
                         </div>
                     </div>
                     {evaluateItems.length>0?<div className="evaluate-con" onClick={()=>Base.push('EvaluateList',{id})}>
                         <Flex justify='between' className="title-con">
                             <div className="title">
-                                商品评价(2663)
+                                商品评价({evaluate.total || ''})
                             </div>
                             <Icon type='right' color='#c9c9c9'/>
                         </Flex>
@@ -284,7 +273,7 @@ export default class GoodsDetail extends BaseComponent{
                             <Flex>
                                 <div className="seller-header">
                                     <NetImg className='header' src={header}/>
-                                    {parseInt(v)?<img className='vip' src={icon.vipIcon} alt=""/>:null}
+                                    {parseInt(v,10)?<img className='vip' src={icon.vipIcon} alt=""/>:null}
                                 </div>
                                 <div>
                                     <div className="name">{nickname}</div>
@@ -325,7 +314,7 @@ export default class GoodsDetail extends BaseComponent{
                                 <div className='label'>客服</div>
                             </Flex.Item>
                             <Flex.Item onClick={this.collectHandler}>
-                                <img src={isCollect?icon.collectIcon1:icon.collectIcon0} alt=""/>
+                                <img src={favorite?icon.collectIcon1:icon.collectIcon0} alt=""/>
                                 <div className='label'>收藏</div>
                             </Flex.Item>
                         </Flex>
@@ -349,9 +338,9 @@ export default class GoodsDetail extends BaseComponent{
                 {isBuyModal?<div className="modal-buy">
                     <Flex className="info-con" justify='between' align='start'>
                         <Flex align='start'>
-                            <img className='goods-img' src={test.test4} alt=""/>
+                            <NetImg className='goods-img' src={default_image}/>
                             <div className='info'>
-                                <div className="price">￥369</div>
+                                <div className="price">￥{sale_price}</div>
                                 <div className="tips">请选择型号</div>
                             </div>
                         </Flex>
