@@ -72,7 +72,7 @@ class MY_Controller extends CI_Controller
         $ret['data'] = $data;
         $ret['status'] = $status;
         $ret['message'] = empty($message) ? '成功' : $message;
-        echo json_encode($ret);exit();
+        echo json_encode($ret, JSON_UNESCAPED_UNICODE);exit();
     }
 
     //站点设置

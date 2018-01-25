@@ -248,6 +248,7 @@ class Goods extends API_Controller {
 	 * @apiSuccess {Object} data.evaluate 评论
 	 * @apiSuccess {Object} data.seller 商家信息
 	 * @apiSuccess {Object} data.goods 商家其他商品
+	 * @apiSuccess {Object} data.favorite 商品收藏 1已收藏 0未收藏
 	 *
 	 * @apiSuccessExample {json} Success-Response:
 	 * {
@@ -309,6 +310,9 @@ class Goods extends API_Controller {
 		$this->db->select('id,name,sale_price,default_image');
 		$ret['goods']['list'] = $this->Goods_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 
+		//收藏状态
+		$this->load->model('Users_collection_model');
+		$ret['favorite'] = $this->Users_collection_model->check_favorite($this->user_id, $goods_id, 40);
 
 		$this->ajaxReturn($ret);
 	}

@@ -4289,6 +4289,13 @@ define({ "api": [
             "optional": false,
             "field": "data.goods",
             "description": "<p>商家其他商品</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data.favorite",
+            "description": "<p>商品收藏 1已收藏 0未收藏</p>"
           }
         ]
       },
