@@ -6,7 +6,7 @@ import './UploadItem.less';
 const formItemLayout = {
   	labelCol: {
     	xs: { span: 24 },
-    	sm: { span: 8 },
+    	sm: { span: 4 },
   	},
   	wrapperCol: {
     	xs: { span: 24 },
@@ -48,7 +48,7 @@ class UploadItem extends BaseComponent{
 			<div className='UploadItem'>
 				{items}
 				<Row>
-					<Col span={8}></Col>
+					<Col span={4}></Col>
 					<Col>
 						<Button type='primary' onClick={()=>this.onSaveBasic()}>确认提交</Button>
 					</Col>

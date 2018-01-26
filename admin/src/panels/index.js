@@ -26,7 +26,19 @@ import AccessSet from './AccessSet';
 import ExpressSet from './ExpressSet';
 import ShopSet from './ShopSet';
 import SysMsg from './SysMsg';
+import MemberExpManager from './MemberExpManager';
+import MemberPointManager from './MemberPointManager';
 export const panelsList =  [
+    {
+        path:'/member/MemberPointManager',
+        component:MemberPointManager,
+        title:'积分管理',
+    },
+    {
+        path:'/member/MemberExpManager',
+        component:MemberExpManager,
+        title:'等级管理',
+    },
     {
         path:'/operation/SysMsg',
         component:SysMsg,
