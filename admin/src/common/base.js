@@ -152,7 +152,10 @@ export const Base = {
             return a_HMSList.join(':');
         }
         return `${a_YMDList.join('-')} ${a_HMSList.join(':')}`;
-    }
+	},
+	getImgUrl(img){
+		return `${Global.RES_URL}${img}`;
+	}
 	// //监听事件
 	// addEvt(name,func){
 	// 	PubSub.subscribe(name,func);

@@ -43,7 +43,7 @@ export class GoodsInfo extends BaseComponent{
 		return <div>
 			{
 				imgList.map((item,index)=>{
-					return <img className='mr10 mb10' key={index} src={item} style={{height:60}} alt=""/>;
+					return <img className='mr10 mb10' key={index} src={Base.getImgUrl(item)} style={{height:60}} alt=""/>;
 				})
 			}
 		</div>

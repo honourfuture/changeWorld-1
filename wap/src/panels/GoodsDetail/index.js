@@ -3,7 +3,7 @@ import {action} from 'mobx';
 import {BaseComponent,Base,NetImg} from '../../common';
 import {Flex, NavBar, Icon, Carousel, Badge, Checkbox,Stepper,Button} from 'antd-mobile';
 import './GoodsDetail.less';
-import {icon,test} from '../../images';
+import {icon} from '../../images';
 
 class EvaluateItem extends BaseComponent{
     render(){
@@ -30,7 +30,7 @@ class GoodsItem extends BaseComponent {
         const {default_image,name,sale_price} = this.props;
         return(
             <div className="goods-item" onClick={this.onClick}>
-                <NetImg src={default_image}/>
+                <NetImg src={Base.getImgUrl(default_image)}/>
                 <div className="title">
                     {name}
                 </div>
@@ -160,7 +160,7 @@ export default class GoodsDetail extends BaseComponent{
         const {list=[],total=''} = goods;
         goods_image = goods_image?JSON.parse(goods_image):[];
         const goodsImgs = goods_image.map((val,index)=>{
-            return <NetImg key={index} src={val} style={{ width: '100%', verticalAlign: 'top'}}/>;
+            return <NetImg key={index} src={Base.getImgUrl(val)} style={{ width: '100%', verticalAlign: 'top'}}/>;
         });
         freight_fee = parseFloat(freight_fee);
         goods_ticket = goods_ticket?JSON.parse(goods_ticket):[];
@@ -175,7 +175,7 @@ export default class GoodsDetail extends BaseComponent{
         });
         goods_detail = goods_detail?JSON.parse(goods_detail):[];
         const goodsDetailImgs = goods_detail.map((item,index)=>{
-            return <img src={item} key={index} alt=''/>;
+            return <img src={Base.getImgUrl(item)} key={index} alt=''/>;
         })
         const evaluateList = evaluate.list || [];
         const evaluateUser = evaluate.user || {};
@@ -338,7 +338,7 @@ export default class GoodsDetail extends BaseComponent{
                 {isBuyModal?<div className="modal-buy">
                     <Flex className="info-con" justify='between' align='start'>
                         <Flex align='start'>
-                            <NetImg className='goods-img' src={default_image}/>
+                            <NetImg className='goods-img' src={Base.getImgUrl(default_image)}/>
                             <div className='info'>
                                 <div className="price">￥{sale_price}</div>
                                 <div className="tips">请选择型号</div>

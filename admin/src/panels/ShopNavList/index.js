@@ -1,11 +1,10 @@
 import React from 'react';
 import {action} from 'mobx';
-import {BaseComponent,Base,Global} from '../../common';
-import { Table, Input,Popconfirm,Switch,Button,Spin,Select,message } from 'antd';
+import {BaseComponent,Base} from '../../common';
+import { Table, Input,Popconfirm,Switch,Button,Spin,message } from 'antd';
 import {remove} from 'lodash';
 import './ShopNavList.less';
 const Search = Input.Search;
-const Option = Select.Option;
 
 export default class ShopNavList extends BaseComponent{
 	store={

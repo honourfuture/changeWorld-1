@@ -50,7 +50,7 @@ export class EditorModal extends BaseComponent{
 			(resolve, reject) => {
 				getBase64(file,(info)=>{
 					Base.POST({act:'common',op:"base64FileUpload",'base64_image_content':info},(res)=>{
-						resolve({data:{link:res.data.file_url}});
+						resolve({data:Base.getImgUrl(res.data.file_url)});
 					},null,(res)=>{
 						message.error(res.message);
 						reject();
@@ -82,7 +82,6 @@ export class EditorModal extends BaseComponent{
 							uploadCallback:this.onUploadCallback,
 							previewImage:true,
 						},
-						options: ['inline', 'blockType', 'fontSize', 'fontFamily', 'list', 'textAlign', 'colorPicker', 'link', 'embedded', 'emoji', 'image', 'remove', 'history'],
 					}}
 					localization={{
 						locale: 'zh',
