@@ -99,7 +99,7 @@ class Users_points extends API_Controller {
 	 * @apiParam {Number} admin_id 管理员唯一ID
 	 * @apiParam {String} account 登录账号
 	 * @apiParam {String} sign 校验签名
-	 * @apiParam {Number} user_id 会员唯一ID
+	 * @apiParam {Number} c_user_id 会员唯一ID
 	 * @apiParam {String} type 类型 1增 2减
 	 * @apiParam {String} points 积分值
 	 * @apiParam {String} remark 操作备注
@@ -130,14 +130,14 @@ class Users_points extends API_Controller {
 		$this->check_operation();
 		$params = elements(
 			array(
-				'user_id', 'type', 'points', 'remark'
+				'c_user_id', 'type', 'points', 'remark'
 			),
 			$this->input->post(),
 			UPDATE_VALID
 		);
 
 		$this->load->model('Users_model');
-		$user = $this->Users_model->get($params['user_id']);
+		$user = $this->Users_model->get($params['c_user_id']);
 		if(! $user){
 			$this->ajaxReturn([], 1, '会员不存在');
 		}
@@ -165,7 +165,7 @@ class Users_points extends API_Controller {
 		}else{
 			$update = array('point' => $user['point'] + $data['value']);
 		}
-		$data['user_id'] = $params['user_id'];
+		$data['user_id'] = $params['c_user_id'];
 		$data['remark'] = $params['remark'];
 		$this->Users_points_model->insert($data);
 
