@@ -36,7 +36,7 @@ class ShopSetItem extends BaseComponent{
 		        action={Global.UPLOAD_URL}
 				onChange={(e)=>this.onUploadChange(e,key)}
 		    >
-		        {value?<img src={value} alt=''/>:<div>
+		        {value?<img src={`${Global.RES_URL}${value}`} alt=''/>:<div>
 					<Icon type={ loading===key ? 'loading':'plus'} />
 					<div className="ant-upload-text">上传</div>
 				</div>}

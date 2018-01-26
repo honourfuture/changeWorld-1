@@ -8,6 +8,7 @@
 import { observable } from 'mobx';
 export default {
     API_URL:'http://aiping.qichebaby.com/api',
+    RES_URL:'http://aiping.qichebaby.com',
     // API_URL:'http://192.168.1.138/project/taskusbipowggnphe/php/index.php/api',
     get UPLOAD_URL(){
         return `${this.API_URL}/common/fileUpload`;
