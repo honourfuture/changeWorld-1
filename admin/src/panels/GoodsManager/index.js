@@ -119,7 +119,7 @@ export default class GoodsManager extends BaseComponent{
 	renderImg(text, record, column) {
 		const {default_image} = record;
 		return (
-			<img className='goodsImg' src={`${Global.RES_URL}${default_image}`} alt=''/>
+			<img className='goodsImg' src={Base.getImgUrl(default_image)} alt=''/>
 		);
 	}
 	renderInput(text, record, column){

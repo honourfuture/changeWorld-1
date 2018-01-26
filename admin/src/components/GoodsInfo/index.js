@@ -1,6 +1,6 @@
 import React from 'react';
 import {action} from 'mobx';
-import {BaseComponent,Base,Global} from '../../common';
+import {BaseComponent,Base} from '../../common';
 import { Modal,Form,Button} from 'antd';
 import './GoodsInfo.less';
 
@@ -43,7 +43,7 @@ export class GoodsInfo extends BaseComponent{
 		return <div>
 			{
 				imgList.map((item,index)=>{
-					return <img className='mr10 mb10' key={index} src={`${Global.RES_URL}${item}`} style={{height:60}} alt=""/>;
+					return <img className='mr10 mb10' key={index} src={Base.getImgUrl(item)} style={{height:60}} alt=""/>;
 				})
 			}
 		</div>

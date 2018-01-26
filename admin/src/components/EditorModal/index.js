@@ -1,7 +1,7 @@
 import React from 'react';
 import { action } from "mobx";
 import {Modal,message} from 'antd';
-import {BaseComponent,Base,Global} from '../../common';
+import {BaseComponent,Base} from '../../common';
 import { Editor } from 'react-draft-wysiwyg';
 import { EditorState,convertToRaw,ContentState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
@@ -50,7 +50,7 @@ export class EditorModal extends BaseComponent{
 			(resolve, reject) => {
 				getBase64(file,(info)=>{
 					Base.POST({act:'common',op:"base64FileUpload",'base64_image_content':info},(res)=>{
-						resolve({data:{link:`${Global.RES_URL}${res.data.file_url}`}});
+						resolve({data:Base.getImgUrl(res.data.file_url)});
 					},null,(res)=>{
 						message.error(res.message);
 						reject();
