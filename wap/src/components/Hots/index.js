@@ -2,12 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {action} from 'mobx';
 import {Base,BaseComponent,NetImg,Global} from '../../common';
-import { WhiteSpace,Carousel,ListView,PullToRefresh,Flex} from 'antd-mobile';
+import { WhiteSpace,Carousel,ListView,PullToRefresh} from 'antd-mobile';
 import './Hots.less';
 
 import {GoodsItem} from '../../components/GoodsList';
 import {test} from '../../images';
-const hList = document.body.offsetHeight - 45-44-154;
 export class Hots extends BaseComponent{
     constructor(props){
         super(props);

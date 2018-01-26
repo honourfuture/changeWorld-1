@@ -96,7 +96,7 @@ export default class AdManager extends BaseComponent{
 					<Icon type={loading ? 'loading' : 'plus'} />
 					<div className="ant-upload-text">上传</div>
 				</div>}
-			</Upload>:<img className='img-uploader' src={`${Global.RES_URL}${image}`} alt=''/>}
+			</Upload>:<img className='img-uploader' src={Base.getImgUrl(image)} alt=''/>}
 		</div>
 	}
 	renderText(text, record, column) {

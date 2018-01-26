@@ -230,7 +230,7 @@ class ProductIssue extends BaseComponent{
                         优惠</Item>
                         <Item 
                         className='use-point-item'
-                        extra={<div>最高抵扣：￥ <em>{parseInt(point_rate)?parseInt(use_point_rate,10)/parseInt(point_rate):'0'}</em></div>}
+                        extra={<div>最高抵扣：￥ <em>{parseInt(point_rate,10)?parseInt(use_point_rate,10)/parseInt(point_rate,10):'0'}</em></div>}
                         >积分兑换比例{` ${point_rate}:1`}
                         </Item>
                         <InputItem

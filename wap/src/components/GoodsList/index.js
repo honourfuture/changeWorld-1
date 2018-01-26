@@ -1,8 +1,7 @@
 import React from 'react';
 import {action} from 'mobx';
-import {BaseComponent,Base,NetImg,Global} from '../../common';
+import {BaseComponent,Base,NetImg} from '../../common';
 import {Flex,Button} from 'antd-mobile';
-import {test} from '../../images';
 import './GoodsList.less';
 const goodsImgHeight = (document.body.offsetWidth-10)/2;
 export class GoodsItem extends BaseComponent {
@@ -17,7 +16,7 @@ export class GoodsItem extends BaseComponent {
             <div className="recommend-goodsItem" onClick={this.onClick}>
                 <div className="recommend-goodsItem-img">
                     <NetImg 
-                    src={`${Global.RES_URL}${default_image}`}
+                    src={Base.getImgUrl(default_image)}
                     height={goodsImgHeight}
                     />
                 </div>

@@ -3,7 +3,7 @@ import {action} from 'mobx';
 import {BaseComponent,Base,NetImg,Global} from '../../common';
 import {Flex,PullToRefresh,NavBar} from 'antd-mobile';
 import './EvaluateList.less';
-import {test,icon} from '../../images';
+import {icon} from '../../images';
 
 const hScroll = document.body.offsetHeight - 45;
 
@@ -11,7 +11,7 @@ class Item extends BaseComponent{
 	render(){
 		const {header,nickname,remark} = this.props;
 		return <Flex className="item" align='start'>
-			<NetImg src={header}/>
+			<NetImg src={Base.getImgUrl(header)}/>
 			<div>
 				<div className="name">
 					{Base.getAnonymity(nickname)}
