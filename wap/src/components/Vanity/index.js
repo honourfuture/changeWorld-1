@@ -3,28 +3,6 @@ import {action} from 'mobx';
 import {BaseComponent,NetImg,Base} from '../../common';
 import {Flex,Tabs,Carousel} from 'antd-mobile';
 import './Vanity.less';
-import {test} from '../../images';
-
-const testNum = [{
-    num:118823,
-    price:100
-},{
-    num:525223,
-    price:100
-},{
-    num:166623,
-    price:100
-},{
-    num:668823,
-    price:200
-},{
-    num:122223,
-    price:200
-},{
-    num:778823,
-    price:200
-}];
-
 
 const Utils={
     units:'个十百千万@#%亿^&~',
