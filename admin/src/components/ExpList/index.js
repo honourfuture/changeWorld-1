@@ -13,6 +13,16 @@ export class ExpList extends BaseComponent{
 		super(props);
 		this.columns = [
 			{
+				title: '会员ID',
+				dataIndex: 'grade_logo',
+				width: '10%',
+			},
+			{
+				title: '会员名称',
+				dataIndex: 'grade_logo',
+				width: '10%',
+			},
+			{
 				title: '会员等级',
 				dataIndex: 'grade_name',
 				width: '10%',
@@ -24,6 +34,16 @@ export class ExpList extends BaseComponent{
 			}, 
 			{
 				title: '等级图',
+				dataIndex: 'grade_logo',
+				width: '10%',
+			},
+			{
+				title: '时间',
+				dataIndex: 'grade_logo',
+				width: '10%',
+			},
+			{
+				title: '操作描述',
 				dataIndex: 'grade_logo',
 				width: '10%',
 			},

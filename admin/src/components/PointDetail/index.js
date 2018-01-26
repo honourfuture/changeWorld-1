@@ -13,20 +13,35 @@ export class PointDetail extends BaseComponent{
 		super(props);
 		this.columns = [
 			{
-				title: '会员等级',
-				dataIndex: 'grade_name',
-				width: '10%',
-			}, 
-			{
-				title: '晋级值',
+				title: '会员ID',
 				dataIndex: 'grade_demand',
 				width: '10%',
 			}, 
 			{
-				title: '等级图',
+				title: '会员名称',
 				dataIndex: 'grade_logo',
 				width: '10%',
 			},
+			{
+				title: '积分',
+				dataIndex: 'grade_logo',
+				width: '10%',
+			},
+			{
+				title: '操作时间',
+				dataIndex: 'grade_logo',
+				width: '10%',
+			},
+			{
+				title: '操作描述',
+				dataIndex: 'grade_logo',
+				width: '10%',
+			},
+			{
+				title: '操作人',
+				dataIndex: 'grade_name',
+				width: '10%',
+			}, 
 		];
 	}
 	@action.bound
