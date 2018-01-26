@@ -1,7 +1,7 @@
 import React from 'react';
 import { action } from "mobx";
 import {Modal,message,Input,Row,Col} from 'antd';
-import {BaseComponent,Base} from '../../common';
+import {BaseComponent,Base,Global} from '../../common';
 import { Editor } from 'react-draft-wysiwyg';
 import { EditorState,convertToRaw,ContentState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
@@ -38,9 +38,8 @@ export class EditorMsg extends BaseComponent{
 	onModalOk(){
 		this.hide();
 		const content = draftToHtml(convertToRaw(this.refs.editor.state.editorState.getCurrentContent()));
-		let titVal = document.getElementById("msgTit").value;
 		const {onComplete} = this.props;
-		onComplete && onComplete(content,titVal,'');
+		onComplete && onComplete(content,this.msgTit,'');
 	}
 	@action.bound
 	onEditorStateChange(editorState){
@@ -51,7 +50,7 @@ export class EditorMsg extends BaseComponent{
 			(resolve, reject) => {
 				getBase64(file,(info)=>{
 					Base.POST({act:'common',op:"base64FileUpload",'base64_image_content':info},(res)=>{
-						resolve({data:{link:res.data.file_url}});
+						resolve({data:{link:`${Global.RES_URL}${res.data.file_url}`}});
 					},null,(res)=>{
 						message.error(res.message);
 						reject();
@@ -77,7 +76,7 @@ export class EditorMsg extends BaseComponent{
 				>
 				<Row>
 					<Col span={4} style={{lineHeight:'32px',width:42}}>标题：</Col>
-					<Col span={20}><Input id="msgTit" placeholder="请输入标题" /></Col>
+					<Col span={20}><Input onChange={e=>this.msgTit=e.target.value} placeholder="请输入标题" /></Col>
 				</Row>
 				<div className="msgTit"></div>
 				<Editor ref='editor'
@@ -89,7 +88,6 @@ export class EditorMsg extends BaseComponent{
 							uploadCallback:this.onUploadCallback,
 							previewImage:true,
 						},
-						options: ['inline', 'blockType', 'fontSize', 'fontFamily', 'list', 'textAlign', 'colorPicker', 'link', 'embedded', 'emoji', 'image', 'remove', 'history'],
 					}}
 					localization={{
 						locale: 'zh',
