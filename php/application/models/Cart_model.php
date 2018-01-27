@@ -29,7 +29,7 @@ class Cart_model extends MY_Model
     		foreach($cart as $item){
     			$a_goods[] = $item['goods_id'];
     			$a_seller[] = $item['seller_uid'];
-    			$goods_num[$item['goods_id']] = $item['num'];
+    			$goods_num[$item['goods_id']] = array('num' => $item['num'], 'goods_attr' => $item['goods_attr']);
     		}
     	}
 
@@ -38,11 +38,11 @@ class Cart_model extends MY_Model
     		$seller = $this->Users_model->get_many_user($a_seller);
 
     		$this->load->model('Goods_model');
-    		$this->db->select('id,name,sale_price,seller_uid,goods_attr,default_image');
+    		$this->db->select('id,name,sale_price,seller_uid,default_image');
     		$goods = $this->Goods_model->get_many($a_goods);
 
     		foreach($goods as $item){
-    			$item['num'] = isset($goods_num[$item['id']]) ? $goods_num[$item['id']] : 1;
+    			isset($goods_num[$item['id']]) && $item = array_merge($item, $goods_num[$item['id']]);
     			if(isset($seller[$item['seller_uid']])){
     				!isset($seller[$item['seller_uid']]['goods']) && $seller[$item['seller_uid']]['goods'] = array();
     				$seller[$item['seller_uid']]['goods'][] = $item;

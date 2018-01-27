@@ -7240,6 +7240,13 @@ define({ "api": [
             "optional": false,
             "field": "num",
             "description": "<p>购买数量</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "goods_attr",
+            "description": "<p>商品属性</p>"
           }
         ]
       }

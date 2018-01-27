@@ -61,6 +61,7 @@ class Cart extends API_Controller {
 	 * @apiParam {String} sign 校验签名
 	 * @apiParam {Number} goods_id 商品唯一ID
 	 * @apiParam {Number} num 购买数量
+	 * @apiParam {String} goods_attr 商品属性
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -85,7 +86,7 @@ class Cart extends API_Controller {
 	{
 		$params = elements(
 			array(
-				'goods_id', 'num'
+				'goods_id', 'num', 'goods_attr'
 			),
 			$this->input->post(),
 			UPDATE_VALID
