@@ -2,8 +2,8 @@ import React from 'react';
 // import { action } from 'mobx';
 import {BaseComponent,Base} from '../../common';
 import {Flex,Button,NavBar,SearchBar,Tabs} from 'antd-mobile';
-import './MyOrder.less';
 import {icon,test} from '../../images';
+import './MyOrder.less';
 
 import {GoodsItem} from '../../components/GoodsItem';
 class OrderItem extends BaseComponent{
