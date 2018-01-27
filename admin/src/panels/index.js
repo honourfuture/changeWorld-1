@@ -28,7 +28,13 @@ import ShopSet from './ShopSet';
 import SysMsg from './SysMsg';
 import MemberExpManager from './MemberExpManager';
 import MemberPointManager from './MemberPointManager';
+import AnchorType from './AnchorType';
 export const panelsList =  [
+    {
+        path:'/member/AnchorType',
+        component:AnchorType,
+        title:'主播类型',
+    },
     {
         path:'/member/MemberPointManager',
         component:MemberPointManager,
