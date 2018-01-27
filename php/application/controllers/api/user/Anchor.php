@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @email webljx@163.com
  * @link www.aicode.org.cn
  */
-class V extends API_Controller {
+class Anchor extends API_Controller {
 
 	public function __construct()
     {
@@ -15,12 +15,12 @@ class V extends API_Controller {
     }
 
     /**
-	 * @api {get} /api/users_points 讲师认证-初始化
+	 * @api {get} /api/user/anchor 讲师认证-初始页
 	 * @apiVersion 1.0.0
-	 * @apiName users_points_save
+	 * @apiName anchor
 	 * @apiGroup user
 	 *
-	 * @apiSampleRequest /api/users_points/save
+	 * @apiSampleRequest /api/user/anchor
 	 *
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
@@ -54,6 +54,9 @@ class V extends API_Controller {
 
     	$this->load->model('Anchor_class_model');
     	$order_by = array('sort' => 'desc', 'id' => 'desc');
+    	if($this->user_id){
+			$this->db->select('id,name');
+		}
     	$ret['class'] = $this->Anchor_class_model->order_by($order_by)->get_many_by('enable', 1);
 
     	$ret['anchor'] = $this->Users_anchor_model->get_by('user_id', $this->user_id);
@@ -62,12 +65,12 @@ class V extends API_Controller {
     }
 
 	/**
-	 * @api {post} /api/users_points 讲师认证
+	 * @api {post} /api/user/anchor/save 讲师认证-编辑 OR 新增
 	 * @apiVersion 1.0.0
-	 * @apiName users_points_save
+	 * @apiName anchor_save
 	 * @apiGroup user
 	 *
-	 * @apiSampleRequest /api/users_points/save
+	 * @apiSampleRequest /api/user/anchor/save
 	 *
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
@@ -122,6 +125,7 @@ class V extends API_Controller {
 				$this->ajaxReturn([], 1, '已认证请勿重复提交信息');
 			}
 
+			$params['status'] = 0;//初始化
 			$this->Users_anchor_model->update($anchor['id'], $params);
 		}else{
 			$this->Users_anchor_model->insert($params);
