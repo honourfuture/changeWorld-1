@@ -59,6 +59,8 @@ class Cart extends API_Controller {
 	 *
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
+	 * @apiParam {Number} goods_id 商品唯一ID
+	 * @apiParam {Number} num 购买数量
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -83,14 +85,19 @@ class Cart extends API_Controller {
 	{
 		$params = elements(
 			array(
-				'seller_uid', 'goods_id', 'num'
+				'goods_id', 'num'
 			),
 			$this->input->post(),
 			UPDATE_VALID
 		);
 		$params['buyer_uid'] = $this->user_id;
 		$this->check_params('add', $params);
-
+		$this->load->model('Goods_model');
+		$goods = $this->Goods_model->get($params['goods_id']);
+		if(! $goods){
+			$this->ajaxReturn([], 1, '商品已删除下架');
+		}
+		$params['seller_uid'] = $goods['seller_uid'];
 
 		if($this->Cart_model->add($params)){
 			$this->ajaxReturn();
