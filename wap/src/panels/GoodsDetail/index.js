@@ -1,7 +1,7 @@
 import React from 'react';
 import {action} from 'mobx';
 import {BaseComponent,Base,NetImg} from '../../common';
-import {Flex, NavBar, Icon, Carousel, Badge, Checkbox,Stepper,Button} from 'antd-mobile';
+import {Flex, NavBar, Icon, Carousel, Badge, Checkbox,Stepper,Button,Toast} from 'antd-mobile';
 import './GoodsDetail.less';
 import {icon} from '../../images';
 
@@ -151,6 +151,14 @@ export default class GoodsDetail extends BaseComponent{
     stepperHandler(value){
         this.store.selectNum  = value;
     }
+    @action.bound
+    onAddShopCart(){
+        const {goods_info = {}} = this.store;
+        const {id,goods_attr} = goods_info;
+        Base.POST({act:'cart',op:'add',mod:'user',goods_id:id,num:1,goods_attr},(res)=>{
+            Toast.success('添加购物车成功');
+        })
+    }
     render(){
         const {favorite,isAddressModal,curAddressIndex,isBuyModal,selectNum,evaluate={},goods={},goods_info={},seller={},address=[]} = this.store;
         let {goods_image='',sale_price='',name='',freight_fee='',goods_ticket='',use_point_rate='',e_invoice='',goods_detail='',seller_uid='',goods_attr='',id,default_image=''} = goods_info;
@@ -272,7 +280,7 @@ export default class GoodsDetail extends BaseComponent{
                         <Flex justify='between' className='lecturer-info'>
                             <Flex>
                                 <div className="seller-header">
-                                    <NetImg className='header' src={header}/>
+                                    <NetImg className='header' src={Base.getImgUrl(header)}/>
                                     {parseInt(v,10)?<img className='vip' src={icon.vipIcon} alt=""/>:null}
                                 </div>
                                 <div>
@@ -319,7 +327,7 @@ export default class GoodsDetail extends BaseComponent{
                             </Flex.Item>
                         </Flex>
                     </Flex.Item>
-                    <Flex.Item className='add-shop-cart' onClick={()=>Base.push('ShopCart')}>
+                    <Flex.Item onClick={this.onAddShopCart} className='add-shop-cart'>
                         加入购物车
                     </Flex.Item>
                     <Flex.Item className='buy-btn' onClick={this.buyModalHandler}>
