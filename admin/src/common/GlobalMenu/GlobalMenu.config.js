@@ -13,6 +13,10 @@ const menuData = [
                 path: 'MemberVCertification',
             },
             {
+                name: '主播类型',
+                path: 'AnchorType',
+            },
+            {
                 name: '会员管理',
                 path: 'MemberManager',
             },

@@ -7,7 +7,7 @@ import './BasicItem.less';
 const formItemLayout = {
   	labelCol: {
     	xs: { span: 24 },
-    	sm: { span: 8 },
+    	sm: { span: 6 },
   	},
   	wrapperCol: {
     	xs: { span: 24 },
@@ -72,7 +72,7 @@ class BasicItem extends BaseComponent{
 			<div className='BasicItem'>
 				{items}
 				<Row>
-					<Col span={8}></Col>
+					<Col span={6}></Col>
 					<Col>
 						<Button type='primary' onClick={()=>this.onSaveBasic()}>确认提交</Button>
 					</Col>

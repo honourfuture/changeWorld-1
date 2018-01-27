@@ -6,7 +6,7 @@ import './SearchItem.less';
 const formItemLayout = {
   	labelCol: {
     	xs: { span: 24 },
-    	sm: { span: 8 },
+    	sm: { span: 4 },
   	},
   	wrapperCol: {
     	xs: { span: 24 },
@@ -42,7 +42,7 @@ class SearchItem extends BaseComponent{
 			<div className='SearchItem'>
 				{items}
 				<Row>
-					<Col span={8}></Col>
+					<Col span={4}></Col>
 					<Col>
 						<Button type='primary' onClick={()=>this.onSaveBasic()}>确认提交</Button>
 					</Col>
