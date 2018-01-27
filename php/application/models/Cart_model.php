@@ -65,4 +65,26 @@ class Cart_model extends MY_Model
     		return $this->insert($data);
     	}
     }
+
+    //批编辑
+    public function save($buyer_uid, $goods_num)
+    {
+    	if($goods = $this->get_many_by('buyer_uid', $buyer_uid)){
+    		$update = $delete = array();
+    		foreach($goods as $item){
+    			if(isset($goods_num[$item['goods_id']])){
+    				if($goods_num[$item['goods_id']]){
+    					$goods_num[$item['goods_id']] != $item['num'] && $this->update($item['id'], array('num' => $goods_num[$item['goods_id']]));
+    				}else{
+    					$delete[] = $item['id'];
+    				}
+    			}
+    		}
+
+    		$delete && $this->delete_many($delete);
+    		return true;
+    	}else{
+    		return false;
+    	}
+    }
 }
