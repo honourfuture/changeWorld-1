@@ -15,7 +15,7 @@ class Cart extends API_Controller {
     }
 
     /**
-	 * @api {post} /api/user/cart 购物车
+	 * @api {get} /api/user/cart 购物车
 	 * @apiVersion 1.0.0
 	 * @apiName cart
 	 * @apiGroup user
@@ -61,7 +61,7 @@ class Cart extends API_Controller {
 	 * @apiParam {String} sign 校验签名
 	 * @apiParam {Number} goods_id 商品唯一ID
 	 * @apiParam {Number} num 购买数量
-	 * @apiParam {String} goods_attr 商品属性
+	 * @apiParam {String} goods_attr 商品属性 json
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -111,9 +111,6 @@ class Cart extends API_Controller {
 	{
 		switch($act){
 			case 'add':
-				if($params['seller_uid'] === '' || $params['seller_uid'] == UPDATE_VALID){
-					$this->ajaxReturn([], 501, '商家ID错误');
-				}
 				if($params['goods_id'] === '' || $params['goods_id'] == UPDATE_VALID){
 					$this->ajaxReturn([], 501, '商品ID错误');
 				}
@@ -121,8 +118,53 @@ class Cart extends API_Controller {
 					$this->ajaxReturn([], 501, '最少购买数量: 1');
 				}
 				break;
-			case 'edit':
+			case 'save':
 				break;
+		}
+	}
+
+	/**
+	 * @api {post} /api/user/cart/save 购物车-批编辑
+	 * @apiVersion 1.0.0
+	 * @apiName cart_save
+	 * @apiGroup user
+	 *
+	 * @apiSampleRequest /api/user/cart/save
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 * @apiParam {String} goods_num json {商品唯一ID:数量} 数量0表示删除
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *     "data": {
+	 *	   },
+	 *     "status": 0,
+	 *     "message": "成功"
+	 * }
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+	public function save()
+	{
+		$goods_num = $this->input->get_post('goods_num');
+		if($a_goods_num = json_decode($goods_num, true)){
+			if($this->Cart_model->save($this->user_id, $a_goods_num)){
+				$this->ajaxReturn();
+			}else{
+				$this->ajaxReturn([], 2, '操作失败');
+			}
+		}else{
+			$this->ajaxReturn([], 1, '数据格式错误');
 		}
 	}
 }
