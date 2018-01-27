@@ -25,6 +25,8 @@ class PointRuleSet extends BaseComponent{
 		{key:'points_evaluate',label:'会员评论'},
 		{key:'points_pay',label:'消费'},
 		{key:'points_order',label:'订单上限'},
+		{key:'line',label:'积分兑换商品规则'},
+		{key:'goods_exchange',label:'抵扣积分'},
 	]
 	@action.bound
 	onSaveBasic(value){
@@ -47,9 +49,13 @@ class PointRuleSet extends BaseComponent{
 		const {pageDate} = this.store;
 		const items = showProps.map((item,index)=>{
 			const {key,label} = item;
-			return <FormItem className="baseForm" key={index} {...formItemLayout} label={label}>
+			if(key === 'line'){
+				return <div style={{marginBottom:24}}>{label}</div>
+			}else{
+				return <FormItem className="baseForm" key={index} {...formItemLayout} label={label}>
 						{getFieldDecorator(key,{initialValue:pageDate[key]})(<Input placeholder={`请输入${label}`} />)}
 					</FormItem>
+			}
 		})
 		return (
 			<div className='PointRuleSet'>
