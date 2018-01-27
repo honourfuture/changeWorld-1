@@ -59,7 +59,7 @@ class Cart_model extends MY_Model
     	$where = array('buyer_uid' => $data['buyer_uid'], 'goods_id' => $data['goods_id']);
     	$goods = $this->get_by($where);
     	if($goods){
-    		$update = array('num' => $goods['num'] + $data['num']);
+    		$update = array('num' => $data['num'], 'goods_attr' => $data['goods_attr']);
     		return $this->update($goods['id'], $update);
     	}else{
     		return $this->insert($data);
