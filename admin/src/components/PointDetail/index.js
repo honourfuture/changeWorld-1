@@ -42,7 +42,7 @@ export class PointDetail extends BaseComponent{
 			},
 			{
 				title: '操作人',
-				dataIndex: 'grade_name',
+				dataIndex: 'rule_name',
 				width: '10%',
 			}, 
 		];

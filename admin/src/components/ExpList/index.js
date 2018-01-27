@@ -47,7 +47,7 @@ export class ExpList extends BaseComponent{
 			},
 			{
 				title: '操作描述',
-				dataIndex: 'remark',
+				dataIndex: 'rule_name_text',
 				width: '10%',
 			},
 		];
