@@ -17,26 +17,22 @@ export default class ShopNavList extends BaseComponent{
 			{
 				title: '排序',
 				dataIndex: 'sort',
-				width: '10%',
 				render: (text, record) => this.renderInput(text, record, 'sort'),
 			},
 			{
-				title: '更新时间',
-				dataIndex: 'updated_at',
-				width: '20%',
-				render: (text, record) => this.renderText(text, record, 'updated_at'),
-			}, 
-			{
 				title: '标题',
 				dataIndex: 'name',
-				width: '15%',
 				render: (text, record) => this.renderInput(text, record, 'name'),
 			}, 
 			{
 				title: '启用',
 				dataIndex: 'enable',
-				width: '15%',
 				render: (text, record) => this.renderSwitch(text, record, 'enable'),
+			}, 
+			{
+				title: '更新时间',
+				dataIndex: 'updated_at',
+				render: (text, record) => this.renderText(text, record, 'updated_at'),
 			}, 
 			{
 				title: '操作',

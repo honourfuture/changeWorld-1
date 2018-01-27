@@ -17,25 +17,21 @@ export default class AnchorType extends BaseComponent{
 			{
 				title: '排序',
 				dataIndex: 'sort',
-				width: '10%',
 				render: (text, record) => this.renderInput(text, record, 'sort'),
 			},
 			{
-				title: '更新时间',
-				dataIndex: 'updated_at',
-				width: '20%',
-			}, 
-			{
 				title: '直播类型',
 				dataIndex: 'name',
-				width: '15%',
 				render: (text, record) => this.renderInput(text, record, 'name'),
 			}, 
 			{
 				title: '启用',
 				dataIndex: 'enable',
-				width: '15%',
 				render: (text, record) => this.renderSwitch(text, record, 'enable'),
+			}, 
+			{
+				title: '更新时间',
+				dataIndex: 'updated_at',
 			}, 
 			{
 				title: '操作',
