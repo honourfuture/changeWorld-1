@@ -29,7 +29,13 @@ import SysMsg from './SysMsg';
 import MemberExpManager from './MemberExpManager';
 import MemberPointManager from './MemberPointManager';
 import AnchorType from './AnchorType';
+import ShopManager from './ShopManager';
 export const panelsList =  [
+    {
+        path:'/shop/ShopManager',
+        component:ShopManager,
+        title:'店铺管理',
+    },
     {
         path:'/member/AnchorType',
         component:AnchorType,
