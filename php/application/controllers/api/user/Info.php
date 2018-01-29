@@ -32,9 +32,9 @@ class Info extends API_Controller {
 	 * @apiSuccess {String} data.user.id 用户唯一ID
 	 * @apiSuccess {String} data.user.nickname 用户昵称
 	 * @apiSuccess {String} data.user.header 用户头像
-	 * @apiSuccess {String} data.user.v 用户V认证 0未认证 1待审核 2未通过 3通过
-	 * @apiSuccess {String} data.user.anchor 讲师标识 0未认证 1待审核 2未通过 3通过
-	 * @apiSuccess {String} data.user.shop 开店 0否 1待审核 2未通过 3通过
+	 * @apiSuccess {String} data.user.v V标识 0否 1是
+	 * @apiSuccess {String} data.user.anchor 讲师标识 0否 1是
+	 * @apiSuccess {String} data.user.seller 卖家 0否 1是
 	 * @apiSuccess {String} data.user.exp 经验值
 	 * @apiSuccess {String} data.user.vip_id 贵族级别 0无
 	 * @apiSuccess {String} data.collection 收藏数量
@@ -50,7 +50,7 @@ class Info extends API_Controller {
 	 *            "header": "",
 	 *            "v": "0",
 	 *            "anchor": "0",
-	 *            "shop": "0",
+	 *            "seller": "0",
 	 *            "exp": "0",
 	 *            "vip_id": "0"
 	 *        },
@@ -80,7 +80,7 @@ class Info extends API_Controller {
 			'header' => $user['header'],
 			'v' => $user['v'],
 			'anchor' => $user['anchor'],
-			'shop' => $user['shop'],
+			'seller' => $user['seller'],
 			'exp' => $user['exp'],
 			'vip_id' => $user['vip_id'],
 		);

@@ -7148,6 +7148,13 @@
             "optional": false,
             "field": "sign",
             "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "job",
+            "description": "<p>默认不传，传order表示下单页，结构调整为data.point,data.point</p>"
           }
         ]
       }
@@ -7247,6 +7254,105 @@
             "optional": false,
             "field": "goods_attr",
             "description": "<p>商品属性 json</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n\t   },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Cart.php",
+    "groupTitle": "user"
+  },
+  {
+    "type": "post",
+    "url": "/api/user/cart/buy",
+    "title": "商品-直接购买",
+    "version": "1.0.0",
+    "name": "cart_buy",
+    "group": "user",
+    "sampleRequest": [
+      {
+        "url": "/api/user/cart/buy"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "goods_id",
+            "description": "<p>商品唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "goods_attr",
+            "description": "<p>商品属性 json</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "job",
+            "description": "<p>默认不传，传order表示下单页，结构调整为data.point,data.point</p>"
           }
         ]
       }
@@ -7803,21 +7909,21 @@
             "type": "String",
             "optional": false,
             "field": "data.user.v",
-            "description": "<p>用户V认证 0未认证 1待审核 2未通过 3通过</p>"
+            "description": "<p>V标识 0否 1是</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "data.user.anchor",
-            "description": "<p>讲师标识 0未认证 1待审核 2未通过 3通过</p>"
+            "description": "<p>讲师标识 0否 1是</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.user.shop",
-            "description": "<p>开店 0否 1待审核 2未通过 3通过</p>"
+            "field": "data.user.seller",
+            "description": "<p>卖家 0否 1是</p>"
           },
           {
             "group": "Success 200",
@@ -7859,7 +7965,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n   \"data\": {\n       \"user\": {\n           \"id\": \"1\",\n           \"nickname\": \"aicode\",\n           \"header\": \"\",\n           \"v\": \"0\",\n           \"anchor\": \"0\",\n           \"shop\": \"0\",\n           \"exp\": \"0\",\n           \"vip_id\": \"0\"\n       },\n       \"collection\": 0,\n       \"follow\": 4,\n       \"fans\": 1\n   },\n   \"status\": 0,\n   \"message\": \"成功\"\n}",
+          "content": "{\n   \"data\": {\n       \"user\": {\n           \"id\": \"1\",\n           \"nickname\": \"aicode\",\n           \"header\": \"\",\n           \"v\": \"0\",\n           \"anchor\": \"0\",\n           \"seller\": \"0\",\n           \"exp\": \"0\",\n           \"vip_id\": \"0\"\n       },\n       \"collection\": 0,\n       \"follow\": 4,\n       \"fans\": 1\n   },\n   \"status\": 0,\n   \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
@@ -8659,6 +8765,84 @@
       ]
     },
     "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Login.php",
+    "groupTitle": "user"
+  },
+  {
+    "type": "post",
+    "url": "/api/user/order/add",
+    "title": "订单-下单",
+    "version": "1.0.0",
+    "name": "order_add",
+    "group": "user",
+    "sampleRequest": [
+      {
+        "url": "/api/user/order/add"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n\t   },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Order.php",
     "groupTitle": "user"
   },
   {

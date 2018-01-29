@@ -328,6 +328,19 @@ class API_Controller extends MY_Controller
         $this->db->select('title,link,image');
         return $this->Ad_model->order_by($order_by)->limit($limit)->get_many_by($where);
     }
+
+    // 会员积分
+    protected function points($user_id)
+    {
+        $this->load->model('Users_model');
+        $user = $this->Users_model->get($user_id);
+
+        $rule = $this->sitePointsRule();
+        return array(
+            'rule' => isset($rule['goods_exchange']) ? $rule['goods_exchange'] : 0,
+            'user' => $user ? $user['point'] : 0
+        );
+    }
 }
 
 

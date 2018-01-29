@@ -54,4 +54,10 @@ class Welcome extends Web_Controller {
 
         echo json_encode($rows, JSON_UNESCAPED_UNICODE);
 	}
+
+    public function sms()
+    {
+        $this->load->library('sms');
+        var_export($this->sms->send(13430332489, array('code' => 1024), 0));
+    }
 }

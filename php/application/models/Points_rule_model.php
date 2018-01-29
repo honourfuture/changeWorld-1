@@ -27,6 +27,7 @@ class Points_rule_model extends MY_Model
     		'points_evaluate' => '会员评论',
             'points_pay' => '消费',
     		'points_order' => '订单上限',
+            'goods_exchange' => '商品抵扣',
     	);
     }
 }

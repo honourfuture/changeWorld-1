@@ -26,8 +26,8 @@ $config['white_list_url'] = array(
 
 // sms短信
 $config['sms'] = array(
-    'account' => 'AC00737',
-    'password' => 'AC0073655'
+    'account' => '8H00010',
+    'password' => '8H0001052'
 );
 
 // 邮箱
