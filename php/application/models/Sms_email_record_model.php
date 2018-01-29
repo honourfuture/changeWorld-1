@@ -33,8 +33,6 @@ class Sms_email_record_model extends MY_Model
 	        $ret['message'] = '验证码发送频率为: '.$this->wait_time_loop.'秒/次';
 	        echo json_encode($ret);exit();
     	}
-    	$this->load->helper('string');
-        $row['verify'] = random_string('numeric', 4);
 
         $row['created_at'] = time();
         $row['ip'] = $this->input->ip_address();

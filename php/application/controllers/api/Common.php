@@ -185,11 +185,15 @@ class Common extends API_Controller
         // 记录
         $this->load->model('Sms_email_record_model');
         $data = array('account' => $mobi);
+        $this->load->helper('string');
+        $data['verify'] = random_string('numeric', 4);
         $this->Sms_email_record_model->insert($data);
 
         // 发送
+        $this->load->library('sms');
+        $result = $this->sms->send($mobi, array('code' => $data['verify']), $sms_id);
 
-        $this->ajaxReturn();
+        $this->ajaxReturn([], $result['status'], $result['message']);
     }
 
     //发生邮件
