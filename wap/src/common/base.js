@@ -11,7 +11,7 @@ import {Component} from 'react';
 // import {PubSub} from 'pubsub-js';
 import Global from './global';
 import { Toast } from 'antd-mobile';
-// import 'whatwg-fetch';
+import 'whatwg-fetch';
 import './base.less';
 useStrict(true);
 window.HISTORY_LENGHT = 0;

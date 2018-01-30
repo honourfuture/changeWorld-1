@@ -2,7 +2,7 @@ import React from 'react';
 import {action,computed} from 'mobx';
 import {BaseComponent,Base,NetImg} from '../../common';
 import {Flex,Checkbox,NavBar,Icon,Button,Stepper,Toast} from 'antd-mobile';
-import {test,icon} from '../../images';
+import {icon} from '../../images';
 import './ShopCart.less';
 
 class CartItem extends BaseComponent{
@@ -74,7 +74,7 @@ export default class ShopCart extends BaseComponent{
 			let isChecked = false;
 			storeList.forEach((storeItem,index)=>{
 				storeItem.goods.forEach((item)=>{
-					const {checked,id,num} = item
+					const {id,num} = item
 					if(item.checked){
 						goods_num[id] = num;
 						isChecked = true;
@@ -102,7 +102,7 @@ export default class ShopCart extends BaseComponent{
 		let isChecked = false;
 		storeList.forEach((storeItem,index)=>{
 			storeItem.goods.forEach((item)=>{
-				const {checked,id} = item
+				const {id} = item
 				if(item.checked){
 					goods_num[id] = 0;
 					isChecked = true;
