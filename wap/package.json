@@ -14,7 +14,7 @@
     "react-dom": "^16.2.0",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.0.17",
-    "whatwg-fetch": "^2.0.3"
+    "reqwest": "^2.0.5"
   },
   "scripts": {
     "start": "react-app-rewired start",
