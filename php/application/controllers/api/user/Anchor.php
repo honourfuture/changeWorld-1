@@ -82,6 +82,7 @@ class Anchor extends API_Controller {
 	 * @apiParam {String} email 邮箱
 	 * @apiParam {String} nickname 昵称
 	 * @apiParam {String} realname 真实姓名
+	 * @apiParam {Number} certificate_type 证件类型
 	 * @apiParam {String} certificate_no 证件号
 	 * @apiParam {String} certificate_photo 证件照
 	 * @apiParam {Number} class_id 主播类型
@@ -115,13 +116,13 @@ class Anchor extends API_Controller {
 	{
 		$params = elements(
 			array(
-				'mobi', 'email', 'nickname', 'realname', 'certificate_no', 'certificate_photo',
+				'mobi', 'email', 'nickname', 'realname', 'certificate_type', 'certificate_no', 'certificate_photo',
 				'class_id', 'summary', 'other', 'anchor_photo', 'anchor_video'
 			),
 			$this->input->post(),
 			UPDATE_VALID
 		);
-		$params['certificate_type'] = 1;//默认身份证
+		// $params['certificate_type'] = 1;//默认身份证
 		$params['user_id'] = $this->user_id;
 
 		if($anchor = $this->Users_anchor_model->get_by('user_id', $this->user_id)){
