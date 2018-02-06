@@ -1,14 +1,14 @@
 <?php
 /*
- * 主播信息
+ * 直播房间
  * @author sz.ljx
  * @author webljx@163.com
  * @link www.aicode.org.cn
  */
 
-class Users_anchor_model extends MY_Model
+class Room_model extends MY_Model
 {
-    public $_table        = 'users_anchor';
+    public $_table        = 'room';
     public $primary_key   = 'id';
     public $before_create = array('created_at', 'updated_at', 'updated_valid');
     public $before_update = array('updated_at', 'updated_valid');
@@ -19,11 +19,8 @@ class Users_anchor_model extends MY_Model
         parent::__construct();
     }
 
-    public function certificate()
+    public function channel_id($user_id, $room_id)
     {
-    	return array(
-    		1 => '身份证',
-    		2 => '港澳证'
-    	);
+    	return 'zhumaidan-'.$user_id.'-'.$room_id;
     }
 }

@@ -2,6 +2,7 @@
     "require": {
         "swiftmailer/swiftmailer": "v5.4.8",
         "gregwar/captcha": "^1.1",
-        "rmccue/requests": "^1.7"
+        "rmccue/requests": "^1.7",
+        "himi/qcloud_live": "^1.0"
     }
 }

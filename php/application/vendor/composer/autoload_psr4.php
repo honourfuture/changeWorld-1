@@ -7,5 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Symfony\\Component\\Finder\\' => array($vendorDir . '/symfony/finder'),
+    'QCloud\\' => array($vendorDir . '/himi/qcloud_live/src/QCloud'),
     'Gregwar\\' => array($vendorDir . '/gregwar/captcha/src/Gregwar'),
 );

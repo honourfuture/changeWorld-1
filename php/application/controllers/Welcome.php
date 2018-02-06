@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+use QCloud\Live\Query;
+
 class Welcome extends Web_Controller {
 
 	/**
@@ -22,6 +24,13 @@ class Welcome extends Web_Controller {
 	{
 		$this->load->view('welcome_message');
 	}
+
+    public function room()
+    {
+        $live = new Query();
+        $channel_id = 1024;
+        echo $live->getPushUrl($channel_id);
+    }
 
 	public function area()
 	{

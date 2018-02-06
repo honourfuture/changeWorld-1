@@ -211,5 +211,40 @@
             "iri",
             "sockets"
         ]
+    },
+    {
+        "name": "himi/qcloud_live",
+        "version": "1.0.3",
+        "version_normalized": "1.0.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/HimiHL/qcloud_live.git",
+            "reference": "f971be28617272f09709981fc381e0dfdc85fa5b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/HimiHL/qcloud_live/f971be28617272f09709981fc381e0dfdc85fa5b.zip",
+            "reference": "f971be28617272f09709981fc381e0dfdc85fa5b",
+            "shasum": ""
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~4.0"
+        },
+        "time": "2017-12-29T01:28:20+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "QCloud\\": "src/QCloud"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "authors": [
+            {
+                "name": "himi",
+                "email": "himi@88hao.cn"
+            }
+        ],
+        "description": "腾讯云Live直播SDK"
     }
 ]

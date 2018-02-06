@@ -15,6 +15,10 @@ class ComposerStaticInit3790068b8dbf2bd53b30a84b0a522fc6
         array (
             'Symfony\\Component\\Finder\\' => 25,
         ),
+        'Q' => 
+        array (
+            'QCloud\\' => 7,
+        ),
         'G' => 
         array (
             'Gregwar\\' => 8,
@@ -25,6 +29,10 @@ class ComposerStaticInit3790068b8dbf2bd53b30a84b0a522fc6
         'Symfony\\Component\\Finder\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/finder',
+        ),
+        'QCloud\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/himi/qcloud_live/src/QCloud',
         ),
         'Gregwar\\' => 
         array (

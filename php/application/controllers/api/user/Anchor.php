@@ -30,12 +30,14 @@ class Anchor extends API_Controller {
 	 * @apiSuccess {Object} data 接口数据集
 	 * @apiSuccess {Object[]} data.class 主播类型
 	 * @apiSuccess {Object} data.anchor 主播信息 空表示未提交过
+	 * @apiSuccess {Object} data.certificate 证件
 	 *
 	 * @apiSuccessExample {json} Success-Response:
 	 * {
 	 *     "data": {
 	 *			"class": [],
-	 *			"anchor": {}
+	 *			"anchor": {},
+	 *			"certificate": {}
 	 *	   },
 	 *     "status": 0,
 	 *     "message": "成功"
@@ -50,7 +52,7 @@ class Anchor extends API_Controller {
 	 */
     public function index()
     {
-    	$ret = array('class' => array(), 'anchor' => array());
+    	$ret = array('class' => array(), 'anchor' => array(), 'certificate' => array());
 
     	$this->load->model('Anchor_class_model');
     	$order_by = array('sort' => 'desc', 'id' => 'desc');
@@ -60,6 +62,8 @@ class Anchor extends API_Controller {
     	$ret['class'] = $this->Anchor_class_model->order_by($order_by)->get_many_by('enable', 1);
 
     	$ret['anchor'] = $this->Users_anchor_model->get_by('user_id', $this->user_id);
+
+    	$ret['certificate'] = $this->Users_anchor_model->certificate();
 
     	$this->ajaxReturn($ret);
     }
