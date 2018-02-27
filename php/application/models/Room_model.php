@@ -23,4 +23,10 @@ class Room_model extends MY_Model
     {
     	return 'zhumaidan-'.$user_id.'-'.$room_id;
     }
+
+    public function get_roomid_by_channel($channel_id)
+    {
+        list($app_name, $user_id, $room_id) = explode('-', $channel_id);
+        return $room_id;
+    }
 }

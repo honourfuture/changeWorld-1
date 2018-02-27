@@ -28,8 +28,10 @@ class Welcome extends Web_Controller {
     public function room()
     {
         $live = new Query();
-        $channel_id = 1024;
-        echo $live->getPushUrl($channel_id);
+        $live->setAppInfo('1253104369', 'f6a34bbd23b89db693b88805aa49d223', '72b6cd0cf7b4bed16368193a244ee97d', 6077);
+        $channel_id = 'zhumaidan-1-1';
+        // echo $live->Live_Channel_GetStatus($channel_id);
+        echo $live->Live_Channel_GetLiveChannelList();
     }
 
 	public function area()

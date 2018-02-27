@@ -35,7 +35,7 @@ class Base
      */
     public function getSign()
     {
-        $this->time = time();
+        $this->time = strtotime('10 minute');
         return md5($this->api_key.$this->time);
     }
 }

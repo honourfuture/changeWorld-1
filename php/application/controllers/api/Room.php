@@ -60,7 +60,7 @@ class Room extends API_Controller {
 			$live = new Query();
 	        $channel_id = $this->Room_model->channel_id($this->user_id, $id);
 	        $update = array(
-	        	'push_url' => $live->getPushUrl($channel_id),
+	        	'push_url' => $live->getPushUrl($channel_id).'&record=flv&record_interval=5400',
 	        	'play_url' => json_encode($live->getPlayUrl($channel_id))
 	        );
 	        $this->Room_model->update($id, $update);
