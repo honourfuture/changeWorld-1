@@ -25,6 +25,9 @@ class Ad_position_model extends MY_Model
     		'shop' => array(//商城
     			'1' => 1,
     		),
+            'knowledge' => array(//知识
+                'live' => 1,//热门
+            ),
     	);
 
     	if(isset($init[$control])){

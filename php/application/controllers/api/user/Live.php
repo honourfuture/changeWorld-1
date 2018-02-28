@@ -107,7 +107,15 @@ class Live extends API_Controller {
 	 * @apiSuccess {Object} data.play_url 播放地址
 	 *
 	 * @apiSuccessExample {json} Success-Response:
-	 * 
+	 * {
+	 *    "data": {
+	 *        "room_id": 1,
+	 *        "push_url": "rtmp://6077.livepush.myqcloud.com/live/6077_zhumaidan-1-2?bizid=6077&txSecret=cbe8817ff9e6185dd783b09c99ea9f20&txTime=5A7AF498",
+	 *        "play_url": "{\"rtmp\":\"rtmp:\\/\\/6077.liveplay.myqcloud.com\\/live\\/6077_zhumaidan-1-2\",\"flv\":\"http:\\/\\/6077.liveplay.myqcloud.com\\/live\\/6077_zhumaidan-1-2.flv\",\"m3u8\":\"http:\\/\\/6077.liveplay.myqcloud.com\\/live\\/6077_zhumaidan-1-2.m3u8\"}"
+	 *    },
+	 *    "status": 0,
+	 *    "message": "成功"
+	 * }
 	 *
 	 * @apiErrorExample {json} Error-Response:
 	 * {
@@ -131,11 +139,13 @@ class Live extends API_Controller {
 		$this->check_add_params('add', $data);
 		$this->load->model('Room_model');
 		if($id = $this->Room_model->insert($data)){
-			$live = new Query();
+			$QLive = new Query();
+	        $config = config_item('live');
+	        $QLive->setAppInfo($config['appid'], $config['api_key'], $config['push_key'], $config['bizid']);
 	        $channel_id = $this->Room_model->channel_id($this->user_id, $id);
 	        $update = array(
-	        	'push_url' => $live->getPushUrl($channel_id).'&record=flv&record_interval=5400',
-	        	'play_url' => json_encode($live->getPlayUrl($channel_id))
+	        	'push_url' => $QLive->getPushUrl($channel_id).'&record=flv&record_interval=5400',
+	        	'play_url' => json_encode($QLive->getPlayUrl($channel_id))
 	        );
 	        $this->Room_model->update($id, $update);
 
