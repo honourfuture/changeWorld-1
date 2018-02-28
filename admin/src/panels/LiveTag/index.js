@@ -208,7 +208,7 @@ export default class LiveTag extends BaseComponent{
             );
         });
 		return (
-			<div className='LiveTag'>
+			<Spin ref="spin" wrapperClassName="LiveTag" spinning={false}>
 				<div className="pb10">
                     <Button onClick={this.onAdd}>新增+</Button>
                     <Search
@@ -225,7 +225,7 @@ export default class LiveTag extends BaseComponent{
                     columns={this.columns}
                     pagination={{ hideOnSinglePage: true }}
                 />
-			</div>
+			</Spin>
 		)
 	}
 };
