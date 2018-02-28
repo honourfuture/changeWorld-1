@@ -30,7 +30,13 @@ import MemberExpManager from './MemberExpManager';
 import MemberPointManager from './MemberPointManager';
 import AnchorType from './AnchorType';
 import ShopManager from './ShopManager';
+import LiveClass from './LiveClass';
 export const panelsList =  [
+    {
+        path:'/live/LiveClass',
+        component:LiveClass,
+        title:'直播类型',
+    },
     {
         path:'/shop/ShopManager',
         component:ShopManager,
