@@ -35,3 +35,11 @@ $config['mail'] = array(
     'account' => '1428452507@qq.com',
     'password' => 'smkyykvqtpjshhhb'
 );
+
+// QQLive
+$config['live'] = array(
+	'appid' => '1253104369',
+	'api_key' => 'f6a34bbd23b89db693b88805aa49d223',
+	'push_key' => '72b6cd0cf7b4bed16368193a244ee97d',
+	'bizid' => '6077'
+);
