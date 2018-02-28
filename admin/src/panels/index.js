@@ -31,7 +31,13 @@ import MemberPointManager from './MemberPointManager';
 import AnchorType from './AnchorType';
 import ShopManager from './ShopManager';
 import LiveClass from './LiveClass';
+import LiveTag from './LiveTag';
 export const panelsList =  [
+    {
+        path:'/Live/LiveTag',
+        component:LiveTag,
+        title:'直播标签',
+    },
     {
         path:'/live/LiveClass',
         component:LiveClass,
