@@ -1,16 +1,27 @@
 import React from 'react';
 import {action} from 'mobx';
+import ReactDOM from 'react-dom';
 import {BaseComponent,Base} from '../../common';
-import {List,NavBar,Flex} from 'antd-mobile';
+import {List,NavBar,Flex,ListView,PullToRefresh} from 'antd-mobile';
 import './MessAgeCenter.less';
 import {icon} from '../../images';
 
 const Item = List.Item;
 export default class MessAgeCenter extends BaseComponent{
-	store={
-		list:[],
-		isRead:"",
-	}
+	constructor(props){
+        super(props);
+        this.dataSource = new ListView.DataSource({
+            rowHasChanged: (row1, row2) => row1 !== row2,
+        });
+        this.cur_page = 1;
+        this.store = {
+            list:[],
+            refreshing:false,
+            height:0,
+            isLoading:true,
+            isRead:"",
+        }
+    }
 	@action.bound
 	onRead(id){
 		Base.push("MessageDetail",{id});
@@ -51,7 +62,7 @@ export default class MessAgeCenter extends BaseComponent{
                 <div className="base-content">
                 	<List className="msgList">
 				        {msgItem}
-				      </List>
+				    </List>
                 </div>
 			</div>
 		)
