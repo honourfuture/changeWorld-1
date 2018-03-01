@@ -32,7 +32,13 @@ import AnchorType from './AnchorType';
 import ShopManager from './ShopManager';
 import LiveClass from './LiveClass';
 import LiveTag from './LiveTag';
+import SpecialTag from './SpecialTag';
 export const panelsList =  [
+    {
+        path:'/live/SpecialTag',
+        component:SpecialTag,
+        title:'专辑标签',
+    },
     {
         path:'/Live/LiveTag',
         component:LiveTag,
