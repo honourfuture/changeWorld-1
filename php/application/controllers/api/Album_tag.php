@@ -58,6 +58,9 @@ class Album_tag extends API_Controller {
 	 *                 },
 	 *                 {
 	 *                     "7": "广告"
+	 *                 },
+	 *                 {
+	 *                     "p9": "天天快递"
 	 *                 }
 	 *             ]
 	 *         }
@@ -77,11 +80,17 @@ class Album_tag extends API_Controller {
 	{
 		$ret = array();
 		$deleted = (int)$this->input->get('deleted');
+		$tag_user = array();
 		if($this->user_id){
+			$this->db->select('concat("p", id) as id,name,pid');
+			$this->load->model('Album_tag_user_model');
+			$tag_user = $this->Album_tag_user_model->get_many_by('user_id', $this->user_id);
+
 			$this->db->select('id,name,pid,limit');
 		}
 		$order_by = array('pid' => 'asc', 'sort' => 'desc', 'id' => 'desc');
 		$tag = $this->Album_tag_model->order_by($order_by)->get_many_by('deleted', $deleted);
+		!empty($tag_user) && $tag = array_merge($tag, $tag_user);//合并用户自定义
 		if($tag){
 			foreach($tag as $item){
 				if($item['pid'] == 0){
@@ -97,10 +106,58 @@ class Album_tag extends API_Controller {
 		$this->ajaxReturn($ret);
 	}
 
-	// 查看
-	public function view()
+	/**
+	 * @api {post} /api/album_tag/add 专辑标签-自定义
+	 * @apiVersion 1.0.0
+	 * @apiName album_tag_add
+	 * @apiGroup user
+	 *
+	 * @apiSampleRequest /api/album_tag/add
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 * @apiParam {String} name 标签名称
+	 * @apiParam {Number} pid 父级ID
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {String} data 接口数据集
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *	    "data": "",
+	 *	    "status": 0,
+	 *	    "message": ""
+	 *	}
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+	public function add()
 	{
+		$params = elements(
+			array(
+				'name', 'pid'
+			),
+			$this->input->post(),
+			UPDATE_VALID
+		);
+		if($params['name'] === '' || $params['name'] == UPDATE_VALID){
+			$this->ajaxReturn([], 501, '名称参数错误');
+		}
+		if($params['pid'] === '' || $params['pid'] == UPDATE_VALID){
+			$this->ajaxReturn([], 501, '请传父级ID');
+		}
+		$params['user_id'] = $this->user_id;
 
+		$this->load->model('Album_tag_user_model');
+		$this->Album_tag_user_model->insert($params);
+
+		$this->ajaxReturn([]);
 	}
 
 	/**
