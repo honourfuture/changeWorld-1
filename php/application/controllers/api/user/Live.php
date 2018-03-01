@@ -144,7 +144,7 @@ class Live extends API_Controller {
 	        $QLive->setAppInfo($config['appid'], $config['api_key'], $config['push_key'], $config['bizid']);
 	        $channel_id = $this->Room_model->channel_id($this->user_id, $id);
 	        $update = array(
-	        	'push_url' => $QLive->getPushUrl($channel_id).'&record=flv&record_interval=5400',
+	        	'push_url' => $QLive->getPushUrl($channel_id).'&record=flv&record_interval=5400&record_type=audio',
 	        	'play_url' => json_encode($QLive->getPlayUrl($channel_id))
 	        );
 	        $this->Room_model->update($id, $update);

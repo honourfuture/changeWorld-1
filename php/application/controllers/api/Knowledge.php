@@ -116,6 +116,7 @@ class Knowledge extends API_Controller
      * @apiSuccess {Object[]} data.ad 轮播广告
      * @apiSuccess {Object[]} data.anchor 热门主播
      * @apiSuccess {Object[]} data.online 直播中
+     * @apiSuccess {Object[]} data.trailer 预告
      *
      * @apiSuccessExample {json} Success-Response:
      * {
@@ -145,7 +146,8 @@ class Knowledge extends API_Controller
      *                 "anchor_uid": "1",
      *                 "views": "0",
      *                 "nickname": "aicode",
-     *                 "v": "0"
+     *                 "v": "0",
+     *                 "price": "0.00"
      *             }
      *         ]
      *     },
@@ -180,25 +182,39 @@ class Knowledge extends API_Controller
         $config = config_item('live');
         $QLive->setAppInfo($config['appid'], $config['api_key'], $config['push_key'], $config['bizid']);
         $response = $QLive->Live_Channel_GetLiveChannelList();
+        $a_room_id = array();
         if($result = json_decode($response, true)){
             if($result['ret'] == 0 && $result['output']['all_count']){
-                $a_room_id = array();
                 foreach($result['output']['channel_list'] as $channel_id){
-                    $a_room_id[] = $this->Room_model->get_roomid_by_channel($channel_id);
+                    $this->Room_model->set_userid_roomid_by_channel($channel_id);
+                    $a_room_id[] = $this->Room_model->room_id;
                     if(count($a_room_id) > 1000){
                         break;
                     }
                 }
 
                 $order_by = array('sort' => 'desc', 'id' => 'desc');
-                $this->db->select('id as room_id,title,cover_image,play_url,live_tag_id,anchor_uid,views');
+                $this->db->select('id as room_id,title,cover_image,play_url,live_tag_id,anchor_uid,views,price');
                 $ret['online'] = $this->Room_model->order_by($order_by)->get_many($a_room_id);
             }
         }
+        $ret['online'] = $this->live_anchor($ret['online']);
+        //预告直播
+        $order_by = array('sort' => 'desc', 'id' => 'desc');
+        $this->db->select('id as room_id,title,cover_image,play_url,live_tag_id,anchor_uid,views,price');
+        $where = array('start_at >' => time());
+        !empty($a_room_id) && $this->db->where_not_in('id', $a_room_id);
+        $ret['trailer'] = $this->Room_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
+        $ret['trailer'] = $this->live_anchor($ret['trailer']);
 
+        $this->ajaxReturn($ret);
+    }
+
+    protected function live_anchor($live)
+    {
         $a_uid = $a_tag = array();
-        if($ret['online']){
-            foreach($ret['online'] as $item){
+        if($live){
+            foreach($live as $item){
                 $a_uid[] = $item['anchor_uid'];
                 $item['live_tag_id'] && $a_tag[] = $item['live_tag_id'];
             }
@@ -226,12 +242,12 @@ class Knowledge extends API_Controller
                 }
             }
 
-            foreach($ret['online'] as $key=>$item){
-                isset($k_user[$item['anchor_uid']]) && $ret['online'][$key] = array_merge($ret['online'][$key], $k_user[$item['anchor_uid']]);
-                isset($k_tag[$item['live_tag_id']]) && $ret['online'][$key] = array_merge($ret['online'][$key], $k_user[$item['anchor_uid']]);
+            foreach($live as $key=>$item){
+                isset($k_user[$item['anchor_uid']]) && $live[$key] = array_merge($live[$key], $k_user[$item['anchor_uid']]);
+                isset($k_tag[$item['live_tag_id']]) && $live[$key] = array_merge($live[$key], $k_user[$item['anchor_uid']]);
             }
         }
 
-        $this->ajaxReturn($ret);
+        return $live;
     }
 }
