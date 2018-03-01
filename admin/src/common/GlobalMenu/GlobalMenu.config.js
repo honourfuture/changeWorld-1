@@ -81,6 +81,14 @@ const menuData = [
             {
                 name: "直播标签",
                 path: "LiveTag"
+            },
+            {
+                name: "专辑类型",
+                path: "SpecialClass"
+            },
+            {
+                name: "专辑标签",
+                path: "SpecialTag"
             }
         ]
     },
