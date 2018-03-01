@@ -488,6 +488,260 @@
   },
   {
     "type": "post",
+    "url": "/api/album_class/save",
+    "title": "专辑类型-编辑 OR 新增",
+    "version": "1.0.0",
+    "name": "album_class_save",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/album_class/save"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "admin_id",
+            "description": "<p>管理员唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account",
+            "description": "<p>登录账号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>记录唯一ID 0表示新增 其他表示编辑</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>专辑类型名称</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "sort",
+            "description": "<p>排序 降序排列</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "enable",
+            "description": "<p>启用 1是 0否</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "deleted",
+            "description": "<p>是否删除 1是 0否（为1时其他字段可不传）</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": \"\",\n\t    \"status\": 0,\n\t    \"message\": \"\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Album_class.php",
+    "groupTitle": "admin"
+  },
+  {
+    "type": "post",
+    "url": "/api/album_tag/save",
+    "title": "专辑标签-编辑 OR 新增",
+    "version": "1.0.0",
+    "name": "album_tag_save",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/album_tag/save"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "admin_id",
+            "description": "<p>管理员唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account",
+            "description": "<p>登录账号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>记录唯一ID 0表示新增 其他表示编辑</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>专辑标签名称</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "sort",
+            "description": "<p>排序 降序排列</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "enable",
+            "description": "<p>启用 1是 0否</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "deleted",
+            "description": "<p>是否删除 1是 0否（为1时其他字段可不传）</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pid",
+            "description": "<p>父级ID 0顶级</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "limit",
+            "description": "<p>限制选择数量</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": \"\",\n\t    \"status\": 0,\n\t    \"message\": \"\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Album_tag.php",
+    "groupTitle": "admin"
+  },
+  {
+    "type": "post",
     "url": "/api/anchor_class/save",
     "title": "主播类-编辑 OR 新增",
     "version": "1.0.0",
@@ -3665,6 +3919,176 @@
   },
   {
     "type": "get",
+    "url": "/api/album_class",
+    "title": "专辑类型-列表",
+    "version": "1.0.0",
+    "name": "album_class",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/album_class"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.id",
+            "description": "<p>专辑类型唯一ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.name",
+            "description": "<p>专辑类型名称</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": [\n\t        {\n\t            \"id\": \"1\",\n\t            \"name\": \"热门\"\n\t        },\n\t        {\n\t            \"id\": \"2\",\n\t            \"name\": \"靓号\"\n\t        }\n\t    ],\n\t    \"status\": 0,\n\t    \"message\": \"成功\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Album_class.php",
+    "groupTitle": "api"
+  },
+  {
+    "type": "get",
+    "url": "/api/album_tag",
+    "title": "专辑标签-列表",
+    "version": "1.0.0",
+    "name": "album_tag",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/album_tag"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"1\": {\n            \"name\": \"内容\",\n            \"limit\": \"3\",\n            \"list\": [\n                {\n                    \"6\": \"广告\"\n                },\n                {\n                    \"5\": \"铃声\"\n                },\n                {\n                    \"4\": \"配音\"\n                },\n                {\n                    \"3\": \"声音日记\"\n                }\n            ]\n        },\n        \"2\": {\n            \"name\": \"播讲\",\n            \"limit\": \"2\",\n            \"list\": [\n                {\n                    \"8\": \"体育\"\n                },\n                {\n                    \"7\": \"广告\"\n                }\n            ]\n        }\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Album_tag.php",
+    "groupTitle": "api"
+  },
+  {
+    "type": "get",
     "url": "/api/anchor_class",
     "title": "主播类-列表",
     "version": "1.0.0",
@@ -5773,13 +6197,20 @@
             "optional": false,
             "field": "data.online",
             "description": "<p>直播中</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "data.trailer",
+            "description": "<p>预告</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    \"data\": {\n        \"ad\": [\n            {\n                \"title\": \"\",\n                \"link\": \"\",\n                \"image\": \"/uploads/2018/02/28/35e9694b2fc8a48148d4ac415fa8a30d.jpg\"\n            }\n        ],\n        \"anchor\": [\n            {\n               \"id\": \"1\",\n                \"nickname\": \"aicode\",\n                \"header\": \"\",\n                \"v\": \"0\"\n            }\n        ],\n        \"online\": [\n            {\n                \"room_id\": \"4\",\n                \"title\": \"你的出生地址\",\n                \"cover_image\": \"/uploads/2018/01/31/a2e0b9485cb752ad7534fd8b86ebd233.png\",\n       \"play_url\": \"{\\\"rtmp\\\":\\\"rtmp:\\\\/\\\\/6077.liveplay.myqcloud.com\\\\/live\\\\/6077_zhumaidan-1-2\\\",\\\"flv\\\":\\\"http:\\\\/\\\\/6077.liveplay.myqcloud.com\\\\/live\\\\/6077_zhumaidan-1-2.flv\\\",\\\"m3u8\\\":\\\"http:\\\\/\\\\/6077.liveplay.myqcloud.com\\\\/live\\\\/6077_zhumaidan-1-2.m3u8\\\"}\",\n                \"live_tag_id\": \"0\",\n                \"anchor_uid\": \"1\",\n                \"views\": \"0\",\n                \"nickname\": \"aicode\",\n                \"v\": \"0\"\n            }\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": {\n        \"ad\": [\n            {\n                \"title\": \"\",\n                \"link\": \"\",\n                \"image\": \"/uploads/2018/02/28/35e9694b2fc8a48148d4ac415fa8a30d.jpg\"\n            }\n        ],\n        \"anchor\": [\n            {\n               \"id\": \"1\",\n                \"nickname\": \"aicode\",\n                \"header\": \"\",\n                \"v\": \"0\"\n            }\n        ],\n        \"online\": [\n            {\n                \"room_id\": \"4\",\n                \"title\": \"你的出生地址\",\n                \"cover_image\": \"/uploads/2018/01/31/a2e0b9485cb752ad7534fd8b86ebd233.png\",\n       \"play_url\": \"{\\\"rtmp\\\":\\\"rtmp:\\\\/\\\\/6077.liveplay.myqcloud.com\\\\/live\\\\/6077_zhumaidan-1-2\\\",\\\"flv\\\":\\\"http:\\\\/\\\\/6077.liveplay.myqcloud.com\\\\/live\\\\/6077_zhumaidan-1-2.flv\\\",\\\"m3u8\\\":\\\"http:\\\\/\\\\/6077.liveplay.myqcloud.com\\\\/live\\\\/6077_zhumaidan-1-2.m3u8\\\"}\",\n                \"live_tag_id\": \"0\",\n                \"anchor_uid\": \"1\",\n                \"views\": \"0\",\n                \"nickname\": \"aicode\",\n                \"v\": \"0\",\n                \"price\": \"0.00\"\n            }\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
