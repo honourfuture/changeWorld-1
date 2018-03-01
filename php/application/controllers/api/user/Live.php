@@ -74,8 +74,15 @@ class Live extends API_Controller {
 			'header' => $user['header'],
 		);
 
-		$ret['album'] = 0;//专辑
-		$ret['work'] = 0;//作品
+		//专辑
+		$this->load->model('Album_model');
+		$where = array('enable' => 1, 'anchor_uid' => $this->user_id);
+		$ret['album'] = $this->Album_model->count_by($where);
+
+		//作品
+		$this->load->model('Room_audio_model');
+		$where = array('enable' => 1, 'anchor_uid' => $this->user_id);
+		$ret['work'] = $this->Room_audio_model->count_by($where);
 
 		$this->ajaxReturn($ret);
 	}
@@ -92,7 +99,7 @@ class Live extends API_Controller {
 	 * @apiParam {String} sign 校验签名
 	 * @apiParam {String} cover_image 封面图
 	 * @apiParam {String} title 标题
-	 * @apiParam {String} live_class 直播类型 ,1,3,
+	 * @apiParam {String} live_class 直播类型
 	 * @apiParam {String} slide_photo 幻灯片 json
 	 * @apiParam {Number} start_at 开始时间 time 1519707307
 	 * @apiParam {Number} price 门票价格
