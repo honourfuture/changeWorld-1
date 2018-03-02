@@ -13,7 +13,7 @@ class Seller extends API_Controller {
     }
 
     /**
-	 * @api {get} /api/seller 店铺
+	 * @api {get} /api/seller 店铺-主页
 	 * @apiVersion 1.0.0
 	 * @apiName seller
 	 * @apiGroup api
@@ -45,8 +45,8 @@ class Seller extends API_Controller {
 	 */
 	public function index()
 	{
-		$seller_uid = $this->input->get('seller_uid');
-		$type = $this->input->get('type');
+		$seller_uid = $this->input->get_post('seller_uid');
+		$type = $this->input->get_post('type');
 
 		$this->load->model('Users_model');
 		$result = $this->Users_model->check_shop($seller_uid);
@@ -64,6 +64,9 @@ class Seller extends API_Controller {
 				$ret[$type] = $this->_goods($seller_uid);
 				break;
 			case 'info':
+				$this->load->model('Users_anchor_model');
+				$this->db->select('job,address,summary,anchor_photo,anchor_video');
+				$ret[$type] = $this->Users_anchor_model->get_by('user_id', $seller_uid);
 				break;
 			case 'album':
 				break;

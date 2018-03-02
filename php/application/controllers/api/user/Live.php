@@ -150,13 +150,15 @@ class Live extends API_Controller {
 	        $config = config_item('live');
 	        $QLive->setAppInfo($config['appid'], $config['api_key'], $config['push_key'], $config['bizid']);
 	        $channel_id = $this->Room_model->channel_id($this->user_id, $id);
+	        $play_url = $QLive->getPlayUrl($channel_id);
 	        $update = array(
 	        	'push_url' => $QLive->getPushUrl($channel_id).'&record=flv&record_interval=5400&record_type=audio',
-	        	'play_url' => json_encode($QLive->getPlayUrl($channel_id))
+	        	'play_url' => json_encode($play_url)
 	        );
 	        $this->Room_model->update($id, $update);
 
 	        $update['room_id'] = $id;
+	        $update['play_url'] = $play_url;
 			$this->ajaxReturn($update);
 		}else{
 			$this->ajaxReturn([], 1, '创建房间失败');

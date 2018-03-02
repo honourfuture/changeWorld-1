@@ -6195,22 +6195,22 @@
             "group": "Success 200",
             "type": "Object[]",
             "optional": false,
-            "field": "data.online",
-            "description": "<p>直播中</p>"
+            "field": "data.live",
+            "description": "<p>直播/预告</p>"
           },
           {
             "group": "Success 200",
-            "type": "Object[]",
+            "type": "String",
             "optional": false,
-            "field": "data.trailer",
-            "description": "<p>预告</p>"
+            "field": "data.live.live_status",
+            "description": "<p>状态 0预告 1直播中 2点播</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    \"data\": {\n        \"ad\": [\n            {\n                \"title\": \"\",\n                \"link\": \"\",\n                \"image\": \"/uploads/2018/02/28/35e9694b2fc8a48148d4ac415fa8a30d.jpg\"\n            }\n        ],\n        \"anchor\": [\n            {\n               \"id\": \"1\",\n                \"nickname\": \"aicode\",\n                \"header\": \"\",\n                \"v\": \"0\"\n            }\n        ],\n        \"online\": [\n            {\n                \"room_id\": \"4\",\n                \"title\": \"你的出生地址\",\n                \"cover_image\": \"/uploads/2018/01/31/a2e0b9485cb752ad7534fd8b86ebd233.png\",\n       \"play_url\": \"{\\\"rtmp\\\":\\\"rtmp:\\\\/\\\\/6077.liveplay.myqcloud.com\\\\/live\\\\/6077_zhumaidan-1-2\\\",\\\"flv\\\":\\\"http:\\\\/\\\\/6077.liveplay.myqcloud.com\\\\/live\\\\/6077_zhumaidan-1-2.flv\\\",\\\"m3u8\\\":\\\"http:\\\\/\\\\/6077.liveplay.myqcloud.com\\\\/live\\\\/6077_zhumaidan-1-2.m3u8\\\"}\",\n                \"live_tag_id\": \"0\",\n                \"anchor_uid\": \"1\",\n                \"views\": \"0\",\n                \"nickname\": \"aicode\",\n                \"v\": \"0\",\n                \"price\": \"0.00\"\n            }\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": {\n        \"ad\": [\n            {\n                \"title\": \"\",\n                \"link\": \"\",\n                \"image\": \"/uploads/2018/02/28/35e9694b2fc8a48148d4ac415fa8a30d.jpg\"\n            }\n        ],\n        \"anchor\": [\n            {\n               \"id\": \"1\",\n                \"nickname\": \"aicode\",\n                \"header\": \"\",\n                \"v\": \"0\"\n            }\n        ],\n        \"online\": [\n            {\n                \"room_id\": \"4\",\n                \"title\": \"你的出生地址\",\n                \"cover_image\": \"/uploads/2018/01/31/a2e0b9485cb752ad7534fd8b86ebd233.png\",\n       \"play_url\": \"{\\\"rtmp\\\":\\\"rtmp:\\\\/\\\\/6077.liveplay.myqcloud.com\\\\/live\\\\/6077_zhumaidan-1-2\\\",\\\"flv\\\":\\\"http:\\\\/\\\\/6077.liveplay.myqcloud.com\\\\/live\\\\/6077_zhumaidan-1-2.flv\\\",\\\"m3u8\\\":\\\"http:\\\\/\\\\/6077.liveplay.myqcloud.com\\\\/live\\\\/6077_zhumaidan-1-2.m3u8\\\"}\",\n                \"live_tag_id\": \"0\",\n                \"anchor_uid\": \"1\",\n                \"views\": \"0\",\n                \"nickname\": \"aicode\",\n                \"v\": \"0\",\n                \"price\": \"0.00\"\n                \"live_status\": \"0\"\n            }\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
@@ -7355,7 +7355,7 @@
   {
     "type": "get",
     "url": "/api/seller",
-    "title": "店铺",
+    "title": "店铺-主页",
     "version": "1.0.0",
     "name": "seller",
     "group": "api",
@@ -8426,6 +8426,41 @@
             "optional": false,
             "field": "anchor_video",
             "description": "<p>主播视频 json</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "job",
+            "description": "<p>职业</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "province_id",
+            "description": "<p>省ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "city_id",
+            "description": "<p>市ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "area_id",
+            "description": "<p>区ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "address",
+            "description": "<p>详细地址</p>"
           }
         ]
       }

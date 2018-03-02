@@ -22,7 +22,7 @@ class Users_anchor_model extends MY_Model
     public function certificate()
     {
     	return array(
-    		1 => '身份证',
+    		1 => '二代身份证',
     		2 => '港澳证'
     	);
     }
