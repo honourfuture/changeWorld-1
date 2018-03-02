@@ -33,7 +33,13 @@ import ShopManager from './ShopManager';
 import LiveClass from './LiveClass';
 import LiveTag from './LiveTag';
 import SpecialTag from './SpecialTag';
+import SpecialClass from './SpecialClass';
 export const panelsList =  [
+    {
+        path:'/live/SpecialClass',
+        component:SpecialClass,
+        title:'专辑类型',
+    },
     {
         path:'/live/SpecialTag',
         component:SpecialTag,
