@@ -90,6 +90,11 @@ class Anchor extends API_Controller {
 	 * @apiParam {String} other 其他说明
 	 * @apiParam {String} anchor_photo 主播照 json
 	 * @apiParam {String} anchor_video 主播视频 json
+	 * @apiParam {String} job 职业
+	 * @apiParam {Number} province_id 省ID
+	 * @apiParam {Number} city_id 市ID
+	 * @apiParam {Number} area_id 区ID
+	 * @apiParam {String} address 详细地址
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -117,7 +122,8 @@ class Anchor extends API_Controller {
 		$params = elements(
 			array(
 				'mobi', 'email', 'nickname', 'realname', 'certificate_type', 'certificate_no', 'certificate_photo',
-				'class_id', 'summary', 'other', 'anchor_photo', 'anchor_video'
+				'class_id', 'summary', 'other', 'anchor_photo', 'anchor_video',
+				'job', 'province_id', 'city_id', 'area_id', 'address'
 			),
 			$this->input->post(),
 			UPDATE_VALID
@@ -127,10 +133,14 @@ class Anchor extends API_Controller {
 
 		if($anchor = $this->Users_anchor_model->get_by('user_id', $this->user_id)){
 			if($anchor['status'] == 1){
-				$this->ajaxReturn([], 1, '已认证请勿重复提交信息');
+				// $this->ajaxReturn([], 1, '已认证请勿重复提交信息');
+				unset($params['mobi']);unset($params['email']);unset($params['nickname']);
+				unset($params['realname']);unset($params['certificate_type']);unset($params['certificate_no']);
+				unset($params['certificate_photo']);unset($params['class_id']);unset($params['other']);
+			}else{
+				$params['status'] = 0;//初始化
 			}
 
-			$params['status'] = 0;//初始化
 			$this->Users_anchor_model->update($anchor['id'], $params);
 		}else{
 			$this->Users_anchor_model->insert($params);
