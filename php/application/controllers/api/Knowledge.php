@@ -115,8 +115,8 @@ class Knowledge extends API_Controller
      * @apiSuccess {Object} data 接口数据集
      * @apiSuccess {Object[]} data.ad 轮播广告
      * @apiSuccess {Object[]} data.anchor 热门主播
-     * @apiSuccess {Object[]} data.online 直播中
-     * @apiSuccess {Object[]} data.trailer 预告
+     * @apiSuccess {Object[]} data.live 直播/预告
+     * @apiSuccess {String} data.live.live_status 状态 0预告 1直播中 2点播
      *
      * @apiSuccessExample {json} Success-Response:
      * {
@@ -148,6 +148,7 @@ class Knowledge extends API_Controller
      *                 "nickname": "aicode",
      *                 "v": "0",
      *                 "price": "0.00"
+     *                 "live_status": "0"
      *             }
      *         ]
      *     },
@@ -177,7 +178,7 @@ class Knowledge extends API_Controller
         //热门直播
         $this->load->model('Room_model');
 
-        $ret['online'] = array();
+        $online = array();
         $QLive = new Query();
         $config = config_item('live');
         $QLive->setAppInfo($config['appid'], $config['api_key'], $config['push_key'], $config['bizid']);
@@ -195,28 +196,32 @@ class Knowledge extends API_Controller
 
                 $order_by = array('sort' => 'desc', 'id' => 'desc');
                 $this->db->select('id as room_id,title,cover_image,play_url,live_tag_id,anchor_uid,views,price');
-                $ret['online'] = $this->Room_model->order_by($order_by)->get_many($a_room_id);
+                $online = $this->Room_model->order_by($order_by)->get_many($a_room_id);
             }
         }
-        $ret['online'] = $this->live_anchor($ret['online']);
+        $online = $this->live_anchor($online, 1);
         //预告直播
         $order_by = array('sort' => 'desc', 'id' => 'desc');
         $this->db->select('id as room_id,title,cover_image,play_url,live_tag_id,anchor_uid,views,price');
         $where = array('start_at >' => time());
         !empty($a_room_id) && $this->db->where_not_in('id', $a_room_id);
-        $ret['trailer'] = $this->Room_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
-        $ret['trailer'] = $this->live_anchor($ret['trailer']);
+        $trailer = $this->Room_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
+        $trailer = $this->live_anchor($trailer, 0);
+
+        $ret['live'] = array_merge($online, $trailer);
 
         $this->ajaxReturn($ret);
     }
 
-    protected function live_anchor($live)
+    //$status 0预告 1直播中 2点播
+    protected function live_anchor($live, $status)
     {
         $a_uid = $a_tag = array();
         if($live){
             foreach($live as $key=>$item){
                 $live[$key]['play_url'] = json_decode($item['play_url'], true);
                 $live[$key]['tag_name'] = '';
+                $live[$key]['live_status'] = $status;
                 $a_uid[] = $item['anchor_uid'];
                 $item['live_tag_id'] && $a_tag[] = $item['live_tag_id'];
             }
