@@ -7355,7 +7355,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/api/seller",
-    "title": "店铺",
+    "title": "店铺-主页",
     "version": "1.0.0",
     "name": "seller",
     "group": "api",
@@ -8426,6 +8426,41 @@ define({ "api": [
             "optional": false,
             "field": "anchor_video",
             "description": "<p>主播视频 json</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "job",
+            "description": "<p>职业</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "province_id",
+            "description": "<p>省ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "city_id",
+            "description": "<p>市ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "area_id",
+            "description": "<p>区ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "address",
+            "description": "<p>详细地址</p>"
           }
         ]
       }

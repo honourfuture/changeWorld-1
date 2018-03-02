@@ -214,7 +214,8 @@ class Knowledge extends API_Controller
     {
         $a_uid = $a_tag = array();
         if($live){
-            foreach($live as $item){
+            foreach($live as $key=>$item){
+                $live[$key]['play_url'] = json_decode($item['play_url'], true);
                 $a_uid[] = $item['anchor_uid'];
                 $item['live_tag_id'] && $a_tag[] = $item['live_tag_id'];
             }

@@ -140,14 +140,14 @@ class MY_Controller extends CI_Controller
             $token = $this->get_admin_token();
             $sign_key = $this->_admin_key;
         }else{
-            $this->ajaxReturn('', LOGIN_STATUS, '非法请求来源');
+            $this->ajaxReturn([], LOGIN_STATUS, '非法请求来源');
         }
 
         if(empty($token)){
-            $this->ajaxReturn('', LOGIN_STATUS, '授权token为空');
+            $this->ajaxReturn([], LOGIN_STATUS, '授权token为空');
         }
         if($sign != $this->get_sign($pri_id, $token, $sign_key)){
-            $this->ajaxReturn('', LOGIN_STATUS, '签名校验错误');
+            $this->ajaxReturn([], LOGIN_STATUS, '签名校验错误');
         }
     }
 
@@ -235,7 +235,7 @@ class MY_Controller extends CI_Controller
     protected function check_operation()
     {
         if($this->user_id){
-            $this->ajaxReturn('', ACCESS_REQUEST, '非法操作');
+            $this->ajaxReturn([], ACCESS_REQUEST, '非法操作');
         }
     }
 
@@ -292,7 +292,7 @@ class API_Controller extends MY_Controller
         if($id = $this->Users_model->insert($data)){
             $this->user_login_success($this->Users_model->get($id));
         }else{
-            $this->ajaxReturn('', LOGIN_STATUS, '保存注册信息失败');
+            $this->ajaxReturn([], LOGIN_STATUS, '保存注册信息失败');
         }
     }
 
@@ -301,7 +301,7 @@ class API_Controller extends MY_Controller
         $this->user_id = $user_info['id'];
         $token = $this->set_user_token();
         if(empty($token)){
-            $this->ajaxReturn('', LOGIN_STATUS, '获取授权token失败');
+            $this->ajaxReturn([], LOGIN_STATUS, '获取授权token失败');
         }
         $sign = $this->get_sign($this->user_id, $token, $this->_user_key);
 
