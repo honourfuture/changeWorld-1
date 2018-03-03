@@ -69,6 +69,7 @@ class Seller extends API_Controller {
 				$ret[$type] = $this->Users_anchor_model->get_by('user_id', $seller_uid);
 				break;
 			case 'album':
+				$ret[$type] = $this->_album($seller_uid);
 				break;
 			case 'live':
 				break;
@@ -83,6 +84,28 @@ class Seller extends API_Controller {
 	protected function search()
 	{
 		
+	}
+
+	protected function _album($seller_uid)
+	{
+		$ret = array('count' => 0, 'list' => array());
+		$where = array('enable' => 1);
+		$where['anchor_uid'] = $seller_uid;
+		if($this->user_id != $seller_uid){
+			$where['public'] = 1;
+		}
+		$this->load->model('Album_model');
+
+		$this->search();
+		$ret['count'] = $this->Album_model->count_by($where);
+		if($ret['count']){
+			$order_by = array('sort' => 'desc', 'updated_at' => 'desc');
+			$this->search();
+			$this->db->select('id,cover_image,title,price');
+			$ret['list'] = $this->Album_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
+		}
+
+		return $ret;
 	}
 
 	protected function _goods($seller_uid)

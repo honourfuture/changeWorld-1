@@ -168,7 +168,7 @@ class Knowledge extends API_Controller
         $ret = array();
         //广告图
         $this->load->model('Ad_position_model');
-        $ad_position_id = $this->Ad_position_model->init('knowledge', 'live');
+        $ad_position_id = $this->Ad_position_model->get_ad_position_id('knowledge', 'live');
         $ret['ad'] = $this->ad($ad_position_id, 8);
         //热门推荐
         $this->load->model('Users_model');

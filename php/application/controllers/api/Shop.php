@@ -55,7 +55,7 @@ class Shop extends API_Controller {
 			$ret['goods'] = $this->_goods($goods_class_id);
 
 			$this->load->model('Ad_position_model');
-			$ad_position_id = $this->Ad_position_model->init('shop', $goods_class_id);
+			$ad_position_id = $this->Ad_position_model->get_ad_position_id('shop', $goods_class_id);
             $ret['ad'] = $this->ad($ad_position_id, 5);
 
 			$this->ajaxReturn($ret);

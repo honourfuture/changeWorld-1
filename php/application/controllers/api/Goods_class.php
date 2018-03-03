@@ -140,7 +140,7 @@ class Goods_class extends API_Controller {
 				$id = $flag;
 				//商品类默认创建分类
 				$this->load->model('Ad_position_model');
-				$this->Ad_position_model->insert(array('name' => $params['name']));
+				$this->Ad_position_model->insert(array('name' => '商城-'.$params['name']));
 			}
 		}
 

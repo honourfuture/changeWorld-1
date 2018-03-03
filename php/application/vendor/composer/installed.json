@@ -246,5 +246,51 @@
             }
         ],
         "description": "腾讯云Live直播SDK"
+    },
+    {
+        "name": "rongcloud/php-sdk",
+        "version": "v2.0.2",
+        "version_normalized": "2.0.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/rongcloud/server-sdk-php-composer.git",
+            "reference": "602a7e4df86e43e115247f135d4d64c65dcc8d8e"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/rongcloud/server-sdk-php-composer/602a7e4df86e43e115247f135d4d64c65dcc8d8e.zip",
+            "reference": "602a7e4df86e43e115247f135d4d64c65dcc8d8e",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "time": "2017-04-28T06:32:09+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "RongCloud\\": "src/RongCloud"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Rong Cloud",
+                "email": "support@rongcloud.cn",
+                "homepage": "https://github.com/rongcloud/"
+            }
+        ],
+        "description": "Rong Cloud Server SDK in PHP.",
+        "homepage": "http://rong.io",
+        "keywords": [
+            "rlcoud",
+            "rong cloud",
+            "rongCloud",
+            "sdk"
+        ]
     }
 ]

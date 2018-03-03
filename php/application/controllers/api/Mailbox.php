@@ -72,11 +72,11 @@ class Mailbox extends API_Controller {
 			$info && $ret['read_ids'] = $info['ids'];
 
 			$where['enable'] = 1;
-			$this->db->select('id,title,summary,updated_at');
+			$select = 'id,title,summary,updated_at';
 		}else{
 			$deleted = (int)$this->input->get('deleted');
 			$where['deleted'] = $deleted;
-			$this->db->select('id,title,created_at,updated_at,enable,sort,summary');
+			$select = 'id,title,created_at,updated_at,enable,sort,summary';
 		}
 
 		$this->search();
@@ -84,6 +84,7 @@ class Mailbox extends API_Controller {
 		if($ret['count']){
 			$order_by = array('sort' => 'desc', 'id' => 'desc');
 			$this->search();
+			$this->db->select($select);
 			$ret['list'] = $this->Mailbox_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 		}
 
@@ -197,7 +198,7 @@ class Mailbox extends API_Controller {
 			);
 			$this->check_params('edit', $params);
 			if($params['deleted'] == 1){
-				$update = array('deleted' => 1);
+				$update = array('deleted' => 1, 'enable' => 0);
 				$flag = $this->Mailbox_model->update_by(array('id' => $id), $update);
 			}else{
 				unset($params['deleted']);
