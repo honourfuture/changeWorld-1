@@ -1,13 +1,12 @@
-
 import React from "react";
 import { action } from "mobx";
 import { BaseComponent, Base } from "../../common";
 import { List, NavBar, Flex } from "antd-mobile";
-import "./MessAgeCenter.less";
+import "./MessageCenter.less";
 import { icon } from "../../images";
 
 const Item = List.Item;
-export default class MessAgeCenter extends BaseComponent {
+export default class MessageCenter extends BaseComponent {
     store = {
         list: [],
         isRead: ""
@@ -52,7 +51,7 @@ export default class MessAgeCenter extends BaseComponent {
         });
 
         return (
-            <div className="MessAgeCenter">
+            <div className="MessageCenter">
                 <NavBar
                     className="base-line"
                     mode="light"

@@ -18,7 +18,7 @@ export class Hots extends BaseComponent {
             goods: [],
             refreshing: false,
             height: 0,
-            isLoading: true,
+            isLoading: false,
             ad: []
         };
     }
@@ -36,12 +36,16 @@ export class Hots extends BaseComponent {
                 this.store.ad = res.data.ad;
                 this.store.goods = res.data.goods;
                 this.store.anchor = res.data.anchor;
-                this.store.height =
-                    document.documentElement.clientHeight -
-                    ReactDOM.findDOMNode(this.listView).offsetTop -
-                    88;
+                this.setListHeight();
             }
         );
+    }
+    @action.bound
+    setListHeight() {
+        this.store.height =
+            document.documentElement.clientHeight -
+            ReactDOM.findDOMNode(this.listView).offsetTop -
+            88;
     }
     @action.bound
     renderGoodsItem(rowData, sectionID, rowID) {
@@ -92,15 +96,19 @@ export class Hots extends BaseComponent {
         const dataSource = this.dataSource.cloneWithRows(goods.slice());
         return (
             <div className="Hots base-content">
-                <Carousel autoplay={true} infinite>
-                    {ad.map(({ image }) => (
-                        <NetImg
-                            key={image}
-                            src={Base.getImgUrl(image)}
-                            style={{ width: "100%" }}
-                        />
-                    ))}
-                </Carousel>
+                {ad.length > 0 ? (
+                    <Carousel autoplay={true} infinite>
+                        {ad.map(({ image, link }, index) => (
+                            <NetImg
+                                key={index}
+                                onClick={() => Base.push(link)}
+                                src={Base.getImgUrl(image)}
+                                style={{ width: "100%" }}
+                                onLoaded={this.setListHeight}
+                            />
+                        ))}
+                    </Carousel>
+                ) : null}
                 <WhiteSpace size="md" />
                 <div className="anchor-recommend">
                     <span>主播推荐</span>

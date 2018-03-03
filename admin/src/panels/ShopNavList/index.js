@@ -17,7 +17,7 @@ export default class ShopNavList extends BaseComponent {
             {
                 title: "ID",
                 dataIndex: "id",
-                render: (text, record) => this.renderInput(text, record, "id")
+                render: (text, record) => this.renderText(text, record, "id")
             },
             {
                 title: "排序",
@@ -59,28 +59,28 @@ export default class ShopNavList extends BaseComponent {
                                     </a>
                                 </span>
                             ) : (
-                                <span>
-                                    <a
-                                        onClick={() =>
-                                            this.onEditChange(
-                                                id,
-                                                true,
-                                                "editable"
-                                            )
-                                        }
-                                    >
-                                        编辑
+                                    <span>
+                                        <a
+                                            onClick={() =>
+                                                this.onEditChange(
+                                                    id,
+                                                    true,
+                                                    "editable"
+                                                )
+                                            }
+                                        >
+                                            编辑
                                     </a>
-                                    <Popconfirm
-                                        title="确认删除?"
-                                        okText="确定"
-                                        cancelText="取消"
-                                        onConfirm={() => this.onDelete(id)}
-                                    >
-                                        <a className="ml10 gray">删除</a>
-                                    </Popconfirm>
-                                </span>
-                            )}
+                                        <Popconfirm
+                                            title="确认删除?"
+                                            okText="确定"
+                                            cancelText="取消"
+                                            onConfirm={() => this.onDelete(id)}
+                                        >
+                                            <a className="ml10 gray">删除</a>
+                                        </Popconfirm>
+                                    </span>
+                                )}
                         </div>
                     );
                 }
@@ -104,8 +104,8 @@ export default class ShopNavList extends BaseComponent {
                         }
                     />
                 ) : (
-                    text
-                )}
+                        text
+                    )}
             </div>
         );
     }
