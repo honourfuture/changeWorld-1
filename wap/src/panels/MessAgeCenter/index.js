@@ -2,7 +2,7 @@ import React from "react";
 import { action } from "mobx";
 import { BaseComponent, Base } from "../../common";
 import { List, NavBar, Flex } from "antd-mobile";
-import "./MessageCenter.less";
+import "./MessAgeCenter.less";
 import { icon } from "../../images";
 
 const Item = List.Item;
