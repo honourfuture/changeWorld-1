@@ -6,6 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @link www.aicode.org.cn
  */
 use QCloud\Live\Query;
+use RongCloud\RongCloud;
 class Live extends API_Controller {
 
 	public function __construct()
@@ -110,12 +111,15 @@ class Live extends API_Controller {
 	 * @apiSuccess {String} message 接口信息描述
 	 * @apiSuccess {Object} data 接口数据集
 	 * @apiSuccess {Number} data.room_id 房间号
+	 * @apiSuccess {Number} data.chat_room_id 聊天室ID
+	 * @apiSuccess {String} data.token 融云token
 	 * @apiSuccess {String} data.push_url 推送地址
 	 * @apiSuccess {Object} data.play_url 播放地址
 	 *
 	 * @apiSuccessExample {json} Success-Response:
 	 * {
 	 *    "data": {
+	 *		  "chat_room_id": 1,
 	 *        "room_id": 1,
 	 *        "push_url": "rtmp://6077.livepush.myqcloud.com/live/6077_zhumaidan-1-2?bizid=6077&txSecret=cbe8817ff9e6185dd783b09c99ea9f20&txTime=5A7AF498",
 	 *        "play_url": "{\"rtmp\":\"rtmp:\\/\\/6077.liveplay.myqcloud.com\\/live\\/6077_zhumaidan-1-2\",\"flv\":\"http:\\/\\/6077.liveplay.myqcloud.com\\/live\\/6077_zhumaidan-1-2.flv\",\"m3u8\":\"http:\\/\\/6077.liveplay.myqcloud.com\\/live\\/6077_zhumaidan-1-2.m3u8\"}"
@@ -146,6 +150,7 @@ class Live extends API_Controller {
 		$this->check_add_params('add', $data);
 		$this->load->model('Room_model');
 		if($id = $this->Room_model->insert($data)){
+			//直播
 			$QLive = new Query();
 	        $config = config_item('live');
 	        $QLive->setAppInfo($config['appid'], $config['api_key'], $config['push_key'], $config['bizid']);
@@ -155,10 +160,38 @@ class Live extends API_Controller {
 	        	'push_url' => $QLive->getPushUrl($channel_id).'&record=flv&record_interval=5400&record_type=audio',
 	        	'play_url' => json_encode($play_url)
 	        );
+	        //融云
+	        $config = config_item('rongcloud');
+        	$rongCloud = new RongCloud($config['app_key'], $config['app_secret']);
+        	//聊天室
+	        $update['chat_room_id'] = 0;
+        	$chat_room_id = $id;
+        	$response = $rongCloud->Chatroom()->create([$chat_room_id => $data['title']]);
+        	if($response && $result = json_decode($response, true)){
+        		if($result['code'] == 200){
+        			$update['chat_room_id'] = $chat_room_id;
+        		}
+        	}
+        	//token
+        	$token = '';
+        	$user = $this->get_user();
+        	$this->load->model('Users_model');
+        	$response = $rongCloud->user()->getToken(
+        		$this->user_id,
+        		$user['nickname'],
+        		$this->Users_model->get_header($user['header'])
+        	);
+        	if($response && $result = json_decode($response, true)){
+        		if($result['code'] == 200){
+        			$token = $result['token'];
+        		}
+        	}
+
 	        $this->Room_model->update($id, $update);
 
 	        $update['room_id'] = $id;
 	        $update['play_url'] = $play_url;
+	        $update['token'] = $token;
 			$this->ajaxReturn($update);
 		}else{
 			$this->ajaxReturn([], 1, '创建房间失败');

@@ -15,6 +15,10 @@ class ComposerStaticInit3790068b8dbf2bd53b30a84b0a522fc6
         array (
             'Symfony\\Component\\Finder\\' => 25,
         ),
+        'R' => 
+        array (
+            'RongCloud\\' => 10,
+        ),
         'Q' => 
         array (
             'QCloud\\' => 7,
@@ -29,6 +33,10 @@ class ComposerStaticInit3790068b8dbf2bd53b30a84b0a522fc6
         'Symfony\\Component\\Finder\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/finder',
+        ),
+        'RongCloud\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/rongcloud/php-sdk/src/RongCloud',
         ),
         'QCloud\\' => 
         array (

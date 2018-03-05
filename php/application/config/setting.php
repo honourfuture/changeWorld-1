@@ -43,3 +43,9 @@ $config['live'] = array(
 	'push_key' => '72b6cd0cf7b4bed16368193a244ee97d',
 	'bizid' => '6077'
 );
+
+// 融云
+$config['rongcloud'] = array(
+	'app_key' => 'p5tvi9dspn5p4',
+	'app_secret' => 'JzSzGK49rqMy'
+);

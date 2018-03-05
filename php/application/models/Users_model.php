@@ -21,6 +21,11 @@ class Users_model extends MY_Model
         parent::__construct();
     }
 
+    public function get_header($header)
+    {
+        return strpos($header, 'http') === false ? $this->config->base_url($header) : $header;
+    }
+
     public function set_password()
     {
 

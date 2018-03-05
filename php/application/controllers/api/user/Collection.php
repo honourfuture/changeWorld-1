@@ -82,6 +82,7 @@ class Collection extends API_Controller {
 						$fans = $this->Users_collection_model->get_many_count_fans($a_id);
 						foreach($ret['list'] as $key=>$item){
 							$ret['list'][$key]['fans'] = isset($fans[$item['id']]) ? $fans[$item['id']] : 0;
+							$ret['list'][$key]['music'] = 0;
 						}
 					}
 				}

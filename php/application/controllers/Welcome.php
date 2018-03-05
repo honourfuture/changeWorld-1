@@ -2,6 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 use QCloud\Live\Query;
+use RongCloud\RongCloud;
 
 class Welcome extends Web_Controller {
 
@@ -24,6 +25,17 @@ class Welcome extends Web_Controller {
 	{
 		$this->load->view('welcome_message');
 	}
+
+    public function chat()
+    {
+        $config = config_item('rongcloud');
+        $rongCloud = new RongCloud($config['app_key'], $config['app_secret']);
+        $result = $rongCloud->user()->getToken('userId1', 'username', 'http://www.rongcloud.cn/images/logo.png');
+        echo $result;
+
+        // echo $rongCloud->Chatroom()->create([1 => '龙哥聊天室']);
+        // echo $rongCloud->Chatroom()->query(1);
+    }
 
     public function room()
     {
