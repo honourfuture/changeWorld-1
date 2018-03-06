@@ -35,4 +35,23 @@ class Room_audio_model extends MY_Model
     	}
     	return $return;
     }
+
+    public function get_many_count_music($a_user_id)
+    {
+        $this->db->select('anchor_uid, COUNT(id) AS sum');
+        $this->db->from($this->_table);
+        $this->db->where('album_id >', 0);
+        $this->db->where_in('anchor_uid', $a_user_id);
+        $this->db->group_by('anchor_uid');
+        $rows = $this->db->get()->result_array();
+
+        $result = array();
+        if($rows){
+            foreach($rows as $item){
+                $result[$item['anchor_uid']] = $item['sum'];
+            }
+        }
+
+        return $result;
+    }
 }

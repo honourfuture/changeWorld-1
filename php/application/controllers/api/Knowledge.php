@@ -90,9 +90,11 @@ class Knowledge extends API_Controller
             }
             if($a_id){
                 $fans = $this->Users_collection_model->get_many_count_fans($a_id);
+                $this->load->model('Room_audio_model');
+                $audio = $this->Room_audio_model->get_many_count_music($a_id);
                 foreach($ret['list'] as $key=>$item){
                     $ret['list'][$key]['fans'] = isset($fans[$item['id']]) ? $fans[$item['id']] : 0;
-                    $ret['list'][$key]['music'] = 0;
+                    $ret['list'][$key]['music'] = isset($audio[$item['id']]) ? $audio[$item['id']] : 0;
                 }
             }
         }
@@ -199,62 +201,17 @@ class Knowledge extends API_Controller
                 $online = $this->Room_model->order_by($order_by)->get_many($a_room_id);
             }
         }
-        $online = $this->live_anchor($online, 1);
+        $online = $this->Room_model->live_anchor($online, 1);
         //预告直播
         $order_by = array('sort' => 'desc', 'id' => 'desc');
         $this->db->select('id as room_id,title,cover_image,play_url,live_tag_id,anchor_uid,views,price');
         $where = array('start_at >' => time());
         !empty($a_room_id) && $this->db->where_not_in('id', $a_room_id);
         $trailer = $this->Room_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
-        $trailer = $this->live_anchor($trailer, 0);
+        $trailer = $this->Room_model->live_anchor($trailer, 0);
 
         $ret['live'] = array_merge($online, $trailer);
 
         $this->ajaxReturn($ret);
-    }
-
-    //$status 0预告 1直播中 2点播
-    protected function live_anchor($live, $status)
-    {
-        $a_uid = $a_tag = array();
-        if($live){
-            foreach($live as $key=>$item){
-                $live[$key]['play_url'] = json_decode($item['play_url'], true);
-                $live[$key]['tag_name'] = '';
-                $live[$key]['live_status'] = $status;
-                $a_uid[] = $item['anchor_uid'];
-                $item['live_tag_id'] && $a_tag[] = $item['live_tag_id'];
-            }
-
-            //主播信息
-            $this->db->select('id,nickname,v');
-            $user = $this->Users_model->get_many($a_uid);
-            $k_user = array();
-            foreach($user as $item){
-                $key = $item['id'];
-                unset($item['id']);
-                $k_user[$key] = $item;
-            }
-
-            //直播标签
-            $k_tag = array();
-            if($a_tag){
-                $this->load->model('Live_tag_model');
-                $this->db->select('id,name as tag_name');
-                $tag = $this->Live_tag_model->get_many($a_tag);
-                foreach($tag as $item){
-                    $key = $item['id'];
-                    unset($item['id']);
-                    $k_tag[$key] = $item;
-                }
-            }
-
-            foreach($live as $key=>$item){
-                isset($k_user[$item['anchor_uid']]) && $live[$key] = array_merge($live[$key], $k_user[$item['anchor_uid']]);
-                isset($k_tag[$item['live_tag_id']]) && $live[$key] = array_merge($live[$key], $k_user[$item['anchor_uid']]);
-            }
-        }
-
-        return $live;
     }
 }
