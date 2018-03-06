@@ -112,7 +112,6 @@ class Live extends API_Controller {
 	 * @apiSuccess {Object} data 接口数据集
 	 * @apiSuccess {Number} data.room_id 房间号
 	 * @apiSuccess {Number} data.chat_room_id 聊天室ID
-	 * @apiSuccess {String} data.token 融云token
 	 * @apiSuccess {String} data.push_url 推送地址
 	 * @apiSuccess {Object} data.play_url 播放地址
 	 *
@@ -173,7 +172,7 @@ class Live extends API_Controller {
         		}
         	}
         	//token
-        	$token = '';
+        	/*$token = '';
         	$user = $this->get_user();
         	$this->load->model('Users_model');
         	$response = $rongCloud->user()->getToken(
@@ -185,13 +184,13 @@ class Live extends API_Controller {
         		if($result['code'] == 200){
         			$token = $result['token'];
         		}
-        	}
+        	}*/
 
 	        $this->Room_model->update($id, $update);
 
 	        $update['room_id'] = $id;
 	        $update['play_url'] = $play_url;
-	        $update['token'] = $token;
+	        // $update['token'] = $token;
 			$this->ajaxReturn($update);
 		}else{
 			$this->ajaxReturn([], 1, '创建房间失败');

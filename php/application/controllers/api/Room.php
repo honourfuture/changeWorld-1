@@ -77,13 +77,11 @@ class Room extends API_Controller {
 	 * @apiSuccess {String} message 接口信息描述
 	 * @apiSuccess {Object} data 接口数据集
 	 * @apiSuccess {Number} data.chat_room_id 聊天室ID
-	 * @apiSuccess {String} data.token 融云token
 	 *
 	 * @apiSuccessExample {json} Success-Response:
 	 * {
 	 *     "data": {
 	 *         "chat_room_id": 2,
-	 *         "token": "OV/rMsT5+bU8tsuVLAExKFPVSOwECud2tsMN8Xc0GyUbpMpKxxspaz7dwTRsWKWa2sMrptl+mtrN6oRHZET/Rw=="
 	 *     },
 	 *     "status": 0,
 	 *     "message": "成功"
@@ -103,7 +101,7 @@ class Room extends API_Controller {
 			$ret = array();
 			$update = array();
 			if($info['anchor_uid'] != $this->user_id){
-				$update = array('views' => $info['views'] + 1);
+				$update['views'] = $info['views'] + 1;
 				// $this->Room_model->update($room_id, $update);
 			}
 			//融云
@@ -122,7 +120,7 @@ class Room extends API_Controller {
         	}
         	$update && $this->Room_model->update($room_id, $update);
         	//token
-        	$token = '';
+        	/*$token = '';
         	$user = $this->get_user();
         	$this->load->model('Users_model');
         	$response = $rongCloud->user()->getToken(
@@ -135,7 +133,7 @@ class Room extends API_Controller {
         			$token = $result['token'];
         		}
         	}
-        	$ret['token'] = $token;
+        	$ret['token'] = $token;*/
 
 			$this->ajaxReturn($ret);
 		}else{
