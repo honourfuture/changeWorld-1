@@ -89,6 +89,10 @@ const menuData = [
             {
                 name: "专辑标签",
                 path: "SpecialTag"
+            },
+            {
+                name: "礼物管理",
+                path: "GiftManager"
             }
         ]
     },

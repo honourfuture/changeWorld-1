@@ -34,7 +34,13 @@ import LiveClass from './LiveClass';
 import LiveTag from './LiveTag';
 import SpecialTag from './SpecialTag';
 import SpecialClass from './SpecialClass';
+import GiftManager from './GiftManager';
 export const panelsList =  [
+    {
+        path:'/live/GiftManager',
+        component:GiftManager,
+        title:'礼物管理',
+    },
     {
         path:'/live/SpecialClass',
         component:SpecialClass,
