@@ -18,4 +18,21 @@ class Room_audio_model extends MY_Model
     {
         parent::__construct();
     }
+
+    public function get_audio_info_by_album($a_album_id){
+    	$this->db->select('album_id,count(`id`) as audio_num,sum(`play_times`) as play_times');
+    	$this->db->where_in('album_id', $a_album_id);
+    	$this->db->group_by('album_id');
+    	$result = $this->db->get($this->_table)->result_array();
+
+    	$return = array();
+    	if($result){
+    		foreach($result as $item){
+    			$album_id = $item['album_id'];
+    			unset($item['album_id']);
+    			$return[$album_id] = $item;
+    		}
+    	}
+    	return $return;
+    }
 }

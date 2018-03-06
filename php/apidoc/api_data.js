@@ -7792,6 +7792,190 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/api/seller/album",
+    "title": "店铺-更多专题",
+    "version": "1.0.0",
+    "name": "seller_album",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/seller/album"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "seller_uid",
+            "description": "<p>店铺唯一ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "data.album",
+            "description": "<p>专题</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"album\": {\n            \"count\": 1,\n            \"list\": [\n                {\n                    \"id\": \"7\",\n                    \"cover_image\": \"/uploads/2018/01/31/a2e0b9485cb752ad7534fd8b86ebd233.png\",\n                    \"title\": \"你的出生地址\",\n                    \"price\": \"10000.00\",\n                    \"audio_num\": \"1\",\n                    \"play_times\": \"0\"\n                }\n            ]\n        }\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Seller.php",
+    "groupTitle": "api"
+  },
+  {
+    "type": "get",
+    "url": "/api/seller/audio",
+    "title": "店铺-更多音频",
+    "version": "1.0.0",
+    "name": "seller_audio",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/seller/audio"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "seller_uid",
+            "description": "<p>店铺唯一ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "data.audio",
+            "description": "<p>音频</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"album\": {\n            \"count\": 1,\n            \"list\": [\n                {\n                    \"id\": \"3\",\n                    \"cover_image\": \"/uploads/2018/01/31/a2e0b9485cb752ad7534fd8b86ebd233.png\",\n                    \"title\": \"你的出生地址\",\n                    \"price\": \"10000.00\",\n                    \"updated_at\": \"2018-03-01 18:38:43\",\n                    \"duration\": \"404\",\n                    \"play_times\": \"0\"\n                }\n            ]\n        }\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Seller.php",
+    "groupTitle": "api"
+  },
+  {
+    "type": "get",
     "url": "/api/seller/goods",
     "title": "店铺-更多商品",
     "version": "1.0.0",
@@ -7851,7 +8035,7 @@ define({ "api": [
             "type": "Object",
             "optional": false,
             "field": "data",
-            "description": "<p>接口数据集 推荐商品</p>"
+            "description": "<p>接口数据集</p>"
           },
           {
             "group": "Success 200",
@@ -7866,6 +8050,98 @@ define({ "api": [
         {
           "title": "Success-Response:",
           "content": "{\n\t    \"data\": [\n\t        {\n\t            \"id\": \"1\",\n\t            \"name\": \"热门\"\n\t        },\n\t        {\n\t            \"id\": \"2\",\n\t            \"name\": \"靓号\"\n\t        }\n\t    ],\n\t    \"status\": 0,\n\t    \"message\": \"成功\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Seller.php",
+    "groupTitle": "api"
+  },
+  {
+    "type": "get",
+    "url": "/api/seller/live",
+    "title": "店铺-更多预告",
+    "version": "1.0.0",
+    "name": "seller_live",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/seller/live"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "seller_uid",
+            "description": "<p>店铺唯一ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "data.live",
+            "description": "<p>直播预告</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"live\": {\n            \"count\": 15,\n            \"list\": [\n                {\n                    \"room_id\": \"48\",\n                    \"title\": \"安卓测试\",\n                    \"cover_image\": \"/uploads/2018/01/30/bb61ca8b2be1d1aee82b0ae8c6ac1cce.png\",\n                    \"anchor_uid\": \"1\",\n                    \"views\": \"3\",\n                    \"price\": \"0.00\",\n                    \"start_at\": \"4294967295\"\n                }\n            ]\n        }\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
