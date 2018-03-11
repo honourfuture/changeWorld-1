@@ -201,19 +201,7 @@ class Seller extends API_Controller {
 			$this->db->select('id,cover_image,title,price');
 			$ret['list'] = $this->Album_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 
-			$a_audio_id = array();
-			foreach($ret['list'] as $key=>$item){
-				$a_audio_id[] = $item['id'];
-				$ret['list'][$key]['audio_num'] = 0;
-				$ret['list'][$key]['play_times'] = 0;
-			}
-			$this->load->model('Room_audio_model');
-			$audio = $this->Room_audio_model->get_audio_info_by_album($a_audio_id);
-			if($audio){
-				foreach($ret['list'] as $key=>$item){
-					isset($audio[$item['id']]) && $ret['list'][$key] = array_merge($ret['list'][$key], $audio[$item['id']]);
-				}
-			}
+			$this->Album_model->audio($ret);
 		}
 
 		return $ret;

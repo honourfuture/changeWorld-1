@@ -214,4 +214,77 @@ class Knowledge extends API_Controller
 
         $this->ajaxReturn($ret);
     }
+
+    /**
+     * @api {get} /api/knowledge/album 知识-专辑(知识、娱乐)
+     * @apiVersion 1.0.0
+     * @apiName knowledge_album
+     * @apiGroup api
+     *
+     * @apiSampleRequest /api/knowledge/album
+     *
+     * @apiParam {Number} user_id 用户唯一ID
+     * @apiParam {String} sign 校验签名
+     * @apiParam {Number} album_class_id 专辑分类ID
+     *
+     * @apiSuccess {Number} status 接口状态 0成功 其他异常
+     * @apiSuccess {String} message 接口信息描述
+     * @apiSuccess {Object} data 接口数据集
+     * @apiSuccess {Number} data.count 总数
+     * @apiSuccess {Object[]} data.list 专辑列表
+     * @apiSuccess {Number} data.list.id 专辑唯一ID
+     * @apiSuccess {String} data.list.cover_image 专家背景
+     * @apiSuccess {String} data.list.title 专辑标题
+     * @apiSuccess {Number} data.list.price 门票价
+     * @apiSuccess {Number} data.list.audio_num 音频集
+     * @apiSuccess {Number} data.list.play_times 播放次数
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * {
+     *     "data": {
+     *         "count": 1,
+     *         "list": [
+     *             {
+     *                 "id": "7",
+     *                 "cover_image": "/uploads/2018/01/31/a2e0b9485cb752ad7534fd8b86ebd233.png",
+     *                 "title": "你的出生地址",
+     *                 "price": "10000.00",
+     *                 "audio_num": "1",
+     *                 "play_times": "0"
+     *             }
+     *         ]
+     *     },
+     *     "status": 0,
+     *     "message": "成功"
+     * }
+     *
+     * @apiErrorExample {json} Error-Response:
+     * {
+     *     "data": "",
+     *     "status": -1,
+     *     "message": "签名校验错误"
+     * }
+     */
+    public function album()
+    {
+        $ret = array('count' => 0, 'list' => array());
+
+        $album_class_id = (int)$this->input->get_post('album_class_id');
+        if($album_class_id){
+            $this->load->model('Album_model');
+            $where = array('enable' => 1, 'public' => 1, 'album_class' => $album_class_id);
+            $ret['count'] = $this->Album_model->count_by($where);
+            if($ret['count']){
+                $order_by = array('id' => 'desc');
+                $this->db->select('id,cover_image,title,price');
+                $ret['list'] = $this->Album_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
+
+                $this->Album_model->audio($ret);
+            }
+            $this->ajaxReturn($ret);
+        }else{
+            $this->ajaxReturn([], 1, '专辑分类ID错误');
+        }
+
+    }
 }
