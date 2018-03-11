@@ -84,6 +84,12 @@ class Seller extends API_Controller {
 				break;
 			case 'live':
 				$ret[$type] = $this->_live($seller_uid);
+				//正在直播
+				$this->load->model('Room_model');
+				$this->db->select('id,views,play_url,cover_image,title,price,chat_room_id');
+				$liveing = $this->Room_model->get_by(array('anchor_uid' => $seller_uid, 'status' => 1));
+				$liveing && $liveing['play_url'] = json_decode($liveing['play_url'], true);
+				$ret['liveing'] = $liveing ? $liveing : [];
 				break;
 			default :
 				$this->ajaxReturn([], 1, '类型不支持');
@@ -195,19 +201,7 @@ class Seller extends API_Controller {
 			$this->db->select('id,cover_image,title,price');
 			$ret['list'] = $this->Album_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 
-			$a_audio_id = array();
-			foreach($ret['list'] as $key=>$item){
-				$a_audio_id[] = $item['id'];
-				$ret['list'][$key]['audio_num'] = 0;
-				$ret['list'][$key]['play_times'] = 0;
-			}
-			$this->load->model('Room_audio_model');
-			$audio = $this->Room_audio_model->get_audio_info_by_album($a_audio_id);
-			if($audio){
-				foreach($ret['list'] as $key=>$item){
-					isset($audio[$item['id']]) && $ret['list'][$key] = array_merge($ret['list'][$key], $audio[$item['id']]);
-				}
-			}
+			$this->Album_model->audio($ret);
 		}
 
 		return $ret;

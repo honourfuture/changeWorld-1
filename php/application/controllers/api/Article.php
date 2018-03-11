@@ -68,11 +68,9 @@ class Article extends API_Controller {
 
 		if($this->user_id){
 			$where['enable'] = 1;
-			$this->db->select('id,title');
 		}else{
 			$deleted = (int)$this->input->get('deleted');
 			$where['deleted'] = $deleted;
-			$this->db->select('id,title,created_at,updated_at,deleted,enable,sort,article_class_id');
 		}
 
 		$this->search();
@@ -80,6 +78,12 @@ class Article extends API_Controller {
 		if($ret['count']){
 			$order_by = array('sort' => 'desc', 'id' => 'desc');
 			$this->search();
+
+			if($this->user_id){
+				$this->db->select('id,title');
+			}else{
+				$this->db->select('id,title,created_at,updated_at,deleted,enable,sort,article_class_id');
+			}
 			$ret['list'] = $this->Article_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 		}
 

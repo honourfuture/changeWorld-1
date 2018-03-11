@@ -23,6 +23,7 @@ class Article_class extends API_Controller {
 	 *
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
+	 * @apiParam {String} page 页面展示类，不传取所有 帮助：help
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -55,12 +56,22 @@ class Article_class extends API_Controller {
 	 */
 	public function index()
 	{
+		$where = array();
 		$deleted = (int)$this->input->get('deleted');
+		$where['deleted'] = $deleted;
+
+		if($page = $this->input->get('page')){
+			switch($page){
+				case 'help':
+					$this->db->where_in('id', $this->Article_class_model->help());
+					break;
+			}
+		}
 		if($this->user_id){
 			$this->db->select('id,name');
 		}
 		$order_by = array('sort' => 'desc', 'id' => 'desc');
-		$ret = $this->Article_class_model->order_by($order_by)->get_many_by('deleted', $deleted);
+		$ret = $this->Article_class_model->order_by($order_by)->get_many_by($where);
 		$this->ajaxReturn($ret);
 	}
 

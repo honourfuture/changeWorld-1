@@ -29,12 +29,12 @@ class Search extends API_Controller {
     }
 
     /**
-     * @api {get} /api/knowledge/collection 知识-关注(主播)
+     * @api {get} /api/search 搜索
      * @apiVersion 1.0.0
-     * @apiName knowledge_collection
+     * @apiName search
      * @apiGroup api
      *
-     * @apiSampleRequest /api/knowledge/collection
+     * @apiSampleRequest /api/search
      *
      * @apiParam {Number} user_id 用户唯一ID
      * @apiParam {String} sign 校验签名
@@ -122,19 +122,7 @@ class Search extends API_Controller {
 			$this->db->like('title', $this->keyword);
 			$ret['list'] = $this->Album_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 
-			$a_audio_id = array();
-			foreach($ret['list'] as $key=>$item){
-				$a_audio_id[] = $item['id'];
-				$ret['list'][$key]['audio_num'] = 0;
-				$ret['list'][$key]['play_times'] = 0;
-			}
-			$this->load->model('Room_audio_model');
-			$audio = $this->Room_audio_model->get_audio_info_by_album($a_audio_id);
-			if($audio){
-				foreach($ret['list'] as $key=>$item){
-					isset($audio[$item['id']]) && $ret['list'][$key] = array_merge($ret['list'][$key], $audio[$item['id']]);
-				}
-			}
+			$this->Album_model->audio($ret);
 		}
 
 		return $ret;

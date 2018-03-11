@@ -18,4 +18,10 @@ class Article_class_model extends MY_Model
     {
         parent::__construct();
     }
+
+    //帮助
+    public function help()
+    {
+    	return [1, 2, 3, 4, 5, 6];
+    }
 }
