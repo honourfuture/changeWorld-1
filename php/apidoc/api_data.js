@@ -4461,6 +4461,13 @@ define({ "api": [
             "optional": false,
             "field": "sign",
             "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "page",
+            "description": "<p>页面展示类，不传取所有 帮助：help</p>"
           }
         ]
       }

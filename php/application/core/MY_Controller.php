@@ -69,7 +69,7 @@ class MY_Controller extends CI_Controller
             header('Content-type: text/html; charset=utf-8');
         }
         $ret = array();
-        $ret['data'] = $data;
+        $ret['data'] = is_null($data) ? [] : $data;
         $ret['status'] = $status;
         $ret['message'] = empty($message) ? '成功' : $message;
         echo json_encode($ret, JSON_UNESCAPED_UNICODE);exit();
