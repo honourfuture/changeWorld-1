@@ -54,7 +54,7 @@ class Users_model extends MY_Model
     public function check_shop($seller_uid)
     {
         $result = array('status' => 0, 'message' => '', 'data' => array());
-        $this->db->select('id,nickname,header,v,exp,vip_id');
+        $this->db->select('id,nickname,header,v,exp,vip_id,pretty_id');
         $user = $this->get($seller_uid);
         if(! $user){
             $result['status'] = 1;

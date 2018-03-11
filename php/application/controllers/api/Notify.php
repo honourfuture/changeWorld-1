@@ -27,10 +27,13 @@ class Notify extends API_Controller
             $this->Room_model->set_userid_roomid_by_channel($channel_id);
             $room_id = $this->Room_model->room_id;
             log_message('error', '[notify live room_id] '.$room_id);
+            $update = [];
             switch($data['event_type']){
                 case 0://断流
+                    $update['status'] = 2;
                     break;
                 case 1://推流
+                    $update['status'] = 1;
                     break;
                 case 100://新的录制文件已生成
                     if($data['duration'] > 300){
@@ -52,6 +55,7 @@ class Notify extends API_Controller
                 case 200://新的截图文件已生成
                     break;
             }
+            $update && $this->Room_model->update($room_id, $update);
 
             echo json_encode(array('code' => 0));
         }

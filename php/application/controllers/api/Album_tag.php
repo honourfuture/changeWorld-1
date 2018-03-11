@@ -94,13 +94,21 @@ class Album_tag extends API_Controller {
 		if($tag){
 			foreach($tag as $item){
 				if($item['pid'] == 0){
-					$ret[$item['id']] = $this->user_id ? array('name' => $item['name'], 'limit' => $item['limit']) : $item;
+					$ret[$item['id']] = $this->user_id ? array('id' => $item['id'], 'name' => $item['name'], 'limit' => $item['limit']) : $item;
 					$ret[$item['id']]['list'] = array();
 				}else{
 					if(isset($ret[$item['pid']])){
-						$ret[$item['pid']]['list'][] = $this->user_id ? array($item['id'] => $item['name']) : $item;
+						$ret[$item['pid']]['list'][] = $this->user_id ? array('id' => $item['id'], 'name' => $item['name']) : $item;
 					}
 				}
+			}
+
+			if($this->user_id){
+				$formatData = array();
+				foreach($ret as $item){
+					$formatData[] = $item;
+				}
+				$ret = $formatData;
 			}
 		}
 		$this->ajaxReturn($ret);

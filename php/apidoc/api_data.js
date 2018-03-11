@@ -6349,105 +6349,6 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/api/knowledge/collection",
-    "title": "知识-关注(主播)",
-    "version": "1.0.0",
-    "name": "knowledge_collection",
-    "group": "api",
-    "sampleRequest": [
-      {
-        "url": "/api/knowledge/collection"
-      }
-    ],
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "user_id",
-            "description": "<p>用户唯一ID</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "sign",
-            "description": "<p>校验签名</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "keyword",
-            "description": "<p>搜索词</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "from",
-            "description": "<p>来源 知识：knowledge 商城：shop</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "tab",
-            "description": "<p>显示卡项 专辑：album 主播：anchor 直播：live 音频：audio</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "status",
-            "description": "<p>接口状态 0成功 其他异常</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>接口信息描述</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Object",
-            "optional": false,
-            "field": "data",
-            "description": "<p>接口数据集</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "{\n    \"data\": {\n        \"count\": 1,\n        \"list\": [\n            {\n                \"room_id\": \"52\",\n                \"title\": \"你的出生地址\",\n                \"cover_image\": \"/uploads/2018/01/31/a2e0b9485cb752ad7534fd8b86ebd233.png\",\n                \"play_url\": {\n                    \"rtmp\": \"rtmp://6077.liveplay.myqcloud.com/live/6077_zhumaidan-1-52\",\n                    \"flv\": \"http://6077.liveplay.myqcloud.com/live/6077_zhumaidan-1-52.flv\",\n                    \"m3u8\": \"http://6077.liveplay.myqcloud.com/live/6077_zhumaidan-1-52.m3u8\"\n                },\n                \"live_tag_id\": \"0\",\n                \"anchor_uid\": \"1\",\n                \"views\": \"0\",\n                \"price\": \"10000.00\",\n                \"tag_name\": \"\",\n                \"live_status\": 1,\n                \"nickname\": \"aicode\",\n                \"v\": \"0\"\n            }\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "examples": [
-        {
-          "title": "Error-Response:",
-          "content": "{\n    \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Search.php",
-    "groupTitle": "api"
-  },
-  {
-    "type": "get",
     "url": "/api/knowledge/live",
     "title": "知识-热门",
     "version": "1.0.0",
@@ -7505,6 +7406,105 @@ define({ "api": [
       ]
     },
     "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Room.php",
+    "groupTitle": "api"
+  },
+  {
+    "type": "get",
+    "url": "/api/search",
+    "title": "搜索",
+    "version": "1.0.0",
+    "name": "search",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/search"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "keyword",
+            "description": "<p>搜索词</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "from",
+            "description": "<p>来源 知识：knowledge 商城：shop</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "tab",
+            "description": "<p>显示卡项 专辑：album 主播：anchor 直播：live 音频：audio</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"count\": 1,\n        \"list\": [\n            {\n                \"room_id\": \"52\",\n                \"title\": \"你的出生地址\",\n                \"cover_image\": \"/uploads/2018/01/31/a2e0b9485cb752ad7534fd8b86ebd233.png\",\n                \"play_url\": {\n                    \"rtmp\": \"rtmp://6077.liveplay.myqcloud.com/live/6077_zhumaidan-1-52\",\n                    \"flv\": \"http://6077.liveplay.myqcloud.com/live/6077_zhumaidan-1-52.flv\",\n                    \"m3u8\": \"http://6077.liveplay.myqcloud.com/live/6077_zhumaidan-1-52.m3u8\"\n                },\n                \"live_tag_id\": \"0\",\n                \"anchor_uid\": \"1\",\n                \"views\": \"0\",\n                \"price\": \"10000.00\",\n                \"tag_name\": \"\",\n                \"live_status\": 1,\n                \"nickname\": \"aicode\",\n                \"v\": \"0\"\n            }\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n    \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Search.php",
     "groupTitle": "api"
   },
   {

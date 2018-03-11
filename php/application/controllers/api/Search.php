@@ -29,12 +29,12 @@ class Search extends API_Controller {
     }
 
     /**
-     * @api {get} /api/knowledge/collection 知识-关注(主播)
+     * @api {get} /api/search 搜索
      * @apiVersion 1.0.0
-     * @apiName knowledge_collection
+     * @apiName search
      * @apiGroup api
      *
-     * @apiSampleRequest /api/knowledge/collection
+     * @apiSampleRequest /api/search
      *
      * @apiParam {Number} user_id 用户唯一ID
      * @apiParam {String} sign 校验签名
