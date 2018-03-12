@@ -35,7 +35,13 @@ import LiveTag from './LiveTag';
 import SpecialTag from './SpecialTag';
 import SpecialClass from './SpecialClass';
 import GiftManager from './GiftManager';
+import FeedBack from './FeedBack';
 export const panelsList =  [
+    {
+        path:'/operation/FeedBack',
+        component:FeedBack,
+        title:'意见反馈',
+    },
     {
         path:'/live/GiftManager',
         component:GiftManager,
