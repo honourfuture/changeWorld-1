@@ -21,12 +21,14 @@ class Users_collection_model extends MY_Model
 
     public function check_fans($user_id, $t_id)
     {
-    	return $this->get_by(array('user_id' => $user_id, 't_id' => $t_id, 'topic' => 1)) ? 1 : 0;
+        $info = $this->get_by(array('user_id' => $user_id, 't_id' => $t_id, 'topic' => 1));
+    	return $info ? $info['id'] : 0;
     }
 
     public function check_favorite($user_id, $t_id, $sub_topic)
     {
-        return $this->get_by(array('user_id' => $user_id, 't_id' => $t_id, 'topic' => 2, 'sub_topic' => $sub_topic)) ? 1 : 0;
+        $info = $this->get_by(array('user_id' => $user_id, 't_id' => $t_id, 'topic' => 2, 'sub_topic' => $sub_topic));
+        return $info ? $info['id'] : 0;
     }
 
     public function get_many_count_fans($a_user_id)

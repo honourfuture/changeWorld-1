@@ -4250,6 +4250,91 @@
     "groupTitle": "api"
   },
   {
+    "type": "post",
+    "url": "/api/album/favorite",
+    "title": "专辑详情-订阅/取消",
+    "version": "1.0.0",
+    "name": "album_favorite",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/album/favorite"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>专辑ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": [],\n    \"status\": 0,\n    \"message\": \"添加订阅成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Album.php",
+    "groupTitle": "api"
+  },
+  {
     "type": "get",
     "url": "/api/album_tag",
     "title": "专辑标签-列表",
@@ -4325,6 +4410,182 @@
       ]
     },
     "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Album_tag.php",
+    "groupTitle": "api"
+  },
+  {
+    "type": "get",
+    "url": "/api/album/view",
+    "title": "专辑详情",
+    "version": "1.0.0",
+    "name": "album_view",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/album/view"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>专辑ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "data.id",
+            "description": "<p>专辑ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.cover_image",
+            "description": "<p>专辑背景图</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.updated_at",
+            "description": "<p>专辑更新时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.title",
+            "description": "<p>专辑标题</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.price",
+            "description": "<p>专辑打包价</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.album_class_name",
+            "description": "<p>专辑类名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.audio_num",
+            "description": "<p>专辑音频数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.play_times",
+            "description": "<p>专辑总播放次数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.nickname",
+            "description": "<p>主播昵称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.header",
+            "description": "<p>主播头像</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.has_favorite",
+            "description": "<p>是否订阅 0否 &gt;0是</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.favorite",
+            "description": "<p>订阅总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.audio",
+            "description": "<p>专辑音频列表</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"id\": \"7\",\n        \"cover_image\": \"/uploads/2018/01/31/a2e0b9485cb752ad7534fd8b86ebd233.png\",\n        \"updated_at\": \"2018-03-01 14:11:29\",\n        \"title\": \"你的出生地址\",\n        \"album_class\": \"3\",\n        \"album_tag\": \",配音,铃声,\",\n        \"price\": \"10000.00\",\n        \"public\": \"1\",\n        \"anchor_uid\": \"1\",\n        \"album_class_name\": \"知识\",\n        \"audio_num\": \"1\",\n        \"play_times\": \"0\",\n        \"nickname\": \"aicode\",\n        \"header\": \"\",\n        \"has_favorite\": 0,\n        \"favorite\": 0,\n        \"audio\": [\n            {\n                \"id\": \"3\",\n                \"cover_image\": \"/uploads/2018/01/31/a2e0b9485cb752ad7534fd8b86ebd233.png\",\n                \"price\": \"10000.00\",\n                \"title\": \"你的出生地址\",\n                \"created_at\": \"2018-03-01 12:08:06\",\n                \"duration\": \"404\",\n                \"video_url\": \"http://1253104369.vod2.myqcloud.com/26be7741vodgzp1253104369/f0.flv\",\n                \"play_times\": \"0\",\n                \"comment\": 0\n            }\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Album.php",
     "groupTitle": "api"
   },
   {
