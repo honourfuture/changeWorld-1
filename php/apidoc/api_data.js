@@ -12547,6 +12547,197 @@ define({ "api": [
     "groupTitle": "user"
   },
   {
+    "type": "get",
+    "url": "/api/security_question/check",
+    "title": "密保-验证页",
+    "version": "1.0.0",
+    "name": "security_question_check",
+    "group": "user",
+    "sampleRequest": [
+      {
+        "url": "/api/security_question/check"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "data.question",
+            "description": "<p>密保问题列表</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.question.id",
+            "description": "<p>密保唯一ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.question.title",
+            "description": "<p>密保名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.security",
+            "description": "<p>密保答案 json 空置表示没有设置 格式：问题ID：答案</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": {\n\t        \"question\": [\n\t            {\n\t                \"id\": \"1\",\n\t                \"title\": \"你的出生地址\"\n\t            },\n\t            {\n\t                \"id\": \"2\",\n\t                \"title\": \"你的母亲生日\"\n\t            },\n\t            {\n\t                \"id\": \"3\",\n\t                \"title\": \"你的身份证号\"\n\t            }\n\t        ],\n\t        \"security\": \"{\\\"1\\\":\\\"中国\\\", \\\"2\\\":\\\"10.1\\\", \\\"3\\\":\\\"1024\\\"}\"\n\t    },\n\t    \"status\": 0,\n\t    \"message\": \"成功\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Security_question.php",
+    "groupTitle": "user"
+  },
+  {
+    "type": "get",
+    "url": "/api/security_question/check_in",
+    "title": "密保-验证",
+    "version": "1.0.0",
+    "name": "security_question_check_in",
+    "group": "user",
+    "sampleRequest": [
+      {
+        "url": "/api/security_question/check_in"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "security_question",
+            "description": "<p>密保问题答案json {密保问题ID:密保答案, 密保问题ID:密保答案}</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": [],\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Security_question.php",
+    "groupTitle": "user"
+  },
+  {
     "type": "post",
     "url": "/api/user/v/save",
     "title": "V认证-提交",

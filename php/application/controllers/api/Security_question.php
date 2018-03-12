@@ -79,10 +79,123 @@ class Security_question extends API_Controller {
 		$this->ajaxReturn($ret);
 	}
 
-	// 查看
-	public function view()
+	/**
+	 * @api {get} /api/security_question/check 密保-验证页
+	 * @apiVersion 1.0.0
+	 * @apiName security_question_check
+	 * @apiGroup user
+	 *
+	 * @apiSampleRequest /api/security_question/check
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集
+	 * @apiSuccess {Object[]} data.question 密保问题列表
+	 * @apiSuccess {String} data.question.id 密保唯一ID
+	 * @apiSuccess {String} data.question.title 密保名称
+	 * @apiSuccess {String} data.security 密保答案 json 空置表示没有设置 格式：问题ID：答案
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *	    "data": {
+	 *	        "question": [
+	 *	            {
+	 *	                "id": "1",
+	 *	                "title": "你的出生地址"
+	 *	            },
+	 *	            {
+	 *	                "id": "2",
+	 *	                "title": "你的母亲生日"
+	 *	            },
+	 *	            {
+	 *	                "id": "3",
+	 *	                "title": "你的身份证号"
+	 *	            }
+	 *	        ],
+	 *	        "security": "{\"1\":\"中国\", \"2\":\"10.1\", \"3\":\"1024\"}"
+	 *	    },
+	 *	    "status": 0,
+	 *	    "message": "成功"
+	 *	}
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+	public function check()
 	{
+		$user = $this->get_user();
+		$u_security_question = [];
+		if($user && $user['security_question']){
+			$u_security_question = json_decode($user['security_question'], true);
+		}
+		if($u_security_question){
+			$a_id = array_keys($u_security_question);
+			$this->db->select('id,title');
+			$this->ajaxReturn($this->Security_question_model->get_many($a_id));
+		}else{
+			$this->ajaxReturn([], 1, '未设置密保问题');
+		}
+	}
 
+	/**
+	 * @api {get} /api/security_question/check_in 密保-验证
+	 * @apiVersion 1.0.0
+	 * @apiName security_question_check_in
+	 * @apiGroup user
+	 *
+	 * @apiSampleRequest /api/security_question/check_in
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 * @apiParam {Object} security_question 密保问题答案json {密保问题ID:密保答案, 密保问题ID:密保答案}
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *     "data": [],
+	 *     "status": 0,
+	 *     "message": "成功"
+	 * }
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+	public function check_in()
+	{
+		$user = $this->get_user();
+		$u_security_question = [];
+		if($user && $user['security_question']){
+			$u_security_question = json_decode($user['security_question'], true);
+		}
+		if($u_security_question){
+			$security_question = $this->input->get_post('security_question');
+			if($a_security_question = json_decode($security_question, true)){
+				foreach($u_security_question as $id=>$val){
+					if(! isset($a_security_question[$id]) || trim($val) != trim($a_security_question[$id])){
+						$this->ajaxReturn([], 3, '验证密保问题失败');
+					}
+				}
+				$this->ajaxReturn();
+			}else{
+				$this->ajaxReturn([], 2, '验证密保问题格式错误');
+			}
+		}else{
+			$this->ajaxReturn([], 1, '未设置密保问题');
+		}
 	}
 
 	/**
