@@ -19,16 +19,51 @@ class Users_collection_model extends MY_Model
         parent::__construct();
     }
 
+    public function favorite($sub_topic, $a_id)
+    {
+        switch($sub_topic){
+            case 10://下载
+            case 20://已购声音
+            case 30://喜欢
+                $this->load->model('Room_audio_model');
+                $this->db->select('id,cover_image,price,title,created_at,duration,video_url,play_times');
+                $audio = $this->Room_audio_model->get_many($a_id);
+                if($audio){
+                    foreach($audio as $key=>$item){
+                        $audio[$key]['comment'] = 0;
+                    }
+                }
+                return $audio;
+                break;
+            case 40://商品
+                $this->load->model('Goods_model');
+                $this->db->select('id,name,sale_price,seller_uid,default_image');
+                return $this->Goods_model->get_many($a_id);
+                break;
+            case 11://下载
+            case 21://已购专辑
+            case 50://订阅
+                $ret = ['count' => count($a_id), 'list' => []];
+                $this->load->model('Album_model');
+                $this->db->select('id,cover_image,title,price');
+                $ret['list'] = $this->Album_model->get_many($a_id);;
+
+                $this->Album_model->audio($ret);
+                return $ret['list'];
+                break;
+        }
+    }
+
     public function check_fans($user_id, $t_id)
     {
         $info = $this->get_by(array('user_id' => $user_id, 't_id' => $t_id, 'topic' => 1));
-    	return $info ? $info['id'] : 0;
+    	return $info ? 1 : 0;
     }
 
     public function check_favorite($user_id, $t_id, $sub_topic)
     {
         $info = $this->get_by(array('user_id' => $user_id, 't_id' => $t_id, 'topic' => 2, 'sub_topic' => $sub_topic));
-        return $info ? $info['id'] : 0;
+        return $info ? 1 : 0;
     }
 
     public function get_many_count_fans($a_user_id)

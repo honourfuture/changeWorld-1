@@ -98,11 +98,11 @@ class Collection extends API_Controller {
 				if($ret['count']){
 					$this->db->select($field);
 					$rows = $this->Users_collection_model->order_by('id', 'DESC')->limit($this->per_page, $this->offset)->get_many_by($where);
-				}
-				if($rows){
+
 					foreach($rows as $item){
 						$a_id[] = $item['t_id'];
 					}
+					$ret['list'] = $this->Users_collection_model->favorite($sub_topic, $a_id);
 				}
 				break;
 			default :
@@ -114,7 +114,7 @@ class Collection extends API_Controller {
 	}
 
     /**
-	 * @api {post} /api/user/collection/save 收藏&关注-保存
+	 * @api {post} /api/user/collection/save 收藏&关注-保存OR取消
 	 * @apiVersion 1.0.0
 	 * @apiName collection_save
 	 * @apiGroup user

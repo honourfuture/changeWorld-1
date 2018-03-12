@@ -4250,91 +4250,6 @@
     "groupTitle": "api"
   },
   {
-    "type": "post",
-    "url": "/api/album/favorite",
-    "title": "专辑详情-订阅/取消",
-    "version": "1.0.0",
-    "name": "album_favorite",
-    "group": "api",
-    "sampleRequest": [
-      {
-        "url": "/api/album/favorite"
-      }
-    ],
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "user_id",
-            "description": "<p>用户唯一ID</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "sign",
-            "description": "<p>校验签名</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "id",
-            "description": "<p>专辑ID</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "status",
-            "description": "<p>接口状态 0成功 其他异常</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>接口信息描述</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Object",
-            "optional": false,
-            "field": "data",
-            "description": "<p>接口数据集</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "{\n    \"data\": [],\n    \"status\": 0,\n    \"message\": \"添加订阅成功\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "examples": [
-        {
-          "title": "Error-Response:",
-          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Album.php",
-    "groupTitle": "api"
-  },
-  {
     "type": "get",
     "url": "/api/album_tag",
     "title": "专辑标签-列表",
@@ -4550,7 +4465,7 @@
             "type": "String",
             "optional": false,
             "field": "data.has_favorite",
-            "description": "<p>是否订阅 0否 &gt;0是</p>"
+            "description": "<p>是否订阅 0否 1是</p>"
           },
           {
             "group": "Success 200",
@@ -10402,7 +10317,7 @@
   {
     "type": "post",
     "url": "/api/user/collection/save",
-    "title": "收藏&关注-保存",
+    "title": "收藏&关注-保存OR取消",
     "version": "1.0.0",
     "name": "collection_save",
     "group": "user",

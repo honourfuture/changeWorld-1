@@ -38,7 +38,7 @@ class Album extends API_Controller {
 	 * @apiSuccess {String} data.play_times 专辑总播放次数
 	 * @apiSuccess {String} data.nickname 主播昵称
 	 * @apiSuccess {String} data.header 主播头像
-	 * @apiSuccess {String} data.has_favorite 是否订阅 0否 >0是
+	 * @apiSuccess {String} data.has_favorite 是否订阅 0否 1是
 	 * @apiSuccess {String} data.favorite 订阅总数
 	 * @apiSuccess {String} data.audio 专辑音频列表
 	 *
@@ -129,57 +129,5 @@ class Album extends API_Controller {
 		}else{
 			$this->ajaxReturn([], 1, '查看专辑详情参数错误');
 		}
-	}
-
-	/**
-	 * @api {post} /api/album/favorite 专辑详情-订阅/取消
-	 * @apiVersion 1.0.0
-	 * @apiName album_favorite
-	 * @apiGroup api
-	 *
-	 * @apiSampleRequest /api/album/favorite
-	 *
-	 * @apiParam {Number} user_id 用户唯一ID
-	 * @apiParam {String} sign 校验签名
-	 * @apiParam {Number} id 专辑ID
-	 *
-	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
-	 * @apiSuccess {String} message 接口信息描述
-	 * @apiSuccess {Object} data 接口数据集
-	 *
-	 * @apiSuccessExample {json} Success-Response:
-	 * {
-	 *     "data": [],
-	 *     "status": 0,
-	 *     "message": "添加订阅成功"
-	 * }
-	 *
-	 * @apiErrorExample {json} Error-Response:
-	 * {
-	 * 	   "data": "",
-	 *     "status": -1,
-	 *     "message": "签名校验错误"
-	 * }
-	 */
-	public function favorite()
-	{
-		$id = (int)$this->input->get_post('id');
-
-		$this->load->model('Users_collection_model');
-		if($fid = $this->Users_collection_model->check_favorite($this->user_id, $id, 50)){
-			$this->Users_collection_model->delete($fid);
-			$message = '取消订阅成功';
-		}else{
-			$data = array(
-				'user_id' => $this->user_id,
-				't_id' => $id,
-				'topic' => 2,
-				'sub_topic' => 50
-			);
-			$this->Users_collection_model->insert($data);
-			$message = '添加订阅成功';
-		}
-
-		$this->ajaxReturn([], 0, $message);
 	}
 }
