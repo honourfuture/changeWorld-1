@@ -7433,13 +7433,112 @@ define({ "api": [
             "optional": false,
             "field": "data.list.title",
             "description": "<p>标题</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.list.summary",
+            "description": "<p>标摘要题</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.list.updated_at",
+            "description": "<p>发布时间</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n  \"data\": [\n      {\n          \"id\": \"3\",\n          \"is_default\": \"1\",\n          \"username\": \"龙建新-1024\",\n          \"mobi\": \"13430332489\",\n          \"province_id\": \"110000\",\n          \"province\": \"北京市\",\n          \"city_id\": \"110101\",\n          \"city\": \"东城区\",\n          \"area_id\": \"0\",\n          \"area\": \"\",\n          \"mailbox\": \"清华园1024号\",\n      }\n ],\n \"status\": 0,\n \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": {\n        \"count\": 2,\n        \"list\": [\n            {\n                \"id\": \"16\",\n                \"title\": \"测试\",\n                \"summary\": \"\",\n                \"updated_at\": \"2018-01-26 17:47:49\"\n            },\n            {\n                \"id\": \"15\",\n                \"title\": \"这是一条站内信\",\n                \"summary\": \"\",\n                \"updated_at\": \"2018-01-23 19:31:19\"\n            }\n        ],\n        \"read_ids\": \",15,14,5,1,11,16,\"\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Mailbox.php",
+    "groupTitle": "api"
+  },
+  {
+    "type": "get",
+    "url": "/api/mailbox/reddot",
+    "title": "站内信-红点",
+    "version": "1.0.0",
+    "name": "mailbox_reddot",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/mailbox/reddot"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.reddot",
+            "description": "<p>0无 1有</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"reddot\": 0\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
@@ -7539,13 +7638,20 @@ define({ "api": [
             "optional": false,
             "field": "data.content",
             "description": "<p>消息详情</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.summary",
+            "description": "<p>标摘要题</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n\t    \"data\": {\n\t        \"id\": \"1\",\n\t        \"title\": \"热门\",\n\t        \"summary\": \"热门\",\n\t        \"content\": \"热门\"\n\t    },\n\t    \"status\": 0,\n\t    \"message\": \"成功\"\n\t}",
+          "content": "{\n    \"data\": {\n        \"id\": \"16\",\n        \"updated_at\": \"2018-01-26 17:47:49\",\n        \"title\": \"测试\",\n        \"content\": \"<p>这是一条站内信</p>\\n\",\n        \"summary\": \"\"\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
@@ -9866,8 +9972,8 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "job",
-            "description": "<p>默认不传，传order表示下单页，结构调整为data.point,data.point</p>"
+            "field": "page",
+            "description": "<p>默认不传，order表示进结算页</p>"
           }
         ]
       }
@@ -10059,13 +10165,6 @@ define({ "api": [
             "optional": false,
             "field": "goods_attr",
             "description": "<p>商品属性 json</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "job",
-            "description": "<p>默认不传，传order表示下单页，结构调整为data.point,data.point</p>"
           }
         ]
       }
@@ -10100,6 +10199,84 @@ define({ "api": [
         {
           "title": "Success-Response:",
           "content": "{\n    \"data\": {\n\t   },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Cart.php",
+    "groupTitle": "user"
+  },
+  {
+    "type": "get",
+    "url": "/api/user/cart/count",
+    "title": "购物车-数量",
+    "version": "1.0.0",
+    "name": "cart_count",
+    "group": "user",
+    "sampleRequest": [
+      {
+        "url": "/api/user/cart/count"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"count\": 2\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]

@@ -6,16 +6,63 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @link www.aicode.org.cn
  */
 class Cart extends API_Controller {
-	protected $job = 'cart';
+	protected $page = 'cart';
 
 	public function __construct()
     {
         parent::__construct();
 
-        $job = $this->input->get_post('job');
-        $job && $this->job = $job;
+        $page = $this->input->get_post('page');
+        $page && $this->page = $page;
 
         $this->load->model('Cart_model');
+    }
+
+    /**
+	 * @api {get} /api/user/cart/count 购物车-数量
+	 * @apiVersion 1.0.0
+	 * @apiName cart_count
+	 * @apiGroup user
+	 *
+	 * @apiSampleRequest /api/user/cart/count
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *     "data": {
+	 *         "count": 2
+	 *     },
+	 *     "status": 0,
+	 *     "message": "成功"
+	 * }
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+    public function count()
+    {
+    	$count = $this->Cart_model->count_by('buyer_uid', $this->user_id);
+    	$this->ajaxReturn(['count' => $count]);
+    }
+
+    //结算页信息
+    protected function order()
+    {
+    	$ret = array();
+		$ret['point'] = $this->points($this->user_id);
+		$ret['goods'] = $this->Cart_model->buyer($this->user_id);
+
+		return $ret;
     }
 
     /**
@@ -28,7 +75,7 @@ class Cart extends API_Controller {
 	 *
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
-	 * @apiParam {String} job 默认不传，传order表示下单页，结构调整为data.point,data.point
+	 * @apiParam {String} page 默认不传，order表示进结算页
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -51,13 +98,7 @@ class Cart extends API_Controller {
 	 */
 	public function index()
 	{
-		if($this->job == 'order'){
-			$ret = array();
-			$ret['point'] = $this->points($this->user_id);
-			$ret['goods'] = $this->Cart_model->buyer($this->user_id);
-		}else{
-			$ret = $this->Cart_model->buyer($this->user_id);
-		}
+		$ret = $this->page == 'order' ? $this->order() : $this->Cart_model->buyer($this->user_id);
 		$this->ajaxReturn($ret);
 	}
 
@@ -103,13 +144,21 @@ class Cart extends API_Controller {
 			$this->input->post(),
 			UPDATE_VALID
 		);
-		$this->check_goods_add($params);
 
-		if($this->Cart_model->add($params)){
+		if($this->cart_add($params)){
 			$this->ajaxReturn();
 		}else{
 			$this->ajaxReturn([], 1, '添加购物车失败');
 		}
+	}
+
+	protected function cart_add($params, $is_buy = false)
+	{
+		//判断商品
+		$this->check_goods_add($params, $is_buy);
+
+		//加入购物车
+		return $this->Cart_model->add($params)
 	}
 
 	/**
@@ -124,7 +173,6 @@ class Cart extends API_Controller {
 	 * @apiParam {String} sign 校验签名
 	 * @apiParam {Number} goods_id 商品唯一ID
 	 * @apiParam {String} goods_attr 商品属性 json
-	 * @apiParam {String} job 默认不传，传order表示下单页，结构调整为data.point,data.point
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -155,9 +203,7 @@ class Cart extends API_Controller {
 			UPDATE_VALID
 		);
 		$params['num'] = 1;
-		$this->check_goods_add($params, true);
-		//加入购物车
-		$this->Cart_model->add($params);
+		$this->cart_add($params, true);
 
 		//商品&商家信息
 		$this->load->model('Users_model');
@@ -165,14 +211,7 @@ class Cart extends API_Controller {
 		!isset($seller[$this->goods['seller_uid']]['goods']) && $seller[$this->goods['seller_uid']]['goods'] = array();
     	$seller[$this->goods['seller_uid']]['goods'][] = $this->goods;
 
-    	if($this->job == 'order'){
-			$ret = array();
-			$ret['point'] = $this->points($this->user_id);
-			$ret['goods'] = $seller;
-		}else{
-			$ret = $seller;
-		}
-		$this->ajaxReturn($ret);
+		$this->ajaxReturn($seller);
 	}
 
 	protected function check_goods_add(&$params, $is_buy = false)

@@ -14,6 +14,43 @@ class Mailbox extends API_Controller {
     }
 
     /**
+	 * @api {get} /api/mailbox/reddot 站内信-红点
+	 * @apiVersion 1.0.0
+	 * @apiName mailbox_reddot
+	 * @apiGroup api
+	 *
+	 * @apiSampleRequest /api/mailbox/reddot
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集
+	 * @apiSuccess {String} data.reddot 0无 1有
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *     "data": {
+	 *         "reddot": 0
+	 *     },
+	 *     "status": 0,
+	 *     "message": "成功"
+	 * }
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+    public function reddot()
+    {
+    	$this->ajaxReturn(['reddot' => $this->Mailbox_model->reddot($this->user_id)]);
+    }
+
+    /**
 	 * @api {get} /api/mailbox 站内信-列表
 	 * @apiVersion 1.0.0
 	 * @apiName mailbox
@@ -32,26 +69,31 @@ class Mailbox extends API_Controller {
 	 * @apiSuccess {Object[]} data.list 接口数据集
 	 * @apiSuccess {String} data.list.id 唯一ID
 	 * @apiSuccess {String} data.list.title 标题
+	 * @apiSuccess {String} data.list.summary 标摘要题
+	 * @apiSuccess {String} data.list.updated_at 发布时间
 	 *
 	 * @apiSuccessExample {json} Success-Response:
 	 * {
-	 *   "data": [
-	 *       {
-	 *           "id": "3",
-	 *           "is_default": "1",
-	 *           "username": "龙建新-1024",
-	 *           "mobi": "13430332489",
-	 *           "province_id": "110000",
-	 *           "province": "北京市",
-	 *           "city_id": "110101",
-	 *           "city": "东城区",
-	 *           "area_id": "0",
-	 *           "area": "",
-	 *           "mailbox": "清华园1024号",
-	 *       }
-	 *  ],
-	 *  "status": 0,
-	 *  "message": "成功"
+	 *     "data": {
+	 *         "count": 2,
+	 *         "list": [
+	 *             {
+	 *                 "id": "16",
+	 *                 "title": "测试",
+	 *                 "summary": "",
+	 *                 "updated_at": "2018-01-26 17:47:49"
+	 *             },
+	 *             {
+	 *                 "id": "15",
+	 *                 "title": "这是一条站内信",
+	 *                 "summary": "",
+	 *                 "updated_at": "2018-01-23 19:31:19"
+	 *             }
+	 *         ],
+	 *         "read_ids": ",15,14,5,1,11,16,"
+	 *     },
+	 *     "status": 0,
+	 *     "message": "成功"
 	 * }
 	 *
 	 * @apiErrorExample {json} Error-Response:
@@ -115,18 +157,20 @@ class Mailbox extends API_Controller {
 	 * @apiSuccess {String} data.title 消息标题
 	 * @apiSuccess {String} data.title 消息摘要
 	 * @apiSuccess {String} data.content 消息详情
+	 * @apiSuccess {String} data.summary 标摘要题
 	 *
 	 * @apiSuccessExample {json} Success-Response:
 	 * {
-	 *	    "data": {
-	 *	        "id": "1",
-	 *	        "title": "热门",
-	 *	        "summary": "热门",
-	 *	        "content": "热门"
-	 *	    },
-	 *	    "status": 0,
-	 *	    "message": "成功"
-	 *	}
+	 *     "data": {
+	 *         "id": "16",
+	 *         "updated_at": "2018-01-26 17:47:49",
+	 *         "title": "测试",
+	 *         "content": "<p>这是一条站内信</p>\n",
+	 *         "summary": ""
+	 *     },
+	 *     "status": 0,
+	 *     "message": "成功"
+	 * }
 	 *
 	 * @apiErrorExample {json} Error-Response:
 	 * {
@@ -137,7 +181,7 @@ class Mailbox extends API_Controller {
 	 */
 	public function view()
 	{
-		$id = (int)$this->input->get('id');
+		$id = (int)$this->input->get_post('id');
 		$this->db->select('id,updated_at,title,content,summary');
 		if($info = $this->Mailbox_model->get($id)){
 			$this->load->model('Users_read_model');
