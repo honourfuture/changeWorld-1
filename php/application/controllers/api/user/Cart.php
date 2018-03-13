@@ -161,6 +161,15 @@ class Cart extends API_Controller {
 	 */
 	public function add()
 	{
+		if($this->cart_add()){
+			$this->ajaxReturn();
+		}else{
+			$this->ajaxReturn([], 1, '添加购物车失败');
+		}
+	}
+
+	protected function cart_add($is_buy = false)
+	{
 		$params = elements(
 			array(
 				'goods_id', 'num', 'goods_attr'
@@ -168,16 +177,6 @@ class Cart extends API_Controller {
 			$this->input->post(),
 			UPDATE_VALID
 		);
-
-		if($this->cart_add($params)){
-			$this->ajaxReturn();
-		}else{
-			$this->ajaxReturn([], 1, '添加购物车失败');
-		}
-	}
-
-	protected function cart_add($params, $is_buy = false)
-	{
 		//判断商品
 		$this->check_goods_add($params, $is_buy);
 
@@ -196,6 +195,7 @@ class Cart extends API_Controller {
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
 	 * @apiParam {Number} goods_id 商品唯一ID
+	 * @apiParam {Number} num 购买数量
 	 * @apiParam {String} goods_attr 商品属性 json
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
@@ -219,15 +219,7 @@ class Cart extends API_Controller {
 	 */
 	public function buy()
 	{
-		$params = elements(
-			array(
-				'goods_id', 'goods_attr'
-			),
-			$this->input->post(),
-			UPDATE_VALID
-		);
-		$params['num'] = 1;
-		$this->cart_add($params, true);
+		$this->cart_add(true);
 
 		//商品&商家信息
 		$this->load->model('Users_model');
