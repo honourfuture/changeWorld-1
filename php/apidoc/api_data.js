@@ -4310,7 +4310,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    \"data\": {\n        \"1\": {\n            \"name\": \"内容\",\n            \"limit\": \"3\",\n            \"list\": [\n                {\n                    \"6\": \"广告\"\n                },\n                {\n                    \"5\": \"铃声\"\n                },\n                {\n                    \"4\": \"配音\"\n                },\n                {\n                    \"3\": \"声音日记\"\n                }\n            ]\n        },\n        \"2\": {\n            \"name\": \"播讲\",\n            \"limit\": \"2\",\n            \"list\": [\n                {\n                    \"8\": \"体育\"\n                },\n                {\n                    \"7\": \"广告\"\n                },\n                {\n                    \"p9\": \"天天快递\"\n                }\n            ]\n        }\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": {\n        \"1\": {\n            \"name\": \"内容\",\n            \"limit\": \"3\",\n            \"list\": [\n                {\n                    \"6\": \"广告\"\n                },\n                {\n                    \"5\": \"铃声\"\n                },\n                {\n                    \"4\": \"配音\"\n                },\n                {\n                    \"3\": \"声音日记\"\n                }\n            ]\n        },\n        \"2\": {\n            \"name\": \"播讲\",\n            \"limit\": \"2\",\n            \"list\": [\n                {\n                    \"8\": \"体育\"\n                },\n                {\n                    \"7\": \"广告\"\n                },\n                {\n                    \"9c\": \"天天快递\"\n                }\n            ]\n        }\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
@@ -9466,6 +9466,91 @@ define({ "api": [
     "groupTitle": "user"
   },
   {
+    "type": "post",
+    "url": "/api/album_tag/del",
+    "title": "专辑标签-自定义删除",
+    "version": "1.0.0",
+    "name": "album_tag_del",
+    "group": "user",
+    "sampleRequest": [
+      {
+        "url": "/api/album_tag/del"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>自定义标签ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": \"\",\n\t    \"status\": 0,\n\t    \"message\": \"\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Album_tag.php",
+    "groupTitle": "user"
+  },
+  {
     "type": "get",
     "url": "/api/user/anchor",
     "title": "讲师认证-初始页",
@@ -10151,6 +10236,13 @@ define({ "api": [
             "optional": false,
             "field": "goods_id",
             "description": "<p>商品唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "num",
+            "description": "<p>购买数量</p>"
           },
           {
             "group": "Parameter",
