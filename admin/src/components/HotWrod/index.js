@@ -132,6 +132,7 @@ export class HotWrod extends BaseComponent{
 	componentDidMount(){
 		Base.GET({act:'search_words',op:'index'},(res)=>{
 			this.store.list = res.data; 
+			this.cacheData = res.data.map(item => ({ ...item }));
 		},this);
 	}
 	render(){
