@@ -10406,6 +10406,13 @@ define({ "api": [
             "optional": false,
             "field": "sign",
             "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "goods_id",
+            "description": "<p>1,2,3</p>"
           }
         ]
       }

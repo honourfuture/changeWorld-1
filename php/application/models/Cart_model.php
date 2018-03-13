@@ -20,9 +20,12 @@ class Cart_model extends MY_Model
     }
 
     //个人购物车
-    public function buyer($buyer_uid)
+    public function buyer($buyer_uid, $a_goods_id = [])
     {
     	$seller = array();
+        if($a_goods_id){
+            $this->db->where_in('goods_id', $a_goods_id);
+        }
     	$cart = $this->get_many_by(array('buyer_uid' => $buyer_uid));
     	$a_seller = $a_goods = $goods_num = array();
     	if($cart){

@@ -61,6 +61,7 @@ class Cart extends API_Controller {
 	 *
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
+	 * @apiParam {String} goods_id 1,2,3
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -84,10 +85,17 @@ class Cart extends API_Controller {
     public function order()
     {
     	$ret = array();
-		$ret['point'] = $this->points($this->user_id);
-		$ret['goods'] = $this->Cart_model->buyer($this->user_id);
+    	$goods_id = trim($this->input->get_post('goods_id'), ',');
+    	if($goods_id){
+    		$a_goods_id = explode(',', $goods_id);
+	    	if($a_goods_id){
+	    		$ret['point'] = $this->points($this->user_id);
+				$ret['goods'] = $this->Cart_model->buyer($this->user_id, $a_goods_id);
+				$this->ajaxReturn($ret);
+	    	}
+    	}
 
-		$this->ajaxReturn($ret);
+    	$this->ajaxReturn([], 1, '请选择购买商品进行结算');
     }
 
     /**
@@ -219,15 +227,12 @@ class Cart extends API_Controller {
 	 */
 	public function buy()
 	{
+		$ret = array();
 		$this->cart_add(true);
 
-		//商品&商家信息
-		$this->load->model('Users_model');
-		$seller = $this->Users_model->get_many_user([$this->goods['seller_uid']]);
-		!isset($seller[$this->goods['seller_uid']]['goods']) && $seller[$this->goods['seller_uid']]['goods'] = array();
-    	$seller[$this->goods['seller_uid']]['goods'][] = $this->goods;
-
-		$this->ajaxReturn($seller);
+		$ret['point'] = $this->points($this->user_id);
+		$ret['goods'] = $this->Cart_model->buyer($this->user_id, [$this->goods['id']]);
+		$this->ajaxReturn($ret);
 	}
 
 	protected function check_goods_add(&$params, $is_buy = false)
