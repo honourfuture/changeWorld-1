@@ -158,7 +158,7 @@ class Cart extends API_Controller {
 		$this->check_goods_add($params, $is_buy);
 
 		//加入购物车
-		return $this->Cart_model->add($params)
+		return $this->Cart_model->add($params);
 	}
 
 	/**
