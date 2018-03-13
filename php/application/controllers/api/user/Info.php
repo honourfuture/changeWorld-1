@@ -115,29 +115,25 @@ class Info extends API_Controller {
 	 * @apiSuccess {String} data.sex 性别 1男 2女 0保密
 	 * @apiSuccess {String} data.birth 出生日期
 	 * @apiSuccess {String} data.summary 简介
-	 * @apiSuccess {String} data.mobi 绑定手机 空表示未绑定
-	 * @apiSuccess {String} data.qq_uid 绑定QQ 空表示未绑定
-	 * @apiSuccess {String} data.weixin_uid 绑定微信 空表示未绑定
-	 * @apiSuccess {String} data.weibo_uid 绑定微博 空表示未绑定
 	 * @apiSuccess {String} data.age 年龄
+	 * @apiSuccess {Object[]} data.bind 已绑定账号 0手机 1微信 2QQ 3微博
 	 *
 	 * @apiSuccessExample {json} Success-Response:
-	 *	{
-	 *	    "data": {
-	 *	        "header": "",
-	 *	        "nickname": "aicode",
-	 *	        "sex": "0",
-	 *	        "birth": "2018-01-12",
-	 *	        "summary": "",
-	 *	        "mobi": "13430332489",
-	 *	        "qq_uid": "",
-	 *	        "weixin_uid": "",
-	 *	        "weibo_uid": "",
-	 *	        "age": 0
-	 *	    },
-	 *	    "status": 0,
-	 *	    "message": "成功"
-	 *	}
+	 * {
+	 *     "data": {
+	 *         "header": "",
+	 *         "nickname": "aicode",
+	 *         "sex": "0",
+	 *         "birth": "2018-01-12",
+	 *         "summary": "",
+	 *         "age": 0,
+	 *         "bind": [
+	 *             "0"
+	 *         ]
+	 *     },
+	 *     "status": 0,
+	 *     "message": "成功"
+	 * }
 	 *
 	 * @apiErrorExample {json} Error-Response:
 	 * {
@@ -152,12 +148,15 @@ class Info extends API_Controller {
 
 		$ret = elements(
 			array(
-				'header', 'nickname', 'sex', 'birth', 'summary', 'mobi', 'qq_uid', 'weixin_uid', 'weibo_uid'
+				'header', 'nickname', 'sex', 'birth', 'summary'
 			),
 			$this->get_user(),
 			''
 		);
 		$ret['age'] = $this->age($ret['birth']);
+
+		$this->load->model('Users_bind_model');
+		$ret['bind'] = $this->Users_bind_model->get_user_bind_list($this->user_id);
 		$this->ajaxReturn($ret);
 	}
 

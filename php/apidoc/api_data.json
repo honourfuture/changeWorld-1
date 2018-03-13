@@ -9713,38 +9713,24 @@
           },
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "Object[]",
             "optional": false,
-            "field": "data.mobi",
-            "description": "<p>绑定手机 空表示未绑定</p>"
+            "field": "data.account_type",
+            "description": "<p>所有绑定账号总集</p>"
           },
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "Object[]",
             "optional": false,
-            "field": "data.qq_uid",
-            "description": "<p>绑定QQ 空表示未绑定</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "data.weixin_uid",
-            "description": "<p>绑定微信 空表示未绑定</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "data.weibo_uid",
-            "description": "<p>绑定微博 空表示未绑定</p>"
+            "field": "data.list",
+            "description": "<p>已绑定账号集</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    \"data\": {\n        \"mobi\": \"13430332489\",\n        \"qq_uid\": \"\",\n        \"weixin_uid\": \"\",\n        \"weibo_uid\": \"\",\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": {\n        \"account_type\": [\n            \"手机\",\n            \"微信\",\n            \"QQ\",\n            \"微博\"\n        ],\n        \"list\": [\n            {\n                \"account_type\": \"0\",\n                \"unique_id\": \"13430331489\",\n                \"other\": []\n            }\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
@@ -10982,43 +10968,22 @@
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.mobi",
-            "description": "<p>绑定手机 空表示未绑定</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "data.qq_uid",
-            "description": "<p>绑定QQ 空表示未绑定</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "data.weixin_uid",
-            "description": "<p>绑定微信 空表示未绑定</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "data.weibo_uid",
-            "description": "<p>绑定微博 空表示未绑定</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
             "field": "data.age",
             "description": "<p>年龄</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "data.bind",
+            "description": "<p>已绑定账号 0手机 1微信 2QQ 3微博</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    \"data\": {\n        \"header\": \"\",\n        \"nickname\": \"aicode\",\n        \"sex\": \"0\",\n        \"birth\": \"2018-01-12\",\n        \"summary\": \"\",\n        \"mobi\": \"13430332489\",\n        \"qq_uid\": \"\",\n        \"weixin_uid\": \"\",\n        \"weibo_uid\": \"\",\n        \"age\": 0\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": {\n        \"header\": \"\",\n        \"nickname\": \"aicode\",\n        \"sex\": \"0\",\n        \"birth\": \"2018-01-12\",\n        \"summary\": \"\",\n        \"age\": 0,\n        \"bind\": [\n            \"0\"\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
