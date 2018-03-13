@@ -6,14 +6,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @link www.aicode.org.cn
  */
 class Cart extends API_Controller {
-	protected $page = 'cart';
 
 	public function __construct()
     {
         parent::__construct();
-
-        $page = $this->input->get_post('page');
-        $page && $this->page = $page;
 
         $this->load->model('Cart_model');
     }
@@ -55,14 +51,43 @@ class Cart extends API_Controller {
     	$this->ajaxReturn(['count' => $count]);
     }
 
-    //结算页信息
-    protected function order()
+    /**
+	 * @api {get} /api/user/cart/order 结算信息
+	 * @apiVersion 1.0.0
+	 * @apiName cart_order
+	 * @apiGroup user
+	 *
+	 * @apiSampleRequest /api/user/cart/order
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *     "data": {
+	 *	   },
+	 *     "status": 0,
+	 *     "message": "成功"
+	 * }
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+    public function order()
     {
     	$ret = array();
 		$ret['point'] = $this->points($this->user_id);
 		$ret['goods'] = $this->Cart_model->buyer($this->user_id);
 
-		return $ret;
+		$this->ajaxReturn($ret);
     }
 
     /**
@@ -75,7 +100,6 @@ class Cart extends API_Controller {
 	 *
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
-	 * @apiParam {String} page 默认不传，order表示进结算页
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -98,7 +122,7 @@ class Cart extends API_Controller {
 	 */
 	public function index()
 	{
-		$ret = $this->page == 'order' ? $this->order() : $this->Cart_model->buyer($this->user_id);
+		$ret = $this->Cart_model->buyer($this->user_id);
 		$this->ajaxReturn($ret);
 	}
 
