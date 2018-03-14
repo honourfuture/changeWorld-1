@@ -101,11 +101,15 @@ class Seller extends API_Controller {
 
 	protected function search()
 	{
-		
+		$keyword = $this->input->get_post('keyword');
+		if($keyword){
+			$this->db->like($this->field, $keyword);
+		}
 	}
 
 	protected function _live($seller_uid)
 	{
+		$this->field = 'title';
 		$ret = array('count' => 0, 'list' => array());
 		//预告直播
 		$where = array('start_at >' => time());
@@ -135,6 +139,7 @@ class Seller extends API_Controller {
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
 	 * @apiParam {Number} seller_uid 店铺唯一ID
+	 * @apiParam {String} keyword 搜索关键词
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -185,6 +190,7 @@ class Seller extends API_Controller {
 
 	protected function _album($seller_uid)
 	{
+		$this->field = 'title';
 		$ret = array('count' => 0, 'list' => array());
 		$where = array('enable' => 1);
 		$where['anchor_uid'] = $seller_uid;
@@ -218,6 +224,7 @@ class Seller extends API_Controller {
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
 	 * @apiParam {Number} seller_uid 店铺唯一ID
+	 * @apiParam {String} keyword 搜索关键词
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -267,6 +274,7 @@ class Seller extends API_Controller {
 
 	protected function _audio($seller_uid)
 	{
+		$this->field = 'title';
 		$ret = array('count' => 0, 'list' => array());
 		$where = array('enable' => 1);
 		$where['anchor_uid'] = $seller_uid;
@@ -296,6 +304,7 @@ class Seller extends API_Controller {
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
 	 * @apiParam {Number} seller_uid 店铺唯一ID
+	 * @apiParam {String} keyword 搜索关键词
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -346,6 +355,7 @@ class Seller extends API_Controller {
 
 	protected function _goods($seller_uid)
 	{
+		$this->field = 'name';
 		$ret = array('count' => 0, 'list' => array());
 		$where = array('enable' => 1);
 		$where['seller_uid'] = $seller_uid;
@@ -374,6 +384,7 @@ class Seller extends API_Controller {
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
 	 * @apiParam {Number} seller_uid 店铺唯一ID
+	 * @apiParam {String} keyword 搜索关键词
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
