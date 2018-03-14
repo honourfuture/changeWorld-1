@@ -14,6 +14,50 @@ class Order extends API_Controller {
         $this->load->model('Order_model');
     }
 
+    /**
+	 * @api {get} /api/user/order 订单-列表
+	 * @apiVersion 1.0.0
+	 * @apiName order
+	 * @apiGroup user
+	 *
+	 * @apiSampleRequest /api/user/order
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *     "data": {
+	 *	   },
+	 *     "status": 0,
+	 *     "message": "成功"
+	 * }
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+	public function index()
+	{
+		$ret = array('count' => 0, 'list' => array());
+
+		$status = intval($this->input->get_post('status'));
+		$seller_uid = intval($this->input->get_post('seller_uid'));
+		if($seller_uid){
+
+		}else{
+			
+		}
+		$this->ajaxReturn($ret);
+	}
+
 	/**
 	 * @api {post} /api/user/order/add 订单-下单
 	 * @apiVersion 1.0.0
@@ -103,7 +147,7 @@ class Order extends API_Controller {
 		$this->load->model('Order_items_model');
 		$r_total = $r_ticket = $r_point = $r_point_amount = 0;
 		$d_cart_id = [];//待删除购物车ID
-		$flag_point = flase;//积分变动标识
+		$flag_point = false;//积分变动标识
 		foreach($goods as $seller_id=>$rows){
 			$order = $order_item = [];
 			if(! isset($seller[$seller_id])){
