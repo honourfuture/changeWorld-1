@@ -21,7 +21,7 @@ define('CONNECT_WEIBO_APPKEY', '7c97fef63ea8389142506246dcd3bccd');
 
 // 跨域白名单
 $config['white_list_url'] = array(
-	'null', 'localhost', 'qichebaby.com', 'kuaimacode.com'
+	'null', 'localhost', 'qichebaby.com', 'kuaimacode.com', '192.168.31.46'
 );
 
 // sms短信

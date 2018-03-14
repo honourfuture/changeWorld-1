@@ -26,22 +26,29 @@ class Bind extends API_Controller {
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
 	 * @apiSuccess {Object} data 接口数据集
-	 * @apiSuccess {String} data.mobi 绑定手机 空表示未绑定
-	 * @apiSuccess {String} data.qq_uid 绑定QQ 空表示未绑定
-	 * @apiSuccess {String} data.weixin_uid 绑定微信 空表示未绑定
-	 * @apiSuccess {String} data.weibo_uid 绑定微博 空表示未绑定
+	 * @apiSuccess {Object[]} data.account_type 所有绑定账号总集
+	 * @apiSuccess {Object[]} data.list 已绑定账号集
 	 *
 	 * @apiSuccessExample {json} Success-Response:
-	 *	{
-	 *	    "data": {
-	 *	        "mobi": "13430332489",
-	 *	        "qq_uid": "",
-	 *	        "weixin_uid": "",
-	 *	        "weibo_uid": "",
-	 *	    },
-	 *	    "status": 0,
-	 *	    "message": "成功"
-	 *	}
+	 * {
+	 *     "data": {
+	 *         "account_type": [
+	 *             "手机",
+	 *             "微信",
+	 *             "QQ",
+	 *             "微博"
+	 *         ],
+	 *         "list": [
+	 *             {
+	 *                 "account_type": "0",
+	 *                 "unique_id": "13430331489",
+	 *                 "other": []
+	 *             }
+	 *         ]
+	 *     },
+	 *     "status": 0,
+	 *     "message": "成功"
+	 * }
 	 *
 	 * @apiErrorExample {json} Error-Response:
 	 * {
@@ -52,15 +59,22 @@ class Bind extends API_Controller {
 	 */
 	public function index()
 	{
-		$ret = array();
+		$ret = array('account_type' => [], 'list' => []);
 
-		$ret = elements(
-			array(
-				'mobi', 'qq_uid', 'weixin_uid', 'weibo_uid'
-			),
-			$this->get_user(),
-			''
-		);
+		$this->load->model('Users_bind_model');
+		$ret['account_type'] = $this->Users_bind_model->account_type();
+		$this->db->select('account_type,unique_id,other');
+		$ret['list'] = $this->Users_bind_model->get_many_by('user_id', $this->user_id);
+		if($ret['list']){
+			foreach($ret['list'] as $key=>$item){
+				if($item['other']){
+					$ret['list'][$key]['other'] = json_decode($item['other'], true);
+				}else{
+					$ret['list'][$key]['other'] = [];
+				}
+			}
+		}
+
 		$this->ajaxReturn($ret);
 	}
 

@@ -60,7 +60,7 @@ class Album_tag extends API_Controller {
 	 *                     "7": "广告"
 	 *                 },
 	 *                 {
-	 *                     "p9": "天天快递"
+	 *                     "9c": "天天快递"
 	 *                 }
 	 *             ]
 	 *         }
@@ -82,7 +82,7 @@ class Album_tag extends API_Controller {
 		$deleted = (int)$this->input->get('deleted');
 		$tag_user = array();
 		if($this->user_id){
-			$this->db->select('concat("p", id) as id,name,pid');
+			$this->db->select('concat(id, "c") as id,name,pid');
 			$this->load->model('Album_tag_user_model');
 			$tag_user = $this->Album_tag_user_model->get_many_by('user_id', $this->user_id);
 
@@ -163,9 +163,54 @@ class Album_tag extends API_Controller {
 		$params['user_id'] = $this->user_id;
 
 		$this->load->model('Album_tag_user_model');
-		$this->Album_tag_user_model->insert($params);
+		if($id = $this->Album_tag_user_model->insert($params)){
+			$this->ajaxReturn(['id' => $id.'c']);
+		}else{
+			$this->ajaxReturn([], 1, '保存失败');
+		}
+	}
 
-		$this->ajaxReturn([]);
+	/**
+	 * @api {post} /api/album_tag/del 专辑标签-自定义删除
+	 * @apiVersion 1.0.0
+	 * @apiName album_tag_del
+	 * @apiGroup user
+	 *
+	 * @apiSampleRequest /api/album_tag/del
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 * @apiParam {Number} id 自定义标签ID
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {String} data 接口数据集
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *	    "data": "",
+	 *	    "status": 0,
+	 *	    "message": ""
+	 *	}
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+	public function del()
+	{
+		$id = intval($this->input->get_post('id'));
+		if($id){
+			$this->load->model('Album_tag_user_model');
+			$this->Album_tag_user_model->delete_by(['id' => $id, 'user_id' => $this->user_id]);
+
+			$this->ajaxReturn([]);
+		}else{
+			$this->ajaxReturn([], 1, '参数ID错误');
+		}
 	}
 
 	/**

@@ -330,11 +330,8 @@ class API_Controller extends MY_Controller
     }
 
     // 会员积分
-    protected function points($user_id)
+    protected function points($user)
     {
-        $this->load->model('Users_model');
-        $user = $this->Users_model->get($user_id);
-
         $rule = $this->sitePointsRule();
         return array(
             'rule' => isset($rule['goods_exchange']) ? $rule['goods_exchange'] : 0,
