@@ -10411,7 +10411,7 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "goods_id",
+            "field": "cart_id",
             "description": "<p>1,2,3</p>"
           }
         ]
@@ -12765,6 +12765,27 @@ define({ "api": [
             "optional": false,
             "field": "sign",
             "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "addressInfo",
+            "description": "<p>收货人信息</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "seller",
+            "description": "<p>商家商品组</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "goods_id",
+            "description": "<p>1,2,3</p>"
           }
         ]
       }

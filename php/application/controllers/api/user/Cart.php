@@ -61,7 +61,7 @@ class Cart extends API_Controller {
 	 *
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
-	 * @apiParam {String} goods_id 1,2,3
+	 * @apiParam {String} cart_id 1,2,3
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -85,12 +85,15 @@ class Cart extends API_Controller {
     public function order()
     {
     	$ret = array();
-    	$goods_id = trim($this->input->get_post('goods_id'), ',');
-    	if($goods_id){
-    		$a_goods_id = explode(',', $goods_id);
-	    	if($a_goods_id){
+    	$cart_id = trim($this->input->get_post('cart_id'), ',');
+    	if($cart_id){
+    		$a_cart_id = explode(',', $cart_id);
+	    	if($a_cart_id){
 	    		$ret['point'] = $this->points($this->user_id);
-				$ret['goods'] = $this->Cart_model->buyer($this->user_id, $a_goods_id);
+				$ret['goods'] = $this->Cart_model->buyer($this->user_id, $a_cart_id);
+
+				$this->load->model('Order_model');
+				$this->Order_model->format_seller_data($ret['goods']);
 				$this->ajaxReturn($ret);
 	    	}
     	}
@@ -169,8 +172,8 @@ class Cart extends API_Controller {
 	 */
 	public function add()
 	{
-		if($this->cart_add()){
-			$this->ajaxReturn();
+		if($cart_id = $this->cart_add()){
+			$this->ajaxReturn(['cart_id' => $cart_id]);
 		}else{
 			$this->ajaxReturn([], 1, '添加购物车失败');
 		}
@@ -228,10 +231,16 @@ class Cart extends API_Controller {
 	public function buy()
 	{
 		$ret = array();
-		$this->cart_add(true);
+		if(!$cart_id = $this->cart_add()){
+			$this->ajaxReturn([], 1, '添加购物车失败');
+		}
 
 		$ret['point'] = $this->points($this->user_id);
-		$ret['goods'] = $this->Cart_model->buyer($this->user_id, [$this->goods['id']]);
+		$ret['goods'] = $this->Cart_model->buyer($this->user_id, [$cart_id]);
+
+		$this->load->model('Order_model');
+		$this->Order_model->format_seller_data($ret['goods']);
+
 		$this->ajaxReturn($ret);
 	}
 

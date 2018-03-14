@@ -163,9 +163,11 @@ class Album_tag extends API_Controller {
 		$params['user_id'] = $this->user_id;
 
 		$this->load->model('Album_tag_user_model');
-		$this->Album_tag_user_model->insert($params);
-
-		$this->ajaxReturn([]);
+		if($id = $this->Album_tag_user_model->insert($params)){
+			$this->ajaxReturn(['id' => $id.'c']);
+		}else{
+			$this->ajaxReturn([], 1, '保存失败');
+		}
 	}
 
 	/**
