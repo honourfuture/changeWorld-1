@@ -12778,13 +12778,13 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "seller",
-            "description": "<p>商家商品组</p>"
+            "description": "<p>商家信息组</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "goods_id",
+            "field": "cart_id",
             "description": "<p>1,2,3</p>"
           }
         ]
@@ -12819,7 +12819,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    \"data\": {\n\t   },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": {\n        \"pay_sn\": \"870069426068845\",\n        \"total\": 131.5,\n        \"ticket\": 16,\n        \"point_amount\": 20,\n        \"point\": 20\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]

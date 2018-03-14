@@ -89,7 +89,9 @@ class Cart extends API_Controller {
     	if($cart_id){
     		$a_cart_id = explode(',', $cart_id);
 	    	if($a_cart_id){
-	    		$ret['point'] = $this->points($this->user_id);
+	    		$this->load->model('Users_model');
+        		$user = $this->Users_model->get($this->user_id);
+	    		$ret['point'] = $this->points($user);
 				$ret['goods'] = $this->Cart_model->buyer($this->user_id, $a_cart_id);
 
 				$this->load->model('Order_model');
@@ -232,10 +234,12 @@ class Cart extends API_Controller {
 	{
 		$ret = array();
 		if(!$cart_id = $this->cart_add()){
-			$this->ajaxReturn([], 1, '添加购物车失败');
+			$this->ajaxReturn([], 1, '保存购物车失败');
 		}
 
-		$ret['point'] = $this->points($this->user_id);
+		$this->load->model('Users_model');
+		$user = $this->Users_model->get($this->user_id);
+	    $ret['point'] = $this->points($user);
 		$ret['goods'] = $this->Cart_model->buyer($this->user_id, [$cart_id]);
 
 		$this->load->model('Order_model');

@@ -47,7 +47,7 @@ class Cart_model extends MY_Model
     		$seller = $this->Users_model->get_many_user($a_seller);
 
     		$this->load->model('Goods_model');
-    		$this->db->select('id,name,sale_price,seller_uid,default_image,goods_ticket,use_point_rate,freight_fee');
+    		$this->db->select('id,name,sale_price,seller_uid,default_image,goods_ticket,use_point_rate,freight_fee,send_mode,e_invoice');
     		$goods = $this->Goods_model->get_many($a_goods);
             $k_goods = [];
             foreach($goods as $item){
