@@ -1,208 +1,293 @@
-import React from 'react';
-import { action } from 'mobx';
-import {BaseComponent,Base} from '../../common';
-import { Flex, Button, NavBar, WhiteSpace, Icon, Stepper, Radio, Checkbox, InputItem, TextareaItem} from 'antd-mobile';
-import './ConfirmOrder.less';
+import React from "react";
+import { action, computed } from "mobx";
+import { BaseComponent, Base, NetImg, Global } from "../../common";
+import {
+    Flex,
+    Button,
+    NavBar,
+    WhiteSpace,
+    Icon,
+    Stepper,
+    Radio,
+    Checkbox,
+    InputItem,
+    TextareaItem,
+    Toast,
+    Input
+} from "antd-mobile";
+import "./ConfirmOrder.less";
 
-import {GoodsItem} from '../../components/GoodsItem';
-import { test, addr, icon } from '../../images';
+import { OrderGoodsItem } from "../../components/OrderGoodsItem";
+import { test, addr, icon } from "../../images";
 
-// class StoreItem extends BaseComponent{
-// 	render(){
-// 		const { title, img, spec, price, num } = this.props.item;
-// 		return (
-// 			<Flex align='start' className='goods-info base-line'>
-// 				<img className='goods-img' src={img} alt="" />
-// 				<Flex.Item>
-// 					<Flex justify='between' align='start'>
-// 						<div className="title ellipsis">{title}</div>
-// 						<div className="price">￥ {price}</div>
-// 					</Flex>
-// 					<Flex justify='between' className='bottom-info'>
-// 						<div className="spec">{spec}</div>
-// 						<div className="spec">x{num}</div>
-// 					</Flex>
-// 				</Flex.Item>
-// 			</Flex>
-// 		)
-// 	}
-// }
+class StoreItem extends BaseComponent {
+    @action.bound
+    onChangeMsg(e) {
+        this.props.item.message = e;
+    }
+    @action.bound
+    onPointChange(e) {
+        const { point } = this.props.item;
+        if ((parseFloat(e) || 0) <= point) {
+            this.props.item.inputPoint = e;
+        }
+    }
+    render() {
+        const {
+            nickname,
+            seller_uid,
+            header,
+            goods,
+            rule,
+            ticket,
+            inputPoint,
+            point
+        } = this.props.item;
+        return (
+            <div className="order-detail">
+                <Flex
+                    className="store-info base-line"
+                    onClick={() => Base.push("AnchorStore", { seller_uid })}
+                >
+                    <NetImg src={header} />
+                    <div className="store-name">{nickname}</div>
+                    <Icon type="right" color="#c9c9c9" />
+                </Flex>
+                {goods.map((item, index) => (
+                    <OrderGoodsItem key={index} item={item} />
+                ))}
+                <div className="order-detail">
+                    {parseFloat(ticket) > 0 ? (
+                        <Flex
+                            justify="between"
+                            align="center"
+                            className="discount-item base-line"
+                        >
+                            <Flex.Item>优惠券</Flex.Item>
+                            <Flex.Item className="ticketTips">
+                                <span className="payMoney">
+                                    -￥{Base.getNumFormat(ticket)}
+                                </span>
+                            </Flex.Item>
+                        </Flex>
+                    ) : null}
+                    {parseFloat(rule) > 0 && parseFloat(point) > 0 ? (
+                        <Flex
+                            justify="between"
+                            align="center"
+                            className="discount-item base-line"
+                        >
+                            <Flex.Item>
+                                积分抵扣 <em>{rule}积分=1元</em>
+                            </Flex.Item>
+                            <Flex.Item align="center">
+                                <InputItem
+                                    type="number"
+                                    value={inputPoint}
+                                    placeholder={`最高可用${point}分`}
+                                    onChange={this.onPointChange}
+                                />
+                            </Flex.Item>
+                        </Flex>
+                    ) : null}
+                </div>
+                <div className="order-remark">
+                    <TextareaItem
+                        onChange={this.onChangeMsg}
+                        placeholder="备注留言"
+                        rows={5}
+                        count={100}
+                    />
+                </div>
+                <WhiteSpace />
+            </div>
+        );
+    }
+}
 
-export default class ConfirmOrder extends BaseComponent{
-	store = {
-		storeList: [
-			{
-				storeName: '文贝袄的店铺',
-				storeId: '1',
-				img: test.u1,
-				goods: [
-					{
-						img: test.test4,
-						title: 'RE:CIPE 水晶防晒喷雾 150毫升/瓶 3瓶',
-						spec: '型号 150ml',
-						price: '369',
-						goodsId: '1',
-						num: 1,
-					}
-				]
-			}
-		],
-		isCoupon:false,
-		isInt:false,
-		isPerson:true,
-		curIndex: 0,
-	}
-	@action.bound
-	couponHandler(){
-		this.store.isCoupon = !this.store.isCoupon;
-	}
-	@action.bound
-	intHandler(){
-		this.store.isInt = !this.store.isInt;
-	}
-	@action.bound
-	invoiceHandler(e){
-		this.store.isPerson = e === 0 ? true : false;
-		this.store.curIndex = e;
-	}
-	render(){
-		const { storeList, isCoupon, isInt, isPerson, curIndex} = this.store;
-		const orderItem = storeList.map((item,index)=>{
-			const {storeName,storeId,img,goods} = item;
-			return <div className="order-detail" key={storeId}>
-				<Flex className='store-info base-line' onClick={() => Base.push('AnchorStore')}>
-					<img src={img} alt="" />
-					<div className='store-name'>{storeName}</div>
-					<Icon type='right' color='#c9c9c9' />
-				</Flex>
-				{
-					goods.map((item)=> <GoodsItem key={item.goodsId} item={item} />)
-				}
-				<Flex justify='between' align='center' className='buy-num'>
-					<div>购买数量</div>
-					<div>
-						<Stepper showNumber className='stepper' min={1} max={99} value={1} />
-					</div>
-				</Flex>
-			</div>
-		})
-
-		return (
-			<div className='ConfirmOrder'>
-				<NavBar
-					className="base-line"
-					mode="light"
-					icon={<img src={icon.back} alt='' />}
-					onLeftClick={Base.goBack}
-				>确认订单</NavBar>
-				<div className="base-content">
-					<img src={addr.orderTopLine} className="img-line" alt=""/>
-					{true?<Flex className="order-address" onClick={()=>Base.push('SelectAddress')}>
-						<div className="addr-info">
-							<div className="addr-user">*彤 185****8158</div>
-							<div className="addr-ess">浙江省-杭州市-西湖区 春申街西溪花园凌波苑</div>
-						</div>
-					</Flex>:
-					<Flex className="order-address" justify="center" align="center" onClick={()=>Base.push('NewAddress')}>
-						<div className="add-addr">
-							<div className="addr-img">
-								<img src={addr.address} className="addIco-img" alt="" />
-							</div>
-							<div className="add-tips">还没收货地址，<em>去添加</em></div>
-						</div>
-					</Flex>}
-					<WhiteSpace />
-					{orderItem}
-					{/* <div className="order-detail">
-						<Flex className='store-info' onClick={()=>Base.push('AnchorStore')}>
-							<img src={test.u1} alt="" />
-							<div className='store-name'>文贝袄的店铺</div>
-							<Icon type='right' color='#c9c9c9' />
-						</Flex>
-						<Flex align='start' className='goods-info'>
-							<img className='goods-img' src={test.test4} alt="" />
-							<Flex.Item>
-								<Flex justify='between' align='start'>
-									<div className="title ellipsis">RE:CIPE 水晶防晒喷雾 150毫升/瓶 3瓶</div>
-									<div className="price">￥ 369</div>
-								</Flex>
-								<Flex justify='between' className='bottom-info'>
-									<div className="spec">型号 150ml</div>
-									<div className="spec">x1</div>
-								</Flex>
-							</Flex.Item>
-						</Flex>
-						<Flex justify='between' align='center' className='buy-num'>
-							<div>购买数量</div>
-							<div>
-								<Stepper showNumber className='stepper' min={1} max={99} value={1} />
-							</div>
-						</Flex>
-					</div> */}
-					<WhiteSpace />
-					<div className="order-detail">
-						<Flex justify="between" align="center" className="discount-item base-line">
-							<Flex.Item>
-								优惠券
-							</Flex.Item>
-							<Flex.Item align="center">
-								<span className="payMoney">-￥{10}</span><Checkbox checked={isCoupon} onChange={this.couponHandler} />
-							</Flex.Item>
-						</Flex>
-						<Flex justify="between" align="center" className="discount-item base-line">
-							<Flex.Item>
-								积分抵扣 <em>100积分=1元</em>
-							</Flex.Item>
-							<Flex.Item align="center">
-								<span className="payMoney">-￥{10}</span><Checkbox checked={isInt} onChange={this.intHandler} />
-							</Flex.Item>
-						</Flex>
-					</div>
-					<div className="order-invoice">
-						<Flex justify="between" align="center" className="discount-item base-line">
-							<div>
-								发票抬头
-							</div>
-							<Flex className="order-invoice-check">
-								{
-									["企业","个人"].map((item,key)=>{
-										return <Flex key={key} onClick={() => this.invoiceHandler(key)}><span className="payMoney">{item}</span><Radio checked={curIndex === key}></Radio></Flex>	
-									})
-								}
-							</Flex>
-						</Flex>
-						{
-							isPerson ? <div>
-								<Flex align="center" className="discount-item base-line">
-									<InputItem placeholder="请输入抬头名称或开票六位代码">名称</InputItem>
-								</Flex>
-								<Flex align="center" className="discount-item base-line">
-									<InputItem placeholder="请输入纳税人识别号或社会统一征信代码">税号</InputItem>
-								</Flex>
-							</div>:<Flex align="center" className="discount-item base-line">
-									<InputItem placeholder="请输入抬头名称">名称</InputItem>
-								</Flex>
-						}
-					</div>
-					<div className="order-remark">
-						<TextareaItem
-							placeholder='备注留言'
-							rows={5}
-							// count={100}
-						/>
-					</div>
-					<WhiteSpace />
-				</div>
-				<Flex className='footer' align="center" justify='between'>
-					<div>
-						<div className="goodsNum">共1件商品</div>
-						<div className='total'>合计 <em>￥ 349.00</em></div>
-					</div>
-					<div>
-						<Button onClick={()=>Base.push('Pay')} type='warning' inline className='pay-btn'>提交订单</Button>
-					</div>
-				</Flex>
-			</div>
-		)
-	}
-};
+export default class ConfirmOrder extends BaseComponent {
+    store = {
+        storeList: [],
+        addressInfo: {}
+    };
+    componentDidMount() {
+        const {
+            goods_id,
+            goods_attr,
+            num,
+            cart_id = ""
+        } = Base.getPageParams();
+        const requestParam = cart_id
+            ? { act: "cart", op: "order", cart_id }
+            : { act: "cart", op: "buy", goods_id, goods_attr, num };
+        Base.POST(
+            {
+                ...requestParam,
+                mod: "user"
+            },
+            res => {
+                const storeList = [];
+                const data = res.data.goods;
+                const { rule, user } = res.data.point;
+                for (const key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        const item = data[key];
+                        item.seller_uid = key;
+                        item.rule = rule;
+                        item.message = "";
+                        // let use_point_rate = 0;
+                        // item.goods.forEach(goodsItem => {
+                        //     use_point_rate += parseFloat(
+                        //         goodsItem.use_point_rate
+                        //     );
+                        // });
+                        item.inputPoint = 0;
+                        storeList.push(item);
+                    }
+                }
+                this.store.storeList = storeList;
+            }
+        );
+        Base.GET(
+            { act: "address", op: "index" },
+            res => {
+                let curAddress = null;
+                if (Global.curSelectAddressId) {
+                    curAddress = res.data.find(
+                        item => item.id === Global.curSelectAddressId
+                    );
+                }
+                this.store.addressInfo =
+                    curAddress && curAddress.id
+                        ? curAddress
+                        : res.data[0] || {};
+            },
+            null,
+            true
+        );
+    }
+    @computed
+    get total() {
+        let totalNum = 0;
+        this.store.storeList.forEach(item => {
+            const { goods, ticket, total } = item;
+            totalNum += parseFloat(total) - (parseFloat(ticket) || 0);
+        });
+        return totalNum;
+    }
+    @action.bound
+    onPay() {
+        const { storeList, addressInfo } = this.store;
+        if (!addressInfo.id) {
+            return Toast.fail("请选择收货地址", 2, null, false);
+        }
+        const seller = {};
+        const cartList = [];
+        storeList.map(item => {
+            const { seller_uid, message, inputPoint, goods } = item;
+            goods.forEach(goodsItem => {
+                cartList.push(goodsItem.cart_id);
+            });
+            seller[seller_uid] = {
+                message,
+                point: inputPoint
+            };
+        });
+        const { mobi, username, province, city, area, address } = addressInfo;
+        const requestParam = {
+            addressInfo: JSON.stringify({
+                username,
+                mobi,
+                address: `${province}-${city}-${area} ${address}`
+            }),
+            seller: JSON.stringify(seller),
+            cart_id: cartList.join(",")
+        };
+        Base.POST(
+            { act: "order", op: "add", mod: "user", ...requestParam },
+            res => {}
+        );
+        console.log(requestParam);
+    }
+    render() {
+        const { storeList, isPerson, curIndex, addressInfo } = this.store;
+        const { username, mobi, province, city, area, address } = addressInfo;
+        const storeItems = storeList.map((item, index) => {
+            return <StoreItem key={index} item={item} />;
+        });
+        return (
+            <div className="ConfirmOrder">
+                <NavBar
+                    className="base-line"
+                    mode="light"
+                    icon={<img src={icon.back} alt="" />}
+                    onLeftClick={Base.goBack}
+                >
+                    确认订单
+                </NavBar>
+                <div className="base-content">
+                    <img src={addr.orderTopLine} className="img-line" alt="" />
+                    {addressInfo.id ? (
+                        <Flex
+                            className="order-address"
+                            onClick={() => Base.push("SelectAddress")}
+                        >
+                            <div className="addr-info">
+                                <div className="addr-user">
+                                    {username}{" "}
+                                    {mobi.replace(
+                                        /^(\d{3})(\d{4})(\d{4})$/,
+                                        "$1****$3"
+                                    )}
+                                </div>
+                                <div className="addr-ess">
+                                    {`${province}-${city}-${area} ${address}`}
+                                </div>
+                            </div>
+                        </Flex>
+                    ) : (
+                        <Flex
+                            className="order-address"
+                            justify="center"
+                            align="center"
+                            onClick={() => Base.push("NewAddress")}
+                        >
+                            <div className="add-addr">
+                                <div className="addr-img">
+                                    <img
+                                        src={addr.address}
+                                        className="addIco-img"
+                                        alt=""
+                                    />
+                                </div>
+                                <div className="add-tips">
+                                    还没收货地址，<em>去添加</em>
+                                </div>
+                            </div>
+                        </Flex>
+                    )}
+                    <WhiteSpace />
+                    {storeItems}
+                </div>
+                <Flex className="footer" align="center" justify="between">
+                    <div>
+                        <div className="goodsNum">共1件商品</div>
+                        <div className="total">
+                            合计 <em>￥ {Base.getNumFormat(this.total)}</em>
+                        </div>
+                    </div>
+                    <div>
+                        <Button
+                            onClick={this.onPay}
+                            type="warning"
+                            inline
+                            className="pay-btn"
+                        >
+                            提交订单
+                        </Button>
+                    </div>
+                </Flex>
+            </div>
+        );
+    }
+}
