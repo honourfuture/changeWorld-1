@@ -1,10 +1,18 @@
-import React from 'react';
-import { action } from 'mobx';
-import { BaseComponent, Base } from '../../common';
-import { Button, List, Radio, WhiteSpace, WingBlank, NavBar } from 'antd-mobile';
-import './SelectAddress.less';
+import React from "react";
+import { action } from "mobx";
+import { BaseComponent, Base, Global } from "../../common";
+import {
+    Button,
+    List,
+    Radio,
+    WhiteSpace,
+    WingBlank,
+    NavBar,
+    Toast
+} from "antd-mobile";
+import "./SelectAddress.less";
 
-import { icon } from '../../images';
+import { icon } from "../../images";
 
 const Item = List.Item;
 const Brief = Item.Brief;
@@ -16,73 +24,102 @@ class AddressItem extends BaseComponent {
         callBack && callBack(index);
     }
     render() {
-        const { name, tel, address, checked } = this.props;
+        const {
+            username,
+            mobi,
+            province,
+            city,
+            area,
+            address,
+            checked,
+            id
+        } = this.props;
         return (
             <div>
                 <List className="addressItem" onClick={this.changeHandler}>
                     <Item
-                        thumb={
-                            <Radio checked={checked} key={name}></Radio>
-                        }
+                        thumb={<Radio checked={checked} key={id} />}
                         multipleLine
                     >
-                        {name} <span>{tel}</span>
-                        <Brief>{address}</Brief>
+                        {username} <span>{mobi}</span>
+                        <Brief
+                        >{`${province}-${city}-${area} ${address}`}</Brief>
                     </Item>
                 </List>
                 <WhiteSpace size="lg" />
             </div>
-        )
+        );
     }
 }
 
 export default class SelectAddress extends BaseComponent {
     store = {
         curIndex: 0,
-        addressDate: [{
-            name: "李娟",
-            tel: "182****3679",
-            address: "浙江省-杭州市-西湖区 春申街西溪花园凌波苑春申街西溪花园凌波苑春申街西溪花园凌波苑"
-        }, {
-            name: "Kaden McCullough",
-            tel: "134****2587",
-            address: "浙江省-杭州市-西湖区 春申街西溪花园凌波苑春申街西溪花园凌波苑春申街西溪花园凌波苑"
-        }, {
-            name: "万莎莎",
-            tel: "134****2587",
-            address: "浙江省-杭州市-西湖区 春申街西溪花园凌波苑春申街西溪花园凌波苑春申街西溪花园凌波苑"
-        }]
-    }
+        addressList: []
+    };
     componentDidMount() {
+        Base.GET({ act: "address", op: "index" }, res => {
+            this.store.addressList = res.data;
+        });
     }
     @action.bound
     changeHandler(index) {
         this.store.curIndex = index;
     }
+    @action.bound
+    onSelect() {
+        const { addressList, curIndex } = this.store;
+        if (addressList.length <= 0 || curIndex < 0) {
+            return Toast.fail("请选择地址", 2, null, false);
+        }
+        Global.curSelectAddressId = addressList[curIndex].id;
+        Base.goBack();
+    }
     render() {
-        const { curIndex, addressDate } = this.store;
-        const addressItem = addressDate.map((item, index) => {
-            return <AddressItem key={index} checked={curIndex === index} index={index} {...item} callBack={this.changeHandler} />;
+        const { curIndex, addressList } = this.store;
+        const addressItems = addressList.map((item, index) => {
+            return (
+                <AddressItem
+                    key={index}
+                    checked={curIndex === index}
+                    index={index}
+                    {...item}
+                    callBack={this.changeHandler}
+                />
+            );
         });
         return (
-            <div className='SelectAddress'>
+            <div className="SelectAddress">
                 <NavBar
                     className="base-line"
                     mode="light"
-                    icon={<img src={icon.back} alt='' />}
+                    icon={<img src={icon.back} alt="" />}
                     onLeftClick={Base.goBack}
-                    rightContent={<div onClick={() => Base.push('NewAddress')} className='right-label'>添加</div>}
-                >选择地址</NavBar>
+                    rightContent={
+                        <div
+                            onClick={() => Base.push("NewAddress")}
+                            className="right-label"
+                        >
+                            添加
+                        </div>
+                    }
+                >
+                    选择地址
+                </NavBar>
                 <div className="base-content">
-                    <div className="SelectAddress-box">
-                        {addressItem}
-                    </div>
+                    <div className="SelectAddress-box">{addressItems}</div>
                     <WhiteSpace size="xl" />
                     <WingBlank>
-                        <Button type="warning" className="save-address" onClick={() => Base.push('NewAddress')}>+ 新增地址</Button>
+                        <Button
+                            type="warning"
+                            className="save-address"
+                            onClick={this.onSelect}
+                        >
+                            确 定
+                        </Button>
                     </WingBlank>
                 </div>
             </div>
-        )
+        );
     }
 }
