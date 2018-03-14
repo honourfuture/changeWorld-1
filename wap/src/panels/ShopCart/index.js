@@ -145,7 +145,7 @@ export default class ShopCart extends BaseComponent {
             });
         });
         if (!cartidList.length) {
-            return Toast.fail("请选择需要删除的商品", 2, null, false);
+            return Toast.fail("请选择需要结算的商品", 2, null, false);
         }
         Base.push("ConfirmOrder", { cart_id: cartidList.join(",") });
     }
