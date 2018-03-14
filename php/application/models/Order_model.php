@@ -19,6 +19,23 @@ class Order_model extends MY_Model
         parent::__construct();
     }
 
+    /*
+     * 订单状态
+     * 已结束：14天后自动更新，禁止退换货操作
+     */
+    public function status()
+    {
+        return [
+            '待付款',
+            '已取消',
+            '待发货',
+            '待收货',
+            '待评价',
+            '已完成',
+            '已结束'
+        ];
+    }
+
     public function make_pay_sn()
     {
     	return mt_rand(10,99) . sprintf('%010d',time() - 1451577600) . sprintf('%03d', (float) microtime() * 1000);

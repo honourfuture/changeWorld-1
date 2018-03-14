@@ -12793,6 +12793,20 @@
             "optional": false,
             "field": "sign",
             "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>订单状态 -1全部 -2退单</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "is_seller",
+            "description": "<p>1卖出订单 0买入订单(私人)</p>"
           }
         ]
       }

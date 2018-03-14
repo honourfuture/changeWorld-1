@@ -24,6 +24,8 @@ class Order extends API_Controller {
 	 *
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
+	 * @apiParam {Number} status 订单状态 -1全部 -2退单
+	 * @apiParam {Number} is_seller 1卖出订单 0买入订单(私人)
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -46,16 +48,62 @@ class Order extends API_Controller {
 	 */
 	public function index()
 	{
-		$ret = array('count' => 0, 'list' => array());
+		$ret = array('count' => 0, 'list' => [], 'status' => []);
 
 		$status = intval($this->input->get_post('status'));
-		$seller_uid = intval($this->input->get_post('seller_uid'));
-		if($seller_uid){
+		$is_seller = intval($this->input->get_post('is_seller'));
 
+		$ret['status'] = $this->Order_model->status();
+
+		$where = [];
+		if(isset($ret['status'][$status])){
+			$where['status'] = $status;
+		}elseif($status == -1){
+
+		}elseif($status == -2){
+			$where['is_refund'] = 1;
 		}else{
-			
+			$this->ajaxReturn([], 1, '订单状态未知');
 		}
+
+		if($is_seller){
+			$where['seller_uid'] = $this->user_id;
+		}else{
+			$where['buyer_uid'] = $this->user_id;
+		}
+
+		$this->search();
+		$ret['count'] = $this->Order_model->count_by($where);
+		if($ret['count']){
+			$order_by = array('id' => 'desc');
+			$this->search();
+			$this->db->select('id,created_at,status,order_sn,real_total_amount,use_ticket_amount,is_refund');
+			$ret['list'] = $this->Order_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
+
+			$a_order_id = [];
+			foreach($ret['list'] as $item){
+				$a_order_id[] = $item['id'];
+			}
+			$this->load->model('Order_items_model');
+			$this->db->select('id,order_id,goods_id,goods_price,num,freight_fee,goods_attr,name,default_image');
+			$order_item = $this->Order_items_model->get_many_by('order_id', $a_order_id);
+			$k_order_item = [];
+			foreach($order_item as $item){
+				!isset($k_order_item[$item['order_id']]) && $k_order_item[$item['order_id']] = [];
+				$k_order_item[$item['order_id']][] = $item;
+			}
+
+			foreach($ret['list'] as $key=>$item){
+				$ret['list'][$key]['goods'] = $k_order_item[$item['id']];
+			}
+		}
+
 		$this->ajaxReturn($ret);
+	}
+
+	protected function search()
+	{
+
 	}
 
 	/**
