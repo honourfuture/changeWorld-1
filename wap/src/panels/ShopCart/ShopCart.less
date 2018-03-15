@@ -1,93 +1,87 @@
-@import '../../common/theme.less';
-.ShopCart{
-    .base-content{
-        height:calc(~'100vh - 95px');
-        .nodata{
-            padding: 40px;
+@import "../../common/theme.less";
+.ShopCart {
+    .base-content {
+        height: calc(~"100vh - 95px");
+        .right-label {
             font-size: 16px;
-            color:#999;
-            text-align: center;
+            color: #333;
         }
-        .right-label{
-            font-size: 16px;
-            color:#333;
-        }
-        .store-item{
+        .store-item {
             margin-bottom: 10px;
         }
-        .store-info{
+        .store-info {
             padding: 10px 15px;
             background: #fff;
-            img{
+            img {
                 width: 30px;
                 height: 30px;
                 border-radius: 50%;
                 margin-right: 10px;
             }
-            .store-name{
+            .store-name {
                 font-size: 14px;
             }
         }
-        .cart-item{
+        .cart-item {
             background: #fff;
-            .check{
+            .check {
                 width: 16px;
                 height: 16px;
                 margin-left: 15px;
             }
-            .goods-info{
+            .goods-info {
                 border-bottom: 1px solid #eee;
                 padding: 10px;
-                .goods-img{
-                    width:75px;
+                .goods-img {
+                    width: 75px;
                     height: 75px;
                     margin-right: 2px;
                 }
-                .title{
+                .title {
                     padding-top: 5px;
                     height: 40px;
                     line-height: 20px;
                     font-size: 14px;
-                    color:#333;
+                    color: #333;
                 }
-                .bottom-info{
+                .bottom-info {
                     margin-top: 15px;
-                    .spec{
+                    .spec {
                         font-size: 14px;
-                        color:#999;
+                        color: #999;
                         height: 22px;
                         line-height: 22px;
                     }
-                    .num{
-                        color:#999;
+                    .num {
+                        color: #999;
                         font-size: 14px;
                     }
-                    .am-stepper{
+                    .am-stepper {
                         width: 100px;
                         height: 22px;
                         line-height: 22px;
                         padding: 0;
-                        &-input-wrap{
+                        &-input-wrap {
                             height: 22px;
                             line-height: 22px;
-                            .am-stepper-input{
+                            .am-stepper-input {
                                 width: 30px;
                             }
                         }
-                        &-handler{
+                        &-handler {
                             border-radius: 50%;
                             width: 20px;
                             height: 20px;
                             line-height: 20px;
-                            &-up{
-                                svg{
-                                    fill:@brand-primary;
+                            &-up {
+                                svg {
+                                    fill: @brand-primary;
                                 }
                             }
                         }
                     }
                 }
-                .price{
+                .price {
                     padding-top: 8px;
                     font-size: 13px;
                     font-weight: 600;
@@ -98,38 +92,38 @@
             }
         }
     }
-    .footer{
+    .footer {
         height: 50px;
         background: #fff;
         padding: 0 15px;
-        color:#666;
-        .am-checkbox-wrapper{
-            .am-checkbox{
+        color: #666;
+        .am-checkbox-wrapper {
+            .am-checkbox {
                 margin-right: 10px;
                 margin-bottom: 1px;
             }
         }
-        .total{
+        .total {
             font-size: 14px;
-            margin-right:10px;
-            em{
+            margin-right: 10px;
+            em {
                 font-size: 16px;
                 color: @brand-primary;
                 font-weight: 500;
             }
         }
-        .pay-btn{
+        .pay-btn {
             background: @brand-primary;
-            color:#fff;
+            color: #fff;
             height: 36px;
             line-height: 36px;
             // box-shadow: 0px 0px 10px saturate(@brand-primary,80%);
         }
-        .del-btn{
+        .del-btn {
             background: #fff;
-            &.am-button{
+            &.am-button {
                 border: 1px solid @brand-primary;
-                color:@brand-primary;
+                color: @brand-primary;
             }
         }
     }

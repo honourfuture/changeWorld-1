@@ -10,7 +10,8 @@ import {
     Stepper,
     Toast
 } from "antd-mobile";
-import { icon } from "../../images";
+import { icon, blankImg } from "../../images";
+import { NoData } from "../../components/NoData";
 import "./ShopCart.less";
 
 class CartItem extends BaseComponent {
@@ -72,8 +73,8 @@ class CartItem extends BaseComponent {
                                         value={num}
                                     />
                                 ) : (
-                                    <div className="num">x{num}</div>
-                                )}
+                                        <div className="num">x{num}</div>
+                                    )}
                             </Flex>
                         </Flex.Item>
                     </Flex>
@@ -254,12 +255,14 @@ export default class ShopCart extends BaseComponent {
                     icon={<img src={icon.back} alt="" />}
                     onLeftClick={Base.goBack}
                     rightContent={
-                        <div
-                            onClick={this.rightHandler}
-                            className="right-label"
-                        >
-                            {isEdit ? "完成" : "编辑"}
-                        </div>
+                        storeList.length > 0 ? (
+                            <div
+                                onClick={this.rightHandler}
+                                className="right-label"
+                            >
+                                {isEdit ? "完成" : "编辑"}
+                            </div>
+                        ) : null
                     }
                 >
                     购物车
@@ -268,8 +271,13 @@ export default class ShopCart extends BaseComponent {
                     {storeItems.length > 0 ? (
                         storeItems
                     ) : (
-                        <div className="nodata">暂无数据</div>
-                    )}
+                            <NoData
+                                img={blankImg.shopCart}
+                                label="亲，购物车空空如也"
+                                btnLabel="去逛逛"
+                                onClick={() => Base.push("ShopIndex")}
+                            />
+                        )}
                 </div>
                 {storeItems.length > 0 ? (
                     <Flex className="footer" justify="between">
@@ -289,20 +297,20 @@ export default class ShopCart extends BaseComponent {
                                 删除
                             </Button>
                         ) : (
-                            <Flex>
-                                <div className="total">
-                                    合计{" "}
-                                    <em>￥{Base.getNumFormat(this.total)}</em>
-                                </div>
-                                <Button
-                                    className="pay-btn"
-                                    size="small"
-                                    onClick={this.payHandler}
-                                >
-                                    去结算
+                                <Flex>
+                                    <div className="total">
+                                        合计{" "}
+                                        <em>￥{Base.getNumFormat(this.total)}</em>
+                                    </div>
+                                    <Button
+                                        className="pay-btn"
+                                        size="small"
+                                        onClick={this.payHandler}
+                                    >
+                                        去结算
                                 </Button>
-                            </Flex>
-                        )}
+                                </Flex>
+                            )}
                     </Flex>
                 ) : null}
             </div>
