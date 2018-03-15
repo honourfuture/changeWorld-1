@@ -1285,6 +1285,91 @@ define({ "api": [
     "groupTitle": "admin"
   },
   {
+    "type": "get",
+    "url": "/api/admin/config/init",
+    "title": "系统配置-查看字段",
+    "version": "1.0.0",
+    "name": "config_init",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/admin/config/init"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "admin_id",
+            "description": "<p>管理员唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account",
+            "description": "<p>登录账号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"site_name\": \"站点名称\",\n        \"icp_number\": \"ICP证书号\",\n        \"statistics_code\": \"第三方流量统计代码\",\n        \"copyright\": \"版权信息\",\n        \"site_status\": \"站点状态\",\n        \"closed_reason\": \"关闭原因\",\n        \"phone\": \"客服联系电话\",\n        \"email\": \"电子邮件\",\n        \"image_max_filesize\": \"图片文件大小\",\n        \"image_allow_ext\": \"文件扩展名\",\n        \"email_host\": \"SMTP 服务器\",\n        \"email_port\": \"SMTP 端口\",\n        \"email_addr\": \"发信人邮件地址\",\n        \"email_id\": \"SMTP 身份验证用户名\",\n        \"email_pass\": \"SMTP 身份验证密码\",\n        \"email_test\": \"测试接收的邮件地址\",\n        \"search_words\": \"默认搜索\",\n        \"logo_image\": \"网站Logo\",\n        \"buyer_image\": \"会员中心Logo\",\n        \"seller_image\": \"商家中心Logo\"\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Config.php",
+    "groupTitle": "admin"
+  },
+  {
     "type": "post",
     "url": "/api/admin/config/save",
     "title": "系统配置-编辑 OR 新增",
@@ -12083,7 +12168,7 @@ define({ "api": [
   {
     "type": "post",
     "url": "/api/user/live_audio/save",
-    "title": "我的音频-编辑 OR 新增",
+    "title": "我的音频-编辑",
     "version": "1.0.0",
     "name": "live_audio_save",
     "group": "user",

@@ -19,6 +19,19 @@ class Config_model extends MY_Model
         parent::__construct();
     }
 
+    public function siteConfig()
+    {
+        $config = array();
+        $rows = $this->get_all();
+        if($rows){
+            foreach($rows as $item){
+                $config[$item['name']] = $item['value'];
+            }
+        }
+
+        return $config;
+    }
+
     public function init()
     {
     	return array(
