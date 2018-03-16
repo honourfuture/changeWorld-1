@@ -21,6 +21,15 @@ class Users_model extends MY_Model
         parent::__construct();
     }
 
+    public function check_city_partners()
+    {
+        return [
+            '否',
+            '待审核',
+            '是'
+        ];
+    }
+
     public function sex()
     {
         return [

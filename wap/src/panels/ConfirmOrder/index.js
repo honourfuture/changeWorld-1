@@ -205,9 +205,10 @@ export default class ConfirmOrder extends BaseComponent {
         };
         Base.POST(
             { act: "order", op: "add", mod: "user", ...requestParam },
-            res => {}
+            res => {
+                Global.curSelectAddressId = "";
+            }
         );
-        console.log(requestParam);
     }
     render() {
         const { storeList, isPerson, curIndex, addressInfo } = this.store;
@@ -246,26 +247,26 @@ export default class ConfirmOrder extends BaseComponent {
                             </div>
                         </Flex>
                     ) : (
-                        <Flex
-                            className="order-address"
-                            justify="center"
-                            align="center"
-                            onClick={() => Base.push("NewAddress")}
-                        >
-                            <div className="add-addr">
-                                <div className="addr-img">
-                                    <img
-                                        src={addr.address}
-                                        className="addIco-img"
-                                        alt=""
-                                    />
+                            <Flex
+                                className="order-address"
+                                justify="center"
+                                align="center"
+                                onClick={() => Base.push("NewAddress")}
+                            >
+                                <div className="add-addr">
+                                    <div className="addr-img">
+                                        <img
+                                            src={addr.address}
+                                            className="addIco-img"
+                                            alt=""
+                                        />
+                                    </div>
+                                    <div className="add-tips">
+                                        还没收货地址，<em>去添加</em>
+                                    </div>
                                 </div>
-                                <div className="add-tips">
-                                    还没收货地址，<em>去添加</em>
-                                </div>
-                            </div>
-                        </Flex>
-                    )}
+                            </Flex>
+                        )}
                     <WhiteSpace />
                     {storeItems}
                 </div>
