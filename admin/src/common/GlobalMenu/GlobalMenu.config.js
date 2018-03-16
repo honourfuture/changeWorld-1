@@ -151,10 +151,33 @@ const menuData = [
         ]
     },
     {
+        name: "城市合伙人",
+        icon: "team",
+        path: "partner",
+        children: [
+            {
+                name: "审核",
+                path: "PartnerAudit"
+            },
+            {
+                name: "列表",
+                path: "PartnerList"
+            }
+        ]
+    },
+    {
         name: "运营",
         icon: "pie-chart",
         path: "operation",
         children: [
+            {
+                name: "充值优惠",
+                path: "RechargeManager"
+            },
+            {
+                name: "银行管理",
+                path: "BankManager"
+            },
             {
                 name: "广告位管理",
                 path: "AdPosition"

@@ -10,22 +10,16 @@ import {
     Spin,
     message,
     Upload,
-    Icon,
-    Select,
-    DatePicker
+    Icon
 } from "antd";
-import moment from "moment";
-import "./AdManager.less";
 import { remove } from "lodash";
-const { RangePicker } = DatePicker;
+import "./BankManager.less";
 const Search = Input.Search;
-const Option = Select.Option;
 
-export default class AdManager extends BaseComponent {
+export default class BankManager extends BaseComponent {
     store = {
         list: [],
-        positionList: [],
-        total: 1
+        searchStr: ""
     };
     constructor(props) {
         super(props);
@@ -33,42 +27,63 @@ export default class AdManager extends BaseComponent {
             {
                 title: "排序",
                 dataIndex: "sort",
-                width: "8%",
+                width: "10%",
                 render: (text, record) => this.renderInput(text, record, "sort")
             },
             {
+                title: "图标",
+                dataIndex: "icon",
+                width: "10%",
+                render: (text, record) => this.renderImg(text, record, "icon")
+            },
+            {
                 title: "标题",
-                dataIndex: "title",
+                dataIndex: "name",
+                width: "10%",
+                render: (text, record) => this.renderInput(text, record, "name")
+            },
+            {
+                title: "拼音",
+                dataIndex: "pinyin",
+                width: "10%",
+                render: (text, record) =>
+                    this.renderInput(text, record, "pinyin")
+            },
+            {
+                title: "首字母",
+                dataIndex: "first_letter",
                 width: "8%",
                 render: (text, record) =>
-                    this.renderInput(text, record, "title")
+                    this.renderInput(text, record, "first_letter")
             },
             {
-                title: "广告图",
-                dataIndex: "image",
-                width: "12%",
-                render: (text, record) => this.renderImg(text, record, "image")
-            },
-            {
-                title: "广告位",
-                dataIndex: "ad_position_id",
-                width: "12%",
+                title: "颜色",
+                dataIndex: "color",
+                width: "10%",
                 render: (text, record) =>
-                    this.renderSelect(text, record, "ad_position_id")
-            },
-            {
-                title: "开始结束时间",
-                dataIndex: "date",
-                width: "25%",
-                render: (text, record) => this.renderDate(text, record, "date")
+                    this.renderInput(text, record, "color")
             },
             {
                 title: "启用",
                 dataIndex: "enable",
-                width: "8%",
+                width: "10%",
                 render: (text, record) =>
                     this.renderSwitch(text, record, "enable")
             },
+            {
+                title: "热门",
+                dataIndex: "is_hot",
+                width: "10%",
+                render: (text, record) =>
+                    this.renderSwitch(text, record, "is_hot")
+            },
+            // {
+            //     title: "更新时间",
+            //     dataIndex: "updated_at",
+            //     width: "20%",
+            //     render: (text, record) =>
+            //         this.renderText(text, record, "updated_at")
+            // },
             {
                 title: "操作",
                 dataIndex: "operation",
@@ -115,8 +130,23 @@ export default class AdManager extends BaseComponent {
             }
         ];
     }
+    //上传
+    @action.bound
+    onUploadChange(info, id) {
+        const list = this.store.list.slice();
+        const itemData = list.find(item => id === item.id);
+        if (info.file.status === "uploading") {
+            itemData.loading = true;
+            return (this.store.list = list);
+        }
+        if (info.file.status === "done") {
+            itemData.loading = false;
+            itemData.icon = info.file.response.data.file_url;
+            return (this.store.list = list);
+        }
+    }
     renderImg(text, record, column) {
-        const { editable, image, loading } = record;
+        const { editable, icon, loading } = record;
         return (
             <div>
                 {editable ? (
@@ -128,10 +158,10 @@ export default class AdManager extends BaseComponent {
                         action={Global.UPLOAD_URL}
                         onChange={e => this.onUploadChange(e, record.id)}
                     >
-                        {image ? (
+                        {icon ? (
                             <img
                                 className="img-uploader"
-                                src={Base.getImgUrl(image)}
+                                src={Base.getImgUrl(icon)}
                                 alt=""
                             />
                         ) : (
@@ -144,7 +174,7 @@ export default class AdManager extends BaseComponent {
                 ) : (
                     <img
                         className="img-uploader"
-                        src={Base.getImgUrl(image)}
+                        src={Base.getImgUrl(icon)}
                         alt=""
                     />
                 )}
@@ -153,55 +183,6 @@ export default class AdManager extends BaseComponent {
     }
     renderText(text, record, column) {
         return <div>{record[column]}</div>;
-    }
-    renderSelect(text, record, column) {
-        const value = record[column];
-        const { positionList } = this.store;
-        let curIndex = positionList.findIndex(item => item.id === value);
-        curIndex = curIndex >= 0 ? curIndex : 0;
-        return (
-            <div>
-                {record.editable ? (
-                    <Select
-                        defaultValue={value || positionList[0].id}
-                        style={{ width: 120 }}
-                        onChange={value =>
-                            this.onEditChange(record.id, value, column)
-                        }
-                    >
-                        {positionList.map(({ id, name }) => (
-                            <Option key={id} value={id}>
-                                {name}
-                            </Option>
-                        ))}
-                    </Select>
-                ) : (
-                    positionList[curIndex].name
-                )}
-            </div>
-        );
-    }
-    renderDate(text, record, column) {
-        let { editable, start_time, end_time } = record;
-        const formatStr = "YYYY-MM-DD";
-        start_time = start_time * 1000;
-        end_time = end_time * 1000;
-        return (
-            <div>
-                {editable ? (
-                    <RangePicker
-                        defaultValue={[moment(start_time), moment(end_time)]}
-                        format={formatStr}
-                        onChange={e => this.onDateChange(e, record.id)}
-                    />
-                ) : (
-                    <div>
-                        {moment(start_time).format(formatStr)} 至{" "}
-                        {moment(end_time).format(formatStr)}
-                    </div>
-                )}
-            </div>
-        );
     }
     renderInput(text, record, column) {
         const { editable } = record;
@@ -225,43 +206,20 @@ export default class AdManager extends BaseComponent {
     renderSwitch(text, record, column) {
         return (
             <Switch
-                checked={parseInt(record.enable, 10) === 1}
+                checked={parseInt(record[column], 10) === 1}
                 onChange={value =>
                     this.onSwitch(record.id, value ? 1 : 0, column)
                 }
             />
         );
     }
+    //编辑
     @action.bound
     onEditChange(id, value, column) {
         const list = this.store.list.slice();
         const itemData = list.find(item => id === item.id);
         itemData[column] = value;
         this.store.list = list;
-    }
-    //日期范围选择
-    @action.bound
-    onDateChange(e, id) {
-        const list = this.store.list.slice();
-        const itemData = list.find(item => id === item.id);
-        itemData.start_time = e[0].unix();
-        itemData.end_time = e[1].unix();
-        this.store.list = list;
-    }
-    //上传
-    @action.bound
-    onUploadChange(info, id) {
-        const list = this.store.list.slice();
-        const itemData = list.find(item => id === item.id);
-        if (info.file.status === "uploading") {
-            itemData.loading = true;
-            return (this.store.list = list);
-        }
-        if (info.file.status === "done") {
-            itemData.loading = false;
-            itemData.image = info.file.response.data.file_url;
-            return (this.store.list = list);
-        }
     }
     //是否启用
     @action.bound
@@ -277,9 +235,13 @@ export default class AdManager extends BaseComponent {
         const list = this.store.list.slice();
         const itemData = list.find(item => id === item.id);
         Base.POST(
-            { act: "ad", op: "save", mod: "admin", ...itemData },
+            { act: "bank", op: "save", ...itemData },
             res => {
                 itemData.editable = false;
+                itemData.updated_at = Base.getTimeFormat(
+                    new Date().getTime() / 1000,
+                    2
+                );
                 itemData.id === 0 && (itemData.id = res.data.id);
                 this.store.list = list;
                 this.cacheData = list.map(item => ({ ...item }));
@@ -296,7 +258,7 @@ export default class AdManager extends BaseComponent {
     @action.bound
     onDelete(id) {
         Base.POST(
-            { act: "ad", op: "save", mod: "admin", id, deleted: "1" },
+            { act: "bank", op: "save", id, deleted: "1" },
             () => remove(this.store.list, item => id === item.id),
             this
         );
@@ -307,91 +269,60 @@ export default class AdManager extends BaseComponent {
         if (this.store.list.find(item => item.id === 0)) {
             return message.info("请保存后再新建");
         }
-        const { positionList } = this.store;
-        const ad_position_id =
-            positionList.length > 0 ? positionList[0].id : "";
         this.store.list.unshift({
             id: 0,
-            title: "",
+            name: "",
+            sort: 0,
+            is_hot: false,
+            pinyin: "",
+            first_letter: "",
+            color: "",
+            icon: "",
             editable: true,
             deleted: "0",
-            enable: "1",
-            sort: 0,
-            link: "",
-            image: "",
-            start_time: moment().unix(),
-            end_time: moment()
-                .add("year", 5)
-                .unix(),
-            ad_position_id
+            enable: "1"
         });
     }
     //搜索
-    searchStr = "";
     @action.bound
-    onSearch(value) {
-        this.current = 1;
-        this.searchStr = value;
-        this.requestData();
+    onSearch(e) {
+        this.store.searchStr = e.target.value;
     }
-    @action.bound
-    onTableHandler({ current, pageSize }) {
-        this.current = current;
-        this.requestData();
-    }
-    current = 1;
-    @action.bound
-    requestData() {
+    componentDidMount() {
         Base.GET(
-            {
-                act: "ad",
-                op: "index",
-                mod: "admin",
-                title: this.searchStr || "",
-                cur_page: this.current || 1,
-                per_page: Global.PAGE_SIZE
-            },
+            { act: "bank", op: "index" },
             res => {
-                const { ad, ad_position } = res.data;
-                this.store.list = ad.list;
-                this.store.positionList = ad_position;
-                this.store.total = ad.count;
-                this.cacheData = ad.list.map(item => ({ ...item }));
+                this.store.list = res.data;
+                this.cacheData = res.data.map(item => ({ ...item }));
             },
             this
         );
     }
-    componentDidMount() {
-        this.requestData();
-    }
     render() {
-        let { list, total } = this.store;
+        let { list, searchStr } = this.store;
         const showList = list.filter(item => {
-            return parseInt(item.deleted, 10) === 0;
+            return (
+                parseInt(item.deleted, 10) === 0 &&
+                (!searchStr || item.name.indexOf(searchStr) !== -1)
+            );
         });
         return (
-            <Spin ref="spin" wrapperClassName="AdManager" spinning={false}>
+            <Spin ref="spin" wrapperClassName="BankManager" spinning={false}>
                 <div className="pb10">
                     <Button onClick={this.onAdd}>新增+</Button>
                     <Search
                         placeholder="搜索标题"
-                        enterButton
-                        onSearch={this.onSearch}
+                        onChange={this.onSearch}
                         style={{ width: 130, marginLeft: 10 }}
                     />
                 </div>
                 <Table
                     className="mt16"
-                    onChange={this.onTableHandler}
                     bordered
                     dataSource={showList}
                     rowKey="id"
                     columns={this.columns}
-                    pagination={{
-                        total,
-                        current: this.current,
-                        defaultPageSize: Global.PAGE_SIZE
-                    }}
+                    pagination={{ hideOnSinglePage: true }}
                 />
             </Spin>
         );
