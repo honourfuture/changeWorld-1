@@ -36,6 +36,11 @@ class Order_model extends MY_Model
         ];
     }
 
+    public function action()
+    {
+        //取消订单、删除订单、查看物流、评价订单、付款、催发货、确认收货、申请发票、申请退款、修改价格、发货
+    }
+
     public function make_pay_sn()
     {
     	return mt_rand(10,99) . sprintf('%010d',time() - 1451577600) . sprintf('%03d', (float) microtime() * 1000);

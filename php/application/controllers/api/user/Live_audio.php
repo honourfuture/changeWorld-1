@@ -179,7 +179,7 @@ class Live_audio extends API_Controller {
 	}
 
     /**
-	 * @api {post} /api/user/live_audio/save 我的音频-编辑 OR 新增
+	 * @api {post} /api/user/live_audio/save 我的音频-编辑
 	 * @apiVersion 1.0.0
 	 * @apiName live_audio_save
 	 * @apiGroup user

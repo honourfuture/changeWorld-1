@@ -75,21 +75,6 @@ class MY_Controller extends CI_Controller
         echo json_encode($ret, JSON_UNESCAPED_UNICODE);exit();
     }
 
-    //站点设置
-    protected function siteConfig()
-    {
-        $config = array();
-        $this->load->model('Config_model');
-        $rows = $this->Config_model->get_all();
-        if($rows){
-            foreach($rows as $item){
-                $config[$item['name']] = $item['value'];
-            }
-        }
-
-        return $config;
-    }
-
     //等级经验规则
     protected function siteGradeRule()
     {

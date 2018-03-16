@@ -1,37 +1,40 @@
 import React from "react";
-// import { action } from 'mobx';
+import { action } from 'mobx';
 import { BaseComponent, Base } from "../../common";
 import { Flex, Button, NavBar, SearchBar, Tabs } from "antd-mobile";
-import { icon, test } from "../../images";
+import { icon, blankImg } from "../../images";
+
 import "./MyOrder.less";
 
 import { OrderGoodsItem } from "../../components/OrderGoodsItem";
+import { NoData } from "../../components/NoData";
 class OrderItem extends BaseComponent {
     render() {
         const renderOrderItem = (this.props.data || []).map((item, key) => {
             const {
-                orderNum,
-                evaluate,
+                order_sn,
+                status,
                 goods,
-                total,
-                storeId,
+                real_total_amount,
+                id,
                 orderType
             } = item;
+            let states = ["待付款","已取消","待发货","待收货","待评价","已完成","已结束"];
             return (
                 <div className="orderItem" key={key}>
                     <Flex justify="between" className="orderItemTit base-line">
-                        <span>订单编号：{orderNum}</span>
-                        <span>{evaluate}</span>
+                        <span>订单编号：{order_sn}</span>
+                        <span>{states[status]}</span>
                     </Flex>
                     {(goods || []).map((item, key) => {
                         return <OrderGoodsItem key={key} item={item} />;
                     })}
                     <div className="orderItemType">
                         <div className="totalItem">
-                            共1件 合计{" "}
-                            <span className="priceTotal">￥ {total}</span>
+                            共{goods.length}件 合计 
+                            <span className="priceTotal">￥ {real_total_amount}</span>
                         </div>
-                        {parseInt(orderType, 10) === 1 ? (
+                        {parseInt(status, 10) === 4 ? (
                             <Flex
                                 className="typeBtn"
                                 justify="end"
@@ -49,27 +52,17 @@ class OrderItem extends BaseComponent {
                                     type="ghost"
                                     inline
                                     size="small"
-                                    className="am-button-borderfix look-log"
-                                    onClick={() =>
-                                        Base.push("ExLog", { storeId })
-                                    }
-                                >
-                                    查看物流
-                                </Button>
-                                <Button
-                                    type="ghost"
-                                    inline
-                                    size="small"
                                     className="am-button-borderfix eva-order"
                                     onClick={() =>
-                                        Base.push("EvaluateOrder", { storeId })
+                                        Base.push("EvaluateOrder", { id })
                                     }
                                 >
                                     评价订单
                                 </Button>
                             </Flex>
                         ) : null}
-                        {parseInt(orderType, 10) === 2 ? (
+                        {/*已完成和已结束*/}
+                        {parseInt(status, 10) === 5 || parseInt(status, 10) === 6 || parseInt(status, 10) === 1  ? (
                             <Flex
                                 className="typeBtn"
                                 justify="end"
@@ -85,7 +78,7 @@ class OrderItem extends BaseComponent {
                                 </Button>
                             </Flex>
                         ) : null}
-                        {parseInt(orderType, 10) === 3 ? (
+                        {parseInt(status, 10) === 0 ? (
                             <Flex
                                 className="typeBtn"
                                 justify="end"
@@ -97,7 +90,7 @@ class OrderItem extends BaseComponent {
                                     size="small"
                                     className="am-button-borderfix look-log"
                                     onClick={() =>
-                                        Base.push("ExLog", { storeId })
+                                        Base.push("ExLog", { id })
                                     }
                                 >
                                     取消订单
@@ -108,14 +101,14 @@ class OrderItem extends BaseComponent {
                                     size="small"
                                     className="am-button-borderfix eva-order"
                                     onClick={() =>
-                                        Base.push("EvaluateOrder", { storeId })
+                                        Base.push("EvaluateOrder", { id })
                                     }
                                 >
                                     去付款
                                 </Button>
                             </Flex>
                         ) : null}
-                        {parseInt(orderType, 10) === 4 ? (
+                        {parseInt(status, 10) === 2 ? (
                             <Flex
                                 className="typeBtn"
                                 justify="end"
@@ -127,7 +120,7 @@ class OrderItem extends BaseComponent {
                                     size="small"
                                     className="am-button-borderfix look-log"
                                     onClick={() =>
-                                        Base.push("ExLog", { storeId })
+                                        Base.push("ExLog", { id })
                                     }
                                 >
                                     取消订单
@@ -138,14 +131,14 @@ class OrderItem extends BaseComponent {
                                     size="small"
                                     className="am-button-borderfix eva-order"
                                     onClick={() =>
-                                        Base.push("EvaluateOrder", { storeId })
+                                        Base.push("EvaluateOrder", { id })
                                     }
                                 >
                                     催发货
                                 </Button>
                             </Flex>
                         ) : null}
-                        {parseInt(orderType, 10) === 5 ? (
+                        {parseInt(status, 10) === 3 ? (
                             <Flex
                                 className="typeBtn"
                                 justify="end"
@@ -157,7 +150,7 @@ class OrderItem extends BaseComponent {
                                     size="small"
                                     className="am-button-borderfix look-log"
                                     onClick={() =>
-                                        Base.push("ExLog", { storeId })
+                                        Base.push("ExLog", { id })
                                     }
                                 >
                                     查看物流
@@ -168,40 +161,10 @@ class OrderItem extends BaseComponent {
                                     size="small"
                                     className="am-button-borderfix eva-order"
                                     onClick={() =>
-                                        Base.push("EvaluateOrder", { storeId })
+                                        Base.push("EvaluateOrder", { id })
                                     }
                                 >
                                     确认收货
-                                </Button>
-                            </Flex>
-                        ) : null}
-                        {parseInt(orderType, 10) === 6 ? (
-                            <Flex
-                                className="typeBtn"
-                                justify="end"
-                                align="center"
-                            >
-                                <Button
-                                    type="ghost"
-                                    inline
-                                    size="small"
-                                    className="am-button-borderfix look-log"
-                                    onClick={() =>
-                                        Base.push("ExLog", { storeId })
-                                    }
-                                >
-                                    查看物流
-                                </Button>
-                                <Button
-                                    type="ghost"
-                                    inline
-                                    size="small"
-                                    className="am-button-borderfix eva-order"
-                                    onClick={() =>
-                                        Base.push("EvaluateOrder", { storeId })
-                                    }
-                                >
-                                    取消售后
                                 </Button>
                             </Flex>
                         ) : null}
@@ -216,124 +179,52 @@ class OrderItem extends BaseComponent {
 export default class MyOrder extends BaseComponent {
     store = {
         curIndex: 0,
-        storeList: [
-            {
-                orderNum: "2017072719315492902513994461",
-                storeId: "1",
-                evaluate: "待评价",
-                total: "369",
-                orderType: "1",
-                goods: [
-                    {
-                        img: test.test4,
-                        title: "RE:CIPE 水晶防晒喷雾 150毫升/瓶 3瓶",
-                        spec: "型号 150ml",
-                        price: "369",
-                        goodsId: "1",
-                        num: 1
-                    }
-                ]
-            },
-            {
-                orderNum: "2017072719315492902513994461",
-                storeId: "2",
-                evaluate: "无效单",
-                total: "369",
-                orderType: "2",
-                goods: [
-                    {
-                        img: test.test4,
-                        title: "RE:CIPE 水晶防晒喷雾 150毫升/瓶 3瓶",
-                        spec: "型号 150ml",
-                        price: "369",
-                        goodsId: "1",
-                        num: 1
-                    }
-                ]
-            },
-            {
-                orderNum: "2017072719315492902513994461",
-                storeId: "3",
-                evaluate: "待付款",
-                total: "369",
-                orderType: "3",
-                goods: [
-                    {
-                        img: test.test4,
-                        title: "RE:CIPE 水晶防晒喷雾 150毫升/瓶 3瓶",
-                        spec: "型号 150ml",
-                        price: "369",
-                        goodsId: "1",
-                        num: 1
-                    }
-                ]
-            },
-            {
-                orderNum: "2017072719315492902513994461",
-                storeId: "4",
-                evaluate: "待发货",
-                total: "369",
-                orderType: "4",
-                goods: [
-                    {
-                        img: test.test4,
-                        title: "RE:CIPE 水晶防晒喷雾 150毫升/瓶 3瓶",
-                        spec: "型号 150ml",
-                        price: "369",
-                        goodsId: "1",
-                        num: 1
-                    }
-                ]
-            },
-            {
-                orderNum: "2017072719315492902513994461",
-                storeId: "5",
-                evaluate: "待收货",
-                total: "369",
-                orderType: "5",
-                goods: [
-                    {
-                        img: test.test4,
-                        title: "RE:CIPE 水晶防晒喷雾 150毫升/瓶 3瓶",
-                        spec: "型号 150ml",
-                        price: "369",
-                        goodsId: "1",
-                        num: 1
-                    }
-                ]
-            },
-            {
-                orderNum: "2017072719315492902513994461",
-                storeId: "6",
-                evaluate: "售后中",
-                total: "369",
-                orderType: "6",
-                goods: [
-                    {
-                        img: test.test4,
-                        title: "RE:CIPE 水晶防晒喷雾 150毫升/瓶 3瓶",
-                        spec: "型号 150ml",
-                        price: "369",
-                        goodsId: "1",
-                        num: 1
-                    }
-                ]
-            }
-        ]
+        count:0,
+        list: []
     };
-
-    renderContent = tab => tab.component;
+    componentDidMount() {
+        Base.GET({ act: "user", op: "order" }, res => {
+            const { count, list, status } = res.data;
+            this.store.count = count;
+            
+            //未完成
+            // let abc = list.forEach(item=>{
+            //     console.log(item.goods)
+            //     item.goods.forEach(item=>{
+            //         console.log(item)
+            //     })
+            //     // return item.goods.unshift({'aaa':item.goods.goods_price})
+            // })
+            // // let list = list.find(item=>{
+            // //     return item.goods.find(item=>{
+            // //         item.goods.unshift({'s'})
+            // //     })
+            // // })
+            // console.log(abc);
+            this.store.list = list;
+            this.store.status = status;
+        });
+    }
+    @action.bound
+    onChange(tab, index) {
+        Base.GET({ act: "user", op: "order", status:index }, res => {
+            const { count, list, status } = res.data;
+            this.store.count = count;
+            this.store.list = list;
+            this.store.status = status;
+        });
+    }
+    goShop(){
+        Base.push('ShopIndex');
+    }
     render() {
-        const { storeList } = this.store;
-        const tabs = [
-            { title: "全部", component: <OrderItem data={storeList} /> },
-            { title: "待付款", component: <OrderItem data={storeList} /> },
-            { title: "待发货", component: <OrderItem data={storeList} /> },
-            { title: "待收货", component: <OrderItem data={storeList} /> },
-            { title: "待评价", component: <OrderItem data={storeList} /> },
-            { title: "退货", component: <OrderItem data={storeList} /> },
-            { title: "已完成", component: <OrderItem data={storeList} /> }
-        ];
+        const { list } = this.store;
+        let tabNames = ["全部","待付款","待发货","待收货","待评价","已取消","已完成"];
+        const tabs = tabNames.map(item=>{
+            return {'title':item};
+        });
+        const item = list.length === 0 ? <NoData img={blankImg.order} label={'暂无数据'} btnLabel={'去逛逛'} onClick={this.goShop} /> : <OrderItem data={list} />;
+
         return (
             <div className="MyOrder">
                 <NavBar
@@ -346,8 +237,8 @@ export default class MyOrder extends BaseComponent {
                 </NavBar>
                 <div className="base-content">
                     <SearchBar placeholder="搜索历史订单" maxLength={8} />
-                    <Tabs className="nav-tabs" tabs={tabs} initialPage={0}>
-                        {this.renderContent}
+                    <Tabs className="nav-tabs" tabs={tabs} onChange={this.onChange} initialPage={0}>
+                        {item}
                     </Tabs>
                 </div>
             </div>

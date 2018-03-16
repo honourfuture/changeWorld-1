@@ -26,13 +26,39 @@ class Users_points extends API_Controller {
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
 	 * @apiSuccess {Object} data 接口数据集
-	 * @apiSuccess {Object} data.user 会员信息
-	 * @apiSuccess {Object} data.points.count 积分变动总数
-	 * @apiSuccess {Object[]} data.points.list 积分变动记录
+	 * @apiSuccess {Number} data.count 总记录数
+	 * @apiSuccess {Object} data.list 列表
+	 * @apiSuccess {String} data.list.id 积分明细ID
+	 * @apiSuccess {String} data.list.updated_at 更新时间
+	 * @apiSuccess {String} data.list.value 变更值
+	 * @apiSuccess {String} data.list.remark 备注描述
+	 * @apiSuccess {String} data.list.rule_name_text 变更类型
 	 *
 	 * @apiSuccessExample {json} Success-Response:
 	 * {
-	 *     "data": "",
+	 *     "data": {
+	 *         "count": 2,
+	 *         "list": [
+	 *             {
+	 *                 "id": "2",
+	 *                 "updated_at": "2018-03-14 15:46:05",
+	 *                 "user_id": "1",
+	 *                 "value": "0",
+	 *                 "rule_name": "goods_exchange",
+	 *                 "remark": "商品下单积分使用抵扣",
+	 *                 "rule_name_text": "商品下单积分使用抵扣"
+	 *             },
+	 *             {
+	 *                 "id": "1",
+	 *                 "updated_at": "2018-03-14 13:01:09",
+	 *                 "user_id": "1",
+	 *                 "value": "20",
+	 *                 "rule_name": "goods_exchange",
+	 *                 "remark": "商品下单积分使用抵扣",
+	 *                 "rule_name_text": "商品下单积分使用抵扣"
+	 *             }
+	 *         ]
+	 *     },
 	 *     "status": 0,
 	 *     "message": "成功"
 	 * }
@@ -46,7 +72,7 @@ class Users_points extends API_Controller {
 	 */
 	public function index()
 	{
-		$ret = array('user' => array(), 'points' => array('count' => 0, 'list' => array()));
+		$ret = array('points' => array('count' => 0, 'list' => array()));
 
 		$where = array();
 		if($this->user_id){
@@ -58,6 +84,7 @@ class Users_points extends API_Controller {
 		if($ret['points']['count']){
 			$order_by = array('id' => 'desc');
 			$this->search();
+			$this->db->select('id,updated_at,user_id,value,rule_name,remark');
 			$ret['points']['list'] = $this->Users_points_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 
 			$a_user = array();
@@ -73,7 +100,8 @@ class Users_points extends API_Controller {
 			}
 		}
 
-		$this->ajaxReturn($ret);
+		//结果一致性
+		$this->ajaxReturn($this->user_id ? $ret['points'] : $ret);
 	}
 
 	protected function search()

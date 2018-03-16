@@ -24,6 +24,8 @@ class BasicItem extends BaseComponent{
 		{key:'copyright',label:'版权信息'},
 		{key:'site_status',label:'站点状态',render:(value)=>this.renderSwitch(value)},
 		{key:'closed_reason',label:'关闭原因'},
+		{key:'phone',label:'客服联系电话'},
+		{key:'email',label:'电子邮箱'},
 	]
 	renderTextArea(value){
 		return (
