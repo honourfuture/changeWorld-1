@@ -6,7 +6,6 @@
  * 面板组件，脚本生成面板文件时，自动修改，无需手动维护
  */
 
-<<<<<<< HEAD
 import Analysis from './Analysis';
 import Login from './Login';
 import Exception403 from './Exception/403';
