@@ -1,7 +1,17 @@
 import React from "react";
 import { action } from "mobx";
-import { BaseComponent, Base } from "../../common";
-import { Table, Input, Popconfirm, Switch, Button, Spin, message } from "antd";
+import { BaseComponent, Base, Global } from "../../common";
+import {
+    Table,
+    Input,
+    Popconfirm,
+    Switch,
+    Button,
+    Spin,
+    message,
+    Upload,
+    Icon
+} from "antd";
 import { remove } from "lodash";
 import "./BankManager.less";
 const Search = Input.Search;
@@ -15,37 +25,65 @@ export default class BankManager extends BaseComponent {
         super(props);
         this.columns = [
             {
-                title: "id",
-                dataIndex: "id",
+                title: "排序",
+                dataIndex: "sort",
                 width: "10%",
-                render: (text, record) => this.renderText(text, record, "id")
+                render: (text, record) => this.renderInput(text, record, "sort")
             },
             {
-                title: "更新时间",
-                dataIndex: "updated_at",
-                width: "20%",
-                render: (text, record) =>
-                    this.renderText(text, record, "updated_at")
+                title: "图标",
+                dataIndex: "icon",
+                width: "10%",
+                render: (text, record) => this.renderImg(text, record, "icon")
             },
             {
                 title: "标题",
                 dataIndex: "name",
-                width: "15%",
+                width: "10%",
                 render: (text, record) => this.renderInput(text, record, "name")
             },
             {
-                title: "宽高",
-                dataIndex: "size",
-                width: "20%",
-                render: (text, record) => this.renderInput(text, record, "size")
+                title: "拼音",
+                dataIndex: "pinyin",
+                width: "10%",
+                render: (text, record) =>
+                    this.renderInput(text, record, "pinyin")
+            },
+            {
+                title: "首字母",
+                dataIndex: "first_letter",
+                width: "8%",
+                render: (text, record) =>
+                    this.renderInput(text, record, "first_letter")
+            },
+            {
+                title: "颜色",
+                dataIndex: "color",
+                width: "10%",
+                render: (text, record) =>
+                    this.renderInput(text, record, "color")
             },
             {
                 title: "启用",
                 dataIndex: "enable",
-                width: "15%",
+                width: "10%",
                 render: (text, record) =>
                     this.renderSwitch(text, record, "enable")
             },
+            {
+                title: "热门",
+                dataIndex: "is_hot",
+                width: "10%",
+                render: (text, record) =>
+                    this.renderSwitch(text, record, "is_hot")
+            },
+            // {
+            //     title: "更新时间",
+            //     dataIndex: "updated_at",
+            //     width: "20%",
+            //     render: (text, record) =>
+            //         this.renderText(text, record, "updated_at")
+            // },
             {
                 title: "操作",
                 dataIndex: "operation",
@@ -92,6 +130,57 @@ export default class BankManager extends BaseComponent {
             }
         ];
     }
+    //上传
+    @action.bound
+    onUploadChange(info, id) {
+        const list = this.store.list.slice();
+        const itemData = list.find(item => id === item.id);
+        if (info.file.status === "uploading") {
+            itemData.loading = true;
+            return (this.store.list = list);
+        }
+        if (info.file.status === "done") {
+            itemData.loading = false;
+            itemData.icon = info.file.response.data.file_url;
+            return (this.store.list = list);
+        }
+    }
+    renderImg(text, record, column) {
+        const { editable, icon, loading } = record;
+        return (
+            <div>
+                {editable ? (
+                    <Upload
+                        name="field"
+                        data={{ field: "field" }}
+                        listType="picture-card"
+                        showUploadList={false}
+                        action={Global.UPLOAD_URL}
+                        onChange={e => this.onUploadChange(e, record.id)}
+                    >
+                        {icon ? (
+                            <img
+                                className="img-uploader"
+                                src={Base.getImgUrl(icon)}
+                                alt=""
+                            />
+                        ) : (
+                            <div>
+                                <Icon type={loading ? "loading" : "plus"} />
+                                <div className="ant-upload-text">上传</div>
+                            </div>
+                        )}
+                    </Upload>
+                ) : (
+                    <img
+                        className="img-uploader"
+                        src={Base.getImgUrl(icon)}
+                        alt=""
+                    />
+                )}
+            </div>
+        );
+    }
     renderText(text, record, column) {
         return <div>{record[column]}</div>;
     }
@@ -117,7 +206,7 @@ export default class BankManager extends BaseComponent {
     renderSwitch(text, record, column) {
         return (
             <Switch
-                checked={parseInt(record.enable, 10) === 1}
+                checked={parseInt(record[column], 10) === 1}
                 onChange={value =>
                     this.onSwitch(record.id, value ? 1 : 0, column)
                 }
@@ -183,10 +272,15 @@ export default class BankManager extends BaseComponent {
         this.store.list.unshift({
             id: 0,
             name: "",
+            sort: 0,
+            is_hot: false,
+            pinyin: "",
+            first_letter: "",
+            color: "",
+            icon: "",
             editable: true,
             deleted: "0",
-            enable: "1",
-            size: ""
+            enable: "1"
         });
     }
     //搜索
