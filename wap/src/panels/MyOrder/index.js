@@ -186,21 +186,6 @@ export default class MyOrder extends BaseComponent {
         Base.GET({ act: "user", op: "order" }, res => {
             const { count, list, status } = res.data;
             this.store.count = count;
-            
-            //未完成
-            // let abc = list.forEach(item=>{
-            //     console.log(item.goods)
-            //     item.goods.forEach(item=>{
-            //         console.log(item)
-            //     })
-            //     // return item.goods.unshift({'aaa':item.goods.goods_price})
-            // })
-            // // let list = list.find(item=>{
-            // //     return item.goods.find(item=>{
-            // //         item.goods.unshift({'s'})
-            // //     })
-            // // })
-            // console.log(abc);
             this.store.list = list;
             this.store.status = status;
         });
@@ -223,6 +208,11 @@ export default class MyOrder extends BaseComponent {
         const tabs = tabNames.map(item=>{
             return {'title':item};
         });
+        list.forEach(item=>{
+            item.goods.forEach(items=>{
+                items.sale_price = items.goods_price
+            })
+        })
         const item = list.length === 0 ? <NoData img={blankImg.order} label={'暂无数据'} btnLabel={'去逛逛'} onClick={this.goShop} /> : <OrderItem data={list} />;
 
         return (
