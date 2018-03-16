@@ -53,6 +53,10 @@ class Recharge extends API_Controller {
 	{
 		$ret = [];
 
+		$this->load->model('Recharge_model');
+		$this->db->select('id,money,free');
+		$ret['recharge'] = $this->Recharge_model->get_many_by('enable', 1);
+
 		$this->ajaxReturn($ret);
 	}
 
