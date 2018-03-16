@@ -119,11 +119,11 @@ class Recharge extends API_Controller {
 				$this->input->post(),
 				UPDATE_VALID
 			);
-			$this->check_params('edit', $params);
 			if($params['deleted'] == 1){
 				$update = array('deleted' => 1, 'enable' => 0);
 				$flag = $this->Recharge_model->update($id, $update);
 			}else{
+				$this->check_params('edit', $params);
 				unset($params['deleted']);
 				if(isset($params['enable']) && $params['enable']){
 					$params['deleted'] = 0;

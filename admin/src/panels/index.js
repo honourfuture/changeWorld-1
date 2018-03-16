@@ -6,6 +6,7 @@
  * 面板组件，脚本生成面板文件时，自动修改，无需手动维护
  */
 
+<<<<<<< HEAD
 import Analysis from './Analysis';
 import Login from './Login';
 import Exception403 from './Exception/403';
@@ -57,159 +58,160 @@ export const panelsList =  [
         title:'银行管理',
     },
     {
-        path:'/operation/RechargeManager',
-        component:RechargeManager,
-        title:'充值优惠',
+        path: "/operation/RechargeManager",
+        component: RechargeManager,
+        title: "充值优惠"
     },
     {
-        path:'/operation/FeedBack',
-        component:FeedBack,
-        title:'意见反馈',
+        path: "/operation/FeedBack",
+        component: FeedBack,
+        title: "意见反馈"
     },
     {
-        path:'/live/GiftManager',
-        component:GiftManager,
-        title:'礼物管理',
+        path: "/live/GiftManager",
+        component: GiftManager,
+        title: "礼物管理"
     },
     {
-        path:'/live/SpecialClass',
-        component:SpecialClass,
-        title:'专辑类型',
+        path: "/live/SpecialClass",
+        component: SpecialClass,
+        title: "专辑类型"
     },
     {
-        path:'/live/SpecialTag',
-        component:SpecialTag,
-        title:'专辑标签',
+        path: "/live/SpecialTag",
+        component: SpecialTag,
+        title: "专辑标签"
     },
     {
-        path:'/Live/LiveTag',
-        component:LiveTag,
-        title:'直播标签',
+        path: "/Live/LiveTag",
+        component: LiveTag,
+        title: "直播标签"
     },
     {
-        path:'/live/LiveClass',
-        component:LiveClass,
-        title:'直播类型',
+        path: "/live/LiveClass",
+        component: LiveClass,
+        title: "直播类型"
     },
     {
-        path:'/shop/ShopManager',
-        component:ShopManager,
-        title:'店铺管理',
+        path: "/shop/ShopManager",
+        component: ShopManager,
+        title: "店铺管理"
     },
     {
-        path:'/member/AnchorType',
-        component:AnchorType,
-        title:'主播类型',
+        path: "/member/AnchorType",
+        component: AnchorType,
+        title: "主播类型"
     },
     {
-        path:'/member/MemberPointManager',
-        component:MemberPointManager,
-        title:'积分管理',
+        path: "/member/MemberPointManager",
+        component: MemberPointManager,
+        title: "积分管理"
     },
     {
-        path:'/member/MemberExpManager',
-        component:MemberExpManager,
-        title:'等级管理',
+        path: "/member/MemberExpManager",
+        component: MemberExpManager,
+        title: "等级管理"
     },
     {
-        path:'/operation/SysMsg',
-        component:SysMsg,
-        title:'站内信',
+        path: "/operation/SysMsg",
+        component: SysMsg,
+        title: "站内信"
     },
     {
-        path:'/system/ShopSet',
-        component:ShopSet,
-        title:'商城设置',
+        path: "/system/ShopSet",
+        component: ShopSet,
+        title: "商城设置"
     },
     {
-        path:'/system/ExpressSet',
-        component:ExpressSet,
-        title:'快递设置',
+        path: "/system/ExpressSet",
+        component: ExpressSet,
+        title: "快递设置"
     },
     {
-        path:'/system/AccessSet',
-        component:AccessSet,
-        title:'权限设置',
+        path: "/system/AccessSet",
+        component: AccessSet,
+        title: "权限设置"
     },
     {
-        path:'/system/SystemSet',
-        component:SystemSet,
-        title:'基础设置',
+        path: "/system/SystemSet",
+        component: SystemSet,
+        title: "基础设置"
     },
     {
-        path:'/goods/CodeManager',
-        component:CodeManager,
-        title:'靓号管理',
+        path: "/goods/CodeManager",
+        component: CodeManager,
+        title: "靓号管理"
     },
     {
-        path:'/goods/GoodsManager',
-        component:GoodsManager,
-        title:'商品管理',
-    },{
-        path:'/article/ArticleSingleManager',
-        component:ArticleSingleManager,
-        title:'单页管理',
+        path: "/goods/GoodsManager",
+        component: GoodsManager,
+        title: "商品管理"
     },
     {
-        path:'/article/ArticleCategory',
-        component:ArticleCategory,
-        title:'文章分类',
+        path: "/article/ArticleSingleManager",
+        component: ArticleSingleManager,
+        title: "单页管理"
     },
     {
-        path:'/article/ArticleList',
-        component:ArticleList,
-        title:'文章列表',
+        path: "/article/ArticleCategory",
+        component: ArticleCategory,
+        title: "文章分类"
     },
     {
-        path:'/member/MemberEncrypted',
-        component:MemberEncrypted,
-        title:'密保问题',
+        path: "/article/ArticleList",
+        component: ArticleList,
+        title: "文章列表"
     },
     {
-        path:'/goods/GoodsProperty',
-        component:GoodsProperty,
-        title:'商品属性',
+        path: "/member/MemberEncrypted",
+        component: MemberEncrypted,
+        title: "密保问题"
     },
     {
-        path:'/operation/AdPosition',
-        component:AdPosition,
-        title:'广告位管理',
+        path: "/goods/GoodsProperty",
+        component: GoodsProperty,
+        title: "商品属性"
     },
     {
-        path:'/operation/AdManager',
-        component:AdManager,
-        title:'广告管理',
+        path: "/operation/AdPosition",
+        component: AdPosition,
+        title: "广告位管理"
     },
     {
-        path:'/goods/ShopNavList',
-        component:ShopNavList,
-        title:'导航',
+        path: "/operation/AdManager",
+        component: AdManager,
+        title: "广告管理"
     },
     {
-        path:'/dashboard/analysis',
-        component:Analysis,
-        title:'分析',
+        path: "/goods/ShopNavList",
+        component: ShopNavList,
+        title: "导航"
     },
     {
-        path:'/user/login',
-        component:Login,
-        title:'登录',
+        path: "/dashboard/analysis",
+        component: Analysis,
+        title: "分析"
     },
     {
-        path:'/exception/403',
-        component:Exception403,
+        path: "/user/login",
+        component: Login,
+        title: "登录"
     },
     {
-        path:'/exception/404',
-        component:Exception404,
+        path: "/exception/403",
+        component: Exception403
     },
     {
-        path:'/exception/500',
-        component:Exception500,
+        path: "/exception/404",
+        component: Exception404
+    },
+    {
+        path: "/exception/500",
+        component: Exception500
     }
-]
-export const getPanelName = (path)=>{
-    const item = panelsList.find((item)=>item.path === path);
-    const title = item?item.title:'';
-    return title?`${title}-直播`:'直播';
-}
+];
+export const getPanelName = path => {
+    const item = panelsList.find(item => item.path === path);
+    const title = item ? item.title : "";
+    return title ? `${title}` : "猪买单";
+};

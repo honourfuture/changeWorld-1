@@ -61,7 +61,7 @@ class Distribution extends API_Controller {
 	}
 
 	/**
-	 * @api {post} /api/user/distribution/add 城市合伙人-提交审核
+	 * @api {post} /api/user/distribution/add 城市合伙人-申请开通
 	 * @apiVersion 1.0.0
 	 * @apiName distribution_add
 	 * @apiGroup user
