@@ -21,6 +21,7 @@ class Users_model extends MY_Model
         parent::__construct();
     }
 
+    //城市合伙人
     public function check_city_partners()
     {
         return [
