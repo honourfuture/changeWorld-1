@@ -31,11 +31,13 @@ class Withdraw extends API_Controller {
 	 * {
 	 *     "data": {
 	 *         "balance": "0.00",
-	 *         "point": "950",
-	 *         "income": {
-	 *             "goods": "1000.00",
-	 *             "live": "50.00",
-	 *             "knowledge": "210.00"
+	 *         "bank": {
+	 *             "id": "1",
+	 *             "user_name": "sz.ljx",
+	 *             "user_card": "112233445566778899",
+	 *             "bank_id": "1",
+	 *             "mobi": "13830332488",
+	 *             "bank_name": "工商银行"
 	 *         }
 	 *     },
 	 *     "status": 0,
@@ -58,6 +60,22 @@ class Withdraw extends API_Controller {
 
 		$user = $this->get_user();
 		$ret['balance'] = $user['balance'];
+
+		$this->load->model('Users_bank_model');
+		$where = [
+			'user_id' => $this->user_id,
+			'enable' => 1
+		];
+		$order_by = array('updated_at' => 'desc');
+		$this->db->select('id,user_name,user_card,bank_id,mobi');
+		if($bank = $this->Users_bank_model->order_by($order_by)->get_by($where)){
+			$ret['bank'] = $bank;
+
+			$this->load->model('Bank_model');
+			$this->db->select('id,name');
+			$bank = $this->Bank_model->get($bank['bank_id']);
+			$ret['bank']['bank_name'] = $bank['name'];
+		}
 
 		$this->ajaxReturn($ret);
 	}
@@ -107,21 +125,6 @@ class Withdraw extends API_Controller {
 	{
 		$ret = array('count' => 0, 'list' => array());
 
-		$topic = 4;
-
-		$this->load->model('Income_model');
-
-		$where = array('topic' => $topic);
-		if($this->user_id){
-			$where['user_id'] = $this->user_id;
-		}
-
-		$order_by = array('id' => 'desc');
-		$ret['count'] = $this->Income_model->count_by($where);
-		if($ret['count']){
-			$this->db->select('id,updated_at,item_title order_sn,item_id,amount,gold real_amount');
-			$ret['list'] = $this->Income_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
-		}
 
 		$this->ajaxReturn($ret);
 	}

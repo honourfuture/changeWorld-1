@@ -30,19 +30,19 @@ class Users_bank extends API_Controller {
 	 *
 	 * @apiSuccessExample {json} Success-Response:
 	 * {
-	 *	    "data": [
-	 *	        {
-	 *	            "id": "1",
-	 *	            "name": "热门"
-	 *	        },
-	 *	        {
-	 *	            "id": "2",
-	 *	            "name": "靓号"
-	 *	        }
-	 *	    ],
-	 *	    "status": 0,
-	 *	    "message": "成功"
-	 *	}
+	 *     "data": [
+	 *         {
+	 *             "id": "1",
+	 *             "user_name": "sz.ljx",
+	 *             "user_card": "112233445566778899",
+	 *             "bank_id": "1",
+	 *             "mobi": "13830332488",
+	 *             "bank_name": "工商银行"
+	 *         }
+	 *     ],
+	 *     "status": 0,
+	 *     "message": "成功"
+	 * }
 	 *
 	 * @apiErrorExample {json} Error-Response:
 	 * {
@@ -60,7 +60,7 @@ class Users_bank extends API_Controller {
 		if($this->user_id){
 			$this->db->select('id,user_name,user_card,bank_id,mobi');
 		}
-		$order_by = array('id' => 'desc');
+		$order_by = array('updated_at' => 'desc');
 		$ret = $this->Users_bank_model->order_by($order_by)->get_many_by($where);
 		if($ret){
 			$a_bank_id = [];
