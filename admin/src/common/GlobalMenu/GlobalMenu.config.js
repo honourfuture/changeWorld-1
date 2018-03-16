@@ -151,7 +151,7 @@ const menuData = [
         ]
     },
     {
-        name: "城市合伙人",
+        name: "分销",
         icon: "team",
         path: "partner",
         children: [
@@ -159,10 +159,10 @@ const menuData = [
                 name: "审核",
                 path: "PartnerAudit"
             },
-            {
-                name: "列表",
-                path: "PartnerList"
-            }
+            // {
+            //     name: "列表",
+            //     path: "PartnerList"
+            // }
         ]
     },
     {

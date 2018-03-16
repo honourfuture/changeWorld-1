@@ -38,7 +38,19 @@ import GiftManager from './GiftManager';
 import FeedBack from './FeedBack';
 import RechargeManager from './RechargeManager';
 import BankManager from './BankManager';
+// import PartnerList from './PartnerList';
+import PartnerAudit from './PartnerAudit';
 export const panelsList =  [
+    {
+        path:'/partner/PartnerAudit',
+        component:PartnerAudit,
+        title:'审核',
+    },
+    // {
+    //     path:'/partner/PartnerList',
+    //     component:PartnerList,
+    //     title:'分销列表',
+    // },
     {
         path:'/operation/BankManager',
         component:BankManager,
