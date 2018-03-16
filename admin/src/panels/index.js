@@ -36,7 +36,19 @@ import SpecialTag from './SpecialTag';
 import SpecialClass from './SpecialClass';
 import GiftManager from './GiftManager';
 import FeedBack from './FeedBack';
+import RechargeManager from './RechargeManager';
+import BankManager from './BankManager';
 export const panelsList =  [
+    {
+        path:'/operation/BankManager',
+        component:BankManager,
+        title:'银行管理',
+    },
+    {
+        path:'/operation/RechargeManager',
+        component:RechargeManager,
+        title:'充值优惠',
+    },
     {
         path:'/operation/FeedBack',
         component:FeedBack,
