@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @email webljx@163.com
  * @link www.aicode.org.cn
  */
-class Wallet_income extends API_Controller {
+class Income extends API_Controller {
 
 	public function __construct()
     {
@@ -13,12 +13,12 @@ class Wallet_income extends API_Controller {
     }
 
 	/**
-	 * @api {get} /api/user/wallet_income 收益明细
+	 * @api {get} /api/user/income 收益明细
 	 * @apiVersion 1.0.0
-	 * @apiName wallet_income
+	 * @apiName income
 	 * @apiGroup user
 	 *
-	 * @apiSampleRequest /api/user/wallet_income
+	 * @apiSampleRequest /api/user/income
 	 *
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名

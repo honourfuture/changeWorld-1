@@ -24,7 +24,8 @@ class Income_model extends MY_Model
     	return [
     		'知识',
     		'直播',
-    		'商品'
+    		'商品',
+    		'充值'
     	];
     }
 
