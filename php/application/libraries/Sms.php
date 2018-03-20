@@ -12,6 +12,7 @@ class Sms
     public $server_name = '【猪买单平台】';
     private $a_tpl_sms   = array(
         '您的验证码是：#code#。请不要把验证码泄露给其他人，若非本人操作请忽略。',
+        '您的验证码是：#code#。请不要把验证码泄露给其他人，若非本人操作请忽略。',
     );
     // 短信发送接口地址
     private $_url = 'https://dx.ipyy.net/smsJson.aspx';

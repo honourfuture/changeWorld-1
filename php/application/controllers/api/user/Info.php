@@ -153,7 +153,7 @@ class Info extends API_Controller {
 			$this->get_user(),
 			''
 		);
-		$ret['age'] = $this->age($ret['birth']);
+		$ret['age'] = $this->Users_model->age($ret['birth']);
 
 		$this->load->model('Users_bind_model');
 		$ret['bind'] = $this->Users_bind_model->get_user_bind_list($this->user_id);
@@ -265,7 +265,7 @@ class Info extends API_Controller {
 				}
 				$update = array('birth' => $birth);
 
-				$ret['age'] = $this->age($birth);
+				$ret['age'] = $this->Users_model->age($birth);
 				break;
 			case 'summary':
 				$summary = $this->input->get_post('summary');

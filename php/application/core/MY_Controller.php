@@ -229,12 +229,6 @@ class MY_Controller extends CI_Controller
         $this->load->model('Users_model');
         return $this->Users_model->get($this->user_id);
     }
-
-    protected function age($birth)
-    {
-        $age = 0;
-        return $age;
-    }
 }
 
 

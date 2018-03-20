@@ -21,6 +21,17 @@ class Users_model extends MY_Model
         parent::__construct();
     }
 
+    public function age($birth)
+    {
+        $date = strtotime($birth);
+        $today = strtotime('today');
+        $diff = floor(($today-$date)/86400/365);
+
+        $age = (strtotime($birth.' +'.$diff.'years') > $today) ? ($diff+1) : $diff;
+        $age = max($age, 0);
+        return min($age, 255);
+    }
+
     //城市合伙人
     public function check_city_partners()
     {
