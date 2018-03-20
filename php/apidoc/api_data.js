@@ -8709,6 +8709,91 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/api/room/viewer",
+    "title": "直播-观众",
+    "version": "1.0.0",
+    "name": "room_viewer",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/room/viewer"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "room_id",
+            "description": "<p>房间号</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": [\n        {\n            \"id\": \"1\",\n            \"header\": \"http://aiping.qichebaby.com/uploads/2018/03/20/ffe6ddafc2a273e12fc686bddebdcd38.png\",\n            \"vip_id\": \"0\",\n            \"exp\": \"0\"\n        },\n        {\n            \"id\": \"2\",\n            \"header\": \"\",\n            \"vip_id\": \"0\",\n            \"exp\": \"0\"\n        }\n    ],\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Room.php",
+    "groupTitle": "api"
+  },
+  {
+    "type": "get",
     "url": "/api/search",
     "title": "搜索",
     "version": "1.0.0",
