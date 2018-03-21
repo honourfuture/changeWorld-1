@@ -245,13 +245,13 @@ class Partner extends API_Controller {
 
 		switch($params['type']){
 			case 1:
-				if(! $mobi){
+				if(! $params['mobi']){
 					$this->ajaxReturn([], 2, '二级分销手机号必传');
 				}
 				$this->check_params('add', $params);
 				break;
 			case 0:
-				if(! $mobi || ! $area){
+				if(! $params['mobi'] || ! $params['area']){
 					$this->ajaxReturn([], 2, '城市合伙人手机号和地址必传');
 				}
 				$this->check_params('add', $params);
@@ -274,7 +274,7 @@ class Partner extends API_Controller {
 	{
 		switch($act){
 			case 'add':
-				if($this->Partner_model->get_by(['user_id' => $this->user_id, 'mobi' => $mobi])){
+				if($this->Partner_model->get_by(['user_id' => $this->user_id, 'mobi' => $params['mobi']])){
 					$this->ajaxReturn([], 3, '手机号已存在');
 				}
 				break;
