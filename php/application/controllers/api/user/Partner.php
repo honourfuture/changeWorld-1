@@ -239,7 +239,11 @@ class Partner extends API_Controller {
 			''
 		);
 
-		switch($type){
+		if($params['type'] === ''){
+			$this->ajaxReturn([], 1, '分销类型错误');
+		}
+
+		switch($params['type']){
 			case 1:
 				if(! $mobi){
 					$this->ajaxReturn([], 2, '二级分销手机号必传');
