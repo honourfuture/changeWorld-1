@@ -11,11 +11,11 @@ class Partner_city extends API_Controller {
     {
         parent::__construct();
 
-        $this->load->model('Partner_city_model');
+        $this->load->model('Partner_model');
     }
 
 	/**
-	 * @api {get} /api/user/partner_city 我的城市合伙人
+	 * @api {get} /api/user/partner_city 城市合伙人-列表
 	 * @apiVersion 1.0.0
 	 * @apiName partner_city
 	 * @apiGroup user
@@ -71,10 +71,10 @@ class Partner_city extends API_Controller {
 		$where = array('user_id' => $this->user_id);
 
 		$order_by = array('id' => 'desc');
-		$ret['count'] = $this->Partner_city_model->count_by($where);
+		$ret['count'] = $this->Partner_model->count_by($where);
 		if($ret['count']){
 			$this->db->select('id,mobi,area');
-			$ret['list'] = $this->Partner_city_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
+			$ret['list'] = $this->Partner_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 
 			$a_mobi = [];
 			foreach($ret['list'] as $key=>$item){
@@ -97,60 +97,5 @@ class Partner_city extends API_Controller {
 		}
 
 		$this->ajaxReturn($ret);
-	}
-
-	/**
-	 * @api {post} /api/user/partner_city/add 城市合伙人-添加
-	 * @apiVersion 1.0.0
-	 * @apiName partner_city_add
-	 * @apiGroup user
-	 *
-	 * @apiSampleRequest /api/user/partner_city/add
-	 *
-	 * @apiParam {Number} user_id 管理员唯一ID
-	 * @apiParam {String} account 登录账号
-	 * @apiParam {String} sign 校验签名
-	 * @apiParam {String} mobi 合伙人手机号
-	 * @apiParam {String} area 省市区 英文逗号分割
-	 *
-	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
-	 * @apiSuccess {String} message 接口信息描述
-	 * @apiSuccess {String} data 接口数据集
-	 *
-	 * @apiSuccessExample {json} Success-Response:
-	 * {
-	 *	    "data": "",
-	 *	    "status": 0,
-	 *	    "message": ""
-	 *	}
-	 *
-	 * @apiErrorExample {json} Error-Response:
-	 * {
-	 * 	   "data": "",
-	 *     "status": -1,
-	 *     "message": "签名校验错误"
-	 * }
-	 */
-	public function add()
-	{
-		$mobi = $this->input->post('mobi');
-		$area = $this->input->post('area');
-		if($mobi && $area){
-			if($this->Partner_city_model->get_by(array('user_id' => $this->user_id, 'mobi' => $mobi))){
-				$this->ajaxReturn([], 3, '手机号已存在');
-			}
-			$data = [
-				'mobi' => $mobi,
-				'area' => $area,
-				'user_id' => $this->user_id
-			];
-			if($this->Partner_city_model->insert($data)){
-				$this->ajaxReturn();
-			}else{
-				$this->ajaxReturn([], 2, '保存合伙人信息失败');
-			}
-		}else{
-			$this->ajaxReturn([], 1, '请输入合伙人手机号和地区');
-		}
 	}
 }

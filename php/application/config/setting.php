@@ -36,12 +36,21 @@ $config['mail'] = array(
     'password' => 'smkyykvqtpjshhhb'
 );
 
+$config['weibo'] = array(
+    'app_key' => '4205373700',
+    'app_secret' => '0baf8cedc16e5e73b7587a144830a4b1'
+);
+
 // QQLive
 $config['live'] = array(
+	//直播
 	'appid' => '1253104369',
 	'api_key' => 'f6a34bbd23b89db693b88805aa49d223',
 	'push_key' => '72b6cd0cf7b4bed16368193a244ee97d',
-	'bizid' => '6077'
+	'bizid' => '6077',
+	//点播
+	'secret_id' => '',
+	'secret_key' => '',
 );
 
 // 融云
