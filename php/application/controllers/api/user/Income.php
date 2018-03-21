@@ -22,6 +22,7 @@ class Income extends API_Controller {
 	 *
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
+	 * @apiParam {Number} type 0销售 1分销 2充值
 	 * @apiParam {Number} topic 主题 0知识 1直播 2商品
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
@@ -83,7 +84,8 @@ class Income extends API_Controller {
 	{
 		$ret = array('count' => 0, 'list' => array());
 
-		$topic = intval($this->input->get_post('topic'));
+		$type = $this->input->get_post('type');
+		$topic = $this->input->get_post('topic');
 
 		$this->load->model('Income_model');
 		$a_topic = $this->Income_model->topic();
@@ -91,7 +93,12 @@ class Income extends API_Controller {
 			$this->ajaxReturn([], 1, '收益明细主题类型错误');
 		}
 
-		$where = array('topic' => $topic);
+		$a_type = $this->Income_model->type();
+		if(! isset($a_type[$type])){
+			$this->ajaxReturn([], 1, '收益类型错误');
+		}
+
+		$where = array('topic' => $topic, 'type' => $type);
 		if($this->user_id){
 			$where['user_id'] = $this->user_id;
 		}

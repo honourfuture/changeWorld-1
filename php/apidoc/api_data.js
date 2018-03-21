@@ -12079,6 +12079,13 @@ define({ "api": [
             "group": "Parameter",
             "type": "Number",
             "optional": false,
+            "field": "type",
+            "description": "<p>0销售 1分销 2充值</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
             "field": "topic",
             "description": "<p>主题 0知识 1直播 2商品</p>"
           }
@@ -14301,10 +14308,10 @@ define({ "api": [
           },
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "Number",
             "optional": false,
             "field": "type",
-            "description": "<p>0二级分销 1城市合伙人</p>"
+            "description": "<p>0城市合伙人 1二级分销</p>"
           },
           {
             "group": "Parameter",
@@ -14449,14 +14456,14 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/api/user/partner_city",
-    "title": "城市合伙人-列表",
+    "url": "/api/user/partner/record",
+    "title": "分销-人员列表",
     "version": "1.0.0",
-    "name": "partner_city",
+    "name": "partner_record",
     "group": "user",
     "sampleRequest": [
       {
-        "url": "/api/user/partner_city"
+        "url": "/api/user/partner/record"
       }
     ],
     "parameter": {
@@ -14475,6 +14482,13 @@ define({ "api": [
             "optional": false,
             "field": "sign",
             "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "type",
+            "description": "<p>0城市合伙人 1二级分销</p>"
           }
         ]
       }
@@ -14529,7 +14543,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Partner_city.php",
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Partner.php",
     "groupTitle": "user"
   },
   {

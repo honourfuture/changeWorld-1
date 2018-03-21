@@ -18,4 +18,12 @@ class Partner_model extends MY_Model
     {
         parent::__construct();
     }
+
+    public function type()
+    {
+        return [
+            '城市合伙人',
+            '二级分销'
+        ];
+    }
 }

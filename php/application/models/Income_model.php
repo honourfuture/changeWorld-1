@@ -19,6 +19,15 @@ class Income_model extends MY_Model
         parent::__construct();
     }
 
+    public function type()
+    {
+        return [
+            '销售',
+            '分销',
+            '充值'
+        ];
+    }
+
     public function topic()
     {
     	return [
