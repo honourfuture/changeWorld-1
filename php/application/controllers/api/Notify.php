@@ -16,6 +16,14 @@ class Notify extends API_Controller
         parent::__construct();
     }
 
+    // 点播
+    public function video()
+    {
+        $content = file_get_contents("php://input");
+        log_message('error', '[notify video content] '.$content);
+    }
+
+    // 直播
     public function live()
     {
         $content = file_get_contents("php://input");

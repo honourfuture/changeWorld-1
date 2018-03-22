@@ -44,13 +44,13 @@ $config['weibo'] = array(
 // QQLive
 $config['live'] = array(
 	//直播
-	'appid' => '1253104369',
-	'api_key' => 'f6a34bbd23b89db693b88805aa49d223',
-	'push_key' => '72b6cd0cf7b4bed16368193a244ee97d',
-	'bizid' => '6077',
+	'appid' => '1256014700',
+	'api_key' => '03bf0596a1764280e524311cf5670fdc',
+	'push_key' => '18b06646116701e01d32dce38414c22a',
+	'bizid' => '21924',
 	//点播
-	'secret_id' => '',
-	'secret_key' => '',
+	'secret_id' => 'AKIDoV3RfhcWYfpD4rsuAF8SWQEWjliYokPv',
+	'secret_key' => 'Uq1d8NVSJySjuuiicKsHWfcR8f1c6OVh',
 );
 
 // 融云
