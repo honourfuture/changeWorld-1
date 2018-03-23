@@ -40,7 +40,19 @@ import RechargeManager from './RechargeManager';
 import BankManager from './BankManager';
 // import PartnerList from './PartnerList';
 import PartnerAudit from './PartnerAudit';
+import SystemLog from './SystemLog';
+import WithdrawalMananger from './WithdrawalMananger';
 export const panelsList =  [
+    {
+        path:'/trade/WithdrawalMananger',
+        component:WithdrawalMananger,
+        title:'提现管理',
+    },
+    {
+        path:'/system/SystemLog',
+        component:SystemLog,
+        title:'日志',
+    },
     {
         path:'/partner/PartnerAudit',
         component:PartnerAudit,

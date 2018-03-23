@@ -62,11 +62,11 @@ const menuData = [
             {
                 name: "靓号管理",
                 path: "CodeManager"
-            },
-            {
-                name: "品牌管理",
-                path: "BrandManager"
             }
+            // {
+            //     name: "品牌管理",
+            //     path: "BrandManager"
+            // }
         ]
     },
     {
@@ -135,6 +135,10 @@ const menuData = [
             {
                 name: "评价管理",
                 path: "EvaluateMananger"
+            },
+            {
+                name: "提现管理",
+                path: "WithdrawalMananger"
             }
             // {
             //     name: '咨询管理',
@@ -158,7 +162,7 @@ const menuData = [
             {
                 name: "审核",
                 path: "PartnerAudit"
-            },
+            }
             // {
             //     name: "列表",
             //     path: "PartnerList"
