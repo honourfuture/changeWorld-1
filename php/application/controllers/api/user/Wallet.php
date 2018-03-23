@@ -66,6 +66,7 @@ class Wallet extends API_Controller {
 		$user = $this->get_user();
 		$ret['balance'] = $user['balance'];
 		$ret['point'] = $user['point'];
+		$ret['gold'] = $user['gold'];
 
 		$this->load->model('Income_model');
 		$ret['income'] = $this->Income_model->sum_income_topic_group($this->user_id);

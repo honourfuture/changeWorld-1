@@ -21,6 +21,28 @@ class Users_model extends MY_Model
         parent::__construct();
     }
 
+    public function rmb_to_gold_rate()
+    {
+        return 100;
+    }
+
+    public function rmb_to_gold($money)
+    {
+        $rate = $this->rmb_to_gold_rate();
+        return floor($money * $rate);
+    }
+
+    public function gold_to_rmb_rate()
+    {
+        return 100;
+    }
+
+    public function gold_to_rmb($gold)
+    {
+        $rate = $this->gold_to_rmb_rate();
+        return round($gold / $rate, 2);
+    }
+
     public function age($birth)
     {
         $date = strtotime($birth);
