@@ -155,4 +155,68 @@ class Resource extends API_Controller {
 		}
 
 	}
+
+	/**
+	 * @api {post} /api/user/resource/del 主播资源-删除
+	 * @apiVersion 1.0.0
+	 * @apiName resource_del
+	 * @apiGroup user
+	 *
+	 * @apiSampleRequest /api/user/resource/del
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 * @apiParam {Number} type 资源类型 0:ppt 1:bg_music
+	 * @apiParam {String} s_id 资源ID 多个英文逗号分割：1,2,3
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *     "data": {
+	 *	   },
+	 *     "status": 0,
+	 *     "message": "成功"
+	 * }
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+	public function del()
+	{
+		$params = elements(
+			array(
+				'type', 's_id'
+			),
+			$this->input->post(),
+			''
+		);
+		$params['user_id'] = $this->user_id;
+		$params['s_id'] = trim($params['s_id']);
+
+		$a_type = $this->Resource_model->type();
+		if(! isset($a_type[$params['type']])){
+			$this->ajaxReturn([], 1, '资源类型错误');
+		}
+
+		if(empty($params['s_id'])){
+			$this->ajaxReturn([], 2, '资源ID必传');
+		}
+		$a_id = explode(',', $params['s_id']);
+
+		$where = array('id' => $a_id, 'user_id' => $this->user_id, 'type' => $params['type']);
+
+		if($this->Resource_model->delete_by($where)){
+			$this->ajaxReturn();
+		}else{
+			$this->ajaxReturn([], 5, '删除资源失败');
+		}
+
+	}
 }

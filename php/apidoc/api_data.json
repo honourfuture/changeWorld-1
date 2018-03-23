@@ -4485,6 +4485,211 @@
   },
   {
     "type": "get",
+    "url": "/api/admin/withdraw/record",
+    "title": "提现管理-记录",
+    "version": "1.0.0",
+    "name": "withdraw_record",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/admin/withdraw/record"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "admin_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.id",
+            "description": "<p>记录ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.created_at",
+            "description": "<p>申请时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.status",
+            "description": "<p>状态 0待处理 1已汇款 2异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.admin_name",
+            "description": "<p>收款人</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"count\": 1,\n        \"list\": [\n            {\n                \"id\": \"3\",\n                \"created_at\": \"2018-03-23 10:22:22\",\n                \"status\": \"0\",\n                \"admin_name\": \"sz.ljx\",\n                \"admin_card\": \"112233445566778899\",\n                \"mobi\": \"13830332488\",\n                \"bank_name\": \"工商银行\",\n                \"amount\": \"100.00\"\n            }\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Withdraw.php",
+    "groupTitle": "admin"
+  },
+  {
+    "type": "post",
+    "url": "/api/admin/withdraw/save",
+    "title": "提现管理-操作",
+    "version": "1.0.0",
+    "name": "withdraw_save",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/admin/withdraw/save"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "admin_id",
+            "description": "<p>管理员唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account",
+            "description": "<p>登录账号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "s_id",
+            "description": "<p>记录唯一ID 多个英文逗号分割：1,2,3</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>状态 0待处理 1已汇款 2异常</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": \"\",\n\t    \"status\": 0,\n\t    \"message\": \"\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Withdraw.php",
+    "groupTitle": "admin"
+  },
+  {
+    "type": "get",
     "url": "/api/address",
     "title": "个人地址-列表",
     "version": "1.0.0",
@@ -15240,6 +15445,98 @@
     "groupTitle": "user"
   },
   {
+    "type": "post",
+    "url": "/api/user/resource/del",
+    "title": "主播资源-删除",
+    "version": "1.0.0",
+    "name": "resource_del",
+    "group": "user",
+    "sampleRequest": [
+      {
+        "url": "/api/user/resource/del"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "type",
+            "description": "<p>资源类型 0:ppt 1:bg_music</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "s_id",
+            "description": "<p>资源ID 多个英文逗号分割：1,2,3</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n\t   },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Resource.php",
+    "groupTitle": "user"
+  },
+  {
     "type": "get",
     "url": "/api/security_question/check",
     "title": "密保-验证页",
@@ -15783,6 +16080,13 @@
             "optional": false,
             "field": "sign",
             "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_bank_id",
+            "description": "<p>用户银行卡ID 默认0(取最新记录) 其他表示选择指定卡</p>"
           }
         ]
       }
@@ -15817,6 +16121,91 @@
         {
           "title": "Success-Response:",
           "content": "{\n    \"data\": {\n        \"balance\": \"0.00\",\n        \"bank\": {\n            \"id\": \"1\",\n            \"user_name\": \"sz.ljx\",\n            \"user_card\": \"112233445566778899\",\n            \"bank_id\": \"1\",\n            \"mobi\": \"13830332488\",\n            \"bank_name\": \"工商银行\"\n        }\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Withdraw.php",
+    "groupTitle": "user"
+  },
+  {
+    "type": "post",
+    "url": "/api/user/withdraw/add",
+    "title": "提现-提交",
+    "version": "1.0.0",
+    "name": "withdraw_add",
+    "group": "user",
+    "sampleRequest": [
+      {
+        "url": "/api/user/withdraw/add"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_bank_id",
+            "description": "<p>用户银行卡ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"count\": 1,\n        \"list\": [\n            {\n                \"id\": \"5\",\n                \"updated_at\": \"2018-03-16 11:32:32\",\n                \"order_sn\": \"112233445566778899\",\n                \"item_id\": \"1\",\n                \"amount\": \"550.00\",\n                \"real_amount\": \"500.00\"\n            }\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
@@ -15888,13 +16277,69 @@
             "optional": false,
             "field": "data",
             "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.id",
+            "description": "<p>记录ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.created_at",
+            "description": "<p>申请时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.status",
+            "description": "<p>状态 0待处理 1已汇款 2异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.user_name",
+            "description": "<p>收款人</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.user_card",
+            "description": "<p>收款账号</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.mobi",
+            "description": "<p>预留手机号</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.bank_name",
+            "description": "<p>卡户银行</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.amount",
+            "description": "<p>提现金额</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    \"data\": {\n        \"count\": 1,\n        \"list\": [\n            {\n                \"id\": \"5\",\n                \"updated_at\": \"2018-03-16 11:32:32\",\n                \"order_sn\": \"112233445566778899\",\n                \"item_id\": \"1\",\n                \"amount\": \"550.00\",\n                \"real_amount\": \"500.00\"\n            }\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": {\n        \"count\": 1,\n        \"list\": [\n            {\n                \"id\": \"3\",\n                \"created_at\": \"2018-03-23 10:22:22\",\n                \"status\": \"0\",\n                \"user_name\": \"sz.ljx\",\n                \"user_card\": \"112233445566778899\",\n                \"mobi\": \"13830332488\",\n                \"bank_name\": \"工商银行\",\n                \"amount\": \"100.00\"\n            }\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
