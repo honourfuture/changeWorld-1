@@ -83,6 +83,8 @@ class Withdraw extends API_Controller {
 			$this->db->select('id,name');
 			$bank = $this->Bank_model->get($bank['bank_id']);
 			$ret['bank']['bank_name'] = $bank['name'];
+		}else{
+			$ret['bank'] = (object)$ret['bank'];
 		}
 
 		$this->ajaxReturn($ret);
@@ -99,6 +101,7 @@ class Withdraw extends API_Controller {
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
 	 * @apiParam {Number} user_bank_id 用户银行卡ID
+	 * @apiParam {String} amount 提现金额
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述

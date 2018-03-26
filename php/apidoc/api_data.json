@@ -16526,6 +16526,13 @@
             "optional": false,
             "field": "user_bank_id",
             "description": "<p>用户银行卡ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "amount",
+            "description": "<p>提现金额</p>"
           }
         ]
       }
