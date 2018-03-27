@@ -28,7 +28,13 @@ import ProductIssue from "./ProductIssue";
 import MessageCenter from "./MessageCenter";
 import MessageDetail from "./MessageDetail";
 import EvaluateList from "./EvaluateList";
+import SellOrder from "./SellOrder";
 export const panelsList = [
+    {
+        path: "/SellOrder",
+        component: SellOrder,
+        title: "我卖出的订单"
+    },
     {
         path: "/EvaluateList",
         component: EvaluateList,
