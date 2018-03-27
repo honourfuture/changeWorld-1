@@ -22,7 +22,7 @@ class Income extends API_Controller {
 	 *
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
-	 * @apiParam {Number} type 0销售 1分销 2充值
+	 * @apiParam {Number} type 0销售 1二级分销 2城市合伙人
 	 * @apiParam {Number} topic 主题 0知识 1直播 2商品
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常

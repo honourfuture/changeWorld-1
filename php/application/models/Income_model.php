@@ -23,8 +23,8 @@ class Income_model extends MY_Model
     {
         return [
             '销售',
-            '分销',
-            '充值'
+            '二级分销',
+            '城市合伙人'
         ];
     }
 
@@ -33,8 +33,7 @@ class Income_model extends MY_Model
     	return [
     		'知识',
     		'直播',
-    		'商品',
-    		'充值'
+    		'商品'
     	];
     }
 

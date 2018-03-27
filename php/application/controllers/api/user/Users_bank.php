@@ -97,8 +97,7 @@ class Users_bank extends API_Controller {
 	 *
 	 * @apiSampleRequest /api/user/users_bank/save
 	 *
-	 * @apiParam {Number} admin_id 管理员唯一ID
-	 * @apiParam {String} account 登录账号
+	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
 	 * @apiParam {Number} id 记录唯一ID 0表示新增 其他表示编辑
 	 * @apiParam {String} user_name 持卡人
@@ -178,7 +177,6 @@ class Users_bank extends API_Controller {
 	{
 		switch($act){
 			case 'add':
-			case 'edit':
 				if($params['user_name'] === '' || $params['user_name'] == UPDATE_VALID){
 					$this->ajaxReturn([], 501, '持卡人必传');
 				}
@@ -188,6 +186,8 @@ class Users_bank extends API_Controller {
 				if($params['bank_id'] === '' || $params['bank_id'] == UPDATE_VALID){
 					$this->ajaxReturn([], 501, '开户行必传');
 				}
+				break;
+			case 'edit':
 				break;
 		}
 	}

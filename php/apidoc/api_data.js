@@ -12710,7 +12710,7 @@ define({ "api": [
             "type": "Number",
             "optional": false,
             "field": "type",
-            "description": "<p>0销售 1分销 2充值</p>"
+            "description": "<p>0销售 1二级分销 2城市合伙人</p>"
           },
           {
             "group": "Parameter",
@@ -16100,15 +16100,8 @@ define({ "api": [
             "group": "Parameter",
             "type": "Number",
             "optional": false,
-            "field": "admin_id",
-            "description": "<p>管理员唯一ID</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "account",
-            "description": "<p>登录账号</p>"
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
           },
           {
             "group": "Parameter",

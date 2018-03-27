@@ -107,7 +107,7 @@ class Gold extends API_Controller {
 
         $amount = $this->Users_model->gold_to_rmb($params['amount']);
         if($amount < 0.01){
-            $this->ajaxReturn([], 2, '金额转余额额度不能少于0.01');
+            $this->ajaxReturn([], 2, '金币转余额额度不能少于0.01');
         }
 
         $this->db->trans_start();
