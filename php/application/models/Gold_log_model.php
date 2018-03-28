@@ -23,9 +23,8 @@ class Gold_log_model extends MY_Model
     {
     	return [
     		'充值',
-    		'送礼',
-    		'收礼',
-    		'转余额'
+    		'转余额',
+            '礼物',//（送、收）
     	];
     }
 }

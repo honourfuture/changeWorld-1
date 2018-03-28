@@ -116,7 +116,7 @@ class Gold extends API_Controller {
 
         //资金明细
         $gold_log = [
-            'topic' => 3,
+            'topic' => 1,
             'from_user_id' => $this->user_id,
             'to_user_id' => $this->user_id,
             'item_title' => $amount,
@@ -184,13 +184,84 @@ class Gold extends API_Controller {
 		$ret = array('count' => 0, 'list' => array());
 
 		$this->load->model('Gold_log_model');
-		$topic = 3;
+		$topic = 1;
 		$where = array('topic' => $topic, 'from_user_id' => $this->user_id);
 
 		$order_by = array('id' => 'desc');
 		$ret['count'] = $this->Gold_log_model->count_by($where);
 		if($ret['count']){
 			$this->db->select('id,updated_at,item_title money,gold');
+			$ret['list'] = $this->Gold_log_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
+		}
+
+		$this->ajaxReturn($ret);
+	}
+
+	/**
+	 * @api {get} /api/user/gold/gift 礼物-记录
+	 * @apiVersion 1.0.0
+	 * @apiName gold_gift
+	 * @apiGroup user
+	 *
+	 * @apiSampleRequest /api/user/gold/gift
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 * @apiParam {String} type in:收到 out:送出
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *     "data": {
+	 *         "count": 1,
+	 *         "list": [
+	 *             {
+	 *                 "id": "15",
+	 *                 "updated_at": "2018-03-28 23:54:57",
+	 *                 "item_title": "游轮",
+	 *                 "gold": "10000.00"
+	 *             }
+	 *         ]
+	 *     },
+	 *     "status": 0,
+	 *     "message": "成功"
+	 * }
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+	public function gift()
+	{
+		$ret = array('count' => 0, 'list' => array());
+
+		$type = $this->input->get_post('type');
+		$topic = 2;
+		$where = array('topic' => $topic);
+		switch($type){
+			case 'in':
+				$where['to_user_id'] = $this->user_id;
+				break;
+			case 'out':
+				$where['from_user_id'] = $this->user_id;
+				break;
+			default :
+				$this->ajaxReturn([], 1, '礼物方式错误');
+				break;
+		}
+
+		$this->load->model('Gold_log_model');
+
+		$order_by = array('id' => 'desc');
+		$ret['count'] = $this->Gold_log_model->count_by($where);
+		if($ret['count']){
+			$this->db->select('id,updated_at,item_title,gold');
 			$ret['list'] = $this->Gold_log_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 		}
 
