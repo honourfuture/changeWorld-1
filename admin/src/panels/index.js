@@ -42,7 +42,13 @@ import BankManager from './BankManager';
 import PartnerAudit from './PartnerAudit';
 import SystemLog from './SystemLog';
 import WithdrawalMananger from './WithdrawalMananger';
+import LecturerNobleManager from './LecturerNobleManager';
 export const panelsList =  [
+    {
+        path:'/member/LecturerNobleManager',
+        component:LecturerNobleManager,
+        title:'贵族管理',
+    },
     {
         path:'/trade/WithdrawalMananger',
         component:WithdrawalMananger,
