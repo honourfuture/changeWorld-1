@@ -34,20 +34,13 @@ class OrderItem extends BaseComponent {
                             共{goods.length}件 合计 
                             <span className="priceTotal">￥ {real_total_amount}</span>
                         </div>
+                        {/*待评价*/}
                         {parseInt(status, 10) === 4 ? (
                             <Flex
                                 className="typeBtn"
                                 justify="end"
                                 align="center"
                             >
-                                <Button
-                                    type="ghost"
-                                    inline
-                                    size="small"
-                                    className="am-button-borderfix contact"
-                                >
-                                    删除订单
-                                </Button>
                                 <Button
                                     type="ghost"
                                     inline
@@ -61,7 +54,7 @@ class OrderItem extends BaseComponent {
                                 </Button>
                             </Flex>
                         ) : null}
-                        {/*已完成和已结束*/}
+                        {/*已完成和已结束、已取消*/}
                         {parseInt(status, 10) === 5 || parseInt(status, 10) === 6 || parseInt(status, 10) === 1  ? (
                             <Flex
                                 className="typeBtn"
@@ -78,6 +71,7 @@ class OrderItem extends BaseComponent {
                                 </Button>
                             </Flex>
                         ) : null}
+                        {/*待付款*/}
                         {parseInt(status, 10) === 0 ? (
                             <Flex
                                 className="typeBtn"
@@ -95,7 +89,7 @@ class OrderItem extends BaseComponent {
                                 >
                                     取消订单
                                 </Button>
-                                <Button
+                                {/*<Button
                                     type="ghost"
                                     inline
                                     size="small"
@@ -106,8 +100,10 @@ class OrderItem extends BaseComponent {
                                 >
                                     去付款
                                 </Button>
+                                */}
                             </Flex>
                         ) : null}
+                        {/*待发货*/}
                         {parseInt(status, 10) === 2 ? (
                             <Flex
                                 className="typeBtn"
@@ -123,7 +119,7 @@ class OrderItem extends BaseComponent {
                                         Base.push("ExLog", { id })
                                     }
                                 >
-                                    取消订单
+                                    申请退款
                                 </Button>
                                 <Button
                                     type="ghost"
@@ -134,10 +130,11 @@ class OrderItem extends BaseComponent {
                                         Base.push("EvaluateOrder", { id })
                                     }
                                 >
-                                    催发货
+                                    提醒发货
                                 </Button>
                             </Flex>
                         ) : null}
+                        {/*待收货*/}
                         {parseInt(status, 10) === 3 ? (
                             <Flex
                                 className="typeBtn"

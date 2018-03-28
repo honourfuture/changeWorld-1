@@ -59,7 +59,7 @@ export default class UserCenter extends BaseComponent{
                 	<WhiteSpace size="lg" />
                 	<div className="uOrderItem mt0">
                 		<List className="shopMenu">
-                			<Item extra={'全部订单'} arrow="horizontal" onClick={()=>Base.push('MyOrder')}>我卖出的</Item>
+                			<Item extra={'全部订单'} arrow="horizontal" onClick={()=>Base.push('SellOrder')}>我卖出的</Item>
                 			<Flex className="menuIco">
                 				<Flex.Item className="Item" align="center">
                 					<img src={userCenter.dfkIco} className="uIco" alt=""/>
