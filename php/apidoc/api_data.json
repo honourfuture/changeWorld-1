@@ -7825,6 +7825,133 @@
   },
   {
     "type": "get",
+    "url": "/api/grade",
+    "title": "等级经验-我的等级",
+    "version": "1.0.0",
+    "name": "grade",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/grade"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data.grade",
+            "description": "<p>我的等级</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.grade.before_grade_name",
+            "description": "<p>前一级等级</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.grade.grade_name",
+            "description": "<p>当前等级</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.grade.after_grade_name",
+            "description": "<p>下一级等级</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.grade.diff",
+            "description": "<p>升级差值</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.grade.exp",
+            "description": "<p>当前经验值</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.rule",
+            "description": "<p>等级说明</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"grade\": {\n            \"before_grade_name\": \"\",\n            \"grade_name\": \"\",\n            \"after_grade_name\": \"钻石\",\n            \"diff\": 10000,\n            \"exp\": \"0\"\n        },\n        \"rule\": \"\"\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Grade.php",
+    "groupTitle": "api"
+  },
+  {
+    "type": "get",
     "url": "/api/knowledge/album",
     "title": "知识-专辑(知识、娱乐)",
     "version": "1.0.0",
@@ -9497,7 +9624,7 @@
             "type": "String",
             "optional": false,
             "field": "rule",
-            "description": "<p>规则项 point: 积分</p>"
+            "description": "<p>规则项 point: 积分 grade: 等级</p>"
           }
         ]
       }
@@ -11222,15 +11349,8 @@
             "group": "Parameter",
             "type": "Number",
             "optional": false,
-            "field": "admin_id",
-            "description": "<p>管理员唯一ID</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "account",
-            "description": "<p>登录账号</p>"
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
           },
           {
             "group": "Parameter",

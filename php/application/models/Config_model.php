@@ -66,7 +66,8 @@ class Config_model extends MY_Model
     			'seller_image' => '商家中心Logo',
     		),
             'rule' => array(
-                'rule_point' => '积分规则'
+                'rule_point' => '积分规则',
+                'rule_grade' => '等级说明',
             ),
     	);
     }

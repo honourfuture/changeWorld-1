@@ -57,7 +57,7 @@ class Grade extends API_Controller {
 	public function index()
 	{
 		$deleted = (int)$this->input->get('deleted');
-		$order_by = array('id' => 'desc');
+		$order_by = array('grade_demand' => 'asc', 'id' => 'desc');
 		$ret = $this->Grade_model->order_by($order_by)->get_many_by('deleted', $deleted);
 		$this->ajaxReturn($ret);
 	}

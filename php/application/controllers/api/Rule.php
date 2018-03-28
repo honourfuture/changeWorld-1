@@ -22,7 +22,7 @@ class Rule extends API_Controller {
 	 *
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
-	 * @apiParam {String} rule 规则项 point: 积分
+	 * @apiParam {String} rule 规则项 point: 积分 grade: 等级
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -57,6 +57,10 @@ class Rule extends API_Controller {
 				$config = $this->Config_model->siteConfig();
 
 				$ret[$rule] = isset($config[$rule]) ? $config[$rule] : '';
+				break;
+			case 'rule_grade':
+				$this->load->model('Grade_model');
+				$ret[$rule] = $this->Grade_model->rule();
 				break;
 			default :
 				break;

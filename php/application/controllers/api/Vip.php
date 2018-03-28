@@ -21,8 +21,7 @@ class Vip extends API_Controller {
 	 *
 	 * @apiSampleRequest /api/vip
 	 *
-	 * @apiParam {Number} admin_id 管理员唯一ID
-	 * @apiParam {String} account 登录账号
+	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
@@ -61,10 +60,9 @@ class Vip extends API_Controller {
 	 */
 	public function index()
 	{
-		$deleted = (int)$this->input->get('deleted');
 		$order_by = array('sort' => 'desc', 'id' => 'desc');
 		$this->db->select('id,name,first_fee,first_gold,renew_fee,renew_gold,icon');
-		$ret = $this->Vip_model->order_by($order_by)->get_many_by('deleted', $deleted);
+		$ret = $this->Vip_model->order_by($order_by)->get_many_by('enable', 1);
 		$this->ajaxReturn($ret);
 	}
 
