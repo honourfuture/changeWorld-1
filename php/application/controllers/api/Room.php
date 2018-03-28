@@ -171,21 +171,30 @@ class Room extends API_Controller {
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
 	 * @apiSuccess {Object} data 接口数据集
+	 * @apiSuccess {String} data.vip 贵族信息 id=0表示无贵族
 	 *
 	 * @apiSuccessExample {json} Success-Response:
 	 * {
 	 *     "data": [
 	 *         {
 	 *             "id": "1",
-	 *             "header": "http://aiping.qichebaby.com/uploads/2018/03/20/ffe6ddafc2a273e12fc686bddebdcd38.png",
-	 *             "vip_id": "0",
-	 *             "exp": "0"
+	 *             "header": "/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png",
+	 *             "exp": "0",
+	 *             "vip": {
+	 *                 "name": "",
+	 *                 "icon": "",
+	 *                 "id": 0
+	 *             }
 	 *         },
 	 *         {
 	 *             "id": "2",
 	 *             "header": "",
-	 *             "vip_id": "0",
-	 *             "exp": "0"
+	 *             "exp": "0",
+	 *             "vip": {
+	 *                 "name": "",
+	 *                 "icon": "",
+	 *                 "id": 0
+	 *             }
 	 *         }
 	 *     ],
 	 *     "status": 0,
@@ -216,8 +225,13 @@ class Room extends API_Controller {
 					$a_user_id[] = $item['user_id'];
 				}
 				$this->load->model('Users_model');
-				$this->db->select('id,header,vip_id,exp');
-				$ret = $this->Users_model->get_many($a_user_id);
+				$this->db->select('id,header,exp');
+				if($ret = $this->Users_model->get_many($a_user_id)){
+					$this->load->model('Users_vip_model');
+					foreach($ret as $key=>$item){
+						$ret[$key]['vip'] = $this->Users_vip_model->vip_info($item['id']);
+					}
+				}
 			}
 
 			$this->ajaxReturn($ret);

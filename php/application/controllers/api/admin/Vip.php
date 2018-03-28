@@ -49,7 +49,8 @@ class Vip extends API_Controller {
 	 *             "first_fee": "100.00",
 	 *             "first_gold": "10000",
 	 *             "renew_fee": "80.00",
-	 *             "renew_gold": "12000"
+	 *             "renew_gold": "12000",
+	 *             "icon": ""
 	 *         }
 	 *     ],
 	 *     "status": 0,
@@ -97,6 +98,7 @@ class Vip extends API_Controller {
 	 * @apiParam {String} first_gold 首开金币
 	 * @apiParam {String} renew_fee 续费费用
 	 * @apiParam {String} renew_gold 续费金币
+	 * @apiParam {String} icon icon图标
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -123,7 +125,7 @@ class Vip extends API_Controller {
 			$params = elements(
 				array(
 					'deleted', 'enable', 'sort', 'name', 'first_fee',
-					'first_gold', 'renew_fee', 'renew_gold'
+					'first_gold', 'renew_fee', 'renew_gold', 'icon'
 				),
 				$this->input->post(),
 				UPDATE_VALID
@@ -143,7 +145,7 @@ class Vip extends API_Controller {
 			$params = elements(
 				array(
 					'sort', 'name', 'first_fee',
-					'first_gold', 'renew_fee', 'renew_gold'
+					'first_gold', 'renew_fee', 'renew_gold', 'icon'
 				),
 				$this->input->post(),
 				UPDATE_VALID
@@ -182,6 +184,9 @@ class Vip extends API_Controller {
 				}
 				if($params['renew_gold'] === '' || $params['renew_gold'] == UPDATE_VALID){
 					$this->ajaxReturn([], 501, '续费金币参数错误');
+				}
+				if($params['icon'] === '' || $params['icon'] == UPDATE_VALID){
+					$this->ajaxReturn([], 501, 'icon图标参数错误');
 				}
 				break;
 			case 'edit':

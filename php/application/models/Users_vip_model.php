@@ -19,17 +19,19 @@ class Users_vip_model extends MY_Model
         parent::__construct();
     }
 
-    public function vip_name($user_id)
+    public function vip_info($user_id)
     {
-    	$vip_name = '';
+    	$vip_info = ['name' => '', 'icon' => '', 'id' => 0];
     	$this->db->select('vip_id');
     	if($vip_user = $this->order_by('id', 'DESC')->get_by(['user_id' => $user_id, 'validity_time >' => time()])){
     		$this->load->model('Vip_model');
     		if($vip = $this->Vip_model->get($vip_user['vip_id'])){
-    			$vip_name = $vip['name'];
+    			$vip_info['name'] = $vip['name'];
+    			$vip_info['icon'] = $vip['icon'];
+    			$vip_info['id'] = $vip['id'];
     		}
     	}
 
-    	return $vip_name;
+    	return $vip_info;
     }
 }

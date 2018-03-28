@@ -36,30 +36,34 @@ class Info extends API_Controller {
 	 * @apiSuccess {String} data.user.anchor 讲师标识 0否 1是
 	 * @apiSuccess {String} data.user.seller 卖家 0否 1是
 	 * @apiSuccess {String} data.user.exp 经验值
-	 * @apiSuccess {String} data.user.vip_id 贵族级别 0无
+	 * @apiSuccess {String} data.vip 贵族信息 id=0表示无贵族
 	 * @apiSuccess {String} data.collection 收藏数量
 	 * @apiSuccess {String} data.follow 关注数量
 	 * @apiSuccess {String} data.fans 粉丝数量
 	 *
 	 * @apiSuccessExample {json} Success-Response:
 	 * {
-	 *    "data": {
-	 *        "user": {
-	 *            "id": "1",
-	 *            "nickname": "aicode",
-	 *            "header": "",
-	 *            "v": "0",
-	 *            "anchor": "0",
-	 *            "seller": "0",
-	 *            "exp": "0",
-	 *            "vip_id": "0"
-	 *        },
-	 *        "collection": 0,
-	 *        "follow": 4,
-	 *        "fans": 1
-	 *    },
-	 *    "status": 0,
-	 *    "message": "成功"
+	 *     "data": {
+	 *         "user": {
+	 *             "id": "1",
+	 *             "nickname": "aicode",
+	 *             "header": "/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png",
+	 *             "v": "0",
+	 *             "anchor": "1",
+	 *             "seller": "1",
+	 *             "exp": "0"
+	 *         },
+	 *         "vip": {
+	 *             "name": "",
+	 *             "icon": "",
+	 *             "id": 0
+	 *         },
+	 *         "collection": 3,
+	 *         "follow": 18,
+	 *         "fans": 1
+	 *     },
+	 *     "status": 0,
+	 *     "message": "成功"
 	 * }
 	 *
 	 * @apiErrorExample {json} Error-Response:
@@ -82,8 +86,10 @@ class Info extends API_Controller {
 			'anchor' => $user['anchor'],
 			'seller' => $user['seller'],
 			'exp' => $user['exp'],
-			'vip_id' => $user['vip_id'],
 		);
+
+		$this->load->model('Users_vip_model');
+		$ret['vip'] = $this->Users_vip_model->vip_info($user['id']);
 
 		$this->load->model('Users_collection_model');
 		$where = array('user_id' => $this->user_id, 'topic' => 2, 'enable' => 1);

@@ -4593,7 +4593,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    \"data\": [\n        {\n            \"id\": \"1\",\n            \"created_at\": \"2018-03-28 15:39:31\",\n            \"updated_at\": \"2018-03-28 15:42:09\",\n            \"deleted\": \"0\",\n            \"enable\": \"1\",\n            \"sort\": \"0\",\n            \"name\": \"男爵\",\n            \"first_fee\": \"100.00\",\n            \"first_gold\": \"10000\",\n            \"renew_fee\": \"80.00\",\n            \"renew_gold\": \"12000\"\n        }\n    ],\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": [\n        {\n            \"id\": \"1\",\n            \"created_at\": \"2018-03-28 15:39:31\",\n            \"updated_at\": \"2018-03-28 15:42:09\",\n            \"deleted\": \"0\",\n            \"enable\": \"1\",\n            \"sort\": \"0\",\n            \"name\": \"男爵\",\n            \"first_fee\": \"100.00\",\n            \"first_gold\": \"10000\",\n            \"renew_fee\": \"80.00\",\n            \"renew_gold\": \"12000\",\n            \"icon\": \"\"\n        }\n    ],\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
@@ -4708,6 +4708,13 @@ define({ "api": [
             "optional": false,
             "field": "renew_gold",
             "description": "<p>续费金币</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "icon",
+            "description": "<p>icon图标</p>"
           }
         ]
       }
@@ -9426,13 +9433,20 @@ define({ "api": [
             "optional": false,
             "field": "data",
             "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.vip",
+            "description": "<p>贵族信息 id=0表示无贵族</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    \"data\": [\n        {\n            \"id\": \"1\",\n            \"header\": \"http://aiping.qichebaby.com/uploads/2018/03/20/ffe6ddafc2a273e12fc686bddebdcd38.png\",\n            \"vip_id\": \"0\",\n            \"exp\": \"0\"\n        },\n        {\n            \"id\": \"2\",\n            \"header\": \"\",\n            \"vip_id\": \"0\",\n            \"exp\": \"0\"\n        }\n    ],\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": [\n        {\n            \"id\": \"1\",\n            \"header\": \"/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png\",\n            \"exp\": \"0\",\n            \"vip\": {\n                \"name\": \"\",\n                \"icon\": \"\",\n                \"id\": 0\n            }\n        },\n        {\n            \"id\": \"2\",\n            \"header\": \"\",\n            \"exp\": \"0\",\n            \"vip\": {\n                \"name\": \"\",\n                \"icon\": \"\",\n                \"id\": 0\n            }\n        }\n    ],\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
@@ -11187,6 +11201,133 @@ define({ "api": [
       ]
     },
     "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Users_points.php",
+    "groupTitle": "api"
+  },
+  {
+    "type": "get",
+    "url": "/api/vip",
+    "title": "贵族-列表",
+    "version": "1.0.0",
+    "name": "vip",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/vip"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "admin_id",
+            "description": "<p>管理员唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account",
+            "description": "<p>登录账号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.id",
+            "description": "<p>贵族唯一ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.name",
+            "description": "<p>贵族名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.first_fee",
+            "description": "<p>首开费用</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.first_gold",
+            "description": "<p>首开金币</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.renew_fee",
+            "description": "<p>续费费用</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.renew_gold",
+            "description": "<p>续费金币</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": [\n        {\n            \"id\": \"1\",\n            \"name\": \"男爵\",\n            \"first_fee\": \"100.00\",\n            \"first_gold\": \"10000\",\n            \"renew_fee\": \"80.00\",\n            \"renew_gold\": \"12000\",\n            \"icon\": \"\"\n        }\n    ],\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Vip.php",
     "groupTitle": "api"
   },
   {
@@ -13321,8 +13462,8 @@ define({ "api": [
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.user.vip_id",
-            "description": "<p>贵族级别 0无</p>"
+            "field": "data.vip",
+            "description": "<p>贵族信息 id=0表示无贵族</p>"
           },
           {
             "group": "Success 200",
@@ -13350,7 +13491,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n   \"data\": {\n       \"user\": {\n           \"id\": \"1\",\n           \"nickname\": \"aicode\",\n           \"header\": \"\",\n           \"v\": \"0\",\n           \"anchor\": \"0\",\n           \"seller\": \"0\",\n           \"exp\": \"0\",\n           \"vip_id\": \"0\"\n       },\n       \"collection\": 0,\n       \"follow\": 4,\n       \"fans\": 1\n   },\n   \"status\": 0,\n   \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": {\n        \"user\": {\n            \"id\": \"1\",\n            \"nickname\": \"aicode\",\n            \"header\": \"/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png\",\n            \"v\": \"0\",\n            \"anchor\": \"1\",\n            \"seller\": \"1\",\n            \"exp\": \"0\"\n        },\n        \"vip\": {\n            \"name\": \"\",\n            \"icon\": \"\",\n            \"id\": 0\n        },\n        \"collection\": 3,\n        \"follow\": 18,\n        \"fans\": 1\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
