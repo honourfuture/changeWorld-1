@@ -20,10 +20,10 @@ const menuData = [
                 name: "会员管理",
                 path: "MemberManager"
             },
-            {
-                name: "等级管理",
-                path: "MemberLvManager"
-            },
+            // {
+            //     name: "等级管理",
+            //     path: "MemberLvManager"
+            // },
             {
                 name: "贵族管理",
                 path: "LecturerNobleManager"

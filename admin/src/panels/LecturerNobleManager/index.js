@@ -191,10 +191,10 @@ export default class LecturerNobleManager extends BaseComponent{
 			return parseInt(item.deleted,10) === 0;
 		})
 		return (
-			<div className='LecturerNobleManager'>
+			<Spin ref='spin' spinning={false} className='LecturerNobleManager'>
 				<Button onClick={this.onAdd}>新增+</Button>
 				<Table className="mt16" bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={false} />
-			</div>
+			</Spin>
 		)
 	}
 };
