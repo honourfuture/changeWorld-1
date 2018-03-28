@@ -44,26 +44,23 @@ class Income_model extends MY_Model
     	];
     }
 
-    public function sum_income_topic_group($user_id = 0)
+    public function sum_income_topic_group($user_id = 0, $type = 0)
     {
     	$ret = [
-    		'goods' => 0,
-			'live' => 0,
-			'knowledge' => 0
+			'knowledge' => 0,
+            'goods' => 0,
     	];
     	$this->db->select('topic,sum(amount) amount');
     	if($user_id){
     		$this->db->where('user_id', $user_id);
     	}
+        $this->db->where('type', $type);
     	$this->db->group_by('topic');
     	if($result = $this->db->get($this->table())->result_array()){
     		foreach($result as $item){
     			switch($item['topic']){
     				case 0:
     					$ret['knowledge'] = $item['amount'];
-    					break;
-    				case 1:
-    					$ret['live'] = $item['amount'];
     					break;
     				case 2:
     					$ret['goods'] = $item['amount'];

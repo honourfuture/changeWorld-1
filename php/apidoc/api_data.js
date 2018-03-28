@@ -9175,6 +9175,91 @@ define({ "api": [
     "groupTitle": "api"
   },
   {
+    "type": "post",
+    "url": "/api/rule",
+    "title": "规则说明",
+    "version": "1.0.0",
+    "name": "rule",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/rule"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "rule",
+            "description": "<p>规则项 point: 积分</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"rule_point\": \"\"\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Rule.php",
+    "groupTitle": "api"
+  },
+  {
     "type": "get",
     "url": "/api/search",
     "title": "搜索",
@@ -16351,6 +16436,13 @@ define({ "api": [
           },
           {
             "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.gold",
+            "description": "<p>金币</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "Object",
             "optional": false,
             "field": "data.income",
@@ -16367,13 +16459,6 @@ define({ "api": [
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.income.live",
-            "description": "<p>直播</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
             "field": "data.income.knowledge",
             "description": "<p>知识</p>"
           }
@@ -16382,7 +16467,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    \"data\": {\n        \"balance\": \"0.00\",\n        \"point\": \"950\",\n        \"income\": {\n            \"goods\": \"1000.00\",\n            \"live\": \"50.00\",\n            \"knowledge\": \"210.00\"\n        }\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": {\n        \"balance\": \"9802.00\",\n        \"point\": \"950\",\n        \"income\": {\n            \"knowledge\": \"210.00\",\n            \"goods\": \"2000.00\"\n        },\n        \"gold\": \"9800\"\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]

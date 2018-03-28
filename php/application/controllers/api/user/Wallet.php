@@ -28,21 +28,21 @@ class Wallet extends API_Controller {
 	 * @apiSuccess {Object} data 接口数据集
 	 * @apiSuccess {String} data.balance 余额
 	 * @apiSuccess {String} data.point 积分
+	 * @apiSuccess {String} data.gold 金币
 	 * @apiSuccess {Object} data.income 收益
 	 * @apiSuccess {String} data.income.goods 商品
-	 * @apiSuccess {String} data.income.live 直播
 	 * @apiSuccess {String} data.income.knowledge 知识
 	 *
 	 * @apiSuccessExample {json} Success-Response:
 	 * {
 	 *     "data": {
-	 *         "balance": "0.00",
+	 *         "balance": "9802.00",
 	 *         "point": "950",
 	 *         "income": {
-	 *             "goods": "1000.00",
-	 *             "live": "50.00",
-	 *             "knowledge": "210.00"
-	 *         }
+	 *             "knowledge": "210.00",
+	 *             "goods": "2000.00"
+	 *         },
+	 *         "gold": "9800"
 	 *     },
 	 *     "status": 0,
 	 *     "message": "成功"
