@@ -15198,14 +15198,14 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/api/user/login/weixin",
+    "url": "/api/user/login/wechat",
     "title": "微信登录",
     "version": "1.0.0",
-    "name": "login_weixin",
+    "name": "login_wechat",
     "group": "user",
     "sampleRequest": [
       {
-        "url": "/api/user/login/weixin"
+        "url": "/api/user/login/wechat"
       }
     ],
     "parameter": {
@@ -15215,15 +15215,8 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "account",
-            "description": "<p>唯一登录账号</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "password",
-            "description": "<p>登录密码</p>"
+            "field": "code",
+            "description": "<p>APP授权code</p>"
           }
         ]
       }

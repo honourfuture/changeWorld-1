@@ -80,7 +80,12 @@ class Register extends API_Controller {
 			        if($user){
 			            $this->ajaxReturn([], 6, '账号已被注册');
 			        }
-					$this->user_reg(array('mobi' => $mobi, 'account' => $account, 'password' => $password));
+
+			        if($id = $this->Users_model->reg(['mobi' => $mobi, 'account' => $account, 'password' => $password])){
+			            $this->user_login_success($this->Users_model->get($id));
+			        }else{
+			            $this->ajaxReturn([], LOGIN_STATUS, '保存注册信息失败');
+			        }
 				}
 			}else{
 				$this->ajaxReturn([], 4, '验证码错误');

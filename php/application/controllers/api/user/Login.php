@@ -5,6 +5,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @email webljx@163.com
  * @link www.aicode.org.cn
  */
+
+use EasyWeChat\Foundation\Application;
+
 class Login extends API_Controller {
 
 	public function __construct()
@@ -136,15 +139,14 @@ class Login extends API_Controller {
     }
 
     /**
-	 * @api {get} /api/user/login/weixin 微信登录
+	 * @api {get} /api/user/login/wechat 微信登录
 	 * @apiVersion 1.0.0
-	 * @apiName login_weixin
+	 * @apiName login_wechat
 	 * @apiGroup user
 	 *
-	 * @apiSampleRequest /api/user/login/weixin
+	 * @apiSampleRequest /api/user/login/wechat
 	 *
-	 * @apiParam {String} account 唯一登录账号
-	 * @apiParam {String} password 登录密码
+	 * @apiParam {String} code APP授权code
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -178,19 +180,60 @@ class Login extends API_Controller {
 	 *     "message": "登录密码错误"
 	 * }
 	 */
-    public function weixin()
+    public function wechat()
     {
-    	$guid = $this->input->get_post('guid');
-		if(!$guid){
-			$this->ajaxReturn([], 1, '微信登录参数非法');
-		}
-		$this->load->model('Users_model');
-		$info = $this->Users_model->get_by('weixin_uid', $guid);
-		if($info){
-			$this->check_status($info);
-		}else{//注册
-			$this->user_reg(array('guid' => $guid));
-		}
+    	$account_type = 1;
+    	if(!$code = $this->input->get('code')){
+    		$this->ajaxReturn([], 1, 'code码必传');
+    	}
+
+    	$app = new Application($this->setting);
+        $oauth = $app->oauth;
+        if($user = $oauth->user()){
+            $user = $user->toArray();
+
+            $this->load->model('Users_model');
+            //判断是否已绑定
+            $where = [
+                'account_type' => $account_type,
+                'unique_id' => $user['id']
+            ];
+            $this->load->model('Users_bind_model');
+            $this->db->select('id,user_id,other');
+            $user_id = 0;
+            if($user_bind = $this->Users_bind_model->get_by($where)){
+                if($user_bind['user_id']){//已绑定账号
+                	$user_id = $user_bind['user_id'];
+                }else{//未绑定账号
+                    if($user_id = $this->Users_model->reg($user['original'])){
+	                	$this->Users_bind_model->update($user_bind['id'], ['user_id' => $user_id]);
+			        }else{
+			            $this->ajaxReturn([], LOGIN_STATUS, '保存注册信息失败');
+			        }
+                }
+            }else{//未绑定账号&首次访问
+            	if($user_id = $this->Users_model->reg($user['original'])){
+                	$data = [
+		            	'user_id' => $user_id,
+		                'account_type' => $account_type,
+		                'unique_id' => $user['original']['openid'],
+		                'other' => json_encode($user['original']),
+		            ];
+		            $this->Users_bind_model->insert($data);
+		        }else{
+		            $this->ajaxReturn([], LOGIN_STATUS, '保存注册信息失败');
+		        }
+            }
+
+            if($info = $this->Users_model->get($user_id)){
+				$this->check_status($info);
+			}else{
+				$this->ajaxReturn([], LOGIN_STATUS, '获取用户信息失败');
+			}
+        }else{
+        	log_message('error', 'wechat oauth failed'.var_export($user, true));
+            $this->ajaxReturn([], 1, '微信授权登录异常错误');
+        }
     }
 
     /**
@@ -246,7 +289,12 @@ class Login extends API_Controller {
 		if($info){
 			$this->check_status($info);
 		}else{//注册
-			$this->user_reg(array('guid' => $guid));
+			if($user_id = $this->Users_model->reg(['guid' => $guid])){
+				$info = $this->Users_model->get($user_id);
+				$this->check_status($info);
+			}else{
+				$this->ajaxReturn([], LOGIN_STATUS, '匿名用户注册失败');
+			}
 		}
     }
 

@@ -117,4 +117,34 @@ class Users_model extends MY_Model
 
         return $result;
     }
+
+    public function reg($params = array())
+    {
+        $data = array();
+        switch($this->router->method)
+        {
+            case 'account':
+                $data['mobi'] = $params['mobi'];
+                $data['account'] = $params['account'];
+                $data['nickname'] = $params['account'];
+                $data['password'] = $this->Users_model->get_password($params['password']);
+                break;
+            case 'qq'://QQ
+                break;
+            case 'wechat'://微信
+                $data['nickname'] = $params['nickname'];
+                $data['header'] = $params['headimgurl'];
+                $data['sex'] = $params['sex'];
+                break;
+            case 'tourist'://匿名
+                $data['nickname'] = '匿名';
+                $data['tourist_uid'] = $params['guid'];
+                break;
+        }
+        $data['point'] = 0;//注册送积分
+        $data['birth'] = date("Y-m-d");
+        $data['reg_ip'] = $this->input->ip_address();
+
+        return $this->Users_model->insert($data);
+    }
 }

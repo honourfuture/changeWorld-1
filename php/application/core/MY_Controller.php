@@ -243,38 +243,6 @@ class API_Controller extends MY_Controller
         }
     }
 
-    protected function user_reg($params = array())
-    {
-        $this->load->model('Users_model');
-        $data = array();
-        switch($this->router->method)
-        {
-            case 'account':
-                $data['mobi'] = $params['mobi'];
-                $data['account'] = $params['account'];
-                $data['nickname'] = $params['account'];
-                $data['password'] = $this->Users_model->get_password($params['password']);
-                break;
-            case 'qq'://QQ
-                break;
-            case 'weixin'://微信
-                break;
-            case 'tourist'://匿名
-                $data['nickname'] = '匿名';
-                $data['tourist_uid'] = $params['guid'];
-                break;
-        }
-        $data['point'] = 0;//注册送积分
-        $data['birth'] = date("Y-m-d");
-        $data['reg_ip'] = $this->input->ip_address();
-
-        if($id = $this->Users_model->insert($data)){
-            $this->user_login_success($this->Users_model->get($id));
-        }else{
-            $this->ajaxReturn([], LOGIN_STATUS, '保存注册信息失败');
-        }
-    }
-
     protected function user_login_success($user_info)
     {
         $this->user_id = $user_info['id'];

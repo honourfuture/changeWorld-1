@@ -58,3 +58,28 @@ $config['rongcloud'] = array(
 	'app_key' => 'p5tvi9dspn5p4',
 	'app_secret' => 'JzSzGK49rqMy'
 );
+
+// 微信
+$config['wechat'] = array(
+	'app_id' => 'wx32eccca0c7b0b2d0',
+	'secret' => 'bdacd064ac8e8eb1e0379e304e00af1b',
+	'token' => 'f2161f9f30a72a6c0bcaa71a7a74b2e9',
+	'aes_key' => '',
+	'response_type' => 'array',
+	'log' => [
+		'level' => 'debug',
+		'permission' => 0777,
+		'file' => APPPATH.'logs'.DIRECTORY_SEPARATOR.'easywechat.log'
+	],
+    'payment' => [
+        'merchant_id' => '',
+        'key' => '',
+        'cert_path' => '',
+        'key_path' => '',
+        'notify_url' => '',
+    ],
+    'open_platform' => [
+    	'app_id' => 'wx32eccca0c7b0b2d0',
+		'secret' => 'bdacd064ac8e8eb1e0379e304e00af1b',
+    ]
+);
