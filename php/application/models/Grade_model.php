@@ -44,6 +44,9 @@ class Grade_model extends MY_Model
 
     public function rule()
     {
-    	return '';
+        $this->load->model('Config_model');
+        $config = $this->Config_model->siteConfig();
+        $rule = 'rule_grade';
+    	return isset($config[$rule]) ? $config[$rule] : '';
     }
 }

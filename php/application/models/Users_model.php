@@ -140,11 +140,29 @@ class Users_model extends MY_Model
                 $data['nickname'] = '匿名';
                 $data['tourist_uid'] = $params['guid'];
                 break;
+            case 'bind':
+                $data['mobi'] = $params['mobi'];
+                $data['nickname'] = isset($params['nickname']) ? $params['nickname'] : '';
+                $data['header'] = isset($params['headimgurl']) ? $params['headimgurl'] : '';
+                $data['sex'] = isset($params['sex']) ? $params['sex'] : 0;
+                break;
         }
         $data['point'] = 0;//注册送积分
         $data['birth'] = date("Y-m-d");
         $data['reg_ip'] = $this->input->ip_address();
 
-        return $this->Users_model->insert($data);
+        $user_id = $this->Users_model->insert($data);
+
+        if(isset($data['mobi'])){
+            $this->load->model('Users_bind_model');
+            $data = [
+                'user_id' => $user_id
+                'account_type' => 0,
+                'unique_id' => $data['mobi'],
+            ];
+            $this->Users_bind_model->insert($data);
+        }
+
+        return $user_id;
     }
 }
