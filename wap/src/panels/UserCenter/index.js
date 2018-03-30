@@ -10,7 +10,7 @@ const orderSatus = [
     { title: "待收货", key: 3, img: userCenter.dshIco },
     { title: "待评价", key: 4, img: userCenter.dpjIco },
     { title: "已完成", key: 5, img: userCenter.ywcIco },
-    { title: "退货", key: 6, img: userCenter.thIco }
+    { title: "退货", key: -2, img: userCenter.thIco }
 ];
 export default class UserCenter extends BaseComponent {
     store = { data: {} };
@@ -86,7 +86,9 @@ export default class UserCenter extends BaseComponent {
                             <Item
                                 extra={"全部订单"}
                                 arrow="horizontal"
-                                onClick={() => Base.push("MyOrder")}
+                                onClick={() =>
+                                    Base.push("MyOrder", { index: -1 })
+                                }
                             >
                                 我买到的
                             </Item>
@@ -101,7 +103,11 @@ export default class UserCenter extends BaseComponent {
                                     <Item
                                         extra={"全部订单"}
                                         arrow="horizontal"
-                                        onClick={() => Base.push("SellOrder")}
+                                        onClick={() =>
+                                            Base.push("SellOrder", {
+                                                index: -1
+                                            })
+                                        }
                                     >
                                         我卖出的
                                     </Item>
