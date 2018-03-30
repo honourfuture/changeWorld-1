@@ -8,6 +8,63 @@ import "./MyOrder.less";
 
 import { OrderGoodsItem } from "../../components/OrderGoodsItem";
 import { NoData } from "../../components/NoData";
+
+class Btns extends BaseComponent {
+    render(){
+        const { btnTxt, callBack, callBackOperator, isDouble } = this.props;
+        let btns = null;
+        if(!isDouble){
+            btns =  <div>
+                        <Button
+                            type="ghost"
+                            inline
+                            size="small"
+                            className="am-button-borderfix"
+                            onClick={() =>
+                                callBack && callBack()
+                            }
+                        >
+                            {btnTxt[0]}
+                        </Button>
+                    </div>
+        }else{
+            btns = <div>
+                        <Button
+                            type="ghost"
+                            inline
+                            size="small"
+                            className="am-button-borderfix"
+                            onClick={() =>
+                                callBack && callBack()
+                            }
+                        >
+                            {btnTxt[0]}
+                        </Button>
+                        <Button
+                            type="ghost"
+                            inline
+                            size="small"
+                            className="am-button-borderfix eva-order"
+                            onClick={() =>
+                                callBackOperator && callBackOperator()
+                            }
+                        >
+                            {btnTxt[1]}
+                        </Button>
+                    </div>
+        }
+        return (
+            <Flex
+                className="typeBtn"
+                justify="end"
+                align="center"
+            >
+                {btns}
+            </Flex>
+        )
+    }
+}
+
 class OrderItem extends BaseComponent {
     render() {
         const renderOrderItem = (this.props.data || []).map((item, key) => {
@@ -20,6 +77,25 @@ class OrderItem extends BaseComponent {
                 orderType
             } = item;
             let states = ["待付款","已取消","待发货","待收货","待评价","已完成","已结束"];
+
+            let btns = null;
+            switch(parseInt(status,10)){
+                case 0:
+                    btns = <Btns btnTxt={["取消订单"]} callBack={()=>console.log('取消')} isDouble={false} />
+                break;
+                case 1,5,6:
+                    btns = <Btns btnTxt={["删除订单"]} callBack={()=>console.log('取消')} isDouble={false} />;      
+                break;
+                case 2:
+                    btns = btns = <Btns btnTxt={["申请退款","提醒发货"]} callBack={()=>console.log('申请退款')} callBackOperator={()=>console.log('提醒发货')} isDouble={true} />;
+                break;
+                case 3:
+                    btns = <Btns btnTxt={["查看物流","确认收货"]} callBack={()=>console.log('查看物流')} callBackOperator={()=>console.log('确认收货')} isDouble={true} />;
+                break;
+                case 4:
+                    btns = <Btns btnTxt={["评价订单"]} callBack={()=>console.log('评价订单')} isDouble={false} />;
+                break;
+            }
             return (
                 <div className="orderItem" key={key}>
                     <Flex justify="between" className="orderItemTit base-line">
@@ -34,137 +110,7 @@ class OrderItem extends BaseComponent {
                             共{goods.length}件 合计 
                             <span className="priceTotal">￥ {real_total_amount}</span>
                         </div>
-                        {/*待评价*/}
-                        {parseInt(status, 10) === 4 ? (
-                            <Flex
-                                className="typeBtn"
-                                justify="end"
-                                align="center"
-                            >
-                                <Button
-                                    type="ghost"
-                                    inline
-                                    size="small"
-                                    className="am-button-borderfix eva-order"
-                                    onClick={() =>
-                                        Base.push("EvaluateOrder", { id })
-                                    }
-                                >
-                                    评价订单
-                                </Button>
-                            </Flex>
-                        ) : null}
-                        {/*已完成和已结束、已取消*/}
-                        {parseInt(status, 10) === 5 || parseInt(status, 10) === 6 || parseInt(status, 10) === 1  ? (
-                            <Flex
-                                className="typeBtn"
-                                justify="end"
-                                align="center"
-                            >
-                                <Button
-                                    type="ghost"
-                                    inline
-                                    size="small"
-                                    className="am-button-borderfix contact"
-                                >
-                                    删除订单
-                                </Button>
-                            </Flex>
-                        ) : null}
-                        {/*待付款*/}
-                        {parseInt(status, 10) === 0 ? (
-                            <Flex
-                                className="typeBtn"
-                                justify="end"
-                                align="center"
-                            >
-                                <Button
-                                    type="ghost"
-                                    inline
-                                    size="small"
-                                    className="am-button-borderfix look-log"
-                                    onClick={() =>
-                                        Base.push("ExLog", { id })
-                                    }
-                                >
-                                    取消订单
-                                </Button>
-                                {/*<Button
-                                    type="ghost"
-                                    inline
-                                    size="small"
-                                    className="am-button-borderfix eva-order"
-                                    onClick={() =>
-                                        Base.push("EvaluateOrder", { id })
-                                    }
-                                >
-                                    去付款
-                                </Button>
-                                */}
-                            </Flex>
-                        ) : null}
-                        {/*待发货*/}
-                        {parseInt(status, 10) === 2 ? (
-                            <Flex
-                                className="typeBtn"
-                                justify="end"
-                                align="center"
-                            >
-                                <Button
-                                    type="ghost"
-                                    inline
-                                    size="small"
-                                    className="am-button-borderfix look-log"
-                                    onClick={() =>
-                                        Base.push("ExLog", { id })
-                                    }
-                                >
-                                    申请退款
-                                </Button>
-                                <Button
-                                    type="ghost"
-                                    inline
-                                    size="small"
-                                    className="am-button-borderfix eva-order"
-                                    onClick={() =>
-                                        Base.push("EvaluateOrder", { id })
-                                    }
-                                >
-                                    提醒发货
-                                </Button>
-                            </Flex>
-                        ) : null}
-                        {/*待收货*/}
-                        {parseInt(status, 10) === 3 ? (
-                            <Flex
-                                className="typeBtn"
-                                justify="end"
-                                align="center"
-                            >
-                                <Button
-                                    type="ghost"
-                                    inline
-                                    size="small"
-                                    className="am-button-borderfix look-log"
-                                    onClick={() =>
-                                        Base.push("ExLog", { id })
-                                    }
-                                >
-                                    查看物流
-                                </Button>
-                                <Button
-                                    type="ghost"
-                                    inline
-                                    size="small"
-                                    className="am-button-borderfix eva-order"
-                                    onClick={() =>
-                                        Base.push("EvaluateOrder", { id })
-                                    }
-                                >
-                                    确认收货
-                                </Button>
-                            </Flex>
-                        ) : null}
+                        {btns}
                     </div>
                 </div>
             );
@@ -180,7 +126,7 @@ export default class MyOrder extends BaseComponent {
         list: []
     };
     componentDidMount() {
-        const {index} = this.props;
+        const index = parseInt(Base.getPageParams('index'));
         this.requestData(index);
     }
     @action.bound
@@ -194,14 +140,15 @@ export default class MyOrder extends BaseComponent {
     }
     @action.bound
     onChange(tab, index) {
-        this.requestData(index);
+        const orderStatus = [-1,0,2,3,4,5,-2];
+        this.requestData(orderStatus[index]);
     }
     goShop(){
         Base.push('ShopIndex');
     }
     render() {
         const { list } = this.store;
-        let tabNames = ["全部","待付款","待发货","待收货","待评价","已取消","已完成"];
+        let tabNames = ["全部","待付款","待发货","待收货","待评价","已完成","退货/售后"];
         const tabs = tabNames.map(item=>{
             return {'title':item};
         });
@@ -209,9 +156,9 @@ export default class MyOrder extends BaseComponent {
             item.goods.forEach(items=>{
                 items.sale_price = items.goods_price
             })
-        })
+        });
         const item = list.length === 0 ? <NoData img={blankImg.order} label={'暂无数据'} btnLabel={'去逛逛'} onClick={this.goShop} /> : <OrderItem data={list} />;
-
+        const pageNum = parseInt(Base.getPageParams('pageNum'));
         return (
             <div className="MyOrder">
                 <NavBar
@@ -224,7 +171,7 @@ export default class MyOrder extends BaseComponent {
                 </NavBar>
                 <div className="base-content">
                     <SearchBar placeholder="搜索历史订单" maxLength={8} />
-                    <Tabs className="nav-tabs" tabs={tabs} onChange={this.onChange} initialPage={0}>
+                    <Tabs className="nav-tabs" tabs={tabs} onChange={this.onChange} initialPage={pageNum}>
                         {item}
                     </Tabs>
                 </div>
