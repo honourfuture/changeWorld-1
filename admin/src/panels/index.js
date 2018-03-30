@@ -43,7 +43,13 @@ import PartnerAudit from './PartnerAudit';
 import SystemLog from './SystemLog';
 import WithdrawalMananger from './WithdrawalMananger';
 import LecturerNobleManager from './LecturerNobleManager';
+import Dashboard from './Dashboard';
 export const panelsList =  [
+    {
+        path:'/Dashboard',
+        component:Dashboard,
+        title:'仪表盘',
+    },
     {
         path:'/member/LecturerNobleManager',
         component:LecturerNobleManager,

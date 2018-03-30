@@ -1,116 +1,176 @@
-import React from 'react';
-import {BaseComponent,Base} from '../../common';
-import {Flex,NavBar,WhiteSpace,List,Badge} from 'antd-mobile';
-import './UserCenter.less';
-import {icon,userCenter} from '../../images';
+import React from "react";
+import { BaseComponent, Base, NetImg } from "../../common";
+import { Flex, NavBar, WhiteSpace, List, Badge } from "antd-mobile";
+import "./UserCenter.less";
+import { icon, userCenter } from "../../images";
 const Item = List.Item;
-export default class UserCenter extends BaseComponent{
-	render(){
-		return (
-			<div className='UserCenter'>
-				<NavBar
+const orderSatus = [
+    { title: "待付款", key: 0, img: userCenter.dfkIco },
+    { title: "待发货", key: 2, img: userCenter.dfhIco },
+    { title: "待收货", key: 3, img: userCenter.dshIco },
+    { title: "待评价", key: 4, img: userCenter.dpjIco },
+    { title: "已完成", key: 5, img: userCenter.ywcIco },
+    { title: "退货", key: -2, img: userCenter.thIco }
+];
+export default class UserCenter extends BaseComponent {
+    store = { data: {} };
+    componentDidMount() {
+        Base.POST({ act: "shop", op: "index", mod: "user" }, res => {
+            console.log(res);
+            this.store.data = res.data;
+        });
+    }
+    render() {
+        const {
+            header,
+            nickname,
+            buyer = {},
+            seller = {},
+            is_seller,
+            anchor
+        } = this.store.data;
+        const buyerItems = [];
+        const sellerItems = [];
+        orderSatus.forEach((item, index) => {
+            const { title, key, img } = item;
+            buyerItems.push(
+                <Flex.Item
+                    key={index}
+                    onClick={() => Base.push("MyOrder", { index: key })}
+                    className="Item"
+                    align="center"
+                >
+                    <img src={img} className="uIco" alt="" />
+                    {buyer[key] > 0 && index !== 5 ? (
+                        <Badge text={buyer[key]} overflowCount={99}>
+                            <span />
+                        </Badge>
+                    ) : null}
+                    <div className="uTit">{title}</div>
+                </Flex.Item>
+            );
+            sellerItems.push(
+                <Flex.Item
+                    key={index}
+                    onClick={() => Base.push("SellOrder", { index: key })}
+                    className="Item"
+                    align="center"
+                >
+                    <img src={img} className="uIco" alt="" />
+                    {seller[key] > 0 && index !== 5 ? (
+                        <Badge text={seller[key]} overflowCount={99}>
+                            <span />
+                        </Badge>
+                    ) : null}
+                    <div className="uTit">{title}</div>
+                </Flex.Item>
+            );
+        });
+        return (
+            <div className="UserCenter">
+                <NavBar
                     className="base-line"
                     mode="light"
-                    icon={<img src={icon.back} alt=''/>}
+                    icon={<img src={icon.back} alt="" />}
                     onLeftClick={Base.goBack}
-                >我的商城</NavBar>
+                >
+                    我的商城
+                </NavBar>
                 <div className="base-content">
-                	<Flex className="userInfo" align="start">
-                		<img src={userCenter.uDefaultImg} className="uImg" alt=""/>
-                		<div className="userInfoName">史珲林</div>
-                	</Flex>
-                	<div className="uOrderItem">
-                		<List className="shopMenu">
-                			<Item extra={'全部订单'} arrow="horizontal" onClick={()=>Base.push('MyOrder')}>我买到的</Item>
-                			<Flex className="menuIco">
-                				<Flex.Item className="Item" align="center">
-            						<img src={userCenter.dfkIco} className="uIco" alt=""/>
-            						<Badge text={1} overflowCount={99}><span /></Badge>
-                					<div className="uTit">待付款</div>
-                				</Flex.Item>
-                				<Flex.Item className="Item" align="center">
-                					<img src={userCenter.dfhIco} className="uIco" alt=""/>
-                					<Badge text={1} overflowCount={99}><span /></Badge>
-                					<div className="uTit">待发货</div>
-                				</Flex.Item>
-                				<Flex.Item className="Item" align="center">
-                					<img src={userCenter.dshIco} className="uIco" alt=""/>
-                					<Badge text={1} overflowCount={99}><span /></Badge>
-                					<div className="uTit">待收货</div>
-                				</Flex.Item>
-                				<Flex.Item className="Item" align="center">
-                					<img src={userCenter.dpjIco} className="uIco" alt=""/>
-                					<Badge text={1} overflowCount={99}><span /></Badge>
-                					<div className="uTit">待评价</div>
-                				</Flex.Item>
-                				<Flex.Item className="Item" align="center">
-                					<img src={userCenter.ywcIco} className="uIco" alt=""/>
-                					<Badge text={1} overflowCount={99}><span /></Badge>
-                					<div className="uTit">已完成</div>
-                				</Flex.Item>
-                				<Flex.Item className="Item" align="center">
-                					<img src={userCenter.thIco} className="uIco" alt=""/>
-                					<Badge text={1} overflowCount={99}><span /></Badge>
-                					<div className="uTit">退货</div>
-                				</Flex.Item>
-                			</Flex>
-                		</List>
-                	</div>
-                	<WhiteSpace size="lg" />
-                	<div className="uOrderItem mt0">
-                		<List className="shopMenu">
-                			<Item extra={'全部订单'} arrow="horizontal" onClick={()=>Base.push('SellOrder')}>我卖出的</Item>
-                			<Flex className="menuIco">
-                				<Flex.Item className="Item" align="center">
-                					<img src={userCenter.dfkIco} className="uIco" alt=""/>
-                					<Badge text={1} overflowCount={99}><span /></Badge>
-                					<div className="uTit">待付款</div>
-                				</Flex.Item>
-                				<Flex.Item className="Item" align="center">
-                					<img src={userCenter.dfhIco} className="uIco" alt=""/>
-                					<Badge text={1} overflowCount={99}><span /></Badge>
-                					<div className="uTit">待发货</div>
-                				</Flex.Item>
-                				<Flex.Item className="Item" align="center">
-                					<img src={userCenter.dshIco} className="uIco" alt=""/>
-                					<Badge text={1} overflowCount={99}><span /></Badge>
-                					<div className="uTit">待收货</div>
-                				</Flex.Item>
-                				<Flex.Item className="Item" align="center">
-                					<img src={userCenter.dpjIco} className="uIco" alt=""/>
-                					<Badge text={0} overflowCount={99}><span /></Badge>
-                					<div className="uTit">待评价</div>
-                				</Flex.Item>
-                				<Flex.Item className="Item" align="center">
-                					<img src={userCenter.ywcIco} className="uIco" alt=""/>
-                					<Badge text={1} overflowCount={99}><span /></Badge>
-                					<div className="uTit">已完成</div>
-                				</Flex.Item>
-                				<Flex.Item className="Item" align="center">
-                					<img src={userCenter.thIco} className="uIco" alt=""/>
-                					<Badge text={0} overflowCount={99}><span /></Badge>
-                					<div className="uTit">退货</div>
-                				</Flex.Item>
-                			</Flex>
-                		</List>
-                	</div>
-                	<WhiteSpace size="lg" />
-                	<List className="shopCart">
-                		<Item arrow="horizontal" onClick={()=>Base.push('MyOrder')}>我的购物车</Item>
-                	</List>
-                	<WhiteSpace size="lg" />
-                	<List className="baseItem">
-                		<Item arrow="horizontal" onClick={()=>Base.push('MyOrder')}>申请开店</Item>
-                		<Item extra={'Aditya Shanahan'} onClick={()=>Base.push('MyOrder')}>店铺名称</Item>
-                		<Item arrow="horizontal" onClick={()=>Base.push('MyOrder')}>产品发布</Item>
-                		<Item arrow="horizontal" onClick={()=>Base.push('MyOrder')}>我的产品</Item>
-                	</List>
-                	<WhiteSpace size="lg" />
-                	<List className="baseItem">
-                		<Item arrow="horizontal" onClick={()=>Base.push('MyOrder')}>数据统计</Item>
-                	</List>
+                    <Flex className="userInfo" align="start">
+                        <NetImg src={Base.getImgUrl(header)} className="uImg" />
+                        <div className="userInfoName">{nickname}</div>
+                    </Flex>
+                    <div className="uOrderItem">
+                        <List className="shopMenu">
+                            <Item
+                                extra={"全部订单"}
+                                arrow="horizontal"
+                                onClick={() =>
+                                    Base.push("MyOrder", { index: -1 })
+                                }
+                            >
+                                我买到的
+                            </Item>
+                            <Flex className="menuIco">{buyerItems}</Flex>
+                        </List>
+                    </div>
+                    <WhiteSpace size="lg" />
+                    {parseInt(is_seller) === 1 ? (
+                        <div>
+                            <div className="uOrderItem mt0">
+                                <List className="shopMenu">
+                                    <Item
+                                        extra={"全部订单"}
+                                        arrow="horizontal"
+                                        onClick={() =>
+                                            Base.push("SellOrder", {
+                                                index: -1
+                                            })
+                                        }
+                                    >
+                                        我卖出的
+                                    </Item>
+                                    <Flex className="menuIco">
+                                        {sellerItems}
+                                    </Flex>
+                                </List>
+                            </div>
+                            <WhiteSpace size="lg" />
+                        </div>
+                    ) : null}
+                    <List className="shopCart">
+                        <Item
+                            arrow="horizontal"
+                            onClick={() => Base.push("ShopCart")}
+                        >
+                            我的购物车
+                        </Item>
+                    </List>
+                    <WhiteSpace size="lg" />
+                    <List className="baseItem">
+                        {parseInt(anchor) === 1 && parseInt(is_seller) !== 1 ? (
+                            <Item
+                                arrow="horizontal"
+                                onClick={() => Base.push("MyOrder")}
+                            >
+                                申请开店
+                            </Item>
+                        ) : null}
+                        {/* <Item
+                            extra={"Aditya Shanahan"}
+                            onClick={() => Base.push("MyOrder")}
+                        >
+                            店铺名称
+                        </Item> */}
+                        {parseInt(is_seller) === 1 ? (
+                            <div>
+                                <Item
+                                    arrow="horizontal"
+                                    onClick={() => Base.push("ProductIssue")}
+                                >
+                                    产品发布
+                                </Item>
+                                <Item
+                                    arrow="horizontal"
+                                    onClick={() => Base.push("MyOrder")}
+                                >
+                                    我的产品
+                                </Item>
+                            </div>
+                        ) : null}
+                    </List>
+                    <WhiteSpace size="lg" />
+                    <List className="baseItem">
+                        <Item
+                            arrow="horizontal"
+                            onClick={() => Base.push("MyOrder")}
+                        >
+                            数据统计
+                        </Item>
+                    </List>
                 </div>
-			</div>
-		)
-	}
-};
+            </div>
+        );
+    }
+}
