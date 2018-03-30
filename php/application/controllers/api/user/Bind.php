@@ -5,6 +5,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @email webljx@163.com
  * @link www.aicode.org.cn
  */
+
+use EasyWeChat\Foundation\Application;
+
 class Bind extends API_Controller {
 
 	public function __construct()
@@ -63,6 +66,8 @@ class Bind extends API_Controller {
 
 		$this->load->model('Users_bind_model');
 		$ret['account_type'] = $this->Users_bind_model->account_type();
+		unset($ret['account_type'][0]);
+
 		$this->db->select('account_type,unique_id,other');
 		$ret['list'] = $this->Users_bind_model->get_many_by('user_id', $this->user_id);
 		if($ret['list']){
@@ -88,12 +93,12 @@ class Bind extends API_Controller {
 	 *
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
-	 * @apiParam {String} act 操作动作 [mobi:手机, qq:QQ, weixin:微信, weibo:新浪微博]
+	 * @apiParam {String} act 操作动作 [mobi:手机, qq:QQ, wechat:微信, weibo:新浪微博]
 	 *
 	 * @apiDescription
 	 * mobi传递参数: mobi,code
 	 * qq传递参数: 
-	 * weixin传递参数: 
+	 * wechat传递参数: code码
 	 * weibo传递参数: 
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
@@ -116,6 +121,8 @@ class Bind extends API_Controller {
 	 */
 	public function save()
 	{
+		$this->load->model('Users_model');
+
 		$act = $this->input->get_post('act');
 		switch($act){
 			case 'mobi':
@@ -124,7 +131,7 @@ class Bind extends API_Controller {
 				if(!$mobi || !$code){
 					$this->ajaxReturn([], 1, '手机号绑定参数错误');
 				}
-				$this->load->model('Users_model');
+
 		        $user = $this->Users_model->get_by('mobi', $mobi);
 		        if($user){
 		            $this->ajaxReturn([], 2, '手机号已被注册');
@@ -145,8 +152,9 @@ class Bind extends API_Controller {
 			case 'qq':
 				$update = array('qq_uid' => $id);
 				break;
-			case 'weixin':
-				$update = array('weixin_uid' => $id);
+			case 'wechat':
+				$open_user = $this->wechat();
+				$update = $this->open_update($open_user);
 				break;
 			case 'weibo':
 				$update = array('weibo_uid' => $id);
@@ -165,5 +173,64 @@ class Bind extends API_Controller {
 			$message = '失败';
 		}
 		$this->ajaxReturn([], $status, '操作'.$message);
+	}
+
+	protected function wechat()
+	{
+		$account_type = 1;
+    	if(!$code = $this->input->get_post('code')){
+    		$this->ajaxReturn([], 1, 'code码必传');
+    	}
+
+    	$this->setting = config_item('wechat');
+    	$app = new Application($this->setting);
+        $oauth = $app->oauth;
+        if($user = $oauth->user()){
+            $user = $user->toArray();
+
+            //判断是否已绑定
+            $where = [
+                'account_type' => $account_type,
+                'unique_id' => $user['id']
+            ];
+            $this->load->model('Users_bind_model');
+            $this->db->select('id,user_id');
+            $user_id = 0;
+            if($user_bind = $this->Users_bind_model->get_by($where)){
+            	$this->ajaxReturn([], 2, '账号已被绑定请勿重复绑定');
+            }else{//未绑定账号
+            	$data = [
+            		'user_id' => $this->user_id,
+	                'account_type' => $account_type,
+	                'unique_id' => $user['original']['openid'],
+	                'other' => json_encode($user['original']),
+	            ];
+	            if($this->Users_bind_model->insert($data)){
+	            	return $user['original'];
+	            }else{
+	            	$this->ajaxReturn([], 2, '绑定资料失败');
+	            }
+            }
+        }else{
+        	log_message('error', 'wechat oauth failed'.var_export($user, true));
+            $this->ajaxReturn([], 1, '微信授权登录异常错误');
+        }
+	}
+
+	protected function open_update($open_user)
+	{
+		$update = [];
+		$user = $this->get_user();
+		if(! $user['header']){
+			isset($open_user['headimgurl']) && $update['header'] = $open_user['headimgurl'];
+		}
+		if(! $user['nickname']){
+			isset($open_user['nickname']) && $update['nickname'] = $open_user['nickname'];
+		}
+		if(! $user['sex']){
+			isset($open_user['sex']) && $update['sex'] = $open_user['sex'];
+		}
+
+		return $update;
 	}
 }

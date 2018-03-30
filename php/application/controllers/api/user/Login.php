@@ -173,7 +173,7 @@ class Login extends API_Controller {
     public function wechat()
     {
     	$account_type = 1;
-    	if(!$code = $this->input->get('code')){
+    	if(!$code = $this->input->get_post('code')){
     		$this->ajaxReturn([], 1, 'code码必传');
     	}
 
