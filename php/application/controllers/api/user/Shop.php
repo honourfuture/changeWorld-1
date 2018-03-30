@@ -25,12 +25,22 @@ class Shop extends API_Controller {
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
-	 * @apiSuccess {Object} data 接口数据集
+	 * @apiSuccess {Object} data 接口数据集 建议用forin遍历buyer 和 seller
 	 *
 	 * @apiSuccessExample {json} Success-Response:
 	 * {
 	 *     "data": {
-	 *	   },
+	 *         "header": "/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png",
+	 *         "nickname": "aicode",
+	 *         "anchor": "1",
+	 *         "is_seller": "1",
+	 *         "buyer": [
+	 *             "8"
+	 *         ],
+	 *         "seller": [
+	 *             "5"
+	 *         ]
+	 *     },
 	 *     "status": 0,
 	 *     "message": "成功"
 	 * }
@@ -42,15 +52,41 @@ class Shop extends API_Controller {
 	 *     "message": "签名校验错误"
 	 * }
 	 */
-	public function save()
+	public function index()
 	{
 		$ret = [];
 
 		$user = $this->get_user();
+		$ret['header'] = $user['header'];
+		$ret['nickname'] = $user['nickname'];
 		//主播标识
 		$ret['anchor'] = $user['anchor'];
 		//商家标识（限定主播才能申请开店）
-		$ret['seller'] = $user['seller'];
+		$ret['is_seller'] = $user['seller'];
+
+		$this->load->model('Order_model');
+
+		//买
+		$ret['buyer'] = [];
+		$this->db->select('count(id) num,status');
+		$this->db->group_by('status');
+		if($buyer = $this->Order_model->get_many_by(['buyer_uid' => $this->user_id])){
+			foreach($buyer as $item){
+				$ret['buyer'][$item['status']] = $item['num'];
+			}
+		}
+
+		//卖
+		if($ret['is_seller']){
+			$ret['seller'] = [];
+			$this->db->select('count(id) num,status');
+			$this->db->group_by('status');
+			if($seller = $this->Order_model->get_many_by(['seller_uid' => $this->user_id])){
+				foreach($seller as $item){
+					$ret['seller'][$item['status']] = $item['num'];
+				}
+			}
+		}
 
 		$this->ajaxReturn($ret);
 	}

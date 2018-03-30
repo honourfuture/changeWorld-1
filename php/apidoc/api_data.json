@@ -17300,14 +17300,14 @@
             "type": "Object",
             "optional": false,
             "field": "data",
-            "description": "<p>接口数据集</p>"
+            "description": "<p>接口数据集 建议用forin遍历buyer 和 seller</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    \"data\": {\n\t   },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": {\n        \"header\": \"/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png\",\n        \"nickname\": \"aicode\",\n        \"anchor\": \"1\",\n        \"is_seller\": \"1\",\n        \"buyer\": [\n            \"8\"\n        ],\n        \"seller\": [\n            \"5\"\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
