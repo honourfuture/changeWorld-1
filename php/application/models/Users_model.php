@@ -142,6 +142,7 @@ class Users_model extends MY_Model
                 break;
             case 'bind':
                 $data['mobi'] = $params['mobi'];
+                $data['password'] = $this->Users_model->get_password($params['password']);
                 $data['nickname'] = isset($params['nickname']) ? $params['nickname'] : '';
                 $data['header'] = isset($params['headimgurl']) ? $params['headimgurl'] : '';
                 $data['sex'] = isset($params['sex']) ? $params['sex'] : 0;

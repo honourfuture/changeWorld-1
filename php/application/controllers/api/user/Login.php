@@ -231,6 +231,8 @@ class Login extends API_Controller {
 	 * @apiParam {String} mobi 绑定手机
 	 * @apiParam {String} code 短信验证码
 	 * @apiParam {String} bind_id 第三方登录返回bind_id
+	 * @apiParam {String} password 登录密码
+	 * @apiParam {String} confirm_password 确认密码
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -269,9 +271,18 @@ class Login extends API_Controller {
     	$mobi = $this->input->get_post('mobi');
     	$code = $this->input->get_post('code');
     	$bind_id = $this->input->get_post('bind_id');
+    	$password = $this->input->get_post('password');
+    	$confirm_password = $this->input->get_post('confirm_password');
 
     	if(!$mobi || !$code){
 			$this->ajaxReturn([], 1, '手机号注册参数错误');
+		}
+
+		if(!$password){
+			$this->ajaxReturn([], 4, '请输入密码');
+		}
+		if($password != $confirm_password){
+			$this->ajaxReturn([], 5, '确认密码不一致');
 		}
 
         $this->load->model('Sms_email_record_model');
@@ -290,6 +301,7 @@ class Login extends API_Controller {
 		        		$data = json_decode($user_bind['other'], true);
 		        	}
 		        	$data['mobi'] = $mobi;
+		        	$data['password'] = $password;
 
 		        	if($user_id = $this->Users_model->reg($data)){
 	                	$this->Users_bind_model->update($bind_id, ['user_id' => $user_id]);
