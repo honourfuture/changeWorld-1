@@ -4371,15 +4371,15 @@
     "groupTitle": "admin"
   },
   {
-    "type": "get",
-    "url": "/api/admin/shop",
-    "title": "等级经验规则-列表",
+    "type": "post",
+    "url": "/api/admin/shop/check",
+    "title": "店铺管理-审核",
     "version": "1.0.0",
-    "name": "shop",
+    "name": "shop_check",
     "group": "admin",
     "sampleRequest": [
       {
-        "url": "/api/admin/shop"
+        "url": "/api/admin/shop/check"
       }
     ],
     "parameter": {
@@ -4405,91 +4405,13 @@
             "optional": false,
             "field": "sign",
             "description": "<p>校验签名</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
+          },
           {
-            "group": "Success 200",
+            "group": "Parameter",
             "type": "Number",
             "optional": false,
             "field": "status",
-            "description": "<p>接口状态 0成功 其他异常</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>接口信息描述</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Object",
-            "optional": false,
-            "field": "data",
-            "description": "<p>接口数据集</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "{\n    \"data\": {\n\t\t\t\"grade_login\": \"50\",\n\t\t\t\"grade_evaluate\": \"20\"\n\t   },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "examples": [
-        {
-          "title": "Error-Response:",
-          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Shop.php",
-    "groupTitle": "admin"
-  },
-  {
-    "type": "post",
-    "url": "/api/admin/shop/save",
-    "title": "等级经验规则-编辑 OR 新增",
-    "version": "1.0.0",
-    "name": "shop_save",
-    "group": "admin",
-    "sampleRequest": [
-      {
-        "url": "/api/admin/shop/save"
-      }
-    ],
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "admin_id",
-            "description": "<p>管理员唯一ID</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "account",
-            "description": "<p>登录账号</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "sign",
-            "description": "<p>校验签名</p>"
+            "description": "<p>1通过 2拒绝</p>"
           }
         ]
       }
@@ -4524,6 +4446,98 @@
         {
           "title": "Success-Response:",
           "content": "{\n\t    \"data\": \"\",\n\t    \"status\": 0,\n\t    \"message\": \"\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Shop.php",
+    "groupTitle": "admin"
+  },
+  {
+    "type": "get",
+    "url": "/api/admin/shop/check_list",
+    "title": "店铺管理-待审核列表",
+    "version": "1.0.0",
+    "name": "shop_check_list",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/admin/shop/check_list"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "admin_id",
+            "description": "<p>管理员唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account",
+            "description": "<p>登录账号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>0待审核 1通过 2拒绝 -1全部</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"status\": [\n            \"待审核\",\n            \"通过\",\n            \"拒绝\"\n        ],\n        \"total\": 1,\n        \"list\": [\n            {\n                \"mobi\": \"13430332489\",\n                \"sex\": \"0\",\n                \"header\": \"/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png\",\n                \"nickname\": \"aicode\",\n                \"summary\": \"\",\n                \"v\": \"0\",\n                \"exp\": \"0\",\n                \"id\": \"1\",\n                \"created_at\": \"2018-03-30 23:20:50\",\n                \"updated_at\": \"2018-03-30 23:20:52\",\n                \"status\": \"0\",\n                \"user_id\": \"1\"\n            }\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]

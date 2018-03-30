@@ -10,20 +10,23 @@ class Shop extends API_Controller {
 	public function __construct()
     {
         parent::__construct();
+
+        // $this->check_operation();
         $this->load->model('Shop_model');
     }
 
     /**
-	 * @api {get} /api/admin/shop 等级经验规则-列表
+	 * @api {get} /api/admin/shop/check_list 店铺管理-待审核列表
 	 * @apiVersion 1.0.0
-	 * @apiName shop
+	 * @apiName shop_check_list
 	 * @apiGroup admin
 	 *
-	 * @apiSampleRequest /api/admin/shop
+	 * @apiSampleRequest /api/admin/shop/check_list
 	 *
 	 * @apiParam {Number} admin_id 管理员唯一ID
 	 * @apiParam {String} account 登录账号
 	 * @apiParam {String} sign 校验签名
+	 * @apiParam {Number} status 0待审核 1通过 2拒绝 -1全部
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -32,9 +35,29 @@ class Shop extends API_Controller {
 	 * @apiSuccessExample {json} Success-Response:
 	 * {
 	 *     "data": {
-	 *			"grade_login": "50",
-	 *			"grade_evaluate": "20"
-	 *	   },
+	 *         "status": [
+	 *             "待审核",
+	 *             "通过",
+	 *             "拒绝"
+	 *         ],
+	 *         "total": 1,
+	 *         "list": [
+	 *             {
+	 *                 "mobi": "13430332489",
+	 *                 "sex": "0",
+	 *                 "header": "/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png",
+	 *                 "nickname": "aicode",
+	 *                 "summary": "",
+	 *                 "v": "0",
+	 *                 "exp": "0",
+	 *                 "id": "1",
+	 *                 "created_at": "2018-03-30 23:20:50",
+	 *                 "updated_at": "2018-03-30 23:20:52",
+	 *                 "status": "0",
+	 *                 "user_id": "1"
+	 *             }
+	 *         ]
+	 *     },
 	 *     "status": 0,
 	 *     "message": "成功"
 	 * }
@@ -46,9 +69,24 @@ class Shop extends API_Controller {
 	 *     "message": "签名校验错误"
 	 * }
 	 */
-	public function index()
+	public function check_list()
 	{
-		$this->ajaxReturn($this->siteGradeRule());
+		$ret = [];
+
+		$this->load->model('Shop_model');
+		$ret['status'] = $this->Shop_model->status();
+
+		$where = [];
+		$status = $this->input->get_post('status');
+		if(isset($ret['status'][$status])){
+			$where['shop.status'] = $status;
+		}else{
+			$where[1] = 1;
+		}
+
+		$ret = array_merge($ret, $this->Shop_model->seller($where, $this->per_page, $this->offset));
+
+		$this->ajaxReturn($ret);
 	}
 
 	// 查看
@@ -58,16 +96,17 @@ class Shop extends API_Controller {
 	}
 
 	/**
-	 * @api {post} /api/admin/shop/save 等级经验规则-编辑 OR 新增
+	 * @api {post} /api/admin/shop/check 店铺管理-审核
 	 * @apiVersion 1.0.0
-	 * @apiName shop_save
+	 * @apiName shop_check
 	 * @apiGroup admin
 	 *
-	 * @apiSampleRequest /api/admin/shop/save
+	 * @apiSampleRequest /api/admin/shop/check
 	 *
 	 * @apiParam {Number} admin_id 管理员唯一ID
 	 * @apiParam {String} account 登录账号
 	 * @apiParam {String} sign 校验签名
+	 * @apiParam {Number} status 1通过 2拒绝
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -87,32 +126,30 @@ class Shop extends API_Controller {
 	 *     "message": "签名校验错误"
 	 * }
 	 */
-	public function save()
+	public function check()
 	{
-		$this->check_operation();
-		$id = (int)$this->input->get_post('id');
-		$params = $this->input->post();
-		$this->check_params('add', $params);
+		$id = $this->input->get_post('id');
+		$status = $this->input->get_post('status');
 
-		$a_name = array_keys($params);
-		$this->Shop_model->delete_by('name', $a_name);
-		$data = array();
-		foreach($params as $key=>$val){
-			// list($value, $remark) = explode('###', $val);
-			$data[] = array('name' => $key, 'value' => $val);
-		}
-		if($flag = $this->Shop_model->insert_many($data)){
-			$id = $flag;
-		}
-
-		if($flag){
-			$status = 0;
-			$message = '成功';
+		$this->load->model('Shop_model');
+		if($shop = $this->Shop_model->get($id)){
+			if(! $shop['status']){
+				if($this->Shop_model->update($id, ['status' => $status])){
+					$this->load->model('Users_model');
+					if($status == 1){
+						$this->Users_model->update($shop['user_id'], ['status' => 1]);
+					}
+					$this->ajaxReturn();
+				}else{
+					$this->ajaxReturn([], 3, '操作失败');
+				}
+			}else{
+				$this->ajaxReturn([], 2, '请勿重复审核');
+			}
 		}else{
-			$status = 1;
-			$message = '失败';
+			$this->ajaxReturn([], 1, '店铺申请ID错误');
 		}
-		$this->ajaxReturn([], $status, '操作'.$message);
+
 	}
 
 	protected function check_params($act, $params)
