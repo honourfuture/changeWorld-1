@@ -6,69 +6,69 @@
  * 面板组件，脚本生成面板文件时，自动修改，无需手动维护
  */
 
-import Analysis from './Analysis';
-import Login from './Login';
-import Exception403 from './Exception/403';
-import Exception404 from './Exception/404';
-import Exception500 from './Exception/500';
-import ShopNavList from './ShopNavList';
-import AdManager from './AdManager';
-import AdPosition from './AdPosition';
-import GoodsProperty from './GoodsProperty';
-import MemberEncrypted from './MemberEncrypted';
-import GoodsManager from './GoodsManager';
-import ArticleList from './ArticleList';
-import ArticleCategory from './ArticleCategory';
-import ArticleSingleManager from './ArticleSingleManager';
-import CodeManager from './CodeManager';
-import SystemSet from './SystemSet';
-import AccessSet from './AccessSet';
-import ExpressSet from './ExpressSet';
-import ShopSet from './ShopSet';
-import SysMsg from './SysMsg';
-import MemberExpManager from './MemberExpManager';
-import MemberPointManager from './MemberPointManager';
-import AnchorType from './AnchorType';
-import ShopManager from './ShopManager';
-import LiveClass from './LiveClass';
-import LiveTag from './LiveTag';
-import SpecialTag from './SpecialTag';
-import SpecialClass from './SpecialClass';
-import GiftManager from './GiftManager';
-import FeedBack from './FeedBack';
-import RechargeManager from './RechargeManager';
-import BankManager from './BankManager';
+import Analysis from "./Analysis";
+import Login from "./Login";
+import Exception403 from "./Exception/403";
+import Exception404 from "./Exception/404";
+import Exception500 from "./Exception/500";
+import ShopNavList from "./ShopNavList";
+import AdManager from "./AdManager";
+import AdPosition from "./AdPosition";
+import GoodsProperty from "./GoodsProperty";
+import MemberEncrypted from "./MemberEncrypted";
+import GoodsManager from "./GoodsManager";
+import ArticleList from "./ArticleList";
+import ArticleCategory from "./ArticleCategory";
+import ArticleSingleManager from "./ArticleSingleManager";
+import CodeManager from "./CodeManager";
+import SystemSet from "./SystemSet";
+import AccessSet from "./AccessSet";
+import ExpressSet from "./ExpressSet";
+import ShopSet from "./ShopSet";
+import SysMsg from "./SysMsg";
+import MemberExpManager from "./MemberExpManager";
+import MemberPointManager from "./MemberPointManager";
+import AnchorType from "./AnchorType";
+import ShopCheckList from "./ShopCheckList";
+import LiveClass from "./LiveClass";
+import LiveTag from "./LiveTag";
+import SpecialTag from "./SpecialTag";
+import SpecialClass from "./SpecialClass";
+import GiftManager from "./GiftManager";
+import FeedBack from "./FeedBack";
+import RechargeManager from "./RechargeManager";
+import BankManager from "./BankManager";
 // import PartnerList from './PartnerList';
-import PartnerAudit from './PartnerAudit';
-import SystemLog from './SystemLog';
-import WithdrawalMananger from './WithdrawalMananger';
-import LecturerNobleManager from './LecturerNobleManager';
-import Dashboard from './Dashboard';
-export const panelsList =  [
+import PartnerAudit from "./PartnerAudit";
+import SystemLog from "./SystemLog";
+import WithdrawalMananger from "./WithdrawalMananger";
+import LecturerNobleManager from "./LecturerNobleManager";
+import Dashboard from "./Dashboard";
+export const panelsList = [
     {
-        path:'/Dashboard',
-        component:Dashboard,
-        title:'仪表盘',
+        path: "/Dashboard",
+        component: Dashboard,
+        title: "仪表盘"
     },
     {
-        path:'/member/LecturerNobleManager',
-        component:LecturerNobleManager,
-        title:'贵族管理',
+        path: "/member/LecturerNobleManager",
+        component: LecturerNobleManager,
+        title: "贵族管理"
     },
     {
-        path:'/trade/WithdrawalMananger',
-        component:WithdrawalMananger,
-        title:'提现管理',
+        path: "/trade/WithdrawalMananger",
+        component: WithdrawalMananger,
+        title: "提现管理"
     },
     {
-        path:'/system/SystemLog',
-        component:SystemLog,
-        title:'日志',
+        path: "/system/SystemLog",
+        component: SystemLog,
+        title: "日志"
     },
     {
-        path:'/partner/PartnerAudit',
-        component:PartnerAudit,
-        title:'审核',
+        path: "/partner/PartnerAudit",
+        component: PartnerAudit,
+        title: "审核"
     },
     // {
     //     path:'/partner/PartnerList',
@@ -76,9 +76,9 @@ export const panelsList =  [
     //     title:'分销列表',
     // },
     {
-        path:'/operation/BankManager',
-        component:BankManager,
-        title:'银行管理',
+        path: "/operation/BankManager",
+        component: BankManager,
+        title: "银行管理"
     },
     {
         path: "/operation/RechargeManager",
@@ -116,9 +116,9 @@ export const panelsList =  [
         title: "直播类型"
     },
     {
-        path: "/shop/ShopManager",
-        component: ShopManager,
-        title: "店铺管理"
+        path: "/shop/ShopCheckList",
+        component: ShopCheckList,
+        title: "店铺审核"
     },
     {
         path: "/member/AnchorType",

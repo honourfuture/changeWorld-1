@@ -102,8 +102,8 @@ const menuData = [
         path: "shop",
         children: [
             {
-                name: "店铺管理",
-                path: "ShopManager"
+                name: "店铺审核",
+                path: "ShopCheckList"
             }
             // {
             //     name: '店铺等级',
