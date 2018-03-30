@@ -11231,6 +11231,13 @@ define({ "api": [
             "optional": false,
             "field": "sign",
             "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "type",
+            "description": "<p>类型 income：收入 used：使用 all：全部</p>"
           }
         ]
       }
@@ -11313,7 +11320,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    \"data\": {\n        \"count\": 2,\n        \"list\": [\n            {\n                \"id\": \"2\",\n                \"updated_at\": \"2018-03-14 15:46:05\",\n                \"user_id\": \"1\",\n                \"value\": \"0\",\n                \"rule_name\": \"goods_exchange\",\n                \"remark\": \"商品下单积分使用抵扣\",\n                \"rule_name_text\": \"商品下单积分使用抵扣\"\n            },\n            {\n                \"id\": \"1\",\n                \"updated_at\": \"2018-03-14 13:01:09\",\n                \"user_id\": \"1\",\n                \"value\": \"20\",\n                \"rule_name\": \"goods_exchange\",\n                \"remark\": \"商品下单积分使用抵扣\",\n                \"rule_name_text\": \"商品下单积分使用抵扣\"\n            }\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": {\n        \"count\": 5,\n        \"list\": [\n            {\n                \"id\": \"5\",\n                \"updated_at\": \"2018-03-14 20:06:18\",\n                \"user_id\": \"1\",\n                \"value\": \"-20\",\n                \"rule_name\": \"goods_exchange\",\n                \"remark\": \"商品抵扣现金\",\n                \"rule_name_text\": \"消费抵扣\"\n            },\n            {\n                \"id\": \"4\",\n                \"updated_at\": \"2018-03-14 19:59:13\",\n                \"user_id\": \"1\",\n                \"value\": \"10\",\n                \"rule_name\": \"points_pay\",\n                \"remark\": \"商品消费立返\",\n                \"rule_name_text\": \"消费立返\"\n            },\n            {\n                \"id\": \"3\",\n                \"updated_at\": \"2018-03-14 19:49:27\",\n                \"user_id\": \"1\",\n                \"value\": \"50\",\n                \"rule_name\": \"points_evaluate\",\n                \"remark\": \"商品订单评论\",\n                \"rule_name_text\": \"订单评论\"\n            },\n            {\n                \"id\": \"2\",\n                \"updated_at\": \"2018-03-14 15:46:05\",\n                \"user_id\": \"1\",\n                \"value\": \"20\",\n                \"rule_name\": \"points_login\",\n                \"remark\": \"每天首次登录\",\n                \"rule_name_text\": \"会员登陆\"\n            },\n            {\n                \"id\": \"1\",\n                \"updated_at\": \"2018-03-14 13:01:09\",\n                \"user_id\": \"1\",\n                \"value\": \"100\",\n                \"rule_name\": \"points_reg\",\n                \"remark\": \"新用户首次注册\",\n                \"rule_name_text\": \"会员注册\"\n            }\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
