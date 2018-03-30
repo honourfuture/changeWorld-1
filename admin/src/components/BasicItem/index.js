@@ -21,6 +21,8 @@ class BasicItem extends BaseComponent{
 		{key:'site_name',label:'站点名称'},
 		{key:'icp_number',label:'ICP证书号'},
 		{key:'statistics_code',label:'第三方流量统计代码',render:(value)=>this.renderTextArea(value)},
+		{key:'rule_grade',label:'等级说明',render:(value)=>this.renderTextArea(value)},
+		{key:'rule_point',label:'积分规则',render:(value)=>this.renderTextArea(value)},
 		{key:'copyright',label:'版权信息'},
 		{key:'site_status',label:'站点状态',render:(value)=>this.renderSwitch(value)},
 		{key:'closed_reason',label:'关闭原因'},
