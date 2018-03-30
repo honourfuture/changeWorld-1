@@ -61,7 +61,7 @@ class Order extends API_Controller {
 		}elseif($status == -1){
 
 		}elseif($status == -2){
-			$where['is_refund'] = 1;
+			$where['refund_status >'] = 0;
 		}else{
 			$this->ajaxReturn([], 1, '订单状态未知');
 		}
