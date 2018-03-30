@@ -180,7 +180,12 @@ export default class MyOrder extends BaseComponent {
         list: []
     };
     componentDidMount() {
-        Base.GET({ act: "user", op: "order" }, res => {
+        const {index} = this.props;
+        this.requestData(index);
+    }
+    @action.bound
+    requestData(index){
+        Base.GET({ act: "user", op: "order",status:index}, res => {
             const { count, list, status } = res.data;
             this.store.count = count;
             this.store.list = list;
@@ -189,12 +194,7 @@ export default class MyOrder extends BaseComponent {
     }
     @action.bound
     onChange(tab, index) {
-        Base.GET({ act: "user", op: "order", status:index }, res => {
-            const { count, list, status } = res.data;
-            this.store.count = count;
-            this.store.list = list;
-            this.store.status = status;
-        });
+        this.requestData(index);
     }
     goShop(){
         Base.push('ShopIndex');
