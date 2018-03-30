@@ -156,7 +156,7 @@ class Users_model extends MY_Model
         if(isset($data['mobi'])){
             $this->load->model('Users_bind_model');
             $data = [
-                'user_id' => $user_id
+                'user_id' => $user_id,
                 'account_type' => 0,
                 'unique_id' => $data['mobi'],
             ];
