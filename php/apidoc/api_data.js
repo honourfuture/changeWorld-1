@@ -4372,6 +4372,176 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/api/admin/shop",
+    "title": "等级经验规则-列表",
+    "version": "1.0.0",
+    "name": "shop",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/admin/shop"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "admin_id",
+            "description": "<p>管理员唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account",
+            "description": "<p>登录账号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n\t\t\t\"grade_login\": \"50\",\n\t\t\t\"grade_evaluate\": \"20\"\n\t   },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Shop.php",
+    "groupTitle": "admin"
+  },
+  {
+    "type": "post",
+    "url": "/api/admin/shop/save",
+    "title": "等级经验规则-编辑 OR 新增",
+    "version": "1.0.0",
+    "name": "shop_save",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/admin/shop/save"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "admin_id",
+            "description": "<p>管理员唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account",
+            "description": "<p>登录账号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": \"\",\n\t    \"status\": 0,\n\t    \"message\": \"\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Shop.php",
+    "groupTitle": "admin"
+  },
+  {
+    "type": "get",
     "url": "/api/users_points/save",
     "title": "积分增减",
     "version": "1.0.0",
@@ -6147,6 +6317,324 @@ define({ "api": [
       ]
     },
     "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Article.php",
+    "groupTitle": "api"
+  },
+  {
+    "type": "post",
+    "url": "/api/audio/download",
+    "title": "音频-下载",
+    "version": "1.0.0",
+    "name": "audio_download",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/audio/download"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>音频ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {},\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Audio.php",
+    "groupTitle": "api"
+  },
+  {
+    "type": "get",
+    "url": "/api/audio/history",
+    "title": "音频-历史",
+    "version": "1.0.0",
+    "name": "audio_history",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/audio/history"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.id",
+            "description": "<p>音频ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.duration",
+            "description": "<p>时长 秒</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.file_size",
+            "description": "<p>文件大小</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.video_url",
+            "description": "<p>音频地址</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.title",
+            "description": "<p>音频标题</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.price",
+            "description": "<p>音频价格</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.cover_image",
+            "description": "<p>音频背景图</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"count\": 1,\n        \"list\": [\n            {\n                \"id\": \"3\",\n                \"duration\": \"404\",\n                \"file_size\": \"26305965\",\n                \"video_url\": \"http://1253104369.vod2.myqcloud.com/26be7741vodgzp1253104369/46a1b7707447398154874610391/f0.flv\",\n                \"title\": \"你的出生地址\",\n                \"price\": \"10000.00\",\n                \"cover_image\": \"/uploads/2018/01/31/a2e0b9485cb752ad7534fd8b86ebd233.png\"\n            }\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Audio.php",
+    "groupTitle": "api"
+  },
+  {
+    "type": "get",
+    "url": "/api/audio/play",
+    "title": "音频-播放页",
+    "version": "1.0.0",
+    "name": "audio_play",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/audio/play"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>音频ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data.audio",
+            "description": "<p>音频信息</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data.user",
+            "description": "<p>主播信息</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data.album",
+            "description": "<p>专辑信息</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"audio\": {\n            \"id\": \"3\",\n            \"duration\": \"404\",\n            \"file_size\": \"26305965\",\n            \"video_url\": \"http://1253104369.vod2.myqcloud.com/26be7741vodgzp1253104369/46a1b7707447398154874610391/f0.flv\",\n            \"anchor_uid\": \"1\",\n            \"album_id\": \"7\",\n            \"title\": \"你的出生地址\",\n            \"price\": \"10000.00\",\n            \"cover_image\": \"/uploads/2018/01/31/a2e0b9485cb752ad7534fd8b86ebd233.png\",\n            \"play_times\": \"0\",\n            \"has_favorite\": 0,\n            \"favorite\": 0,\n            \"comment\": 0\n        },\n        \"user\": {\n            \"nickname\": \"aicode\",\n            \"header\": \"/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png\",\n            \"v\": \"0\"\n        },\n        \"album\": {\n            \"cover_image\": \"/uploads/2018/01/31/a2e0b9485cb752ad7534fd8b86ebd233.png\",\n            \"title\": \"你的出生地址\",\n            \"has_favorite\": 1,\n            \"favorite\": 1\n        }\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Audio.php",
     "groupTitle": "api"
   },
   {
@@ -11231,6 +11719,13 @@ define({ "api": [
             "optional": false,
             "field": "sign",
             "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "type",
+            "description": "<p>类型 income：收入 used：使用 all：全部</p>"
           }
         ]
       }
@@ -11313,7 +11808,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    \"data\": {\n        \"count\": 2,\n        \"list\": [\n            {\n                \"id\": \"2\",\n                \"updated_at\": \"2018-03-14 15:46:05\",\n                \"user_id\": \"1\",\n                \"value\": \"0\",\n                \"rule_name\": \"goods_exchange\",\n                \"remark\": \"商品下单积分使用抵扣\",\n                \"rule_name_text\": \"商品下单积分使用抵扣\"\n            },\n            {\n                \"id\": \"1\",\n                \"updated_at\": \"2018-03-14 13:01:09\",\n                \"user_id\": \"1\",\n                \"value\": \"20\",\n                \"rule_name\": \"goods_exchange\",\n                \"remark\": \"商品下单积分使用抵扣\",\n                \"rule_name_text\": \"商品下单积分使用抵扣\"\n            }\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": {\n        \"count\": 5,\n        \"list\": [\n            {\n                \"id\": \"5\",\n                \"updated_at\": \"2018-03-14 20:06:18\",\n                \"user_id\": \"1\",\n                \"value\": \"-20\",\n                \"rule_name\": \"goods_exchange\",\n                \"remark\": \"商品抵扣现金\",\n                \"rule_name_text\": \"消费抵扣\"\n            },\n            {\n                \"id\": \"4\",\n                \"updated_at\": \"2018-03-14 19:59:13\",\n                \"user_id\": \"1\",\n                \"value\": \"10\",\n                \"rule_name\": \"points_pay\",\n                \"remark\": \"商品消费立返\",\n                \"rule_name_text\": \"消费立返\"\n            },\n            {\n                \"id\": \"3\",\n                \"updated_at\": \"2018-03-14 19:49:27\",\n                \"user_id\": \"1\",\n                \"value\": \"50\",\n                \"rule_name\": \"points_evaluate\",\n                \"remark\": \"商品订单评论\",\n                \"rule_name_text\": \"订单评论\"\n            },\n            {\n                \"id\": \"2\",\n                \"updated_at\": \"2018-03-14 15:46:05\",\n                \"user_id\": \"1\",\n                \"value\": \"20\",\n                \"rule_name\": \"points_login\",\n                \"remark\": \"每天首次登录\",\n                \"rule_name_text\": \"会员登陆\"\n            },\n            {\n                \"id\": \"1\",\n                \"updated_at\": \"2018-03-14 13:01:09\",\n                \"user_id\": \"1\",\n                \"value\": \"100\",\n                \"rule_name\": \"points_reg\",\n                \"remark\": \"新用户首次注册\",\n                \"rule_name_text\": \"会员注册\"\n            }\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
@@ -12127,12 +12622,12 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "act",
-            "description": "<p>操作动作 [mobi:手机, qq:QQ, weixin:微信, weibo:新浪微博]</p>"
+            "description": "<p>操作动作 [mobi:手机, qq:QQ, wechat:微信, weibo:新浪微博]</p>"
           }
         ]
       }
     },
-    "description": "<p>mobi传递参数: mobi,code qq传递参数: weixin传递参数: weibo传递参数:</p>",
+    "description": "<p>mobi传递参数: mobi,code qq传递参数: wechat传递参数: code码 weibo传递参数:</p>",
     "success": {
       "fields": {
         "Success 200": [
@@ -14887,6 +15382,147 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/api/user/login/bind",
+    "title": "第三方授权-强制绑手机",
+    "version": "1.0.0",
+    "name": "login_bind",
+    "group": "user",
+    "sampleRequest": [
+      {
+        "url": "/api/user/login/bind"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "mobi",
+            "description": "<p>绑定手机</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>短信验证码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "bind_id",
+            "description": "<p>第三方登录返回bind_id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>登录密码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "confirm_password",
+            "description": "<p>确认密码</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data.auth",
+            "description": "<p>接口认证信息</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.auth.user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.auth.sign",
+            "description": "<p>接口签名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.updated_at",
+            "description": "<p>最后登录时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.nickname",
+            "description": "<p>用户昵称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.header",
+            "description": "<p>用户头像</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": {\n\t        \"auth\": {\n\t            \"user_id\": \"1\",\n\t            \"sign\": \"ad8550bf1d589f5213a1b13ba051c376\",\n\t        },\n\t        \"updated_at\": \"2018-01-08 16:03:47\",\n\t        \"nickname\": \"aicode\",\n\t        \"header\": \"\"\n\t    },\n\t    \"status\": 0,\n\t    \"message\": \"成功\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": 3,\n    \"message\": \"登录密码错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Login.php",
+    "groupTitle": "user"
+  },
+  {
+    "type": "get",
     "url": "/api/user/login_out",
     "title": "用户退出",
     "version": "1.0.0",
@@ -15243,7 +15879,7 @@ define({ "api": [
             "type": "Object",
             "optional": false,
             "field": "data",
-            "description": "<p>接口数据集</p>"
+            "description": "<p>接口数据集 如果存在auth表名登录成功，否则强制转手机绑定页</p>"
           },
           {
             "group": "Success 200",
@@ -16778,6 +17414,162 @@ define({ "api": [
       ]
     },
     "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Security_question.php",
+    "groupTitle": "user"
+  },
+  {
+    "type": "get",
+    "url": "/api/user/shop",
+    "title": "我的商城",
+    "version": "1.0.0",
+    "name": "shop",
+    "group": "user",
+    "sampleRequest": [
+      {
+        "url": "/api/user/shop"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集 建议用forin遍历buyer 和 seller</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"header\": \"/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png\",\n        \"nickname\": \"aicode\",\n        \"anchor\": \"1\",\n        \"is_seller\": \"1\",\n        \"buyer\": [\n            \"8\"\n        ],\n        \"seller\": [\n            \"5\"\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Shop.php",
+    "groupTitle": "user"
+  },
+  {
+    "type": "get",
+    "url": "/api/user/shop/add",
+    "title": "我的商城-申请开店",
+    "version": "1.0.0",
+    "name": "shop_add",
+    "group": "user",
+    "sampleRequest": [
+      {
+        "url": "/api/user/shop/add"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集 建议用forin遍历buyer 和 seller</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"header\": \"/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png\",\n        \"nickname\": \"aicode\",\n        \"anchor\": \"1\",\n        \"is_seller\": \"1\",\n        \"buyer\": [\n            \"8\"\n        ],\n        \"seller\": [\n            \"5\"\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Shop.php",
     "groupTitle": "user"
   },
   {

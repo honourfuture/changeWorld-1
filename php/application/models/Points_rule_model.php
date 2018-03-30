@@ -24,10 +24,10 @@ class Points_rule_model extends MY_Model
     	return array(
     		'points_reg' => '会员注册',
     		'points_login' => '会员登陆',
-    		'points_evaluate' => '会员评论',
-            'points_pay' => '消费',
+    		'points_evaluate' => '订单评论',
+            'points_pay' => '消费立返',
     		'points_order' => '订单上限',
-            'goods_exchange' => '商品抵扣',
+            'goods_exchange' => '消费抵扣',
     	);
     }
 }

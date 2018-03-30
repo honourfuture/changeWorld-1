@@ -22,6 +22,7 @@ class Users_points extends API_Controller {
 	 *
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
+	 * @apiParam {String} type 类型 income：收入 used：使用 all：全部
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -37,25 +38,52 @@ class Users_points extends API_Controller {
 	 * @apiSuccessExample {json} Success-Response:
 	 * {
 	 *     "data": {
-	 *         "count": 2,
+	 *         "count": 5,
 	 *         "list": [
+	 *             {
+	 *                 "id": "5",
+	 *                 "updated_at": "2018-03-14 20:06:18",
+	 *                 "user_id": "1",
+	 *                 "value": "-20",
+	 *                 "rule_name": "goods_exchange",
+	 *                 "remark": "商品抵扣现金",
+	 *                 "rule_name_text": "消费抵扣"
+	 *             },
+	 *             {
+	 *                 "id": "4",
+	 *                 "updated_at": "2018-03-14 19:59:13",
+	 *                 "user_id": "1",
+	 *                 "value": "10",
+	 *                 "rule_name": "points_pay",
+	 *                 "remark": "商品消费立返",
+	 *                 "rule_name_text": "消费立返"
+	 *             },
+	 *             {
+	 *                 "id": "3",
+	 *                 "updated_at": "2018-03-14 19:49:27",
+	 *                 "user_id": "1",
+	 *                 "value": "50",
+	 *                 "rule_name": "points_evaluate",
+	 *                 "remark": "商品订单评论",
+	 *                 "rule_name_text": "订单评论"
+	 *             },
 	 *             {
 	 *                 "id": "2",
 	 *                 "updated_at": "2018-03-14 15:46:05",
 	 *                 "user_id": "1",
-	 *                 "value": "0",
-	 *                 "rule_name": "goods_exchange",
-	 *                 "remark": "商品下单积分使用抵扣",
-	 *                 "rule_name_text": "商品下单积分使用抵扣"
+	 *                 "value": "20",
+	 *                 "rule_name": "points_login",
+	 *                 "remark": "每天首次登录",
+	 *                 "rule_name_text": "会员登陆"
 	 *             },
 	 *             {
 	 *                 "id": "1",
 	 *                 "updated_at": "2018-03-14 13:01:09",
 	 *                 "user_id": "1",
-	 *                 "value": "20",
-	 *                 "rule_name": "goods_exchange",
-	 *                 "remark": "商品下单积分使用抵扣",
-	 *                 "rule_name_text": "商品下单积分使用抵扣"
+	 *                 "value": "100",
+	 *                 "rule_name": "points_reg",
+	 *                 "remark": "新用户首次注册",
+	 *                 "rule_name_text": "会员注册"
 	 *             }
 	 *         ]
 	 *     },
@@ -75,6 +103,13 @@ class Users_points extends API_Controller {
 		$ret = array('points' => array('count' => 0, 'list' => array()));
 
 		$where = array();
+		$type = $this->input->get_post('type');
+		if($type == 'income'){
+			$where['value >'] = 0;
+		}elseif($type == 'used'){
+			$where['value <'] = 0;
+		}
+
 		if($this->user_id){
 			$where['user_id'] = $this->user_id;
 		}
@@ -90,7 +125,7 @@ class Users_points extends API_Controller {
 			$a_user = array();
 			if($ret['points']['list']){
 				foreach($ret['points']['list'] as $key=>$item){
-					$ret['points']['list'][$key]['rule_name_text'] = $item['remark'] ? $item['remark'] : $this->formatPointsName($item['rule_name']);
+					$ret['points']['list'][$key]['rule_name_text'] = $this->formatPointsName($item['rule_name']);
 					$item['user_id'] && $a_user[] = $item['user_id'];
 				}
 			}
