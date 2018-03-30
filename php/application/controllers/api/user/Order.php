@@ -77,7 +77,7 @@ class Order extends API_Controller {
 		if($ret['count']){
 			$order_by = array('id' => 'desc');
 			$this->search();
-			$this->db->select('id,created_at,status,order_sn,real_total_amount,use_ticket_amount,use_point_amount,is_refund,seller_uid,buyer_uid');
+			$this->db->select('id,created_at,status,order_sn,real_total_amount,use_ticket_amount,use_point_amount,seller_uid,buyer_uid');
 			$ret['list'] = $this->Order_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 
 			$a_order_id = [];

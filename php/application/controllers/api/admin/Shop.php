@@ -107,6 +107,7 @@ class Shop extends API_Controller {
 	 * @apiParam {String} account 登录账号
 	 * @apiParam {String} sign 校验签名
 	 * @apiParam {Number} status 1通过 2拒绝
+	 * @apiParam {Number} id 申请ID
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
