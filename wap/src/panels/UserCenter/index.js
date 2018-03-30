@@ -32,11 +32,11 @@ export default class UserCenter extends BaseComponent {
         const buyerItems = [];
         const sellerItems = [];
         orderSatus.forEach((item, index) => {
-            const { title, key, img } = item;
+            const { title, key, pageNum, img } = item;
             buyerItems.push(
                 <Flex.Item
                     key={index}
-                    onClick={() => Base.push("MyOrder", { index: key })}
+                    onClick={() => Base.push("MyOrder", { index: key,pageNum:index+1 })}
                     className="Item"
                     align="center"
                 >
