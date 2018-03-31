@@ -125,12 +125,8 @@ const menuData = [
                 path: "GoodsOrderList"
             },
             {
-                name: "退款管理",
+                name: "退款/退货",
                 path: "refundMananger"
-            },
-            {
-                name: "退货管理",
-                path: "refundGoodsMananger"
             },
             {
                 name: "评价管理",
