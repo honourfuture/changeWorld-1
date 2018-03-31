@@ -19,6 +19,16 @@ class Order_model extends MY_Model
         parent::__construct();
     }
 
+    public function refund_status()
+    {
+        return [
+            '无',
+            '已申请',
+            '已通过',
+            '已拒绝'
+        ];
+    }
+
     /*
      * 订单状态
      * 已结束：14天后自动更新，禁止退换货操作
@@ -26,13 +36,13 @@ class Order_model extends MY_Model
     public function status()
     {
         return [
-            '待付款',
-            '已取消',
-            '待发货',
-            '待收货',
-            '待评价',
-            '已完成',
-            '已结束'
+            '待付款',//0
+            '已取消',//1
+            '待发货',//2
+            '待收货',//3
+            '待评价',//4
+            '已完成',//5
+            '已结束'//6
         ];
     }
 
