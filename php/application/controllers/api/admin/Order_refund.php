@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @email webljx@163.com
  * @link www.aicode.org.cn
  */
-class User extends API_Controller {
+class Order_refund extends API_Controller {
 
 	public function __construct()
     {
@@ -16,12 +16,12 @@ class User extends API_Controller {
     }
 
     /**
-	 * @api {get} /api/admin/user 用户管理-列表
+	 * @api {get} /api/admin/order_refund 退款/退单-列表
 	 * @apiVersion 1.0.0
-	 * @apiName user
+	 * @apiName order_refund
 	 * @apiGroup admin
 	 *
-	 * @apiSampleRequest /api/admin/user
+	 * @apiSampleRequest /api/admin/order_refund
 	 *
 	 * @apiParam {Number} admin_id 管理员唯一ID
 	 * @apiParam {String} account 登录账号
@@ -49,6 +49,7 @@ class User extends API_Controller {
 	{
 		$ret = ['list' => []];
 
+		$this->load->model('Users_model');
 		$ret['sex'] = $this->Users_model->sex();
 
 		$where = [];
@@ -65,12 +66,12 @@ class User extends API_Controller {
 	}
 
 	/**
-	 * @api {get} /api/admin/user/view 用户管理-详情
+	 * @api {get} /api/admin/order_refund/view 退款/退单-详情
 	 * @apiVersion 1.0.0
-	 * @apiName user_view
+	 * @apiName order_refund_view
 	 * @apiGroup admin
 	 *
-	 * @apiSampleRequest /api/admin/user/view
+	 * @apiSampleRequest /api/admin/order_refund/view
 	 *
 	 * @apiParam {Number} admin_id 管理员唯一ID
 	 * @apiParam {String} account 登录账号

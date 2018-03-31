@@ -69,7 +69,6 @@ class Anchor extends API_Controller {
 	{
 		$ret = ['list' => []];
 
-		$this->load->model('Users_anchor_model');
 		$ret['status'] = $this->Users_anchor_model->status();
 
 		$where = [];
@@ -193,7 +192,6 @@ class Anchor extends API_Controller {
 		$id = $this->input->get_post('id');
 		$status = $this->input->get_post('status');
 
-		$this->load->model('Users_anchor_model');
 		if($anchor = $this->Users_anchor_model->get($id)){
 			if(! $anchor['status']){
 				if($this->Users_anchor_model->update($id, ['status' => $status])){
