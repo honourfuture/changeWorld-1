@@ -18,4 +18,12 @@ class Order_evaluate_model extends MY_Model
     {
         parent::__construct();
     }
+
+    public function status()
+    {
+    	return [
+    		'显示',
+    		'隐藏'
+    	];
+    }
 }
