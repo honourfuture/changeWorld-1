@@ -138,7 +138,7 @@ class Shop extends API_Controller {
 				if($this->Shop_model->update($id, ['status' => $status])){
 					$this->load->model('Users_model');
 					if($status == 1){
-						$this->Users_model->update($shop['user_id'], ['status' => 1]);
+						$this->Users_model->update($shop['user_id'], ['seller' => 1]);
 					}
 					$this->ajaxReturn();
 				}else{

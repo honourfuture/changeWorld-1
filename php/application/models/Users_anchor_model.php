@@ -26,4 +26,13 @@ class Users_anchor_model extends MY_Model
             ['id' => 2, 'name' => '港澳证']
     	);
     }
+
+    public function status()
+    {
+        return [
+            '待审核',
+            '已通过',
+            '已拒绝'
+        ];
+    }
 }
