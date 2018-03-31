@@ -239,7 +239,7 @@ class Order_action extends API_Controller {
 
     			$this->load->model('Order_express_model');
     			if($this->Order_express_model->insert($data)){
-    				$this->Order_model->update($this->order['id'], ['status' => 3])
+    				$this->Order_model->update($this->order['id'], ['status' => 3]);
     				$this->ajaxReturn();
     			}else{
     				$this->ajaxReturn([], 5, '取消订单操作失败');
