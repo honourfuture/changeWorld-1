@@ -22,10 +22,8 @@ export class UserLayout extends React.PureComponent {
                 <div className="userLayout">
                     <div className="top">
                         <div className="header">
-                            <Link to="/">
-                                <img alt="logo" className="logo" src={logo} />
-                                <span className="title">猪买单</span>
-                            </Link>
+                            <img alt="logo" className="logo" src={logo} />
+                            <span className="title">猪买单</span>
                         </div>
                         <div className="desc">猪买单 打造最好的直播平台</div>
                     </div>

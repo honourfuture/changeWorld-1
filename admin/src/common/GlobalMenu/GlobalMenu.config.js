@@ -17,6 +17,10 @@ const menuData = [
                 path: "AnchorType"
             },
             {
+                name: "主播列表",
+                path: "AnchorList"
+            },
+            {
                 name: "会员管理",
                 path: "MemberManager"
             },
