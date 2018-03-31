@@ -15,6 +15,136 @@ class Order extends API_Controller {
     }
 
     /**
+	 * @api {get} /api/user/order/view 订单-详情
+	 * @apiVersion 1.0.0
+	 * @apiName order_view
+	 * @apiGroup user
+	 *
+	 * @apiSampleRequest /api/user/order/view
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 * @apiParam {Number} status 订单状态 -1全部 -2退单
+	 * @apiParam {String} order_id 订单号
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *     "data": {
+	 *         "order": {
+	 *             "id": "1",
+	 *             "created_at": "2018-03-14 13:01:08",
+	 *             "updated_at": "2018-03-14 13:01:08",
+	 *             "deleted": "0",
+	 *             "status": "0",
+	 *             "enable": "1",
+	 *             "pay_sn": "870069426068845",
+	 *             "order_sn": "280069426068852001",
+	 *             "seller_uid": "1",
+	 *             "total_amount": "145.50",
+	 *             "real_total_amount": "115.50",
+	 *             "use_ticket_amount": "10.00",
+	 *             "use_point_amount": "20.00",
+	 *             "buyer_uid": "1",
+	 *             "refund_status": "0",
+	 *             "has_e_invoice": "0",
+	 *             "address_info": "{\"username\":\"daihanqiao\",\"mobi\":\"18507558811\",\"address\":\"河北省-唐山市-路南区 2313\"}",
+	 *             "message": "留言1",
+	 *             "use_point": "20",
+	 *             "ticket_info": "{\"full_amount\":\"100\",\"free_amount\":\"10\"}"
+	 *         },
+	 *         "evaluate": [],
+	 *         "invoice": [],
+	 *         "goods": [
+	 *             {
+	 *                 "id": "1",
+	 *                 "order_id": "1",
+	 *                 "goods_id": "4",
+	 *                 "goods_price": "20.00",
+	 *                 "num": "1",
+	 *                 "freight_fee": "2.00",
+	 *                 "goods_attr": "{\"7\":[\"1L\"],\"8\":[\"白色\"]}",
+	 *                 "name": "测试商品",
+	 *                 "default_image": "/uploads/2018/01/23/3b3b5b51b0290d787276d741f1c0f81d.png"
+	 *             },
+	 *             {
+	 *                 "id": "2",
+	 *                 "order_id": "1",
+	 *                 "goods_id": "26",
+	 *                 "goods_price": "100.00",
+	 *                 "num": "1",
+	 *                 "freight_fee": "1.50",
+	 *                 "goods_attr": "{\"6\":[\"xxl\"],\"8\":[\"红色\"]}",
+	 *                 "name": "完美小金瓶",
+	 *                 "default_image": "/uploads/2018/03/13/c1f71ad3579f0543685a92ce663c8532.png"
+	 *             },
+	 *             {
+	 *                 "id": "3",
+	 *                 "order_id": "1",
+	 *                 "goods_id": "4",
+	 *                 "goods_price": "20.00",
+	 *                 "num": "1",
+	 *                 "freight_fee": "2.00",
+	 *                 "goods_attr": "",
+	 *                 "name": "测试商品",
+	 *                 "default_image": "/uploads/2018/01/23/3b3b5b51b0290d787276d741f1c0f81d.png"
+	 *             }
+	 *         ]
+	 *     },
+	 *     "status": 0,
+	 *     "message": "成功"
+	 * }
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+    public function view()
+    {
+    	$ret = [];
+
+    	$order_id = $this->input->get_post('order_id');
+    	if($order = $this->Order_model->get($order_id)){
+    		if($order['seller_uid'] != $this->user_id && $order['buyer_uid'] != $this->user_id){
+    			$this->ajaxReturn([], 2, '该订单不属于你');
+    		}
+    		$ret['order'] = $order;
+    		//评论
+    		$this->load->model('Order_evaluate_model');
+    		$this->db->select('id,remark,is_anonymous,photos');
+    		if($evaluate = $this->Order_evaluate_model->get_by(['user_id' => $order['buyer_uid'], 'order_id' => $order['id']])){
+    			$evaluate['photos'] = json_decode($evaluate['photos'], true);
+    		}else{
+    			$evaluate = [];
+    		}
+    		$ret['evaluate'] = $evaluate;
+    		//发票
+    		$this->load->model('E_invoice_model');
+    		$this->db->select('id,invoice_type,invoice_title,invoice_number');
+    		if($invoice = $this->E_invoice_model->get_by(['user_id' => $order['buyer_uid'], 'order_id' => $order['id']])){
+    			//to do something
+    		}else{
+    			$invoice = [];
+    		}
+    		$ret['invoice'] = $invoice;
+    		//商品
+    		$this->load->model('Order_items_model');
+			$this->db->select('id,order_id,goods_id,goods_price,num,freight_fee,goods_attr,name,default_image');
+			$ret['goods'] = $this->Order_items_model->get_many_by('order_id', $order['id']);
+
+			$this->ajaxReturn($ret);
+    	}else{
+    		$this->ajaxReturn([], 1, '订单不存在');
+    	}
+    }
+
+    /**
 	 * @api {get} /api/user/order 订单-列表
 	 * @apiVersion 1.0.0
 	 * @apiName order

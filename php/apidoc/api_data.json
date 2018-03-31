@@ -4412,6 +4412,13 @@
             "optional": false,
             "field": "status",
             "description": "<p>1通过 2拒绝</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>申请ID</p>"
           }
         ]
       }
@@ -16053,6 +16060,98 @@
   },
   {
     "type": "post",
+    "url": "/api/user/order_action/buyer",
+    "title": "订单操作-买家",
+    "version": "1.0.0",
+    "name": "order_action_buyer",
+    "group": "user",
+    "sampleRequest": [
+      {
+        "url": "/api/user/order_action/buyer"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "order_id",
+            "description": "<p>订单号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "action",
+            "description": "<p>{cancel:取消, del:删除, pay:付款, remind:提醒发货, refund:退款/退货, express:查看物流, goods_confirm:确认收货, evaluate:评价, invoice:申请发票}</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n\t   },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Order_action.php",
+    "groupTitle": "user"
+  },
+  {
+    "type": "post",
     "url": "/api/user/order/add",
     "title": "订单-下单",
     "version": "1.0.0",
@@ -16134,6 +16233,98 @@
         {
           "title": "Success-Response:",
           "content": "{\n    \"data\": {\n        \"pay_sn\": \"870069426068845\",\n        \"total\": 131.5,\n        \"ticket\": 16,\n        \"point_amount\": 20,\n        \"point\": 20\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Order.php",
+    "groupTitle": "user"
+  },
+  {
+    "type": "get",
+    "url": "/api/user/order/view",
+    "title": "订单-详情",
+    "version": "1.0.0",
+    "name": "order_view",
+    "group": "user",
+    "sampleRequest": [
+      {
+        "url": "/api/user/order/view"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>订单状态 -1全部 -2退单</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "order_id",
+            "description": "<p>订单号</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"order\": {\n            \"id\": \"1\",\n            \"created_at\": \"2018-03-14 13:01:08\",\n            \"updated_at\": \"2018-03-14 13:01:08\",\n            \"deleted\": \"0\",\n            \"status\": \"0\",\n            \"enable\": \"1\",\n            \"pay_sn\": \"870069426068845\",\n            \"order_sn\": \"280069426068852001\",\n            \"seller_uid\": \"1\",\n            \"total_amount\": \"145.50\",\n            \"real_total_amount\": \"115.50\",\n            \"use_ticket_amount\": \"10.00\",\n            \"use_point_amount\": \"20.00\",\n            \"buyer_uid\": \"1\",\n            \"refund_status\": \"0\",\n            \"has_e_invoice\": \"0\",\n            \"address_info\": \"{\\\"username\\\":\\\"daihanqiao\\\",\\\"mobi\\\":\\\"18507558811\\\",\\\"address\\\":\\\"河北省-唐山市-路南区 2313\\\"}\",\n            \"message\": \"留言1\",\n            \"use_point\": \"20\",\n            \"ticket_info\": \"{\\\"full_amount\\\":\\\"100\\\",\\\"free_amount\\\":\\\"10\\\"}\"\n        },\n        \"evaluate\": [],\n        \"invoice\": [],\n        \"goods\": [\n            {\n                \"id\": \"1\",\n                \"order_id\": \"1\",\n                \"goods_id\": \"4\",\n                \"goods_price\": \"20.00\",\n                \"num\": \"1\",\n                \"freight_fee\": \"2.00\",\n                \"goods_attr\": \"{\\\"7\\\":[\\\"1L\\\"],\\\"8\\\":[\\\"白色\\\"]}\",\n                \"name\": \"测试商品\",\n                \"default_image\": \"/uploads/2018/01/23/3b3b5b51b0290d787276d741f1c0f81d.png\"\n            },\n            {\n                \"id\": \"2\",\n                \"order_id\": \"1\",\n                \"goods_id\": \"26\",\n                \"goods_price\": \"100.00\",\n                \"num\": \"1\",\n                \"freight_fee\": \"1.50\",\n                \"goods_attr\": \"{\\\"6\\\":[\\\"xxl\\\"],\\\"8\\\":[\\\"红色\\\"]}\",\n                \"name\": \"完美小金瓶\",\n                \"default_image\": \"/uploads/2018/03/13/c1f71ad3579f0543685a92ce663c8532.png\"\n            },\n            {\n                \"id\": \"3\",\n                \"order_id\": \"1\",\n                \"goods_id\": \"4\",\n                \"goods_price\": \"20.00\",\n                \"num\": \"1\",\n                \"freight_fee\": \"2.00\",\n                \"goods_attr\": \"\",\n                \"name\": \"测试商品\",\n                \"default_image\": \"/uploads/2018/01/23/3b3b5b51b0290d787276d741f1c0f81d.png\"\n            }\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
