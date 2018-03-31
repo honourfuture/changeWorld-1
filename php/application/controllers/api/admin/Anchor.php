@@ -16,7 +16,7 @@ class Anchor extends API_Controller {
     }
 
     /**
-	 * @api {get} /api/admin/anchor 讲师列表
+	 * @api {get} /api/admin/anchor 主播管理-列表
 	 * @apiVersion 1.0.0
 	 * @apiName anchor
 	 * @apiGroup admin
@@ -67,7 +67,7 @@ class Anchor extends API_Controller {
 	 */
 	public function index()
 	{
-		$ret = [];
+		$ret = ['list' => []];
 
 		$this->load->model('Users_anchor_model');
 		$ret['status'] = $this->Users_anchor_model->status();
@@ -77,7 +77,7 @@ class Anchor extends API_Controller {
 		if(isset($ret['status'][$status])){
 			$where['status'] = $status;
 		}else{
-			$where[1] = 1;
+			$where['1 >'] = 0;
 		}
 
 		$order_by = array('id' => 'desc');
@@ -91,7 +91,7 @@ class Anchor extends API_Controller {
 	}
 
 	/**
-	 * @api {get} /api/admin/anchor/view 讲师列表-详情
+	 * @api {get} /api/admin/anchor/view 主播管理--详情
 	 * @apiVersion 1.0.0
 	 * @apiName anchor_view
 	 * @apiGroup admin
@@ -157,7 +157,7 @@ class Anchor extends API_Controller {
 	}
 
 	/**
-	 * @api {post} /api/admin/anchor/save 讲师列表-编辑
+	 * @api {post} /api/admin/anchor/save 主播管理--编辑
 	 * @apiVersion 1.0.0
 	 * @apiName anchor_save
 	 * @apiGroup admin
