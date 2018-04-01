@@ -10,12 +10,11 @@ import {
     Spin,
     message,
     Select,
-    Modal,
     Form
 } from "antd";
 import { remove } from "lodash";
-import { EditorModal } from "../../components/EditorModal";
-import "./AnchorList.less";
+import { OrderDetail } from "../../components/OrderDetail";
+import "./OrderManager.less";
 const Search = Input.Search;
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -31,7 +30,7 @@ const formItemLayout = {
     }
 };
 
-export default class AnchorList extends BaseComponent {
+export default class OrderManager extends BaseComponent {
     store = {
         list: [],
         status: -1,
@@ -41,83 +40,80 @@ export default class AnchorList extends BaseComponent {
         super(props);
         this.columns = [
             {
-                title: "编号",
-                dataIndex: "id",
-                width: "10%",
-                render: (text, record) => this.renderText(text, record, "id")
-            },
-            {
-                title: "昵称",
-                dataIndex: "nickname",
-                width: "10%",
-                render: (text, record) =>
-                    this.renderText(text, record, "nickname")
-            },
-            {
-                title: "真实姓名",
-                dataIndex: "realname",
-                width: "10%",
-                render: (text, record) =>
-                    this.renderText(text, record, "realname")
-            },
-            {
-                title: "手机号",
-                dataIndex: "mobi",
-                width: "10%",
-                render: (text, record) => this.renderText(text, record, "mobi")
-            },
-            {
-                title: "邮箱",
-                dataIndex: "email",
-                width: "15%",
-                render: (text, record) => this.renderText(text, record, "email")
-            },
-            {
-                title: "编辑时间",
-                dataIndex: "updated_at",
+                title: "订单编号",
+                dataIndex: "order_sn",
                 width: "15%",
                 render: (text, record) =>
-                    this.renderText(text, record, "updated_at")
+                    this.renderText(text, record, "order_sn")
+            },
+            {
+                title: "买家姓名",
+                dataIndex: "buyer_uid",
+                width: "10%",
+                render: (text, record) =>
+                    this.renderText(
+                        this.user[record.buyer_uid].nickname,
+                        record,
+                        "buyer_uid"
+                    )
+            },
+            {
+                title: "卖家姓名",
+                dataIndex: "seller_uid",
+                width: "10%",
+                render: (text, record) =>
+                    this.renderText(
+                        this.user[record.seller_uid].nickname,
+                        record,
+                        "seller_uid"
+                    )
+            },
+            {
+                title: "支付金额",
+                dataIndex: "real_total_amount",
+                width: "10%",
+                render: (text, record) =>
+                    this.renderText(text, record, "real_total_amount")
+            },
+            {
+                title: "总金额",
+                dataIndex: "total_amount",
+                width: "10%",
+                render: (text, record) =>
+                    this.renderText(text, record, "total_amount")
+            },
+            {
+                title: "订单状态",
+                dataIndex: "status",
+                width: "10%",
+                render: (text, record) =>
+                    this.renderText(
+                        this.status[record.status],
+                        record,
+                        "status"
+                    )
+            },
+            {
+                title: "下单时间",
+                dataIndex: "created_at",
+                width: "15%",
+                render: (text, record) =>
+                    this.renderText(text, record, "created_at")
             },
             {
                 title: "操作",
-                dataIndex: "status",
-                width: "15%",
+                dataIndex: "operation",
+                width: "10%",
                 render: (text, record) => {
                     const { id, status } = record;
                     return (
                         <div className="editable-row-operations">
-                            {parseInt(status) !== 0 ? (
-                                <span>
-                                    <span>{this.status[status]}</span>
-                                    <a
-                                        style={{ marginLeft: 30 }}
-                                        className="gray"
-                                        onClick={() => this.onDetail(record.id)}
-                                    >
-                                        详情
-                                    </a>
-                                </span>
-                            ) : (
-                                <span>
-                                    <Popconfirm
-                                        title="确认通过?"
-                                        okText="通过"
-                                        cancelText="拒绝"
-                                        onConfirm={() => this.onCheck(id, 1)}
-                                        onCancel={() => this.onCheck(id, 2)}
-                                    >
-                                        <a>审　核</a>
-                                    </Popconfirm>
-                                    <a
-                                        style={{ marginLeft: 30 }}
-                                        className="gray"
-                                        onClick={() => this.onDetail(record.id)}
-                                    >
-                                        详情
-                                    </a>
-                                </span>
-                            )}
+                            <a
+                                style={{ marginLeft: 30 }}
+                                onClick={() => this.onDetail(record.id)}
+                            >
+                                详情
+                            </a>
                         </div>
                     );
                 }
@@ -194,14 +190,7 @@ export default class AnchorList extends BaseComponent {
     }
     @action.bound
     onDetail(id) {
-        if (id) {
-            Base.GET({ act: "anchor", op: "view", mod: "admin", id }, res => {
-                console.log(res);
-                this.store.curData = res.data;
-            });
-        } else {
-            this.store.curData = null;
-        }
+        this.refs.orderDetail.show(id);
     }
     @action.bound
     onCheck(id, status) {
@@ -231,19 +220,20 @@ export default class AnchorList extends BaseComponent {
     requestData() {
         Base.GET(
             {
-                act: "anchor",
+                act: "order",
                 op: "index",
                 mod: "admin",
                 status: this.store.status,
-                mobi: this.searchStr || "",
+                order_sn: this.searchStr || "",
                 cur_page: this.current || 1,
                 per_page: Global.PAGE_SIZE
             },
             res => {
-                const { list, count, status } = res.data;
+                const { list, count, status, user } = res.data;
                 this.store.list = list;
                 this.store.total = count;
                 this.status = status;
+                this.user = user;
                 this.cacheData = list.map(item => ({ ...item }));
             },
             this
@@ -287,10 +277,10 @@ export default class AnchorList extends BaseComponent {
             });
         }
         return (
-            <Spin ref="spin" wrapperClassName="AnchorList" spinning={false}>
+            <Spin ref="spin" wrapperClassName="OrderManager" spinning={false}>
                 <div className="pb10">
                     <Search
-                        placeholder="搜索手机号"
+                        placeholder="搜索订单号"
                         enterButton
                         onSearch={this.onSearch}
                         style={{ width: 160, marginRight: 10 }}
@@ -317,24 +307,7 @@ export default class AnchorList extends BaseComponent {
                         defaultPageSize: Global.PAGE_SIZE
                     }}
                 />
-                <Modal
-                    className="anchorList-modal"
-                    title="主播详情"
-                    visible={!!curData}
-                    closable={false}
-                    onCancel={() => this.onDetail()}
-                    footer={[
-                        <Button
-                            key="submit"
-                            type="primary"
-                            onClick={() => this.onDetail()}
-                        >
-                            确认
-                        </Button>
-                    ]}
-                >
-                    <Form>{infoItems}</Form>
-                </Modal>
+                <OrderDetail ref="orderDetail" />
             </Spin>
         );
     }

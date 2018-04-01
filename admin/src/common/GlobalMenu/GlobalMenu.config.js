@@ -121,8 +121,8 @@ const menuData = [
         path: "trade",
         children: [
             {
-                name: "商品订单",
-                path: "GoodsOrderList"
+                name: "订单管理",
+                path: "OrderManager"
             },
             {
                 name: "退款/退货",
