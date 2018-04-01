@@ -7,6 +7,7 @@ import "./MessageCenter.less";
 import { icon } from "../../images";
 
 const Item = List.Item;
+const height = document.body.offsetHeight - 45;
 
 class MessageItem extends BaseComponent {
     @action.bound
@@ -34,7 +35,6 @@ class MessageItem extends BaseComponent {
     }
 }
 
-
 export default class MessageCenter extends BaseComponent {
     constructor(props){
         super(props);
@@ -46,34 +46,20 @@ export default class MessageCenter extends BaseComponent {
             list: [],
             isRead: "",
             refreshing: false,
-            height: 0,
-            isLoading: false,
+            isLoading: false
         };
     }
-    @action.bound
-    setListHeight() {
-        this.store.height =
-            document.documentElement.clientHeight -
-            ReactDOM.findDOMNode(this.listView).offsetTop -
-            88;
-    }
     componentDidMount() {
-        Base.GET(
-            {
-                act: "mailbox",
-                op: "index",
-                per_page: Global.PAGE_SIZE
-            },
-            res => {
-                this.cur_page++;
-                this.store.list = res.data.list;
-                this.setListHeight();
-            }
-        );
+        this.cur_page = 1;
+        this.requestData(false);
     }
     @action.bound
-    requestData() {
-        Base.GET(
+    renderItem(rowData, sectionID, rowID) {
+        return <MessageItem {...rowData} />;
+    }
+    @action.bound
+    requestData(b_noToast = true) {
+        Base.POST(
             {
                 act: "mailbox",
                 op: "index",
@@ -82,20 +68,22 @@ export default class MessageCenter extends BaseComponent {
             },
             res => {
                 const { list } = res.data;
-                this.store.list = this.cur_page === 1 ? [].concat(list):this.store.list.concat(list);
+                this.store.list =
+                    this.cur_page === 1
+                        ? [].concat(list)
+                        : this.store.list.concat(list);
                 this.store.refreshing = false;
-                this.store.isLoading = list.length > 0;
+                this.store.isLoading = false;
                 if (list.length > 0) {
                     this.cur_page++;
                 }
             },
-            false,
-            true
+            null,
+            b_noToast
         );
     }
     @action.bound
     onRefresh() {
-        console.log(1)
         this.store.refreshing = true;
         this.store.isLoading = false;
         this.cur_page = 1;
@@ -103,19 +91,12 @@ export default class MessageCenter extends BaseComponent {
     }
     @action.bound
     onEndReached() {
-        console.log(2)
         this.store.isLoading = true;
         this.store.refreshing = true;
         this.requestData();
     }
-    @action.bound
-    renderMsgItem(rowData, sectionID, rowID) {
-        console.log(rowData);
-        return <MessageItem {...rowData} />;
-    }
     render() {
-        const { list, isRead ,height,isLoading,refreshing} = this.store;
-        console.log(isLoading,"isLoading")
+        const { list,isLoading,refreshing} = this.store;
         const dataSource = this.dataSource.cloneWithRows(list.slice());
         return (
             <div className="MessageCenter">
@@ -129,13 +110,16 @@ export default class MessageCenter extends BaseComponent {
                 </NavBar>
                 <div className="base-content">
                     <ListView
-                        ref={el => (this.listView = el)}
                         style={{ height }}
                         dataSource={dataSource}
-                        renderRow={this.renderMsgItem}
+                        renderRow={this.renderItem}
                         renderFooter={() => (
                             <div style={{ padding: 15, textAlign: "center" }}>
-                                {isLoading ? "加载中..." : "加载完成"}
+                                {isLoading
+                                    ? "加载中..."
+                                    : list.length >= Global.PAGE_SIZE
+                                        ? "加载完成"
+                                        : ""}
                             </div>
                         )}
                         pullToRefresh={
@@ -145,6 +129,7 @@ export default class MessageCenter extends BaseComponent {
                             />
                         }
                         onEndReached={this.onEndReached}
+                        // pageSize={2}
                     />
                 </div>
             </div>

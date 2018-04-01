@@ -155,7 +155,9 @@ export default class SellOrder extends BaseComponent{
         const showList = list.filter(item=>{
             return parseInt(item.deleted,10) === 0;
         });
-        const item = showList.length === 0 ? <NoData img={blankImg.order} label={'暂无数据'} btnLabel={'去逛逛'} onClick={this.goShop} /> : <OrderItem changeList={this.changeList} changePrice={this.changePrice} data={showList} />;
+        const item = showList.length === 0 ? 
+                        <NoData img={blankImg.order} label={'暂无数据'} btnLabel={'去逛逛'} onClick={this.goShop} /> : 
+                        <OrderItem changeList={this.changeList} changePrice={this.changePrice} data={showList} />;
         const pageNum = parseInt(Base.getPageParams('pageNum'));
 		return (
 			<div className='SellOrder MyOrder'>

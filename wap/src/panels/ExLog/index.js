@@ -26,7 +26,18 @@ export default class ExLog extends BaseComponent{
 		orderNo:2017072719315,
 		exName:"顺丰快递"
 	}
+	componentDidMount(){
+		const id = parseInt(Base.getPageParams('id'));
+		// express
+		Base.POST({ act: "order_action", op: "buyer",mod:'user',order_id:id,action:'express'}, res => {
+            // Toast.info(`已提交申请！`, 1);
+            // setTimeout(()=>{
+            // 	Base.goBack();
+            // },1000)
+        });
+	}
 	render(){
+		
 		const {listLog,orderNo,exName} = this.store;
 		const listsLog = listLog.map((item,key)=>{
 			if(key === 0 ){
