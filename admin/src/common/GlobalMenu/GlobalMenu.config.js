@@ -126,7 +126,7 @@ const menuData = [
             },
             {
                 name: "退款/退货",
-                path: "refundMananger"
+                path: "RefundMananger"
             },
             {
                 name: "评价管理",
@@ -236,29 +236,29 @@ const menuData = [
 
     //     ],
     // },
-    {
-        name: "通讯",
-        icon: "global",
-        path: "net",
-        children: [
-            {
-                name: "短信",
-                path: "NetSms"
-            },
-            {
-                name: "邮箱",
-                path: "NetEmail"
-            },
-            {
-                name: "apns",
-                path: "NetApns"
-            },
-            {
-                name: "会员消息",
-                path: "MemberMsgList"
-            }
-        ]
-    },
+    // {
+    //     name: "通讯",
+    //     icon: "global",
+    //     path: "net",
+    //     children: [
+    //         {
+    //             name: "短信",
+    //             path: "NetSms"
+    //         },
+    //         {
+    //             name: "邮箱",
+    //             path: "NetEmail"
+    //         },
+    //         {
+    //             name: "apns",
+    //             path: "NetApns"
+    //         },
+    //         {
+    //             name: "会员消息",
+    //             path: "MemberMsgList"
+    //         }
+    //     ]
+    // },
     {
         name: "手机端",
         icon: "mobile",

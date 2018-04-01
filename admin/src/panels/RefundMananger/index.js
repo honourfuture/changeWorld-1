@@ -14,7 +14,7 @@ import {
 } from "antd";
 import { remove } from "lodash";
 import { OrderDetail } from "../../components/OrderDetail";
-import "./OrderManager.less";
+import "./RefundMananger.less";
 const Search = Input.Search;
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -30,7 +30,7 @@ const formItemLayout = {
     }
 };
 
-export default class OrderManager extends BaseComponent {
+export default class RefundMananger extends BaseComponent {
     store = {
         list: [],
         status: -1
@@ -41,20 +41,16 @@ export default class OrderManager extends BaseComponent {
             {
                 title: "订单编号",
                 dataIndex: "order_sn",
-                width: "15%",
+                width: "16%",
                 render: (text, record) =>
                     this.renderText(text, record, "order_sn")
             },
             {
                 title: "买家姓名",
-                dataIndex: "buyer_uid",
+                dataIndex: "user_id",
                 width: "10%",
                 render: (text, record) =>
-                    this.renderText(
-                        this.user[record.buyer_uid].nickname,
-                        record,
-                        "buyer_uid"
-                    )
+                    this.renderText(this.user[text].nickname, record, "user_id")
             },
             {
                 title: "卖家姓名",
@@ -62,27 +58,33 @@ export default class OrderManager extends BaseComponent {
                 width: "10%",
                 render: (text, record) =>
                     this.renderText(
-                        this.user[record.seller_uid].nickname,
+                        this.user[text].nickname,
                         record,
                         "seller_uid"
                     )
             },
             {
-                title: "支付金额",
+                title: "支付金额/总金额",
                 dataIndex: "real_total_amount",
-                width: "10%",
+                width: "13%",
                 render: (text, record) =>
-                    this.renderText(text, record, "real_total_amount")
+                    this.renderText(
+                        `${this.order[record.order_id].real_total_amount} / ${
+                            this.order[record.order_id].total_amount
+                        }`,
+                        record,
+                        "real_total_amount"
+                    )
             },
             {
-                title: "总金额",
-                dataIndex: "total_amount",
-                width: "10%",
+                title: "退款留言",
+                dataIndex: "remark",
+                width: "15%",
                 render: (text, record) =>
-                    this.renderText(text, record, "total_amount")
+                    this.renderText(text, record, "remark")
             },
             {
-                title: "订单状态",
+                title: "退款状态",
                 dataIndex: "status",
                 width: "10%",
                 render: (text, record) =>
@@ -102,7 +104,7 @@ export default class OrderManager extends BaseComponent {
             {
                 title: "操作",
                 dataIndex: "operation",
-                width: "10%",
+                width: "8%",
                 render: (text, record) => {
                     const { id, status } = record;
                     return (
@@ -139,7 +141,7 @@ export default class OrderManager extends BaseComponent {
     requestData() {
         Base.GET(
             {
-                act: "order",
+                act: "order_refund",
                 op: "index",
                 mod: "admin",
                 status: this.store.status,
@@ -148,11 +150,12 @@ export default class OrderManager extends BaseComponent {
                 per_page: Global.PAGE_SIZE
             },
             res => {
-                const { list, count, status, user } = res.data;
+                const { list, count, status, user, order } = res.data;
                 this.store.list = list;
                 this.store.total = count;
                 this.status = status;
                 this.user = user;
+                this.order = order;
                 this.cacheData = list.map(item => ({ ...item }));
             },
             this
@@ -171,20 +174,23 @@ export default class OrderManager extends BaseComponent {
         let { list, total } = this.store;
         const showList = list.slice();
         const { status = [] } = this;
-        const statusCon = status.map((item, index) => {
-            return (
-                <Option value={index} key={index}>
-                    {item}
-                </Option>
-            );
-        });
+        const statusCon = [];
+        for (const key in status) {
+            if (status.hasOwnProperty(key)) {
+                statusCon.push(
+                    <Option value={key} key={key}>
+                        {status[key]}
+                    </Option>
+                );
+            }
+        }
         statusCon.unshift(
             <Option value={-1} key={-1}>
                 全部
             </Option>
         );
         return (
-            <Spin ref="spin" wrapperClassName="OrderManager" spinning={false}>
+            <Spin ref="spin" wrapperClassName="RefundMananger" spinning={false}>
                 <div className="pb10">
                     <Search
                         placeholder="搜索订单号"

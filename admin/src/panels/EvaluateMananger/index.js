@@ -10,11 +10,13 @@ import {
     Spin,
     message,
     Select,
-    Form
+    Form,
+    Modal,
+    Carousel
 } from "antd";
 import { remove } from "lodash";
 import { OrderDetail } from "../../components/OrderDetail";
-import "./OrderManager.less";
+import "./EvaluateMananger.less";
 const Search = Input.Search;
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -30,10 +32,10 @@ const formItemLayout = {
     }
 };
 
-export default class OrderManager extends BaseComponent {
+export default class EvaluateMananger extends BaseComponent {
     store = {
         list: [],
-        status: -1
+        imgList: []
     };
     constructor(props) {
         super(props);
@@ -47,14 +49,10 @@ export default class OrderManager extends BaseComponent {
             },
             {
                 title: "买家姓名",
-                dataIndex: "buyer_uid",
+                dataIndex: "user_id",
                 width: "10%",
                 render: (text, record) =>
-                    this.renderText(
-                        this.user[record.buyer_uid].nickname,
-                        record,
-                        "buyer_uid"
-                    )
+                    this.renderText(this.user[text].nickname, record, "user_id")
             },
             {
                 title: "卖家姓名",
@@ -62,60 +60,68 @@ export default class OrderManager extends BaseComponent {
                 width: "10%",
                 render: (text, record) =>
                     this.renderText(
-                        this.user[record.seller_uid].nickname,
+                        this.user[text].nickname,
                         record,
                         "seller_uid"
                     )
             },
             {
-                title: "支付金额",
+                title: "支付金额/总金额",
                 dataIndex: "real_total_amount",
-                width: "10%",
-                render: (text, record) =>
-                    this.renderText(text, record, "real_total_amount")
-            },
-            {
-                title: "总金额",
-                dataIndex: "total_amount",
-                width: "10%",
-                render: (text, record) =>
-                    this.renderText(text, record, "total_amount")
-            },
-            {
-                title: "订单状态",
-                dataIndex: "status",
-                width: "10%",
+                width: "13%",
                 render: (text, record) =>
                     this.renderText(
-                        this.status[record.status],
+                        `${this.order[record.order_id].real_total_amount} / ${
+                            this.order[record.order_id].total_amount
+                        }`,
                         record,
-                        "status"
+                        "real_total_amount"
                     )
             },
             {
-                title: "下单时间",
+                title: "评价时间",
                 dataIndex: "created_at",
                 width: "15%",
                 render: (text, record) =>
                     this.renderText(text, record, "created_at")
             },
             {
-                title: "操作",
-                dataIndex: "operation",
-                width: "10%",
-                render: (text, record) => {
-                    const { id, status } = record;
-                    return (
-                        <div className="editable-row-operations">
-                            <a onClick={() => this.onDetail(record.id)}>详情</a>
-                        </div>
-                    );
-                }
+                title: "评价内容",
+                dataIndex: "remark",
+                width: "20%",
+                render: (text, record) =>
+                    this.renderText(text, record, "remark")
+            },
+            {
+                title: "评价图片",
+                dataIndex: "photos",
+                width: "15%",
+                render: (text, record) =>
+                    this.renderPhotos(text, record, "photos")
             }
         ];
     }
     renderText(text, record, column) {
         return <div>{text}</div>;
+    }
+    renderPhotos(text, record, column) {
+        const photos = text ? JSON.parse(text) : [];
+        if (photos.length > 0) {
+            return (
+                <div
+                    onClick={this.onToggleModal}
+                    style={{ textAlign: "center" }}
+                >
+                    <img
+                        className="thumbnail"
+                        src={Base.getImgUrl(photos[0])}
+                        alt=""
+                    />
+                    <div className="thumbnail-label">点击查看大图</div>
+                </div>
+            );
+        }
+        return <div>无评价图片</div>;
     }
     //搜索
     searchStr = "";
@@ -126,8 +132,9 @@ export default class OrderManager extends BaseComponent {
         this.requestData();
     }
     @action.bound
-    onDetail(id) {
-        this.refs.orderDetail.show(id);
+    onToggleModal(id) {
+        const itemData = this.store.list.find(item => item.id === id);
+        this.store.imgList = JSON.parse(itemData.photos);
     }
     @action.bound
     onTableHandler({ current, pageSize }) {
@@ -139,52 +146,36 @@ export default class OrderManager extends BaseComponent {
     requestData() {
         Base.GET(
             {
-                act: "order",
+                act: "order_evaluate",
                 op: "index",
                 mod: "admin",
-                status: this.store.status,
                 order_sn: this.searchStr || "",
                 cur_page: this.current || 1,
                 per_page: Global.PAGE_SIZE
             },
             res => {
-                const { list, count, status, user } = res.data;
+                const { list, count, user, order } = res.data;
+                this.user = user;
+                this.order = order;
                 this.store.list = list;
                 this.store.total = count;
-                this.status = status;
-                this.user = user;
                 this.cacheData = list.map(item => ({ ...item }));
             },
             this
         );
     }
-    @action.bound
-    onStatusSelect(e) {
-        this.current = 1;
-        this.store.status = e;
-        this.requestData();
-    }
     componentDidMount() {
         this.requestData();
     }
     render() {
-        let { list, total } = this.store;
+        let { list, total, imgList } = this.store;
         const showList = list.slice();
-        const { status = [] } = this;
-        const statusCon = status.map((item, index) => {
-            return (
-                <Option value={index} key={index}>
-                    {item}
-                </Option>
-            );
-        });
-        statusCon.unshift(
-            <Option value={-1} key={-1}>
-                全部
-            </Option>
-        );
         return (
-            <Spin ref="spin" wrapperClassName="OrderManager" spinning={false}>
+            <Spin
+                ref="spin"
+                wrapperClassName="EvaluateMananger"
+                spinning={false}
+            >
                 <div className="pb10">
                     <Search
                         placeholder="搜索订单号"
@@ -192,14 +183,6 @@ export default class OrderManager extends BaseComponent {
                         onSearch={this.onSearch}
                         style={{ width: 160, marginRight: 10 }}
                     />
-                    {statusCon.length > 0 ? (
-                        <Select
-                            onChange={this.onStatusSelect}
-                            defaultValue={-1}
-                        >
-                            {statusCon}
-                        </Select>
-                    ) : null}
                 </div>
                 <Table
                     className="mt16"
@@ -214,7 +197,36 @@ export default class OrderManager extends BaseComponent {
                         defaultPageSize: Global.PAGE_SIZE
                     }}
                 />
-                <OrderDetail ref="orderDetail" />
+                {imgList.length > 0 ? (
+                    <Modal
+                        className="EvaluateManangerModal"
+                        title="评价图片"
+                        visible={!!imgList.length}
+                        closable={false}
+                        onCancel={this.onToggleModal}
+                        footer={[
+                            <Button
+                                key="submit"
+                                type="primary"
+                                onClick={this.onToggleModal}
+                            >
+                                确认
+                            </Button>
+                        ]}
+                    >
+                        <Carousel autoplay={false}>
+                            {imgList.map((item, index) => {
+                                return (
+                                    <img
+                                        key={index}
+                                        src={Base.getImgUrl(item)}
+                                        alt=""
+                                    />
+                                );
+                            })}
+                        </Carousel>
+                    </Modal>
+                ) : null}
             </Spin>
         );
     }

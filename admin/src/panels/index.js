@@ -47,7 +47,19 @@ import Dashboard from "./Dashboard";
 import AnchorList from './AnchorList';
 import MemberManager from './MemberManager';
 import OrderManager from './OrderManager';
+import RefundMananger from './RefundMananger';
+import EvaluateMananger from './EvaluateMananger';
 export const panelsList = [
+    {
+        path:'/trade/EvaluateMananger',
+        component:EvaluateMananger,
+        title:'评价管理',
+    },
+    {
+        path:'/trade/RefundMananger',
+        component:RefundMananger,
+        title:'退款/退货',
+    },
     {
         path:'/trade/OrderManager',
         component:OrderManager,
