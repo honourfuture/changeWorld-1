@@ -1,29 +1,43 @@
 import React from 'react';
+import { action } from "mobx";
 import {BaseComponent,Base} from '../../common';
-import {NavBar,WhiteSpace,Button,List,InputItem,select,WingBlank} from 'antd-mobile';
+import {NavBar,WhiteSpace,Button,List,InputItem,select,WingBlank,Toast} from 'antd-mobile';
+import { createForm } from 'rc-form';
 import './WriteExInfo.less';
 import {icon} from '../../images';
 
 const Item = List.Item;
-export default class WriteExInfo extends BaseComponent{
+class WriteExInfo extends BaseComponent{
 	store={
-        exName:[{
-            name:"顺丰",
-            value:1
-        },{
-            name:"邮政",
-            value:2
-        },{
-            name:"中通",
-            value:3
-        }]
+        exName:[],
+        exNo:'0'
+    }
+    componentDidMount(){
+        Base.GET({ act: "express", op: "index"}, res => {
+            this.store.exName = res.data;
+        });
+    }
+    @action.bound
+    exHandler(){
+        const id = parseInt(Base.getPageParams('id'));
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                values.express_id = values.express_id ? values.express_id : this.store.exNo;
+                Base.POST({ act: "order_action", op: "seller",mod:'user',order_id:id,action:'goods_send',...values}, res => {
+                    Toast.info(`发货成功！`, 1);
+                    setTimeout(()=>{
+                        Base.goBack();
+                    },1000)
+                });
+            }
+        });
     }
 	render(){
 		const {exName} = this.store;
+        const { getFieldProps, getFieldError } = this.props.form;
 		const exNames = exName.map((item,key)=>{
-			return <option value={item.value} key={key}>{item.name}</option>
-		})
-
+			return <option value={item.id} key={key}>{item.name}</option>
+		});
 		return (
 			<div className='WriteExInfo'>
 				<NavBar
@@ -39,7 +53,9 @@ export default class WriteExInfo extends BaseComponent{
 							align="right"
 							arrow="horizontal"
 				          	extra={
-				          		<select>
+				          		<select
+                                    {...getFieldProps('express_id')}
+                                >
 				          			{exNames}
 					          	</select>
 				         	}
@@ -49,14 +65,20 @@ export default class WriteExInfo extends BaseComponent{
                             align="right"
                             placeholder="请输入快递单号"
                             moneyKeyboardAlign="left"
+                            error={!!getFieldError('number')}
+                            {...getFieldProps('number', {
+                                rules: [{ required: true, message:'请输入快递单号'}],
+                            })}
                         >快递单号<em>*</em></InputItem>
                     </List>
                     <WhiteSpace size="xl" />
                     <WingBlank>
-                        <Button type="warning" className="save-address" onClick={()=>Base.push('NewAddress')}>提交</Button>
+                        <Button type="warning" className="save-address" onClick={this.exHandler}>提交</Button>
                     </WingBlank>
                 </div>
 			</div>
 		)
 	}
 };
+export default createForm()(WriteExInfo);
+

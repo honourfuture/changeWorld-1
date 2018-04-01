@@ -1,0 +1,96 @@
+@import '../../common/theme.less';
+.ApplyInvoice{
+	.applyCheck{
+		margin-top: 15px;
+		background: #fff;
+		.discount-item {
+            padding: 13px 15px;
+            background: #fff;
+            .am-flexbox-item {
+                font-size: 13px;
+                em {
+                    margin-left: 16px;
+                    color: #999;
+                }
+                .am-list-line {
+                    padding-right: 0;
+                }
+            }
+            .am-radio {
+            	margin-top: -3px;
+                // margin-left: 8px;
+                width: 20px;
+                height: 20px;
+                border: 1px solid #ccc;
+                border-radius: 50%;
+                .am-radio-inner {
+                    width: 20px;
+                    height: 20px;
+                    border-width: 1px;
+                }
+                &.am-radio-checked {
+                    .am-radio-inner::after {
+                        width: 10px;
+                        height: 10px;
+                        background: @brand-primary;
+                        border-radius: 50%;
+                        top: 50% !important;
+                        right: 50% !important;
+                        border-color: @brand-primary;
+                        border-width: inherit;
+                        transform: translate(50%, -50%);
+                    }
+                }
+            }
+            .am-list-item {
+                padding-left: 0;
+                height: auto;
+                min-height: auto;
+                flex: 1;
+                .am-list-line {
+                    padding-left: 0;
+                }
+                .am-input-label {
+                    font-size: 13px;
+                    color: #333;
+                }
+                input {
+                    padding: 1px 0;
+                    font-size: 14px;
+                }
+                ::-webkit-input-placeholder {
+                    font-size: 14px;
+                    color: #e0e0e0;
+                }
+            }
+            .am-checkbox-wrapper {
+                margin-left: 8px;
+            }
+            .leftFlex{
+            	width: 70px;
+            	flex: inherit;
+            }
+        }
+	}
+    &-opear{
+        width: 100%;
+        padding: 15px;
+        box-sizing: border-box;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        .am-button{
+            height: 44px;
+            line-height: 44px;
+            font-size: 14px;
+            &.payBtn{
+                margin-right: 80px;
+                border:1px solid @brand-primary;
+                color: @brand-primary;
+                &::before{
+                    border: none;
+                }
+            }
+        }
+    }
+}

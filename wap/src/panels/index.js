@@ -29,7 +29,19 @@ import MessageCenter from "./MessageCenter";
 import MessageDetail from "./MessageDetail";
 import EvaluateList from "./EvaluateList";
 import SellOrder from "./SellOrder";
+import ApplyInvoice from "./ApplyInvoice";
+import AfterMarket from "./AfterMarket";
 export const panelsList = [
+    {
+        path: "/AfterMarket",
+        component: AfterMarket,
+        title: "申请售后"
+    },
+    {
+        path: "/ApplyInvoice",
+        component: ApplyInvoice,
+        title: "申请发票"
+    },
     {
         path: "/SellOrder",
         component: SellOrder,

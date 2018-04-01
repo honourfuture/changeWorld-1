@@ -1,71 +1,37 @@
 import React from "react";
 import { action } from 'mobx';
 import { BaseComponent, Base } from "../../common";
-import { Flex, Button, NavBar, SearchBar, Tabs } from "antd-mobile";
+import { Flex, NavBar, SearchBar, Tabs } from "antd-mobile";
 import { icon, blankImg } from "../../images";
-
+import {remove} from 'lodash';
 import "./MyOrder.less";
 
 import { OrderGoodsItem } from "../../components/OrderGoodsItem";
+import { OrderBtn } from "../../components/OrderBtn";
 import { NoData } from "../../components/NoData";
 
-class Btns extends BaseComponent {
-    render(){
-        const { btnTxt, callBack, callBackOperator, isDouble } = this.props;
-        let btns = null;
-        if(!isDouble){
-            btns =  <div>
-                        <Button
-                            type="ghost"
-                            inline
-                            size="small"
-                            className="am-button-borderfix"
-                            onClick={() =>
-                                callBack && callBack()
-                            }
-                        >
-                            {btnTxt[0]}
-                        </Button>
-                    </div>
-        }else{
-            btns = <div>
-                        <Button
-                            type="ghost"
-                            inline
-                            size="small"
-                            className="am-button-borderfix"
-                            onClick={() =>
-                                callBack && callBack()
-                            }
-                        >
-                            {btnTxt[0]}
-                        </Button>
-                        <Button
-                            type="ghost"
-                            inline
-                            size="small"
-                            className="am-button-borderfix eva-order"
-                            onClick={() =>
-                                callBackOperator && callBackOperator()
-                            }
-                        >
-                            {btnTxt[1]}
-                        </Button>
-                    </div>
-        }
-        return (
-            <Flex
-                className="typeBtn"
-                justify="end"
-                align="center"
-            >
-                {btns}
-            </Flex>
-        )
-    }
-}
-
 class OrderItem extends BaseComponent {
+    @action.bound
+    cancelOrder(id){
+        const {changeList} = this.props;
+        Base.POST({ act: "order_action", op: "buyer",mod:'user',order_id:id,action:'cancel'}, res => {
+            changeList && changeList(id);
+        });
+    }
+    @action.bound
+    delOrder(id){
+        const {changeList} = this.props;
+        Base.POST({ act: "order_action", op: "buyer",mod:'user',order_id:id,action:'del'}, res => {
+            changeList && changeList(id);
+        });
+    }
+    @action.bound
+    goods_confirm(id){
+        const {changeList} = this.props;
+        Base.POST({ act: "order_action", op: "buyer",mod:'user',order_id:id,action:'goods_confirm'}, res => {
+            changeList && changeList(id);
+        });
+    }
     render() {
         const renderOrderItem = (this.props.data || []).map((item, key) => {
             const {
@@ -77,23 +43,58 @@ class OrderItem extends BaseComponent {
                 orderType
             } = item;
             let states = ["待付款","已取消","待发货","待收货","待评价","已完成","已结束"];
-
             let btns = null;
             switch(parseInt(status,10)){
-                case 0:
-                    btns = <Btns btnTxt={["取消订单"]} callBack={()=>console.log('取消')} isDouble={false} />
+                case 0://待付款
+                    btns = <OrderBtn 
+                                btnTxt={["取消订单","付款","联系商家"]} 
+                                oneCallBack={()=>this.cancelOrder(id)} 
+                                twoCallBack={()=>console.log('付款')}
+                                threeCallBack={()=>console.log('联系商家')}
+                                isDouble={3} 
+                            />
                 break;
-                case 1,5,6:
-                    btns = <Btns btnTxt={["删除订单"]} callBack={()=>console.log('取消')} isDouble={false} />;      
+                case 1://已取消
+                    btns = <OrderBtn 
+                                btnTxt={["删除订单"]} 
+                                oneCallBack={()=>this.delOrder(id)}
+                                isDouble={1} 
+                            />
                 break;
-                case 2:
-                    btns = btns = <Btns btnTxt={["申请退款","提醒发货"]} callBack={()=>console.log('申请退款')} callBackOperator={()=>console.log('提醒发货')} isDouble={true} />;
+                case 2://代发货
+                    btns = <OrderBtn 
+                                btnTxt={["申请退款","联系商家"]} 
+                                oneCallBack={()=>console.log('申请退款')} 
+                                twoCallBack={()=>console.log('联系商家')}
+                                isDouble={2} 
+                            />;
                 break;
-                case 3:
-                    btns = <Btns btnTxt={["查看物流","确认收货"]} callBack={()=>console.log('查看物流')} callBackOperator={()=>console.log('确认收货')} isDouble={true} />;
+                case 3://待收货
+                    btns = <OrderBtn 
+                                btnTxt={["查看物流","确认收货","退款/退货","联系商家"]} 
+                                oneCallBack={()=>Base.push('ExLog',{id:id})}
+                                twoCallBack={()=>this.goods_confirm(id)} 
+                                threeCallBack={()=>Base.push('AfterMarket',{id:id})}
+                                fourCallBack={()=>console.log('联系商家')}
+                                isDouble={4} 
+                            />;
                 break;
-                case 4:
-                    btns = <Btns btnTxt={["评价订单"]} callBack={()=>console.log('评价订单')} isDouble={false} />;
+                case 4://待评价
+                    btns = <OrderBtn 
+                                btnTxt={["评价订单","退款/退货","联系商家"]} 
+                                oneCallBack={()=>Base.push('EvaluateOrder',{id:id,item:JSON.stringify(item)})}
+                                twoCallBack={()=>Base.push('AfterMarket',{id:id})}
+                                threeCallBack={()=>console.log('联系商家')}
+                                isDouble={3} 
+                            />;
+                break;
+                case 5: //完成
+                    btns = <OrderBtn 
+                            btnTxt={["申请发票","退款/退货"]} 
+                            oneCallBack={()=>Base.push('ApplyInvoice',{id:id})} 
+                            twoCallBack={()=>Base.push('AfterMarket',{id:id})}
+                            isDouble={2} 
+                        />;      
                 break;
             }
             return (
@@ -130,6 +131,10 @@ export default class MyOrder extends BaseComponent {
         this.requestData(index);
     }
     @action.bound
+    changeList(id){
+        remove(this.store.list,item=>id === item.id);
+    }
+    @action.bound
     requestData(index){
         Base.GET({ act: "user", op: "order",status:index}, res => {
             const { count, list, status } = res.data;
@@ -148,7 +153,7 @@ export default class MyOrder extends BaseComponent {
     }
     render() {
         const { list } = this.store;
-        let tabNames = ["全部","待付款","待发货","待收货","待评价","已完成","退货/售后"];
+        let tabNames = ["全部","待付款","待发货","待收货","待评价","已完成","退货/退款"];
         const tabs = tabNames.map(item=>{
             return {'title':item};
         });
@@ -157,7 +162,10 @@ export default class MyOrder extends BaseComponent {
                 items.sale_price = items.goods_price
             })
         });
-        const item = list.length === 0 ? <NoData img={blankImg.order} label={'暂无数据'} btnLabel={'去逛逛'} onClick={this.goShop} /> : <OrderItem data={list} />;
+        const showList = list.filter(item=>{
+            return parseInt(item.deleted,10) === 0;
+        });
+        const item = showList.length === 0 ? <NoData img={blankImg.order} label={'暂无数据'} btnLabel={'去逛逛'} onClick={this.goShop} /> : <OrderItem changeList={this.changeList} data={showList} />;
         const pageNum = parseInt(Base.getPageParams('pageNum'));
         return (
             <div className="MyOrder">

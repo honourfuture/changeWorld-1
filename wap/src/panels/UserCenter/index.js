@@ -52,7 +52,7 @@ export default class UserCenter extends BaseComponent {
             sellerItems.push(
                 <Flex.Item
                     key={index}
-                    onClick={() => Base.push("SellOrder", { index: key })}
+                    onClick={() => Base.push("SellOrder", { index: key,pageNum:index+1 })}
                     className="Item"
                     align="center"
                 >

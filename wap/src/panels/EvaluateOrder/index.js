@@ -9,35 +9,55 @@ import {
     TextareaItem,
     ImagePicker,
     Checkbox,
-    WingBlank
+    WingBlank,
+    Toast
 } from "antd-mobile";
+import { createForm } from 'rc-form';
 import "./EvaluateOrder.less";
-import { icon, test } from "../../images";
+import { icon } from "../../images";
 import { OrderGoodsItem } from "../../components/OrderGoodsItem";
 
 const AgreeItem = Checkbox.AgreeItem;
-export default class EvaluateOrder extends BaseComponent {
+class EvaluateOrder extends BaseComponent {
     store = {
         files: [],
-        storeList: [
-            {
-                img: test.test4,
-                title: "RE:CIPE 水晶防晒喷雾 150毫升/瓶 3瓶",
-                spec: "型号 150ml",
-                price: "369",
-                goodsId: "1",
-                num: 1
-            }
-        ]
-    };
+        storeList: [],
+        is_anonymous: true
+    }
     @action.bound
     onChange = (files, type, index) => {
-        console.log(files, type, index);
         this.store.files = files;
-    };
+    }
+    @action.bound
+    submitHandler(){
+        const id = parseInt(Base.getPageParams('id'));
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                values.is_anonymous = values.is_anonymous ? values.is_anonymous : this.store.is_anonymous;
+                let arrImg = {};
+                this.store.files.map((item,key)=>{
+                    arrImg[key] = item.url;
+                });
+                values.photos = arrImg;
+                Base.POST({ act: "order_action", op: "buyer",mod:'user',order_id:id,action:'evaluate',...values}, res => {
+                    Toast.info(`评价成功！`, 1);
+                    setTimeout(()=>{
+                        Base.goBack();
+                    },1000)
+                });
+            }
+        });
+    }
+    @action.bound
+    agreeChange(){
+        this.store.is_anonymous = !this.store.is_anonymous;
+    }
     render() {
-        const { storeList, files } = this.store;
-        const goodsItem = storeList.map((item, key) => {
+        const { storeList, files,is_anonymous } = this.store;
+        const { getFieldProps, getFieldError } = this.props.form;
+        const item = JSON.parse(Base.getPageParams('item'));
+        
+        const goodsItem = item.goods.map((item, key) => {
             return <OrderGoodsItem key={key} item={item} />;
         });
 
@@ -58,16 +78,23 @@ export default class EvaluateOrder extends BaseComponent {
                         <TextareaItem
                             placeholder="请输入输入您对商品的描述"
                             autoHeight
+                            error={!!getFieldError('remark')}
+                            {...getFieldProps('remark', {
+                                rules: [{ required: true, message:'请输入输入您对商品的描述'}],
+                            })}
                         />
                         <ImagePicker
                             files={files}
                             onChange={this.onChange}
-                            onImageClick={(index, fs) => console.log(index, fs)}
-                            selectable={files.length < 10}
+                            selectable={files.length < 5}
                             multiple={true}
                         />
                         <Flex className="anonymity" justify="end">
-                            <AgreeItem>匿名评价</AgreeItem>
+                            <AgreeItem 
+                                defaultChecked 
+                                onClick={this.agreeChange}
+                                {...getFieldProps('is_anonymous')}
+                            >匿名评价</AgreeItem>
                         </Flex>
                     </div>
                     <WhiteSpace size="lg" />
@@ -75,7 +102,7 @@ export default class EvaluateOrder extends BaseComponent {
                         <Button
                             type="warning"
                             className="save-address"
-                            onClick={() => Base.push("MyOrder")}
+                            onClick={this.submitHandler}
                         >
                             提交
                         </Button>
@@ -85,3 +112,4 @@ export default class EvaluateOrder extends BaseComponent {
         );
     }
 }
+export default createForm()(EvaluateOrder);
