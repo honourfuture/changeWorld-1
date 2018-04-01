@@ -52,6 +52,7 @@ class Order_refund extends API_Controller {
 
 		$this->load->model('Order_model');
 		$ret['status'] = $this->Order_model->refund_status();
+		unset($ret['status'][0]);
 
 		$where = [];
 		$status = $this->input->get_post('status');
