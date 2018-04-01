@@ -73,7 +73,6 @@ class Shop extends API_Controller {
 	{
 		$ret = [];
 
-		$this->load->model('Shop_model');
 		$ret['status'] = $this->Shop_model->status();
 
 		$where = [];
@@ -81,7 +80,7 @@ class Shop extends API_Controller {
 		if(isset($ret['status'][$status])){
 			$where['shop.status'] = $status;
 		}else{
-			$where[1] = 1;
+			$where['1 >'] = 0;
 		}
 
 		$ret = array_merge($ret, $this->Shop_model->seller($where, $this->per_page, $this->offset));
@@ -132,7 +131,6 @@ class Shop extends API_Controller {
 		$id = $this->input->get_post('id');
 		$status = $this->input->get_post('status');
 
-		$this->load->model('Shop_model');
 		if($shop = $this->Shop_model->get($id)){
 			if(! $shop['status']){
 				if($this->Shop_model->update($id, ['status' => $status])){

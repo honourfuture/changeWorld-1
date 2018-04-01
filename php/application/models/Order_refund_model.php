@@ -18,4 +18,13 @@ class Order_refund_model extends MY_Model
     {
         parent::__construct();
     }
+
+    public function type()
+    {
+    	return [
+    		'统称售后',
+    		'退款',
+    		'退单'
+    	];
+    }
 }

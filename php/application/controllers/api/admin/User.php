@@ -49,7 +49,6 @@ class User extends API_Controller {
 	{
 		$ret = ['list' => []];
 
-		$this->load->model('Users_model');
 		$ret['sex'] = $this->Users_model->sex();
 
 		$where = [];

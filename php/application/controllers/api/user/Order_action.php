@@ -95,6 +95,28 @@ class Order_action extends API_Controller {
     			//提醒发货页
     			break;
     		case 'refund'://退款/退货
+                if(! in_array($this->order['status'], [2, 3, 4, 5, 6])){
+                    $this->ajaxReturn([], 4, '订单操作状态不支持');
+                }
+                $remark = $this->input->get_post('remark');
+                if(! $remark){
+                    $this->ajaxReturn([], 5, '请输入退款/退货说明');
+                }
+
+                $data = [];
+                $data['remark'] = $remark;
+                $data['user_id'] = $this->user_id;
+                $data['order_id'] = $this->order['id'];
+                $data['order_sn'] = $this->order['order_sn'];
+                $data['seller_uid'] = $this->order['seller_uid'];
+
+                $this->load->model('Order_refund_model');
+                if($this->Order_refund_model->insert($data)){
+                    $this->Order_model->update($this->order['id'], ['refund_status' => 1]);
+                    $this->ajaxReturn();
+                }else{
+                    $this->ajaxReturn([], 5, '退款/退货提交失败');
+                }
     			break;
     		case 'express'://查看物流
     			$this->express();
@@ -188,6 +210,38 @@ class Order_action extends API_Controller {
 		}
     }
 
+    /**
+     * @api {post} /api/user/order_action/seller 订单操作-卖家
+     * @apiVersion 1.0.0
+     * @apiName order_action_seller
+     * @apiGroup user
+     *
+     * @apiSampleRequest /api/user/order_action/seller
+     *
+     * @apiParam {Number} user_id 用户唯一ID
+     * @apiParam {String} sign 校验签名
+     * @apiParam {String} order_id 订单号
+     * @apiParam {String} action {change_price:改价, goods_send:发货, express:查看物流, complete:退款/退货审核}
+     *
+     * @apiSuccess {Number} status 接口状态 0成功 其他异常
+     * @apiSuccess {String} message 接口信息描述
+     * @apiSuccess {Object} data 接口数据集
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * {
+     *     "data": {
+     *     },
+     *     "status": 0,
+     *     "message": "成功"
+     * }
+     *
+     * @apiErrorExample {json} Error-Response:
+     * {
+     *     "data": "",
+     *     "status": -1,
+     *     "message": "签名校验错误"
+     * }
+     */
     public function seller()
     {
     	if($this->user_id != $this->order['seller_uid']){
@@ -239,7 +293,7 @@ class Order_action extends API_Controller {
 
     			$this->load->model('Order_express_model');
     			if($this->Order_express_model->insert($data)){
-    				$this->Order_model->update($this->order['id'], ['status' => 3])
+    				$this->Order_model->update($this->order['id'], ['status' => 3]);
     				$this->ajaxReturn();
     			}else{
     				$this->ajaxReturn([], 5, '取消订单操作失败');

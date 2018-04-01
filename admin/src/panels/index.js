@@ -44,7 +44,25 @@ import SystemLog from "./SystemLog";
 import WithdrawalMananger from "./WithdrawalMananger";
 import LecturerNobleManager from "./LecturerNobleManager";
 import Dashboard from "./Dashboard";
+import AnchorList from './AnchorList';
+import MemberManager from './MemberManager';
+import OrderManager from './OrderManager';
 export const panelsList = [
+    {
+        path:'/trade/OrderManager',
+        component:OrderManager,
+        title:'订单管理',
+    },
+    {
+        path:'/member/MemberManager',
+        component:MemberManager,
+        title:'会员管理',
+    },
+    {
+        path:'/member/AnchorList',
+        component:AnchorList,
+        title:'主播管理',
+    },
     {
         path: "/Dashboard",
         component: Dashboard,

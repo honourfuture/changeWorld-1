@@ -5,8 +5,8 @@ const menuData = [
         path: "member",
         children: [
             {
-                name: "讲师认证",
-                path: "MemberLecturerCertification"
+                name: "会员管理",
+                path: "MemberManager"
             },
             {
                 name: "V认证",
@@ -17,12 +17,8 @@ const menuData = [
                 path: "AnchorType"
             },
             {
-                name: "主播列表",
+                name: "主播管理",
                 path: "AnchorList"
-            },
-            {
-                name: "会员管理",
-                path: "MemberManager"
             },
             // {
             //     name: "等级管理",
@@ -125,16 +121,12 @@ const menuData = [
         path: "trade",
         children: [
             {
-                name: "商品订单",
-                path: "GoodsOrderList"
+                name: "订单管理",
+                path: "OrderManager"
             },
             {
-                name: "退款管理",
+                name: "退款/退货",
                 path: "refundMananger"
-            },
-            {
-                name: "退货管理",
-                path: "refundGoodsMananger"
             },
             {
                 name: "评价管理",
