@@ -180,5 +180,5 @@ return array(
 	'odm'	=>	'application/vnd.oasis.opendocument.text-master',
 	'ott'	=>	'application/vnd.oasis.opendocument.text-template',
 	'oth'	=>	'application/vnd.oasis.opendocument.text-web',
-	'apk'   =>  'application/vnd.android.package-archive'
+	'apk'   =>  array('application/vnd.android.package-archive', 'application/zip')
 );
