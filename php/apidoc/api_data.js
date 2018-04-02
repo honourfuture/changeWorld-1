@@ -12795,6 +12795,91 @@ define({ "api": [
     "groupTitle": "api"
   },
   {
+    "type": "get",
+    "url": "/api/user/album_audio_comment",
+    "title": "音频-所有评论",
+    "version": "1.0.0",
+    "name": "album_audio_comment",
+    "group": "user",
+    "sampleRequest": [
+      {
+        "url": "/api/user/album_audio_comment"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "audio_id",
+            "description": "<p>音频ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"count\": 2,\n        \"list\": [\n            {\n                \"id\": \"4\",\n                \"user_id\": \"1\",\n                \"comment\": \"主播能加个微信或留个电话吗\",\n                \"created_at\": \"2018-04-02 13:12:48\",\n                \"header\": \"/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png\",\n                \"nickname\": \"aicode\",\n                \"likes\": 0,\n                \"has_likes\": 0,\n                \"reply\": {\n                    \"count\": 0,\n                    \"list\": []\n                }\n            },\n            {\n                \"id\": \"1\",\n                \"user_id\": \"1\",\n                \"comment\": \"双击666\",\n                \"created_at\": \"2018-04-02 11:03:41\",\n                \"header\": \"/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png\",\n                \"nickname\": \"aicode\",\n                \"likes\": 0,\n                \"has_likes\": 0,\n                \"reply\": {\n                    \"count\": 2,\n                    \"list\": [\n                        {\n                            \"user_id\": \"1\",\n                            \"comment\": \"送飞机、航母\",\n                            \"header\": \"/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png\",\n                            \"nickname\": \"aicode\"\n                        },\n                        {\n                            \"user_id\": \"1\",\n                            \"comment\": \"双击666\",\n                            \"header\": \"/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png\",\n                            \"nickname\": \"aicode\"\n                        }\n                    ]\n                }\n            }\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Album_audio_comment.php",
+    "groupTitle": "user"
+  },
+  {
     "type": "post",
     "url": "/api/user/album_audio_comment/add",
     "title": "音频-发布评论",
@@ -12894,7 +12979,7 @@ define({ "api": [
     "groupTitle": "user"
   },
   {
-    "type": "post",
+    "type": "get",
     "url": "/api/user/album_audio_comment/barrage",
     "title": "音频-弹幕",
     "version": "1.0.0",
@@ -12928,6 +13013,91 @@ define({ "api": [
             "optional": false,
             "field": "audio_id",
             "description": "<p>音频ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"count\": 4,\n        \"list\": [\n            {\n                \"id\": \"4\",\n                \"user_id\": \"1\",\n                \"comment\": \"主播能加个微信或留个电话吗\",\n                \"header\": \"/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png\",\n                \"nickname\": \"aicode\"\n            },\n            {\n                \"id\": \"3\",\n                \"user_id\": \"1\",\n                \"comment\": \"送飞机、航母\",\n                \"header\": \"/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png\",\n                \"nickname\": \"aicode\"\n            },\n            {\n                \"id\": \"2\",\n                \"user_id\": \"1\",\n                \"comment\": \"双击666\",\n                \"header\": \"/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png\",\n                \"nickname\": \"aicode\"\n            },\n            {\n                \"id\": \"1\",\n                \"user_id\": \"1\",\n                \"comment\": \"双击666\",\n                \"header\": \"/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png\",\n                \"nickname\": \"aicode\"\n            }\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Album_audio_comment.php",
+    "groupTitle": "user"
+  },
+  {
+    "type": "post",
+    "url": "/api/user/album_audio_comment/likes",
+    "title": "音频-评论点赞",
+    "version": "1.0.0",
+    "name": "album_audio_comment_likes",
+    "group": "user",
+    "sampleRequest": [
+      {
+        "url": "/api/user/album_audio_comment/likes"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "cid",
+            "description": "<p>评论ID 点赞/取消自动判断</p>"
           }
         ]
       }
