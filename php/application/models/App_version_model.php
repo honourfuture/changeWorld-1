@@ -18,4 +18,19 @@ class App_version_model extends MY_Model
     {
         parent::__construct();
     }
+
+    //平台
+    public function platform()
+    {
+    	return [
+    		'IOS',
+    		'Android'
+    	];
+    }
+
+    //渠道
+    public function channel()
+    {
+    	return [];
+    }
 }
