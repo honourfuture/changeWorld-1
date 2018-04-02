@@ -1,40 +1,16 @@
 import React from "react";
 import { action } from "mobx";
 import { BaseComponent, Base, Global } from "../../common";
-import {
-    Table,
-    Input,
-    Popconfirm,
-    Switch,
-    Button,
-    Spin,
-    message,
-    Select,
-    Form
-} from "antd";
-import { remove } from "lodash";
+import { Table, Input, Spin, Select, Form } from "antd";
 import { OrderDetail } from "../../components/OrderDetail";
 import "./OrderManager.less";
 const Search = Input.Search;
 const Option = Select.Option;
-const FormItem = Form.Item;
-
-const formItemLayout = {
-    labelCol: {
-        xs: { span: 24 },
-        sm: { span: 8 }
-    },
-    wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 }
-    }
-};
 
 export default class OrderManager extends BaseComponent {
     store = {
         list: [],
-        status: -1,
-        curData: null
+        status: -1
     };
     constructor(props) {
         super(props);
@@ -108,72 +84,10 @@ export default class OrderManager extends BaseComponent {
                     const { id, status } = record;
                     return (
                         <div className="editable-row-operations">
-                            <a
-                                style={{ marginLeft: 30 }}
-                                onClick={() => this.onDetail(record.id)}
-                            >
-                                详情
-                            </a>
+                            <a onClick={() => this.onDetail(record.id)}>详情</a>
                         </div>
                     );
                 }
-            }
-        ];
-        this.info = [
-            {
-                key: "nickname",
-                label: "昵称"
-            },
-            {
-                key: "realname",
-                label: "真实姓名"
-            },
-            {
-                key: "mobi",
-                label: "手机号"
-            },
-            {
-                key: "email",
-                label: "电子邮箱"
-            },
-            {
-                key: "anchor_photo",
-                label: "主播照片",
-                render: value => {
-                    const list = JSON.parse(value);
-                    console.log(list);
-                    return list.map((item, index) => {
-                        return (
-                            <img
-                                key={index}
-                                src={Base.getImgUrl(item)}
-                                className="photo"
-                                alt=""
-                            />
-                        );
-                    });
-                }
-            },
-            {
-                key: "certificate_no",
-                label: "证件号码"
-            },
-            {
-                key: "certificate_photo",
-                label: "证件照片",
-                render: value => {
-                    return (
-                        <img
-                            className="photo"
-                            src={Base.getImgUrl(value)}
-                            alt=""
-                        />
-                    );
-                }
-            },
-            {
-                key: "summary",
-                label: "简介"
             }
         ];
     }
@@ -191,24 +105,6 @@ export default class OrderManager extends BaseComponent {
     @action.bound
     onDetail(id) {
         this.refs.orderDetail.show(id);
-    }
-    @action.bound
-    onCheck(id, status) {
-        const list = this.store.list.slice();
-        const itemData = list.find(item => id === item.id);
-        Base.POST(
-            { act: "anchor", op: "save", mod: "admin", id, status },
-            res => {
-                itemData.status = status;
-                itemData.updated_at = Base.getTimeFormat(
-                    new Date().getTime() / 1000,
-                    2
-                );
-                this.store.list = list;
-                this.cacheData = list.map(item => ({ ...item }));
-            },
-            this
-        );
     }
     @action.bound
     onTableHandler({ current, pageSize }) {
@@ -249,7 +145,7 @@ export default class OrderManager extends BaseComponent {
         this.requestData();
     }
     render() {
-        let { list, total, curData } = this.store;
+        let { list, total } = this.store;
         const showList = list.slice();
         const { status = [] } = this;
         const statusCon = status.map((item, index) => {
@@ -264,18 +160,6 @@ export default class OrderManager extends BaseComponent {
                 全部
             </Option>
         );
-        let infoItems = null;
-        if (curData) {
-            infoItems = this.info.map((item, index) => {
-                const { key, label, render } = item;
-                const value = !render ? curData[key] : render(curData[key]);
-                return (
-                    <FormItem key={index} {...formItemLayout} label={label}>
-                        {value}
-                    </FormItem>
-                );
-            });
-        }
         return (
             <Spin ref="spin" wrapperClassName="OrderManager" spinning={false}>
                 <div className="pb10">

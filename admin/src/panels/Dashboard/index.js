@@ -1,6 +1,6 @@
 import React from "react";
-import { BaseComponent, Base } from "../../common";
-import { Card, Icon, Avatar, Row, Col, Badge } from "antd";
+import { BaseComponent } from "../../common";
+import { Card, Row, Col, Badge } from "antd";
 import "./Dashboard.less";
 
 const { Meta } = Card;

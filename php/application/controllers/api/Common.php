@@ -31,8 +31,8 @@ class Common extends API_Controller
     protected function init_upload()
     {
         $config['upload_path'] = FCPATH.'uploads/';
-        $config['allowed_types'] = 'gif|jpg|png|jpeg';
-        $config['max_size'] = 2048;//K
+        $config['allowed_types'] = 'gif|jpg|png|jpeg|apk';
+        // $config['max_size'] = 2048;//K
         $config['file_ext_tolower'] = TRUE;
         $config['encrypt_name'] = TRUE;
 
@@ -82,9 +82,19 @@ class Common extends API_Controller
         if($this->upload->do_upload($field)){
             $data = $this->upload->data();
             $ret['file_url'] = '/'.substr($data['full_path'], strpos($data['full_path'], 'uploads'));
+            $this->formatResource($this->upload->file_ext, $ret);
+
             $this->ajaxReturn($ret, 0, '', true);
         }else{
             $this->ajaxReturn($ret, 1, $this->upload->display_errors('', ''), true);
+        }
+    }
+
+    protected function formatResource($file_ext, &$ret)
+    {
+        $ext = strtolower(ltrim($file_ext, '.'));
+        if($ext == 'apk'){
+            $ret['file_url'] = base_url($ret['file_url']);
         }
     }
 

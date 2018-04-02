@@ -65,6 +65,17 @@ export class OrderDetail extends BaseComponent {
             render: value => <div>￥ {value}</div>
         },
         {
+            key: "has_e_invoice",
+            label: "发票：",
+            render: value => (
+                <div>{parseInt(value, 10) ? "需要" : "不需要"}</div>
+            )
+        },
+        {
+            key: "message",
+            label: "买家家留言："
+        },
+        {
             key: "status",
             label: "订单状态：",
             render: value => <div>{this.store.data.status[value]}</div>
@@ -90,7 +101,7 @@ export class OrderDetail extends BaseComponent {
             key: "freight_fee",
             label: "运费：",
             render: value => (
-                <div>{parseInt(value) > 0 ? `￥ ${value}` : "免运费"}</div>
+                <div>{parseInt(value, 10) > 0 ? `￥ ${value}` : "免运费"}</div>
             )
         },
         {
@@ -206,6 +217,7 @@ export class OrderDetail extends BaseComponent {
                     title="商品详情"
                     visible={visible}
                     closable={false}
+                    onCancel={this.hideModal}
                     footer={[
                         <Button
                             key="submit"

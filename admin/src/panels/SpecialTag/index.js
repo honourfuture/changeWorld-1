@@ -18,26 +18,26 @@ class ExpandedRowRender extends BaseComponent {
             {
                 title: "排序",
                 dataIndex: "sort",
-                width:'160px',
+                width: "160px",
                 render: (text, record) => this.renderInput(text, record, "sort")
             },
             {
                 title: "　子标签",
                 dataIndex: "name",
-                width:'260px',
+                width: "260px",
                 render: (text, record) => this.renderInput(text, record, "name")
             },
             {
                 title: "启用",
                 dataIndex: "enable",
-                width:'120px',
+                width: "120px",
                 render: (text, record) =>
                     this.renderSwitch(text, record, "enable")
             },
             {
                 title: "更新时间",
                 dataIndex: "updated_at",
-                width:'240px',
+                width: "240px",
                 render: (text, record) =>
                     this.renderText(text, record, "updated_at")
             },
@@ -200,26 +200,26 @@ export default class SpecialTag extends BaseComponent {
             {
                 title: "排序",
                 dataIndex: "sort",
-                width:'160px',
+                width: "160px",
                 render: (text, record) => this.renderInput(text, record, "sort")
             },
             {
                 title: "专辑标签",
                 dataIndex: "name",
-                width:'260px',
+                width: "260px",
                 render: (text, record) => this.renderInput(text, record, "name")
             },
             {
                 title: "启用",
                 dataIndex: "enable",
-                width:'120px',
+                width: "120px",
                 render: (text, record) =>
                     this.renderSwitch(text, record, "enable")
             },
             {
                 title: "更新时间",
                 dataIndex: "updated_at",
-                width:'240px',
+                width: "240px",
                 render: (text, record) =>
                     this.renderText(text, record, "updated_at")
             },
@@ -369,7 +369,7 @@ export default class SpecialTag extends BaseComponent {
             return message.info("请保存后再新建");
         }
         const data = this.store.list.find(
-            item => parseInt(item.id) === parseInt(id)
+            item => parseInt(item.id, 10) === parseInt(id, 10)
         );
         if (data.list.find(item => item.id === 0)) {
             return message.info("请保存后再新建");

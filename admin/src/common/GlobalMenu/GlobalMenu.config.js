@@ -126,7 +126,7 @@ const menuData = [
             },
             {
                 name: "退款/退货",
-                path: "refundMananger"
+                path: "RefundMananger"
             },
             {
                 name: "评价管理",
@@ -236,29 +236,29 @@ const menuData = [
 
     //     ],
     // },
-    {
-        name: "通讯",
-        icon: "global",
-        path: "net",
-        children: [
-            {
-                name: "短信",
-                path: "NetSms"
-            },
-            {
-                name: "邮箱",
-                path: "NetEmail"
-            },
-            {
-                name: "apns",
-                path: "NetApns"
-            },
-            {
-                name: "会员消息",
-                path: "MemberMsgList"
-            }
-        ]
-    },
+    // {
+    //     name: "通讯",
+    //     icon: "global",
+    //     path: "net",
+    //     children: [
+    //         {
+    //             name: "短信",
+    //             path: "NetSms"
+    //         },
+    //         {
+    //             name: "邮箱",
+    //             path: "NetEmail"
+    //         },
+    //         {
+    //             name: "apns",
+    //             path: "NetApns"
+    //         },
+    //         {
+    //             name: "会员消息",
+    //             path: "MemberMsgList"
+    //         }
+    //     ]
+    // },
     {
         name: "手机端",
         icon: "mobile",
@@ -268,10 +268,10 @@ const menuData = [
                 name: "APP版本",
                 path: "AppVersion"
             },
-            {
-                name: "启动图",
-                path: "AppStartManager"
-            },
+            // {
+            //     name: "启动图",
+            //     path: "AppStartManager"
+            // },
             {
                 name: "引导图",
                 path: "AppGuideManager"
@@ -314,10 +314,10 @@ const menuData = [
                 name: "快递公司",
                 path: "ExpressSet"
             },
-            {
-                name: "权限设置",
-                path: "AccessSet"
-            },
+            // {
+            //     name: "权限设置",
+            //     path: "AccessSet"
+            // },
             {
                 name: "日志",
                 path: "SystemLog"

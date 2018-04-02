@@ -47,7 +47,31 @@ import Dashboard from "./Dashboard";
 import AnchorList from './AnchorList';
 import MemberManager from './MemberManager';
 import OrderManager from './OrderManager';
+import RefundMananger from './RefundMananger';
+import EvaluateMananger from './EvaluateMananger';
+import AppVersion from './AppVersion';
+import AppGuideManager from './AppGuideManager';
 export const panelsList = [
+    {
+        path:'/mobile/AppGuideManager',
+        component:AppGuideManager,
+        title:'引导图',
+    },
+    {
+        path:'/mobile/AppVersion',
+        component:AppVersion,
+        title:'APP版本',
+    },
+    {
+        path:'/trade/EvaluateMananger',
+        component:EvaluateMananger,
+        title:'评价管理',
+    },
+    {
+        path:'/trade/RefundMananger',
+        component:RefundMananger,
+        title:'退款/退货',
+    },
     {
         path:'/trade/OrderManager',
         component:OrderManager,

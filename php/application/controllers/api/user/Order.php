@@ -188,6 +188,7 @@ class Order extends API_Controller {
 		$where = [];
 		if(isset($ret['status'][$status])){
 			$where['status'] = $status;
+			$where['refund_status'] = 0;
 		}elseif($status == -1){
 
 		}elseif($status == -2){
@@ -214,17 +215,20 @@ class Order extends API_Controller {
 			foreach($ret['list'] as $item){
 				$a_order_id[] = $item['id'];
 			}
-			$this->load->model('Order_items_model');
-			$this->db->select('id,order_id,goods_id,goods_price,num,freight_fee,goods_attr,name,default_image');
-			$order_item = $this->Order_items_model->get_many_by('order_id', $a_order_id);
-			$k_order_item = [];
-			foreach($order_item as $item){
-				!isset($k_order_item[$item['order_id']]) && $k_order_item[$item['order_id']] = [];
-				$k_order_item[$item['order_id']][] = $item;
-			}
 
-			foreach($ret['list'] as $key=>$item){
-				$ret['list'][$key]['goods'] = $k_order_item[$item['id']];
+			if($a_order_id){
+				$this->load->model('Order_items_model');
+				$this->db->select('id,order_id,goods_id,goods_price,num,freight_fee,goods_attr,name,default_image');
+				$order_item = $this->Order_items_model->get_many_by('order_id', $a_order_id);
+				$k_order_item = [];
+				foreach($order_item as $item){
+					!isset($k_order_item[$item['order_id']]) && $k_order_item[$item['order_id']] = [];
+					$k_order_item[$item['order_id']][] = $item;
+				}
+
+				foreach($ret['list'] as $key=>$item){
+					$ret['list'][$key]['goods'] = $k_order_item[$item['id']];
+				}
 			}
 		}
 

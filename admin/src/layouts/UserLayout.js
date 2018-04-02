@@ -7,7 +7,7 @@
  */
 
 import React from "react";
-import { Link, Route, Redirect, Switch } from "react-router-dom";
+import { Route, Redirect, Switch } from "react-router-dom";
 import DocumentTitle from "react-document-title";
 import { GlobalFooter } from "../common/GlobalFooter";
 import "./UserLayout.less";

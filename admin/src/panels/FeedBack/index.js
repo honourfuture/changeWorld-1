@@ -1,17 +1,16 @@
-import React from 'react';
-import {action} from 'mobx';
-import {BaseComponent,Base,Global} from '../../common';
-import { Table, Input, Popconfirm, Spin,Button } from "antd";
-import {remove} from 'lodash';
-import './FeedBack.less';
+import React from "react";
+import { action } from "mobx";
+import { BaseComponent, Base, Global } from "../../common";
+import { Table, Input, Spin } from "antd";
+import "./FeedBack.less";
 
-export default class FeedBack extends BaseComponent{
-	store={
-		list: [],
+export default class FeedBack extends BaseComponent {
+    store = {
+        list: [],
         user: {},
-        total: 1,
-	}
-	constructor(props) {
+        total: 1
+    };
+    constructor(props) {
         super(props);
         this.columns = [
             {
@@ -24,7 +23,8 @@ export default class FeedBack extends BaseComponent{
                 title: "反馈内容",
                 dataIndex: "content",
                 width: "10%",
-                render: (text, record) => this.renderText(text, record, "content")
+                render: (text, record) =>
+                    this.renderText(text, record, "content")
             },
             {
                 title: "反馈人",
@@ -37,8 +37,7 @@ export default class FeedBack extends BaseComponent{
                 title: "反馈图片",
                 dataIndex: "photos",
                 width: "10%",
-                render: (text, record) =>
-                    this.renderImg(text, record, "photos")
+                render: (text, record) => this.renderImg(text, record, "photos")
             },
             {
                 title: "反馈时间",
@@ -46,7 +45,7 @@ export default class FeedBack extends BaseComponent{
                 width: "10%",
                 render: (text, record) =>
                     this.renderText(text, record, "updated_at")
-            },
+            }
         ];
     }
     renderStoreInfo(text, record, column) {
@@ -59,14 +58,17 @@ export default class FeedBack extends BaseComponent{
     }
     renderImg(text, record, column) {
         const { photos } = record;
-        let backPhotos = (photos || []).map((item,key)=>{
-        	return <img className="feedImg" src={Base.getImgUrl(item)} key={key} alt=""/>
-        })
-        return (
-        	<div className="feedCont">
-            	{backPhotos}
-        	</div>
-        );
+        let backPhotos = (photos || []).map((item, key) => {
+            return (
+                <img
+                    className="feedImg"
+                    src={Base.getImgUrl(item)}
+                    key={key}
+                    alt=""
+                />
+            );
+        });
+        return <div className="feedCont">{backPhotos}</div>;
     }
     renderInput(text, record, column) {
         const { editable } = record;
@@ -103,7 +105,7 @@ export default class FeedBack extends BaseComponent{
                 per_page: Global.PAGE_SIZE
             },
             res => {
-                const { list, user ,count} = res.data;
+                const { list, user, count } = res.data;
                 this.store.list = list;
                 this.store.user = user;
                 this.store.total = count;
@@ -115,14 +117,14 @@ export default class FeedBack extends BaseComponent{
     componentDidMount() {
         this.requestData();
     }
-	render(){
-		let { list, total } = this.store;
+    render() {
+        let { list, total } = this.store;
         const showList = list.filter(item => {
             return parseInt(item.deleted, 10) === 0;
         });
-		return (
-			<Spin ref="spin" wrapperClassName="FeedBack" spinning={false}>
-				<Table
+        return (
+            <Spin ref="spin" wrapperClassName="FeedBack" spinning={false}>
+                <Table
                     className="mt16"
                     bordered
                     onChange={this.onTableHandler}
@@ -135,7 +137,7 @@ export default class FeedBack extends BaseComponent{
                         defaultPageSize: Global.PAGE_SIZE
                     }}
                 />
-			</Spin>
-		)
-	}
-};
+            </Spin>
+        );
+    }
+}
