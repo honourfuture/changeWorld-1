@@ -1,7 +1,7 @@
 import React from "react";
 import { action } from "mobx";
 import { BaseComponent, Base, Global } from "../../common";
-import { Table, Button, Input, message } from "antd";
+import { Table, Button, Input } from "antd";
 import "./ExpList.less";
 
 const Search = Input.Search;

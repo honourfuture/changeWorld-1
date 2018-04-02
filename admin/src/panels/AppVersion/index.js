@@ -130,7 +130,7 @@ export default class AppVersion extends BaseComponent {
         return (
             <div>
                 {editable ? (
-                    parseInt(platform) === 0 ? (
+                    parseInt(platform, 10) === 0 ? (
                         <Input
                             style={{ margin: "-5px 0" }}
                             value={text}
@@ -207,7 +207,7 @@ export default class AppVersion extends BaseComponent {
         );
     }
     renderSelect(text, record, column) {
-        const value = parseInt(record[column]) || 0;
+        const value = parseInt(record[column], 10) || 0;
         const { platform } = this;
         return (
             <div>
@@ -325,7 +325,7 @@ export default class AppVersion extends BaseComponent {
                 mod: "admin"
             },
             res => {
-                const { list, count, platform } = res.data;
+                const { list, platform } = res.data;
                 this.platform = platform;
                 this.store.list = list;
                 this.cacheData = list.map(item => ({ ...item }));

@@ -87,7 +87,7 @@ export default class AnchorList extends BaseComponent {
                     const { id, status } = record;
                     return (
                         <div className="editable-row-operations">
-                            {parseInt(status) !== 0 ? (
+                            {parseInt(status, 10) !== 0 ? (
                                 <span>
                                     <span>{this.status[status]}</span>
                                     <a

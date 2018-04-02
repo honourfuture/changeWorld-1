@@ -7,14 +7,15 @@ import {
     Popconfirm,
     Switch,
     Button,
+    Spin,
     message,
     Upload,
     Icon
 } from "antd";
-import "./ExpLvSet.less";
 import { remove } from "lodash";
+import "./AppGuideManager.less";
 
-export class ExpLvSet extends BaseComponent {
+export default class AppGuideManager extends BaseComponent {
     store = {
         list: []
     };
@@ -22,39 +23,29 @@ export class ExpLvSet extends BaseComponent {
         super(props);
         this.columns = [
             {
-                title: "会员等级",
-                dataIndex: "grade_name",
+                title: "排序",
+                dataIndex: "sort",
                 width: "10%",
-                render: (text, record) =>
-                    this.renderInput(text, record, "grade_name")
+                render: (text, record) => this.renderInput(text, record, "sort")
             },
             {
-                title: "晋级值",
-                dataIndex: "grade_demand",
-                width: "10%",
-                render: (text, record) =>
-                    this.renderInput(text, record, "grade_demand")
+                title: "图片",
+                dataIndex: "url",
+                width: "40%",
+                render: (text, record) => this.renderImg(text, record, "url")
             },
             {
-                title: "等级图",
-                dataIndex: "grade_logo",
-                width: "10%",
+                title: "更新时间",
+                dataIndex: "updated_at",
+                width: "16%",
                 render: (text, record) =>
-                    this.renderImg(text, record, "grade_logo")
-            },
-            {
-                title: "启用",
-                dataIndex: "enable",
-                width: "10%",
-                render: (text, record) =>
-                    this.renderSwitch(text, record, "enable")
+                    this.renderText(text, record, "updated_at")
             },
             {
                 title: "操作",
                 dataIndex: "operation",
-                width: "15%",
                 render: (text, record) => {
-                    const { editable, id } = record;
+                    const { id, editable } = record;
                     return (
                         <div className="editable-row-operations">
                             {editable ? (
@@ -79,7 +70,7 @@ export class ExpLvSet extends BaseComponent {
                                         }
                                     >
                                         编辑
-                                    </a>&nbsp;&nbsp;
+                                    </a>
                                     <Popconfirm
                                         title="确认删除?"
                                         okText="确定"
@@ -97,7 +88,7 @@ export class ExpLvSet extends BaseComponent {
         ];
     }
     renderImg(text, record, column) {
-        const { editable, grade_logo, loading } = record;
+        const { url, loading, editable } = record;
         return (
             <div>
                 {editable ? (
@@ -109,12 +100,16 @@ export class ExpLvSet extends BaseComponent {
                         action={Global.UPLOAD_URL}
                         onChange={e => this.onUploadChange(e, record.id)}
                     >
-                        {grade_logo ? (
-                            <img
-                                className="img-uploader"
-                                src={grade_logo}
-                                alt=""
-                            />
+                        {url ? (
+                            loading ? (
+                                <Icon type="loading" />
+                            ) : (
+                                <img
+                                    className="guide-img"
+                                    src={Base.getImgUrl(url)}
+                                    alt=""
+                                />
+                            )
                         ) : (
                             <div>
                                 <Icon type={loading ? "loading" : "plus"} />
@@ -124,13 +119,16 @@ export class ExpLvSet extends BaseComponent {
                     </Upload>
                 ) : (
                     <img
-                        className="img-uploader"
-                        src={`${Global.RES_URL}${grade_logo}`}
+                        className="guide-img"
+                        src={Base.getImgUrl(url)}
                         alt=""
                     />
                 )}
             </div>
         );
+    }
+    renderText(text, record, column) {
+        return <div>{record[column]}</div>;
     }
     renderInput(text, record, column) {
         const { editable } = record;
@@ -140,7 +138,6 @@ export class ExpLvSet extends BaseComponent {
                     <Input
                         style={{ margin: "-5px 0" }}
                         value={text}
-                        type={column === "sort" ? "number" : "text"}
                         onChange={e =>
                             this.onEditChange(record.id, e.target.value, column)
                         }
@@ -161,7 +158,6 @@ export class ExpLvSet extends BaseComponent {
             />
         );
     }
-    //上传
     @action.bound
     onUploadChange(info, id) {
         const list = this.store.list.slice();
@@ -169,14 +165,13 @@ export class ExpLvSet extends BaseComponent {
         if (info.file.status === "uploading") {
             itemData.loading = true;
             return (this.store.list = list);
-        }
-        if (info.file.status === "done") {
+        } else if (info.file.status === "done") {
             itemData.loading = false;
-            itemData.image = info.file.response.data.file_url;
+            itemData.url = info.file.response.data.file_url;
             return (this.store.list = list);
         }
     }
-    //编辑
+    //内容编辑
     @action.bound
     onEditChange(id, value, column) {
         const list = this.store.list.slice();
@@ -184,15 +179,50 @@ export class ExpLvSet extends BaseComponent {
         itemData[column] = value;
         this.store.list = list;
     }
+    //删除
+    @action.bound
+    onDelete(id) {
+        Base.POST(
+            { act: "app_map", op: "save", mod: "admin", id, deleted: "1" },
+            () => remove(this.store.list, item => id === item.id),
+            this
+        );
+    }
+    //取消
+    @action.bound
+    onCancel(id) {
+        this.store.list = this.cacheData.map(item => ({ ...item }));
+    }
+    @action.bound
+    onAdd() {
+        if (this.store.list.find(item => item.id === 0)) {
+            return message.info("请保存后再新建");
+        }
+        this.store.list.unshift({
+            id: 0,
+            sort: "0",
+            editable: true,
+            deleted: "0",
+            url: ""
+        });
+    }
+    //设置内容
+    @action.bound
+    onCompleteEdit(content, id) {
+        const list = this.store.list.slice();
+        const itemData = list.find(item => id === item.id);
+        itemData.content = content;
+        this.onSave(id);
+    }
     //保存
     @action.bound
     onSave(id) {
         const list = this.store.list.slice();
         const itemData = list.find(item => id === item.id);
-        itemData.editable = false;
         Base.POST(
-            { act: "grade", op: "save", mod: "admin", ...itemData },
+            { act: "app_map", op: "save", mod: "admin", ...itemData },
             res => {
+                itemData.editable = false;
                 itemData.updated_at = Base.getTimeFormat(
                     new Date().getTime() / 1000,
                     2
@@ -204,57 +234,18 @@ export class ExpLvSet extends BaseComponent {
             this
         );
     }
-    //是否启用
-    @action.bound
-    onSwitch(id, value, column) {
-        const list = this.store.list.slice();
-        const itemData = list.find(item => id === item.id);
-        itemData[column] = value;
-        this.onSave(id);
-    }
-    //取消
-    @action.bound
-    onCancel(id) {
-        this.store.list = this.cacheData.map(item => ({ ...item }));
-    }
-    //删除
-    @action.bound
-    onDelete(id) {
-        Base.POST(
-            { act: "grade", op: "save", mod: "admin", id, deleted: "1" },
-            () => remove(this.store.list, item => id === item.id),
-            this
-        );
-    }
-    //添加
-    @action.bound
-    onAdd() {
-        if (this.store.list.find(item => item.id === 0)) {
-            return message.info("请保存后再新建");
-        }
-        this.store.list.unshift({
-            id: "",
-            grade_name: "",
-            grade_demand: "",
-            grade_logo: "",
-            editable: true,
-            deleted: "0",
-            enable: "1"
-        });
-    }
     @action.bound
     requestData() {
-        Base.POST(
+        Base.GET(
             {
-                act: "grade",
+                act: "app_map",
                 op: "index",
-                mod: "admin",
-                cur_page: this.current || 1,
-                per_page: Global.PAGE_SIZE
+                mod: "admin"
             },
             res => {
-                this.store.list = res.data;
-                this.cacheData = res.data.map(item => ({ ...item }));
+                const { list } = res.data;
+                this.store.list = list;
+                this.cacheData = list.map(item => ({ ...item }));
             },
             this
         );
@@ -264,22 +255,25 @@ export class ExpLvSet extends BaseComponent {
     }
     render() {
         let { list } = this.store;
-        const showList = list.filter(item => {
-            return parseInt(item.deleted, 10) === 0;
-        });
+        const showList = list.slice();
         return (
-            <div className="ExpLvSet">
-                <Button onClick={this.onAdd}>新增+</Button>
+            <Spin
+                ref="spin"
+                wrapperClassName="AppGuideManager"
+                spinning={false}
+            >
+                <div className="pb10">
+                    <Button onClick={this.onAdd}>新增+</Button>
+                </div>
                 <Table
                     className="mt16"
                     bordered
-                    onChange={this.onTableHandler}
                     dataSource={showList}
                     rowKey="id"
                     columns={this.columns}
-                    pagination={false}
+                    pagination={{ hideOnSinglePage: true }}
                 />
-            </div>
+            </Spin>
         );
     }
 }

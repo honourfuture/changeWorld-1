@@ -67,7 +67,9 @@ export class OrderDetail extends BaseComponent {
         {
             key: "has_e_invoice",
             label: "发票：",
-            render: value => <div>{parseInt(value) ? "需要" : "不需要"}</div>
+            render: value => (
+                <div>{parseInt(value, 10) ? "需要" : "不需要"}</div>
+            )
         },
         {
             key: "message",
@@ -99,7 +101,7 @@ export class OrderDetail extends BaseComponent {
             key: "freight_fee",
             label: "运费：",
             render: value => (
-                <div>{parseInt(value) > 0 ? `￥ ${value}` : "免运费"}</div>
+                <div>{parseInt(value, 10) > 0 ? `￥ ${value}` : "免运费"}</div>
             )
         },
         {

@@ -1,34 +1,11 @@
 import React from "react";
 import { action } from "mobx";
 import { BaseComponent, Base, Global } from "../../common";
-import {
-    Table,
-    Input,
-    Popconfirm,
-    Switch,
-    Button,
-    Spin,
-    message,
-    Select,
-    Form
-} from "antd";
-import { remove } from "lodash";
+import { Table, Input, Spin, Select, Form } from "antd";
 import { OrderDetail } from "../../components/OrderDetail";
 import "./OrderManager.less";
 const Search = Input.Search;
 const Option = Select.Option;
-const FormItem = Form.Item;
-
-const formItemLayout = {
-    labelCol: {
-        xs: { span: 24 },
-        sm: { span: 8 }
-    },
-    wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 }
-    }
-};
 
 export default class OrderManager extends BaseComponent {
     store = {

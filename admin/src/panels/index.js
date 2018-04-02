@@ -50,7 +50,13 @@ import OrderManager from './OrderManager';
 import RefundMananger from './RefundMananger';
 import EvaluateMananger from './EvaluateMananger';
 import AppVersion from './AppVersion';
+import AppGuideManager from './AppGuideManager';
 export const panelsList = [
+    {
+        path:'/mobile/AppGuideManager',
+        component:AppGuideManager,
+        title:'引导图',
+    },
     {
         path:'/mobile/AppVersion',
         component:AppVersion,

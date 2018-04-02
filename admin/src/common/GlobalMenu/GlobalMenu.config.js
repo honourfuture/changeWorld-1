@@ -314,10 +314,10 @@ const menuData = [
                 name: "快递公司",
                 path: "ExpressSet"
             },
-            {
-                name: "权限设置",
-                path: "AccessSet"
-            },
+            // {
+            //     name: "权限设置",
+            //     path: "AccessSet"
+            // },
             {
                 name: "日志",
                 path: "SystemLog"
