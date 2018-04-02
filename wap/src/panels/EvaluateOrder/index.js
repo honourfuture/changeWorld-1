@@ -26,7 +26,13 @@ class EvaluateOrder extends BaseComponent {
     }
     @action.bound
     onChange = (files, type, index) => {
-        this.store.files = files;
+        if(type === 'add'){
+            const requestFile = files[files.length - 1];
+            Base.POST({act:'common',op:'base64FileUpload',base64_image_content:requestFile.url},(res)=>{
+                requestFile.file_url = res.data.file_url;
+                this.store.files = files;
+            });
+        }
     }
     @action.bound
     submitHandler(){
@@ -34,12 +40,8 @@ class EvaluateOrder extends BaseComponent {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 values.is_anonymous = values.is_anonymous ? values.is_anonymous : this.store.is_anonymous;
-                let arrImg = {};
-                this.store.files.map((item,key)=>{
-                    arrImg[key] = item.url;
-                });
-                values.photos = arrImg;
-                Base.POST({ act: "order_action", op: "buyer",mod:'user',order_id:id,action:'evaluate',...values}, res => {
+                const goodsImg = this.store.files.map(item=>item.file_url);
+                Base.POST({ act: "order_action", op: "buyer",mod:'user',order_id:id,action:'evaluate',photos:JSON.stringify(goodsImg),...values}, res => {
                     Toast.info(`评价成功！`, 1);
                     setTimeout(()=>{
                         Base.goBack();
