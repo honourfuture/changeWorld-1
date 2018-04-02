@@ -26,13 +26,7 @@ class EvaluateOrder extends BaseComponent {
     }
     @action.bound
     onChange = (files, type, index) => {
-        if(type === 'add'){
-            const requestFile = files[files.length - 1];
-            Base.POST({act:'common',op:'base64FileUpload',base64_image_content:requestFile.url},(res)=>{
-                requestFile.file_url = res.data.file_url;
-                this.store.files = files;
-            })
-        }
+        this.store.files = files;
     }
     @action.bound
     submitHandler(){
@@ -42,7 +36,7 @@ class EvaluateOrder extends BaseComponent {
                 values.is_anonymous = values.is_anonymous ? values.is_anonymous : this.store.is_anonymous;
                 let arrImg = {};
                 this.store.files.map((item,key)=>{
-                    arrImg[key] = item.file_url;
+                    arrImg[key] = item.url;
                 });
                 values.photos = arrImg;
                 Base.POST({ act: "order_action", op: "buyer",mod:'user',order_id:id,action:'evaluate',...values}, res => {

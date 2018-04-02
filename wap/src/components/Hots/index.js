@@ -49,7 +49,6 @@ export class Hots extends BaseComponent {
     }
     @action.bound
     renderGoodsItem(rowData, sectionID, rowID) {
-        console.log(rowData);
         return <GoodsItem {...rowData} />;
     }
     @action.bound
@@ -70,9 +69,7 @@ export class Hots extends BaseComponent {
                         ? [].concat(goods)
                         : this.store.goods.concat(goods);
                 this.store.refreshing = false;
-                console.log(goods.length,"requestData");
                 this.store.isLoading = goods.length > 0;
-                console.log(this.store.isLoading,"requestData");
                 if (goods.length > 0) {
                     this.cur_page++;
                 }
