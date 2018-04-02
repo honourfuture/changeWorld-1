@@ -49,7 +49,13 @@ import MemberManager from './MemberManager';
 import OrderManager from './OrderManager';
 import RefundMananger from './RefundMananger';
 import EvaluateMananger from './EvaluateMananger';
+import AppVersion from './AppVersion';
 export const panelsList = [
+    {
+        path:'/mobile/AppVersion',
+        component:AppVersion,
+        title:'APP版本',
+    },
     {
         path:'/trade/EvaluateMananger',
         component:EvaluateMananger,
