@@ -72,7 +72,7 @@ class Room_model extends MY_Model
 
             foreach($live as $key=>$item){
                 isset($k_user[$item['anchor_uid']]) && $live[$key] = array_merge($live[$key], $k_user[$item['anchor_uid']]);
-                isset($k_tag[$item['live_tag_id']]) && $live[$key] = array_merge($live[$key], $k_user[$item['anchor_uid']]);
+                isset($k_tag[$item['live_tag_id']]) && $live[$key] = array_merge($live[$key], $k_tag[$item['live_tag_id']]);
             }
         }
 
