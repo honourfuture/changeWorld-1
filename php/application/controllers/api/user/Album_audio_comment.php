@@ -10,6 +10,87 @@ class Album_audio_comment extends API_Controller {
 	public function __construct()
     {
         parent::__construct();
+
+        $this->reply['per_page'] = $this->per_page;
+    	$this->reply['offset'] = $this->offset;
+    }
+
+    /**
+	 * @api {get} /api/user/album_audio_comment/view 音频-评论详情
+	 * @apiVersion 1.0.0
+	 * @apiName album_audio_comment_view
+	 * @apiGroup user
+	 *
+	 * @apiSampleRequest /api/user/album_audio_comment/view
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 * @apiParam {String} cid 评论ID
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *     "data": {
+	 *         "id": "1",
+	 *         "user_id": "1",
+	 *         "comment": "双击666",
+	 *         "created_at": "2018-04-02 11:03:41",
+	 *         "header": "/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png",
+	 *         "nickname": "aicode",
+	 *         "likes": 0,
+	 *         "has_likes": 0,
+	 *         "reply": {
+	 *             "count": 2,
+	 *             "list": [
+	 *                 {
+	 *                     "id": "3",
+	 *                     "user_id": "1",
+	 *                     "comment": "送飞机、航母",
+	 *                     "created_at": "2018-04-02 13:11:39",
+	 *                     "header": "/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png",
+	 *                     "nickname": "aicode"
+	 *                 },
+	 *                 {
+	 *                     "id": "2",
+	 *                     "user_id": "1",
+	 *                     "comment": "双击666",
+	 *                     "created_at": "2018-04-02 12:51:39",
+	 *                     "header": "/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png",
+	 *                     "nickname": "aicode"
+	 *                 }
+	 *             ]
+	 *         }
+	 *     },
+	 *     "status": 0,
+	 *     "message": "成功"
+	 * }
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+    public function view()
+    {
+    	$cid = (int)$this->input->get_post('cid');
+		if(! $cid){
+			$this->ajaxReturn([], 1, '评论ID错误');
+		}
+
+    	$this->select = 'id,user_id,comment,created_at';
+    	$result = $this->comment(['pid' => $cid]);
+    	if($result['list']){
+    		$ret = $result['list'][0];
+    	}else{
+    		$ret = [];
+    	}
+
+		$this->ajaxReturn($ret);
     }
 
     protected function comment($where = [])
@@ -25,7 +106,18 @@ class Album_audio_comment extends API_Controller {
 		$this->load->model('Album_audio_comment_model');
 		$this->load->model('Album_audio_comment_likes_model');
 
-		$where['album_id'] = $audio['album_id'];
+		$pid = isset($where['pid']) ? $where['pid'] : NULL;
+
+		if(is_null($pid)){
+			$where['album_id'] = $audio['album_id'];
+		}else{
+			if($pid){
+				$where = ['id' => $pid];
+			}else{
+				$where['album_id'] = $audio['album_id'];
+			}
+		}
+
 		$order_by = array('id' => 'desc');
 		$result['count'] = $this->Album_audio_comment_model->count_by($where);
 		if($result['count']){
@@ -40,7 +132,7 @@ class Album_audio_comment extends API_Controller {
 				$item['user_id'] && $a_uid[] = $item['user_id'];
 
 				//回复列表
-				if(isset($where['pid'])){
+				if(! is_null($pid)){
 					//点赞数
 					$result['list'][$key]['likes'] = $this->Album_audio_comment_likes_model->count_by(['cid' => $item['id']]);
 					//是否点赞
@@ -50,8 +142,8 @@ class Album_audio_comment extends API_Controller {
 					$result['list'][$key]['reply'] = ['count' => 0, 'list' => []];
 					$result['list'][$key]['reply']['count'] = $this->Album_audio_comment_model->count_by(['pid' => $item['id']]);
 					if($result['list'][$key]['reply']['count']){
-						$this->db->select('user_id,comment');
-						$result['list'][$key]['reply']['list'] = $this->Album_audio_comment_model->order_by($order_by)->limit(3, 0)->get_many_by(['pid' => $item['id']]);
+						$this->db->select('id,user_id,comment,created_at');
+						$result['list'][$key]['reply']['list'] = $this->Album_audio_comment_model->order_by($order_by)->limit($this->reply['per_page'], $this->reply['offset'])->get_many_by(['pid' => $item['id']]);
 						foreach($result['list'][$key]['reply']['list'] as $key_reply=>$item_reply){
 							$result['list'][$key]['reply']['list'][$key_reply]['header'] = '';
 							$result['list'][$key]['reply']['list'][$key_reply]['nickname'] = '';
@@ -167,6 +259,8 @@ class Album_audio_comment extends API_Controller {
     public function index()
     {
     	$this->select = 'id,user_id,comment,created_at';
+    	$this->reply['per_page'] = 3;
+    	$this->reply['offset'] = 0;
     	$ret = $this->comment(['pid' => 0]);
 
 		$this->ajaxReturn($ret);
