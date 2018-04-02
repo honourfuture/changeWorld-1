@@ -109,7 +109,7 @@ export default class EvaluateMananger extends BaseComponent {
         if (photos.length > 0) {
             return (
                 <div
-                    onClick={this.onToggleModal}
+                    onClick={() => this.onToggleModal(record.id)}
                     style={{ textAlign: "center" }}
                 >
                     <img
@@ -133,8 +133,12 @@ export default class EvaluateMananger extends BaseComponent {
     }
     @action.bound
     onToggleModal(id) {
-        const itemData = this.store.list.find(item => item.id === id);
-        this.store.imgList = JSON.parse(itemData.photos);
+        if (id) {
+            const itemData = this.store.list.find(item => item.id === id);
+            this.store.imgList = JSON.parse(itemData.photos);
+        } else {
+            this.store.imgList = [];
+        }
     }
     @action.bound
     onTableHandler({ current, pageSize }) {
@@ -203,12 +207,12 @@ export default class EvaluateMananger extends BaseComponent {
                         title="评价图片"
                         visible={!!imgList.length}
                         closable={false}
-                        onCancel={this.onToggleModal}
+                        onCancel={() => this.onToggleModal()}
                         footer={[
                             <Button
                                 key="submit"
                                 type="primary"
-                                onClick={this.onToggleModal}
+                                onClick={() => this.onToggleModal()}
                             >
                                 确认
                             </Button>
