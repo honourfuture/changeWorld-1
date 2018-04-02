@@ -30,17 +30,20 @@ class Express extends API_Controller {
 	 * @apiSuccess {Object[]} data 接口数据集
 	 * @apiSuccess {String} data.id 快递公司唯一ID
 	 * @apiSuccess {String} data.name 快递公司名称
+	 * @apiSuccess {String} data.com 快递公司代码
 	 *
 	 * @apiSuccessExample {json} Success-Response:
 	 * {
 	 *	    "data": [
 	 *	        {
 	 *	            "id": "1",
-	 *	            "name": "热门"
+	 *	            "name": "热门",
+	 *	            "com": "yuantong"
 	 *	        },
 	 *	        {
 	 *	            "id": "2",
-	 *	            "name": "靓号"
+	 *	            "name": "靓号",
+	 *	            "com": "yuantong"
 	 *	        }
 	 *	    ],
 	 *	    "status": 0,
@@ -64,7 +67,7 @@ class Express extends API_Controller {
 			$where['status'] = $status;
 		}
 		if($this->user_id){
-			$this->db->select('id,name');
+			$this->db->select('id,name,com');
 		}
 		$order_by = array('sort' => 'desc', 'id' => 'desc');
 		$ret = $this->Express_model->order_by($order_by)->get_many_by($where);
@@ -95,6 +98,7 @@ class Express extends API_Controller {
 	 * @apiParam {Number} deleted 是否删除 1是 0否（为1时其他字段可不传）
 	 * @apiParam {Number} status 状态 0初始化 1常用 其他
 	 * @apiParam {String} pinyin 拼音首字母
+	 * @apiParam {String} com 快递公司代码
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -121,7 +125,7 @@ class Express extends API_Controller {
 		if($id){
 			$params = elements(
 				array(
-					'name', 'sort', 'status', 'pinyin', 'deleted', 'enable'
+					'name', 'sort', 'status', 'pinyin', 'deleted', 'enable', 'com'
 				),
 				$this->input->post(),
 				UPDATE_VALID
@@ -141,7 +145,7 @@ class Express extends API_Controller {
 		}else{
 			$params = elements(
 				array(
-					'name', 'sort', 'status', 'pinyin'
+					'name', 'sort', 'status', 'pinyin', 'com'
 				),
 				$this->input->post(),
 				UPDATE_VALID
@@ -177,6 +181,9 @@ class Express extends API_Controller {
 				}
 				if($params['pinyin'] === '' || $params['pinyin'] == UPDATE_VALID){
 					$this->ajaxReturn([], 501, '拼音首字母必填');
+				}
+				if($params['com'] === '' || $params['com'] == UPDATE_VALID){
+					$this->ajaxReturn([], 501, '快递公司代码必填');
 				}
 				break;
 			case 'edit':
