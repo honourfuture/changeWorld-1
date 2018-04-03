@@ -119,7 +119,7 @@ class Recharge extends API_Controller {
             'body' => '猪买单充值中心-会员充值',
             'out_trade_no' => $this->Users_recharge_model->make_order_sn($this->user_id),
             'total_fee' => $params['payment_id'] == 0 ? $params['amount'] * 100 : $params['amount'],
-            'notify_url' => $params['payment_id'] == 0 ? site_url('/notify/wechat_recharge') : site_url('/notify/alipay_recharge'),
+            'notify_url' => $params['payment_id'] == 0 ? site_url('/api/notify/wechat_recharge') : site_url('/api/notify/alipay_recharge'),
             'trade_type' => 'APP'
         ]);
 
