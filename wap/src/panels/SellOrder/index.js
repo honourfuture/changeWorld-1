@@ -62,8 +62,9 @@ class OrderItem extends BaseComponent {
             case 3://待收货
                 btns = <OrderBtn 
                             btnTxt={["查看物流","联系顾客"]} 
-                            oneCallBack={()=>console.log('查看物流')} 
-                            isDouble={1} 
+                            oneCallBack={()=>Base.push('ExLog',{id:id})} 
+                            twoCallBack={()=>console.log('联系顾客')}
+                            isDouble={2} 
                         />;
             break;
             case 4://待评价
@@ -141,6 +142,7 @@ export default class SellOrder extends BaseComponent{
             act: "user", 
             op:"order",
             status:this.store.curPage,
+            is_seller:1,
             cur_page: this.cur_page || 1,
             per_page: Global.PAGE_SIZE
         }, res => {
