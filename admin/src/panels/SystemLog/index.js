@@ -25,10 +25,10 @@ export default class SystemLog extends BaseComponent {
             },
             {
                 title: "操作账号",
-                dataIndex: "account",
+                dataIndex: "admin_account",
                 width: "10%",
                 render: (text, record) =>
-                    this.renderText(text, record, "account")
+                    this.renderText(text, record, "admin_account")
             },
             {
                 title: "操作描述",
@@ -67,8 +67,9 @@ export default class SystemLog extends BaseComponent {
     requestData() {
         Base.GET(
             {
-                act: "action_log",
+                act: "admin_log",
                 op: "index",
+                mod: "admin",
                 account: this.searchStr || "",
                 cur_page: this.current || 1,
                 per_page: Global.PAGE_SIZE
