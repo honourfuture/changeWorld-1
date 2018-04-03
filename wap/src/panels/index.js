@@ -31,7 +31,13 @@ import EvaluateList from "./EvaluateList";
 import SellOrder from "./SellOrder";
 import ApplyInvoice from "./ApplyInvoice";
 import AfterMarket from "./AfterMarket";
+import Statistics from './Statistics';
 export const panelsList = [
+    {
+        path:'/Statistics',
+        component:Statistics,
+        title:'数据统计',
+    },
     {
         path: "/AfterMarket",
         component: AfterMarket,

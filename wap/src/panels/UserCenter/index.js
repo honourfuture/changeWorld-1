@@ -36,7 +36,9 @@ export default class UserCenter extends BaseComponent {
             buyerItems.push(
                 <Flex.Item
                     key={index}
-                    onClick={() => Base.push("MyOrder", { index: key,pageNum:index+1 })}
+                    onClick={() =>
+                        Base.push("MyOrder", { index: key, pageNum: index + 1 })
+                    }
                     className="Item"
                     align="center"
                 >
@@ -52,7 +54,12 @@ export default class UserCenter extends BaseComponent {
             sellerItems.push(
                 <Flex.Item
                     key={index}
-                    onClick={() => Base.push("SellOrder", { index: key,pageNum:index+1 })}
+                    onClick={() =>
+                        Base.push("SellOrder", {
+                            index: key,
+                            pageNum: index + 1
+                        })
+                    }
                     className="Item"
                     align="center"
                 >
@@ -147,7 +154,9 @@ export default class UserCenter extends BaseComponent {
                             <div>
                                 <Item
                                     arrow="horizontal"
-                                    onClick={() => Base.push("ProductIssue")}
+                                    onClick={() =>
+                                        Base.pushApp("openShopAuthView")
+                                    }
                                 >
                                     产品发布
                                 </Item>
@@ -164,7 +173,7 @@ export default class UserCenter extends BaseComponent {
                     <List className="baseItem">
                         <Item
                             arrow="horizontal"
-                            onClick={() => Base.push("MyOrder")}
+                            onClick={() => Base.push("Statistics")}
                         >
                             数据统计
                         </Item>

@@ -12,6 +12,7 @@ import { Component } from "react";
 import Global from "./global";
 import { Toast } from "antd-mobile";
 import reqwest from "reqwest";
+import Store from "store";
 import "./base.less";
 useStrict(true);
 window.HISTORY_LENGHT = 0;
@@ -75,13 +76,12 @@ export const Base = {
     },
     //进入App页面
     pushApp(path, params) {
-        if (window.webkit && window.webkit.messageHandlers) {
-            window.webkit.messageHandlers.openModule.postMessage({
-                moduleName: path,
-                params: params || {}
-            });
-        } else {
-            this.push(path, params);
+        console.log(path, params ? params : "");
+        if (window.JKEventHandler) {
+            window.JKEventHandler.callNativeFunction(
+                path,
+                params ? params : ""
+            );
         }
     },
     //获取页面传来的参数
@@ -113,8 +113,10 @@ export const Base = {
         let s_requestUrl = `${Global.API_URL}/${mod}${o_param["act"]}/${
             o_param["op"]
         }`;
-        o_param.sign = "51409079b103509bed505b276f27717c";
-        o_param.user_id = 1;
+        const { sign, user_id } = this.getLocalData("user_verify_data") || {};
+        console.log(sign, user_id);
+        o_param.sign = sign || "51409079b103509bed505b276f27717c";
+        o_param.user_id = user_id || 1;
         delete o_param["act"];
         delete o_param["op"];
         if (o_param.mod) {
@@ -216,6 +218,26 @@ export const Base = {
     },
     getImgUrl(img) {
         return `${Global.RES_URL}${img}`;
+    },
+    //获取本地数据
+    getLocalData(s_storageName, s_key) {
+        let o_data = Store.get(s_storageName);
+        return o_data && s_key ? o_data[s_key] : o_data;
+    },
+    //设置本地数据
+    setLocalData(s_storageName, u_value, s_key) {
+        let o_data = Store.get(s_storageName);
+        if (s_key) {
+            o_data = o_data || {};
+            o_data[s_key] = u_value;
+        } else {
+            o_data = u_value;
+        }
+        Store.set(s_storageName, o_data);
+    },
+    //清除本地数据
+    removeLocalData(s_storageName) {
+        Store.remove(s_storageName);
     }
     // //监听事件
     // addEvt(name,func){
@@ -231,6 +253,10 @@ export const Base = {
     // }
 };
 window.goBack = Base.goBack;
+const { sign, user_id } = Base.getPageParams();
+if (sign && user_id) {
+    Base.setLocalData("user_verify_data", { sign, user_id });
+}
 //基础组件，内置store
 @observer
 export class BaseComponent extends Component {
