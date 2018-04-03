@@ -58,7 +58,7 @@ class OrderItem extends BaseComponent {
             break;
             case 2://代发货
                 btns = <OrderBtn 
-                            btnTxt={["申请退款","联系商家"]} 
+                            btnTxt={["退款/退货","联系商家"]} 
                             oneCallBack={()=>Base.push('AfterMarket',{id:id})} 
                             twoCallBack={()=>console.log('联系商家')}
                             isDouble={2} 
