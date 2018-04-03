@@ -152,6 +152,7 @@ export default class MyOrder extends BaseComponent {
             act: "user", 
             op:"order",
             status:this.store.curPage,
+            is_seller:0,
             cur_page: this.cur_page || 1,
             per_page: Global.PAGE_SIZE
         }, res => {

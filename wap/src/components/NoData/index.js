@@ -10,9 +10,12 @@ export class NoData extends BaseComponent {
             <div className="NoData">
                 <img src={img} alt="" />
                 <div>{label}</div>
-                <Button onClick={onClick} size="small" inline type="ghost">
-                    {btnLabel}
-                </Button>
+                {
+                    Boolean(btnLabel) ?<Button onClick={onClick} size="small" inline type="ghost">
+                                            {btnLabel}
+                                        </Button> : ''
+                }
+                
             </div>
         );
     }
