@@ -9,8 +9,8 @@ const Step = Steps.Step;
 export default class ExLog extends BaseComponent{
 	store = {
 		list:[],
-		orderNo:2017072719315,
-		exName:"顺丰快递"
+		number:2017072719315,
+		express:"顺丰快递"
 	}
 	componentDidMount(){
 		this.requestData();
@@ -19,11 +19,14 @@ export default class ExLog extends BaseComponent{
     requestData() {
         const id = parseInt(Base.getPageParams('id'));
 		Base.POST({ act: "order_action", op: "buyer",mod:'user',order_id:id,action:'express'}, res => {
-			this.store.list = res.data;
+			const {info,number,express} = res.data;
+			this.store.list = info;
+			this.store.number = number;
+			this.store.express = express;
         });
     }
 	render(){
-		const {list,orderNo,exName} = this.store;
+		const {list,number,express} = this.store;
 		const listsLog = list.map((item,key)=>{
 			if(key === 0 ){
 				return <Step key={key} status="error" className="last" title={item.context} description={item.ftime} />
@@ -46,10 +49,10 @@ export default class ExLog extends BaseComponent{
 								<img src={icon.exCar} className="exCarImg" alt=""/>
 								<div className="exInfo">
 									<div className="exInfoItem">
-										<span>订单编号：</span>{exName}
+										<span>订单编号：</span>{express}
 									</div>
 									<div className="exInfoItem">
-										<span>物流编号：</span>{orderNo}
+										<span>物流编号：</span>{number}
 									</div>
 								</div>
 		                	</Flex>
