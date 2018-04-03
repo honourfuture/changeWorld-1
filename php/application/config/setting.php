@@ -72,8 +72,8 @@ $config['wechat'] = array(
 		'file' => APPPATH.'logs'.DIRECTORY_SEPARATOR.'easywechat.log'
 	],
     'payment' => [
-        'merchant_id' => '',
-        'key' => '',
+        'merchant_id' => '1501096091',
+        'key' => 'bdacd064ac8e8eb1e0379e304e00af1b',
         'cert_path' => '',
         'key_path' => '',
         'notify_url' => '',
@@ -83,3 +83,10 @@ $config['wechat'] = array(
 		'secret' => 'bdacd064ac8e8eb1e0379e304e00af1b',
     ]
 );
+
+// 快递100
+$config['kuaidi100'] = [
+	'url' => 'http://poll.kuaidi100.com/poll/query.do',
+	'key' => 'JbEACpZW8625',
+	'customer' => 'A7CE1F24DADFFAD00F3DBB8574757950'
+];

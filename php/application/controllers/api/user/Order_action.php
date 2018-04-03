@@ -170,6 +170,49 @@ class Order_action extends API_Controller {
     	}
     }
 
+    protected function express()
+    {
+        $ret = [];
+        $this->load->model('Order_express_model');
+        if(! $express = $this->Order_express_model->get_by(['order_id' => $this->order['id']])){
+            $this->ajaxReturn([], 1, '确认商户是否已发货');
+        }
+
+        $config = config_item('kuaidi100');
+        $param = [
+            'com' => $express['com'],
+            'num' => $express['number'],
+            // 'from' => '广东省深圳市',
+            // 'to' => '广东省深圳市',
+            'resultv2' => 1
+        ];
+        $data = [
+            'param' => json_encode($param, JSON_UNESCAPED_UNICODE)
+        ];
+        $data['customer'] = $config['customer'];
+        $data['sign'] = strtoupper(md5($data['param'].$config['key'].$config['customer']));
+
+        $response = Requests::POST($config['url'], [], $data);
+        if($response->status_code != 200){
+            $this->ajaxReturn([], 2, '网络异常，请隔段时间再查');
+        }
+        $result = json_decode($response->body, true);
+        if(isset($result['status']) && $result['status'] == 200){
+            $ret = $result['data'];
+            $this->Order_express_model->update($express['id'], ['express_info' => json_encode($ret)]);
+        }
+
+        if(! $ret){
+            if($express['express_info']){
+                $ret = json_decode($express['express_info']);
+            }else{
+                $this->ajaxReturn([], 3, $result['message']);
+            }
+        }
+
+        $this->ajaxReturn($ret);
+    }
+
     protected function invoice()
     {
     	if($this->order['status'] != 5){
@@ -287,6 +330,7 @@ class Order_action extends API_Controller {
     				$this->ajaxReturn([], 4, '该快递公司不支持');
     			}
 				$data['express'] = $express['name'];
+                $data['com'] = $express['com'];
     			if(empty($data['number'])){
     				$this->ajaxReturn([], 4, '快递单号必填');
     			}

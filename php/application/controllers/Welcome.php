@@ -26,6 +26,34 @@ class Welcome extends Web_Controller {
 		$this->load->view('welcome_message');
 	}
 
+    public function kuaidi()
+    {
+        $url = 'http://poll.kuaidi100.com/poll/query.do';
+
+        $com = 'yuantong';
+        $num = '813304321148';//813304321148
+        $param = [
+            'com' => $com,
+            'num' => $num,
+            // 'from' => '广东省深圳市',
+            // 'to' => '广东省深圳市',
+            'resultv2' => 1
+        ];
+        $data = [
+            'param' => json_encode($param, JSON_UNESCAPED_UNICODE)
+        ];
+
+        $key = 'JbEACpZW8625';
+        $customer = 'A7CE1F24DADFFAD00F3DBB8574757950';
+
+        $data['customer'] = $customer;
+        $data['sign'] = strtoupper(md5($data['param'].$key.$customer));
+
+        // var_export($data);
+        $response = Requests::POST($url, [], $data);
+        echo $response->body;
+    }
+
     public function notify()
     {
         $successful = true;
