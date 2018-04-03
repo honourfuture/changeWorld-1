@@ -10,7 +10,7 @@ import { OrderGoodsItem } from "../../components/OrderGoodsItem";
 import { OrderBtn } from "../../components/OrderBtn";
 import { NoData } from "../../components/NoData";
 
-const height = document.body.offsetHeight - 89;
+const height = document.body.offsetHeight - 134;
 
 class OrderItem extends BaseComponent {
     @action.bound
@@ -36,7 +36,7 @@ class OrderItem extends BaseComponent {
     }
     render() {
         const item = this.props;
-        const {order_sn,status,goods,real_total_amount,id,orderType} = this.props;
+        const {order_sn,status,goods,real_total_amount,id,orderType,refund_status} = this.props;
         let states = ["待付款","已取消","待发货","待收货","待评价","已完成","已结束"];
         let btns = null;
         switch(parseInt(status,10)){
@@ -59,7 +59,7 @@ class OrderItem extends BaseComponent {
             case 2://代发货
                 btns = <OrderBtn 
                             btnTxt={["申请退款","联系商家"]} 
-                            oneCallBack={()=>console.log('申请退款')} 
+                            oneCallBack={()=>Base.push('AfterMarket',{id:id})} 
                             twoCallBack={()=>console.log('联系商家')}
                             isDouble={2} 
                         />;
@@ -92,7 +92,9 @@ class OrderItem extends BaseComponent {
                     />;      
             break;
         }
-
+        if(parseInt(refund_status) === 1){
+            btns = null;
+        }
         return (
             <div className="orderItem">
                 <Flex justify="between" className="orderItemTit base-line">
@@ -111,93 +113,6 @@ class OrderItem extends BaseComponent {
                 </div>
             </div>
         );
-
-
-        // const renderOrderItem = data.map((item, key) => {
-        //     const {
-        //         order_sn,
-        //         status,
-        //         goods,
-        //         real_total_amount,
-        //         id,
-        //         orderType
-        //     } = item;
-            
-        //     let btns = null;
-
-        //     switch(parseInt(status,10)){
-        //         case 0://待付款
-        //             btns = <OrderBtn 
-        //                         btnTxt={["取消订单","付款","联系商家"]} 
-        //                         oneCallBack={()=>this.cancelOrder(id)} 
-        //                         twoCallBack={()=>console.log('付款')}
-        //                         threeCallBack={()=>console.log('联系商家')}
-        //                         isDouble={3} 
-        //                     />
-        //         break;
-        //         case 1://已取消
-        //             btns = <OrderBtn 
-        //                         btnTxt={["删除订单"]} 
-        //                         oneCallBack={()=>this.delOrder(id)}
-        //                         isDouble={1} 
-        //                     />
-        //         break;
-        //         case 2://代发货
-        //             btns = <OrderBtn 
-        //                         btnTxt={["申请退款","联系商家"]} 
-        //                         oneCallBack={()=>console.log('申请退款')} 
-        //                         twoCallBack={()=>console.log('联系商家')}
-        //                         isDouble={2} 
-        //                     />;
-        //         break;
-        //         case 3://待收货
-        //             btns = <OrderBtn 
-        //                         btnTxt={["查看物流","确认收货","退款/退货","联系商家"]} 
-        //                         oneCallBack={()=>Base.push('ExLog',{id:id})}
-        //                         twoCallBack={()=>this.goods_confirm(id)} 
-        //                         threeCallBack={()=>Base.push('AfterMarket',{id:id})}
-        //                         fourCallBack={()=>console.log('联系商家')}
-        //                         isDouble={4} 
-        //                     />;
-        //         break;
-        //         case 4://待评价
-        //             btns = <OrderBtn 
-        //                         btnTxt={["评价订单","退款/退货","联系商家"]} 
-        //                         oneCallBack={()=>Base.push('EvaluateOrder',{id:id,item:JSON.stringify(item)})}
-        //                         twoCallBack={()=>Base.push('AfterMarket',{id:id})}
-        //                         threeCallBack={()=>console.log('联系商家')}
-        //                         isDouble={3} 
-        //                     />;
-        //         break;
-        //         case 5: //完成
-        //             btns = <OrderBtn 
-        //                     btnTxt={["申请发票","退款/退货"]} 
-        //                     oneCallBack={()=>Base.push('ApplyInvoice',{id:id})} 
-        //                     twoCallBack={()=>Base.push('AfterMarket',{id:id})}
-        //                     isDouble={2} 
-        //                 />;      
-        //         break;
-        //     }
-        //     return (
-        //         <div className="orderItem" key={key}>
-        //             <Flex justify="between" className="orderItemTit base-line">
-        //                 <span>订单编号：{order_sn}</span>
-        //                 <span>{states[status]}</span>
-        //             </Flex>
-        //             {(goods || []).map((item, key) => {
-        //                 return <OrderGoodsItem key={key} item={item} />;
-        //             })}
-        //             <div className="orderItemType">
-        //                 <div className="totalItem">
-        //                     共{goods.length}件 合计 
-        //                     <span className="priceTotal">￥ {real_total_amount}</span>
-        //                 </div>
-        //                 {btns}
-        //             </div>
-        //         </div>
-        //     );
-        // });
-        // return <div>{renderOrderItem}</div>;
     }
 }
 
@@ -210,7 +125,6 @@ export default class MyOrder extends BaseComponent {
         this.cur_page = 1;
         this.store = {
             list: [],
-            isRead: "",
             refreshing: false,
             isLoading: false,
             count:0,
@@ -221,15 +135,11 @@ export default class MyOrder extends BaseComponent {
         this.cur_page = 1;
         const index = parseInt(Base.getPageParams('index'));
         this.store.curPage = index;
-        this.requestData(index);
-        // this.requestData(false);
+        this.requestData(false);
     }
     @action.bound
     renderItem(rowData, sectionID, rowID) {
         return <OrderItem changeList={this.changeList} {...rowData} />;
-        // return rowData.length>0 ? <OrderItem changeList={this.changeList} {...rowData} /> :
-        //                         <NoData img={blankImg.order} label={'暂无数据'} btnLabel={'去逛逛'} onClick={this.goShop} /> 
-
     }
     @action.bound
     changeList(id){
@@ -237,14 +147,17 @@ export default class MyOrder extends BaseComponent {
     }
     @action.bound
     requestData(index,b_noToast = true) {
+
         Base.GET({ 
             act: "user", 
             op:"order",
-            status:index,
+            status:this.store.curPage,
             cur_page: this.cur_page || 1,
             per_page: Global.PAGE_SIZE
         }, res => {
             const { count, list, status } = res.data;
+            this.store.count = count;
+            this.store.status = status;
             this.store.list =
                 this.cur_page === 1
                     ? [].concat(list)
@@ -254,8 +167,7 @@ export default class MyOrder extends BaseComponent {
             if (list.length > 0) {
                 this.cur_page++;
             }
-            this.store.count = count;
-            this.store.status = status;
+            
         },
         null,
         b_noToast
@@ -267,14 +179,14 @@ export default class MyOrder extends BaseComponent {
         this.store.refreshing = true;
         this.store.isLoading = false;
         this.cur_page = 1;
-        this.requestData(this.store.curPage);
+        this.requestData();
     }
     //上拉
     @action.bound
     onEndReached() {
         this.store.isLoading = true;
         this.store.refreshing = true;
-        this.requestData(this.store.curPage);
+        this.requestData();
     }
     //tab切换
     @action.bound
@@ -288,7 +200,7 @@ export default class MyOrder extends BaseComponent {
         Base.push('ShopIndex');
     }
     render() {
-        const { list,isLoading,refreshing } = this.store;
+        const { list,isLoading,refreshing,count } = this.store;
         list.forEach(item=>{
             item.goods.forEach(items=>{
                 items.sale_price = items.goods_price
@@ -302,13 +214,7 @@ export default class MyOrder extends BaseComponent {
         const tabs = tabNames.map(item=>{
             return {'title':item};
         });
-        
         const pageNum = parseInt(Base.getPageParams('pageNum'));
-        // const item = showList.length === 0 ? 
-        //             <NoData img={blankImg.order} label={'暂无数据'} btnLabel={'去逛逛'} onClick={this.goShop} /> 
-        //             : <OrderItem changeList={this.changeList} data={showList} />;
-
-         // {item}
         return (
             <div className="MyOrder">
                 <NavBar
@@ -322,31 +228,31 @@ export default class MyOrder extends BaseComponent {
                 <div className="base-content">
                     <SearchBar placeholder="搜索历史订单" maxLength={8} />
                     <Tabs className="nav-tabs" tabs={tabs} onChange={this.onChange} initialPage={pageNum}>
-                       
-                        <ListView
-                            style={{ height }}
-                            dataSource={dataSource}
-                            renderRow={this.renderItem}
-                            renderFooter={() => (
-                                <div style={{ padding: 15, textAlign: "center" }}>
-                                    {isLoading
-                                        ? "加载中..."
-                                        : showList.length >= Global.PAGE_SIZE
-                                            ? "加载完成"
-                                            : ""}
-                                </div>
-                            )}
-                            pullToRefresh={
-                                <PullToRefresh
-                                    refreshing={refreshing}
-                                    onRefresh={this.onRefresh}
-                                />
-                            }
-                            onEndReached={this.onEndReached}
-                            // pageSize={2}
-                        />
-
-
+                        {
+                            count > 0 ? <ListView
+                                            style={{ height }}
+                                            dataSource={dataSource}
+                                            renderRow={this.renderItem}
+                                            renderFooter={() => (
+                                                <div style={{ padding: 15, textAlign: "center" }}>
+                                                    {isLoading
+                                                        ? "加载中..."
+                                                        : showList.length >= Global.PAGE_SIZE
+                                                            ? "加载完成"
+                                                            : ""}
+                                                </div>
+                                            )}
+                                            pullToRefresh={
+                                                <PullToRefresh
+                                                    refreshing={refreshing}
+                                                    onRefresh={this.onRefresh}
+                                                />
+                                            }
+                                            onEndReached={this.onEndReached}
+                                            // pageSize={2}
+                                        /> : 
+                                        <NoData img={blankImg.order} label={'暂无数据'} btnLabel={'去逛逛'} onClick={this.goShop} />
+                        }
                     </Tabs>
                 </div>
             </div>
