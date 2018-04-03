@@ -36,7 +36,7 @@ class OrderItem extends BaseComponent {
     }
     render() {
         const item = this.props;
-        const {order_sn,status,goods,real_total_amount,id,orderType,refund_status} = this.props;
+        const {order_sn,status,goods,real_total_amount,id,orderType,refund_status,seller_uid} = this.props;
         let states = ["待付款","已取消","待发货","待收货","待评价","已完成","已结束"];
         let btns = null;
         switch(parseInt(status,10)){
@@ -45,7 +45,7 @@ class OrderItem extends BaseComponent {
                             btnTxt={["取消订单","付款","联系商家"]} 
                             oneCallBack={()=>this.cancelOrder(id)} 
                             twoCallBack={()=>console.log('付款')}
-                            threeCallBack={()=>console.log('联系商家')}
+                            threeCallBack={()=>Base.pushApp("openChatView",{seller_uid:seller_uid})}
                             isDouble={3} 
                         />
             break;
@@ -60,7 +60,7 @@ class OrderItem extends BaseComponent {
                 btns = <OrderBtn 
                             btnTxt={["退款/退货","联系商家"]} 
                             oneCallBack={()=>Base.push('AfterMarket',{id:id})} 
-                            twoCallBack={()=>console.log('联系商家')}
+                            twoCallBack={()=>Base.pushApp("openChatView",{seller_uid:seller_uid})}
                             isDouble={2} 
                         />;
             break;
@@ -70,7 +70,7 @@ class OrderItem extends BaseComponent {
                             oneCallBack={()=>Base.push('ExLog',{id:id})}
                             twoCallBack={()=>this.goods_confirm(id)} 
                             threeCallBack={()=>Base.push('AfterMarket',{id:id})}
-                            fourCallBack={()=>console.log('联系商家')}
+                            fourCallBack={()=>Base.pushApp("openChatView",{seller_uid:seller_uid})}
                             isDouble={4} 
                         />;
             break;
@@ -79,7 +79,7 @@ class OrderItem extends BaseComponent {
                             btnTxt={["评价订单","退款/退货","联系商家"]} 
                             oneCallBack={()=>Base.push('EvaluateOrder',{id:id,item:JSON.stringify(item)})}
                             twoCallBack={()=>Base.push('AfterMarket',{id:id})}
-                            threeCallBack={()=>console.log('联系商家')}
+                            threeCallBack={()=>Base.pushApp("openChatView",{seller_uid:seller_uid})}
                             isDouble={3} 
                         />;
             break;
