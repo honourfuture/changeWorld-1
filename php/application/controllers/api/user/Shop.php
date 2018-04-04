@@ -204,7 +204,7 @@ class Shop extends API_Controller {
 				$k_goods_count[$item['goods_id']] = $item['count'];
 			}
 			$this->load->model('Goods_model');
-			$this->db->select('id,default_image,name');
+			$this->db->select('id,default_image,name,sale_price');
 			if($goods = $this->Goods_model->get_many($a_goods_id)){
 				foreach($goods as $key=>$item){
 					$goods[$key]['count'] = isset($k_goods_count[$item['id']]) ? $k_goods_count[$item['id']] : 0;
