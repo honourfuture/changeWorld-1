@@ -2520,6 +2520,13 @@
             "optional": false,
             "field": "pinyin",
             "description": "<p>拼音首字母</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "com",
+            "description": "<p>快递公司代码</p>"
           }
         ]
       }
@@ -6534,6 +6541,98 @@
     "groupTitle": "admin"
   },
   {
+    "type": "post",
+    "url": "/api/user/Order_payment/payment",
+    "title": "充值-提交",
+    "version": "1.0.0",
+    "name": "Order_payment_payment",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/user/Order_payment/payment"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "payment_id",
+            "description": "<p>充值方式 0微信 1支付宝</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "amount",
+            "description": "<p>充值金额</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": \"\",\n\t    \"status\": 0,\n\t    \"message\": \"\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Order_payment.php",
+    "groupTitle": "api"
+  },
+  {
     "type": "get",
     "url": "/api/address",
     "title": "个人地址-列表",
@@ -7534,7 +7633,7 @@
             "type": "String",
             "optional": false,
             "field": "alias",
-            "description": "<p>别名</p>"
+            "description": "<p>别名 {&quot;about_us&quot;:&quot;关于我们&quot;,&quot;join_us&quot;:&quot;加入我们&quot;,&quot;contact_us&quot;:&quot;联系我们&quot;,&quot;protocol&quot;:&quot;用户协议&quot;,&quot;copyright&quot;:&quot;版权申明&quot;}</p>"
           }
         ]
       }
@@ -8651,13 +8750,20 @@
             "optional": false,
             "field": "data.name",
             "description": "<p>快递公司名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.com",
+            "description": "<p>快递公司代码</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n\t    \"data\": [\n\t        {\n\t            \"id\": \"1\",\n\t            \"name\": \"热门\"\n\t        },\n\t        {\n\t            \"id\": \"2\",\n\t            \"name\": \"靓号\"\n\t        }\n\t    ],\n\t    \"status\": 0,\n\t    \"message\": \"成功\"\n\t}",
+          "content": "{\n\t    \"data\": [\n\t        {\n\t            \"id\": \"1\",\n\t            \"name\": \"热门\",\n\t            \"com\": \"yuantong\"\n\t        },\n\t        {\n\t            \"id\": \"2\",\n\t            \"name\": \"靓号\",\n\t            \"com\": \"yuantong\"\n\t        }\n\t    ],\n\t    \"status\": 0,\n\t    \"message\": \"成功\"\n\t}",
           "type": "json"
         }
       ]
@@ -17944,7 +18050,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    \"data\": {\n\t   },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": {\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
@@ -17953,7 +18059,7 @@
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "content": "{\n    \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
           "type": "json"
         }
       ]
@@ -18150,6 +18256,133 @@
       ]
     },
     "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Order.php",
+    "groupTitle": "user"
+  },
+  {
+    "type": "get",
+    "url": "/api/user/order_payment",
+    "title": "付款页",
+    "version": "1.0.0",
+    "name": "order_payment",
+    "group": "user",
+    "sampleRequest": [
+      {
+        "url": "/api/user/order_payment"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "trade_type",
+            "description": "<p>交易类型 pay_sn:下单支付号 order_sn:商家订单号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "trade_sn",
+            "description": "<p>交易号</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.total_amount",
+            "description": "<p>订单总金额</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.real_total_amount",
+            "description": "<p>实付总金额</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.use_ticket_amount",
+            "description": "<p>优惠总金额</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.use_point_amount",
+            "description": "<p>积分抵扣总金额</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.use_point",
+            "description": "<p>积分总数</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"total_amount\": \"145.50\",\n        \"real_total_amount\": \"115.50\",\n        \"use_ticket_amount\": \"10.00\",\n        \"use_point_amount\": \"20.00\",\n        \"use_point\": \"20\"\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Order_payment.php",
     "groupTitle": "user"
   },
   {
