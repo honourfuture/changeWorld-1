@@ -218,7 +218,7 @@ export default class SellOrder extends BaseComponent{
                 </NavBar>
                 <div className="base-content">
                     <SearchBar placeholder="搜索历史订单" maxLength={8} />
-                    <Tabs className="nav-tabs" tabs={tabs} onChange={this.onChange} initialPage={pageNum}>
+                    <Tabs className="nav-tabs" tabs={tabs} swipeable={false} onChange={this.onChange} initialPage={pageNum}>
                         {
                             count > 0 ? <ListView
                                             style={{ height }}

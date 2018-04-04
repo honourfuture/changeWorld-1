@@ -44,7 +44,7 @@ class OrderItem extends BaseComponent {
                 btns = <OrderBtn 
                             btnTxt={["取消订单","付款","联系商家"]} 
                             oneCallBack={()=>this.cancelOrder(id)} 
-                            twoCallBack={()=>console.log('付款')}
+                            twoCallBack={()=>Base.push('pay',{order_sn})}
                             threeCallBack={()=>Base.pushApp("openChatView",{seller_uid:seller_uid})}
                             isDouble={3} 
                         />
@@ -97,13 +97,15 @@ class OrderItem extends BaseComponent {
         }
         return (
             <div className="orderItem">
-                <Flex justify="between" className="orderItemTit base-line">
-                    <span>订单编号：{order_sn}</span>
-                    <span>{states[status]}</span>
-                </Flex>
-                {(goods || []).map((item, key) => {
-                    return <OrderGoodsItem key={key} item={item} />;
-                })}
+                <div onClick={()=>Base.push('OrderDetail',{order_id:id})}>
+                    <Flex justify="between" className="orderItemTit base-line">
+                        <span>订单编号：{order_sn}</span>
+                        <span>{states[status]}</span>
+                    </Flex>
+                    {(goods || []).map((item, key) => {
+                        return <OrderGoodsItem key={key} item={item} />;
+                    })}
+                </div>
                 <div className="orderItemType">
                     <div className="totalItem">
                         共{goods.length}件 合计 
@@ -228,7 +230,7 @@ export default class MyOrder extends BaseComponent {
                 </NavBar>
                 <div className="base-content">
                     <SearchBar placeholder="搜索历史订单" maxLength={8} />
-                    <Tabs className="nav-tabs" tabs={tabs} onChange={this.onChange} initialPage={pageNum}>
+                    <Tabs className="nav-tabs" tabs={tabs} swipeable={false} onChange={this.onChange} initialPage={pageNum}>
                         {
                             count > 0 ? <ListView
                                             style={{ height }}
