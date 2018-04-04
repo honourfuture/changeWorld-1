@@ -53,7 +53,8 @@ class Notify extends API_Controller
                         $data[] = [
                             'goods_id' => $item['goods_id'],
                             'seller_uid' => $item['seller_uid'],
-                            'num' => $item['num']
+                            'num' => $item['num'],
+                            'order_id' => $item['order_id']
                         ];
                     }
                     $this->Record_goods_model->insert_many($data);

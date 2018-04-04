@@ -148,4 +148,72 @@ class Shop extends API_Controller {
 			$this->ajaxReturn([], 1, '认证主播才能申请开店');
 		}
 	}
+
+	/**
+	 * @api {get} /api/user/shop/static_goods 我的商城-统计商品
+	 * @apiVersion 1.0.0
+	 * @apiName shop_static_goods
+	 * @apiGroup user
+	 *
+	 * @apiSampleRequest /api/user/shop/static_goods
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集 建议用forin遍历buyer 和 seller
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *     "data": {
+	 *         "header": "/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png",
+	 *         "nickname": "aicode",
+	 *         "anchor": "1",
+	 *         "is_seller": "1",
+	 *         "buyer": [
+	 *             "8"
+	 *         ],
+	 *         "seller": [
+	 *             "5"
+	 *         ]
+	 *     },
+	 *     "status": 0,
+	 *     "message": "成功"
+	 * }
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+	public function static_goods()
+	{
+		$ret = ['count' => 0, 'goods' => []];
+
+		$this->load->model('Record_goods_model');
+		$this->db->select('goods_id,sum(num) count');
+		$this->db->group_by('goods_id');
+		if($rows = $this->Record_goods_model->get_many_by(['seller_uid' => $this->user_id])){
+			$a_goods_id = [];
+			$k_goods_count = [];
+			foreach($rows as $item){
+				$a_goods_id[] = $item['goods_id'];
+				$k_goods_count[$item['goods_id']] = $item['count'];
+			}
+			$this->load->model('Goods_model');
+			$this->db->select('id,default_image,name');
+			if($goods = $this->Goods_model->get_many($a_goods_id)){
+				foreach($goods as $key=>$item){
+					$goods[$key]['count'] = isset($k_goods_count[$item['id']]) ? $k_goods_count[$item['id']] : 0;
+					$ret['count'] += $goods[$key]['count'];
+				}
+				$ret['goods'] = $goods;
+			}
+		}
+
+		$this->ajaxReturn($ret);
+	}
 }
