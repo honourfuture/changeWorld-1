@@ -39,7 +39,7 @@ class OrderItem extends BaseComponent {
     }
     render() {
         const item = this.props;
-        const {order_sn,status,goods,real_total_amount,id,orderType,refund_status} = this.props;
+        const {order_sn,status,goods,real_total_amount,id,orderType,refund_status,buyer_uid} = this.props;
         let states = ["待付款","已取消","待发货","待收货","待评价","已完成","已结束"];
         let btns = null;
         switch(parseInt(status,10)){
@@ -47,7 +47,7 @@ class OrderItem extends BaseComponent {
                 btns = <OrderBtn 
                             btnTxt={["修改价格","联系顾客"]} 
                             oneCallBack={()=>this.modifyPrice(id)} 
-                            twoCallBack={()=>console.log('联系顾客')}
+                            twoCallBack={()=>Base.pushApp("openChatView",{seller_uid:buyer_uid})}
                             isDouble={2} 
                         />
             break;
@@ -55,7 +55,7 @@ class OrderItem extends BaseComponent {
                 btns = <OrderBtn 
                             btnTxt={["发货","联系顾客"]} 
                             oneCallBack={()=>Base.push('WriteExInfo',{id:id})} 
-                            twoCallBack={()=>console.log('联系顾客')}
+                            twoCallBack={()=>Base.pushApp("openChatView",{seller_uid:buyer_uid})}
                             isDouble={2} 
                         />;
             break;
@@ -63,14 +63,14 @@ class OrderItem extends BaseComponent {
                 btns = <OrderBtn 
                             btnTxt={["查看物流","联系顾客"]} 
                             oneCallBack={()=>Base.push('ExLog',{id:id})} 
-                            twoCallBack={()=>console.log('联系顾客')}
+                            twoCallBack={()=>Base.pushApp("openChatView",{seller_uid:buyer_uid})}
                             isDouble={2} 
                         />;
             break;
             case 4://待评价
                 btns = <OrderBtn 
                             btnTxt={["联系顾客"]} 
-                            oneCallBack={()=>console.log('评价订单')} 
+                            oneCallBack={()=>Base.pushApp("openChatView",{seller_uid:buyer_uid})} 
                             isDouble={1} 
                         />;
             break;

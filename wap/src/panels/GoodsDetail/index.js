@@ -1,6 +1,6 @@
 import React from "react";
 import { action } from "mobx";
-import { BaseComponent, Base, NetImg } from "../../common";
+import { BaseComponent, Base, NetImg, Global } from "../../common";
 import {
     Flex,
     NavBar,
@@ -374,6 +374,12 @@ export default class GoodsDetail extends BaseComponent {
         //         );
         //     }
         // }
+        const shareData = {
+            title: name,
+            description: "",
+            imageUrl: Base.getImgUrl(default_image),
+            linkUrl: `${Global.RES_URL}/wap/index.html#/GoodsDetail?id=${id}`
+        };
         return (
             <div className="GoodsDetail">
                 <NavBar
@@ -388,7 +394,17 @@ export default class GoodsDetail extends BaseComponent {
                             style={{ marginRight: "16px" }}
                             alt=""
                         />,
-                        <img key="1" src={icon.share} alt="" />
+                        <img
+                            onClick={() =>
+                                Base.pushApp(
+                                    "openShareView",
+                                    JSON.stringify(shareData)
+                                )
+                            }
+                            key="1"
+                            src={icon.share}
+                            alt=""
+                        />
                     ]}
                 />
                 <div className="base-content">
@@ -523,15 +539,17 @@ export default class GoodsDetail extends BaseComponent {
                         <Flex>
                             <Flex.Item
                                 onClick={() =>
-                                    Base.pushApp("userStore", {
-                                        shopid: seller_uid
-                                    })
+                                    Base.pushApp("openShopView", seller_uid)
                                 }
                             >
                                 <img src={icon.storeIcon} alt="" />
                                 <div className="label">店铺</div>
                             </Flex.Item>
-                            <Flex.Item>
+                            <Flex.Item
+                                onClick={() =>
+                                    Base.pushApp("openChatView", seller_uid)
+                                }
+                            >
                                 <img src={icon.customerIcon} alt="" />
                                 <div className="label">客服</div>
                             </Flex.Item>
