@@ -249,7 +249,8 @@ export const Base = {
     // }
 };
 window.goBack = Base.goBack;
-const { sign, user_id } = Base.getPageParams();
+const verify_data = window.localStorage.getItem("user_verify_data");
+const { sign, user_id } = verify_data ? JSON.parse(verify_data) : {};
 if (sign && user_id) {
     Base.setLocalData("user_verify_data", { sign, user_id });
 }

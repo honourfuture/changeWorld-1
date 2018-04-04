@@ -1,7 +1,7 @@
 import React from "react";
 import { action } from "mobx";
 import { BaseComponent, Base } from "../../common";
-import { Flex, Button, Radio, NavBar } from "antd-mobile";
+import { Flex, Button, Radio, NavBar, Toast } from "antd-mobile";
 import "./Pay.less";
 import { icon, test, pay } from "../../images";
 
@@ -49,13 +49,19 @@ export default class Pay extends BaseComponent {
             res => {
                 if (window.JKEventHandler) {
                     window.JKEventHandler.callNativeFunction(
+                        "payWithParams",
                         JSON.stringify({ ...res.data, payment_type: type }),
+                        "callbackID",
                         data => {
-                            Base.push("PayState", {
-                                trade_sn,
-                                real_total_amount,
-                                payment_type: type
-                            });
+                            if (parseInt(data) === 1) {
+                                Base.push("PayState", {
+                                    trade_sn,
+                                    real_total_amount,
+                                    payment_type: type
+                                });
+                            } else {
+                                Toast.fail("支付失败", 2, null, false);
+                            }
                         }
                     );
                 }
