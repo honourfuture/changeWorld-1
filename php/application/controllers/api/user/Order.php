@@ -433,7 +433,8 @@ class Order extends API_Controller {
 			'total' => $r_total,
 			'ticket' => $r_ticket,
 			'point_amount' => $r_point_amount,
-			'point' => $r_point
+			'point' => $r_point,
+			'balance' => $user['balance']
 		];
 		$this->ajaxReturn($ret);
 	}

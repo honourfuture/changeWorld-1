@@ -19,10 +19,56 @@ class Order_model extends MY_Model
         parent::__construct();
     }
 
+    public function get_order_by_pay_sn($pay_sn)
+    {
+        $result = [];
+        if($rows = $this->get_many_by(['pay_sn' => $pay_sn])){
+            foreach($rows as $item){
+                if($item['status'] != 0){
+                    $result = [];
+                    break;
+                }else{
+                    !isset($result['id']) && $result['id'] = [];
+                    $result['id'][] = $item['id'];
+
+                    !isset($result['total_amount']) && $result['total_amount'] = 0;
+                    $result['total_amount'] = round($result['total_amount'] + $item['total_amount'], 2);
+
+                    !isset($result['real_total_amount']) && $result['real_total_amount'] = 0;
+                    $result['real_total_amount'] = round($result['real_total_amount'] + $item['real_total_amount'], 2);
+
+                    !isset($result['use_ticket_amount']) && $result['use_ticket_amount'] = 0;
+                    $result['use_ticket_amount'] = round($result['use_ticket_amount'] + $item['use_ticket_amount'], 2);
+
+                    !isset($result['use_point_amount']) && $result['use_point_amount'] = 0;
+                    $result['use_point_amount'] = round($result['use_point_amount'] + $item['use_point_amount'], 2);
+
+                    !isset($result['use_point']) && $result['use_point'] = 0;
+                    $result['use_point'] = round($result['use_point'] + $item['use_point'], 2);
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    public function get_order_by_order_sn($order_sn)
+    {
+        $result = [];
+        $this->db->select('id,status,total_amount,real_total_amount,use_ticket_amount,use_point_amount,use_point');
+        if($row = $this->get_by(['order_sn' => $order_sn])){
+            if($row['status'] == 0){
+                $result = $row;
+            }
+        }
+
+        return $result;
+    }
+
     public function refund_status()
     {
         return [
-            '无',
+            '未申请',
             '已申请',
             '已通过',
             '已拒绝'

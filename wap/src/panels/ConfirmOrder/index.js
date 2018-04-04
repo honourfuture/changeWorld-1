@@ -47,7 +47,7 @@ class StoreItem extends BaseComponent {
             <div className="order-detail">
                 <Flex
                     className="store-info base-line"
-                    onClick={() => Base.push("AnchorStore", { seller_uid })}
+                    onClick={() => Base.pushApp("openShopView", seller_uid)}
                 >
                     <NetImg src={header} />
                     <div className="store-name">{nickname}</div>
@@ -207,6 +207,8 @@ export default class ConfirmOrder extends BaseComponent {
             { act: "order", op: "add", mod: "user", ...requestParam },
             res => {
                 Global.curSelectAddressId = "";
+                const { pay_sn } = res.data;
+                Base.push("Pay", { pay_sn });
             }
         );
     }
@@ -247,26 +249,26 @@ export default class ConfirmOrder extends BaseComponent {
                             </div>
                         </Flex>
                     ) : (
-                            <Flex
-                                className="order-address"
-                                justify="center"
-                                align="center"
-                                onClick={() => Base.push("NewAddress")}
-                            >
-                                <div className="add-addr">
-                                    <div className="addr-img">
-                                        <img
-                                            src={addr.address}
-                                            className="addIco-img"
-                                            alt=""
-                                        />
-                                    </div>
-                                    <div className="add-tips">
-                                        还没收货地址，<em>去添加</em>
-                                    </div>
+                        <Flex
+                            className="order-address"
+                            justify="center"
+                            align="center"
+                            onClick={() => Base.push("NewAddress")}
+                        >
+                            <div className="add-addr">
+                                <div className="addr-img">
+                                    <img
+                                        src={addr.address}
+                                        className="addIco-img"
+                                        alt=""
+                                    />
                                 </div>
-                            </Flex>
-                        )}
+                                <div className="add-tips">
+                                    还没收货地址，<em>去添加</em>
+                                </div>
+                            </div>
+                        </Flex>
+                    )}
                     <WhiteSpace />
                     {storeItems}
                 </div>

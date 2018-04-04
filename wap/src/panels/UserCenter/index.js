@@ -36,7 +36,9 @@ export default class UserCenter extends BaseComponent {
             buyerItems.push(
                 <Flex.Item
                     key={index}
-                    onClick={() => Base.push("MyOrder", { index: key,pageNum:index+1 })}
+                    onClick={() =>
+                        Base.push("MyOrder", { index: key, pageNum: index + 1 })
+                    }
                     className="Item"
                     align="center"
                 >
@@ -52,7 +54,12 @@ export default class UserCenter extends BaseComponent {
             sellerItems.push(
                 <Flex.Item
                     key={index}
-                    onClick={() => Base.push("SellOrder", { index: key,pageNum:index+1 })}
+                    onClick={() =>
+                        Base.push("SellOrder", {
+                            index: key,
+                            pageNum: index + 1
+                        })
+                    }
                     className="Item"
                     align="center"
                 >
@@ -66,6 +73,8 @@ export default class UserCenter extends BaseComponent {
                 </Flex.Item>
             );
         });
+        const { user_id } =
+            Base.getLocalData("user_verify_data") || Base.getPageParams();
         return (
             <div className="UserCenter">
                 <NavBar
@@ -132,7 +141,7 @@ export default class UserCenter extends BaseComponent {
                         {parseInt(anchor) === 1 && parseInt(is_seller) !== 1 ? (
                             <Item
                                 arrow="horizontal"
-                                onClick={() => Base.push("MyOrder")}
+                                onClick={() => Base.pushApp("openShopAuthView")}
                             >
                                 申请开店
                             </Item>
@@ -153,7 +162,9 @@ export default class UserCenter extends BaseComponent {
                                 </Item>
                                 <Item
                                     arrow="horizontal"
-                                    onClick={() => Base.push("MyOrder")}
+                                    onClick={() =>
+                                        Base.pushApp("openShopView", user_id)
+                                    }
                                 >
                                     我的产品
                                 </Item>
@@ -164,7 +175,7 @@ export default class UserCenter extends BaseComponent {
                     <List className="baseItem">
                         <Item
                             arrow="horizontal"
-                            onClick={() => Base.push("MyOrder")}
+                            onClick={() => Base.push("Statistics")}
                         >
                             数据统计
                         </Item>

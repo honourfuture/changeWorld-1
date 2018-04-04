@@ -73,8 +73,8 @@ class CartItem extends BaseComponent {
                                         value={num}
                                     />
                                 ) : (
-                                        <div className="num">x{num}</div>
-                                    )}
+                                    <div className="num">x{num}</div>
+                                )}
                             </Flex>
                         </Flex.Item>
                     </Flex>
@@ -231,7 +231,7 @@ export default class ShopCart extends BaseComponent {
                 <div className="store-item" key={storeId}>
                     <Flex
                         className="store-info base-line"
-                        onClick={() => Base.push("AnchorStore")}
+                        onClick={() => Base.pushApp("openShopView", storeId)}
                     >
                         <NetImg src={Base.getImgUrl(header)} />
                         <div className="store-name">{nickname}</div>
@@ -271,13 +271,13 @@ export default class ShopCart extends BaseComponent {
                     {storeItems.length > 0 ? (
                         storeItems
                     ) : (
-                            <NoData
-                                img={blankImg.shopCart}
-                                label="亲，购物车空空如也"
-                                btnLabel="去逛逛"
-                                onClick={() => Base.push("ShopIndex")}
-                            />
-                        )}
+                        <NoData
+                            img={blankImg.shopCart}
+                            label="亲，购物车空空如也"
+                            btnLabel="去逛逛"
+                            onClick={() => Base.push("ShopIndex")}
+                        />
+                    )}
                 </div>
                 {storeItems.length > 0 ? (
                     <Flex className="footer" justify="between">
@@ -297,20 +297,20 @@ export default class ShopCart extends BaseComponent {
                                 删除
                             </Button>
                         ) : (
-                                <Flex>
-                                    <div className="total">
-                                        合计{" "}
-                                        <em>￥{Base.getNumFormat(this.total)}</em>
-                                    </div>
-                                    <Button
-                                        className="pay-btn"
-                                        size="small"
-                                        onClick={this.payHandler}
-                                    >
-                                        去结算
+                            <Flex>
+                                <div className="total">
+                                    合计{" "}
+                                    <em>￥{Base.getNumFormat(this.total)}</em>
+                                </div>
+                                <Button
+                                    className="pay-btn"
+                                    size="small"
+                                    onClick={this.payHandler}
+                                >
+                                    去结算
                                 </Button>
-                                </Flex>
-                            )}
+                            </Flex>
+                        )}
                     </Flex>
                 ) : null}
             </div>

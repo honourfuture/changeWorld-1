@@ -1,9 +1,16 @@
 import React from "react";
-import { action } from 'mobx';
-import { BaseComponent, Base ,Global} from "../../common";
-import { Flex, NavBar, SearchBar, Tabs ,ListView, PullToRefresh} from "antd-mobile";
+import { action } from "mobx";
+import { BaseComponent, Base, Global } from "../../common";
+import {
+    Flex,
+    NavBar,
+    SearchBar,
+    Tabs,
+    ListView,
+    PullToRefresh
+} from "antd-mobile";
 import { icon, blankImg } from "../../images";
-import {remove} from 'lodash';
+import { remove } from "lodash";
 import "./MyOrder.less";
 
 import { OrderGoodsItem } from "../../components/OrderGoodsItem";
@@ -14,85 +21,171 @@ const height = document.body.offsetHeight - 134;
 
 class OrderItem extends BaseComponent {
     @action.bound
-    cancelOrder(id){
-        const {changeList} = this.props;
-        Base.POST({ act: "order_action", op: "buyer",mod:'user',order_id:id,action:'cancel'}, res => {
-            changeList && changeList(id);
-        });
+    cancelOrder(id) {
+        const { changeList } = this.props;
+        Base.POST(
+            {
+                act: "order_action",
+                op: "buyer",
+                mod: "user",
+                order_id: id,
+                action: "cancel"
+            },
+            res => {
+                changeList && changeList(id);
+            }
+        );
     }
     @action.bound
-    delOrder(id){
-        const {changeList} = this.props;
-        Base.POST({ act: "order_action", op: "buyer",mod:'user',order_id:id,action:'del'}, res => {
-            changeList && changeList(id);
-        });
+    delOrder(id) {
+        const { changeList } = this.props;
+        Base.POST(
+            {
+                act: "order_action",
+                op: "buyer",
+                mod: "user",
+                order_id: id,
+                action: "del"
+            },
+            res => {
+                changeList && changeList(id);
+            }
+        );
     }
     @action.bound
-    goods_confirm(id){
-        const {changeList} = this.props;
-        Base.POST({ act: "order_action", op: "buyer",mod:'user',order_id:id,action:'goods_confirm'}, res => {
-            changeList && changeList(id);
-        });
+    goods_confirm(id) {
+        const { changeList } = this.props;
+        Base.POST(
+            {
+                act: "order_action",
+                op: "buyer",
+                mod: "user",
+                order_id: id,
+                action: "goods_confirm"
+            },
+            res => {
+                changeList && changeList(id);
+            }
+        );
     }
     render() {
         const item = this.props;
-        const {order_sn,status,goods,real_total_amount,id,orderType,refund_status,seller_uid} = this.props;
-        let states = ["待付款","已取消","待发货","待收货","待评价","已完成","已结束"];
+        const {
+            order_sn,
+            status,
+            goods,
+            real_total_amount,
+            id,
+            orderType,
+            refund_status,
+            seller_uid
+        } = this.props;
+        let states = [
+            "待付款",
+            "已取消",
+            "待发货",
+            "待收货",
+            "待评价",
+            "已完成",
+            "已结束"
+        ];
         let btns = null;
-        switch(parseInt(status,10)){
-            case 0://待付款
-                btns = <OrderBtn 
-                            btnTxt={["取消订单","付款","联系商家"]} 
-                            oneCallBack={()=>this.cancelOrder(id)} 
-                            twoCallBack={()=>Base.push('pay',{order_sn})}
-                            threeCallBack={()=>Base.pushApp("openChatView",{seller_uid:seller_uid})}
-                            isDouble={3} 
-                        />
-            break;
-            case 1://已取消
-                btns = <OrderBtn 
-                            btnTxt={["删除订单"]} 
-                            oneCallBack={()=>this.delOrder(id)}
-                            isDouble={1} 
-                        />
-            break;
-            case 2://代发货
-                btns = <OrderBtn 
-                            btnTxt={["退款/退货","联系商家"]} 
-                            oneCallBack={()=>Base.push('AfterMarket',{id:id})} 
-                            twoCallBack={()=>Base.pushApp("openChatView",{seller_uid:seller_uid})}
-                            isDouble={2} 
-                        />;
-            break;
-            case 3://待收货
-                btns = <OrderBtn 
-                            btnTxt={["查看物流","确认收货","退款/退货","联系商家"]} 
-                            oneCallBack={()=>Base.push('ExLog',{id:id})}
-                            twoCallBack={()=>this.goods_confirm(id)} 
-                            threeCallBack={()=>Base.push('AfterMarket',{id:id})}
-                            fourCallBack={()=>Base.pushApp("openChatView",{seller_uid:seller_uid})}
-                            isDouble={4} 
-                        />;
-            break;
-            case 4://待评价
-                btns = <OrderBtn 
-                            btnTxt={["评价订单","退款/退货","联系商家"]} 
-                            oneCallBack={()=>Base.push('EvaluateOrder',{id:id,item:JSON.stringify(item)})}
-                            twoCallBack={()=>Base.push('AfterMarket',{id:id})}
-                            threeCallBack={()=>Base.pushApp("openChatView",{seller_uid:seller_uid})}
-                            isDouble={3} 
-                        />;
-            break;
+        switch (parseInt(status, 10)) {
+            case 0: //待付款
+                btns = (
+                    <OrderBtn
+                        btnTxt={["取消订单", "付款", "联系商家"]}
+                        oneCallBack={() => this.cancelOrder(id)}
+                        twoCallBack={() => Base.push('pay',{order_sn})}
+                        threeCallBack={() =>
+                            Base.pushApp("openChatView", {
+                                seller_uid: seller_uid
+                            })
+                        }
+                        isDouble={3}
+                    />
+                );
+                break;
+            case 1: //已取消
+                btns = (
+                    <OrderBtn
+                        btnTxt={["删除订单"]}
+                        oneCallBack={() => this.delOrder(id)}
+                        isDouble={1}
+                    />
+                );
+                break;
+            case 2: //代发货
+                btns = (
+                    <OrderBtn
+                        btnTxt={["退款/退货", "联系商家"]}
+                        oneCallBack={() => Base.push("AfterMarket", { id: id })}
+                        twoCallBack={() =>
+                            Base.pushApp("openChatView", {
+                                seller_uid: seller_uid
+                            })
+                        }
+                        isDouble={2}
+                    />
+                );
+                break;
+            case 3: //待收货
+                btns = (
+                    <OrderBtn
+                        btnTxt={[
+                            "查看物流",
+                            "确认收货",
+                            "退款/退货",
+                            "联系商家"
+                        ]}
+                        oneCallBack={() => Base.push("ExLog", { id: id })}
+                        twoCallBack={() => this.goods_confirm(id)}
+                        threeCallBack={() =>
+                            Base.push("AfterMarket", { id: id })
+                        }
+                        fourCallBack={() =>
+                            Base.pushApp("openChatView", {
+                                seller_uid: seller_uid
+                            })
+                        }
+                        isDouble={4}
+                    />
+                );
+                break;
+            case 4: //待评价
+                btns = (
+                    <OrderBtn
+                        btnTxt={["评价订单", "退款/退货", "联系商家"]}
+                        oneCallBack={() =>
+                            Base.push("EvaluateOrder", {
+                                id: id,
+                                item: JSON.stringify(item)
+                            })
+                        }
+                        twoCallBack={() => Base.push("AfterMarket", { id: id })}
+                        threeCallBack={() =>
+                            Base.pushApp("openChatView", {
+                                seller_uid: seller_uid
+                            })
+                        }
+                        isDouble={3}
+                    />
+                );
+                break;
             case 5: //完成
-                btns = <OrderBtn 
-                        btnTxt={["申请发票","退款/退货"]} 
-                        oneCallBack={()=>Base.push('ApplyInvoice',{id:id})} 
-                        twoCallBack={()=>Base.push('AfterMarket',{id:id})}
-                        isDouble={2} 
-                    />;      
-            break;
+                btns = (
+                    <OrderBtn
+                        btnTxt={["申请发票", "退款/退货"]}
+                        oneCallBack={() =>
+                            Base.push("ApplyInvoice", { id: id })
+                        }
+                        twoCallBack={() => Base.push("AfterMarket", { id: id })}
+                        isDouble={2}
+                    />
+                );
+                break;
         }
-        if(parseInt(refund_status) === 1){
+        if (parseInt(refund_status) === 1) {
             btns = null;
         }
         return (
@@ -108,8 +201,10 @@ class OrderItem extends BaseComponent {
                 </div>
                 <div className="orderItemType">
                     <div className="totalItem">
-                        共{goods.length}件 合计 
-                        <span className="priceTotal">￥ {real_total_amount}</span>
+                        共{goods.length}件 合计
+                        <span className="priceTotal">
+                            ￥ {real_total_amount}
+                        </span>
                     </div>
                     {btns}
                 </div>
@@ -119,7 +214,7 @@ class OrderItem extends BaseComponent {
 }
 
 export default class MyOrder extends BaseComponent {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.dataSource = new ListView.DataSource({
             rowHasChanged: (row1, row2) => row1 !== row2
@@ -129,13 +224,13 @@ export default class MyOrder extends BaseComponent {
             list: [],
             refreshing: false,
             isLoading: false,
-            count:0,
-            curPage:-1
+            count: 0,
+            curPage: -1
         };
     }
     componentDidMount() {
         this.cur_page = 1;
-        const index = parseInt(Base.getPageParams('index'));
+        const index = parseInt(Base.getPageParams("index"));
         this.store.curPage = index;
         this.requestData(false);
     }
@@ -144,36 +239,36 @@ export default class MyOrder extends BaseComponent {
         return <OrderItem changeList={this.changeList} {...rowData} />;
     }
     @action.bound
-    changeList(id){
-        remove(this.store.list,item=>id === item.id);
+    changeList(id) {
+        remove(this.store.list, item => id === item.id);
     }
     @action.bound
-    requestData(index,b_noToast = true) {
-
-        Base.GET({ 
-            act: "user", 
-            op:"order",
-            status:this.store.curPage,
-            is_seller:0,
-            cur_page: this.cur_page || 1,
-            per_page: Global.PAGE_SIZE
-        }, res => {
-            const { count, list, status } = res.data;
-            this.store.count = count;
-            this.store.status = status;
-            this.store.list =
-                this.cur_page === 1
-                    ? [].concat(list)
-                    : this.store.list.concat(list);
-            this.store.refreshing = false;
-            this.store.isLoading = false;
-            if (list.length > 0) {
-                this.cur_page++;
-            }
-            
-        },
-        null,
-        b_noToast
+    requestData(index, b_noToast = true) {
+        Base.GET(
+            {
+                act: "user",
+                op: "order",
+                status: this.store.curPage,
+                is_seller: 0,
+                cur_page: this.cur_page || 1,
+                per_page: Global.PAGE_SIZE
+            },
+            res => {
+                const { count, list, status } = res.data;
+                this.store.count = count;
+                this.store.status = status;
+                this.store.list =
+                    this.cur_page === 1
+                        ? [].concat(list)
+                        : this.store.list.concat(list);
+                this.store.refreshing = false;
+                this.store.isLoading = false;
+                if (list.length > 0) {
+                    this.cur_page++;
+                }
+            },
+            null,
+            b_noToast
         );
     }
     //下拉
@@ -194,30 +289,38 @@ export default class MyOrder extends BaseComponent {
     //tab切换
     @action.bound
     onChange(tab, index) {
-        const orderStatus = [-1,0,2,3,4,5,-2];
+        const orderStatus = [-1, 0, 2, 3, 4, 5, -2];
         this.cur_page = 1;
         this.store.curPage = orderStatus[index];
         this.requestData(orderStatus[index]);
     }
-    goShop(){
-        Base.push('ShopIndex');
+    goShop() {
+        Base.push("ShopIndex");
     }
     render() {
-        const { list,isLoading,refreshing,count } = this.store;
-        list.forEach(item=>{
-            item.goods.forEach(items=>{
-                items.sale_price = items.goods_price
-            })
+        const { list, isLoading, refreshing, count } = this.store;
+        list.forEach(item => {
+            item.goods.forEach(items => {
+                items.sale_price = items.goods_price;
+            });
         });
-        const showList = list.filter(item=>{
-            return parseInt(item.deleted,10) === 0;
+        const showList = list.filter(item => {
+            return parseInt(item.deleted, 10) === 0;
         });
         const dataSource = this.dataSource.cloneWithRows(showList.slice());
-        let tabNames = ["全部","待付款","待发货","待收货","待评价","已完成","退货/退款"];
-        const tabs = tabNames.map(item=>{
-            return {'title':item};
+        let tabNames = [
+            "全部",
+            "待付款",
+            "待发货",
+            "待收货",
+            "待评价",
+            "已完成",
+            "退货/退款"
+        ];
+        const tabs = tabNames.map(item => {
+            return { title: item };
         });
-        const pageNum = parseInt(Base.getPageParams('pageNum'));
+        const pageNum = parseInt(Base.getPageParams("pageNum"));
         return (
             <div className="MyOrder">
                 <NavBar
@@ -228,34 +331,52 @@ export default class MyOrder extends BaseComponent {
                 >
                     我的订单
                 </NavBar>
-                <div className="base-content">
+                <div>
                     <SearchBar placeholder="搜索历史订单" maxLength={8} />
-                    <Tabs className="nav-tabs" tabs={tabs} swipeable={false} onChange={this.onChange} initialPage={pageNum}>
-                        {
-                            count > 0 ? <ListView
-                                            style={{ height }}
-                                            dataSource={dataSource}
-                                            renderRow={this.renderItem}
-                                            renderFooter={() => (
-                                                <div style={{ padding: 15, textAlign: "center" }}>
-                                                    {isLoading
-                                                        ? "加载中..."
-                                                        : showList.length >= Global.PAGE_SIZE
-                                                            ? "加载完成"
-                                                            : ""}
-                                                </div>
-                                            )}
-                                            pullToRefresh={
-                                                <PullToRefresh
-                                                    refreshing={refreshing}
-                                                    onRefresh={this.onRefresh}
-                                                />
-                                            }
-                                            onEndReached={this.onEndReached}
-                                            // pageSize={2}
-                                        /> : 
-                                        <NoData img={blankImg.order} label={'暂无数据'} btnLabel={'去逛逛'} onClick={this.goShop} />
-                        }
+                    <Tabs
+                        className="nav-tabs"
+                        tabs={tabs}
+                        swipeable={false}
+                        onChange={this.onChange}
+                        initialPage={pageNum}
+                    >
+                        {count > 0 ? (
+                            <ListView
+                                style={{ height }}
+                                dataSource={dataSource}
+                                renderRow={this.renderItem}
+                                renderFooter={() => (
+                                    <div
+                                        style={{
+                                            padding: 15,
+                                            textAlign: "center"
+                                        }}
+                                    >
+                                        {isLoading
+                                            ? "加载中..."
+                                            : showList.length >=
+                                              Global.PAGE_SIZE
+                                                ? "加载完成"
+                                                : ""}
+                                    </div>
+                                )}
+                                pullToRefresh={
+                                    <PullToRefresh
+                                        refreshing={refreshing}
+                                        onRefresh={this.onRefresh}
+                                    />
+                                }
+                                onEndReached={this.onEndReached}
+                                // pageSize={2}
+                            />
+                        ) : (
+                            <NoData
+                                img={blankImg.order}
+                                label={"暂无数据"}
+                                btnLabel={"去逛逛"}
+                                onClick={this.goShop}
+                            />
+                        )}
                     </Tabs>
                 </div>
             </div>

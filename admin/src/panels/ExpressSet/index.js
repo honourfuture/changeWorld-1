@@ -23,7 +23,7 @@ export default class ExpressSet extends BaseComponent {
                 render: (text, record) => this.renderInput(text, record, "name")
             },
             {
-                title: "简称",
+                title: "拼音",
                 dataIndex: "pinyin",
                 render: (text, record) =>
                     this.renderInput(text, record, "pinyin")
@@ -63,28 +63,28 @@ export default class ExpressSet extends BaseComponent {
                                     </a>
                                 </span>
                             ) : (
-                                <span>
-                                    <a
-                                        onClick={() =>
-                                            this.onEditChange(
-                                                id,
-                                                true,
-                                                "editable"
-                                            )
-                                        }
-                                    >
-                                        编辑
+                                    <span>
+                                        <a
+                                            onClick={() =>
+                                                this.onEditChange(
+                                                    id,
+                                                    true,
+                                                    "editable"
+                                                )
+                                            }
+                                        >
+                                            编辑
                                     </a>&nbsp;&nbsp;
                                     <Popconfirm
-                                        title="确认删除?"
-                                        okText="确定"
-                                        cancelText="取消"
-                                        onConfirm={() => this.onDelete(id)}
-                                    >
-                                        <a className="ml10 gray">删除</a>
-                                    </Popconfirm>
-                                </span>
-                            )}
+                                            title="确认删除?"
+                                            okText="确定"
+                                            cancelText="取消"
+                                            onConfirm={() => this.onDelete(id)}
+                                        >
+                                            <a className="ml10 gray">删除</a>
+                                        </Popconfirm>
+                                    </span>
+                                )}
                         </div>
                     );
                 }
@@ -105,8 +105,8 @@ export default class ExpressSet extends BaseComponent {
                         }
                     />
                 ) : (
-                    text
-                )}
+                        text
+                    )}
             </div>
         );
     }
@@ -128,7 +128,7 @@ export default class ExpressSet extends BaseComponent {
         }
         this.store.list.unshift({
             id: "",
-            sort: "",
+            sort: "0",
             name: "",
             pinyin: "",
             com: "",

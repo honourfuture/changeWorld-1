@@ -205,7 +205,7 @@ class Order_action extends API_Controller {
 
         if(! $info){
             if($express['express_info']){
-                $info = json_decode($express['express_info']);
+                $info = json_decode($express['express_info'], true);
             }else{
                 $this->ajaxReturn([], 3, $result['message']);
             }

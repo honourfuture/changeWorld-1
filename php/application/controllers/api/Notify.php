@@ -16,6 +16,61 @@ class Notify extends API_Controller
         parent::__construct();
     }
 
+    public function wechat_order_payment()
+    {
+        $this->setting = config_item('wechat');
+        $app = new Application($this->setting);
+        $response = $app->payment->handleNotify(function($notify, $successful){
+            if(! in_array($notify->attach, ['pay_sn', 'order_sn'])){
+                log_message('error', '[wechat_order_payment] '.$notify);
+                return false;
+            }
+            $this->load->model('Order_model');
+            if($notify->attach == 'pay_sn'){
+                $where = ['pay_sn' => $notify->out_trade_no];
+            }else{
+                $where = ['order_sn' => $notify->out_trade_no];
+            }
+            if(! $order = $this->Order_model->get_many_by($where)){
+                return false;
+            }
+
+            $a_order_id = [];
+            foreach($order as $item){
+                $a_order_id[] = $item['id'];
+            }
+
+            $update = [];
+            if($successful){
+                $update['status'] = 2;
+
+                //商品销售记录
+                $this->load->model('Order_items_model');
+                if($goods = $this->Order_items_model->get_many_by(['order_id' => $a_order_id])){
+                    $this->load->model('Record_goods_model');
+                    $data = [];
+                    foreach($goods as $item){
+                        $data[] = [
+                            'goods_id' => $item['goods_id'],
+                            'seller_uid' => $item['seller_uid'],
+                            'num' => $item['num'],
+                            'order_id' => $item['order_id']
+                        ];
+                    }
+                    $this->Record_goods_model->insert_many($data);
+                }
+                //分佣
+            }else{
+                log_message('error', '[wechat_order_payment] '.$notify);
+            }
+            $update && $this->Order_model->update_many($a_order_id, $update);
+
+            return true;
+        });
+
+        echo $response;
+    }
+
     // 微信充值
     public function wechat_recharge()
     {
