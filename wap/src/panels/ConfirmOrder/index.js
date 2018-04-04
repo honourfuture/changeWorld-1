@@ -47,7 +47,7 @@ class StoreItem extends BaseComponent {
             <div className="order-detail">
                 <Flex
                     className="store-info base-line"
-                    onClick={() => Base.push("AnchorStore", { seller_uid })}
+                    onClick={() => Base.pushApp("openShopView", seller_uid)}
                 >
                     <NetImg src={header} />
                     <div className="store-name">{nickname}</div>

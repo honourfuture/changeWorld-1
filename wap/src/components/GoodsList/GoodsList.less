@@ -1,34 +1,43 @@
-@import '../../common/theme.less';
-.recommend-goods{
-    &Item{
+@import "../../common/theme.less";
+.recommend-goods {
+    &Item {
         margin-bottom: 10px;
-        width: calc(~'50% - 5px'); //48%;
-        &:nth-child(2n){
+        width: calc(~"50% - 5px"); //48%;
+        &.sale-item {
+            background: #fff;
+        }
+        &:nth-child(2n) {
             margin-left: 10px;
         }
-        &-img{
-            img{
+        &-img {
+            img {
                 width: 100%;
                 display: block;
             }
         }
-        &-body{
+        &-body {
             padding: 10px 15px;
             background: #f7f7f7;
-            box-shadow: inset 0 0 0 0 #F0F0F0;
+            box-shadow: inset 0 0 0 0 #f0f0f0;
         }
-        &-title{
+        &-title {
             margin-bottom: 5px;
-            line-height: 21px;
-            font-size: 14px;
+            line-height: 17px;
+            height: 36px;
+            font-size: 13px;
             color: #333;
         }
-        .goodsPrice{
+        .goodsPrice {
             font-size: 16px;
-            color: #222;
+            color: #333;
         }
-        .am-button{
+        .am-button {
             position: unset !important;
+        }
+        .sale-num {
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
         }
     }
 }

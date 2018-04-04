@@ -73,6 +73,8 @@ export default class UserCenter extends BaseComponent {
                 </Flex.Item>
             );
         });
+        const { user_id } =
+            Base.getLocalData("user_verify_data") || Base.getPageParams();
         return (
             <div className="UserCenter">
                 <NavBar
@@ -139,7 +141,7 @@ export default class UserCenter extends BaseComponent {
                         {parseInt(anchor) === 1 && parseInt(is_seller) !== 1 ? (
                             <Item
                                 arrow="horizontal"
-                                onClick={() => Base.push("MyOrder")}
+                                onClick={() => Base.pushApp("openShopAuthView")}
                             >
                                 申请开店
                             </Item>
@@ -154,15 +156,15 @@ export default class UserCenter extends BaseComponent {
                             <div>
                                 <Item
                                     arrow="horizontal"
-                                    onClick={() =>
-                                        Base.pushApp("openShopAuthView")
-                                    }
+                                    onClick={() => Base.push("ProductIssue")}
                                 >
                                     产品发布
                                 </Item>
                                 <Item
                                     arrow="horizontal"
-                                    onClick={() => Base.push("MyOrder")}
+                                    onClick={() =>
+                                        Base.pushApp("openShopView", user_id)
+                                    }
                                 >
                                     我的产品
                                 </Item>

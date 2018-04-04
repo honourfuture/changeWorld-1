@@ -2,7 +2,7 @@ import React from "react";
 import { action } from "mobx";
 import { BaseComponent, Base, Global } from "../../common";
 import { ListView, PullToRefresh } from "antd-mobile";
-import { GoodsItem } from "../../components/GoodsList";
+import { SalesGoodsItem } from "../../components/GoodsList";
 import "./Statistics.less";
 const height = document.body.offsetHeight - 169;
 
@@ -15,6 +15,7 @@ export default class Statistics extends BaseComponent {
         this.cur_page = 1;
         this.store = {
             list: [],
+            count: 0,
             isRead: "",
             refreshing: false,
             isLoading: false
@@ -26,26 +27,28 @@ export default class Statistics extends BaseComponent {
     }
     @action.bound
     renderItem(rowData, sectionID, rowID) {
-        return <GoodsItem {...rowData} />;
+        return <SalesGoodsItem {...rowData} />;
     }
     @action.bound
     requestData(b_noToast = true) {
         Base.POST(
             {
-                act: "mailbox",
-                op: "index",
+                act: "shop",
+                op: "static_goods",
+                mod: "user",
                 cur_page: this.cur_page || 1,
                 per_page: Global.PAGE_SIZE
             },
             res => {
-                const { list } = res.data;
+                const { goods, count } = res.data;
+                this.store.count = count;
                 this.store.list =
                     this.cur_page === 1
-                        ? [].concat(list)
-                        : this.store.list.concat(list);
+                        ? [].concat(goods)
+                        : this.store.list.concat(goods);
                 this.store.refreshing = false;
                 this.store.isLoading = false;
-                if (list.length > 0) {
+                if (goods.length > 0) {
                     this.cur_page++;
                 }
             },
@@ -67,13 +70,13 @@ export default class Statistics extends BaseComponent {
         this.requestData();
     }
     render() {
-        const { list, isLoading, refreshing } = this.store;
+        const { list, isLoading, refreshing, count } = this.store;
         const dataSource = this.dataSource.cloneWithRows(list.slice());
         return (
             <div className="Statistics">
                 <div className="intBox">
                     <div className="myInt">
-                        <div className="round">1162</div>
+                        <div className="round">{count}</div>
                         <div className="label">总销量</div>
                     </div>
                 </div>

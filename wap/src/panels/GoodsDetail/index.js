@@ -514,7 +514,11 @@ export default class GoodsDetail extends BaseComponent {
                                     </div>
                                 </div>
                             </Flex>
-                            <Flex>
+                            <Flex
+                                onClick={() =>
+                                    Base.pushApp("openShopView", seller_uid)
+                                }
+                            >
                                 <div className="right-des">讲师店铺</div>
                                 <Icon type="right" color="#c9c9c9" />
                             </Flex>

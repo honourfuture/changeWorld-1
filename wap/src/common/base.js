@@ -76,11 +76,9 @@ export const Base = {
     },
     //进入App页面
     pushApp(path, params) {
+        console.log(path, params);
         if (window.JKEventHandler) {
-            window.JKEventHandler.callNativeFunction(
-                path,
-                params ? params : ""
-            );
+            window.JKEventHandler.callNativeFunction(path, params || "");
         }
     },
     //获取页面传来的参数
