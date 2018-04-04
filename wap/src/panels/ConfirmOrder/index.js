@@ -207,8 +207,8 @@ export default class ConfirmOrder extends BaseComponent {
             { act: "order", op: "add", mod: "user", ...requestParam },
             res => {
                 Global.curSelectAddressId = "";
-                const { balance, pay_sn, total } = res.data;
-                Base.push("Pay", { balance, pay_sn, total });
+                const { pay_sn } = res.data;
+                Base.push("Pay", { pay_sn });
             }
         );
     }

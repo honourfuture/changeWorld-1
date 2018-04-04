@@ -47,7 +47,9 @@ export default class PayState extends BaseComponent {
                         className="PayState-opear"
                     >
                         <Button
-                            onClick={() => Base.push("MyOrder", { index: 2 })}
+                            onClick={() =>
+                                Base.push("MyOrder", { index: 2, pageNum: 2 })
+                            }
                             type="ghost"
                             inline
                             className="am-button-borderfix payBtn"
