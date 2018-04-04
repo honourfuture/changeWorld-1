@@ -48,14 +48,14 @@ class Order_model extends MY_Model
                 }
             }
         }
-
+        echo $this->db->last_query();
         return $result;
     }
 
     public function get_order_by_order_sn($order_sn)
     {
         $result = [];
-        $this->db->select('id,total_amount,real_total_amount,use_ticket_amount,use_point_amount,use_point');
+        $this->db->select('id,status,total_amount,real_total_amount,use_ticket_amount,use_point_amount,use_point');
         if($row = $this->get_by(['order_sn' => $order_sn])){
             if($row['status'] == 0){
                 $result = $row;

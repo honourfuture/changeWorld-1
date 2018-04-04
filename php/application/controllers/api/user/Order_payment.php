@@ -44,7 +44,7 @@ class Order_payment extends API_Controller {
     }
 
 	/**
-	 * @api {get} /api/user/order_payment 付款页
+	 * @api {get} /api/user/order_payment 订单付款页
 	 * @apiVersion 1.0.0
 	 * @apiName order_payment
 	 * @apiGroup user
@@ -118,17 +118,18 @@ class Order_payment extends API_Controller {
 	}
 
 	/**
-	 * @api {post} /api/user/Order_payment/payment 充值-提交
+	 * @api {post} /api/user/order_payment/payment 订单付款页-提交
 	 * @apiVersion 1.0.0
-	 * @apiName Order_payment_payment
+	 * @apiName order_payment_payment
 	 * @apiGroup api
 	 *
-	 * @apiSampleRequest /api/user/Order_payment/payment
+	 * @apiSampleRequest /api/user/order_payment/payment
 	 *
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
-	 * @apiParam {Number} payment_id 充值方式 0微信 1支付宝
-	 * @apiParam {String} amount 充值金额
+	 * @apiParam {Number} payment_type 支付类型 balance：余额 wechat：微信 alipay：支付宝
+	 * @apiParam {String} trade_type 交易类型 pay_sn：下单支付 order_sn：订单列表支付
+	 * @apiParam {String} trade_sn 交易号
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
