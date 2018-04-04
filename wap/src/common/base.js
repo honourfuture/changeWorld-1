@@ -76,7 +76,6 @@ export const Base = {
     },
     //进入App页面
     pushApp(path, params) {
-        console.log(path, params ? params : "");
         if (window.JKEventHandler) {
             window.JKEventHandler.callNativeFunction(
                 path,
@@ -114,7 +113,6 @@ export const Base = {
             o_param["op"]
         }`;
         const { sign, user_id } = this.getLocalData("user_verify_data") || {};
-        console.log(sign, user_id);
         o_param.sign = sign || "51409079b103509bed505b276f27717c";
         o_param.user_id = user_id || 1;
         delete o_param["act"];
@@ -140,9 +138,9 @@ export const Base = {
                     case 0:
                         f_succBack && action(f_succBack)(res);
                         break;
-                    case -1:
-                        self.push("userLogin");
-                        break;
+                    // case -1:
+                    //     self.push("userLogin");
+                    //     break;
                     default:
                         Toast.fail(res.message);
                         break;

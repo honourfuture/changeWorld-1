@@ -1,107 +1,98 @@
-@import '../../common/theme.less';
-.Pay{
-	.base-content{
-		padding: 15px;
-	}
-	&-box{
-		background: #fff;
-		border-radius: 8px;
-		&-goods{
-			padding: 20px 15px;
-			.goodsImg{
-				width: 66px;
-				height: 66px;
-				img{
-					width: 100%;
-					display: block;
-				}
-			}
-			.goodsInfo{
-				width: calc(~'100% - 76px');
-				height: 66px;
-				&-tit{
-					line-height: 20px;
-					font-size: 13px;
-					color: #181818;
-				}
-				&-num{
-					margin-top: 10px;
-					line-height: 13px;
-					span{
-						font-size: 13px;
-						color: #999;
-						&:first-of-type{
-							font-size: 14px;
-							color: @brand-primary;
-						}
-					}
-				}
-			}
-		}
-		&-mode{
-			padding: 20px 15px;
-			background: #fbfbfb; 
-			.pay-check{
-				margin-top: 23px;
-				.am-flexbox{
-					margin-bottom: 19px;
-					&:last-of-type{
-						margin-bottom: 0;
-					}
-				}
-				.am-flexbox-item{
-					font-size: 13px;
-					&:last-of-type{
-						flex: inherit;
-						text-align: right;
-					}
-					img{
-						height: 22px;
-					}
-					span{
-						line-height: 13px;
-					}
-					.pay-gold{
-						letter-spacing: 0;
-						color: #404143;
-					}
-					.account-money{
-						margin-left: 10px;
-						color: #999;
-					}
-					.payMoney{
-						margin-right: 8px;
-						color: @brand-primary;
-					}
-				}
-				.am-radio {
-					padding: 2.5px;
-					border: 1px solid #ccc;
-					border-radius: 50%;
-					&.am-radio-checked{
-						border: 1px solid @brand-primary;
-						background: @brand-primary;
-						.am-radio-inner::after{
-							width: 5px;
-							height: 10px;
-							top: -1px;
-							right: 7px;
-							border-color: #fff;
-						}
-					}
-				}
-			}
-		}
-		&-opear{
-			padding: 30px 15px;
-			.am-button{
-				width: 100%;
-				height: 40px;
-				line-height: 40px;
-				span{
-					font-size: 16px;
-				}
-			}
-		}
-	}
+@import "../../common/theme.less";
+.Pay {
+    .base-content {
+        padding: 15px;
+    }
+    &-box {
+        background: #fff;
+        border-radius: 8px;
+        &-goods {
+            padding: 20px 15px;
+            .goodsImg {
+                width: 66px;
+                height: 66px;
+                img {
+                    width: 100%;
+                    display: block;
+                }
+            }
+        }
+        &-mode {
+            padding: 20px 15px;
+            background: #fbfbfb;
+            .pay-check {
+                margin-top: 23px;
+                position: relative;
+                padding-bottom: 35px;
+                .am-flexbox {
+                    margin-bottom: 19px;
+                    &:last-of-type {
+                        margin-bottom: 0;
+                    }
+                }
+                .am-flexbox-item {
+                    font-size: 13px;
+                    &:last-of-type {
+                        flex: inherit;
+                        text-align: right;
+                    }
+                    img {
+                        height: 22px;
+                    }
+                    span {
+                        line-height: 13px;
+                    }
+                    .pay-gold {
+                        letter-spacing: 0;
+                        color: #404143;
+                    }
+                    .account-money {
+                        margin-left: 10px;
+                        color: #999;
+                    }
+                }
+                .am-radio {
+                    padding: 2.5px;
+                    border: 1px solid #ccc;
+                    border-radius: 50%;
+                    &.am-radio-checked {
+                        border: 1px solid @brand-primary;
+                        background: @brand-primary;
+                        .am-radio-inner::after {
+                            width: 5px;
+                            height: 10px;
+                            top: -1px;
+                            right: 7px;
+                            border-color: #fff;
+                        }
+                    }
+                }
+                .payMoney {
+                    em {
+                        color: #999;
+                        font-weight: normal;
+                        font-size: 12px;
+                    }
+                    color: @brand-primary;
+                    margin-top: 20px;
+                    margin-right: 10px;
+                    position: absolute;
+                    right: 0;
+                    font-weight: 600;
+                    font-size: 18px;
+                }
+            }
+        }
+        &-opear {
+            padding: 30px 15px;
+            .am-button {
+                width: 100%;
+                height: 40px;
+                line-height: 40px;
+                span {
+                    font-size: 16px;
+                }
+            }
+        }
+    }
 }
