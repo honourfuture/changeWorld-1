@@ -92,6 +92,9 @@ class Order_payment extends API_Controller {
 
 		$ret = $this->payment_format($trade_type, $trade_sn);
 
+		$user = $this->get_user();
+		$ret['balance'] = $user['balance'];
+
 		$this->ajaxReturn($ret);
 	}
 
