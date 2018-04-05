@@ -190,7 +190,7 @@ class OrderItem extends BaseComponent {
         }
         return (
             <div className="orderItem">
-                <div onClick={()=>Base.push('OrderDetail',{order_id:id})}>
+                <div onClick={()=>Base.push('OrderDetail',{order_id:id,nowCur:this.props.nowCur})}>
                     <Flex justify="between" className="orderItemTit base-line">
                         <span>订单编号：{order_sn}</span>
                         <span>{states[status]}</span>
@@ -236,7 +236,7 @@ export default class MyOrder extends BaseComponent {
     }
     @action.bound
     renderItem(rowData, sectionID, rowID) {
-        return <OrderItem changeList={this.changeList} {...rowData} />;
+        return <OrderItem nowCur={this.store.curPage}  changeList={this.changeList} {...rowData} />;
     }
     @action.bound
     changeList(id) {

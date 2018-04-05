@@ -32,7 +32,13 @@ import SellOrder from "./SellOrder";
 import ApplyInvoice from "./ApplyInvoice";
 import AfterMarket from "./AfterMarket";
 import Statistics from './Statistics';
+import SellerOrderDetail from './SellerOrderDetail';
 export const panelsList = [
+    {
+        path:'/SellerOrderDetail',
+        component:SellerOrderDetail,
+        title:'订单详情',
+    },
     {
         path:'/Statistics',
         component:Statistics,

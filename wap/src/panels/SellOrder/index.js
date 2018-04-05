@@ -80,13 +80,15 @@ class OrderItem extends BaseComponent {
         }
         return (
             <div className="orderItem">
-                <Flex justify="between" className="orderItemTit base-line">
-                    <span>订单编号：{order_sn}</span>
-                    <span>{states[status]}</span>
-                </Flex>
-                {(goods || []).map((item, key) => {
-                    return <OrderGoodsItem key={key} item={item} />;
-                })}
+                <div onClick={()=>Base.push('SellerOrderDetail',{order_id:id,nowCur:this.props.nowCur})}>
+                    <Flex justify="between" className="orderItemTit base-line">
+                        <span>订单编号：{order_sn}</span>
+                        <span>{states[status]}</span>
+                    </Flex>
+                    {(goods || []).map((item, key) => {
+                        return <OrderGoodsItem key={key} item={item} />;
+                    })}
+                </div>
                 <div className="orderItemType">
                     <div className="totalItem">
                         共{goods.length}件 合计 
@@ -122,7 +124,7 @@ export default class SellOrder extends BaseComponent{
     }
     @action.bound
     renderItem(rowData, sectionID, rowID) {
-        return <OrderItem changeList={this.changeList} {...rowData} />;
+        return <OrderItem nowCur={this.store.curPage} changeList={this.changeList} {...rowData} />;
     }
     @action.bound
     changePrice(id,price){

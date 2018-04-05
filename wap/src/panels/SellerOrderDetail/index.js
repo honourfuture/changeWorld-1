@@ -2,7 +2,7 @@ import React from 'react';
 import { action } from 'mobx';
 import {BaseComponent,Base} from '../../common';
 import { Flex, Button, NavBar, WhiteSpace } from 'antd-mobile';
-import './OrderDetail.less';
+import '../OrderDetail/OrderDetail.less';
 import { test, icon,addr } from '../../images';
 
 import { OrderBtn } from "../../components/OrderBtn";
@@ -69,61 +69,40 @@ class OrderGoodsItem extends BaseComponent{
 
 class OrderBtnItem extends BaseComponent{
 	render(){
-		const {status,refund_status,id,order_sn,seller_uid} = this.props.data || {};
+		const {status,refund_status,id,order_sn,buyer_uid} = this.props.data || {};
 		const item = this.props.goods;
 		let btns = null;
-
-		switch(parseInt(status,10)){
+        switch(parseInt(status,10)){
             case 0://待付款
                 btns = <OrderBtn 
-                            btnTxt={["取消订单","付款","联系商家"]} 
-                            oneCallBack={()=>this.cancelOrder(id)} 
-                            twoCallBack={()=>Base.push('pay',{order_sn})}
-                            threeCallBack={()=>Base.pushApp("openChatView",{seller_uid:seller_uid})}
-                            isDouble={3} 
-                        />
-            break;
-            case 1://已取消
-                btns = <OrderBtn 
-                            btnTxt={["删除订单"]} 
-                            oneCallBack={()=>this.delOrder(id)}
-                            isDouble={1} 
+                            btnTxt={["修改价格","联系顾客"]} 
+                            oneCallBack={()=>this.modifyPrice(id)} 
+                            twoCallBack={()=>Base.pushApp("openChatView",{seller_uid:buyer_uid})}
+                            isDouble={2} 
                         />
             break;
             case 2://代发货
                 btns = <OrderBtn 
-                            btnTxt={["退款/退货","联系商家"]} 
-                            oneCallBack={()=>Base.push('AfterMarket',{id:id})} 
-                            twoCallBack={()=>Base.pushApp("openChatView",{seller_uid:seller_uid})}
+                            btnTxt={["发货","联系顾客"]} 
+                            oneCallBack={()=>Base.push('WriteExInfo',{id:id})} 
+                            twoCallBack={()=>Base.pushApp("openChatView",{seller_uid:buyer_uid})}
                             isDouble={2} 
                         />;
             break;
             case 3://待收货
                 btns = <OrderBtn 
-                            btnTxt={["查看物流","确认收货","退款/退货","联系商家"]} 
-                            oneCallBack={()=>Base.push('ExLog',{id:id})}
-                            twoCallBack={()=>this.goods_confirm(id)} 
-                            threeCallBack={()=>Base.push('AfterMarket',{id:id})}
-                            fourCallBack={()=>Base.pushApp("openChatView",{seller_uid:seller_uid})}
-                            isDouble={4} 
+                            btnTxt={["查看物流","联系顾客"]} 
+                            oneCallBack={()=>Base.push('ExLog',{id:id})} 
+                            twoCallBack={()=>Base.pushApp("openChatView",{seller_uid:buyer_uid})}
+                            isDouble={2} 
                         />;
             break;
             case 4://待评价
                 btns = <OrderBtn 
-                            btnTxt={["评价订单","退款/退货","联系商家"]} 
-                            oneCallBack={()=>Base.push('EvaluateOrder',{id:id,item:JSON.stringify(item)})}
-                            twoCallBack={()=>Base.push('AfterMarket',{id:id})}
-                            threeCallBack={()=>Base.pushApp("openChatView",{seller_uid:seller_uid})}
-                            isDouble={3} 
+                            btnTxt={["联系顾客"]} 
+                            oneCallBack={()=>Base.pushApp("openChatView",{seller_uid:buyer_uid})} 
+                            isDouble={1} 
                         />;
-            break;
-            case 5: //完成
-                btns = <OrderBtn 
-                        btnTxt={["申请发票","退款/退货"]} 
-                        oneCallBack={()=>Base.push('ApplyInvoice',{id:id})} 
-                        twoCallBack={()=>Base.push('AfterMarket',{id:id})}
-                        isDouble={2} 
-                    />;      
             break;
         }
         if(parseInt(refund_status) === 1){
@@ -139,7 +118,7 @@ class OrderBtnItem extends BaseComponent{
 }
 
 
-export default class OrderDetail extends BaseComponent{
+export default class SellerOrderDetail extends BaseComponent{
 	store = {
 		detail:{},
 		curPage:0
@@ -149,7 +128,7 @@ export default class OrderDetail extends BaseComponent{
 		const order_id = parseInt(Base.getPageParams('order_id'));
 		const nowCur = parseInt(Base.getPageParams('nowCur'));
 		this.store.curPage = nowCur;
-		Base.GET({act: "order",op:"view",mod:'user',order_id:order_id,status:-1,}, res => {
+		Base.GET({act: "order",op:"view",mod:'user',order_id:order_id,status:nowCur}, res => {
             this.store.detail = res.data;
         });
 	}
@@ -216,7 +195,7 @@ export default class OrderDetail extends BaseComponent{
 					<WhiteSpace size="lg" />
 					{invoiceItem}
 				</div>
-				{ parseInt(order.refund_status) === 1 ? null : 
+				{ parseInt(order.refund_status) === 1 || parseInt(this.store.curPage) === -2 ? null : 
 					<Flex className='footer' justify='end' align="center">
 						<OrderBtnItem data={order} good={goods} />
 					</Flex>
