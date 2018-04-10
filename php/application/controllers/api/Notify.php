@@ -16,6 +16,39 @@ class Notify extends API_Controller
         parent::__construct();
     }
 
+    // 微信服务
+    public function wechat_service_payment()
+    {
+        $this->setting = config_item('wechat');
+        $app = new Application($this->setting);
+        $response = $app->payment->handleNotify(function($notify, $successful){
+            $this->load->model('Payment_log_model');
+
+            $where = ['order_sn' => $notify->out_trade_no];
+            if(! $service_log = $this->Payment_log_model->get_by($where)){
+                return false;
+            }
+
+            if($service_log['status'] == 1){
+                return true;
+            }
+
+            $update = [];
+            if($successful){
+                $update['status'] = 1;
+            }else{
+                $update['status'] = 2;
+            }
+
+            //更新流水状态
+            $this->Payment_log_model->update($service_log['id'], $update);
+
+            return true;
+        });
+
+        echo $response;
+    }
+
     // 微信贵族
     public function wechat_vip_payment()
     {

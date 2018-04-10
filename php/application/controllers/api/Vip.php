@@ -243,7 +243,13 @@ class Vip extends API_Controller {
 		$user = $this->get_user();
 		if($user && $user['balance'] >= $this->amount){
 			if($this->amount > 0){
-				$this->Users_model->update($this->user_id, ['balance' => round($user['balance'] - $this->amount, 2), 'gold' => round($user['gold'] + $this->gold]));
+				$this->Users_model->update(
+					$this->user_id,
+					[
+						'balance' => round($user['balance'] - $this->amount, 2),
+						'gold' => round($user['gold'] + $this->gold)
+					]
+				);
 			}
 
 			//更新流水状态
