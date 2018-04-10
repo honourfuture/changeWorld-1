@@ -48,6 +48,16 @@ export default class LecturerNobleManager extends BaseComponent{
 				render: (text, record) => this.renderInput(text, record, 'renew_gold'),
 			}, 
 			{
+				title: '天数',
+				dataIndex: 'days',
+				render: (text, record) => this.renderInput(text, record, 'days'),
+			},
+			{
+				title: '单位',
+				dataIndex: 'unit',
+				render: (text, record) => this.renderInput(text, record, 'unit'),
+			},
+			{
 				title: '启用',
 				dataIndex: 'enable',
 				width: '15%',
@@ -156,7 +166,7 @@ export default class LecturerNobleManager extends BaseComponent{
 		if(this.store.list.find(item=>item.id === 0)){
 			return message.info('请保存后再新建');
 		}
-		this.store.list.unshift({id:'',name:'',icon:'',first_fee:'',first_gold:'',renew_fee:'',renew_gold:'',editable:true,deleted:'0',enable:'1'});
+		this.store.list.unshift({id:'',name:'',icon:'',first_fee:'',first_gold:'',renew_fee:'',renew_gold:'',days:'',unit:'',editable:true,deleted:'0',enable:'1'});
 	}
 	//上传
 	@action.bound
