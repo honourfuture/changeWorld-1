@@ -248,6 +248,18 @@ class Payment_log extends API_Controller {
 			//更新流水状态
 			$order_update = ['status' => 1];
 			$this->Payment_log_model->update($order_id, $order_update);
+			//收藏
+			if(in_array($this->topic, ['audio', 'album'])){
+				$sub_topic = ($this->topic == 'audio') ? 20 : 21;
+				$this->load->model('Users_collection_model');
+				$data = [
+					'user_id' => $this->user_id,
+					't_id' => $this->row['id'],
+					'topic' => 2,
+					'sub_topic' => $sub_topic
+				];
+				$this->Users_collection_model->insert($data);
+			}
 			//余额明细
 
 			$this->ajaxReturn();

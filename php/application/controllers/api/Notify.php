@@ -36,6 +36,19 @@ class Notify extends API_Controller
             $update = [];
             if($successful){
                 $update['status'] = 1;
+
+                //收藏
+                if(in_array($service_log['service'], [1, 2])){
+                    $sub_topic = ($service_log['service'] == 1) ? 20 : 21;
+                    $this->load->model('Users_collection_model');
+                    $data = [
+                        'user_id' => $service_log['user_id'],
+                        't_id' => $service_log['t_id'],
+                        'topic' => 2,
+                        'sub_topic' => $sub_topic
+                    ];
+                    $this->Users_collection_model->insert($data);
+                }
             }else{
                 $update['status'] = 2;
             }
