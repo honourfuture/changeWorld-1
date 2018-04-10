@@ -140,7 +140,7 @@ class Resource extends API_Controller {
 			$this->ajaxReturn([], 3, '资源内容必传');
 		}
 
-		if($params['type'] == 0 && !$content = json_decode($params['content'])){
+		if($params['type'] == 0 && !$content = json_decode($params['content'], true)){
 			$this->ajaxReturn([], 3, 'ppt资源格式错误');
 		}
 

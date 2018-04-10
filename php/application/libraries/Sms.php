@@ -10,7 +10,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Sms
 {
     public $server_name = '【猪买单平台】';
-    private $a_tpl_sms   = array(
+    private $a_tpl_sms   = array(// 0注册 1找回密码 2绑定
+        '您的验证码是：#code#。请不要把验证码泄露给其他人，若非本人操作请忽略。',
         '您的验证码是：#code#。请不要把验证码泄露给其他人，若非本人操作请忽略。',
         '您的验证码是：#code#。请不要把验证码泄露给其他人，若非本人操作请忽略。',
     );

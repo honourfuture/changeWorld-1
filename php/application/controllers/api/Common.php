@@ -156,7 +156,7 @@ class Common extends API_Controller
      *
      * @apiSampleRequest /api/common/sms
      *
-     * @apiParam {Number} sms_id 短信模板 0注册 1找回密码
+     * @apiParam {Number} sms_id 短信模板 0注册 1找回密码 2绑定
      * @apiParam {String} mobi 获取验证码手机号
      *
      * @apiSuccess {Number} status 接口状态 0成功 其他异常
