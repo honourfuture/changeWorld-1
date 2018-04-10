@@ -16,6 +16,78 @@ class Notify extends API_Controller
         parent::__construct();
     }
 
+    // 微信贵族
+    public function wechat_vip_payment()
+    {
+        $this->setting = config_item('wechat');
+        $app = new Application($this->setting);
+        $response = $app->payment->handleNotify(function($notify, $successful){
+            $this->load->model('Users_vip_log_model');
+            $this->load->model('Users_vip_model');
+            $this->load->model('Vip_model');
+
+            $where = ['order_sn' => $notify->out_trade_no];
+            if(! $vip_log = $this->Users_vip_log_model->get_by($where)){
+                return false;
+            }
+
+            if($vip_log['status'] == 1){
+                return true;
+            }
+
+            $update = [];
+            if($successful){
+                $update['status'] = 1;
+
+                if(! $vip = $this->Vip_model->get($vip_log['vip_id'])){
+                    return false;
+                }
+                //更新用户贵族
+                $user_vip = $this->Users_vip_model->get_by(['user_id' => $vip_log['user_id'], 'vip_id' => $vip_log['vip_id']]);
+                if($user_vip){
+                    $add_time = max($user_vip['validity_time'], time());
+                    $data = [
+                        'validity_time' => strtotime('+'.$vip['days'].' days', $add_time)
+                    ];
+                    $this->Users_vip_model->update($user_vip['id'], $data);
+                }else{
+                    $data = [
+                        'user_id' => $vip_log['user_id'],
+                        'vip_id' => $vip_log['vip_id'],
+                        'validity_time' => strtotime('+'.$vip['days'].' days')
+                    ];
+                    $this->Users_vip_model->insert($data);
+                }
+
+                $this->load->model('Users_model');
+                $this->db->set('gold', 'gold + '.$vip_log['gold'], false);
+                $this->db->where('id', $vip_log['user_id']);
+                $this->db->update($this->Users_model->table());
+                //金币明细
+                $gold_log = [
+                    'topic' => 3,
+                    'from_user_id' => $vip_log['user_id'],
+                    'to_user_id' => $vip_log['user_id'],
+                    'item_title' => $vip_log['amount'],
+                    'item_id' => $vip_log['id'],
+                    'gold' => $vip_log['gold']
+                ];
+                $this->load->model('Gold_log_model');
+                $this->Gold_log_model->insert($gold_log);
+            }else{
+                $update['status'] = 2;
+            }
+
+            //更新流水状态
+            $this->Users_vip_log_model->update($vip_log['id'], $update);
+
+            return true;
+        });
+
+        echo $response;
+    }
+
+    // 微信商品订单
     public function wechat_order_payment()
     {
         $this->setting = config_item('wechat');
@@ -97,7 +169,7 @@ class Notify extends API_Controller
                     $gold = floor($user['gold'] + $recharge_gold);
                     $this->Users_model->update($user['id'], ['gold' => $gold]);
 
-                    //资金明细
+                    //金币明细
                     $gold_log = [
                         'topic' => 0,
                         'from_user_id' => $recharge['user_id'],

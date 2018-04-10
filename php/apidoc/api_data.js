@@ -6285,6 +6285,20 @@ define({ "api": [
             "optional": false,
             "field": "icon",
             "description": "<p>icon图标</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "days",
+            "description": "<p>有效期天数</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "unit",
+            "description": "<p>有效期单位</p>"
           }
         ]
       }
@@ -8524,7 +8538,7 @@ define({ "api": [
             "type": "Number",
             "optional": false,
             "field": "sms_id",
-            "description": "<p>短信模板 0注册 1找回密码</p>"
+            "description": "<p>短信模板 0注册 1找回密码 2绑定</p>"
           },
           {
             "group": "Parameter",
@@ -11127,7 +11141,7 @@ define({ "api": [
   {
     "type": "post",
     "url": "/api/user/order_payment/payment",
-    "title": "付款页-提交",
+    "title": "订单付款页-提交",
     "version": "1.0.0",
     "name": "order_payment_payment",
     "group": "api",
@@ -13428,13 +13442,274 @@ define({ "api": [
             "optional": false,
             "field": "data.renew_gold",
             "description": "<p>续费金币</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.days",
+            "description": "<p>有效期天数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.unit",
+            "description": "<p>有效期单位：日/月/季/年</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    \"data\": [\n        {\n            \"id\": \"1\",\n            \"name\": \"男爵\",\n            \"first_fee\": \"100.00\",\n            \"first_gold\": \"10000\",\n            \"renew_fee\": \"80.00\",\n            \"renew_gold\": \"12000\",\n            \"icon\": \"\"\n        }\n    ],\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": [\n        {\n            \"id\": \"1\",\n            \"name\": \"男爵\",\n            \"first_fee\": \"100.00\",\n            \"first_gold\": \"10000\",\n            \"renew_fee\": \"80.00\",\n            \"renew_gold\": \"12000\",\n            \"icon\": \"\",\n            \"days\": \"30\",\n            \"unit\": \"月\",\n        }\n    ],\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Vip.php",
+    "groupTitle": "api"
+  },
+  {
+    "type": "post",
+    "url": "/api/vip/payment",
+    "title": "贵族-支付",
+    "version": "1.0.0",
+    "name": "vip_payment",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/vip/payment"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "payment_type",
+            "description": "<p>支付类型 balance：余额 wechat：微信 alipay：支付宝</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "vip_id",
+            "description": "<p>贵族ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": \"\",\n\t    \"status\": 0,\n\t    \"message\": \"\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Vip.php",
+    "groupTitle": "api"
+  },
+  {
+    "type": "get",
+    "url": "/api/vip/view",
+    "title": "贵族-下单",
+    "version": "1.0.0",
+    "name": "vip_view",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/vip/view"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "vip_id",
+            "description": "<p>贵族ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.id",
+            "description": "<p>贵族唯一ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.name",
+            "description": "<p>贵族名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.first_fee",
+            "description": "<p>首开费用</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.first_gold",
+            "description": "<p>首开金币</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.renew_fee",
+            "description": "<p>续费费用</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.renew_gold",
+            "description": "<p>续费金币</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.days",
+            "description": "<p>有效期天数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.unit",
+            "description": "<p>有效期单位：日/月/季/年</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.balance",
+            "description": "<p>账号余额</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.amount",
+            "description": "<p>支付金额</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"id\": \"1\",\n        \"name\": \"男爵\",\n        \"enable\": \"1\",\n        \"first_fee\": \"100.00\",\n        \"first_gold\": \"10000\",\n        \"renew_fee\": \"80.00\",\n        \"renew_gold\": \"12000\",\n        \"icon\": \"\",\n        \"days\": \"30\",\n        \"unit\": \"月\",\n        \"balance\": \"9800.10\",\n        \"amount\": \"100.00\"\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
@@ -18268,7 +18543,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/api/user/order_payment",
-    "title": "付款页",
+    "title": "订单付款页",
     "version": "1.0.0",
     "name": "order_payment",
     "group": "user",
@@ -19852,6 +20127,84 @@ define({ "api": [
     "sampleRequest": [
       {
         "url": "/api/user/shop/add"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集 建议用forin遍历buyer 和 seller</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"header\": \"/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png\",\n        \"nickname\": \"aicode\",\n        \"anchor\": \"1\",\n        \"is_seller\": \"1\",\n        \"buyer\": [\n            \"8\"\n        ],\n        \"seller\": [\n            \"5\"\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Shop.php",
+    "groupTitle": "user"
+  },
+  {
+    "type": "get",
+    "url": "/api/user/shop/static_goods",
+    "title": "我的商城-统计商品",
+    "version": "1.0.0",
+    "name": "shop_static_goods",
+    "group": "user",
+    "sampleRequest": [
+      {
+        "url": "/api/user/shop/static_goods"
       }
     ],
     "parameter": {

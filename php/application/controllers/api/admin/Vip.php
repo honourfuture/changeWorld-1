@@ -99,6 +99,8 @@ class Vip extends API_Controller {
 	 * @apiParam {String} renew_fee 续费费用
 	 * @apiParam {String} renew_gold 续费金币
 	 * @apiParam {String} icon icon图标
+	 * @apiParam {String} days 有效期天数
+	 * @apiParam {String} unit 有效期单位
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -125,7 +127,8 @@ class Vip extends API_Controller {
 			$params = elements(
 				array(
 					'deleted', 'enable', 'sort', 'name', 'first_fee',
-					'first_gold', 'renew_fee', 'renew_gold', 'icon'
+					'first_gold', 'renew_fee', 'renew_gold', 'icon',
+					'days', 'unit'
 				),
 				$this->input->post(),
 				UPDATE_VALID
@@ -145,7 +148,8 @@ class Vip extends API_Controller {
 			$params = elements(
 				array(
 					'sort', 'name', 'first_fee',
-					'first_gold', 'renew_fee', 'renew_gold', 'icon'
+					'first_gold', 'renew_fee', 'renew_gold', 'icon',
+					'days', 'unit'
 				),
 				$this->input->post(),
 				UPDATE_VALID
@@ -187,6 +191,12 @@ class Vip extends API_Controller {
 				}
 				if($params['icon'] === '' || $params['icon'] == UPDATE_VALID){
 					$this->ajaxReturn([], 501, 'icon图标参数错误');
+				}
+				if($params['days'] === '' || $params['days'] == UPDATE_VALID){
+					$this->ajaxReturn([], 501, '请输入有效天数');
+				}
+				if($params['unit'] === '' || $params['unit'] == UPDATE_VALID){
+					$this->ajaxReturn([], 501, '请输入对应单位：日/月/季/年');
 				}
 				break;
 			case 'edit':
