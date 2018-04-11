@@ -3,6 +3,7 @@ import { BaseComponent, Base, NetImg } from "../../common";
 import { Flex, NavBar, WhiteSpace, List, Badge } from "antd-mobile";
 import "./UserCenter.less";
 import { icon, userCenter } from "../../images";
+import { action } from "mobx";
 const Item = List.Item;
 const orderSatus = [
     { title: "待付款", key: 0, img: userCenter.dfkIco },
@@ -18,6 +19,12 @@ export default class UserCenter extends BaseComponent {
         Base.POST({ act: "shop", op: "index", mod: "user" }, res => {
             console.log(res);
             this.store.data = res.data;
+        });
+    }
+    @action.bound
+    onPushShop() {
+        Base.getAuthData(({ user_id }) => {
+            Base.pushApp("openShopView", user_id);
         });
     }
     render() {
@@ -73,8 +80,6 @@ export default class UserCenter extends BaseComponent {
                 </Flex.Item>
             );
         });
-        const { user_id } =
-            Base.getLocalData("user_verify_data") || Base.getPageParams();
         return (
             <div className="UserCenter">
                 <NavBar
@@ -162,9 +167,7 @@ export default class UserCenter extends BaseComponent {
                                 </Item>
                                 <Item
                                     arrow="horizontal"
-                                    onClick={() =>
-                                        Base.pushApp("openShopView", user_id)
-                                    }
+                                    onClick={this.onPushShop}
                                 >
                                     我的产品
                                 </Item>

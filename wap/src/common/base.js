@@ -110,44 +110,45 @@ export const Base = {
         let s_requestUrl = `${Global.API_URL}/${mod}${o_param["act"]}/${
             o_param["op"]
         }`;
-        const { sign, user_id } = this.getLocalData("user_verify_data") || {};
-        o_param.sign = sign || "51409079b103509bed505b276f27717c";
-        o_param.user_id = user_id || 1;
-        delete o_param["act"];
-        delete o_param["op"];
-        if (o_param.mod) {
-            delete o_param["mod"];
-        }
-        let self = this;
-        !b_noToast && Toast.loading("加载中", 0);
-        reqwest({
-            withCredentials: true,
-            crossOrigin: true,
-            url: s_requestUrl,
-            method: s_method,
-            data: o_param,
-            type: "json",
-            processData: !(o_param instanceof FormData), //传文件流
-            timeout: 10000,
-            success: res => {
-                self.DEBUG && console.log(res);
-                !b_noToast && Toast.hide();
-                switch (res.status) {
-                    case 0:
-                        f_succBack && action(f_succBack)(res);
-                        break;
-                    // case -1:
-                    //     self.push("userLogin");
-                    //     break;
-                    default:
-                        Toast.fail(res.message);
-                        break;
-                }
-            },
-            error: err => {
-                self.DEBUG && console.log(err);
-                Toast.offline("连接异常，请重新尝试");
+        this.getAuthData(({ sign, user_id }) => {
+            o_param.sign = sign;
+            o_param.user_id = user_id;
+            delete o_param["act"];
+            delete o_param["op"];
+            if (o_param.mod) {
+                delete o_param["mod"];
             }
+            let self = this;
+            !b_noToast && Toast.loading("加载中", 0);
+            reqwest({
+                withCredentials: true,
+                crossOrigin: true,
+                url: s_requestUrl,
+                method: s_method,
+                data: o_param,
+                type: "json",
+                processData: !(o_param instanceof FormData), //传文件流
+                timeout: 10000,
+                success: res => {
+                    self.DEBUG && console.log(res);
+                    !b_noToast && Toast.hide();
+                    switch (res.status) {
+                        case 0:
+                            f_succBack && action(f_succBack)(res);
+                            break;
+                        // case -1:
+                        //     self.push("userLogin");
+                        //     break;
+                        default:
+                            Toast.fail(res.message);
+                            break;
+                    }
+                },
+                error: err => {
+                    self.DEBUG && console.log(err);
+                    Toast.offline("连接异常，请重新尝试");
+                }
+            });
         });
     },
     GET(o_param, f_succBack = null, f_failBack = null, b_noToast = false) {
@@ -156,16 +157,13 @@ export const Base = {
     POST(o_param, f_succBack = null, f_failBack = null, b_noToast = false) {
         this._request(o_param, f_succBack, "POST", f_failBack, b_noToast);
     },
-    getAuthData() {
-        alert(window.JKEventHandler);
+    getAuthData(cb) {
         if (window.JKEventHandler) {
             window.JKEventHandler.callNativeFunction(
                 "getUserAuth",
                 "",
                 "getUserAuth",
-                function(data) {
-                    Base.setLocalData("user_verify_data", data);
-                }
+                cb
             );
         }
     },
@@ -262,7 +260,6 @@ export const Base = {
     // }
 };
 window.goBack = Base.goBack;
-Base.getAuthData();
 //基础组件，内置store
 @observer
 export class BaseComponent extends Component {
