@@ -157,6 +157,7 @@ export const Base = {
         this._request(o_param, f_succBack, "POST", f_failBack, b_noToast);
     },
     getAuthData() {
+        alert(window.JKEventHandler);
         if (window.JKEventHandler) {
             window.JKEventHandler.callNativeFunction(
                 "getUserAuth",
