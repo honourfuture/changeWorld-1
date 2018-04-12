@@ -26,6 +26,26 @@ class Welcome extends Web_Controller {
 		$this->load->view('welcome_message');
 	}
 
+    public function truncate()
+    {
+        $config = [
+            'ad', 'ad_position', 'address', 'admin', 'album_class',
+            'album_tag', 'anchor_class', 'app_map', 'area', 'article',
+            'article_class', 'bank', 'config', 'express', 'goods_attr_category',
+            'goods_class', 'grade', 'help', 'live_class', 'live_gift',
+            'live_tag', 'mailbox', 'pretty', 'recharge', 'search_words',
+            'security_question', 'vip',
+        ];
+        $tables = $this->db->list_tables();
+
+        foreach ($tables as $table)
+        {
+            if(! in_array($table, $config)){
+                $this->db->truncate($table);
+            }
+        }
+    }
+
     public function kuaidi()
     {
         $url = 'http://poll.kuaidi100.com/poll/query.do';
