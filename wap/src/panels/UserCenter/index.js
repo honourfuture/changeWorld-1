@@ -143,7 +143,7 @@ export default class UserCenter extends BaseComponent {
                     </List>
                     <WhiteSpace size="lg" />
                     <List className="baseItem">
-                        {parseInt(anchor) === 1 && parseInt(is_seller) !== 1 ? (
+                        {parseInt(anchor) === 2 && parseInt(is_seller) !== 1 ? (
                             <Item
                                 arrow="horizontal"
                                 onClick={() => Base.pushApp("openShopAuthView")}
@@ -175,14 +175,16 @@ export default class UserCenter extends BaseComponent {
                         ) : null}
                     </List>
                     <WhiteSpace size="lg" />
-                    <List className="baseItem">
-                        <Item
-                            arrow="horizontal"
-                            onClick={() => Base.push("Statistics")}
-                        >
-                            数据统计
-                        </Item>
-                    </List>
+                    {parseInt(is_seller) === 1 ? (
+                        <List className="baseItem">
+                            <Item
+                                arrow="horizontal"
+                                onClick={() => Base.push("Statistics")}
+                            >
+                                数据统计
+                            </Item>
+                        </List>
+                    ) : null}
                 </div>
             </div>
         );

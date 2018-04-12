@@ -165,8 +165,8 @@ export const Base = {
                 "getUserAuth",
                 cb
             );
-        } else {
-            cb({ sign: "51409079b103509bed505b276f27717c", user_id: 1 });
+        } else if (/localhost/.test(window.location.href)) {
+            cb({ sign: "98d63d912b977101dc2885e404585b8a", user_id: 5 });
         }
     },
     //多个异步操作处理
