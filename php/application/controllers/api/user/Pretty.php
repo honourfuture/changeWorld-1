@@ -5,6 +5,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @email webljx@163.com
  * @link www.aicode.org.cn
  */
+use EasyWeChat\Foundation\Application;
+use EasyWeChat\Payment\Order;
 class Pretty extends API_Controller {
 
 	public function __construct()
@@ -32,6 +34,11 @@ class Pretty extends API_Controller {
 	 * @apiSuccess {Object} data 接口数据集
 	 *
 	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *	    "data": "",
+	 *	    "status": 0,
+	 *	    "message": ""
+	 *	}
 	 *
 	 * @apiErrorExample {json} Error-Response:
 	 * {
