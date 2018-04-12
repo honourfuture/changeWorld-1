@@ -174,7 +174,7 @@ class Payment_log extends API_Controller {
 			'amount' => $this->row['price'],
 			'user_id' => $this->user_id,
 			'payment_type' => $payment_type,
-			't_id' => $$this->t_id,
+			't_id' => $this->t_id,
 			'service' => $this->service
 		];
 		if(! $order_id = $this->Payment_log_model->insert($log)){
