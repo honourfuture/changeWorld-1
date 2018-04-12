@@ -175,14 +175,14 @@ export default class UserCenter extends BaseComponent {
                         ) : null}
                     </List>
                     <WhiteSpace size="lg" />
-                    <List className="baseItem">
+                    {parseInt(is_seller) === 1 ? (<List className="baseItem">
                         <Item
                             arrow="horizontal"
                             onClick={() => Base.push("Statistics")}
                         >
                             数据统计
                         </Item>
-                    </List>
+                    </List>):null}
                 </div>
             </div>
         );
