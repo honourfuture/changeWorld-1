@@ -16,6 +16,10 @@ const orderSatus = [
 export default class UserCenter extends BaseComponent {
     store = { data: {} };
     componentDidMount() {
+        this.requestData();
+    }
+    @action.bound
+    requestData() {
         Base.POST({ act: "shop", op: "index", mod: "user" }, res => {
             console.log(res);
             this.store.data = res.data;
@@ -25,6 +29,12 @@ export default class UserCenter extends BaseComponent {
     onPushShop() {
         Base.getAuthData(({ user_id }) => {
             Base.pushApp("openShopView", user_id);
+        });
+    }
+    @action.bound
+    openShopAuth() {
+        Base.GET({ act: "shop", op: "add", mod: "user" }, res => {
+            this.requestData();
         });
     }
     render() {
@@ -146,7 +156,7 @@ export default class UserCenter extends BaseComponent {
                         {parseInt(anchor) === 2 && parseInt(is_seller) !== 1 ? (
                             <Item
                                 arrow="horizontal"
-                                onClick={() => Base.pushApp("openShopAuthView")}
+                                onClick={this.openShopAuth}
                             >
                                 申请开店
                             </Item>
