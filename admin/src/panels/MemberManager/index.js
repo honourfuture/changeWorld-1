@@ -68,7 +68,7 @@ export default class MemberManager extends BaseComponent {
                 title: "金币",
                 dataIndex: "gold",
                 width: "8%",
-                render: (text, record) => this.renderText(text, record, "exp")
+                render: (text, record) => this.renderText(text, record, "gold")
             },
             {
                 title: "主播",
