@@ -5,6 +5,7 @@
         "rmccue/requests": "^1.7",
         "himi/qcloud_live": "^1.0",
         "rongcloud/php-sdk": "^2.0",
-        "overtrue/wechat": "^3.3"
+        "overtrue/wechat": "^3.3",
+        "yansongda/pay": "^1.3"
     }
 }
