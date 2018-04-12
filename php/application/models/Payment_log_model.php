@@ -34,6 +34,7 @@ class Payment_log_model extends MY_Model
             '直播',//预告、直播中
             '音频',
             '专辑',
+            '靓号',
         ];
     }
 
