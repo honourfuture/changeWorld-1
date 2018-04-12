@@ -36,7 +36,7 @@ class Users_model extends MY_Model
     public function seller()
     {
         return [
-            '未申请'
+            '未申请',
             '待审核',
             '已通过',
             '已拒绝'
