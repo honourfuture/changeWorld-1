@@ -72,6 +72,10 @@ const Utils = {
     }
 };
 class VanityItem extends BaseComponent {
+    @action.bound
+    onClick() {
+        console.log(12);
+    }
     render() {
         const { pretty_id, price } = this.props;
         const numRed = pretty_id.toString().slice(0, 4);
@@ -79,7 +83,7 @@ class VanityItem extends BaseComponent {
             .toString()
             .slice(4, pretty_id.toString().length);
         return (
-            <div className="listItem">
+            <div className="listItem" onClick={this.onClick}>
                 <div className="listItem-num">
                     <em>{numRed}</em>
                     {numLast}
