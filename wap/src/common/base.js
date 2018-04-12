@@ -165,7 +165,7 @@ export const Base = {
                 "getUserAuth",
                 cb
             );
-        } else {
+        } else if (/localhost/.test(window.location.href)) {
             cb({ sign: "51409079b103509bed505b276f27717c", user_id: 1 });
         }
     },
