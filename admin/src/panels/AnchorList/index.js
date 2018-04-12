@@ -87,7 +87,7 @@ export default class AnchorList extends BaseComponent {
                     const { id, status } = record;
                     return (
                         <div className="editable-row-operations">
-                            {parseInt(status, 10) !== 0 ? (
+                            {parseInt(status, 10) !== 1 ? (
                                 <span>
                                     <span>{this.status[status]}</span>
                                     <a
@@ -104,10 +104,10 @@ export default class AnchorList extends BaseComponent {
                                         title="确认通过?"
                                         okText="通过"
                                         cancelText="拒绝"
-                                        onConfirm={() => this.onCheck(id, 1)}
-                                        onCancel={() => this.onCheck(id, 2)}
+                                        onConfirm={() => this.onCheck(id, 2)}
+                                        onCancel={() => this.onCheck(id, 3)}
                                     >
-                                        <a>审　核</a>
+                                        <a>审核</a>
                                     </Popconfirm>
                                     <a
                                         style={{ marginLeft: 30 }}

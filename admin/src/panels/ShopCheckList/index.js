@@ -93,9 +93,9 @@ export default class ShopCheckList extends BaseComponent {
                     const { status, id } = record;
                     return (
                         <div className="editable-row-operations">
-                            {parseInt(status) !== 0 ? (
+                            {parseInt(status) !== 1 ? (
                                 <span>
-                                    {parseInt(status) === 1
+                                    {parseInt(status) === 2
                                         ? "已通过"
                                         : "已拒绝"}
                                 </span>
@@ -105,8 +105,8 @@ export default class ShopCheckList extends BaseComponent {
                                         title="确认通过?"
                                         okText="通过"
                                         cancelText="拒绝"
-                                        onConfirm={() => this.onCheck(id, 1)}
-                                        onCancel={() => this.onCheck(id, 2)}
+                                        onConfirm={() => this.onCheck(id, 2)}
+                                        onCancel={() => this.onCheck(id, 3)}
                                     >
                                         <a className="ml10">审核</a>
                                     </Popconfirm>

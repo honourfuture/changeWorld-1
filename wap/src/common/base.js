@@ -165,6 +165,8 @@ export const Base = {
                 "getUserAuth",
                 cb
             );
+        } else {
+            cb({ sign: "51409079b103509bed505b276f27717c", user_id: 1 });
         }
     },
     //多个异步操作处理
