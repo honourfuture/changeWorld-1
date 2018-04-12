@@ -32,6 +32,11 @@ class Pretty extends API_Controller {
 	 * @apiSuccess {Object} data 接口数据集
 	 *
 	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *	    "data": "",
+	 *	    "status": 0,
+	 *	    "message": ""
+	 *	}
 	 *
 	 * @apiErrorExample {json} Error-Response:
 	 * {
