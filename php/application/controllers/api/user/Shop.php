@@ -134,13 +134,17 @@ class Shop extends API_Controller {
 	public function add()
 	{
 		$user = $this->get_user();
-		if($user['anchor']){
-			if($user['seller']){
+		if($user['anchor'] == 2){
+			if($user['seller'] == 2){
 				$this->ajaxReturn([], 2, '店铺已开通请勿重复申请');
 			}else{
+				$status = 1;
 				$this->load->model('Shop_model');
 				$this->Shop_model->delete_by(['user_id' => $this->user_id]);
-				$this->Shop_model->insert(['user_id' => $this->user_id]);
+				$this->Shop_model->insert(['user_id' => $this->user_id, 'status' => $status]);
+
+				$this->load->model('Users_model');
+				$this->Users_model->update($this->user_id, ['seller' => $status]);
 
 				$this->ajaxReturn();
 			}

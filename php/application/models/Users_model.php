@@ -21,6 +21,28 @@ class Users_model extends MY_Model
         parent::__construct();
     }
 
+    // 主播状态
+    public function anchor()
+    {
+        return [
+            '未申请',
+            '待审核',
+            '已通过',
+            '已拒绝'
+        ];
+    }
+
+    // 商家状态
+    public function seller()
+    {
+        return [
+            '未申请',
+            '待审核',
+            '已通过',
+            '已拒绝'
+        ];
+    }
+
     public function rmb_to_gold_rate()
     {
         return 100;

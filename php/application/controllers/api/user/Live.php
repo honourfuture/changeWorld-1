@@ -62,7 +62,7 @@ class Live extends API_Controller {
 		$ret = array();
 
 		$user = $this->get_user();
-		if(! $user['anchor']){
+		if($user['anchor'] != 2){
 			$this->ajaxReturn([], 1, '主播信息未认证');
 		}
 

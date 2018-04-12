@@ -62,6 +62,9 @@ class Anchor extends API_Controller {
     	$ret['class'] = $this->Anchor_class_model->order_by($order_by)->get_many_by('enable', 1);
 
     	$ret['anchor'] = $this->Users_anchor_model->get_by('user_id', $this->user_id);
+    	if($ret['anchor'] && $ret['anchor']['status'] == 1){
+    		$this->ajaxReturn([], 1, '主播信息待审核，禁止操作');
+    	}
 
     	$ret['certificate'] = $this->Users_anchor_model->certificate();
 
@@ -130,21 +133,22 @@ class Anchor extends API_Controller {
 		);
 		// $params['certificate_type'] = 1;//默认身份证
 		$params['user_id'] = $this->user_id;
+		$params['status'] = 1;//待审核
 
 		if($anchor = $this->Users_anchor_model->get_by('user_id', $this->user_id)){
 			if($anchor['status'] == 1){
-				// $this->ajaxReturn([], 1, '已认证请勿重复提交信息');
-				unset($params['mobi']);unset($params['email']);unset($params['nickname']);
-				unset($params['realname']);unset($params['certificate_type']);unset($params['certificate_no']);
-				unset($params['certificate_photo']);unset($params['class_id']);unset($params['other']);
-			}else{
-				$params['status'] = 0;//初始化
+				$this->ajaxReturn([], 1, '主播信息待审核，禁止更新信息');
+			}elseif($anchor['status'] == 2){
+				$this->ajaxReturn([], 2, '主播已认证，禁止更新信息');
 			}
 
 			$this->Users_anchor_model->update($anchor['id'], $params);
 		}else{
 			$this->Users_anchor_model->insert($params);
 		}
+
+		$this->load->model('Users_model');
+		$this->Users_model->update($this->user_id, ['anchor' => $params['status']]);
 
 		$this->ajaxReturn();
 	}

@@ -22,10 +22,10 @@ class Shop_model extends MY_Model
     public function status()
     {
     	return [
-    		'待审核',
-    		'通过',
-    		'拒绝'
-    	];
+            1 => '待审核',
+            2 => '已通过',
+            3 => '已拒绝'
+        ];
     }
 
     public function seller($where, $limit, $offset = 0)

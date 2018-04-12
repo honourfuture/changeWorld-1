@@ -16362,14 +16362,14 @@
             "type": "String",
             "optional": false,
             "field": "data.user.anchor",
-            "description": "<p>讲师标识 0否 1是</p>"
+            "description": "<p>讲师标识 0:'未申请', 1:'待审核', 2:'已通过', 3:'已拒绝'</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "data.user.seller",
-            "description": "<p>卖家 0否 1是</p>"
+            "description": "<p>卖家 0:'未申请', 1:'待审核', 2:'已通过', 3:'已拒绝'</p>"
           },
           {
             "group": "Success 200",
