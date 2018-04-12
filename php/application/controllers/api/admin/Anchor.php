@@ -198,7 +198,7 @@ class Anchor extends API_Controller {
 		}
 
 		if($anchor = $this->Users_anchor_model->get($id)){
-			if($anchor['status'] != 1){
+			if($anchor['status'] == 1){
 				if($this->Users_anchor_model->update($id, ['status' => $status])){
 					$this->load->model('Users_model');
 					$this->Users_model->update($anchor['user_id'], ['anchor' => $status]);

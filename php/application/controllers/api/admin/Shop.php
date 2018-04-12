@@ -137,7 +137,7 @@ class Shop extends API_Controller {
 		}
 
 		if($shop = $this->Shop_model->get($id)){
-			if($shop['status'] != 1){
+			if($shop['status'] == 1){
 				if($this->Shop_model->update($id, ['status' => $status])){
 					$this->load->model('Users_model');
 					$this->Users_model->update($shop['user_id'], ['seller' => $status]);
