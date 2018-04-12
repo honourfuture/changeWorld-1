@@ -176,7 +176,7 @@ class Knowledge extends API_Controller
         $this->load->model('Users_model');
         $order_by = array('sort' => 'desc', 'id' => 'desc');
         $this->db->select('id,nickname,header,v');
-        $ret['anchor'] = $this->Users_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by(array('anchor' => 1, 'is_hot' => 1));
+        $ret['anchor'] = $this->Users_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by(array('anchor' => 2, 'is_hot' => 1));
         //热门直播
         $this->load->model('Room_model');
 

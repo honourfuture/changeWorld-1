@@ -133,7 +133,7 @@ class Search extends API_Controller {
     {
     	$ret = array('count' => 0, 'list' => array());
 		$where = array('enable' => 1);
-		$where['anchor'] = 1;
+		$where['anchor'] = 2;
 		
 		$this->db->group_start();
 		$this->db->like('nickname', $this->keyword);

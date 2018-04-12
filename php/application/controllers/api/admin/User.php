@@ -50,6 +50,8 @@ class User extends API_Controller {
 		$ret = ['list' => []];
 
 		$ret['sex'] = $this->Users_model->sex();
+		$ret['anchor_status'] = $this->Users_model->anchor();
+		$ret['seller_status'] = $this->Users_model->seller();
 
 		$where = [];
 		$where['1 >'] = 0;
