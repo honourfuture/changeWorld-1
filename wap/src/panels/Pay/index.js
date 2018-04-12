@@ -31,57 +31,99 @@ export default class Pay extends BaseComponent {
     }
     @action.bound
     payHandler() {
+        const { pretty_id, id, isPretty } = Base.getPageParams();
         const { curIndex, payTypeList } = this.store;
         const { type } = payTypeList[curIndex];
         const { pay_sn, order_sn } = Base.getPageParams();
         const trade_type = pay_sn ? "pay_sn" : "order_sn";
         const trade_sn = pay_sn ? pay_sn : order_sn;
         const { real_total_amount, balance } = this.store.data;
-        Base.POST(
-            {
-                act: "order_payment",
-                op: "payment",
-                mod: "user",
-                payment_type: type,
-                trade_type,
-                trade_sn
-            },
-            res => {
-                if (window.JKEventHandler) {
-                    window.JKEventHandler.callNativeFunction(
-                        "payWithParams",
-                        JSON.stringify({ ...res.data, payment_type: type }),
-                        "callbackID",
-                        data => {
-                            if (parseInt(data) === 1) {
-                                Base.push("PayState", {
-                                    trade_sn,
-                                    real_total_amount,
-                                    payment_type: type
-                                });
-                            } else {
-                                Toast.fail("支付失败", 2, null, false);
+        if (parseInt(isPretty)) {
+            Base.POST(
+                {
+                    act: "pretty",
+                    op: "payment",
+                    mod: "user",
+                    payment_type: type,
+                    id
+                },
+                res => {
+                    if (window.JKEventHandler) {
+                        window.JKEventHandler.callNativeFunction(
+                            "payWithParams",
+                            JSON.stringify({ ...res.data, payment_type: type }),
+                            "callbackID",
+                            data => {
+                                if (parseInt(data) === 1) {
+                                    Base.push("PayState", {
+                                        pretty_id,
+                                        real_total_amount,
+                                        payment_type: type
+                                    });
+                                } else {
+                                    Toast.fail("支付失败", 2, null, false);
+                                }
                             }
-                        }
-                    );
+                        );
+                    }
                 }
-            }
-        );
+            );
+        } else {
+            Base.POST(
+                {
+                    act: "order_payment",
+                    op: "payment",
+                    mod: "user",
+                    payment_type: type,
+                    trade_type,
+                    trade_sn
+                },
+                res => {
+                    if (window.JKEventHandler) {
+                        window.JKEventHandler.callNativeFunction(
+                            "payWithParams",
+                            JSON.stringify({ ...res.data, payment_type: type }),
+                            "callbackID",
+                            data => {
+                                if (parseInt(data) === 1) {
+                                    Base.push("PayState", {
+                                        trade_sn,
+                                        real_total_amount,
+                                        payment_type: type
+                                    });
+                                } else {
+                                    Toast.fail("支付失败", 2, null, false);
+                                }
+                            }
+                        );
+                    }
+                }
+            );
+        }
     }
     componentDidMount() {
-        const { pay_sn, order_sn } = Base.getPageParams();
-        Base.GET(
-            {
-                act: "order_payment",
-                op: "index",
-                mod: "user",
-                trade_type: pay_sn ? "pay_sn" : "order_sn",
-                trade_sn: pay_sn ? pay_sn : order_sn
-            },
-            res => {
-                this.store.data = res.data;
-            }
-        );
+        const { pay_sn, order_sn, id, isPretty } = Base.getPageParams();
+        if (parseInt(isPretty) === 1) {
+            Base.GET({ act: "pretty", op: "view", mod: "user", id }, res => {
+                this.store.data = {
+                    ...res.data,
+                    real_total_amount: res.data.price
+                };
+            });
+        } else {
+            Base.GET(
+                {
+                    act: "order_payment",
+                    op: "index",
+                    mod: "user",
+                    trade_type: pay_sn ? "pay_sn" : "order_sn",
+                    trade_sn: pay_sn ? pay_sn : order_sn
+                },
+                res => {
+                    this.store.data = res.data;
+                }
+            );
+        }
     }
     render() {
         const { payTypeList, curIndex, data } = this.store;

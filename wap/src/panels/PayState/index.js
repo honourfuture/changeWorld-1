@@ -10,6 +10,7 @@ export default class PayState extends BaseComponent {
     render() {
         const {
             trade_sn,
+            pretty_id,
             real_total_amount,
             payment_type
         } = Base.getPageParams();
@@ -34,9 +35,15 @@ export default class PayState extends BaseComponent {
                                 ￥{Base.getNumFormat(real_total_amount)}
                             </span>
                         </div>
-                        <div className="orderItem">
-                            订单编号：<span>{trade_sn}</span>
-                        </div>
+                        {pretty_id ? (
+                            <div className="orderItem">
+                                靓号：<span>{pretty_id}</span>
+                            </div>
+                        ) : (
+                            <div className="orderItem">
+                                订单编号：<span>{trade_sn}</span>
+                            </div>
+                        )}
                         <div className="orderItem">
                             支付方式：<span>{this.payDic[payment_type]}</span>
                         </div>

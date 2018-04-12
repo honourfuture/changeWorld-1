@@ -111,8 +111,6 @@ export const Base = {
             o_param["op"]
         }`;
         this.getAuthData(({ sign, user_id }) => {
-            window.JKEventHandler.callNativeFunction("logIOS", sign);
-            window.JKEventHandler.callNativeFunction("logIOS", user_id);
             o_param.sign = sign;
             o_param.user_id = user_id;
             delete o_param["act"];
@@ -160,16 +158,9 @@ export const Base = {
         this._request(o_param, f_succBack, "POST", f_failBack, b_noToast);
     },
     getAuthData(cb) {
-        if (window.JKEventHandler) {
-            window.JKEventHandler.callNativeFunction(
-                "getUserAuth",
-                "",
-                "getUserAuth",
-                cb
-            );
-        } else if (/localhost/.test(window.location.href)) {
-            cb({ sign: "98d63d912b977101dc2885e404585b8a", user_id: 5 });
-        }
+        let user_verify_data = window.localStorage.getItem("user_verify_data");
+        user_verify_data = user_verify_data ? JSON.parse(user_verify_data) : {};
+        cb(user_verify_data);
     },
     //多个异步操作处理
     // promiseAll(f_succBack,...promiseParams){

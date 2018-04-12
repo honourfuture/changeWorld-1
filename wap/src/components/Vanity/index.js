@@ -74,7 +74,8 @@ const Utils = {
 class VanityItem extends BaseComponent {
     @action.bound
     onClick() {
-        console.log(12);
+        const { pretty_id, id } = this.props;
+        Base.push("Pay", { pretty_id, id, isPretty: 1 });
     }
     render() {
         const { pretty_id, price } = this.props;
