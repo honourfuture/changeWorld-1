@@ -55,17 +55,17 @@ export default class ShopCheckList extends BaseComponent {
                 width: "12%",
                 render: (text, record) => this.renderText(text, record, "mobi")
             },
-            {
-                title: "V认证",
-                dataIndex: "v",
-                width: "8%",
-                render: (text, record) =>
-                    this.renderText(
-                        parseInt(record.v) === 1 ? "已认证" : "未认证",
-                        record,
-                        "v"
-                    )
-            },
+            // {
+            //     title: "V认证",
+            //     dataIndex: "v",
+            //     width: "8%",
+            //     render: (text, record) =>
+            //         this.renderText(
+            //             parseInt(record.v) === 1 ? "已认证" : "未认证",
+            //             record,
+            //             "v"
+            //         )
+            // },
             {
                 title: "经验值",
                 dataIndex: "exp",

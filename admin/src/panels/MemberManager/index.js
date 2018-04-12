@@ -73,21 +73,10 @@ export default class MemberManager extends BaseComponent {
             {
                 title: "主播",
                 dataIndex: "anchor",
-                width: "5%",
+                width: "10%",
                 render: (text, record) =>
                     this.renderText(
-                        parseInt(record.anchor, 10) ? "是" : "否",
-                        record,
-                        "v"
-                    )
-            },
-            {
-                title: "认证",
-                dataIndex: "v",
-                width: "5%",
-                render: (text, record) =>
-                    this.renderText(
-                        parseInt(record.v, 10) ? "是" : "否",
+                        this.anchor_status[record.anchor],
                         record,
                         "v"
                     )
@@ -95,10 +84,10 @@ export default class MemberManager extends BaseComponent {
             {
                 title: "店铺",
                 dataIndex: "seller",
-                width: "5%",
+                width: "10%",
                 render: (text, record) =>
                     this.renderText(
-                        parseInt(record.seller, 10) ? "是" : "否",
+                        this.seller_status[record.seller],
                         record,
                         "v"
                     )
@@ -144,10 +133,12 @@ export default class MemberManager extends BaseComponent {
                 per_page: Global.PAGE_SIZE
             },
             res => {
-                const { list, count } = res.data;
+                const { list, count, anchor_status, seller_status } = res.data;
                 this.store.list = list;
                 this.store.total = count;
                 this.cacheData = list.map(item => ({ ...item }));
+                this.anchor_status = anchor_status;
+                this.seller_status = seller_status;
             },
             this
         );

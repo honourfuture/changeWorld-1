@@ -261,14 +261,18 @@ export default class AnchorList extends BaseComponent {
     render() {
         let { list, total, curData } = this.store;
         const showList = list.slice();
-        const { status = [] } = this;
-        const statusCon = status.map((item, index) => {
-            return (
-                <Option value={index} key={index}>
-                    {item}
-                </Option>
-            );
-        });
+        const { status = {} } = this;
+        const statusCon = [];
+        for (const key in status) {
+            if (status.hasOwnProperty(key)) {
+                const item = status[key];
+                statusCon.push(
+                    <Option value={key} key={key}>
+                        {item}
+                    </Option>
+                );
+            }
+        }
         statusCon.unshift(
             <Option value={-1} key={-1}>
                 全部

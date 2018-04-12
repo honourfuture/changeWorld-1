@@ -50,6 +50,12 @@ export default class AdManager extends BaseComponent {
                 render: (text, record) => this.renderImg(text, record, "image")
             },
             {
+                title: "链接地址",
+                dataIndex: "link",
+                width: "18%",
+                render: (text, record) => this.renderInput(text, record, "link")
+            },
+            {
                 title: "广告位",
                 dataIndex: "ad_position_id",
                 width: "12%",
@@ -59,7 +65,7 @@ export default class AdManager extends BaseComponent {
             {
                 title: "开始结束时间",
                 dataIndex: "date",
-                width: "25%",
+                width: "20%",
                 render: (text, record) => this.renderDate(text, record, "date")
             },
             {
