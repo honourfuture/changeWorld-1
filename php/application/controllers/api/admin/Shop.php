@@ -131,13 +131,17 @@ class Shop extends API_Controller {
 		$id = $this->input->get_post('id');
 		$status = $this->input->get_post('status');
 
+		$a_status = $this->Shop_model->status();
+		if(! isset($a_status[$status])){
+			$this->ajaxReturn([], 1, '审核状态错误');
+		}
+
 		if($shop = $this->Shop_model->get($id)){
-			if(! $shop['status']){
+			if($shop['status'] != 1){
 				if($this->Shop_model->update($id, ['status' => $status])){
 					$this->load->model('Users_model');
-					if($status == 1){
-						$this->Users_model->update($shop['user_id'], ['seller' => 1]);
-					}
+					$this->Users_model->update($shop['user_id'], ['seller' => $status]);
+
 					$this->ajaxReturn();
 				}else{
 					$this->ajaxReturn([], 3, '操作失败');

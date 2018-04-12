@@ -33,8 +33,8 @@ class Info extends API_Controller {
 	 * @apiSuccess {String} data.user.nickname 用户昵称
 	 * @apiSuccess {String} data.user.header 用户头像
 	 * @apiSuccess {String} data.user.v V标识 0否 1是
-	 * @apiSuccess {String} data.user.anchor 讲师标识 0否 1是
-	 * @apiSuccess {String} data.user.seller 卖家 0否 1是
+	 * @apiSuccess {String} data.user.anchor 讲师标识 0:'未申请', 1:'待审核', 2:'已通过', 3:'已拒绝'
+	 * @apiSuccess {String} data.user.seller 卖家 0:'未申请', 1:'待审核', 2:'已通过', 3:'已拒绝'
 	 * @apiSuccess {String} data.user.exp 经验值
 	 * @apiSuccess {String} data.vip 贵族信息 id=0表示无贵族
 	 * @apiSuccess {String} data.collection 收藏数量
