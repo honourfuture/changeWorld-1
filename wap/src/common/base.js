@@ -110,7 +110,10 @@ export const Base = {
         let s_requestUrl = `${Global.API_URL}/${mod}${o_param["act"]}/${
             o_param["op"]
         }`;
-        this.getAuthData(({ sign, user_id }) => {
+        this.getAuthData(res => {
+            const { sign, user_id } = res;
+            alert(sign);
+            alert(res);
             o_param.sign = sign;
             o_param.user_id = user_id;
             delete o_param["act"];
