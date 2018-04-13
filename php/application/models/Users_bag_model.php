@@ -1,14 +1,14 @@
 <?php
 /*
- * 金币流水
+ * 领取记录
  * @author sz.ljx
  * @author webljx@163.com
  * @link www.aicode.org.cn
  */
 
-class Gold_log_model extends MY_Model
+class Users_bag_model extends MY_Model
 {
-    public $_table        = 'gold_log';
+    public $_table        = 'users_bag';
     public $primary_key   = 'id';
     public $before_create = array('created_at', 'updated_at', 'updated_valid');
     public $before_update = array('updated_at', 'updated_valid');
@@ -17,16 +17,5 @@ class Gold_log_model extends MY_Model
     public function __construct()
     {
         parent::__construct();
-    }
-
-    public function topic()
-    {
-    	return [
-    		'充值',
-    		'转余额',
-            '礼物',//（送、收）
-            '购买贵族',
-            '红包'
-    	];
     }
 }
