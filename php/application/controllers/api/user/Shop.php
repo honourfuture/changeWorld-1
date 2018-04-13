@@ -62,7 +62,7 @@ class Shop extends API_Controller {
 		//主播标识
 		$ret['anchor'] = $user['anchor'];
 		//商家标识（限定主播才能申请开店）
-		$ret['seller'] = $user['seller'];
+		$ret['seller_status'] = $user['seller'];
 
 		$this->load->model('Order_model');
 
@@ -77,7 +77,7 @@ class Shop extends API_Controller {
 		}
 
 		//卖
-		if($ret['seller'] == 2){
+		if($ret['seller_status'] == 2){
 			$ret['seller'] = [];
 			$this->db->select('count(id) num,status');
 			$this->db->group_by('status');
