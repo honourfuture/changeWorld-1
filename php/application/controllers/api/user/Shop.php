@@ -33,7 +33,7 @@ class Shop extends API_Controller {
 	 *         "header": "/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png",
 	 *         "nickname": "aicode",
 	 *         "anchor": "1",
-	 *         "is_seller": "1",
+	 *         "seller": "1",
 	 *         "buyer": [
 	 *             "8"
 	 *         ],
@@ -62,7 +62,7 @@ class Shop extends API_Controller {
 		//主播标识
 		$ret['anchor'] = $user['anchor'];
 		//商家标识（限定主播才能申请开店）
-		$ret['is_seller'] = $user['seller'];
+		$ret['seller'] = $user['seller'];
 
 		$this->load->model('Order_model');
 
@@ -77,7 +77,7 @@ class Shop extends API_Controller {
 		}
 
 		//卖
-		if($ret['is_seller']){
+		if($ret['seller'] == 2){
 			$ret['seller'] = [];
 			$this->db->select('count(id) num,status');
 			$this->db->group_by('status');
@@ -112,7 +112,7 @@ class Shop extends API_Controller {
 	 *         "header": "/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png",
 	 *         "nickname": "aicode",
 	 *         "anchor": "1",
-	 *         "is_seller": "1",
+	 *         "seller": "1",
 	 *         "buyer": [
 	 *             "8"
 	 *         ],
@@ -174,7 +174,7 @@ class Shop extends API_Controller {
 	 *         "header": "/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png",
 	 *         "nickname": "aicode",
 	 *         "anchor": "1",
-	 *         "is_seller": "1",
+	 *         "seller": "1",
 	 *         "buyer": [
 	 *             "8"
 	 *         ],
