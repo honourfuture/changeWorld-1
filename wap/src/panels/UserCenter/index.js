@@ -33,9 +33,12 @@ export default class UserCenter extends BaseComponent {
     }
     @action.bound
     openShopAuth() {
-        Base.GET({ act: "shop", op: "add", mod: "user" }, res => {
-            this.requestData();
-        });
+        const { seller_status } = this.store.data;
+        if (parseInt(seller_status, 10) === 0) {
+            Base.GET({ act: "shop", op: "add", mod: "user" }, res => {
+                this.requestData();
+            });
+        }
     }
     render() {
         const {
@@ -43,9 +46,10 @@ export default class UserCenter extends BaseComponent {
             nickname,
             buyer = {},
             seller = {},
-            is_seller,
+            seller_status,
             anchor
         } = this.store.data;
+        const is_seller = parseInt(seller_status, 10) === 2;
         const buyerItems = [];
         const sellerItems = [];
         orderSatus.forEach((item, index) => {
@@ -120,7 +124,7 @@ export default class UserCenter extends BaseComponent {
                         </List>
                     </div>
                     <WhiteSpace size="lg" />
-                    {parseInt(is_seller) === 1 ? (
+                    {is_seller ? (
                         <div>
                             <div className="uOrderItem mt0">
                                 <List className="shopMenu">
@@ -153,10 +157,15 @@ export default class UserCenter extends BaseComponent {
                     </List>
                     <WhiteSpace size="lg" />
                     <List className="baseItem">
-                        {parseInt(anchor) === 2 && parseInt(is_seller) !== 1 ? (
+                        {!is_seller ? (
                             <Item
                                 arrow="horizontal"
                                 onClick={this.openShopAuth}
+                                extra={
+                                    ["未申请", "待审核", "已通过", "已拒绝"][
+                                        seller_status
+                                    ] || ""
+                                }
                             >
                                 申请开店
                             </Item>
@@ -167,7 +176,7 @@ export default class UserCenter extends BaseComponent {
                         >
                             店铺名称
                         </Item> */}
-                        {parseInt(is_seller) === 1 ? (
+                        {is_seller ? (
                             <div>
                                 <Item
                                     arrow="horizontal"
@@ -185,7 +194,7 @@ export default class UserCenter extends BaseComponent {
                         ) : null}
                     </List>
                     <WhiteSpace size="lg" />
-                    {parseInt(is_seller) === 1 ? (
+                    {is_seller ? (
                         <List className="baseItem">
                             <Item
                                 arrow="horizontal"
