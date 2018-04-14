@@ -309,7 +309,7 @@ class Notify extends API_Controller
                     $update['status'] = 1;
                     break;
                 case 100://新的录制文件已生成
-                    if($data['duration'] > 300){
+                    if(true || $data['duration'] > 300){
                         $this->load->model('Room_audio_model');
                         $insert = elements(
                             array(
