@@ -47,7 +47,9 @@ class Mailbox extends API_Controller {
 	 */
     public function reddot()
     {
-    	$this->ajaxReturn(['reddot' => $this->Mailbox_model->reddot($this->user_id)]);
+    	$reddot = $this->user_id ? $this->Mailbox_model->reddot($this->user_id) : 0;
+    	$ret = ['reddot' => $reddot];
+    	$this->ajaxReturn();
     }
 
     /**
