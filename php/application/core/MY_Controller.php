@@ -238,7 +238,10 @@ class API_Controller extends MY_Controller
     public function __construct()
     {
         parent::__construct();
-        if(! in_array($this->router->class, array('login', 'common', 'register', 'forget', 'normal', 'notify'))){
+        $unLogin = config_item('unLogin');
+        if(isset($unLogin[$this->router->class]) && (in_array('*', $unLogin[$this->router->class]) || in_array($this->router->method, $unLogin[$this->router->class]))){
+            //不用认证
+        }else{
             $this->check_sign();
         }
     }
