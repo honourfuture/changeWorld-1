@@ -159,7 +159,7 @@ export const Base = {
     },
     getAuthData(cb) {
         let user_verify_data = window.localStorage.getItem("user_verify_data");
-        alert(user_verify_data);
+        window.JKEventHandler.callNativeFunction("logIOS", user_verify_data);
         user_verify_data = user_verify_data ? JSON.parse(user_verify_data) : {};
         // { sign: "98d63d912b977101dc2885e404585b8a", user_id: 5 }
         cb(user_verify_data);
