@@ -9,5 +9,6 @@ $config['unLogin'] = [//控制器=>方法
 	'normal' => ['*'],
 	'notify' => ['*'],
 	'knowledge' => ['live', 'album'],
-	'shop' => ['*']
+	'shop' => ['*'],
+	'goods_class' => ['index']
 ];
