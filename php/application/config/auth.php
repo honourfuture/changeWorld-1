@@ -2,15 +2,19 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 $config['unLogin'] = [//控制器=>方法
-	'login' => ['*'],
-	'common' => ['*'],
-	'register' => ['*'],
-	'forget' => ['*'],
-	'normal' => ['*'],
-	'notify' => ['*'],
-	'knowledge' => ['live', 'album'],
+	'api/admin/login_out' = > ['*'],
+	'api/admin/login' => ['*'],
+
+	'api/user/login' => ['*'],
+	'api/user/register' => ['*'],
+	'api/user/cart' => ['count'],
+
+	'api/common' => ['*'],
+	'api/forget' => ['*'],
+	'api/normal' => ['*'],
+	'api/notify' => ['*'],
+	'api/knowledge' => ['live', 'album'],
 	'api/shop' => ['*'],
-	'goods_class' => ['index'],
-	'cart' => ['count'],
-	'mailbox' => ['reddot']
+	'api/goods_class' => ['index'],
+	'api/mailbox' => ['reddot']
 ];
