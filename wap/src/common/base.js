@@ -79,6 +79,8 @@ export const Base = {
         console.log(path, params);
         if (window.JKEventHandler) {
             window.JKEventHandler.callNativeFunction(path, params || "");
+        } else if (window.Native) {
+            window.Native[path](params || "");
         }
     },
     //获取页面传来的参数
