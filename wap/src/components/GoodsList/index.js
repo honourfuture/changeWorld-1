@@ -17,7 +17,7 @@ export class GoodsItem extends BaseComponent {
                 <div className="recommend-goodsItem-img">
                     <NetImg
                         src={Base.getImgUrl(default_image)}
-                        height={goodsImgHeight}
+                        style={{height:goodsImgHeight}}
                     />
                 </div>
                 <div className="recommend-goodsItem-body">
