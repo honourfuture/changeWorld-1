@@ -188,7 +188,7 @@ class Order_payment extends API_Controller {
     	$order = new Order([
             'body' => '猪买单订单支付-商品订单消费',
             'out_trade_no' => $trade_sn,
-            'total_fee' => $this->amount * 100,
+            'total_fee' => TEST_PAYMENT ? TEST_PAYMENT : $this->amount * 100,
             'notify_url' => site_url('/api/notify/wechat_order_payment'),
             'trade_type' => 'APP',
             'attach' => $trade_type

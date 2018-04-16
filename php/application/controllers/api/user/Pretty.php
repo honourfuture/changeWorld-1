@@ -179,7 +179,7 @@ class Pretty extends API_Controller {
     	$order = new Order([
             'body' => '猪买单-购买靓号',
             'out_trade_no' => $order_sn,
-            'total_fee' => $this->row['price'] * 100,
+            'total_fee' => TEST_PAYMENT ? TEST_PAYMENT : $this->row['price'] * 100,
             'notify_url' => site_url('/api/notify/wechat_pretty_payment'),
             'trade_type' => 'APP'
         ]);

@@ -7,6 +7,8 @@ define('LOGIN_STATUS', -1);//转登录页面状态
 define('UPDATE_VALID', -404);//更新字段过滤值
 define('ACCESS_REQUEST', 500);//非法操作
 
+define('TEST_PAYMENT', 0.01);
+
 // QQ互联
 define('CONNECT_QQ_APPID', '101437563');
 define('CONNECT_QQ_APPKEY', '68eea7a3a58d29f262af2a18322f8da1');
