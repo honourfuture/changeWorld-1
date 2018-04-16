@@ -48,22 +48,29 @@ export default class Pay extends BaseComponent {
                     id
                 },
                 res => {
+                    const callBack = data => {
+                        if (parseInt(data) === 1) {
+                            Base.push("PayState", {
+                                pretty_id,
+                                real_total_amount,
+                                payment_type: type
+                            });
+                        } else {
+                            Toast.fail("支付失败", 2, null, false);
+                        }
+                    };
                     if (window.JKEventHandler) {
                         window.JKEventHandler.callNativeFunction(
                             "payWithParams",
                             JSON.stringify({ ...res.data, payment_type: type }),
                             "callbackID",
-                            data => {
-                                if (parseInt(data) === 1) {
-                                    Base.push("PayState", {
-                                        pretty_id,
-                                        real_total_amount,
-                                        payment_type: type
-                                    });
-                                } else {
-                                    Toast.fail("支付失败", 2, null, false);
-                                }
-                            }
+                            callBack
+                        );
+                    } else if (window.Native) {
+                        window.Native.payWithParams(
+                            JSON.stringify({ ...res.data, payment_type: type }),
+                            "callbackID",
+                            callBack
                         );
                     }
                 }

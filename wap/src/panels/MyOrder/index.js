@@ -96,7 +96,7 @@ class OrderItem extends BaseComponent {
                     <OrderBtn
                         btnTxt={["取消订单", "付款", "联系商家"]}
                         oneCallBack={() => this.cancelOrder(id)}
-                        twoCallBack={() => Base.push('pay',{order_sn})}
+                        twoCallBack={() => Base.push("pay", { order_sn })}
                         threeCallBack={() =>
                             Base.pushApp("openChatView", {
                                 seller_uid: seller_uid
@@ -190,7 +190,14 @@ class OrderItem extends BaseComponent {
         }
         return (
             <div className="orderItem">
-                <div onClick={()=>Base.push('OrderDetail',{order_id:id,nowCur:this.props.nowCur})}>
+                <div
+                    onClick={() =>
+                        Base.push("OrderDetail", {
+                            order_id: id,
+                            nowCur: this.props.nowCur
+                        })
+                    }
+                >
                     <Flex justify="between" className="orderItemTit base-line">
                         <span>订单编号：{order_sn}</span>
                         <span>{states[status]}</span>
@@ -236,7 +243,13 @@ export default class MyOrder extends BaseComponent {
     }
     @action.bound
     renderItem(rowData, sectionID, rowID) {
-        return <OrderItem nowCur={this.store.curPage}  changeList={this.changeList} {...rowData} />;
+        return (
+            <OrderItem
+                nowCur={this.store.curPage}
+                changeList={this.changeList}
+                {...rowData}
+            />
+        );
     }
     @action.bound
     changeList(id) {
@@ -295,7 +308,7 @@ export default class MyOrder extends BaseComponent {
         this.requestData(orderStatus[index]);
     }
     goShop() {
-        Base.push("ShopIndex");
+        Base.pushApp("openMainShop");
     }
     render() {
         const { list, isLoading, refreshing, count } = this.store;
