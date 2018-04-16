@@ -64,7 +64,7 @@ export default class PayState extends BaseComponent {
                             我的订单
                         </Button>
                         <Button
-                            onClick={() => Base.push("ShopIndex")}
+                            onClick={() => Base.pushApp("openMainShop")}
                             type="warning"
                             inline
                         >

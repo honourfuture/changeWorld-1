@@ -275,7 +275,7 @@ export default class ShopCart extends BaseComponent {
                             img={blankImg.shopCart}
                             label="亲，购物车空空如也"
                             btnLabel="去逛逛"
-                            onClick={() => Base.push("ShopIndex")}
+                            onClick={() => Base.pushApp("openMainShop")}
                         />
                     )}
                 </div>
