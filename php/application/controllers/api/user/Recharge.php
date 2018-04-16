@@ -9,7 +9,7 @@ use EasyWeChat\Foundation\Application;
 use EasyWeChat\Payment\Order;
 
 use Yansongda\Pay\Pay;
-use Yansongda\Pay\Log;
+// use Yansongda\Pay\Log;
 class Recharge extends API_Controller {
 
 	public function __construct()

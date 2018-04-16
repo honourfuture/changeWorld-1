@@ -7,6 +7,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * @link www.aicode.org.cn
  */
 use EasyWeChat\Foundation\Application;
+use Yansongda\Pay\Pay;
 use QCloud\Live\Query;
 class Notify extends API_Controller
 {
@@ -279,6 +280,53 @@ class Notify extends API_Controller
         });
 
         echo $response;
+    }
+
+    // 支付宝充值
+    public function alipay_recharge()
+    {
+        $this->setting = config_item('yansongda');
+        $app = new Pay($this->setting);
+        if($notify = $app->driver('alipay')->gateway('app')->verify($_REQUEST)){
+            $this->load->model('Users_recharge_model');
+            $where = ['order_sn' => $notify->out_trade_no];
+            if(! $recharge = $this->Users_recharge_model->get_by($where)){
+                return false;
+            }
+
+            if($recharge['status'] == 1){
+                return true;
+            }
+
+            $update = [];
+            if($successful){
+                $update['status'] = 1;
+
+                $this->load->model('Users_model');
+                if($user = $this->Users_model->get($recharge['user_id'])){
+                    $recharge_gold = $this->Users_model->rmb_to_gold($recharge['real_amount']);
+                    $gold = floor($user['gold'] + $recharge_gold);
+                    $this->Users_model->update($user['id'], ['gold' => $gold]);
+
+                    //金币明细
+                    $gold_log = [
+                        'topic' => 0,
+                        'from_user_id' => $recharge['user_id'],
+                        'to_user_id' => $recharge['user_id'],
+                        'item_title' => $recharge['real_amount'],
+                        'item_id' => $recharge['id'],
+                        'gold' => $recharge_gold
+                    ];
+                    $this->load->model('Gold_log_model');
+                    $this->Gold_log_model->insert($gold_log);
+                }
+            }else{
+                $update['status'] = 2;
+            }
+            $this->Users_recharge_model->update($recharge['id'], $update);
+
+            echo "success";
+        }
     }
 
     // 点播
