@@ -7,6 +7,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 use EasyWeChat\Foundation\Application;
 use EasyWeChat\Payment\Order;
+
+use Yansongda\Pay\Pay;
+use Yansongda\Pay\Log;
 class Recharge extends API_Controller {
 
 	public function __construct()
@@ -115,11 +118,50 @@ class Recharge extends API_Controller {
 
         $params['real_amount'] = $params['amount'];
 
-        $order = new Order([
+        switch($params['payment_id']){
+        	case 0:
+        		$this->wechat($params);
+        		break;
+        	case 1:
+        		$this->alipay($params);
+        		break;
+        	default :
+        		$this->ajaxReturn([], 1, '支付方式错误');
+        		break;
+        }
+    }
+
+    protected function alipay($params)
+    {
+    	$order = [
+    		'subject' => '猪买单充值中心-会员充值',
+            'out_trade_no' => $this->Users_recharge_model->make_order_sn($this->user_id),
+            'total_amount' => TEST_PAYMENT ? TEST_PAYMENT : $params['amount'],
+    	];
+
+    	$this->setting = config_item('yansongda');
+    	$this->setting['alipay']['notify_url'] = site_url('/api/notify/alipay_recharge');
+    	$app = new Pay($this->setting);
+    	$response = $app->driver('alipay')->gateway('app')->pay($order);
+
+    	$data = [
+            'order_sn' => $order['out_trade_no'],
+            'amount' => $params['amount'],
+            'real_amount' => $params['real_amount'],
+            'user_id' => $this->user_id,
+            'payment_id' => $params['payment_id']
+        ];
+        $this->Users_recharge_model->insert($data);
+        $this->ajaxReturn($response);
+    }
+
+    protected function wechat($params)
+    {
+    	$order = new Order([
             'body' => '猪买单充值中心-会员充值',
             'out_trade_no' => $this->Users_recharge_model->make_order_sn($this->user_id),
-            'total_fee' => TEST_PAYMENT ? TEST_PAYMENT : ($params['payment_id'] == 0 ? $params['amount'] * 100 : $params['amount']),
-            'notify_url' => $params['payment_id'] == 0 ? site_url('/api/notify/wechat_recharge') : site_url('/api/notify/alipay_recharge'),
+            'total_fee' => TEST_PAYMENT ? TEST_PAYMENT : $params['amount'] * 100,
+            'notify_url' => site_url('/api/notify/wechat_recharge'),
             'trade_type' => 'APP'
         ]);
 

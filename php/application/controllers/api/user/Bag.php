@@ -19,12 +19,12 @@ class Bag extends API_Controller {
     }
 
     /**
-	 * @api {post} /api/user/bag 红包-发布
+	 * @api {post} /api/user/bag/add 红包-发布
 	 * @apiVersion 1.0.0
-	 * @apiName bag
+	 * @apiName bag_add
 	 * @apiGroup user
 	 *
-	 * @apiSampleRequest /api/user/bag
+	 * @apiSampleRequest /api/user/bag/add
 	 *
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名

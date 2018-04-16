@@ -13,8 +13,9 @@ $config['unLogin'] = [//控制器=>方法
 	'api/forget' => ['*'],
 	'api/normal' => ['*'],
 	'api/notify' => ['*'],
-	'api/knowledge' => ['live', 'album'],
+	'api/knowledge' => ['live', 'album', 'collection'],
 	'api/shop' => ['*'],
 	'api/goods_class' => ['index'],
-	'api/mailbox' => ['reddot']
+	'api/mailbox' => ['reddot'],
+	'api/album_class' => ['index'],
 ];
