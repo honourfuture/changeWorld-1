@@ -41,7 +41,7 @@ class AppGateway extends Alipay
     {
         parent::pay($config_biz);
 
-        // return http_build_query($this->config);
-        return $this->config;
+        return http_build_query($this->config);
+        // return $this->config;
     }
 }

@@ -136,7 +136,7 @@ class Recharge extends API_Controller {
     	$order = [
     		'subject' => '猪买单充值中心-会员充值',
             'out_trade_no' => $this->Users_recharge_model->make_order_sn($this->user_id),
-            'total_amount' => TEST_PAYMENT ? TEST_PAYMENT : $params['amount'],
+            'total_amount' => TEST_PAYMENT ? TEST_PAYMENT * 0.01 : $params['amount'],
     	];
 
     	$this->setting = config_item('yansongda');

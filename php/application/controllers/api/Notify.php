@@ -289,7 +289,7 @@ class Notify extends API_Controller
         $app = new Pay($this->setting);
         if($notify = $app->driver('alipay')->gateway('app')->verify($_REQUEST)){
             $this->load->model('Users_recharge_model');
-            $where = ['order_sn' => $notify->out_trade_no];
+            $where = ['order_sn' => $notify['out_trade_no']];
             if(! $recharge = $this->Users_recharge_model->get_by($where)){
                 return false;
             }
