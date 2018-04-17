@@ -23,41 +23,65 @@ class Notify extends API_Controller
         $this->setting = config_item('wechat');
         $app = new Application($this->setting);
         $response = $app->payment->handleNotify(function($notify, $successful){
-            $this->load->model('Payment_log_model');
-
-            $where = ['order_sn' => $notify->out_trade_no];
-            if(! $service_log = $this->Payment_log_model->get_by($where)){
-                return false;
-            }
-
-            if($service_log['status'] == 1){
-                return true;
-            }
-
-            $update = [];
-            if($successful){
-                $update['status'] = 1;
-
-                //更新销售状态
-                $this->load->model('Pretty_model');
-                if($pretty = $this->Pretty_model->get($service_log['t_id'])){
-                    $this->Pretty_model->update($service_log['t_id'], ['status' => 1, 'buyer_id' => $service_log['user_id']]);
-
-                    //更新个人靓号
-                    $this->load->model('Users_model');
-                    $this->Users_model->update($service_log['user_id'], ['pretty_id' => $pretty['pretty_id']]);
-                }
-            }else{
-                $update['status'] = 2;
-            }
-
-            //更新流水状态
-            $this->Payment_log_model->update($service_log['id'], $update);
-
-            return true;
+            return $this->pretty($notify, $successful);
         });
 
         echo $response;
+    }
+
+    protected function pretty($notify, $successful)
+    {
+        is_array($notify) && $notify = (object)$notify;
+        if(! isset($notify->out_trade_no)){
+            return false;
+        }
+
+        $this->load->model('Payment_log_model');
+
+        $where = ['order_sn' => $notify->out_trade_no];
+        if(! $service_log = $this->Payment_log_model->get_by($where)){
+            return false;
+        }
+
+        if($service_log['status'] == 1){
+            return true;
+        }
+
+        $update = [];
+        if($successful){
+            $update['status'] = 1;
+
+            //更新销售状态
+            $this->load->model('Pretty_model');
+            if($pretty = $this->Pretty_model->get($service_log['t_id'])){
+                $this->Pretty_model->update($service_log['t_id'], ['status' => 1, 'buyer_id' => $service_log['user_id']]);
+
+                //更新个人靓号
+                $this->load->model('Users_model');
+                $this->Users_model->update($service_log['user_id'], ['pretty_id' => $pretty['pretty_id']]);
+            }
+        }else{
+            $update['status'] = 2;
+        }
+
+        //更新流水状态
+        $this->Payment_log_model->update($service_log['id'], $update);
+
+        return true;
+    }
+
+    // 支付宝良好
+    public function alipay_pretty_payment()
+    {
+        $this->setting = config_item('yansongda');
+        $app = new Pay($this->setting);
+        if($notify = $app->driver('alipay')->gateway('app')->verify($_REQUEST)){
+            $this->pretty($notify, true);
+        }else{
+            $this->pretty([], false);
+        }
+
+        echo "success";
     }
 
     // 微信服务
@@ -66,44 +90,68 @@ class Notify extends API_Controller
         $this->setting = config_item('wechat');
         $app = new Application($this->setting);
         $response = $app->payment->handleNotify(function($notify, $successful){
-            $this->load->model('Payment_log_model');
-
-            $where = ['order_sn' => $notify->out_trade_no];
-            if(! $service_log = $this->Payment_log_model->get_by($where)){
-                return false;
-            }
-
-            if($service_log['status'] == 1){
-                return true;
-            }
-
-            $update = [];
-            if($successful){
-                $update['status'] = 1;
-
-                //收藏
-                if(in_array($service_log['service'], [1, 2])){
-                    $sub_topic = ($service_log['service'] == 1) ? 20 : 21;
-                    $this->load->model('Users_collection_model');
-                    $data = [
-                        'user_id' => $service_log['user_id'],
-                        't_id' => $service_log['t_id'],
-                        'topic' => 2,
-                        'sub_topic' => $sub_topic
-                    ];
-                    $this->Users_collection_model->insert($data);
-                }
-            }else{
-                $update['status'] = 2;
-            }
-
-            //更新流水状态
-            $this->Payment_log_model->update($service_log['id'], $update);
-
-            return true;
+            return $this->service($notify, $successful);
         });
 
         echo $response;
+    }
+
+    protected function service($notify, $successful)
+    {
+        is_array($notify) && $notify = (object)$notify;
+        if(! isset($notify->out_trade_no)){
+            return false;
+        }
+
+        $this->load->model('Payment_log_model');
+
+        $where = ['order_sn' => $notify->out_trade_no];
+        if(! $service_log = $this->Payment_log_model->get_by($where)){
+            return false;
+        }
+
+        if($service_log['status'] == 1){
+            return true;
+        }
+
+        $update = [];
+        if($successful){
+            $update['status'] = 1;
+
+            //收藏
+            if(in_array($service_log['service'], [1, 2])){
+                $sub_topic = ($service_log['service'] == 1) ? 20 : 21;
+                $this->load->model('Users_collection_model');
+                $data = [
+                    'user_id' => $service_log['user_id'],
+                    't_id' => $service_log['t_id'],
+                    'topic' => 2,
+                    'sub_topic' => $sub_topic
+                ];
+                $this->Users_collection_model->insert($data);
+            }
+        }else{
+            $update['status'] = 2;
+        }
+
+        //更新流水状态
+        $this->Payment_log_model->update($service_log['id'], $update);
+
+        return true;
+    }
+
+    // 支付宝服务
+    public function alipay_service_payment()
+    {
+        $this->setting = config_item('yansongda');
+        $app = new Pay($this->setting);
+        if($notify = $app->driver('alipay')->gateway('app')->verify($_REQUEST)){
+            $this->service($notify, true);
+        }else{
+            $this->service([], false);
+        }
+
+        echo "success";
     }
 
     // 微信贵族
@@ -112,69 +160,93 @@ class Notify extends API_Controller
         $this->setting = config_item('wechat');
         $app = new Application($this->setting);
         $response = $app->payment->handleNotify(function($notify, $successful){
-            $this->load->model('Users_vip_log_model');
-            $this->load->model('Users_vip_model');
-            $this->load->model('Vip_model');
-
-            $where = ['order_sn' => $notify->out_trade_no];
-            if(! $vip_log = $this->Users_vip_log_model->get_by($where)){
-                return false;
-            }
-
-            if($vip_log['status'] == 1){
-                return true;
-            }
-
-            $update = [];
-            if($successful){
-                $update['status'] = 1;
-
-                if(! $vip = $this->Vip_model->get($vip_log['vip_id'])){
-                    return false;
-                }
-                //更新用户贵族
-                $user_vip = $this->Users_vip_model->get_by(['user_id' => $vip_log['user_id'], 'vip_id' => $vip_log['vip_id']]);
-                if($user_vip){
-                    $add_time = max($user_vip['validity_time'], time());
-                    $data = [
-                        'validity_time' => strtotime('+'.$vip['days'].' days', $add_time)
-                    ];
-                    $this->Users_vip_model->update($user_vip['id'], $data);
-                }else{
-                    $data = [
-                        'user_id' => $vip_log['user_id'],
-                        'vip_id' => $vip_log['vip_id'],
-                        'validity_time' => strtotime('+'.$vip['days'].' days')
-                    ];
-                    $this->Users_vip_model->insert($data);
-                }
-
-                $this->load->model('Users_model');
-                $this->db->set('gold', 'gold + '.$vip_log['gold'], false);
-                $this->db->where('id', $vip_log['user_id']);
-                $this->db->update($this->Users_model->table());
-                //金币明细
-                $gold_log = [
-                    'topic' => 3,
-                    'from_user_id' => $vip_log['user_id'],
-                    'to_user_id' => $vip_log['user_id'],
-                    'item_title' => $vip_log['amount'],
-                    'item_id' => $vip_log['id'],
-                    'gold' => $vip_log['gold']
-                ];
-                $this->load->model('Gold_log_model');
-                $this->Gold_log_model->insert($gold_log);
-            }else{
-                $update['status'] = 2;
-            }
-
-            //更新流水状态
-            $this->Users_vip_log_model->update($vip_log['id'], $update);
-
-            return true;
+            return $this->vip($notify, $successful);
         });
 
         echo $response;
+    }
+
+    protected function vip($notify, $successful)
+    {
+        is_array($notify) && $notify = (object)$notify;
+        if(! isset($notify->out_trade_no)){
+            return false;
+        }
+
+        $this->load->model('Users_vip_log_model');
+        $this->load->model('Users_vip_model');
+        $this->load->model('Vip_model');
+
+        $where = ['order_sn' => $notify->out_trade_no];
+        if(! $vip_log = $this->Users_vip_log_model->get_by($where)){
+            return false;
+        }
+
+        if($vip_log['status'] == 1){
+            return true;
+        }
+
+        $update = [];
+        if($successful){
+            $update['status'] = 1;
+
+            if(! $vip = $this->Vip_model->get($vip_log['vip_id'])){
+                return false;
+            }
+            //更新用户贵族
+            $user_vip = $this->Users_vip_model->get_by(['user_id' => $vip_log['user_id'], 'vip_id' => $vip_log['vip_id']]);
+            if($user_vip){
+                $add_time = max($user_vip['validity_time'], time());
+                $data = [
+                    'validity_time' => strtotime('+'.$vip['days'].' days', $add_time)
+                ];
+                $this->Users_vip_model->update($user_vip['id'], $data);
+            }else{
+                $data = [
+                    'user_id' => $vip_log['user_id'],
+                    'vip_id' => $vip_log['vip_id'],
+                    'validity_time' => strtotime('+'.$vip['days'].' days')
+                ];
+                $this->Users_vip_model->insert($data);
+            }
+
+            $this->load->model('Users_model');
+            $this->db->set('gold', 'gold + '.$vip_log['gold'], false);
+            $this->db->where('id', $vip_log['user_id']);
+            $this->db->update($this->Users_model->table());
+            //金币明细
+            $gold_log = [
+                'topic' => 3,
+                'from_user_id' => $vip_log['user_id'],
+                'to_user_id' => $vip_log['user_id'],
+                'item_title' => $vip_log['amount'],
+                'item_id' => $vip_log['id'],
+                'gold' => $vip_log['gold']
+            ];
+            $this->load->model('Gold_log_model');
+            $this->Gold_log_model->insert($gold_log);
+        }else{
+            $update['status'] = 2;
+        }
+
+        //更新流水状态
+        $this->Users_vip_log_model->update($vip_log['id'], $update);
+
+        return true;
+    }
+
+    // 支付宝贵族
+    public function alipay_vip_payment()
+    {
+        $this->setting = config_item('yansongda');
+        $app = new Pay($this->setting);
+        if($notify = $app->driver('alipay')->gateway('app')->verify($_REQUEST)){
+            $this->vip($notify, true);
+        }else{
+            $this->vip([], false);
+        }
+
+        echo "success";
     }
 
     // 微信商品订单
@@ -183,54 +255,85 @@ class Notify extends API_Controller
         $this->setting = config_item('wechat');
         $app = new Application($this->setting);
         $response = $app->payment->handleNotify(function($notify, $successful){
-            if(! in_array($notify->attach, ['pay_sn', 'order_sn'])){
-                log_message('error', '[wechat_order_payment] '.$notify);
-                return false;
-            }
-            $this->load->model('Order_model');
-            if($notify->attach == 'pay_sn'){
-                $where = ['pay_sn' => $notify->out_trade_no];
-            }else{
-                $where = ['order_sn' => $notify->out_trade_no];
-            }
-            if(! $order = $this->Order_model->get_many_by($where)){
-                return false;
-            }
-
-            $a_order_id = [];
-            foreach($order as $item){
-                $a_order_id[] = $item['id'];
-            }
-
-            $update = [];
-            if($successful){
-                $update['status'] = 2;
-
-                //商品销售记录
-                $this->load->model('Order_items_model');
-                if($goods = $this->Order_items_model->get_many_by(['order_id' => $a_order_id])){
-                    $this->load->model('Record_goods_model');
-                    $data = [];
-                    foreach($goods as $item){
-                        $data[] = [
-                            'goods_id' => $item['goods_id'],
-                            'seller_uid' => $item['seller_uid'],
-                            'num' => $item['num'],
-                            'order_id' => $item['order_id']
-                        ];
-                    }
-                    $this->Record_goods_model->insert_many($data);
-                }
-                //分佣
-            }else{
-                log_message('error', '[wechat_order_payment] '.$notify);
-            }
-            $update && $this->Order_model->update_many($a_order_id, $update);
-
-            return true;
+            return $this->order($notify, $successful);
         });
 
         echo $response;
+    }
+
+    protected function order($notify, $successful)
+    {
+        is_array($notify) && $notify = (object)$notify;
+        if(! isset($notify->out_trade_no)){
+            return false;
+        }
+
+        $attach = null;
+        if(isset($notify->passback_params)){
+            $attach = $notify->passback_params;
+        }elseif(isset($notify->attach)){
+            $attach = $notify->attach;
+        }
+
+        if(! in_array($attach, ['pay_sn', 'order_sn'])){
+            log_message('error', '[wechat_order_payment] '.$notify);
+            return false;
+        }
+        $this->load->model('Order_model');
+        if($attach == 'pay_sn'){
+            $where = ['pay_sn' => $notify->out_trade_no];
+        }else{
+            $where = ['order_sn' => $notify->out_trade_no];
+        }
+        if(! $order = $this->Order_model->get_many_by($where)){
+            return false;
+        }
+
+        $a_order_id = [];
+        foreach($order as $item){
+            $a_order_id[] = $item['id'];
+        }
+
+        $update = [];
+        if($successful){
+            $update['status'] = 2;
+
+            //商品销售记录
+            $this->load->model('Order_items_model');
+            if($goods = $this->Order_items_model->get_many_by(['order_id' => $a_order_id])){
+                $this->load->model('Record_goods_model');
+                $data = [];
+                foreach($goods as $item){
+                    $data[] = [
+                        'goods_id' => $item['goods_id'],
+                        'seller_uid' => $item['seller_uid'],
+                        'num' => $item['num'],
+                        'order_id' => $item['order_id']
+                    ];
+                }
+                $this->Record_goods_model->insert_many($data);
+            }
+            //分佣
+        }else{
+            log_message('error', '[wechat_order_payment] '.$notify);
+        }
+        $update && $this->Order_model->update_many($a_order_id, $update);
+
+        return true;
+    }
+
+    // 支付宝商品订单
+    public function alipay_order_payment()
+    {
+        $this->setting = config_item('yansongda');
+        $app = new Pay($this->setting);
+        if($notify = $app->driver('alipay')->gateway('app')->verify($_REQUEST)){
+            $this->order($notify, true);
+        }else{
+            $this->order([], false);
+        }
+
+        echo "success";
     }
 
     // 微信充值
@@ -239,47 +342,57 @@ class Notify extends API_Controller
         $this->setting = config_item('wechat');
         $app = new Application($this->setting);
         $response = $app->payment->handleNotify(function($notify, $successful){
-            $this->load->model('Users_recharge_model');
-            $where = ['order_sn' => $notify->out_trade_no];
-            if(! $recharge = $this->Users_recharge_model->get_by($where)){
-                return false;
-            }
-
-            if($recharge['status'] == 1){
-                return true;
-            }
-
-            $update = [];
-            if($successful){
-                $update['status'] = 1;
-
-                $this->load->model('Users_model');
-                if($user = $this->Users_model->get($recharge['user_id'])){
-                    $recharge_gold = $this->Users_model->rmb_to_gold($recharge['real_amount']);
-                    $gold = floor($user['gold'] + $recharge_gold);
-                    $this->Users_model->update($user['id'], ['gold' => $gold]);
-
-                    //金币明细
-                    $gold_log = [
-                        'topic' => 0,
-                        'from_user_id' => $recharge['user_id'],
-                        'to_user_id' => $recharge['user_id'],
-                        'item_title' => $recharge['real_amount'],
-                        'item_id' => $recharge['id'],
-                        'gold' => $recharge_gold
-                    ];
-                    $this->load->model('Gold_log_model');
-                    $this->Gold_log_model->insert($gold_log);
-                }
-            }else{
-                $update['status'] = 2;
-            }
-            $this->Users_recharge_model->update($recharge['id'], $update);
-
-            return true;
+            return $this->recharge($notify, true);
         });
 
         echo $response;
+    }
+
+    protected function recharge($notify, $successful)
+    {
+        is_array($notify) && $notify = (object)$notify;
+        if(! isset($notify->out_trade_no)){
+            return false;
+        }
+
+        $this->load->model('Users_recharge_model');
+        $where = ['order_sn' => $notify->out_trade_no];
+        if(! $recharge = $this->Users_recharge_model->get_by($where)){
+            return false;
+        }
+
+        if($recharge['status'] == 1){
+            return true;
+        }
+
+        $update = [];
+        if($successful){
+            $update['status'] = 1;
+
+            $this->load->model('Users_model');
+            if($user = $this->Users_model->get($recharge['user_id'])){
+                $recharge_gold = $this->Users_model->rmb_to_gold($recharge['real_amount']);
+                $gold = floor($user['gold'] + $recharge_gold);
+                $this->Users_model->update($user['id'], ['gold' => $gold]);
+
+                //金币明细
+                $gold_log = [
+                    'topic' => 0,
+                    'from_user_id' => $recharge['user_id'],
+                    'to_user_id' => $recharge['user_id'],
+                    'item_title' => $recharge['real_amount'],
+                    'item_id' => $recharge['id'],
+                    'gold' => $recharge_gold
+                ];
+                $this->load->model('Gold_log_model');
+                $this->Gold_log_model->insert($gold_log);
+            }
+        }else{
+            $update['status'] = 2;
+        }
+        $this->Users_recharge_model->update($recharge['id'], $update);
+
+        return true;
     }
 
     // 支付宝充值
@@ -288,45 +401,12 @@ class Notify extends API_Controller
         $this->setting = config_item('yansongda');
         $app = new Pay($this->setting);
         if($notify = $app->driver('alipay')->gateway('app')->verify($_REQUEST)){
-            $this->load->model('Users_recharge_model');
-            $where = ['order_sn' => $notify['out_trade_no']];
-            if(! $recharge = $this->Users_recharge_model->get_by($where)){
-                return false;
-            }
-
-            if($recharge['status'] == 1){
-                return true;
-            }
-
-            $update = [];
-            if($successful){
-                $update['status'] = 1;
-
-                $this->load->model('Users_model');
-                if($user = $this->Users_model->get($recharge['user_id'])){
-                    $recharge_gold = $this->Users_model->rmb_to_gold($recharge['real_amount']);
-                    $gold = floor($user['gold'] + $recharge_gold);
-                    $this->Users_model->update($user['id'], ['gold' => $gold]);
-
-                    //金币明细
-                    $gold_log = [
-                        'topic' => 0,
-                        'from_user_id' => $recharge['user_id'],
-                        'to_user_id' => $recharge['user_id'],
-                        'item_title' => $recharge['real_amount'],
-                        'item_id' => $recharge['id'],
-                        'gold' => $recharge_gold
-                    ];
-                    $this->load->model('Gold_log_model');
-                    $this->Gold_log_model->insert($gold_log);
-                }
-            }else{
-                $update['status'] = 2;
-            }
-            $this->Users_recharge_model->update($recharge['id'], $update);
-
-            echo "success";
+            $this->recharge($notify, true);
+        }else{
+            $this->recharge([], false);
         }
+
+        echo "success";
     }
 
     // 点播

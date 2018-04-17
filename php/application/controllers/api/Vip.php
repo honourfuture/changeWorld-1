@@ -205,6 +205,7 @@ class Vip extends API_Controller {
         		$this->wechat($log['order_sn']);
         		break;
         	case 'alipay':
+        		$this->alipay($log['order_sn']);
         		break;
         	default :
         		$this->ajaxReturn([], 1, '订单支付类型错误');
@@ -293,7 +294,7 @@ class Vip extends API_Controller {
     	$order = new Order([
             'body' => '猪买单-购买贵族',
             'out_trade_no' => $order_sn,
-            'total_fee' => $this->amount * 100,
+            'total_fee' => TEST_PAYMENT ? TEST_PAYMENT : $this->amount * 100,
             'notify_url' => site_url('/api/notify/wechat_vip_payment'),
             'trade_type' => 'APP'
         ]);
@@ -306,5 +307,21 @@ class Vip extends API_Controller {
         }else{
             $this->ajaxReturn([], 2, $result->return_msg);
         }
+    }
+
+    protected function alipay($order_sn)
+    {
+    	$order = [
+    		'subject' => '猪买单-购买贵族',
+            'out_trade_no' => $order_sn,
+            'total_amount' => TEST_PAYMENT ? TEST_PAYMENT * 0.01 : $this->amount
+    	];
+
+    	$this->setting = config_item('yansongda');
+    	$this->setting['alipay']['notify_url'] = site_url('/api/notify/alipay_vip_payment');
+    	$app = new Pay($this->setting);
+    	$response = $app->driver('alipay')->gateway('app')->pay($order);
+
+        $this->ajaxReturn($response);
     }
 }

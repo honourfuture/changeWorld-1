@@ -7,6 +7,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 use EasyWeChat\Foundation\Application;
 use EasyWeChat\Payment\Order;
+
+use Yansongda\Pay\Pay;
+
 class Order_payment extends API_Controller {
 
 	public function __construct()
@@ -176,11 +179,29 @@ class Order_payment extends API_Controller {
         		$this->wechat($params['trade_type'], $params['trade_sn']);
         		break;
         	case 'alipay':
+        		$this->alipay($params['trade_type'], $params['trade_sn']);
         		break;
         	default :
         		$this->ajaxReturn([], 1, '订单支付类型错误');
         		break;
         }
+    }
+
+    protected function alipay($trade_type, $trade_sn)
+    {
+    	$order = [
+    		'subject' => '猪买单订单支付-商品订单消费',
+            'out_trade_no' => $trade_sn,
+            'total_amount' => TEST_PAYMENT ? TEST_PAYMENT * 0.01 : $this->amount,
+            'passback_params' => $trade_type
+    	];
+
+    	$this->setting = config_item('yansongda');
+    	$this->setting['alipay']['notify_url'] = site_url('/api/notify/alipay_order_payment');
+    	$app = new Pay($this->setting);
+    	$response = $app->driver('alipay')->gateway('app')->pay($order);
+
+        $this->ajaxReturn($response);
     }
 
     protected function wechat($trade_type, $trade_sn)
