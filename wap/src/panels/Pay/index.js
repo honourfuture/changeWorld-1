@@ -67,10 +67,10 @@ export default class Pay extends BaseComponent {
                             callBack
                         );
                     } else if (window.Native) {
+                        window.payHandler = callBack;
                         window.Native.payWithParams(
                             JSON.stringify({ ...res.data, payment_type: type }),
-                            "callbackID",
-                            callBack
+                            "payHandler"
                         );
                     }
                 }
