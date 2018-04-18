@@ -7,7 +7,7 @@ export class NetImg extends BaseComponent {
     @action.bound
     onLoad() {
         window.dispatchEvent(new Event("resize"));
-        this.store.height = "auto";
+        // this.store.height = "auto";
         const { onLoaded } = this.props;
         onLoaded && onLoaded();
     }
@@ -21,7 +21,7 @@ export class NetImg extends BaseComponent {
         delete props["onLoaded"];
         return (
             <img
-                style={{ height }}
+                // style={{ height }}
                 alt=""
                 onLoad={this.onLoad}
                 onError={this.onError}

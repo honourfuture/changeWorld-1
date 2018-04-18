@@ -35,6 +35,7 @@ class GoodsItem extends BaseComponent {
     onClick() {
         const { id } = this.props;
         Base.push("GoodsDetail", { id });
+        window.location.reload();
     }
     render() {
         const { default_image, name, sale_price } = this.props;
