@@ -5,6 +5,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @email webljx@163.com
  * @link www.aicode.org.cn
  */
+use EasyWeChat\Foundation\Application;
+use EasyWeChat\Payment\Order;
 class Vip extends API_Controller {
 
 	public function __construct()
