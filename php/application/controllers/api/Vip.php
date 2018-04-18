@@ -7,6 +7,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 use EasyWeChat\Foundation\Application;
 use EasyWeChat\Payment\Order;
+
+use Yansongda\Pay\Pay;
 class Vip extends API_Controller {
 
 	public function __construct()
