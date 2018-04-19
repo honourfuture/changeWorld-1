@@ -70,10 +70,111 @@ class Live_gift extends API_Controller {
 		$this->ajaxReturn($ret);
 	}
 
-	// 查看
-	public function view()
+	/**
+	 * @api {get} /api/live_gift/send 直播礼物-送礼
+	 * @apiVersion 1.0.0
+	 * @apiName live_gift_send
+	 * @apiGroup api
+	 *
+	 * @apiSampleRequest /api/live_gift/send
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 * @apiParam {Number} to_user_id 收礼用户ID
+	 * @apiParam {Number} gift_id 礼物唯一ID
+	 * @apiParam {Number} num 礼物数量
+	 * @apiParam {Number} room_id 直播间ID
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object[]} data 接口数据集
+	 * @apiSuccess {String} data.id 直播礼物唯一ID
+	 * @apiSuccess {String} data.title 直播礼物名称
+	 * @apiSuccess {String} data.img 直播礼物图
+	 * @apiSuccess {String} data.amount 兑换数量
+	 * @apiSuccess {String} data.exchange_type 兑换类型 1金币 2积分
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *     "data": [
+	 *         {
+	 *             "id": "1",
+	 *             "title": "棒棒糖",
+	 *             "img": "/uploads/2018/01/31/a2e0b9485cb752ad7534fd8b86ebd233.png",
+	 *             "amount": "10000",
+	 *             "exchange_type": "1"
+	 *         }
+	 *     ],
+	 *     "status": 0,
+	 *     "message": "成功"
+	 * }
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+	public function send()
 	{
+		$gift_id = (int)$this->input->get_post('gift_id');
+		$to_user_id = (int)$this->input->get_post('to_user_id');
+		$num = (int)$this->input->get_post('num');
+		$room_id = (int)$this->input->get_post('room_id');
 
+		if(!$gift_id || !$to_user_id || !$num){
+			$this->ajaxReturn([], 1, '参数错误');
+		}
+
+		if(! $gift = $this->Live_gift_model->get($gift_id)){
+			$this->ajaxReturn([], 2, '礼物已下架');
+		}
+		if(! $gift['enable']){
+			$this->ajaxReturn([], 2, '礼物已下架');
+		}
+
+		$this->load->model('Users_model');
+		if(!$user_from = $this->Users_model->get($this->user_id)){
+			$this->ajaxReturn([], 3, '数据异常错误');
+		}
+
+		$gold = $gift['amount'] * $num;
+		if($user_from['gold'] < $gold){
+			$this->ajaxReturn([], 4, '金币余额不足');
+		}
+
+		$this->db->trans_start();
+
+		//送减
+		$this->Users_model->update($user_from['id'], ['gold' => round($user_from['gold'] - $gold, 2)]);
+		//收加
+		$this->db->set('gold', 'gold + '.$gold, false);
+		$this->db->where('id', $to_user_id);
+		$this->db->update($this->Users_model->table());
+		//直播间加
+		$this->load->model('Room_model');
+		$this->db->set('income_gold', 'income_gold + '.$gold, false);
+		$this->db->where('id', $room_id);
+		$this->db->update($this->Room_model->table());
+		//金币明细
+        $gold_log = [
+            'topic' => 2,
+            'from_user_id' => $user_from['id'],
+            'to_user_id' => $to_user_id,
+            'item_title' => $gift['title'],
+            'item_id' => $gift['id'],
+            'gold' => $gold
+        ];
+        $this->load->model('Gold_log_model');
+        $this->Gold_log_model->insert($gold_log);
+
+        $this->db->trans_complete();
+        if ($this->db->trans_status() === FALSE){
+        	$this->ajaxReturn([], 5, '送礼服务异常请稍后重试');
+        }else{
+        	$this->ajaxReturn();
+        }
 	}
 
 	/**

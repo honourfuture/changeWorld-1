@@ -85,11 +85,14 @@ class Room extends API_Controller {
 	 * @apiSuccess {String} message 接口信息描述
 	 * @apiSuccess {Object} data 接口数据集
 	 * @apiSuccess {Number} data.chat_room_id 聊天室ID
+	 * @apiSuccess {Number} data.views 主播热度
 	 *
 	 * @apiSuccessExample {json} Success-Response:
 	 * {
 	 *     "data": {
 	 *         "chat_room_id": 2,
+	 *         "views": 2,
+	 *         "income_gold": 10000,
 	 *     },
 	 *     "status": 0,
 	 *     "message": "成功"
@@ -134,6 +137,9 @@ class Room extends API_Controller {
 	        	}
         	}
         	$update && $this->Room_model->update($room_id, $update);
+
+        	$ret['views'] = $info['views'] + 1;
+        	$ret['income_gold'] = $info['income_gold'];
         	//token
         	/*$token = '';
         	$user = $this->get_user();

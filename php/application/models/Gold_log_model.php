@@ -22,11 +22,11 @@ class Gold_log_model extends MY_Model
     public function topic()
     {
     	return [
-    		'充值',
-    		'转余额',
-            '礼物',//（送、收）
-            '购买贵族',
-            '红包'
+    		'充值',// 0
+    		'转余额',// 1
+            '礼物',// 2（送、收）
+            '购买贵族',// 3
+            '红包',// 4
     	];
     }
 }
