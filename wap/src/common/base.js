@@ -226,6 +226,19 @@ export const Base = {
     getImgUrl(img) {
         return `${Global.RES_URL}${img}`;
     },
+    get isWechat() {
+        const ua = window.navigator.userAgent.toLowerCase();
+        return ua.indexOf("micromessenger") !== -1;
+    },
+    get isIos() {
+        const ua = window.navigator.userAgent;
+        return /\(i[^;]+;( U;)? CPU.+Mac OS X/i.test(ua);
+    },
+    //校验手机号
+    checkMobile: function(i_mobileNum) {
+        const re = new RegExp(/^1(3|4|5|7|8)\d{9}$/);
+        return re.test(i_mobileNum);
+    },
     //获取本地数据
     getLocalData(s_storageName, s_key) {
         let o_data = Store.get(s_storageName);

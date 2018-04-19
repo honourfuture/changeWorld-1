@@ -33,7 +33,13 @@ import ApplyInvoice from "./ApplyInvoice";
 import AfterMarket from "./AfterMarket";
 import Statistics from './Statistics';
 import SellerOrderDetail from './SellerOrderDetail';
+import Share from './Share';
 export const panelsList = [
+    {
+        path:'/Share',
+        component:Share,
+        title:'手机客户端下载',
+    },
     {
         path:'/SellerOrderDetail',
         component:SellerOrderDetail,

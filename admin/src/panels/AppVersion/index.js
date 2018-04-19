@@ -29,16 +29,23 @@ export default class AppVersion extends BaseComponent {
             {
                 title: "更新描述",
                 dataIndex: "explain",
-                width: "25%",
+                width: "20%",
                 render: (text, record) =>
                     this.renderTextArea(text, record, "explain")
             },
             {
-                title: "版本号",
+                title: "版本名称",
                 dataIndex: "version",
-                width: "10%",
+                width: "8%",
                 render: (text, record) =>
                     this.renderInput(text, record, "version")
+            },
+            {
+                title: "版本号",
+                dataIndex: "version_alias",
+                width: "8%",
+                render: (text, record) =>
+                    this.renderInput(text, record, "version_alias")
             },
             {
                 title: "平台",
@@ -280,7 +287,8 @@ export default class AppVersion extends BaseComponent {
             explain: "",
             platform: 0,
             url: "",
-            version: ""
+            version: "",
+            version_alias: ""
         });
     }
     //搜索
