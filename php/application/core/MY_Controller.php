@@ -242,6 +242,9 @@ class API_Controller extends MY_Controller
         $key = $this->router->directory.$this->router->class;
         if(isset($unLogin[$key]) && (in_array('*', $unLogin[$key]) || in_array($this->router->method, $unLogin[$key]))){
             //不用认证
+            if($this->input->get_post('user_id')){
+                $this->check_sign();
+            }
         }else{
             $this->check_sign();
         }
