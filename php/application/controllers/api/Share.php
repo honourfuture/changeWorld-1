@@ -10,6 +10,22 @@ class Share extends API_Controller {
 	public function __construct()
     {
         parent::__construct();
+
+        $this->point = 1000;
+    }
+
+    public function index()
+    {
+    	$ret = [];
+
+    	$ret['point'] = $this->point;
+
+    	$this->load->model('App_version_model');
+    	$this->db->select('platform,url');
+    	$this->db->group_by('platform');
+    	$ret['app'] = $this->App_version_model->order_by('id', 'desc')->get_many_by(['enable' => 1]);
+
+    	$this->ajaxReturn($ret);
     }
 
 	/**
@@ -45,7 +61,7 @@ class Share extends API_Controller {
 	{
 		$params = elements(
 			array(
-				'point', 'mobi', 'invite_uid'
+				'mobi', 'invite_uid'
 			),
 			$this->input->post(),
 			0
@@ -53,6 +69,7 @@ class Share extends API_Controller {
 		if(! $params['mobi']){
 			$this->ajaxReturn([], 1, '请输入有效手机号');
 		}
+		$params['point'] = $this->point;
 
 		$this->load->model('Share_record_model');
 		$this->Share_record_model->insert($params);
