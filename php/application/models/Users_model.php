@@ -174,7 +174,30 @@ class Users_model extends MY_Model
         $data['birth'] = date("Y-m-d");
         $data['reg_ip'] = $this->input->ip_address();
 
+        $rule_name = 'points_reg';
+        if(isset($data['mobi'])){
+            //邀请注册
+            $this->load->model('Share_record_model');
+            if($record = $this->Share_record_model->get_by(['mobi' => $data['mobi']])){
+                $data['pid'] = $record['invite_uid'];
+                $data['point'] = $record['point'];
+
+                $rule_name = 'invite_reg';
+            }
+        }
+
         $user_id = $this->Users_model->insert($data);
+
+        if($data['point']){
+            $this->load->model('Users_points_model');
+            $log = [
+                'user_id' => $user_id,
+                'value' => $data['point'],
+                'rule_name' => $rule_name,
+                'remark' => '注册'
+            ];
+            $this->Users_points_model->insert($log);
+        }
 
         if(isset($data['mobi'])){
             $this->load->model('Users_bind_model');
