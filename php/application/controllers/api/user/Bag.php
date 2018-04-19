@@ -81,7 +81,7 @@ class Bag extends API_Controller {
     	//扣除
     	$this->Users_model->update($user['id'], [$this->field => round($user[$this->field] - $sum, 2)]);
     	//记录
-    	$bag_id = $this->Bag_model->insert(['user_id' => $user['id'], 'amount' => $sum, 'num' => $num, 'room_id' => $room_id]);
+    	$bag_id = $this->Bag_model->insert(['user_id' => $user['id'], 'amount' => $sum, 'num' => $num, 'room_id' => $room_id, 'surplus_num' => $num]);
     	//批量预生成
     	$bag_init = $this->Bag_model->init($bag_id, $room_id, $amount, $num, $type);
     	$this->Users_bag_model->insert_many($bag_init);
@@ -295,10 +295,18 @@ class Bag extends API_Controller {
 
 			$this->db->trans_start();
 
+			//更新用户数据
 	    	$this->db->set($this->field, $this->field.'+'.$users_bag['amount'], false);
 	    	$this->db->where('id', $this->user_id);
 	    	$this->db->update($this->Users_model->table());
 
+	    	//更新红包数据
+	    	$this->db->set('surplus_num', 'surplus_num - 1', false);
+	    	$this->db->set('use_amount', 'use_amount + '.$users_bag['amount'], false);
+	    	$this->db->where('id', $id);
+	    	$this->db->update($this->Bag_model->table());
+
+	    	//更新领取数据
 	    	$this->Users_bag_model->update($users_bag['id'], ['user_id' => $this->user_id]);
 
 	    	//流水
@@ -320,5 +328,69 @@ class Bag extends API_Controller {
 		}else{
 			$this->ajaxReturn([], 1, '红包已领取完');
 		}
+	}
+
+	/**
+	 * @api {get} /api/user/bag/view 红包-查看
+	 * @apiVersion 1.0.0
+	 * @apiName bag_view
+	 * @apiGroup user
+	 *
+	 * @apiSampleRequest /api/user/bag/view
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 * @apiParam {String} room_id 房间ID
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集
+	 * @apiSuccess {String} data.amount 红包总金额
+	 * @apiSuccess {String} data.num 红包总数量
+	 * @apiSuccess {String} data.use_amount 被领取总金额
+	 * @apiSuccess {String} data.surplus_num 红包剩余数量
+	 * @apiSuccess {String} data.header 发红包者头像
+	 * @apiSuccess {String} data.nickname 发红包者昵称
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *     "data": {
+	 *         "id": "7",
+	 *         "created_at": "2018-04-13 20:18:55",
+	 *         "user_id": "3",
+	 *         "amount": "100.00",
+	 *         "num": "2",
+	 *         "room_id": "5",
+	 *         "use_amount": "0.00",
+	 *         "surplus_num": "1",
+	 *         "header": "",
+	 *         "nickname": "aicode"
+	 *     },
+	 *     "status": 0,
+	 *     "message": "成功"
+	 * }
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+	public function view()
+	{
+		$ret = [];
+		$room_id = (int)$this->input->get_post('room_id');
+
+		if($bag = $this->Bag_model->order_by('id', 'desc')->get_by(['room_id' => $room_id, 'surplus_num >' => 0])){
+			$this->db->select('header,nickname');
+			if($user = $this->Users_model->get($bag['user_id'])){
+				$ret = array_merge($bag, $user);
+			}
+		}else{
+			$this->ajaxReturn([], 1, '房间无红包');
+		}
+
+		$this->ajaxReturn($ret);
 	}
 }

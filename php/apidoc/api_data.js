@@ -14639,105 +14639,6 @@ define({ "api": [
     "groupTitle": "user"
   },
   {
-    "type": "post",
-    "url": "/api/user/bag",
-    "title": "红包-发布",
-    "version": "1.0.0",
-    "name": "bag",
-    "group": "user",
-    "sampleRequest": [
-      {
-        "url": "/api/user/bag"
-      }
-    ],
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "user_id",
-            "description": "<p>用户唯一ID</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "sign",
-            "description": "<p>校验签名</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "amount",
-            "description": "<p>总金额</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "num",
-            "description": "<p>总数量</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "room_id",
-            "description": "<p>房间号</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "status",
-            "description": "<p>接口状态 0成功 其他异常</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>接口信息描述</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Object",
-            "optional": false,
-            "field": "data",
-            "description": "<p>接口数据集</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "{\n    \"data\": {\n        \"bag_id\": 7,\n        \"amount\": 100,\n        \"num\": 2\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "examples": [
-        {
-          "title": "Error-Response:",
-          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Bag.php",
-    "groupTitle": "user"
-  },
-  {
     "type": "get",
     "url": "/api/user/bag",
     "title": "红包-详情",
@@ -14848,6 +14749,105 @@ define({ "api": [
         {
           "title": "Success-Response:",
           "content": "{\n    \"data\": {\n        \"id\": \"1\",\n        \"user_id\": \"3\",\n        \"amount\": \"100.00\",\n        \"num\": \"1\",\n        \"header\": \"\",\n        \"nickname\": \"aicode\",\n        \"list\": [\n            {\n                \"id\": \"1\",\n                \"header\": \"http://thirdwx.qlogo.cn/mmopen/vi_32/\",\n                \"nickname\": \"小树\",\n                \"amount\": \"100.00\"\n            }\n        ],\n        \"count\": 1\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Bag.php",
+    "groupTitle": "user"
+  },
+  {
+    "type": "post",
+    "url": "/api/user/bag/add",
+    "title": "红包-发布",
+    "version": "1.0.0",
+    "name": "bag_add",
+    "group": "user",
+    "sampleRequest": [
+      {
+        "url": "/api/user/bag/add"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "amount",
+            "description": "<p>总金额</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "num",
+            "description": "<p>总数量</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "room_id",
+            "description": "<p>房间号</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"bag_id\": 7,\n        \"amount\": 100,\n        \"num\": 2\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
@@ -15039,6 +15039,133 @@ define({ "api": [
         {
           "title": "Success-Response:",
           "content": "{\n    \"data\": {\n        \"amount\": \"31.61\"\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Bag.php",
+    "groupTitle": "user"
+  },
+  {
+    "type": "get",
+    "url": "/api/user/bag/view",
+    "title": "红包-查看",
+    "version": "1.0.0",
+    "name": "bag_view",
+    "group": "user",
+    "sampleRequest": [
+      {
+        "url": "/api/user/bag/view"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "room_id",
+            "description": "<p>房间ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.amount",
+            "description": "<p>红包总金额</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.num",
+            "description": "<p>红包总数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.use_amount",
+            "description": "<p>被领取总金额</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.surplus_num",
+            "description": "<p>红包剩余数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.header",
+            "description": "<p>发红包者头像</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.nickname",
+            "description": "<p>发红包者昵称</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"id\": \"7\",\n        \"created_at\": \"2018-04-13 20:18:55\",\n        \"user_id\": \"3\",\n        \"amount\": \"100.00\",\n        \"num\": \"2\",\n        \"room_id\": \"5\",\n        \"use_amount\": \"0.00\",\n        \"surplus_num\": \"1\",\n        \"header\": \"\",\n        \"nickname\": \"aicode\"\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
@@ -20984,7 +21111,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    \"data\": {\n        \"header\": \"/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png\",\n        \"nickname\": \"aicode\",\n        \"anchor\": \"1\",\n        \"is_seller\": \"1\",\n        \"buyer\": [\n            \"8\"\n        ],\n        \"seller\": [\n            \"5\"\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": {\n        \"header\": \"/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png\",\n        \"nickname\": \"aicode\",\n        \"anchor\": \"1\",\n        \"seller\": \"1\",\n        \"buyer\": [\n            \"8\"\n        ],\n        \"seller\": [\n            \"5\"\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
@@ -21062,7 +21189,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    \"data\": {\n        \"header\": \"/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png\",\n        \"nickname\": \"aicode\",\n        \"anchor\": \"1\",\n        \"is_seller\": \"1\",\n        \"buyer\": [\n            \"8\"\n        ],\n        \"seller\": [\n            \"5\"\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": {\n        \"header\": \"/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png\",\n        \"nickname\": \"aicode\",\n        \"anchor\": \"1\",\n        \"seller\": \"1\",\n        \"buyer\": [\n            \"8\"\n        ],\n        \"seller\": [\n            \"5\"\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
@@ -21140,7 +21267,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    \"data\": {\n        \"header\": \"/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png\",\n        \"nickname\": \"aicode\",\n        \"anchor\": \"1\",\n        \"is_seller\": \"1\",\n        \"buyer\": [\n            \"8\"\n        ],\n        \"seller\": [\n            \"5\"\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": {\n        \"header\": \"/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png\",\n        \"nickname\": \"aicode\",\n        \"anchor\": \"1\",\n        \"seller\": \"1\",\n        \"buyer\": [\n            \"8\"\n        ],\n        \"seller\": [\n            \"5\"\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
