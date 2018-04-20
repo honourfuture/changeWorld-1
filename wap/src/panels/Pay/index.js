@@ -59,19 +59,29 @@ export default class Pay extends BaseComponent {
                             Toast.fail("支付失败", 2, null, false);
                         }
                     };
-                    if (window.JKEventHandler) {
-                        window.JKEventHandler.callNativeFunction(
-                            "payWithParams",
-                            JSON.stringify({ ...res.data, payment_type: type }),
-                            "callbackID",
-                            callBack
-                        );
-                    } else if (window.Native) {
-                        window.payHandler = callBack;
-                        window.Native.payWithParams(
-                            JSON.stringify({ ...res.data, payment_type: type }),
-                            "payHandler"
-                        );
+                    if (type === "balance") {
+                        callBack(1);
+                    } else {
+                        if (window.JKEventHandler) {
+                            window.JKEventHandler.callNativeFunction(
+                                "payWithParams",
+                                JSON.stringify({
+                                    ...res.data,
+                                    payment_type: type
+                                }),
+                                "callbackID",
+                                callBack
+                            );
+                        } else if (window.Native) {
+                            window.payHandler = callBack;
+                            window.Native.payWithParams(
+                                JSON.stringify({
+                                    ...res.data,
+                                    payment_type: type
+                                }),
+                                "payHandler"
+                            );
+                        }
                     }
                 }
             );
@@ -86,23 +96,40 @@ export default class Pay extends BaseComponent {
                     trade_sn
                 },
                 res => {
-                    if (window.JKEventHandler) {
-                        window.JKEventHandler.callNativeFunction(
-                            "payWithParams",
-                            JSON.stringify({ ...res.data, payment_type: type }),
-                            "callbackID",
-                            data => {
-                                if (parseInt(data) === 1) {
-                                    Base.push("PayState", {
-                                        trade_sn,
-                                        real_total_amount,
-                                        payment_type: type
-                                    });
-                                } else {
-                                    Toast.fail("支付失败", 2, null, false);
-                                }
-                            }
-                        );
+                    const callBack = data => {
+                        if (parseInt(data) === 1) {
+                            Base.push("PayState", {
+                                trade_sn,
+                                real_total_amount,
+                                payment_type: type
+                            });
+                        } else {
+                            Toast.fail("支付失败", 2, null, false);
+                        }
+                    };
+                    if (type === "balance") {
+                        callBack(1);
+                    } else {
+                        if (window.JKEventHandler) {
+                            window.JKEventHandler.callNativeFunction(
+                                "payWithParams",
+                                JSON.stringify({
+                                    ...res.data,
+                                    payment_type: type
+                                }),
+                                "callbackID",
+                                callBack
+                            );
+                        } else if (window.Native) {
+                            window.payHandler = callBack;
+                            window.Native.payWithParams(
+                                JSON.stringify({
+                                    ...res.data,
+                                    payment_type: type
+                                }),
+                                "payHandler"
+                            );
+                        }
                     }
                 }
             );
