@@ -103,7 +103,7 @@ export class Hots extends BaseComponent {
                                 key={index}
                                 onClick={() => Base.push(link)}
                                 src={Base.getImgUrl(image)}
-                                style={{ width: "100%" }}
+                                style={{ width: "100%", height: "auto" }}
                                 onLoaded={this.setListHeight}
                             />
                         ))}
