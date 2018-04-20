@@ -281,6 +281,22 @@ export default class GoodsDetail extends BaseComponent {
             Base.push("ConfirmOrder", { goods_id, goods_attr, num: selectNum });
         }
     }
+    @action.bound
+    onShare() {
+        const { goods_info = {} } = this.store;
+        let { name = "", default_image = "" } = goods_info;
+        Base.getAuthData(({ user_id }) => {
+            const shareData = {
+                title: name,
+                description: "",
+                imageUrl: Base.getImgUrl(default_image),
+                linkUrl: `${
+                    Global.RES_URL
+                }/wap/index.html#/Share?invite_uid=${user_id}&type=0`
+            };
+            Base.pushApp("openShareView", JSON.stringify(shareData));
+        });
+    }
     render() {
         const {
             favorite,
@@ -375,12 +391,6 @@ export default class GoodsDetail extends BaseComponent {
         //         );
         //     }
         // }
-        const shareData = {
-            title: name,
-            description: "",
-            imageUrl: Base.getImgUrl(default_image),
-            linkUrl: `${Global.RES_URL}/wap/index.html#/GoodsDetail?id=${id}`
-        };
         return (
             <div className="GoodsDetail">
                 <NavBar
@@ -396,12 +406,7 @@ export default class GoodsDetail extends BaseComponent {
                             alt=""
                         />,
                         <img
-                            onClick={() =>
-                                Base.pushApp(
-                                    "openShareView",
-                                    JSON.stringify(shareData)
-                                )
-                            }
+                            onClick={this.onShare}
                             key="1"
                             src={icon.share}
                             alt=""

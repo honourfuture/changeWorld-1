@@ -1,12 +1,13 @@
 import React from "react";
 import { BaseComponent, Base } from "../../common";
 import { NavBar, Button, Flex, Toast } from "antd-mobile";
-import { icon } from "../../images";
+import { icon, share } from "../../images";
 import "./Share.less";
 import { action } from "mobx";
 
 export default class Share extends BaseComponent {
     store = { point: 0, iosUrl: "", andoridUrl: "" };
+    type = Base.getPageParams("type") || 0;
     @action.bound
     onReceive() {
         const { mobi } = this;
@@ -57,39 +58,51 @@ export default class Share extends BaseComponent {
                 >
                     手机客户端下载
                 </NavBar>
-                <div className="operation-con">
-                    <div className="integral-con">
-                        <Flex className="icon-con">
-                            <img src={icon.logo} alt="" />
-                            <div className="tips-con">
-                                <div className="title">猪买单</div>
-                                <div className="tips">
-                                    下载APP 立送{point}积分
+                <div
+                    className="base-content content"
+                    style={{
+                        backgroundImage: `url(${
+                            share["share_bg_" + this.type]
+                        })`
+                    }}
+                >
+                    <div className="operation-con">
+                        <div className="integral-con">
+                            <Flex className="icon-con">
+                                <img src={icon.logo} alt="" />
+                                <div className="tips-con">
+                                    <div className="title">猪买单</div>
+                                    <div className="tips">
+                                        下载APP 立送{point}积分
+                                    </div>
                                 </div>
-                            </div>
-                        </Flex>
-                        <Flex className="receive-con" justify="between">
-                            <input
-                                onChange={e => (this.mobi = e.target.value)}
-                                placeholder="填写手机号"
-                                type="number"
-                            />
-                            <div className="receive" onClick={this.onReceive}>
-                                领取
-                            </div>
-                        </Flex>
+                            </Flex>
+                            <Flex className="receive-con" justify="between">
+                                <input
+                                    onChange={e => (this.mobi = e.target.value)}
+                                    placeholder="填写手机号"
+                                    type="number"
+                                />
+                                <div
+                                    className="receive"
+                                    onClick={this.onReceive}
+                                >
+                                    领取
+                                </div>
+                            </Flex>
+                        </div>
+                        {Base.isIos ? (
+                            <Button onClick={this.onDown} className="ios">
+                                <img src={icon.ios} alt="" />
+                                iPhone版下载
+                            </Button>
+                        ) : (
+                            <Button onClick={this.onDown} className="android">
+                                <img src={icon.android} alt="" />
+                                Android版下载
+                            </Button>
+                        )}
                     </div>
-                    {Base.isIos ? (
-                        <Button onClick={this.onDown} className="ios">
-                            <img src={icon.ios} alt="" />
-                            iPhone版下载
-                        </Button>
-                    ) : (
-                        <Button onClick={this.onDown} className="android">
-                            <img src={icon.android} alt="" />
-                            Android版下载
-                        </Button>
-                    )}
                 </div>
             </div>
         );

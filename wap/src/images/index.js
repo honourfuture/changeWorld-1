@@ -46,6 +46,13 @@ export const blankImg = {
     offline: require("./noData/offline.png")
 };
 
+export const share = {
+    share_bg_0: require("./share/share_bg_0.png"),
+    share_bg_1: require("./share/share_bg_1.png"),
+    share_bg_2: require("./share/share_bg_2.png"),
+    share_bg_3: require("./share/share_bg_3.png")
+};
+
 export const defaultImg = require("./default.png");
 
 export const test = {
