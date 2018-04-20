@@ -286,7 +286,7 @@ class Seller extends API_Controller {
 		if($ret['count']){
 			$order_by = array('updated_at' => 'desc', 'id' => 'desc');
 			$this->search();
-			$this->db->select('id,cover_image,title,price,updated_at,duration,play_times');
+			$this->db->select('id,cover_image,title,price,updated_at,duration,play_times,album_id');
 			$ret['list'] = $this->Room_audio_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 		}
 
