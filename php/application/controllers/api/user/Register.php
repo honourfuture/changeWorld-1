@@ -61,9 +61,9 @@ class Register extends API_Controller {
         }
 
         $this->load->model('Sms_email_record_model');
-		$info = $this->Sms_email_record_model->order_by('id', 'DESC')->get_by('account', $mobi);
-		if($info){
-			if($info['verify'] == $code){
+        $test_mobi = $this->Sms_email_record_model->test_mobi($mobi);
+		if($test_mobi || $info = $this->Sms_email_record_model->order_by('id', 'DESC')->get_by('account', $mobi)){
+			if($test_mobi || $info['verify'] == $code){
 				if($step == 1){
 					$this->ajaxReturn();
 				}elseif($step == 2){
