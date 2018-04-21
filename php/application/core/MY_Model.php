@@ -686,4 +686,22 @@ class MY_Model extends CI_Model
         $method = ($multi) ? 'result' : 'row';
         return $this->_temporary_return_type == 'array' ? $method . '_array' : $method;
     }
+
+    public function test_mobi($mobi)
+    {
+        $test = [
+            13723716380,
+            13723716382,
+            13723716383,
+            13723716384,
+            13723716385,
+            13430332489,
+        ];
+
+        if(in_array($mobi, $test)){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
