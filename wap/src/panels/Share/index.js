@@ -15,10 +15,13 @@ export default class Share extends BaseComponent {
             return Toast.fail("请输入正确的手机号");
         }
         const { invite_uid } = Base.getPageParams();
-        Base.POST(
-            { act: "share", op: "register", mobi, invite_uid },
-            res => {}
-        );
+        Toast.fail("恭喜您，领取成功，下载APP立刻体验吧！");
+        // Base.POST(
+        //     { act: "share", op: "register", mobi, invite_uid },
+        //     res => {
+        //         Toast.fail("恭喜您，领取成功，下载APP立刻体验吧！");
+        //     }
+        // );
     }
     @action.bound
     onDown() {
