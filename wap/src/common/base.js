@@ -86,7 +86,8 @@ export const Base = {
     //获取页面传来的参数
     getPageParams(keyStr, url) {
         url = url || window.document.location.href;
-        const str = url.split("?")[1];
+        const a_url = url.split("?");
+        let str = a_url.length === 3 ? a_url[2] : a_url[1];
         if (typeof str === "undefined") {
             return keyStr ? "" : {};
         }
