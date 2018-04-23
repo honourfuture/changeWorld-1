@@ -21,18 +21,20 @@ class Album_model extends MY_Model
 
     public function audio(&$ret)
     {
-    	$a_audio_id = array();
-		foreach($ret['list'] as $key=>$item){
-			$a_audio_id[] = $item['id'];
-			$ret['list'][$key]['audio_num'] = 0;
-			$ret['list'][$key]['play_times'] = 0;
-		}
-		$this->load->model('Room_audio_model');
-		$audio = $this->Room_audio_model->get_audio_info_by_album($a_audio_id);
-		if($audio){
-			foreach($ret['list'] as $key=>$item){
-				isset($audio[$item['id']]) && $ret['list'][$key] = array_merge($ret['list'][$key], $audio[$item['id']]);
-			}
-		}
+        if($ret['list']){
+        	$a_audio_id = array();
+    		foreach($ret['list'] as $key=>$item){
+    			$a_audio_id[] = $item['id'];
+    			$ret['list'][$key]['audio_num'] = 0;
+    			$ret['list'][$key]['play_times'] = 0;
+    		}
+    		$this->load->model('Room_audio_model');
+    		$audio = $this->Room_audio_model->get_audio_info_by_album($a_audio_id);
+    		if($audio){
+    			foreach($ret['list'] as $key=>$item){
+    				isset($audio[$item['id']]) && $ret['list'][$key] = array_merge($ret['list'][$key], $audio[$item['id']]);
+    			}
+    		}
+        }
     }
 }
