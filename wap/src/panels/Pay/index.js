@@ -62,25 +62,23 @@ export default class Pay extends BaseComponent {
                     if (type === "balance") {
                         callBack(1);
                     } else {
+                        const data =
+                            typeof res.data === "string"
+                                ? `${res.data}&payment_type=${type}`
+                                : JSON.stringify({
+                                      ...res.data,
+                                      payment_type: type
+                                  });
                         if (window.JKEventHandler) {
                             window.JKEventHandler.callNativeFunction(
                                 "payWithParams",
-                                JSON.stringify({
-                                    ...res.data,
-                                    payment_type: type
-                                }),
+                                data,
                                 "callbackID",
                                 callBack
                             );
                         } else if (window.Native) {
                             window.payHandler = callBack;
-                            window.Native.payWithParams(
-                                JSON.stringify({
-                                    ...res.data,
-                                    payment_type: type
-                                }),
-                                "payHandler"
-                            );
+                            window.Native.payWithParams(data, "payHandler");
                         }
                     }
                 }
@@ -110,25 +108,23 @@ export default class Pay extends BaseComponent {
                     if (type === "balance") {
                         callBack(1);
                     } else {
+                        const data =
+                            typeof res.data === "string"
+                                ? `${res.data}&payment_type=${type}`
+                                : JSON.stringify({
+                                      ...res.data,
+                                      payment_type: type
+                                  });
                         if (window.JKEventHandler) {
                             window.JKEventHandler.callNativeFunction(
                                 "payWithParams",
-                                JSON.stringify({
-                                    ...res.data,
-                                    payment_type: type
-                                }),
+                                data,
                                 "callbackID",
                                 callBack
                             );
                         } else if (window.Native) {
                             window.payHandler = callBack;
-                            window.Native.payWithParams(
-                                JSON.stringify({
-                                    ...res.data,
-                                    payment_type: type
-                                }),
-                                "payHandler"
-                            );
+                            window.Native.payWithParams(data, "payHandler");
                         }
                     }
                 }

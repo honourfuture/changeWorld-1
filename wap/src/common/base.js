@@ -161,6 +161,9 @@ export const Base = {
     },
     getAuthData(cb) {
         let user_verify_data = window.localStorage.getItem("user_verify_data");
+        if (window.Native) {
+            window.Native.log(user_verify_data);
+        }
         // user_verify_data = user_verify_data ? JSON.parse(user_verify_data) : {};
         user_verify_data = user_verify_data
             ? JSON.parse(user_verify_data)
