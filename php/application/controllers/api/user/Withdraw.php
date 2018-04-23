@@ -87,6 +87,8 @@ class Withdraw extends API_Controller {
 			$ret['bank'] = (object)$ret['bank'];
 		}
 
+		$ret['withdraw_tips'] = '到账时间以银行为准';
+
 		$this->ajaxReturn($ret);
 	}
 

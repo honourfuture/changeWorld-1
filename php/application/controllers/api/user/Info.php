@@ -86,6 +86,7 @@ class Info extends API_Controller {
 			'anchor' => $user['anchor'],
 			'seller' => $user['seller'],
 			'exp' => $user['exp'],
+			'mobi' => $user['mobi'],
 		);
 
 		$this->load->model('Users_vip_model');
