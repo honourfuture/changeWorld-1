@@ -106,7 +106,7 @@ class Album extends API_Controller {
 			$this->load->model('Room_audio_model');
 			$a_audio_id = [$id];
 			$audio = $this->Room_audio_model->get_audio_info_by_album($a_audio_id);
-			$info = array_merge($info, $audio[$id]);
+			isset($audio[$id]) && $info = array_merge($info, $audio[$id]);
 			//主播信息
 			$this->load->model('Users_model');
 			$this->db->select('nickname,header');
