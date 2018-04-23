@@ -62,13 +62,17 @@ export default class Pay extends BaseComponent {
                     if (type === "balance") {
                         callBack(1);
                     } else {
-                        const data =
-                            typeof res.data === "string"
-                                ? `${res.data}&payment_type=${type}`
-                                : JSON.stringify({
-                                      ...res.data,
-                                      payment_type: type
-                                  });
+                        // const data =
+                        //     typeof res.data === "string"
+                        //         ? `${res.data}&payment_type=${type}`
+                        //         : JSON.stringify({
+                        //               data:res.data,
+                        //               payment_type: type
+                        //           });
+                        const data = JSON.stringify({
+                            data: res.data,
+                            payment_type: type
+                        });
                         if (window.JKEventHandler) {
                             window.JKEventHandler.callNativeFunction(
                                 "payWithParams",
@@ -108,13 +112,10 @@ export default class Pay extends BaseComponent {
                     if (type === "balance") {
                         callBack(1);
                     } else {
-                        const data =
-                            typeof res.data === "string"
-                                ? `${res.data}&payment_type=${type}`
-                                : JSON.stringify({
-                                      ...res.data,
-                                      payment_type: type
-                                  });
+                        const data = JSON.stringify({
+                            data: res.data,
+                            payment_type: type
+                        });
                         if (window.JKEventHandler) {
                             window.JKEventHandler.callNativeFunction(
                                 "payWithParams",
