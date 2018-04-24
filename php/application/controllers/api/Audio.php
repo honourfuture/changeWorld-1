@@ -93,6 +93,7 @@ class Audio extends API_Controller {
 			$this->db->select('cover_image,title');
 			$this->load->model('Album_model');
 			$ret['album'] = $this->Album_model->get($info['album_id']);
+			$ret['album']['audio_num'] = $this->Room_audio_model->count_by(['album_id' => $info['album_id']]);
 
 			//订阅
 			$this->load->model('Users_collection_model');
