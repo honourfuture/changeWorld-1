@@ -115,6 +115,15 @@ class Order extends API_Controller {
     			$this->ajaxReturn([], 2, '该订单不属于你');
     		}
     		$ret['order'] = $order;
+    		//交易会员信息
+    		if($order['seller_uid'] == $this->user_id){
+				$uid = $order['buyer_uid'];
+			}else{
+				$uid = $order['seller_uid'];
+			}
+			$this->load->model('Users_model');
+			$this->db->select('id,nickname,header,mobi');
+			$ret['user'] = $this->Users_model->get($uid);
     		//评论
     		$this->load->model('Order_evaluate_model');
     		$this->db->select('id,remark,is_anonymous,photos');
@@ -198,8 +207,10 @@ class Order extends API_Controller {
 		}
 
 		if($is_seller){
+			$user_field = 'buyer_uid';
 			$where['seller_uid'] = $this->user_id;
 		}else{
+			$user_field = 'seller_uid';
 			$where['buyer_uid'] = $this->user_id;
 		}
 
@@ -212,8 +223,13 @@ class Order extends API_Controller {
 			$ret['list'] = $this->Order_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 
 			$a_order_id = [];
-			foreach($ret['list'] as $item){
-				$a_order_id[] = $item['id'];
+			$a_uid = [];
+			if($ret['list']){
+				foreach($ret['list'] as $item){
+					$a_order_id[] = $item['id'];
+					$a_uid[] = $item['seller_uid'];
+					$a_uid[] = $item['buyer_uid'];
+				}
 			}
 
 			if($a_order_id){
@@ -226,8 +242,12 @@ class Order extends API_Controller {
 					$k_order_item[$item['order_id']][] = $item;
 				}
 
+				$this->load->model('Users_model');
+				$k_uid_item = $this->Users_model->get_many_user($a_uid, 'id,nickname,header,mobi', true);
+
 				foreach($ret['list'] as $key=>$item){
-					$ret['list'][$key]['goods'] = $k_order_item[$item['id']];
+					$ret['list'][$key]['goods'] = isset($k_order_item[$item['id']]) ? $k_order_item[$item['id']] : [];
+					$ret['list'][$key]['user'] = isset($k_uid_item[$item[$user_field]]) ? $k_uid_item[$item[$user_field]] : [];
 				}
 			}
 		}
