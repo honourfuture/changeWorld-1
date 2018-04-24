@@ -78,7 +78,8 @@ class OrderItem extends BaseComponent {
             id,
             orderType,
             refund_status,
-            seller_uid
+            seller_uid,
+            user
         } = this.props;
         let states = [
             "待付款",
@@ -98,9 +99,7 @@ class OrderItem extends BaseComponent {
                         oneCallBack={() => this.cancelOrder(id)}
                         twoCallBack={() => Base.push("pay", { order_sn })}
                         threeCallBack={() =>
-                            Base.pushApp("openChatView", {
-                                seller_uid: seller_uid
-                            })
+                            Base.pushApp("openChatView", JSON.stringify(user))
                         }
                         isDouble={3}
                     />
@@ -121,9 +120,7 @@ class OrderItem extends BaseComponent {
                         btnTxt={["退款/退货", "联系商家"]}
                         oneCallBack={() => Base.push("AfterMarket", { id: id })}
                         twoCallBack={() =>
-                            Base.pushApp("openChatView", {
-                                seller_uid: seller_uid
-                            })
+                            Base.pushApp("openChatView", JSON.stringify(user))
                         }
                         isDouble={2}
                     />
@@ -144,9 +141,7 @@ class OrderItem extends BaseComponent {
                             Base.push("AfterMarket", { id: id })
                         }
                         fourCallBack={() =>
-                            Base.pushApp("openChatView", {
-                                seller_uid: seller_uid
-                            })
+                            Base.pushApp("openChatView", JSON.stringify(user))
                         }
                         isDouble={4}
                     />
@@ -164,9 +159,7 @@ class OrderItem extends BaseComponent {
                         }
                         twoCallBack={() => Base.push("AfterMarket", { id: id })}
                         threeCallBack={() =>
-                            Base.pushApp("openChatView", {
-                                seller_uid: seller_uid
-                            })
+                            Base.pushApp("openChatView", JSON.stringify(user))
                         }
                         isDouble={3}
                     />
