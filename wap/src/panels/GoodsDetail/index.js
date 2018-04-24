@@ -391,6 +391,7 @@ export default class GoodsDetail extends BaseComponent {
         //         );
         //     }
         // }
+        const chatData = { ...seller, id: seller_uid };
         return (
             <div className="GoodsDetail">
                 <NavBar
@@ -557,7 +558,10 @@ export default class GoodsDetail extends BaseComponent {
                             </Flex.Item>
                             <Flex.Item
                                 onClick={() =>
-                                    Base.pushApp("openChatView", seller_uid)
+                                    Base.pushApp(
+                                        "openChatView",
+                                        JSON.stringify(chatData)
+                                    )
                                 }
                             >
                                 <img src={icon.customerIcon} alt="" />
