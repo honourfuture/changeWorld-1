@@ -275,10 +275,16 @@ class Common extends API_Controller
      */
     public function area()
     {
-        $pid = (int)$this->input->get_post('pid');
+        $pid = isset($this->requestData['pid']) ? (int)$this->requestData['pid'] : 0;
         $this->load->model('Area_model');
-        $this->db->select('id,name,pid,first_letter');
-        $area = $this->Area_model->get_many_by('pid', $pid);
+        $one_city = $this->Area_model->one_city();
+        if(isset($one_city[$pid])){
+            $area = [$one_city[$pid]];
+        }else{
+            $this->db->select('id,fullname name,pid,first_letter,pinyin');
+            $area = $this->Area_model->get_many_by('pid', $pid);
+        }
+
         $this->ajaxReturn($area);
     }
 }
