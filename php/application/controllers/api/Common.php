@@ -145,6 +145,8 @@ class Common extends API_Controller
             } else {
                 $this->ajaxReturn($ret, 1, '保存失败');
             }
+        }else{
+            $this->ajaxReturn([], 2, '文件base64格式错误');
         }
     }
 
