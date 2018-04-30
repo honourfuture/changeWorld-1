@@ -277,7 +277,7 @@ class Common extends API_Controller
      */
     public function area()
     {
-        $pid = isset($this->requestData['pid']) ? (int)$this->requestData['pid'] : 0;
+        $pid = (int)$this->input->get_post('pid');
         $this->load->model('Area_model');
         $one_city = $this->Area_model->one_city();
         if(isset($one_city[$pid])){
