@@ -63,7 +63,7 @@ export default class ArticleList extends BaseComponent{
 								:
 								<span>
 									<a onClick={() => this.onEditChange(id,true,'editable')}>编辑</a>
-									<a className='ml10' onClick={() => this.refs.editor.show(record.content,id)}>设置内容</a>
+									<a className='ml10' onClick={() => this.onShow(id) }>设置内容</a>
 									<Popconfirm title="确认删除?" okText='确定' cancelText='取消' onConfirm={() => this.onDelete(id)}>
 										<a className='ml10 gray'>删除</a>
 									</Popconfirm>
@@ -110,6 +110,12 @@ export default class ArticleList extends BaseComponent{
 					}
 				</Select>:article_class[curIndex].name}
 			</div>
+	}
+	@action.bound
+	onShow(id){
+		Base.GET({act:'article',op:'view',id:id},(res)=>{
+			this.refs.editor.show(res.data.content,id);
+		},this);
 	}
 	//是否启用
 	@action.bound
