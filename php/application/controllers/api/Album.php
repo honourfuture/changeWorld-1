@@ -92,7 +92,7 @@ class Album extends API_Controller {
 		$this->db->select('id,cover_image,updated_at,title,album_class,album_tag,price,public,anchor_uid');
 		$info = $this->Album_model->get($id);
 		if($info){
-			if(! $info['public']){
+			if(!$info['public'] && $info['anchor_uid'] != $this->user_id){
 				$this->ajaxReturn([], 2, '主播专辑未公开');
 			}
 			//专辑类型

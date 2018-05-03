@@ -194,9 +194,10 @@ class Seller extends API_Controller {
 		$ret = array('count' => 0, 'list' => array());
 		$where = array('enable' => 1);
 		$where['anchor_uid'] = $seller_uid;
-		if($this->user_id != $seller_uid){
+		/*if($this->user_id != $seller_uid){
 			$where['public'] = 1;
-		}
+		}*/
+		$where['public'] = 1;
 		$this->load->model('Album_model');
 
 		$this->search();

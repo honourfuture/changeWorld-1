@@ -156,7 +156,7 @@ class Live extends API_Controller {
 	        $channel_id = $this->Room_model->channel_id($this->user_id, $id);
 	        $play_url = $QLive->getPlayUrl($channel_id);
 	        $update = array(
-	        	'push_url' => $QLive->getPushUrl($channel_id).'&record=mp4&record_interval=5400&record_type=audio',
+	        	'push_url' => $QLive->getPushUrl($channel_id).'&record=aac&record_interval=5400&record_type=audio',
 	        	'play_url' => json_encode($play_url)
 	        );
 	        //融云
