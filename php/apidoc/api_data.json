@@ -14263,6 +14263,13 @@
             "optional": false,
             "field": "cid",
             "description": "<p>评论ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "audio_id",
+            "description": "<p>音频ID</p>"
           }
         ]
       }

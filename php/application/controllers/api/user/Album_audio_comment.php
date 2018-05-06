@@ -26,6 +26,7 @@ class Album_audio_comment extends API_Controller {
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
 	 * @apiParam {String} cid 评论ID
+	 * @apiParam {String} audio_id 音频ID
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
