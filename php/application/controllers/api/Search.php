@@ -111,7 +111,7 @@ class Search extends API_Controller {
     protected function _album()
 	{
 		$ret = array('count' => 0, 'list' => array());
-		$where = array('enable' => 1);
+		$where = array('enable' => 1, 'public' => 1);
 		$this->db->like('title', $this->keyword);
 		$this->load->model('Album_model');
 
@@ -241,7 +241,7 @@ class Search extends API_Controller {
 		$ret['count'] = $this->Room_audio_model->count_by($where);
 		if($ret['count']){
 			$order_by = array('updated_at' => 'desc', 'id' => 'desc');
-			$this->db->select('id,cover_image,title,price,updated_at,duration,play_times');
+			$this->db->select('id,cover_image,title,price,updated_at,duration,play_times,album_id');
 			$this->db->like('title', $this->keyword);
 			$ret['list'] = $this->Room_audio_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 		}
