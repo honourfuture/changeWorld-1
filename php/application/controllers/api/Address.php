@@ -73,7 +73,9 @@ class Address extends API_Controller {
 		$where = array('user_id' => $this->user_id, 'deleted' => $deleted);
 		$order_by = array('is_default' => 'desc', 'updated_at' => 'desc');
 		$this->db->select('id,is_default,username,mobi,province_id,province,city_id,city,area_id,area,address');
-		$ret = $this->Address_model->order_by($order_by)->get_many_by($where);
+		if(! $ret = $this->Address_model->order_by($order_by)->get_many_by($where)){
+			$ret = [];
+		}
 		$this->ajaxReturn($ret);
 	}
 
