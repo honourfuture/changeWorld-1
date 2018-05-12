@@ -18,4 +18,5 @@ $config['unLogin'] = [//控制器=>方法
 	'api/goods_class' => ['index'],
 	'api/mailbox' => ['reddot'],
 	'api/album_class' => ['index'],
+	'api/search' => ['*'],
 ];
