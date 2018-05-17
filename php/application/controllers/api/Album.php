@@ -122,6 +122,7 @@ class Album extends API_Controller {
 			if($info['audio']){
 				foreach($info['audio'] as $key=>$item){
 					$info['audio'][$key]['comment'] = 0;
+					$info['audio'][$key]['like'] = $this->Users_collection_model->check_favorite($this->user_id, $item['id'], 30);
 				}
 			}
 
