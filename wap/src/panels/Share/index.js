@@ -49,14 +49,6 @@ export default class Share extends BaseComponent {
         const { point } = this.store;
         return (
             <div className="Share">
-                <NavBar
-                    className="base-line"
-                    mode="light"
-                    icon={<img src={icon.back} alt="" />}
-                    onLeftClick={Base.goBack}
-                >
-                    手机客户端下载
-                </NavBar>
                 <div
                     className="base-content content"
                     style={{
