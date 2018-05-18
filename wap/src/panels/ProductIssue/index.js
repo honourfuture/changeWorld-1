@@ -55,8 +55,8 @@ class ImgItem extends BaseComponent {
                     files={fileName}
                     onChange={this.onChangeImg}
                     onImageClick={(index, fs) => console.log(index, fs)}
-                    selectable={fileName.length < 6}
-                    multiple={true}
+                    selectable={fileName.length < 10}
+                    // multiple={true}
                 />
                 <div className="upImgTips">最多可上传6张图片</div>
             </div>
@@ -205,7 +205,7 @@ class ProductIssue extends BaseComponent {
                         }
                     >
                         {name}
-                        <em>{">"}</em>
+                        <em>{"没有就不用写"}</em>
                     </Item>
                     {list.map((attrItem, attrIndex) => {
                         const propsStr = `attr_${id}_${attrIndex}`;

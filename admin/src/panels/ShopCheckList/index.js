@@ -85,37 +85,37 @@ export default class ShopCheckList extends BaseComponent {
                 width: "15%",
                 render: (text, record) =>
                     this.renderText(text, record, "updated_at")
-            },
-            {
-                title: "操作",
-                dataIndex: "operation",
-                render: (text, record) => {
-                    const { status, id } = record;
-                    return (
-                        <div className="editable-row-operations">
-                            {parseInt(status) !== 1 ? (
-                                <span>
-                                    {parseInt(status) === 2
-                                        ? "已通过"
-                                        : "已拒绝"}
-                                </span>
-                            ) : (
-                                <span>
-                                    <Popconfirm
-                                        title="确认通过?"
-                                        okText="通过"
-                                        cancelText="拒绝"
-                                        onConfirm={() => this.onCheck(id, 2)}
-                                        onCancel={() => this.onCheck(id, 3)}
-                                    >
-                                        <a className="ml10">审核</a>
-                                    </Popconfirm>
-                                </span>
-                            )}
-                        </div>
-                    );
-                }
             }
+            // {
+            //     title: "操作",
+            //     dataIndex: "operation",
+            //     render: (text, record) => {
+            //         const { status, id } = record;
+            //         return (
+            //             <div className="editable-row-operations">
+            //                 {parseInt(status) !== 1 ? (
+            //                     <span>
+            //                         {parseInt(status) === 2
+            //                             ? "已通过"
+            //                             : "已拒绝"}
+            //                     </span>
+            //                 ) : (
+            //                     <span>
+            //                         <Popconfirm
+            //                             title="确认通过?"
+            //                             okText="通过"
+            //                             cancelText="拒绝"
+            //                             onConfirm={() => this.onCheck(id, 2)}
+            //                             onCancel={() => this.onCheck(id, 3)}
+            //                         >
+            //                             <a className="ml10">审核</a>
+            //                         </Popconfirm>
+            //                     </span>
+            //                 )}
+            //             </div>
+            //         );
+            //     }
+            // }
         ];
     }
     renderImg(text, record, column) {

@@ -2,7 +2,7 @@ import React from "react";
 import { BaseComponent, Base } from "../../common";
 import { Flex } from "antd-mobile";
 import "./OrderGoodsItem.less";
-
+const w = document.body.offsetWidth;
 export class OrderGoodsItem extends BaseComponent {
     render() {
         const {
@@ -20,7 +20,11 @@ export class OrderGoodsItem extends BaseComponent {
             }
         }
         return (
-            <Flex align="start" className="OrderGoodsItem goods-info base-line">
+            <Flex
+                align="start"
+                style={{ width: w }}
+                className="OrderGoodsItem goods-info base-line"
+            >
                 <img
                     className="goods-img"
                     src={Base.getImgUrl(default_image)}

@@ -1,123 +1,127 @@
-@import '../../common/theme.less';
-.ProductIssue{
-	::-webkit-input-placeholder{
-		font-size: 14px;
-		color: #999;
-	}
-	.am-input-label,.mainTit{
-		font-size: 14px;
-		color: #333;
-		em{
-			color: @brand-primary;
-		}
-	}
-	.productBasic{
-		.am-list-item{
-			padding-left: 0;
-			.am-list-line{
-				padding-left: 15px;
-			}
-		}
-		.am-input-control{
-			input{
-				text-align: right;
-				font-size: 14px;
-				color: #333;
-			}
-			.fake-input,.fake-input-placeholder{
-				font-size: 14px;
-			}
-		}
-		.am-input-clear{
-			margin-left: 5px;
-		}
-		.am-list-content{
-			font-size: 14px;
-			color: #333;
-		}
-		.pick-item{
-			.am-list-extra{
-				font-size: 13px;
-			}
-			em{
-				color: @brand-primary;
-			}
-		}
-		.use-point-item{
-			.am-list-content,.am-list-extra{
-				color:#666666;
-				font-size: 14px;
-				em{
-					font-size: 16px;
-					color: @brand-primary;
-				}
-			}
-		}
-		.discounts-item{
-			.am-list-line{
-				-webkit-box-pack: justify;
-				justify-content:space-between;
-			}
-			.am-list-extra{
-				-webkit-box-pack:end;
-				justify-content:flex-end;
-				-ms-flex-preferred-size: 70%;
-				flex-basis: 70%;
-				.am-input-item{
-					.am-list-line{
-						&:after{
-							height:0;
-						}
-					}
-					.am-list-line{
-						.fake-input-container{
-							width: 40px;
-						}
-					}
-				}
-			}
-		}
-		.city-rate-item .am-input-label{
-			width:140px;
-		}
-		&.attr-con{
-			margin-bottom: 10px;
-			.attr-item{
-				.am-list-extra{
-					-ms-flex-preferred-size: 50px;
-					flex-basis: 50px;
-					.add-btn{
-						color:@brand-primary;
-						padding: 0;
-						&::before{
-							border-color: @brand-primary;
-						}
-					}
-				}
-				em{
-					color:#999;
-					margin-left: 10px;
-				}
-			}
-			.am-input-control input{
-				text-align: left;
-			}
-		}
-	}
-	.productImg{
-		padding: 20px 15px;
-		background: #fff;
-		.am-image-picker{
-			margin-top: 16px;
-		}
-		.upImgTips{
-			font-size: 14px;
-			color: #999;
-		}
-		.productDetailInfo{
-			padding-left: 0;
-			min-height: 44px;
-			font-size: 14px;
-		}
-	}
+@import "../../common/theme.less";
+.ProductIssue {
+    ::-webkit-input-placeholder {
+        font-size: 14px;
+        color: #999;
+    }
+    .am-input-label,
+    .mainTit {
+        font-size: 14px;
+        color: #333;
+        em {
+            color: @brand-primary;
+        }
+    }
+    .productBasic {
+        .am-list-item {
+            padding-left: 0;
+            .am-list-line {
+                padding-left: 15px;
+            }
+        }
+        .am-input-control {
+            input {
+                text-align: right;
+                font-size: 14px;
+                color: #333;
+            }
+            .fake-input,
+            .fake-input-placeholder {
+                font-size: 14px;
+            }
+        }
+        .am-input-clear {
+            margin-left: 5px;
+        }
+        .am-list-content {
+            font-size: 14px;
+            color: #333;
+        }
+        .pick-item {
+            .am-list-extra {
+                font-size: 13px;
+            }
+            em {
+                color: @brand-primary;
+            }
+        }
+        .use-point-item {
+            .am-list-content,
+            .am-list-extra {
+                color: #666666;
+                font-size: 14px;
+                em {
+                    font-size: 16px;
+                    color: @brand-primary;
+                }
+            }
+        }
+        .discounts-item {
+            .am-list-line {
+                -webkit-box-pack: justify;
+                justify-content: space-between;
+            }
+            .am-list-extra {
+                -webkit-box-pack: end;
+                justify-content: flex-end;
+                -ms-flex-preferred-size: 70%;
+                flex-basis: 70%;
+                .am-input-item {
+                    .am-list-line {
+                        &:after {
+                            height: 0;
+                        }
+                    }
+                    .am-list-line {
+                        .fake-input-container {
+                            width: 40px;
+                        }
+                    }
+                }
+            }
+        }
+        .city-rate-item .am-input-label {
+            width: 140px;
+        }
+        &.attr-con {
+            margin-bottom: 10px;
+            .attr-item {
+                .am-list-extra {
+                    -ms-flex-preferred-size: 50px;
+                    flex-basis: 50px;
+                    .add-btn {
+                        color: @brand-primary;
+                        padding: 0;
+                        &::before {
+                            border-color: @brand-primary;
+                        }
+                    }
+                }
+                em {
+                    color: #999;
+                    margin-left: 10px;
+                    font-size: 11px;
+                }
+            }
+            .am-input-control input {
+                text-align: left;
+            }
+        }
+    }
+    .productImg {
+        padding: 20px 15px;
+        background: #fff;
+        .am-image-picker {
+            margin-top: 16px;
+        }
+        .upImgTips {
+            font-size: 14px;
+            color: #999;
+        }
+        .productDetailInfo {
+            padding-left: 0;
+            min-height: 44px;
+            font-size: 14px;
+        }
+    }
 }
