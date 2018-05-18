@@ -201,7 +201,8 @@ class Anchor extends API_Controller {
 			if($anchor['status'] == 1){
 				if($this->Users_anchor_model->update($id, ['status' => $status])){
 					$this->load->model('Users_model');
-					$this->Users_model->update($anchor['user_id'], ['anchor' => $status]);
+					//主播通过、直接开店 modify 2018/05/18
+					$this->Users_model->update($anchor['user_id'], ['anchor' => $status, 'seller' => $status]);
 
 					$this->ajaxReturn();
 				}else{
