@@ -36,14 +36,9 @@ export const Base = {
         if (/http(s?):\/\//.test(path)) {
             return (window.location.href = path);
         }
-        if (
-            window.Router.history.location.pathname === "/ShopIndex" ||
-            window.Router.history.location.pathname === "/UserCenter"
-        ) {
+        if (window.Router.history.location.pathname === "/ShopIndex") {
             const url = window.location.href;
-            const newUrl = url
-                .replace("ShopIndex", path)
-                .replace("UserCenter", path);
+            const newUrl = url.replace("ShopIndex", path);
             //打开原生页面，传入url
             if (window.webkit && window.webkit.messageHandlers) {
                 window.webkit.messageHandlers.pushNewViewController.postMessage(
