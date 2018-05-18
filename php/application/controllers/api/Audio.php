@@ -84,6 +84,8 @@ class Audio extends API_Controller {
 			if(! $info['album_id']){
 				$this->ajaxReturn([], 2, '音频已下线');
 			}
+			$this->Room_audio_model->update($info['id'], ['play_times' => $info['play_times'] + 1]);
+
 			$ret['audio'] = $info;
 			//主播信息
 			$this->load->model('Users_model');
