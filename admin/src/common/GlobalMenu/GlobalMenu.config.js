@@ -102,7 +102,7 @@ const menuData = [
         path: "shop",
         children: [
             {
-                name: "店铺审核",
+                name: "店铺管理",
                 path: "ShopCheckList"
             }
             // {

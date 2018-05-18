@@ -157,7 +157,7 @@ export default class UserCenter extends BaseComponent {
                     </List>
                     <WhiteSpace size="lg" />
                     <List className="baseItem">
-                        {!is_seller ? (
+                        {/* {!is_seller ? (
                             <Item
                                 arrow="horizontal"
                                 onClick={this.openShopAuth}
@@ -169,7 +169,7 @@ export default class UserCenter extends BaseComponent {
                             >
                                 申请开店
                             </Item>
-                        ) : null}
+                        ) : null} */}
                         {/* <Item
                             extra={"Aditya Shanahan"}
                             onClick={() => Base.push("MyOrder")}

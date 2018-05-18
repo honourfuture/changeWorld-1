@@ -342,16 +342,19 @@ export default class GoodsDetail extends BaseComponent {
         goods_ticket = goods_ticket ? JSON.parse(goods_ticket) : [];
         const goodsTickets = goods_ticket.map((item, index) => {
             const { full_amount = "", free_amount = "" } = item;
-            return (
-                <div className="flex-item base-line" key={index}>
-                    <Flex>
-                        <div className="title">优惠券</div>
-                        <div className="des">
-                            满<em>{full_amount}</em>减<em>{free_amount}</em>
-                        </div>
-                    </Flex>
-                </div>
-            );
+            if (parseFloat(full_amount) > 0) {
+                return (
+                    <div className="flex-item base-line" key={index}>
+                        <Flex>
+                            <div className="title">优惠券</div>
+                            <div className="des">
+                                满<em>{full_amount}</em>减<em>{free_amount}</em>
+                            </div>
+                        </Flex>
+                    </div>
+                );
+            }
+            return null;
         });
         goods_detail = goods_detail ? JSON.parse(goods_detail) : [];
         const goodsDetailImgs = goods_detail.map((item, index) => {
@@ -434,7 +437,7 @@ export default class GoodsDetail extends BaseComponent {
                     </div>
                     <div className="discounts-con">
                         {goodsTickets}
-                        {use_point_rate ? (
+                        {parseFloat(use_point_rate) > 0 ? (
                             <div className="flex-item">
                                 <Flex>
                                     <div className="title">积分</div>

@@ -36,9 +36,14 @@ export const Base = {
         if (/http(s?):\/\//.test(path)) {
             return (window.location.href = path);
         }
-        if (window.Router.history.location.pathname === "/ShopIndex") {
+        if (
+            window.Router.history.location.pathname === "/ShopIndex" ||
+            window.Router.history.location.pathname === "/UserCenter"
+        ) {
             const url = window.location.href;
-            const newUrl = url.replace("ShopIndex", path);
+            const newUrl = url
+                .replace("ShopIndex", path)
+                .replace("UserCenter", path);
             //打开原生页面，传入url
             if (window.webkit && window.webkit.messageHandlers) {
                 window.webkit.messageHandlers.pushNewViewController.postMessage(
@@ -162,10 +167,10 @@ export const Base = {
     },
     getAuthData(cb) {
         let user_verify_data = window.localStorage.getItem("user_verify_data");
-        user_verify_data = user_verify_data ? JSON.parse(user_verify_data) : {};
-        // user_verify_data = user_verify_data
-        //     ? JSON.parse(user_verify_data)
-        //     : { sign: "d7363c1b5e30cafd8a7514bbb87a6299", user_id: 1 };
+        // user_verify_data = user_verify_data ? JSON.parse(user_verify_data) : {};
+        user_verify_data = user_verify_data
+            ? JSON.parse(user_verify_data)
+            : { sign: "b6bcbe5ab2bd48f5e4fb2ce1bc29f909", user_id: 2 };
         cb(user_verify_data);
     },
     //多个异步操作处理
