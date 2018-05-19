@@ -145,7 +145,7 @@ class Common extends API_Controller
                 $ret['file_url'] = '/'.substr($new_file, strpos($new_file, 'uploads'));
                 $this->upload->set_image_properties($new_file);
                 $ret['width'] = $this->upload->image_width;
-                $ret['height'] = $this->upload->image_width;
+                $ret['height'] = $this->upload->image_height;
                 $this->ajaxReturn($ret);
             } else {
                 $this->ajaxReturn($ret, 1, '保存失败');
