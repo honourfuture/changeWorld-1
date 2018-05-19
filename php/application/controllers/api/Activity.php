@@ -172,16 +172,16 @@ class Activity extends API_Controller
         $id = (int)$this->input->get_post('id');
         if($id){
             $this->load->model('Activity_model');
-            $this->db->select('id,title,details,photos,time_end,prize');
+            $this->db->select('id,title,details,photos,time_end,prize,views,rule,user_name,user_id');
             $list = ['list' => []];
             $list['list'][] = $this->Activity_model->get($id);
 
             $this->common($list);
             $ret['info'] = $list['list'][0];
 
-            $ret['total'] = 0;
+            $ret['info']['total'] = 0;
             foreach($ret['info']['prize'] as $item){
-                $ret['total'] = round($item['num'] * $item['sale_price'] + $ret['total'], 2);
+                $ret['info']['total'] = round($item['num'] * $item['sale_price'] + $ret['total'], 2);
             }
 
             $this->ajaxReturn($ret);

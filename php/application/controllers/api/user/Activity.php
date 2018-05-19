@@ -140,6 +140,7 @@ class Activity extends API_Controller {
 			);
 			$this->check_params('add', $params);
 			$params['summary'] = mb_substr(strip_tags($params['details']), 0, 88);
+			$params['user_id'] = $this->user_id;
 			if($flag = $this->Activity_model->insert($params)){
 				$id = $flag;
 			}
