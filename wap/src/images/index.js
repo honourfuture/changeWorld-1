@@ -55,6 +55,13 @@ export const share = {
 
 export const defaultImg = require("./default.png");
 
+export const activify = {
+    activify_01: require("./activify/activify_01.jpg"),
+    activify_02: require("./activify/activify_02.jpg"),
+    activify_03: require("./activify/activify_03.jpg"),
+    activify_04: require("./activify/activify_04.jpg"),
+    activify_05: require("./activify/activify_05.jpg"),
+};
 // export const test = {
 //     test1: require("./test/1.jpg"),
 //     test2: require("./test/2.jpg"),
