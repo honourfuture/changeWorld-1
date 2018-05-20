@@ -195,7 +195,7 @@ class Activity extends API_Controller
             $vote_user_id = $this->input->get_post('vote_user_id');
             if($vote_user_id){
                 $this->load->model('Users_model');
-                $this->db->select('nickname,header,v,exp')
+                $this->db->select('nickname,header,v,exp');
                 $ret['user'] = $this->Users_model->get($vote_user_id);
 
                 $this->load->model('Activity_vote_model');
