@@ -34,7 +34,13 @@ import AfterMarket from "./AfterMarket";
 import Statistics from './Statistics';
 import SellerOrderDetail from './SellerOrderDetail';
 import Share from './Share';
+import Activify_share from './Activify_share';
 export const panelsList = [
+    {
+        path:'/Activify_share',
+        component:Activify_share,
+        title:'活动分享',
+    },
     {
         path:'/Share',
         component:Share,

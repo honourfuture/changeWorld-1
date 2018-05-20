@@ -1,0 +1,244 @@
+@import '../../common/theme.less';
+::-webkit-input-placeholder{
+    text-align: center;
+    font-size: 14px;
+}
+.Activify_share{
+    min-height: 100%;
+    .share_box{
+        // border-radius: 3px;
+        // background: #FDEDEC;
+        background: url('../../images/activify/activify_01.jpg') no-repeat;
+        background-size: 100% 100%;
+        text-align: center;
+        &_brank{
+            padding-top: 55px;
+            margin-bottom: 48px;
+            font-size: 20px;
+            color: #E31B19;
+        }
+        &_user{
+            width: 60%;
+            margin-left: 20%;
+            .user_box{
+                .user_img{
+                    margin-right: 21px;
+                    width: 45px;
+                    height: 45px;
+                    border-radius: 50%;
+                }
+                &_info{
+                    font-size: 16px;
+                    color: #222;
+                    img{
+                        margin-left: 10px;
+                        margin-right: 2px;
+                        width: 18px;
+                        height: 18px;
+                    }
+                    span{
+                        color: #E31B19;
+                    }
+                    &.number{
+                        margin-top: 10px;
+                        font-size: 12px;
+                        color: #999;
+                    }
+                }
+            }
+            .u_img{
+                margin: 20px 0;
+                width: 180px;
+            }
+        }
+    }
+    .title_type{
+        height: 25px;
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        &.one{
+            background-image:url('../../images/activify/activify_02.jpg');
+        }
+        &.two{
+            height: 23px;
+            background-image:url('../../images/activify/activify_04.jpg');            
+        }
+    }
+    .vote_box{
+        background-image:url('../../images/activify/activify_03.jpg');
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        &.intro{
+            background-image:url('../../images/activify/activify_05.jpg') no-repeat;
+        }
+        &.goods{
+            padding-bottom: 82px;
+            background-image:url('../../images/activify/activify_06.jpg') no-repeat;
+        }
+        .voteBox_number{
+            padding-top: 30px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #E31B19;
+        }
+    }
+    .voteBox{
+        padding-bottom: 16px;
+        text-align: center;
+        .voteInput{
+            margin: auto;
+            width: 230px;
+            height: 40px;
+            min-height: 40px;
+            border-radius: 30px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .voteBtn{
+            margin-top: 20px;
+            width: 230px;
+            min-height: 40px;
+            line-height: 40px;
+            border: none;
+            border-radius: 30px;
+            background: #E31B19;
+            font-size: 16px;
+            color: #fff;
+            &::before{
+                border: none;
+            }
+        }
+        .activify_detail{
+            padding-top: 16px;
+            font-size: 12px;
+            color: #E31B19;
+            .countDown{
+                margin: 0 2px;
+                padding: 2px;
+                border-radius: 2px;
+                background: #E31B19;
+                color: #fff;
+            }
+        }
+    }
+    .story_box{
+        margin-left: 10%;
+        width: 80%;
+        background: #fff;
+        .story_tit{
+            padding-top: 32px;
+            padding-bottom: 8px;
+            text-align: center;
+            font-size: 16px;
+            color: #222;
+        }
+        &_sile{
+            .slider-decorator-0{
+                bottom: 20px !important;
+                text-align: right !important; 
+                .am-carousel-wrap{
+                    text-align: right;
+                }
+                .am-carousel-wrap-dot-active > span{
+                    background: #fff;
+                }
+            }
+        }
+        &_des{
+            padding: 0 10px;
+            p{
+                margin-top: 16px;
+                font-size: 12px;
+                color: #666;
+            }
+            .more{
+                margin-top: 8px;
+                padding: 8px 0;
+                text-align: center;
+                font-size: 14px;
+                color: #3484F5;
+            }
+        }
+        .totalNumber{
+            padding: 8px;
+            background: #F6F6F6;
+            .total_box{
+                padding: 16px 0;
+                background: #fff;
+                border-radius: 5px;
+                text-align: center;
+                .title{
+                    font-size: 12px;
+                    color: #333;
+                }
+                .number{
+                    margin-top: 16px;
+                    font-size: 16px;
+                    color: #E31B19;
+                }
+            }
+        }
+    }
+    .goods_box{
+        margin-left: 10%;
+        width: 80%;
+        background: #fff;
+    }
+    .vote_prize{
+        padding: 19px 0;
+        border-bottom: 1px solid #f1f1f1;
+        text-align: center;
+        font-size: 14px;
+        color: #E31B19;
+    }
+    .goods_box_item{
+        padding: 10px;
+        .prizeImg{
+            width: 100%;
+        }
+        .goodsTit{
+            margin: 8px 0;
+            font-size: 12px;
+            color: #666;
+        }
+        .goodsPrice{
+            font-size: 12px;
+            color: #E31B19;
+        }
+    }
+    .my-list{
+        .am-list-item .am-list-line{
+            .am-list-content{
+                font-size: 12px;
+                color: #999;
+            }
+            .am-list-extra{
+                font-size: 12px;
+                color: #666;
+                text-overflow: initial;
+                white-space: inherit;
+            }
+        } 
+    }
+    .footer{
+        width: 100%;
+        height: 51px;
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        .footerItem{
+            margin: 0;
+            width: 50%;
+            height: 51px;
+            line-height: 51px;
+            background: #E31B19;
+            text-align: center;
+            font-size: 16px;
+            color: #fff;
+            &.issueBtn{
+                background: #fff;
+                color: #E31B19;
+            }
+        }
+    }
+}
