@@ -40,6 +40,13 @@ class Payment_log_model extends MY_Model
 
     public function live($user_id, $room_id)
     {
+        $this->load->model('Room_model');
+        if($room = $this->Room_model->get($room_id)){
+            if($room['anchor_uid'] == $user_id){
+                return true;
+            }
+        }
+
         $where = [
             'user_id' => $user_id,
             't_id' => $room_id,
@@ -47,11 +54,18 @@ class Payment_log_model extends MY_Model
             'status' => 1
         ];
 
-        return $this->get_by($where);
+        return $this->get_by($where) ? true : false;
     }
 
     public function audio($user_id, $audio_id)
     {
+        $this->load->model('Room_audio_model');
+        if($audio = $this->Room_audio_model->get($audio_id)){
+            if($audio['anchor_uid'] == $user_id){
+                return true;
+            }
+        }
+
         $where = [
             'user_id' => $user_id,
             't_id' => $audio_id,
@@ -59,11 +73,18 @@ class Payment_log_model extends MY_Model
             'status' => 1
         ];
 
-        return $this->get_by($where);
+        return $this->get_by($where) ? true : false;
     }
 
     public function album($user_id, $album_id)
     {
+        $this->load->model('Album_model');
+        if($album = $this->Album_model->get($album_id)){
+            if($album['anchor_uid'] == $user_id){
+                return true;
+            }
+        }
+
         $where = [
             'user_id' => $user_id,
             't_id' => $album_id,
@@ -71,7 +92,7 @@ class Payment_log_model extends MY_Model
             'status' => 1
         ];
 
-        return $this->get_by($where);
+        return $this->get_by($where) ? true : false;
     }
 
     public function make_pay_sn()

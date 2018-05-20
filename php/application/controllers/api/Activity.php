@@ -88,7 +88,12 @@ class Activity extends API_Controller
             $where['is_recommend'] = 1;
             $order_by = array('id' => 'desc');
             $this->db->select('id,photos,title,summary');
-            $ret['recommend'] = $this->Activity_model->order_by($order_by)->get_many_by($where);
+            if($recommend = $this->Activity_model->order_by($order_by)->get_many_by($where)){
+                foreach($recommend as $item){
+                    $item['photos'] = json_decode($item['photos'], true);
+                    $ret['recommend'][] = $item;
+                }
+            }
 
             //广告图
 
