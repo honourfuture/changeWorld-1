@@ -196,9 +196,12 @@ class Bind extends API_Controller {
             $this->load->model('Users_bind_model');
             $this->db->select('id,user_id');
             $user_id = 0;
-            if($user_bind = $this->Users_bind_model->get_by($where)){
+            if($user_bind = $this->Users_bind_model->get_by($where) && $user_bind['user_id']){
             	$this->ajaxReturn([], 2, '账号已被绑定请勿重复绑定');
             }else{//未绑定账号
+            	if($user_bind){
+            		$this->Users_bind_model->delete($user_bind['id']);
+            	}
             	$data = [
             		'user_id' => $this->user_id,
 	                'account_type' => $account_type,
