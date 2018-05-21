@@ -78,13 +78,14 @@ class Activity extends API_Controller
         if($activity_class_id){
             $this->load->model('Activity_model');
             $now_time = time();
-            $where = array(
+            $common_where = array(
                 'enable' => 1,
                 'activity_class' => $activity_class_id,
                 'time_start <' => $now_time,
                 'time_end >' => $now_time
             );
             //推荐
+            $where = $common_where;
             $where['is_recommend'] = 1;
             $order_by = array('id' => 'desc');
             $this->db->select('id,photos,title,summary');
@@ -96,12 +97,22 @@ class Activity extends API_Controller
             }
 
             //广告图
+            $ret['ad'] = [];
+            $where = $common_where;
+            $where['is_ad'] = 1;
+            $order_by = array('id' => 'desc');
+            $this->db->select('id,ad_image');
+            if($ad = $this->Activity_model->order_by($order_by)->get_by($where)){
+                $ret['ad'] = $ad;
+            }
 
             //奖励公告
             $ret['notice'] = [];
 
             //常规活动
+            $where = $common_where;
             $where['is_recommend'] = 0;
+            $where['is_ad'] = 0;
             $ret['count'] = $this->Activity_model->count_by($where);
             if($ret['count']){
                 $order_by = array('id' => 'desc');
@@ -186,7 +197,7 @@ class Activity extends API_Controller
 
             $ret['info']['total'] = 0;
             foreach($ret['info']['prize'] as $item){
-                $ret['info']['total'] = round($item['num'] * $item['sale_price'] + $ret['total'], 2);
+                $ret['info']['total'] = round($item['num'] * $item['sale_price'] + $ret['info']['total'], 2);
             }
 
             //投票数
