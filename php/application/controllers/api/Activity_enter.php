@@ -134,7 +134,7 @@ class Activity_enter extends API_Controller
             $ret['activity'] = $info;
 
             $this->load->model('Users_model');
-            $this->db->select('nickname,header,v,exp')
+            $this->db->select('nickname,header,v,exp');
             $ret['user'] = $this->Users_model->get($info['user_id']);
 
             $this->ajaxReturn($ret);
