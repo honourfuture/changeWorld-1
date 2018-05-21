@@ -121,6 +121,7 @@ class Bind extends API_Controller {
 	 */
 	public function save()
 	{
+		$this->nickname = '';
 		$this->load->model('Users_model');
 
 		$act = $this->input->get_post('act');
@@ -148,6 +149,8 @@ class Bind extends API_Controller {
 				}else{
 					$this->ajaxReturn([], 3, '先获取验证码绑定');
 				}
+
+				$this->nickname = $mobi;
 				break;
 			case 'qq':
 				$update = array('qq_uid' => $id);
@@ -172,7 +175,7 @@ class Bind extends API_Controller {
 			$status = 1;
 			$message = '失败';
 		}
-		$this->ajaxReturn([], $status, '操作'.$message);
+		$this->ajaxReturn(['nickname' => $this->nickname], $status, '操作'.$message);
 	}
 
 	protected function wechat()
@@ -196,7 +199,8 @@ class Bind extends API_Controller {
             $this->load->model('Users_bind_model');
             $this->db->select('id,user_id');
             $user_id = 0;
-            if($user_bind = $this->Users_bind_model->get_by($where) && $user_bind['user_id']){
+            $user_bind = $this->Users_bind_model->get_by($where);
+            if($user_bind && $user_bind['user_id']){
             	$this->ajaxReturn([], 2, '账号已被绑定请勿重复绑定');
             }else{//未绑定账号
             	if($user_bind){
@@ -222,6 +226,8 @@ class Bind extends API_Controller {
 
 	protected function open_update($open_user)
 	{
+		isset($open_user['nickname']) && $this->nickname = $open_user['nickname'];
+
 		$update = [];
 		$user = $this->get_user();
 		if(! $user['header']){
