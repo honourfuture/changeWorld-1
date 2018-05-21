@@ -9,6 +9,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Activity extends API_Controller
 {
+    protected $enter_id = 0;
+    protected $a_user_id = [];
 
     public function __construct()
     {
@@ -289,8 +291,62 @@ class Activity extends API_Controller
         }
     }
 
+    /**
+     * @api {get} /api/activity/more 活动详情=更多选手
+     * @apiVersion 1.0.0
+     * @apiName activity_more
+     * @apiGroup api
+     *
+     * @apiSampleRequest /api/activity/more
+     *
+     * @apiParam {Number} user_id 用户唯一ID
+     * @apiParam {String} sign 校验签名
+     * @apiParam {Number} id 活动ID
+     *
+     * @apiSuccess {Number} status 接口状态 0成功 其他异常
+     * @apiSuccess {String} message 接口信息描述
+     * @apiSuccess {Object} data 接口数据集
+     * @apiSuccess {Number} data.enter_count 总报名人数
+     * @apiSuccess {Object[]} data.enter_list 报名人列表
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * {
+     *     "data": {
+     *         "enter_count": 1,
+     *         "enter_list": {
+     *             "id": "2",
+     *             "user_id": "2",
+     *             "photos": [
+     *                 {
+     *                     "url": "/uploads/2018/05/21/2d803788c1fa7fe6ff815fa0cf18cded.png",
+     *                     "width": 746,
+     *                     "height": 518
+     *                 },
+     *                 {
+     *                     "url": "/uploads/2018/05/21/2e2bb341f3d6744c402244a39962e673.png",
+     *                     "width": 624,
+     *                     "height": 620
+     *                 }
+     *             ],
+     *             "vote": "0",
+     *             "nickname": "三斤叔",
+     *             "header": "/uploads/2018/05/19/0a6f179af5ac8a3a13698aaff961777d.png"
+     *         }
+     *     },
+     *     "status": 0,
+     *     "message": "成功"
+     * }
+     *
+     * @apiErrorExample {json} Error-Response:
+     * {
+     *     "data": "",
+     *     "status": -1,
+     *     "message": "签名校验错误"
+     * }
+     */
     public function more()
     {
+        $ret = [];
         $id = (int)$this->input->get_post('id');
         $this->load->model('Activity_enter_model');
         $ret['enter_count'] = $this->Activity_enter_model->count_by(['activity_id' => $id]);
@@ -300,10 +356,113 @@ class Activity extends API_Controller
         $this->ajaxReturn($ret);
     }
 
+    /**
+     * @api {get} /api/activity/search 活动详情=搜索选手
+     * @apiVersion 1.0.0
+     * @apiName activity_search
+     * @apiGroup api
+     *
+     * @apiSampleRequest /api/activity/search
+     *
+     * @apiParam {Number} user_id 用户唯一ID
+     * @apiParam {String} sign 校验签名
+     * @apiParam {Number} id 活动ID
+     * @apiParam {String} keyword 搜索词 选手号、会员ID号、名称
+     *
+     * @apiSuccess {Number} status 接口状态 0成功 其他异常
+     * @apiSuccess {String} message 接口信息描述
+     * @apiSuccess {Object} data 接口数据集
+     * @apiSuccess {Number} data.enter_count 总报名人数
+     * @apiSuccess {Object[]} data.enter_list 报名人列表
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * {
+     *     "data": {
+     *         "enter_count": 1,
+     *         "enter_list": {
+     *             "id": "2",
+     *             "user_id": "2",
+     *             "photos": [
+     *                 {
+     *                     "url": "/uploads/2018/05/21/2d803788c1fa7fe6ff815fa0cf18cded.png",
+     *                     "width": 746,
+     *                     "height": 518
+     *                 },
+     *                 {
+     *                     "url": "/uploads/2018/05/21/2e2bb341f3d6744c402244a39962e673.png",
+     *                     "width": 624,
+     *                     "height": 620
+     *                 }
+     *             ],
+     *             "vote": "0",
+     *             "nickname": "三斤叔",
+     *             "header": "/uploads/2018/05/19/0a6f179af5ac8a3a13698aaff961777d.png"
+     *         }
+     *     },
+     *     "status": 0,
+     *     "message": "成功"
+     * }
+     *
+     * @apiErrorExample {json} Error-Response:
+     * {
+     *     "data": "",
+     *     "status": -1,
+     *     "message": "签名校验错误"
+     * }
+     */
+    public function search()
+    {
+        $ret = ['enter_count' => 0, 'enter_list' => []];
+        $keyword = $this->input->get_post('keyword');
+        if($keyword){
+            $this->load->model('Users_model');
+            $this->db->select('GROUP_CONCAT(id) as s_user_id');
+            $this->db->like('nickname', $keyword);
+            $row = $this->db->get($this->Users_model->table())->row_array();
+            $a_user_id = [];
+            if($row){
+                $a_user_id = explode(',', $row['s_user_id']);
+            }
+
+            if(is_numeric($keyword)){
+                $a_user_id[] = $keyword;
+                $this->enter_id = $keyword;
+            }
+            $this->a_user_id = $a_user_id;
+
+            $id = (int)$this->input->get_post('id');
+            $this->load->model('Activity_enter_model');
+
+            $where = [];
+            $where['activity_id'] = $id;
+            $this->search_group();
+            $ret['enter_count'] = $this->Activity_enter_model->count_by($where);
+
+            $ret['enter_list'] = $this->activity_enter($id);
+        }
+
+        $this->ajaxReturn($ret);
+    }
+
+    protected function search_group()
+    {
+        if($this->a_user_id){
+            $this->db->group_start();
+            $this->db->where_in('user_id', $this->a_user_id);
+            if($this->enter_id){
+                $this->db->or_group_start();
+                $this->db->where('id', $this->enter_id);
+                $this->db->group_end();
+            }
+            $this->db->group_end();
+        }
+    }
+
     protected function activity_enter($id)
     {
         $enter_list = [];
         $this->db->select('id,user_id,photos,vote');
+        $this->search_group();
         $enter = $this->Activity_enter_model->order_by('vote', 'desc')->limit($this->per_page, $this->offset)->get_many_by(['activity_id' => $id]);
         if($enter){
             $a_user_id = [];
@@ -317,6 +476,7 @@ class Activity extends API_Controller
                 $item['photos'] = json_decode($item['photos'], true);
                 $item['nickname'] = '';
                 isset($user[$item['user_id']]) && $item['nickname'] = $user[$item['user_id']]['nickname'];
+                isset($user[$item['user_id']]) && $item['header'] = $user[$item['user_id']]['header'];
 
                 $enter_list = $item;
             }

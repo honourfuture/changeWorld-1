@@ -7184,6 +7184,211 @@ define({ "api": [
     "groupTitle": "api"
   },
   {
+    "type": "get",
+    "url": "/api/activity/more",
+    "title": "活动详情=更多选手",
+    "version": "1.0.0",
+    "name": "activity_more",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/activity/more"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>活动ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "data.enter_count",
+            "description": "<p>总报名人数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "data.enter_list",
+            "description": "<p>报名人列表</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"enter_count\": 1,\n        \"enter_list\": {\n            \"id\": \"2\",\n            \"user_id\": \"2\",\n            \"photos\": [\n                {\n                    \"url\": \"/uploads/2018/05/21/2d803788c1fa7fe6ff815fa0cf18cded.png\",\n                    \"width\": 746,\n                    \"height\": 518\n                },\n                {\n                    \"url\": \"/uploads/2018/05/21/2e2bb341f3d6744c402244a39962e673.png\",\n                    \"width\": 624,\n                    \"height\": 620\n                }\n            ],\n            \"vote\": \"0\",\n            \"nickname\": \"三斤叔\",\n            \"header\": \"/uploads/2018/05/19/0a6f179af5ac8a3a13698aaff961777d.png\"\n        }\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n    \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Activity.php",
+    "groupTitle": "api"
+  },
+  {
+    "type": "get",
+    "url": "/api/activity/search",
+    "title": "活动详情=搜索选手",
+    "version": "1.0.0",
+    "name": "activity_search",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/activity/search"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>活动ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "keyword",
+            "description": "<p>搜索词 选手号、会员ID号、名称</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "data.enter_count",
+            "description": "<p>总报名人数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "data.enter_list",
+            "description": "<p>报名人列表</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"enter_count\": 1,\n        \"enter_list\": {\n            \"id\": \"2\",\n            \"user_id\": \"2\",\n            \"photos\": [\n                {\n                    \"url\": \"/uploads/2018/05/21/2d803788c1fa7fe6ff815fa0cf18cded.png\",\n                    \"width\": 746,\n                    \"height\": 518\n                },\n                {\n                    \"url\": \"/uploads/2018/05/21/2e2bb341f3d6744c402244a39962e673.png\",\n                    \"width\": 624,\n                    \"height\": 620\n                }\n            ],\n            \"vote\": \"0\",\n            \"nickname\": \"三斤叔\",\n            \"header\": \"/uploads/2018/05/19/0a6f179af5ac8a3a13698aaff961777d.png\"\n        }\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n    \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Activity.php",
+    "groupTitle": "api"
+  },
+  {
     "type": "post",
     "url": "/api/activity/vote",
     "title": "活动-投票",
