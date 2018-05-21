@@ -128,7 +128,16 @@ class Activity_enter extends API_Controller
 
         $this->load->model('Activity_enter_model');
         if($info = $this->Activity_enter_model->get(['activity_id' => $params['activity_id'], 'user_id' => $enter_user_id])){
-            $this->ajaxReturn($info);
+            $ret = [];
+
+            $info['photos'] = json_decode($info['photos'], true);
+            $ret['activity'] = $info;
+
+            $this->load->model('Users_model');
+            $this->db->select('nickname,header,v,exp')
+            $ret['user'] = $this->Users_model->get($info['user_id']);
+
+            $this->ajaxReturn($ret);
         }else{
             $this->ajaxReturn([], 1, '用户未报名改活动');
         }

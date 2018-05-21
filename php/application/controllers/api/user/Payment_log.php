@@ -56,15 +56,16 @@ class Payment_log extends API_Controller {
 	 */
 	public function dialog()
 	{
+		$flag = false;
 		switch($this->topic){
 			case 'live':
-				$row = $this->Payment_log_model->live($this->user_id, $this->t_id);
+				$flag = $this->Payment_log_model->live($this->user_id, $this->t_id);
 				break;
 			case 'audio':
-				$row = $this->Payment_log_model->audio($this->user_id, $this->t_id);
+				$flag = $this->Payment_log_model->audio($this->user_id, $this->t_id);
 				break;
 			case 'album':
-				$row = $this->Payment_log_model->album($this->user_id, $this->t_id);
+				$flag = $this->Payment_log_model->album($this->user_id, $this->t_id);
 				break;
 			default :
 				$this->ajaxReturn([], 1, '支付主题错误');
@@ -72,7 +73,7 @@ class Payment_log extends API_Controller {
 		}
 
 		$ret = ['dialog' => 1];
-		if($row){
+		if($flag){
 			$ret['dialog'] = 0;
 		}
 
