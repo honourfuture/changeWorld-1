@@ -86,7 +86,7 @@ class Activity_enter extends API_Controller
     }
 
     /**
-     * @api {get} /api/activity_enter/details 活动-报名用户详情
+     * @api {post} /api/activity_enter/details 活动-报名用户详情
      * @apiVersion 1.0.0
      * @apiName activity_enter_details
      * @apiGroup api

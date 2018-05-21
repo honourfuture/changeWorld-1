@@ -15,6 +15,92 @@ class Activity extends API_Controller {
     }
 
     /**
+	 * @api {get} /api/user/activity 我的活动
+	 * @apiVersion 1.0.0
+	 * @apiName activity
+	 * @apiGroup user
+	 *
+	 * @apiSampleRequest /api/user/activity
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 * @apiParam {String} tab {self:发布的活动, join:参加的活动}
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集
+	 * @apiSuccess {Object[]} data.class 活动类型
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *     "data": {
+	 *         "class": [
+	 *             {
+	 *                 "id": "7",
+	 *                 "name": "庆典"
+	 *             },
+	 *             {
+	 *                 "id": "6",
+	 *                 "name": "节日"
+	 *             }
+	 *         ]
+	 *     },
+	 *     "status": 0,
+	 *     "message": "成功"
+	 * }
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+    public function index()
+    {
+    	$result = ['count' => 0, 'list' => []];
+
+    	$tab = $this->input->get_post('tab');
+    	if($tab == 'self'){
+    		$where = ['user_id' => $this->user_id];
+    		$order_by = array('id' => 'desc');
+			$result['count'] = $this->Activity_model->count_by($where);
+			if($result['count']){
+				$this->db->select('id,title,prize');
+				$result['list'] = $this->Activity_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
+			}
+    	}elseif($tab == 'join'){
+    		$where = ['user_id' => $this->user_id];
+    		$order_by = array('id' => 'desc');
+    		$this->load->model('Activity_enter_model');
+    		$result['count'] = $this->Activity_enter_model->count_by($where);
+			if($result['count']){
+				$this->db->select('GROUP_CONCAT(activity_id) as s_activity_id');
+				$row = $this->Activity_enter_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_by($where);
+				if($row){
+					$this->db->select('id,title,prize');
+					$result['list'] = $this->Activity_model->get_many(explode(',', $row['s_activity_id']));
+				}
+			}
+    	}else{
+    		$this->ajaxReturn($result);
+    	}
+
+    	$this->Activity_model->common($result);
+    	if($result['list']){
+    		foreach($result['list'] as $key=>$row){
+    			$result['list'][$key]['total'] = 0;
+	            foreach($row['prize'] as $item){
+	                $result['list'][$key]['total'] = round($item['num'] * $item['sale_price'] + $result['list'][$key]['total'], 2);
+	            }
+	            unset($result['list'][$key]['prize']);
+            }
+    	}
+
+    	$this->ajaxReturn($result);
+    }
+
+    /**
 	 * @api {get} /api/user/activity/init 商家活动-发布初始页
 	 * @apiVersion 1.0.0
 	 * @apiName activity_init

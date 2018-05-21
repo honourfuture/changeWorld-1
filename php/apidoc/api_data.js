@@ -7092,7 +7092,7 @@ define({ "api": [
     "groupTitle": "api"
   },
   {
-    "type": "get",
+    "type": "post",
     "url": "/api/activity_enter/details",
     "title": "活动-报名用户详情",
     "version": "1.0.0",
@@ -14601,6 +14601,98 @@ define({ "api": [
     },
     "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Vip.php",
     "groupTitle": "api"
+  },
+  {
+    "type": "get",
+    "url": "/api/user/activity",
+    "title": "我的活动",
+    "version": "1.0.0",
+    "name": "activity",
+    "group": "user",
+    "sampleRequest": [
+      {
+        "url": "/api/user/activity"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "tab",
+            "description": "<p>{self:发布的活动, join:参加的活动}</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "data.class",
+            "description": "<p>活动类型</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"class\": [\n            {\n                \"id\": \"7\",\n                \"name\": \"庆典\"\n            },\n            {\n                \"id\": \"6\",\n                \"name\": \"节日\"\n            }\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Activity.php",
+    "groupTitle": "user"
   },
   {
     "type": "get",

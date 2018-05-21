@@ -119,7 +119,7 @@ class Activity extends API_Controller
                 $this->db->select('id,title,summary,prize');
                 $ret['list'] = $this->Activity_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 
-                $this->common($ret);
+                $this->Activity_model->common($ret);
             }
             $this->ajaxReturn($ret);
         }else{
@@ -192,7 +192,7 @@ class Activity extends API_Controller
             $list = ['list' => []];
             $list['list'][] = $this->Activity_model->get($id);
 
-            $this->common($list);
+            $this->Activity_model->common($list);
             $ret['info'] = $list['list'][0];
 
             $ret['info']['total'] = 0;
@@ -323,44 +323,5 @@ class Activity extends API_Controller
         }
 
         return $enter_list;
-    }
-
-    protected function common(&$ret)
-    {
-        if($ret['list']){
-            $a_goods_id = [];
-            foreach($ret['list'] as $key=>$item){
-                if(isset($item['photos'])){
-                    $ret['list'][$key]['photos'] = json_decode($item['photos'], true);
-                }
-                $prize = json_decode($item['prize'], true);
-                foreach($prize as $row){
-                    $a_goods_id[] = $row['goods_id'];
-                }
-
-                $ret['list'][$key]['prize'] = $prize;
-            }
-
-            //查询商品
-            $this->load->model('Goods_model');
-            $this->db->select('id,name goods_name,sale_price,default_image');
-            $k_goods = [];
-            if($goods = $this->Goods_model->get_many($a_goods_id)){
-                foreach($goods as $item){
-                    $goods_id = $item['id'];
-                    unset($item['id']);
-                    $k_goods[$goods_id] = $item;
-                }
-            }
-
-            //格式化数据
-            if($k_goods){
-                foreach($ret['list'] as $key=>$item){
-                    foreach($ret['list'][$key]['prize'] as $id=>$goods){
-                        isset($k_goods[$goods['goods_id']]) && $ret['list'][$key]['prize'][$id] = array_merge($ret['list'][$key]['prize'][$id], $k_goods[$goods['goods_id']]);
-                    }
-                }
-            }
-        }
     }
 }
