@@ -127,7 +127,7 @@ class Activity_enter extends API_Controller
         );
 
         $this->load->model('Activity_enter_model');
-        if($info = $this->Activity_enter_model->get(['activity_id' => $params['activity_id'], 'user_id' => $params['enter_user_id']])){
+        if($info = $this->Activity_enter_model->get_by(['activity_id' => $params['activity_id'], 'user_id' => $params['enter_user_id']])){
             $ret = [];
 
             $info['photos'] = json_decode($info['photos'], true);
