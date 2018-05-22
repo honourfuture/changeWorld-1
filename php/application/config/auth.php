@@ -20,4 +20,6 @@ $config['unLogin'] = [//控制器=>方法
 	'api/album_class' => ['index'],
 	'api/search' => ['*'],
 	'api/activity' => ['*'],
+	'api/activity_class' => ['index'],
+	'api/activity_enter' => ['details'],
 ];
