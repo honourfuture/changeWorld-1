@@ -109,7 +109,11 @@ class Activity extends API_Controller
             }
 
             //奖励公告
-            $ret['notice'] = [];
+            $ret['notice'] = [
+                ['nickname' => '马云', 'prize' => '一等奖', 'prize_name' => '优酷免广告1个月', 'price' => 22.6],
+                ['nickname' => '马化腾', 'prize' => '一等奖', 'prize_name' => '优酷免广告1个月', 'price' => 22.6],
+                ['nickname' => 'sz.ljx', 'prize' => '一等奖', 'prize_name' => '优酷免广告1个月', 'price' => 22.6]
+            ];
 
             //常规活动
             $where = $common_where;
