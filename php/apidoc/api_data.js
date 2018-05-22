@@ -7389,6 +7389,105 @@ define({ "api": [
     "groupTitle": "api"
   },
   {
+    "type": "get",
+    "url": "/api/activity/title",
+    "title": "活动-搜索",
+    "version": "1.0.0",
+    "name": "activity_title",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/activity/title"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "keyword",
+            "description": "<p>活动名称</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "data.count",
+            "description": "<p>其他活动总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "data.list",
+            "description": "<p>其他活动列表</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"count\": 1,\n        \"list\": [\n            {\n                \"id\": \"1\",\n                \"title\": \"6.1儿童来免单\",\n                \"summary\": \"大朋友带小朋友，小朋友免单\",\n                \"prize\": [\n                    {\n                        \"goods_id\": 1,\n                        \"name\": \"一等奖\",\n                        \"num\": 10,\n                        \"goods_name\": \"测试商品\",\n                        \"sale_price\": \"1.00\",\n                        \"default_image\": \"/uploads/2018/05/18/b6102dc8ad0039f8ee7a219bebbb069f.png\"\n                    }\n                ]\n            }\n        ],\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n    \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Activity.php",
+    "groupTitle": "api"
+  },
+  {
     "type": "post",
     "url": "/api/activity/vote",
     "title": "活动-投票",
@@ -18419,12 +18518,12 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "act",
-            "description": "<p>操作动作 [修改密码:password, 支付密码:pay_password, 头像:header, 昵称:nickname, 性别:sex 0保密 1男 2女, 出生日期:birth 2018-01-12, 简介:summary]</p>"
+            "description": "<p>操作动作 [修改密码:password, 支付密码:pay_password, 头像:header, 昵称:nickname, 性别:sex 0保密 1男 2女, 出生日期:birth 2018-01-12, 简介:summary, 地址:address（省市区名称）]</p>"
           }
         ]
       }
     },
-    "description": "<p>password传递参数: old_password,new_password,confirm_password pay_password传递参数: pay_password,confirm_password header传递参数：header nickname传递参数：nickname sex传递参数：sex birth传递参数：birth 接口返回age summary传递参数：summary</p>",
+    "description": "<p>password传递参数: old_password,new_password,confirm_password pay_password传递参数: pay_password,confirm_password header传递参数：header nickname传递参数：nickname sex传递参数：sex birth传递参数：birth 接口返回age summary传递参数：summary address传递参数：address</p>",
     "success": {
       "fields": {
         "Success 200": [
