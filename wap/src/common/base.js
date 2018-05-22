@@ -235,6 +235,32 @@ export const Base = {
         const ua = window.navigator.userAgent;
         return /\(i[^;]+;( U;)? CPU.+Mac OS X/i.test(ua);
     },
+    //格式化时间日期,time:秒数,type:0,输出年月日,1.输出时分秒,2.全部输出
+    getTimeFormat(s_time, i_type = 0) {
+        s_time = s_time ? new Date(parseInt(s_time, 10) * 1000) : new Date();
+        let a_YMDList = [
+            s_time.getFullYear(),
+            s_time.getMonth() + 1,
+            s_time.getDate()
+        ];
+        let a_HMSList = [
+            s_time.getHours(),
+            s_time.getMinutes(),
+            s_time.getSeconds()
+        ];
+        a_YMDList.forEach(function(value, index) {
+            a_YMDList[index] = value.toString().replace(/(^\d{1}$)/, `0$1`);
+        });
+        a_HMSList.forEach(function(value, index) {
+            a_HMSList[index] = value.toString().replace(/(^\d{1}$)/, `0$1`);
+        });
+        if (i_type === 0) {
+            return a_YMDList.join("-");
+        } else if (i_type === 1) {
+            return a_HMSList.join(":");
+        }
+        return `${a_YMDList.join("-")} ${a_HMSList.join(":")}`;
+    },
     //校验手机号
     checkMobile: function(i_mobileNum) {
         const re = new RegExp(/^1(3|4|5|7|8)\d{9}$/);
