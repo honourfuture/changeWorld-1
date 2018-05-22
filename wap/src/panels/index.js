@@ -31,30 +31,30 @@ import EvaluateList from "./EvaluateList";
 import SellOrder from "./SellOrder";
 import ApplyInvoice from "./ApplyInvoice";
 import AfterMarket from "./AfterMarket";
-import Statistics from './Statistics';
-import SellerOrderDetail from './SellerOrderDetail';
-import Share from './Share';
-import Activify_share from './Activify_share';
+import Statistics from "./Statistics";
+import SellerOrderDetail from "./SellerOrderDetail";
+import Share from "./Share";
+import ActivifyShare from "./ActivifyShare";
 export const panelsList = [
     {
-        path:'/Activify_share',
-        component:Activify_share,
-        title:'活动分享',
+        path: "/ActivifyShare",
+        component: ActivifyShare,
+        title: "活动分享"
     },
     {
-        path:'/Share',
-        component:Share,
-        title:'手机客户端下载',
+        path: "/Share",
+        component: Share,
+        title: "手机客户端下载"
     },
     {
-        path:'/SellerOrderDetail',
-        component:SellerOrderDetail,
-        title:'订单详情',
+        path: "/SellerOrderDetail",
+        component: SellerOrderDetail,
+        title: "订单详情"
     },
     {
-        path:'/Statistics',
-        component:Statistics,
-        title:'数据统计',
+        path: "/Statistics",
+        component: Statistics,
+        title: "数据统计"
     },
     {
         path: "/AfterMarket",
