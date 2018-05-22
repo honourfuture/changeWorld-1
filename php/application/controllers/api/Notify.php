@@ -17,6 +17,76 @@ class Notify extends API_Controller
         parent::__construct();
     }
 
+    // 微信收款码转账
+    public function wechat_support()
+    {
+        $this->setting = config_item('wechat');
+        $app = new Application($this->setting);
+        $response = $app->payment->handleNotify(function($notify, $successful){
+            return $this->support($notify, true);
+        });
+
+        echo $response;
+    }
+
+    protected function support($notify, $successful)
+    {
+        is_array($notify) && $notify = (object)$notify;
+        if(! isset($notify->out_trade_no)){
+            return false;
+        }
+
+        $this->load->model('Users_support_model');
+        $where = ['order_sn' => $notify->out_trade_no];
+        if(! $recharge = $this->Users_support_model->get_by($where)){
+            return false;
+        }
+
+        if($recharge['status'] == 1){
+            return true;
+        }
+
+        $update = [];
+        if($successful){
+            $update['status'] = 1;
+
+            $this->load->model('Users_model');
+            if($user = $this->Users_model->get($recharge['to_user_id'])){
+                $this->Users_model->update($user['id'], ['balance' => round($user['balance'] + $recharge['money'], 2)]);
+                //金币明细
+                /*$gold_log = [
+                    'topic' => 0,
+                    'from_user_id' => $recharge['user_id'],
+                    'to_user_id' => $recharge['user_id'],
+                    'item_title' => $recharge['real_amount'],
+                    'item_id' => $recharge['id'],
+                    'gold' => $recharge_gold
+                ];
+                $this->load->model('Gold_log_model');
+                $this->Gold_log_model->insert($gold_log);*/
+            }
+        }else{
+            $update['status'] = 2;
+        }
+        $this->Users_support_model->update($recharge['id'], $update);
+
+        return true;
+    }
+
+    // 支付宝收款码转账
+    public function alipay_support()
+    {
+        $this->setting = config_item('yansongda');
+        $app = new Pay($this->setting);
+        if($notify = $app->driver('alipay')->gateway('app')->verify($_REQUEST)){
+            $this->support($notify, true);
+        }else{
+            $this->support([], false);
+        }
+
+        echo "success";
+    }
+
     // 微信靓号
     public function wechat_pretty_payment()
     {

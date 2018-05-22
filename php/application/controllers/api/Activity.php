@@ -313,6 +313,9 @@ class Activity extends API_Controller
                 $ret['vote'] = $this->Activity_vote_model->count_by(['activity_id' => $id, 'user_id' => $vote_user_id]);*/
             }else{
                 //赞助商
+                $this->load->model('Users_support_model');
+                $support = $this->Users_support_model->rank($id, 6, 0);
+                $ret['support'] = $support['list'];
 
                 //报名用户
                 $ret['enter_list'] = $this->activity_enter($id);
