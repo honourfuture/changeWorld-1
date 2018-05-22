@@ -18,6 +18,87 @@ class Activity extends API_Controller
     }
 
     /**
+     * @api {get} /api/activity/title 活动-搜索
+     * @apiVersion 1.0.0
+     * @apiName activity_title
+     * @apiGroup api
+     *
+     * @apiSampleRequest /api/activity/title
+     *
+     * @apiParam {Number} user_id 用户唯一ID
+     * @apiParam {String} sign 校验签名
+     * @apiParam {String} keyword 活动名称
+     *
+     * @apiSuccess {Number} status 接口状态 0成功 其他异常
+     * @apiSuccess {String} message 接口信息描述
+     * @apiSuccess {Object} data 接口数据集
+     * @apiSuccess {Number} data.count 其他活动总数
+     * @apiSuccess {Object[]} data.list 其他活动列表
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * {
+     *     "data": {
+     *         "count": 1,
+     *         "list": [
+     *             {
+     *                 "id": "1",
+     *                 "title": "6.1儿童来免单",
+     *                 "summary": "大朋友带小朋友，小朋友免单",
+     *                 "prize": [
+     *                     {
+     *                         "goods_id": 1,
+     *                         "name": "一等奖",
+     *                         "num": 10,
+     *                         "goods_name": "测试商品",
+     *                         "sale_price": "1.00",
+     *                         "default_image": "/uploads/2018/05/18/b6102dc8ad0039f8ee7a219bebbb069f.png"
+     *                     }
+     *                 ]
+     *             }
+     *         ],
+     *     },
+     *     "status": 0,
+     *     "message": "成功"
+     * }
+     *
+     * @apiErrorExample {json} Error-Response:
+     * {
+     *     "data": "",
+     *     "status": -1,
+     *     "message": "签名校验错误"
+     * }
+     */
+    public function title()
+    {
+        $ret = array('count' => 0, 'list' => array());
+
+        $keyword = $this->input->get_post('keyword');
+        if($keyword){
+            $this->load->model('Activity_model');
+            $now_time = time();
+            $where = array(
+                'enable' => 1,
+                'time_start <' => $now_time,
+                'time_end >' => $now_time
+            );
+
+            $this->db->like('title', $keyword);
+            $ret['count'] = $this->Activity_model->count_by($where);
+            if($ret['count']){
+                $order_by = array('id' => 'desc');
+                $this->db->select('id,title,summary,prize');
+                $this->db->like('title', $keyword);
+                $ret['list'] = $this->Activity_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
+
+                $this->Activity_model->common($ret);
+            }
+            $this->ajaxReturn($ret);
+        }else{
+            $this->ajaxReturn($ret);
+        }
+    }
+
+    /**
      * @api {get} /api/activity 活动-首页
      * @apiVersion 1.0.0
      * @apiName activity
