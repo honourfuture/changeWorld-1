@@ -75,7 +75,7 @@ class Bind extends API_Controller {
 				if($item['other']){
 					$ret['list'][$key]['other'] = json_decode($item['other'], true);
 				}else{
-					$ret['list'][$key]['other'] = [];
+					$ret['list'][$key]['other'] = {};
 				}
 			}
 		}
