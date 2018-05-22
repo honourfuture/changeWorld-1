@@ -216,12 +216,20 @@ class Activity extends API_Controller
 
             $vote_user_id = $this->input->get_post('vote_user_id');
             if($vote_user_id){
+                $enter = $this->Activity_enter_model->get_by(['activity_id' => $id, 'user_id' => $vote_user_id]);
+                if(! $enter){
+                    $this->ajaxReturn([], 2, '用户未报名改活动');
+                }
+                $ret['enter'] = [
+                    'id' => $enter['id'],
+                    'vote' => $enter['vote']
+                ];
                 $this->load->model('Users_model');
                 $this->db->select('nickname,header,v,exp');
                 $ret['user'] = $this->Users_model->get($vote_user_id);
 
-                $this->load->model('Activity_vote_model');
-                $ret['vote'] = $this->Activity_vote_model->count_by(['activity_id' => $id, 'user_id' => $vote_user_id]);
+                /*$this->load->model('Activity_vote_model');
+                $ret['vote'] = $this->Activity_vote_model->count_by(['activity_id' => $id, 'user_id' => $vote_user_id]);*/
             }else{
                 //赞助商
 
