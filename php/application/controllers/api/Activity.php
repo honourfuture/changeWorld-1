@@ -9,6 +9,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Activity extends API_Controller
 {
+    protected $rank = 0;
     protected $enter_id = 0;
     protected $a_user_id = [];
 
@@ -398,6 +399,7 @@ class Activity extends API_Controller
      * @apiParam {Number} user_id 用户唯一ID
      * @apiParam {String} sign 校验签名
      * @apiParam {Number} id 活动ID
+     * @apiParam {Number} rank 排行 0默认详情页更多 1选手排行
      *
      * @apiSuccess {Number} status 接口状态 0成功 其他异常
      * @apiSuccess {String} message 接口信息描述
@@ -444,6 +446,7 @@ class Activity extends API_Controller
     {
         $ret = [];
         $id = (int)$this->input->get_post('id');
+        $this->rank = (int)$this->input->get_post('rank');
         $this->load->model('Activity_enter_model');
         $ret['enter_count'] = $this->Activity_enter_model->count_by(['activity_id' => $id]);
 
@@ -557,7 +560,18 @@ class Activity extends API_Controller
     protected function activity_enter($id)
     {
         $enter_list = [];
-        $this->db->select('id,user_id,photos,vote');
+        $select = 'id,user_id,photos,vote';
+        if($this->rank){
+            $select .= ',likes';
+
+            $this->load->model('Activity_model');
+            if($activity = $this->Activity_model->get($id)){
+                $prize = json_decode($activity['prize'], true);
+            }else{
+                $this->ajaxReturn([], 1, '参赛活动不存在');
+            }
+        }
+        $this->db->select($select);
         $this->search_group();
         $enter = $this->Activity_enter_model->order_by('vote', 'desc')->limit($this->per_page, $this->offset)->get_many_by(['activity_id' => $id]);
         if($enter){
@@ -568,16 +582,73 @@ class Activity extends API_Controller
             $this->load->model('Users_model');
             $user = $this->Users_model->get_many_user($a_user_id);
 
-            foreach($enter as $item){
+            foreach($enter as $key=>$item){
                 $item['photos'] = json_decode($item['photos'], true);
                 $item['nickname'] = '';
                 isset($user[$item['user_id']]) && $item['nickname'] = $user[$item['user_id']]['nickname'];
                 isset($user[$item['user_id']]) && $item['header'] = $user[$item['user_id']]['header'];
 
-                $enter_list = $item;
+                if($this->rank){
+                    $item['likes'] = strpos($item['likes'], ','.$this->user_id.',') === false ? 0 : 1;
+                    $item['prize'] = isset($prize[$key]) ? $prize[$key]['name'] : '';
+                }
+
+                $enter_list[] = $item;
             }
         }
 
         return $enter_list;
+    }
+
+    /**
+     * @api {post} /api/activity/likes 活动-参赛人点赞
+     * @apiVersion 1.0.0
+     * @apiName activity_likes
+     * @apiGroup api
+     *
+     * @apiSampleRequest /api/activity/likes
+     *
+     * @apiParam {Number} user_id 用户唯一ID
+     * @apiParam {String} sign 校验签名
+     * @apiParam {Number} vote_id 参赛号
+     *
+     * @apiSuccess {Number} status 接口状态 0成功 其他异常
+     * @apiSuccess {String} message 接口信息描述
+     * @apiSuccess {Object} data 接口数据集
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * {
+     *      "data": "",
+     *      "status": 0,
+     *      "message": "成功"
+     *  }
+     *
+     * @apiErrorExample {json} Error-Response:
+     * {
+     *     "data": "",
+     *     "status": -1,
+     *     "message": "签名校验错误"
+     * }
+     */
+    public function likes()
+    {
+        $vote_id = (int)$this->input->get_post('vote_id');
+        $this->load->model('Activity_enter_model');
+        if($enter = $this->Activity_enter_model->get($vote_id)){
+            $update = [];
+            if($enter['likes']){
+                if(strpos($enter['likes'], ','.$this->user_id.',') === false){//点赞
+                    $update['likes'] = $enter['likes'].$this->user_id;
+                }else{//取消
+                    $update['likes'] = str_replace(','.$this->user_id.',', ',', $enter['likes']);
+                }
+            }else{
+                $update['likes'] = $this->user_id;
+            }
+
+            $update['likes'] = ','.trim($update['likes'], ',').',';
+            $this->Activity_enter_model->update($enter['id'], $update);
+        }
+        $this->ajaxReturn();
     }
 }
