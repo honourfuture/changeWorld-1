@@ -156,7 +156,7 @@ class Info extends API_Controller {
 
 		$ret = elements(
 			array(
-				'header', 'nickname', 'sex', 'birth', 'summary'
+				'header', 'nickname', 'sex', 'birth', 'summary', 'address'
 			),
 			$this->get_user(),
 			''
