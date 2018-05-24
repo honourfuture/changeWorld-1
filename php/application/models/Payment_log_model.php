@@ -66,6 +66,11 @@ class Payment_log_model extends MY_Model
             }
         }
 
+        $flag = $this->album($user_id, $audio['album_id']);
+        if($flag){
+            return $flag;
+        }
+
         $where = [
             'user_id' => $user_id,
             't_id' => $audio_id,

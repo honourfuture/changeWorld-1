@@ -148,7 +148,7 @@ class Anchor extends API_Controller {
 		}
 
 		$this->load->model('Users_model');
-		$this->Users_model->update($this->user_id, ['anchor' => $params['status'], 'nickname' => $params['nickname']]);
+		$this->Users_model->update($this->user_id, ['anchor' => $params['status']]);
 
 		$this->ajaxReturn();
 	}
