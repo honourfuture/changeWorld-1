@@ -114,11 +114,11 @@ export default class LecturerNobleManager extends BaseComponent{
 				action={Global.UPLOAD_URL}
 				onChange={(e)=>this.onUploadChange(e,record.id)}
 			>
-				{icon?<img className='img-uploader' src={icon} alt=''/>:<div>
+				{icon?<img className='img-uploader' style={{width:'120px'}} src={icon} alt=''/>:<div>
 					<Icon type={loading ? 'loading' : 'plus'} />
 					<div className="ant-upload-text">上传</div>
 				</div>}
-			</Upload>:<img className='img-uploader' src={Base.getImgUrl(icon)} alt=''/>}
+			</Upload>:<img className='img-uploader'  style={{width:'120px'}} src={Base.getImgUrl(icon)} alt=''/>}
 		</div>
 	}
 	renderSwitch(text,record,column){
