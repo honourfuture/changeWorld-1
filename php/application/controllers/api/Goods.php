@@ -225,6 +225,11 @@ class Goods extends API_Controller {
 		//积分兑换比例
 		$ret['point_rate'] = 10;
 
+		$this->load->model('Goods_class_model');
+		$this->db->select('id,name');
+		$order_by = array('sort' => 'desc', 'id' => 'desc');
+		$ret['goods_class'] = $this->Goods_class_model->order_by($order_by)->get_many_by('deleted', 0);
+
 		$this->ajaxReturn($ret);
 	}
 
@@ -454,7 +459,7 @@ class Goods extends API_Controller {
 				array(
 					'name', 'stock', 'sale_price', 'freight_fee', 'send_mode',
 					'goods_ticket', 'use_point_rate', 'e_invoice', 'city_partner_rate', 'two_level_rate',
-					'goods_image', 'goods_attr', 'goods_detail', 'is_hot'
+					'goods_image', 'goods_attr', 'goods_detail', 'is_hot', 'goods_class_id'
 				),
 				$this->input->post(),
 				''
