@@ -70,6 +70,7 @@ class ProductIssue extends BaseComponent {
         goods_detail: [],
         send_mode: [],
         goods_attr: [],
+        goods_class: [],
         point_rate: 0,
         use_point_rate: 0
     };
@@ -90,7 +91,8 @@ class ProductIssue extends BaseComponent {
                     full_amount = 0,
                     free_amount = 0,
                     two_level_rate,
-                    city_partner_rate
+                    city_partner_rate,
+                    goods_class_id
                 } = values;
                 const i_two_level_rate = parseFloat(two_level_rate) || 0;
                 const i_city_partner_rate = parseFloat(city_partner_rate) || 0;
@@ -101,6 +103,9 @@ class ProductIssue extends BaseComponent {
                         null,
                         false
                     );
+                }
+                if (!goods_class_id) {
+                    return Toast.fail("请选择产品分类", 2, null, false);
                 }
                 if (!send_mode) {
                     return Toast.fail("请选择发货模式", 2, null, false);
@@ -145,6 +150,7 @@ class ProductIssue extends BaseComponent {
                         use_point_rate,
                         e_invoice,
                         send_mode: send_mode[0],
+                        goods_class_id: goods_class_id[0],
                         goods_ticket,
                         goods_image: JSON.stringify(goods_imageUrl),
                         goods_detail: JSON.stringify(goods_detailUrl),
@@ -187,12 +193,15 @@ class ProductIssue extends BaseComponent {
     }
     componentDidMount() {
         Base.GET({ act: "goods", op: "init" }, res => {
-            const { goods_attr, send_mode, point_rate } = res.data;
+            const { goods_attr, send_mode, point_rate, goods_class } = res.data;
             this.store.goods_attr = goods_attr.map(item => {
                 return { ...item, list: [] };
             });
             this.store.send_mode = send_mode.map((label, value) => {
                 return { label, value };
+            });
+            this.store.goods_class = goods_class.map(({ id, name }) => {
+                return { label: name, value: id };
             });
             this.store.point_rate = point_rate;
         });
@@ -204,7 +213,8 @@ class ProductIssue extends BaseComponent {
             send_mode,
             goods_attr,
             point_rate,
-            use_point_rate
+            use_point_rate,
+            goods_class
         } = this.store;
         const { getFieldProps, getFieldError } = this.props.form;
         const goodsAttrItems = goods_attr.map((item, index) => {
@@ -308,6 +318,15 @@ class ProductIssue extends BaseComponent {
                         >
                             产品价格<em>*</em>
                         </InputItem>
+                        <Picker
+                            data={goods_class}
+                            cols={1}
+                            {...getFieldProps("goods_class_id")}
+                        >
+                            <Item className="pick-item" arrow="horizontal">
+                                产品分类<em>*</em>
+                            </Item>
+                        </Picker>
                     </List>
                     <WhiteSpace />
                     <List className="productBasic">
