@@ -225,6 +225,11 @@ class Goods extends API_Controller {
 		//积分兑换比例
 		$ret['point_rate'] = 10;
 
+		$this->load->model('Goods_class_model');
+		$this->db->select('id,name');
+		$order_by = array('sort' => 'desc', 'id' => 'desc');
+		$ret['goods_class'] = $this->Goods_class_model->order_by($order_by)->get_many_by('deleted', 0);
+
 		$this->ajaxReturn($ret);
 	}
 
@@ -394,6 +399,7 @@ class Goods extends API_Controller {
 	 * @apiParam {Number} deleted 是否删除 1是 0否（为1时其他字段可不传）
 	 * @apiParam {Number} sort 排序 降序排列
 	 * @apiParam {Number} goods_class_id 商品分类ID
+	 * @apiParam {Number} is_hot 是否热门 0否 1是
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -421,7 +427,8 @@ class Goods extends API_Controller {
 				array(
 					'name', 'stock', 'sale_price', 'freight_fee', 'send_mode',
 					'goods_ticket', 'use_point_rate', 'e_invoice', 'city_partner_rate', 'two_level_rate',
-					'goods_image', 'goods_attr', 'goods_detail', 'deleted', 'enable', 'sort', 'goods_class_id'
+					'goods_image', 'goods_attr', 'goods_detail', 'deleted', 'enable', 'sort', 'goods_class_id',
+					'is_hot'
 				),
 				$this->input->post(),
 				UPDATE_VALID
@@ -452,7 +459,7 @@ class Goods extends API_Controller {
 				array(
 					'name', 'stock', 'sale_price', 'freight_fee', 'send_mode',
 					'goods_ticket', 'use_point_rate', 'e_invoice', 'city_partner_rate', 'two_level_rate',
-					'goods_image', 'goods_attr', 'goods_detail'
+					'goods_image', 'goods_attr', 'goods_detail', 'is_hot', 'goods_class_id'
 				),
 				$this->input->post(),
 				''
