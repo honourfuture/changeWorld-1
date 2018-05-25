@@ -71,6 +71,13 @@ export default class GoodsManager extends BaseComponent {
                     this.renderText(text, record, "sale_price")
             },
             {
+                title: "热门商品",
+                dataIndex: "is_hot",
+                width: "10%",
+                render: (text, record) =>
+                    this.renderSwitch(text, record, "is_hot")
+            },
+            {
                 title: "上/下架",
                 dataIndex: "enable",
                 width: "10%",
@@ -198,7 +205,7 @@ export default class GoodsManager extends BaseComponent {
     renderSwitch(text, record, column) {
         return (
             <Switch
-                checked={parseInt(record.enable, 10) === 1}
+                checked={parseInt(record[column], 10) === 1}
                 onChange={value =>
                     this.onSwitch(record.id, value ? 1 : 0, column)
                 }

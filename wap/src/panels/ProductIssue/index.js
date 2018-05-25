@@ -55,10 +55,10 @@ class ImgItem extends BaseComponent {
                     files={fileName}
                     onChange={this.onChangeImg}
                     onImageClick={(index, fs) => console.log(index, fs)}
-                    selectable={fileName.length < 10}
+                    selectable={fileName.length < 8}
                     // multiple={true}
                 />
-                <div className="upImgTips">最多可上传6张图片</div>
+                <div className="upImgTips">最多可上传8张图片</div>
             </div>
         );
     }
@@ -85,7 +85,23 @@ class ProductIssue extends BaseComponent {
     onSubmit() {
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                const { send_mode, full_amount = 0, free_amount = 0 } = values;
+                const {
+                    send_mode,
+                    full_amount = 0,
+                    free_amount = 0,
+                    two_level_rate,
+                    city_partner_rate
+                } = values;
+                const i_two_level_rate = parseFloat(two_level_rate) || 0;
+                const i_city_partner_rate = parseFloat(city_partner_rate) || 0;
+                if (i_two_level_rate + i_city_partner_rate > 100) {
+                    return Toast.fail(
+                        "分销比例之和不能超过100%",
+                        2,
+                        null,
+                        false
+                    );
+                }
                 if (!send_mode) {
                     return Toast.fail("请选择发货模式", 2, null, false);
                 }
@@ -120,6 +136,7 @@ class ProductIssue extends BaseComponent {
                 delete values["full_amount"];
                 delete values["free_amount"];
                 delete values["e_invoice"];
+
                 Base.POST(
                     {
                         act: "goods",
@@ -136,7 +153,10 @@ class ProductIssue extends BaseComponent {
                     res => {
                         alert("恭喜您", "发布成功！", [
                             { text: "继续发布", onPress: null },
-                            { text: "我的商城", onPress: () => Base.goBack() }
+                            {
+                                text: "我的产品",
+                                onPress: () => Base.push("MyProduct")
+                            }
                         ]);
                     }
                 );
@@ -163,7 +183,7 @@ class ProductIssue extends BaseComponent {
     }
     @action.bound
     onPointChange(value) {
-        this.store.use_point_rate = value;
+        this.store.use_point_rate = value || 0;
     }
     componentDidMount() {
         Base.GET({ act: "goods", op: "init" }, res => {
@@ -237,6 +257,7 @@ class ProductIssue extends BaseComponent {
                     <WhiteSpace />
                     <List className="productBasic">
                         <InputItem
+                            maxLength={25}
                             error={!!getFieldError("name")}
                             {...getFieldProps("name", {
                                 rules: [

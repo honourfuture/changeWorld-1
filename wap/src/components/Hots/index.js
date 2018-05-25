@@ -23,11 +23,12 @@ export class Hots extends BaseComponent {
         };
     }
     componentDidMount() {
-        const { id } = this.props;
+        const { id, is_hot } = this.props;
         Base.GET(
             {
                 act: "shop",
                 op: "index",
+                is_hot,
                 goods_class_id: id,
                 per_page: Global.PAGE_SIZE
             },
@@ -53,12 +54,13 @@ export class Hots extends BaseComponent {
     }
     @action.bound
     requestData() {
-        const { id } = this.props;
+        const { id, is_hot } = this.props;
         Base.GET(
             {
                 act: "shop",
                 op: "goods",
                 goods_class_id: id,
+                is_hot,
                 cur_page: this.cur_page || 1,
                 per_page: Global.PAGE_SIZE
             },
