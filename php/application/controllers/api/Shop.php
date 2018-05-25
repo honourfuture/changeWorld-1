@@ -51,11 +51,20 @@ class Shop extends API_Controller {
 	{
 		$ret = array('ad' => array(), 'goods' => array());
 		$goods_class_id = (int)$this->input->get_post('goods_class_id');
+		$is_hot = (int)$this->input->get_post('is_hot');
 		if($goods_class_id){
 			$ret['goods'] = $this->_goods($goods_class_id);
 
 			$this->load->model('Ad_position_model');
 			$ad_position_id = $this->Ad_position_model->get_ad_position_id('shop', $goods_class_id);
+            $ret['ad'] = $this->ad($ad_position_id, 5);
+
+			$this->ajaxReturn($ret);
+		}elseif($is_hot){
+			$ret['goods'] = $this->_goods(0, true);
+
+			$this->load->model('Ad_position_model');
+			$ad_position_id = $this->Ad_position_model->get_ad_position_id('shop', 1);
             $ret['ad'] = $this->ad($ad_position_id, 5);
 
 			$this->ajaxReturn($ret);
@@ -108,8 +117,13 @@ class Shop extends API_Controller {
 	{
 		$ret = array('goods' => array());
 		$goods_class_id = (int)$this->input->get_post('goods_class_id');
+		$is_hot = (int)$this->input->get_post('is_hot');
 		if($goods_class_id){
 			$ret['goods'] = $this->_goods($goods_class_id);
+
+			$this->ajaxReturn($ret);
+		}elseif($is_hot){
+			$ret['goods'] = $this->_goods(0, true);
 
 			$this->ajaxReturn($ret);
 		}else{
@@ -117,11 +131,16 @@ class Shop extends API_Controller {
 		}
 	}
 
-	protected function _goods($goods_class_id)
+	protected function _goods($goods_class_id, $is_hot = false)
 	{
 		$this->load->model('Goods_model');
 		$order_by = array('sort' => 'desc', 'updated_at' => 'desc');
-		$where = array('goods_class_id' => $goods_class_id, 'enable' => 1);
+		$where = ['enable' => 1];
+		if($is_hot){
+			$where['is_hot'] = 1;
+		}else{
+			$where['goods_class_id'] = $goods_class_id;
+		}
 		$this->db->select('id,default_image,name,sale_price');
 		return $this->Goods_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 	}
