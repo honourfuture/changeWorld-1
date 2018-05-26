@@ -165,7 +165,7 @@ export const Base = {
         user_verify_data = user_verify_data ? JSON.parse(user_verify_data) : {};
         // user_verify_data = user_verify_data
         //     ? JSON.parse(user_verify_data)
-        //     : { sign: "b6bcbe5ab2bd48f5e4fb2ce1bc29f909", user_id: 2 };
+        //     : { sign: "facf1ba49e3ce1b9eb8a1a3736b90429", user_id: 1 };
         cb(user_verify_data);
     },
     //多个异步操作处理

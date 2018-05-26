@@ -186,7 +186,7 @@ export default class UserCenter extends BaseComponent {
                                 </Item>
                                 <Item
                                     arrow="horizontal"
-                                    onClick={this.onPushShop}
+                                    onClick={() => Base.push("MyProduct")}
                                 >
                                     我的产品
                                 </Item>

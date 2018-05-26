@@ -15,6 +15,11 @@ export default class ShopIndex extends BaseComponent {
                 const { id, name } = item;
                 return { key: id, title: name, component: <Hots id={id} /> };
             });
+            tabs.unshift({
+                key: -1,
+                title: "热门",
+                component: <Hots is_hot={1} id={0} />
+            });
             tabs.splice(1, 0, { key: 0, title: "靓号", component: <Vanity /> });
             this.store.tabs = tabs;
         });
