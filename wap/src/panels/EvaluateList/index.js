@@ -9,9 +9,13 @@ const hScroll = document.body.offsetHeight - 45;
 
 class Item extends BaseComponent {
 	render() {
-		const { header, nickname, remark } = this.props;
+		const { header, nickname, remark, photos } = this.props;
+		const photo = JSON.parse(JSON.parse(photos));
+		let photosItem = (photo || []).map((item,key)=>{
+			return <NetImg className="desImg" src={Base.getImgUrl(item)} key={key}/>
+		});
 		return <Flex className="item" align='start'>
-			<NetImg src={Base.getImgUrl(header)} />
+			<NetImg className="userImg" src={Base.getImgUrl(header)} />
 			<div>
 				<div className="name">
 					{Base.getAnonymity(nickname)}
@@ -19,6 +23,12 @@ class Item extends BaseComponent {
 				<div className="des">
 					{remark}
 				</div>
+				{
+					photo.length > 0 ? (<div className="photos">
+											{photosItem}
+										</div>) : null
+				}
+				
 			</div>
 		</Flex>
 	}
