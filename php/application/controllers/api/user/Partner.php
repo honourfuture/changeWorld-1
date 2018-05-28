@@ -98,7 +98,7 @@ class Partner extends API_Controller {
 
 			$a_mobi = [];
 			foreach($ret['list'] as $key=>$item){
-				$ret['list'][$key]['user_id'] = 0;
+				// $ret['list'][$key]['user_id'] = 0;
 				$a_mobi[] = $item[$filed];
 			}
 
