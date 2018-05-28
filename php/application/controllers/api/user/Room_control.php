@@ -15,6 +15,65 @@ class Room_control extends API_Controller {
     }
 
     /**
+	 * @api {get} /api/user/room_control/search 场控-添加搜索
+	 * @apiVersion 1.0.0
+	 * @apiName room_control_search
+	 * @apiGroup user
+	 *
+	 * @apiSampleRequest /api/user/room_control/search
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 * @apiParam {String} keyword 搜索词 支持：会员号，手机号，昵称
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集
+	 * @apiSuccess {String} data.user_id 为0表示添加的城市场控手机号未注册
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *     "data": [
+	 *         {
+	 *             "id": "3",
+	 *             "nickname": "꯭諾꯭",
+	 *             "mobi": "13923771616",
+	 *             "header": "http://thirdwx.qlogo.cn/mmopen/vi_32//132",
+	 *             "sex": "0",
+	 *             "summary": ""
+	 *         }
+	 *     ],
+	 *     "status": 0,
+	 *     "message": "成功"
+	 * }
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+	public function search()
+	{
+		$ret = [];
+		$keyword = trim($this->input->get_post('keyword'));
+		if($keyword){
+			$this->load->model('Users_model');
+
+			$this->db->select('id,nickname,mobi,header,sex,summary');
+			$this->db->like('id', $keyword);
+			$this->db->or_like('nickname', $keyword);
+			$this->db->or_like('mobi', $keyword);
+			if($result = $this->Users_model->order_by('id', 'desc')->limit($this->per_page, $this->offset)->get_all()){
+				$ret = $result;
+			}
+		}
+
+		$this->ajaxReturn($ret);
+	}
+
+    /**
 	 * @api {get} /api/user/room_control 场控-首页
 	 * @apiVersion 1.0.0
 	 * @apiName room_control
@@ -69,22 +128,22 @@ class Room_control extends API_Controller {
 		$order_by = array('id' => 'desc');
 		$ret['count'] = $this->Room_control_model->count_by($where);
 		if($ret['count']){
-			$this->db->select('id,mobi');
+			$this->db->select('id,room_control_user_id');
 			$ret['list'] = $this->Room_control_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 
-			$a_mobi = [];
+			$a_room_control_user_id = [];
 			foreach($ret['list'] as $key=>$item){
 				$ret['list'][$key]['user_id'] = 0;
-				$a_mobi[] = $item['mobi'];
+				$a_room_control_user_id[] = $item['room_control_user_id'];
 			}
 
 			$this->load->model('Users_model');
 			$this->db->select('id user_id,nickname,header,v,exp,mobi,summary');
-			if($users = $this->Users_model->get_many_by(['mobi' => $a_mobi])){
+			if($users = $this->Users_model->get_many($a_room_control_user_id)){
 				$k_users = [];
 				$a_id = array();
 				foreach($users as $item){
-					$k_users[$item['mobi']] = $item;
+					$k_users[$item['user_id']] = $item;
 					$a_id[] = $item['user_id'];
 				}
 
@@ -100,9 +159,9 @@ class Room_control extends API_Controller {
 	            }
 
 				foreach($ret['list'] as $key=>$item){
-					isset($k_users[$item['mobi']]) && $ret['list'][$key] = array_merge($item, $k_users[$item['mobi']]);
-					$ret['list'][$key]['fans'] = isset($fans[$k_users[$item['mobi']]['user_id']]) ? $fans[$k_users[$item['mobi']]['user_id']] : 0;
-	                $ret['list'][$key]['music'] = isset($audio[$k_users[$item['mobi']]['user_id']]) ? $audio[$k_users[$item['mobi']]['user_id']] : 0;
+					isset($k_users[$item['room_control_user_id']]) && $ret['list'][$key] = array_merge($item, $k_users[$item['room_control_user_id']]);
+					$ret['list'][$key]['fans'] = isset($fans[$k_users[$item['room_control_user_id']]['user_id']]) ? $fans[$k_users[$item['room_control_user_id']]['user_id']] : 0;
+	                $ret['list'][$key]['music'] = isset($audio[$k_users[$item['room_control_user_id']]['user_id']]) ? $audio[$k_users[$item['room_control_user_id']]['user_id']] : 0;
 				}
 			}
 		}
@@ -121,7 +180,7 @@ class Room_control extends API_Controller {
 	 * @apiParam {Number} user_id 管理员唯一ID
 	 * @apiParam {String} account 登录账号
 	 * @apiParam {String} sign 校验签名
-	 * @apiParam {String} mobi 场控手机号
+	 * @apiParam {String} room_control_user_id 选择场控账号ID
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -145,7 +204,7 @@ class Room_control extends API_Controller {
 	{
 		$params = elements(
 			array(
-				'mobi'
+				'room_control_user_id'
 			),
 			$this->input->post(),
 			''
@@ -166,8 +225,8 @@ class Room_control extends API_Controller {
 		switch($act){
 			case 'add':
 				$this->load->model('Users_model');
-				if(! $this->Users_model->get_by(['mobi' => $params['mobi']])){
-					$this->ajaxReturn([], 3, '手机号未注册应用');
+				if(! $this->Users_model->get($params['room_control_user_id'])){
+					$this->ajaxReturn([], 3, '选择场控账号不存在');
 				}
 				break;
 			case 'edit':
