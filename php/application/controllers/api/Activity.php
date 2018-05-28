@@ -276,12 +276,13 @@ class Activity extends API_Controller
         $id = (int)$this->input->get_post('id');
         if($id){
             $this->load->model('Activity_model');
-            $this->db->select('id,title,details,photos,time_end,prize,views,rule,user_name,user_id');
+            $this->db->select('id,title,details,photos,time_end,prize,views,user_name,user_id');
             $list = ['list' => []];
             $list['list'][] = $this->Activity_model->get($id);
 
             $this->Activity_model->common($list);
             $ret['info'] = $list['list'][0];
+            $ret['info']['rule'] = '规则';
 
             $ret['info']['total'] = 0;
             foreach($ret['info']['prize'] as $item){
