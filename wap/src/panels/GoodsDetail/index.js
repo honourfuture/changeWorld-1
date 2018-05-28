@@ -324,11 +324,19 @@ export default class GoodsDetail extends BaseComponent {
             id,
             default_image = ""
         } = goods_info;
-        goods_attr = goods_attr ? JSON.parse(goods_attr) : {};
+        try {
+            goods_attr = JSON.parse(goods_attr);
+        } catch (error) {
+            goods_attr = {};
+        }
         const goodsAttrDic = this.store.goods_attr;
         const { header = "", nickname = "", summary = "", v = "" } = seller;
         const { list = [], total = "" } = goods;
-        goods_image = goods_image ? JSON.parse(goods_image) : [];
+        try {
+            goods_image = JSON.parse(goods_image);
+        } catch (error) {
+            goods_image = [];
+        }
         const goodsImgs = goods_image.map((val, index) => {
             return (
                 <NetImg
