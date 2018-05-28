@@ -21578,6 +21578,13 @@
             "optional": false,
             "field": "type",
             "description": "<p>0城市合伙人 1二级分销</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "project",
+            "description": "<p>查询加盟项目（默认：0） 0否 1是</p>"
           }
         ]
       }
