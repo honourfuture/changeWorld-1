@@ -150,7 +150,8 @@ class Info extends API_Controller {
 			'exp' => $user['exp'],
 			'mobi' => $user['mobi'],
 			'pretty_id' => $user['pretty_id'],
-			'address' => $user['address']
+			'address' => $user['address'],
+			'bg_image' => $user['bg_image'],
 		);
 
 		$this->load->model('Users_vip_model');
@@ -219,7 +220,7 @@ class Info extends API_Controller {
 
 		$ret = elements(
 			array(
-				'header', 'nickname', 'sex', 'birth', 'summary', 'address'
+				'header', 'nickname', 'sex', 'birth', 'summary', 'address', 'bg_image'
 			),
 			$this->get_user(),
 			''
@@ -241,7 +242,7 @@ class Info extends API_Controller {
 	 *
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
-	 * @apiParam {String} act 操作动作 [修改密码:password, 支付密码:pay_password, 头像:header, 昵称:nickname, 性别:sex 0保密 1男 2女, 出生日期:birth 2018-01-12, 简介:summary, 地址:address（省市区名称）]
+	 * @apiParam {String} act 操作动作 [修改密码:password, 支付密码:pay_password, 头像:header, 昵称:nickname, 性别:sex 0保密 1男 2女, 出生日期:birth 2018-01-12, 简介:summary, 地址:address（省市区名称），背景图：bg_image]
 	 *
 	 * @apiDescription
 	 * password传递参数: old_password,new_password,confirm_password
@@ -252,6 +253,7 @@ class Info extends API_Controller {
 	 * birth传递参数：birth 接口返回age
 	 * summary传递参数：summary
 	 * address传递参数：address
+	 * bg_image传递参数：bg_image
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -346,6 +348,10 @@ class Info extends API_Controller {
 			case 'address':
 				$address = $this->input->get_post('address');
 				$update = array('address' => $address);
+				break;
+			case 'bg_image':
+				$bg_image = $this->input->get_post('bg_image');
+				$update = array('bg_image' => $bg_image);
 				break;
 			default :
 				$this->ajaxReturn([], 1, '未知操作');
