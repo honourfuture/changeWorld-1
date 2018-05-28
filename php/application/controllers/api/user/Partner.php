@@ -25,6 +25,7 @@ class Partner extends API_Controller {
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
 	 * @apiParam {Number} type 0城市合伙人 1二级分销
+	 * @apiParam {Number} project 查询加盟项目（默认：0） 0否 1是
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -69,36 +70,53 @@ class Partner extends API_Controller {
 	{
 		$ret = array('count' => 0, 'list' => array());
 
+		$project = (int)$this->input->get_post('project');
 		$type = $this->input->get_post('type');
 		$a_type = $this->Partner_model->type();
 		if(! isset($a_type[$type])){
 			$this->ajaxReturn([], 1, '分销类型错误');
 		}
 
-		$where = array('user_id' => $this->user_id, 'type' => $type);
+		$where = array('type' => $type);
+		if($project){
+			$user = $this->get_user();
+			if(!$user || !$user['mobi']){
+				$this->ajaxReturn($ret);
+			}
+			$where['mobi'] = $user['mobi'];
+			$filed = 'user_id';
+		}else{
+			$where['user_id'] = $this->user_id;
+			$filed = 'mobi';
+		}
 
 		$order_by = array('id' => 'desc');
 		$ret['count'] = $this->Partner_model->count_by($where);
 		if($ret['count']){
-			$this->db->select('id,mobi,area');
+			$this->db->select('id,mobi,area,user_id');
 			$ret['list'] = $this->Partner_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 
 			$a_mobi = [];
 			foreach($ret['list'] as $key=>$item){
 				$ret['list'][$key]['user_id'] = 0;
-				$a_mobi[] = $item['mobi'];
+				$a_mobi[] = $item[$filed];
 			}
 
 			$this->load->model('Users_model');
 			$this->db->select('id user_id,nickname,header,v,exp,mobi');
-			if($users = $this->Users_model->get_many_by(['mobi' => $a_mobi])){
+			if($project){
+				$users = $this->Users_model->get_many($a_mobi);
+			}else{
+				$users = $this->Users_model->get_many_by(['mobi' => $a_mobi]);
+			}
+			if($users){
 				$k_users = [];
 				foreach($users as $item){
-					$k_users[$item['mobi']] = $item;
+					$k_users[$item[$filed]] = $item;
 				}
 
 				foreach($ret['list'] as $key=>$item){
-					isset($k_users[$item['mobi']]) && $ret['list'][$key] = array_merge($item, $k_users[$item['mobi']]);
+					isset($k_users[$item[$filed]]) && $ret['list'][$key] = array_merge($item, $k_users[$item[$filed]]);
 				}
 			}
 		}
