@@ -152,6 +152,7 @@ class Info extends API_Controller {
 			'pretty_id' => $user['pretty_id'],
 			'address' => $user['address'],
 			'bg_image' => $user['bg_image'],
+			'sex' => $user['sex'],
 		);
 
 		$this->load->model('Users_vip_model');
