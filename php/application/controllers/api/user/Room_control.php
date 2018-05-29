@@ -67,7 +67,7 @@ class Room_control extends API_Controller {
 			$this->db->or_like('mobi', $keyword);
 			if($result = $this->Users_model->order_by('id', 'desc')->limit($this->per_page, $this->offset)->get_all()){
 				foreach($result as $key=>$item){
-					$row = $this->Room_control_model->get($item['room_control_user_id']);
+					$row = $this->Room_control_model->get_by(['room_control_user_id' => $item['id']]);
 					$item['room_control'] = $row ? 1 : 0;
 
 					$ret[] = $item;
