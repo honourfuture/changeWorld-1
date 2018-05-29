@@ -282,7 +282,10 @@ class Activity extends API_Controller
 
             $this->Activity_model->common($list);
             $ret['info'] = $list['list'][0];
-            $ret['info']['rule'] = '规则';
+            $ret['info']['rule'] = '每人限定最多投 7 票/小时，同一个选手只能投 1 票/次';
+            $this->load->model('Users_model');
+            $user = $this->Users_model->get($ret['info']['user_id']);
+            $ret['info']['user_name'] = $user['nickname'];
 
             $ret['info']['total'] = 0;
             foreach($ret['info']['prize'] as $item){
