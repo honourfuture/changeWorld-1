@@ -287,6 +287,9 @@ class Activity extends API_Controller
             $user = $this->Users_model->get($ret['info']['user_id']);
             $ret['info']['user_name'] = $user['nickname'];
 
+            $user = $this->get_user();
+            $ret['mobi'] = $user['mobi'];
+
             $ret['info']['total'] = 0;
             foreach($ret['info']['prize'] as $item){
                 $ret['info']['total'] = round($item['num'] * $item['sale_price'] + $ret['info']['total'], 2);

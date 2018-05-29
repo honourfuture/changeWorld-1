@@ -62,11 +62,16 @@ class Room_control extends API_Controller {
 			$this->load->model('Users_model');
 
 			$this->db->select('id,nickname,mobi,header,sex,summary');
-			$this->db->like('id', $keyword);
+			$this->db->where('id', $keyword);
 			$this->db->or_like('nickname', $keyword);
 			$this->db->or_like('mobi', $keyword);
 			if($result = $this->Users_model->order_by('id', 'desc')->limit($this->per_page, $this->offset)->get_all()){
-				$ret = $result;
+				foreach($result as $key=>$item){
+					$row = $this->Room_control_model->get($item['room_control_user_id']);
+					$item['room_control'] = $row ? 1 : 0;
+
+					$ret[] = $item;
+				}
 			}
 		}
 
