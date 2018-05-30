@@ -122,12 +122,12 @@ class Activity extends API_Controller {
 	}
 
 	/**
-	 * @api {post} /api/admin/activity/ad 活动-广告设置
+	 * @api {post} /api/admin/activity/img 活动-广告设置
 	 * @apiVersion 1.0.0
-	 * @apiName activity_ad
+	 * @apiName activity_img
 	 * @apiGroup admin
 	 *
-	 * @apiSampleRequest /api/admin/activity/ad
+	 * @apiSampleRequest /api/admin/activity/img
 	 *
 	 * @apiParam {Number} admin_id 管理员唯一ID
 	 * @apiParam {String} account 登录账号
@@ -154,7 +154,7 @@ class Activity extends API_Controller {
 	 *     "message": "签名校验错误"
 	 * }
 	 */
-	public function ad()
+	public function img()
 	{
 		$id = (int)$this->input->get_post('id');
 		$is_ad = (int)$this->input->get_post('is_ad');
