@@ -46,7 +46,16 @@ class Activity extends API_Controller {
 	 */
 	public function index()
 	{
-		$ret = ['list' => []];
+		$ret = ['list' => [], 'class' => []];
+
+		$this->load->model('Activity_class_model');
+		$this->db->select('id,name');
+		if($class = $this->Activity_class_model->get_all()){
+			foreach($class as $item){
+				$ret['class'][$item['id']] = $item['name'];
+			}
+		}
+
 
 		$ret['count'] = $this->Activity_model->count_all();
 		if($ret['count']){
@@ -63,6 +72,7 @@ class Activity extends API_Controller {
 				$users = $this->Users_model->get_many_user($a_user_id);
 				foreach($ret['list'] as $key=>$item){
 					$ret['list'][$key]['user'] = isset($users[$item['user_id']]) ? $users[$item['user_id']] : [];
+					$ret['list'][$key]['activity_class_name'] = isset($ret['class'][$item['activity_class']]) ? $ret['class'][$item['activity_class']] : '';
 				}
 			}else{
 				$ret['list'] = [];
