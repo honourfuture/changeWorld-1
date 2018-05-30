@@ -46,7 +46,16 @@ class Activity extends API_Controller {
 	 */
 	public function index()
 	{
-		$ret = ['list' => []];
+		$ret = ['list' => [], 'class' => []];
+
+		$this->load->model('Activity_class_model');
+		$this->db->select('id,name');
+		if($class = $this->Activity_class_model->get_all()){
+			foreach($class as $item){
+				$ret['class'][$item['id']] = $item['name'];
+			}
+		}
+
 
 		$ret['count'] = $this->Activity_model->count_all();
 		if($ret['count']){
@@ -63,6 +72,7 @@ class Activity extends API_Controller {
 				$users = $this->Users_model->get_many_user($a_user_id);
 				foreach($ret['list'] as $key=>$item){
 					$ret['list'][$key]['user'] = isset($users[$item['user_id']]) ? $users[$item['user_id']] : [];
+					$ret['list'][$key]['activity_class_name'] = isset($ret['class'][$item['activity_class']]) ? $ret['class'][$item['activity_class']] : '';
 				}
 			}else{
 				$ret['list'] = [];
@@ -122,12 +132,12 @@ class Activity extends API_Controller {
 	}
 
 	/**
-	 * @api {post} /api/admin/activity/ad 活动-广告设置
+	 * @api {post} /api/admin/activity/img 活动-广告设置
 	 * @apiVersion 1.0.0
-	 * @apiName activity_ad
+	 * @apiName activity_img
 	 * @apiGroup admin
 	 *
-	 * @apiSampleRequest /api/admin/activity/ad
+	 * @apiSampleRequest /api/admin/activity/img
 	 *
 	 * @apiParam {Number} admin_id 管理员唯一ID
 	 * @apiParam {String} account 登录账号
@@ -154,7 +164,7 @@ class Activity extends API_Controller {
 	 *     "message": "签名校验错误"
 	 * }
 	 */
-	public function ad()
+	public function img()
 	{
 		$id = (int)$this->input->get_post('id');
 		$is_ad = (int)$this->input->get_post('is_ad');
