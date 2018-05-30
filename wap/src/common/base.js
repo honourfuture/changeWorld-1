@@ -112,7 +112,7 @@ export const Base = {
         const mod = o_param["mod"] ? `${o_param["mod"]}/` : "";
         let s_requestUrl = `${Global.API_URL}/${mod}${o_param["act"]}/${
             o_param["op"]
-        }`;
+            }`;
         this.getAuthData(({ sign, user_id }) => {
             o_param.sign = sign;
             o_param.user_id = user_id;
@@ -225,7 +225,11 @@ export const Base = {
         return `${s_str[0] || ""}******${s_str[s_str.length - 1] || ""}`;
     },
     getImgUrl(img) {
-        return `${Global.RES_URL}${img}`;
+        return /http|data:/.test(img)
+            ? img
+            : img
+                ? `${Global.RES_URL}${img}`
+                : "";
     },
     get isWechat() {
         const ua = window.navigator.userAgent.toLowerCase();
@@ -248,10 +252,10 @@ export const Base = {
             s_time.getMinutes(),
             s_time.getSeconds()
         ];
-        a_YMDList.forEach(function(value, index) {
+        a_YMDList.forEach(function (value, index) {
             a_YMDList[index] = value.toString().replace(/(^\d{1}$)/, `0$1`);
         });
-        a_HMSList.forEach(function(value, index) {
+        a_HMSList.forEach(function (value, index) {
             a_HMSList[index] = value.toString().replace(/(^\d{1}$)/, `0$1`);
         });
         if (i_type === 0) {
@@ -262,7 +266,7 @@ export const Base = {
         return `${a_YMDList.join("-")} ${a_HMSList.join(":")}`;
     },
     //校验手机号
-    checkMobile: function(i_mobileNum) {
+    checkMobile: function (i_mobileNum) {
         const re = new RegExp(/^1(3|4|5|7|8)\d{9}$/);
         return re.test(i_mobileNum);
     },
