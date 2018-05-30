@@ -166,6 +166,21 @@ const menuData = [
         ]
     },
     {
+        name: "活动管理",
+        icon: "team",
+        path: "activity",
+        children: [
+            {
+                name: "活动列表",
+                path: "ActivityList"
+            },
+            {
+                name: "活动分类管理",
+                path: "ActivityClassManage"
+            }
+        ]
+    },
+    {
         name: "运营",
         icon: "pie-chart",
         path: "operation",

@@ -51,7 +51,19 @@ import RefundMananger from "./RefundMananger";
 import EvaluateMananger from "./EvaluateMananger";
 import AppVersion from "./AppVersion";
 import AppGuideManager from "./AppGuideManager";
+import ActivityList from './ActivityList';
+import ActivityClassManage from './ActivityClassManage';
 export const panelsList = [
+    {
+        path:'/activity/ActivityClassManage',
+        component:ActivityClassManage,
+        title:'活动分类管理',
+    },
+    {
+        path:'/activity/ActivityList',
+        component:ActivityList,
+        title:'活动列表',
+    },
     {
         path: "/mobile/AppGuideManager",
         component: AppGuideManager,
