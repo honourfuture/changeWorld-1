@@ -15,6 +15,45 @@ class Room extends API_Controller {
         $this->load->model('Room_model');
     }
 
+    /**
+	 * @api {post} /api/room/ppt 直播-设置ppt
+	 * @apiVersion 1.0.0
+	 * @apiName room_ppt
+	 * @apiGroup api
+	 *
+	 * @apiSampleRequest /api/room/ppt
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 * @apiParam {Number} room_id 房间号
+	 * @apiParam {String} url 资源地址
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *    "data": [],
+	 *    "status": 0,
+	 *    "message": "成功"
+	 * }
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+    public function ppt()
+    {
+    	$url = $this->input->get_post('url');
+    	$room_id = (int)$this->input->get_post('room_id');
+    	$this->Room_model->update_by(['id' => $room_id, 'anchor_uid' => $this->user_id], ['ppt' => $url]);
+    	$this->ajaxReturn();
+    }
+
 	/**
 	 * @api {post} /api/room/out 直播-退出房间
 	 * @apiVersion 1.0.0
@@ -117,6 +156,8 @@ class Room extends API_Controller {
 			$this->Live_online_model->insert($insert);
 
 			$ret = array();
+			$ret['ppt'] = $info['ppt'];
+
 			$update = array();
 			if($info['anchor_uid'] != $this->user_id){
 				$update['views'] = $info['views'] + 1;
