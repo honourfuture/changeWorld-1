@@ -35,7 +35,13 @@ import Statistics from "./Statistics";
 import SellerOrderDetail from "./SellerOrderDetail";
 import Share from "./Share";
 import ActivifyShare from "./ActivifyShare";
+import ArticleDetail from './ArticleDetail';
 export const panelsList = [
+    {
+        path:'/ArticleDetail',
+        component:ArticleDetail,
+        title:'文章详情',
+    },
     {
         path: "/ActivifyShare",
         component: ActivifyShare,
