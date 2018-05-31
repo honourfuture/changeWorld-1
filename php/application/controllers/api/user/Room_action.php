@@ -73,12 +73,12 @@ class Room_action extends API_Controller {
 		$order_by = array('id' => 'desc');
 		$ret['count'] = $this->Room_action_model->count_by($where);
 		if($ret['count']){
-			$this->db->select('id,user_uid');
+			$this->db->select('id,uid');
 			$list = $this->Room_action_model->order_by($order_by)->get_many_by($where);
 
 			$a_uid = [];
 			foreach($list as $key=>$item){
-				$a_uid[] = $item['user_uid'];
+				$a_uid[] = $item['uid'];
 			}
 
 			$this->load->model('Users_model');
