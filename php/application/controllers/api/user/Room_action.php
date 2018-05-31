@@ -138,6 +138,10 @@ class Room_action extends API_Controller {
 			$this->ajaxReturn([], 2, '无权限操作直播间');
 		}
 
+		if($this->Room_control_model->get_by(['user_id' => $room['anchor_uid'], 'room_control_user_id' => $uid])){
+			$this->ajaxReturn([], 3, '该用户为主播场控');
+		}
+
 		$params = [
 			'room_id' => $room['id'],
 			'anchor_uid' => $room['anchor_uid'],
