@@ -382,10 +382,17 @@ class Bag extends API_Controller {
 		$ret = [];
 		$room_id = (int)$this->input->get_post('room_id');
 
-		if($bag = $this->Bag_model->order_by('id', 'desc')->get_by(['room_id' => $room_id, 'surplus_num >' => 0])){
-			$this->db->select('header,nickname');
-			if($user = $this->Users_model->get($bag['user_id'])){
-				$ret = array_merge($bag, $user);
+		if($bags = $this->Bag_model->order_by('id', 'desc')->limit(100)->get_many_by(['room_id' => $room_id, 'surplus_num >' => 0])){
+			$a_user_id = [];
+			foreach($bags as $item){
+				$a_user_id[] = $item['user_id'];
+			}
+
+			$users = $this->Users_model->get_many_user($a_user_id, 'id,header,nickname');
+			foreach($bags as $item){
+				$item['header'] = isset($users[$item['user_id']]['header']) ? $users[$item['user_id']]['header'] : '';
+				$item['nickname'] = isset($users[$item['user_id']]['nickname']) ? $users[$item['user_id']]['nickname'] : '';
+				$ret[] = $item;
 			}
 		}else{
 			$this->ajaxReturn([], 1, '房间无红包');
