@@ -11,7 +11,7 @@ class Room_model extends MY_Model
     public $_table        = 'room';
     public $primary_key   = 'id';
     public $before_create = array('created_at', 'updated_at', 'updated_valid');
-    public $before_update = array('updated_at', 'updated_valid');
+    public $before_update = array('updated_at');
     public $protected_attributes = array('id');
 
     public $user_id;
