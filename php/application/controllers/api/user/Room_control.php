@@ -15,6 +15,51 @@ class Room_control extends API_Controller {
     }
 
     /**
+	 * @api {get} /api/user/room_control/check 主播场控判断
+	 * @apiVersion 1.0.0
+	 * @apiName room_control_check
+	 * @apiGroup user
+	 *
+	 * @apiSampleRequest /api/user/room_control/check
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 * @apiParam {Number} anchor_uid 主播ID
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集
+	 * @apiSuccess {String} data.is_room_control 场控判断 0否 1是
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *     "data": {
+	 *         "is_room_control": 1,
+	 *     },
+	 *     "status": 0,
+	 *     "message": "成功"
+	 * }
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+	public function check()
+	{
+		$anchor_uid = (int)$this->input->get_post('anchor_uid');
+		$this->load->model('Room_control_model');
+		$is_room_control = 0;
+		if($this->Room_control_model->get_by(['user_id' => $anchor_uid, 'room_control_user_id' => $this->user_id])){
+			$is_room_control = 1;
+		}
+
+		$this->ajaxReturn(['is_room_control' => $is_room_control]);
+	}
+
+    /**
 	 * @api {get} /api/user/room_control/search 场控-添加搜索
 	 * @apiVersion 1.0.0
 	 * @apiName room_control_search
