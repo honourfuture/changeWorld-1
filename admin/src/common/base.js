@@ -8,7 +8,7 @@
 import {action,observable,useStrict} from 'mobx';
 import {observer} from 'mobx-react';
 import {Component} from 'react';
-// import {PubSub} from 'pubsub-js';
+import {PubSub} from 'pubsub-js';
 import Global from './global';
 import { message } from 'antd';
 import Cookies from 'js-cookie';
@@ -155,19 +155,19 @@ export const Base = {
 	},
 	getImgUrl(img){
 		return `${Global.RES_URL}${img}`;
-	}
+	},
 	// //监听事件
-	// addEvt(name,func){
-	// 	PubSub.subscribe(name,func);
-	// },
+	addEvt(name,func){
+		PubSub.subscribe(name,func);
+	},
 	// //移除事件
-	// removeEvt(name){
-	// 	PubSub.unsubscribe(name);
-	// },
+	removeEvt(name){
+		PubSub.unsubscribe(name);
+	},
 	// //发送事件
-	// sendEvt(name,data){
-	// 	PubSub.publish(name,data);
-	// }
+	sendEvt(name,data){
+		PubSub.publish(name,data);
+	}
 }
 
 //基础组件，内置store

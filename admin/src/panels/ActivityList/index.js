@@ -68,12 +68,12 @@ export default class ActivityList extends BaseComponent{
 				dataIndex: 'operation',
 				width: '10%',
 				render: (text, record) => {
-					const { id,user } = record;
+					const { id,user,is_ad } = record;
 					return (
 					<div className="editable-row-operations">
 						<span>
 							<a onClick={() => this.onRead(id,user.nickname)}>详情</a>&nbsp;&nbsp;
-							<a onClick={() => this.onAddImg(id)}>广告位</a>
+							<a onClick={() => this.onAddImg(id,is_ad)}>广告位</a>
 						</span>
 					</div>
 					);
@@ -113,9 +113,8 @@ export default class ActivityList extends BaseComponent{
 		this.refs.detail.show(id,names);
 	}
 	@action.bound
-	onAddImg(id){
-		console.log(this.refs.adImg)
-		// this.refs.adImg.show(id);
+	onAddImg(id,is_ad){
+		Base.sendEvt('com.show.adimg',{id:id,is_ad:is_ad});
 	}
 	//保存
 	@action.bound

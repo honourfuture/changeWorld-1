@@ -1,7 +1,7 @@
 import React from 'react';
 import {action} from 'mobx';
 import {BaseComponent,Base,Global} from '../../common';
-import { Modal,Form,Button,Upload,Switch,Icon} from 'antd';
+import { Modal,Form,Button,Upload,Switch,Icon,message} from 'antd';
 import './AddActivityImg.less';
 const formItemLayout = {
 	labelCol: {
@@ -14,30 +14,39 @@ const formItemLayout = {
 	},
 };
 const FormItem = Form.Item;
+
 class AddActivityImg extends BaseComponent{
 	store={
 		visible:false,
-		loading:false
+		loading:false,
+		adImg:[],
+		uploadDis:true
 	}
 	showProps=[
 		{key:'is_ad',label:'是否加入广告图',render:(value)=>this.renderSwitch(value)},
-		{key:'ad_image',label:'活动开始时间',render:(value)=>this.renderImg(value)},
+		{key:'ad_image',label:'广告图片',render:(value)=>this.renderImg(value)},
 	];
 	renderSwitch(values){
 		return (
-			<Switch checked={parseInt(values,10) === 1} onChange={(value)=>this.onSwitch(value?1:0)} checkedChildren="开" unCheckedChildren="关" />
+			<Switch defaultChecked={parseInt(values,10) === 1} onChange={this.onSwitch} />
 		)
 	}
+	onSwitch(value){
+		console.log(value)
+		// value ? this.store.uploadDis = false : this.store.uploadDis = true;
+	}
+	@action.bound
 	renderImg(value){
-		const {loading} = this.store;
+		const {loading,uploadDis} = this.store;
 		return (
 			<Upload
+				disabled={uploadDis}
 				name="field"
 				data={{ field: "field" }}
 				listType="picture-card"
 				showUploadList={false}
 				action={Global.UPLOAD_URL}
-				onChange={e => this.onUploadChange(e)}
+				onChange={e => this.onUploadChange(e,this.id)}
 			>
 				{value ? (
 					<img
@@ -56,22 +65,58 @@ class AddActivityImg extends BaseComponent{
 	}
 	//上传
     @action.bound
-    onUploadChange(info) {
+    onUploadChange(info,id) {
+		const list = this.props.item.slice();
+		const itemData = list.find(item => id === item.id);
         if (info.file.status === "uploading") {
-            this.store.loading = true;
+			itemData.loading = true;
         }
         if (info.file.status === "done") {
-            this.store.loading = false;
+			itemData.loading = false;
+			itemData.ad_image = info.file.response.data.file_url;
+			this.store.adImg.push(info.file.response.data.file_url);
         }
 	}
 	@action.bound
-	show(id){
-		this.id = id;
+	show(data){
+		this.id = data.id;
 		this.store.visible = true;
+		// if(parseInt(data.is_ad) === 1){
+		// 	this.store.uploadDis = true;
+		// }else{
+		// 	this.store.uploadDis = false;
+		// }
 	}
 	@action.bound
 	hideModal(){
 		this.store.visible = false;
+	}
+	@action.bound
+	componentDidMount(){
+		Base.addEvt('com.show.adimg',(res,data)=>{
+			console.log(data)
+			this.show(data);
+			
+		});
+	}
+	@action.bound
+	componentWillUnmount(){
+		Base.removeEvt('com.show.adimg');
+	}
+	@action.bound
+	onSave(value){
+		this.props.form.validateFields((err, values) => {
+			if(!err){
+				values.ad_image = this.store.adImg.map(item=>item);
+				values.id = this.id;
+				values.is_ad = values.is_ad === true ? 1 : 0;
+				// console.log(values)
+				Base.POST({act:'activity',op:'img',mod:'admin',...values},(res)=>{
+					message.success(res.message);
+				},this);
+				this.hideModal();
+			}
+        });
 	}
 	render(){
 		const {getFieldDecorator} = this.props.form;
@@ -92,10 +137,16 @@ class AddActivityImg extends BaseComponent{
 				title="增加广告"
 				visible={visible}
 				closable={false}
+				footer={[
+					<Button key="back" onClick={this.hideModal}>
+		              取消
+		            </Button>,
+		            <Button key="submit" type="primary" onClick={this.onSave}>
+		              确认提交
+		            </Button>
+		        ]}
 			>
-				<Form>
-					{items}
-				</Form>
+				{items}
 			</Modal>
 		)
 	}
