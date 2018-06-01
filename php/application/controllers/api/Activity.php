@@ -13,6 +13,9 @@ class Activity extends API_Controller
     protected $enter_id = 0;
     protected $a_user_id = [];
 
+    protected $max_times = 7;
+    protected $rule = '每人限定最多投 7 票/小时，同一个选手只能投 1 票/次';
+
     public function __construct()
     {
         parent::__construct();
@@ -282,7 +285,7 @@ class Activity extends API_Controller
 
             $this->Activity_model->common($list);
             $ret['info'] = $list['list'][0];
-            $ret['info']['rule'] = '每人限定最多投 7 票/小时，同一个选手只能投 1 票/次';
+            $ret['info']['rule'] = $this->rule;
             $this->load->model('Users_model');
             $user = $this->Users_model->get($ret['info']['user_id']);
             $ret['info']['user_name'] = $user['nickname'];
@@ -379,11 +382,24 @@ class Activity extends API_Controller
         $this->load->model('Activity_enter_model');
         if($enter = $this->Activity_enter_model->get_by(['activity_id' => $activity_id, 'user_id' => $vote_user_id])){
             $this->load->model('Activity_vote_model');
+            $h = date('YmdH');
+            //限定同一个选手投一次票
+            if($row = $this->Activity_vote_model->order_by('id', 'desc')->get_by(['activity_id' => $activity_id, 'user_id' => $vote_user_id, 'mobi' => $mobi])){
+                if($h == $row['h']){
+                    $this->ajaxReturn([], 3, $this->rule);
+                }
+            }
+            if($this->Activity_vote_model->count_by(['activity_id' => $activity_id, 'mobi' => $mobi, 'h' => $h]) + 1 > $this->max_times){
+                $this->ajaxReturn([], 4, $this->rule);
+            }
+
+
             $data = [
                 'activity_id' => $activity_id,
                 'user_id' => $vote_user_id,
                 'mobi' => $mobi,
-                'ip' => $this->input->ip_address()
+                'ip' => $this->input->ip_address(),
+                'h' => $h
             ];
             $this->Activity_vote_model->insert($data);
 
