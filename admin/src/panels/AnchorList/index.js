@@ -179,6 +179,9 @@ export default class AnchorList extends BaseComponent {
                 key: "anchor_video",
                 label: "主播视频",
                 render: value => {
+                    if(!value){
+                        return '';
+                    }
                     const list = JSON.parse(value);
                     return (
                             <video width="320" height="240" controls>
