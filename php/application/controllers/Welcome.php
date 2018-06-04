@@ -29,7 +29,8 @@ class Welcome extends Web_Controller {
     public function truncate()
     {
         $config = [
-            'ad', 'ad_position', 'address', 'admin', 'album_class',
+            'activity_class',
+            'ad', 'ad_position', 'admin', 'album_class',
             'album_tag', 'anchor_class', 'app_map', 'area', 'article',
             'article_class', 'bank', 'config', 'express', 'goods_attr_category',
             'goods_class', 'grade', 'help', 'live_class', 'live_gift',

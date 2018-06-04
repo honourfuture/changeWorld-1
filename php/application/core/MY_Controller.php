@@ -110,7 +110,7 @@ class MY_Controller extends CI_Controller
      * @account 登录账号
      * @sign 签名字段
      */
-    protected function check_sign()
+    protected function check_sign($required = true)
     {
         $sign = $this->input->get_post('sign');
         $this->user_id = $this->input->get_post('user_id');
@@ -129,11 +129,25 @@ class MY_Controller extends CI_Controller
         }
 
         if(empty($token)){
-            $this->ajaxReturn([], LOGIN_STATUS, '授权token为空');
+            if($required){
+                $this->ajaxReturn([], LOGIN_STATUS, '授权token为空');
+            }else{
+                $this->reset_global_params();
+            }
         }
         if($sign != $this->get_sign($pri_id, $token, $sign_key)){
-            $this->ajaxReturn([], LOGIN_STATUS, '签名校验错误');
+            if($required){
+                $this->ajaxReturn([], LOGIN_STATUS, '签名校验错误');
+            }else{
+                $this->reset_global_params();
+            }
         }
+    }
+
+    protected function reset_global_params()
+    {
+        $this->user_id = 0;
+        $this->admin_id = 0;
     }
 
     protected function get_sign($pri_id, $token, $sign_key)
@@ -243,7 +257,7 @@ class API_Controller extends MY_Controller
         if(isset($unLogin[$key]) && (in_array('*', $unLogin[$key]) || in_array($this->router->method, $unLogin[$key]))){
             //不用认证
             if($this->input->get_post('user_id')){
-                $this->check_sign();
+                $this->check_sign(false);
             }
         }else{
             $this->check_sign();
