@@ -4,6 +4,9 @@ import {BaseComponent,Base,Global} from '../../common';
 import { Table, Input,Popconfirm,Switch,Button,Spin,message ,Upload,Icon,Modal,Form} from 'antd';
 import { remove } from "lodash";
 import './ActivityList.less';
+
+import {ActivityDetail} from '../../components/ActivityDetail';
+import AddActivityImg from '../../components/AddActivityImg';
 const FormItem = Form.Item;
 const formItemLayout = {
     labelCol: {
@@ -20,13 +23,8 @@ export default class ActivityList extends BaseComponent{
 	store = {
 		list: [],
 		acImg:false,
-		acDetail:false,
 		loading:'',
 	};
-	// showProps=[
-	// 	{key:'is_ad',label:'加入广告图',render:(value)=>this.renderImgSwitch(value)},
-	// 	{key:'ad_image',label:'图片地址',render:(value,key,label)=>this.renderUpload(value,key,label)},
-	// ]
 	constructor(props) {
 		super(props);
 		this.columns = [
@@ -70,12 +68,12 @@ export default class ActivityList extends BaseComponent{
 				dataIndex: 'operation',
 				width: '10%',
 				render: (text, record) => {
-					const { id } = record;
+					const { id,user,is_ad } = record;
 					return (
 					<div className="editable-row-operations">
 						<span>
-							<a onClick={() => alert(id)}>详情</a>&nbsp;&nbsp;
-							<a onClick={() => this.onAddImg(id)}>广告位</a>
+							<a onClick={() => this.onRead(id,user.nickname)}>详情</a>&nbsp;&nbsp;
+							<a onClick={() => this.onAddImg(id,is_ad)}>广告位</a>
 						</span>
 					</div>
 					);
@@ -111,13 +109,16 @@ export default class ActivityList extends BaseComponent{
 		)
 	}
 	@action.bound
-	onAddImg(){
-		this.store.acImg = !this.store.acImg;
+	onRead(id,names){
+		this.refs.detail.show(id,names);
+	}
+	@action.bound
+	onAddImg(id,is_ad){
+		Base.sendEvt('com.show.adimg',{id:id,is_ad:is_ad});
 	}
 	//保存
 	@action.bound
 	onSave(id,value) {
-		console.log(id,value)
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
 		Base.POST({act:'activity',op:'recommend',mod:'admin',id:id,is_recommend:value},(res)=>{
@@ -152,67 +153,29 @@ export default class ActivityList extends BaseComponent{
 	}
 	componentDidMount() {
 		Base.GET({act:'activity',op:'index',mod:'admin'},(res)=>{
-			console.log(res.data.list);
 			const {list} = res.data;
 			this.store.list = list;
 			this.cacheData = list.map(item => ({ ...item }));
 		},this);
 	}
-	// renderImgSwitch(values){
-	// 	return (
-	// 		<Switch checked={parseInt(values,10) === 1} onChange={(value)=>this.onSwitch(value?1:0)} />
-	// 	)
-	// }
-	// renderUpload(value,key,label){
-	// 	const {loading} = this.store;
-	// 	return (
-	// 		<Upload
-	// 			name="field"
-	// 			data={{'field':'field'}}
-	// 	        listType="picture-card"
-	// 	        showUploadList={false}
-	// 	        action={Global.UPLOAD_URL}
-	// 			onChange={(e)=>this.onUploadChange(e,key)}
-	// 	    >
-	// 	        {value?<img src={Base.getImgUrl(value)} alt=''/>:<div>
-	// 				<Icon type={ loading===key ? 'loading':'plus'} />
-	// 				<div className="ant-upload-text">上传</div>
-	// 			</div>}
-	// 	    </Upload>
-	// 	)
-	// }
 	render(){
 		let {list,acImg,acDetail} = this.store;
 		const showList = list.filter(item=>{
 			return parseInt(item.deleted,10) === 0;
 		});
-		// const items = this.showProps.map((item,index)=>{
-		// 	const {key,label,render} = item;
-		// 	return <FormItem className="baseForm" key={index} {...formItemLayout} label={label}>
-		// 				{render(key,label)}
-		// 			</FormItem>
-		// })
 		return (
 			<Spin ref='spin' spinning={false} className='ActivityList'>
 				<Table className="mt16" bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={false} />
-				{/* <Modal
-                    className="activityImg-modal"
-                    title="广告位"
-                    visible={acImg}
-                    closable={false}
-                    onCancel={() => this.onAddImg()}
-                    footer={[
-                        <Button
-                            key="submit"
-                            type="primary"
-                            onClick={() => alert(1)}
-                        >
-                            确认
-                        </Button>
-                    ]}
-                >
-                    <Form>{items}</Form>
-                </Modal> */}
+				<ActivityDetail
+					ref="detail"
+                    item={list}
+                    destroyOnClose
+				/>
+				<AddActivityImg
+					ref="adImg"
+                    item={list}
+					destroyOnClose
+				/>
 			</Spin>
 		)
 	}
