@@ -281,7 +281,12 @@ class Activity extends API_Controller
             $this->load->model('Activity_model');
             $this->db->select('id,title,details,photos,time_end,prize,views,user_name,user_id');
             $list = ['list' => []];
-            $list['list'][] = $this->Activity_model->get($id);
+            if(!$row = $this->Activity_model->get($id)){
+                $this->ajaxReturn([], 2, '活动ID不存在');
+            }
+            $row['views'] += 1;
+            $this->Activity_model->update($id, ['views' => $row['views']]);
+            $list['list'][] = $row;
 
             $this->Activity_model->common($list);
             $ret['info'] = $list['list'][0];
