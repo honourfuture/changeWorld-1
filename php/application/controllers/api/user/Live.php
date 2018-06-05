@@ -70,7 +70,7 @@ class Live extends API_Controller {
 		$anchor = $this->Users_anchor_model->get_by('user_id', $this->user_id);
 		list($date, $time) = explode(' ', $anchor['updated_at']);
 		$ret['anchor'] = array(
-			'name' => $anchor['realname'] ? $anchor['realname'] : $anchor['nickname'],
+			'name' => $user['nickname'] ? $user['nickname'] : ($anchor['nickname'] ? $anchor['nickname'] : $anchor['realname']),
 			'updated_at' => $date,
 			'header' => $user['header'],
 		);
