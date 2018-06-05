@@ -152,4 +152,59 @@ class Anchor extends API_Controller {
 
 		$this->ajaxReturn();
 	}
+
+	/**
+	 * @api {post} /api/user/anchor/update 讲师-认证后编辑
+	 * @apiVersion 1.0.0
+	 * @apiName anchor_update
+	 * @apiGroup user
+	 *
+	 * @apiSampleRequest /api/user/anchor/update
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 * @apiParam {String} summary 简介
+	 * @apiParam {String} anchor_photo 主播照 json
+	 * @apiParam {String} anchor_video 主播视频 json
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *     "data": {
+	 *			"points_reg": "会员注册",
+	 *			"points_login": "会员登录"
+	 *	   },
+	 *     "status": 0,
+	 *     "message": "成功"
+	 * }
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+	public function update()
+	{
+		$params = elements(
+			array(
+				'summary', 'anchor_photo', 'anchor_video'
+			),
+			$this->input->post(),
+			UPDATE_VALID
+		);
+		// $params['certificate_type'] = 1;//默认身份证
+
+		if($anchor = $this->Users_anchor_model->get_by('user_id', $this->user_id)){
+			$this->Users_anchor_model->update($anchor['id'], $params);
+		}else{
+			$this->ajaxReturn([], 1, '主播不存在');
+		}
+
+		$this->ajaxReturn();
+	}
 }

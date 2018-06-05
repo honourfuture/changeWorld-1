@@ -58,6 +58,7 @@ class Users_bank extends API_Controller {
 		$where['deleted'] = $deleted;
 
 		if($this->user_id){
+			$where['user_id'] = $this->user_id;
 			$this->db->select('id,user_name,user_card,bank_id,mobi');
 		}
 		$order_by = array('updated_at' => 'desc');
