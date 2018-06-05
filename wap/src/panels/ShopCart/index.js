@@ -108,9 +108,9 @@ export default class ShopCart extends BaseComponent {
             let isChecked = false;
             storeList.forEach((storeItem, index) => {
                 storeItem.goods.forEach(item => {
-                    const { id, num } = item;
+                    const { goods_id, num } = item;
                     if (item.checked) {
-                        goods_num[id] = num;
+                        goods_num[goods_id] = num;
                         isChecked = true;
                     }
                 });
@@ -157,9 +157,9 @@ export default class ShopCart extends BaseComponent {
         let isChecked = false;
         storeList.forEach((storeItem, index) => {
             storeItem.goods.forEach(item => {
-                const { id } = item;
+                const { goods_id } = item;
                 if (item.checked) {
-                    goods_num[id] = 0;
+                    goods_num[goods_id] = 0;
                     isChecked = true;
                 }
             });
