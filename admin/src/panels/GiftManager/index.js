@@ -26,10 +26,10 @@ export default class GiftManager extends BaseComponent {
                 name: "金币",
                 id: "1"
             },
-            {
-                name: "积分",
-                id: "2"
-            }
+            // {
+            //     name: "积分",
+            //     id: "2"
+            // }
         ],
         total: 1
     };
