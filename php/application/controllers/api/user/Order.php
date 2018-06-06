@@ -383,6 +383,8 @@ class Order extends API_Controller {
 			$r_point_amount += $use_point_amount;
 			$r_point += $seller[$seller_id]['point'];
 
+			$now_time = time();
+
 			$this->db->trans_start();
 			$order = [
 				'pay_sn' => $pay_sn,
@@ -417,6 +419,7 @@ class Order extends API_Controller {
 					'default_image' => $item['default_image'],
 					'buyer_uid' => $this->user_id,
 					'seller_uid' => $seller_id,
+					'created_time' => $now_time
 				];
 			}
 			$this->db->insert_batch($this->Order_items_model->table(), $order_item);

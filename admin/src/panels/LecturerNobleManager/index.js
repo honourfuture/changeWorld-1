@@ -1,13 +1,31 @@
 import React from 'react';
 import {action} from 'mobx';
 import {BaseComponent,Base,Global} from '../../common';
-import { Table, Input,Popconfirm,Switch,Button,Spin,message ,Upload,Icon,} from 'antd';
+import { Table, Input,Popconfirm,Switch,Button,Spin,message ,Upload,Icon,Select} from 'antd';
 import './LecturerNobleManager.less';
 import {remove} from 'lodash';
-
+const Option = Select.Option;
 export default class LecturerNobleManager extends BaseComponent{
 	store={
 		list:[],
+		positionList:[
+			// {
+            //     name: "日",
+            //     id: "1"
+			// },
+			{
+                name: "月",
+                id: "2"
+			},
+			// {
+            //     name: "季",
+            //     id: "3"
+			// },
+			// {
+            //     name: "年",
+            //     id: "4"
+            // },
+		]
 	}
 	constructor(props) {
 		super(props);
@@ -55,7 +73,8 @@ export default class LecturerNobleManager extends BaseComponent{
 			{
 				title: '单位',
 				dataIndex: 'unit',
-				render: (text, record) => this.renderInput(text, record, 'unit'),
+				// render: (text, record) => this.renderInput(text, record, 'unit'),
+				render: (text, record) => this.renderSelect(text, record, "unit")
 			},
 			{
 				title: '启用',
@@ -104,7 +123,6 @@ export default class LecturerNobleManager extends BaseComponent{
 	}
 	renderImg(text,record,column){
 		const {editable,icon,loading} = record;
-		console.log(record);
 		return <div>
 			{editable?<Upload
 				name="field"
@@ -114,12 +132,39 @@ export default class LecturerNobleManager extends BaseComponent{
 				action={Global.UPLOAD_URL}
 				onChange={(e)=>this.onUploadChange(e,record.id)}
 			>
-				{icon?<img className='img-uploader' style={{width:'120px'}} src={icon} alt=''/>:<div>
+				{icon?<img className='img-uploader' style={{width:'120px'}} src={Base.getImgUrl(icon)} alt=''/>:<div>
 					<Icon type={loading ? 'loading' : 'plus'} />
 					<div className="ant-upload-text">上传</div>
 				</div>}
 			</Upload>:<img className='img-uploader'  style={{width:'120px'}} src={Base.getImgUrl(icon)} alt=''/>}
 		</div>
+	}
+	renderSelect(text, record, column){
+		const value = record[column];
+        const { positionList } = this.store;
+        let curIndex = positionList.findIndex(item => item.name === value);
+        curIndex = curIndex >= 0 ? curIndex : 0;
+        return (
+            <div>
+                {record.editable ? (
+                    <Select
+                        defaultValue={value || positionList[0].name}
+                        style={{ width: 120 }}
+                        onChange={value =>
+                            this.onEditChange(record.id, value, column)
+                        }
+                    >
+                        {positionList.map(({ id, name }) => (
+                            <Option key={id} value={id}>
+                                {name}
+                            </Option>
+                        ))}
+                    </Select>
+                ) : (
+                    positionList[curIndex].name
+                )}
+            </div>
+        );
 	}
 	renderSwitch(text,record,column){
 		return (
@@ -139,6 +184,7 @@ export default class LecturerNobleManager extends BaseComponent{
 	onSave(id) {
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
+		itemData.unit = ['日','月','季','年'][itemData.unit - 1];
 		Base.POST({act:'vip',op:'save',mod:'admin',...itemData},(res)=>{
 			itemData.editable = false;
 			itemData.updated_at = Base.getTimeFormat(new Date().getTime()/1000,2);

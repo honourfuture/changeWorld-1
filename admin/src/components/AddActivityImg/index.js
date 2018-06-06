@@ -147,6 +147,9 @@ class AddActivityImg extends BaseComponent{
 		        ]}
 			>
 				{items}
+				<FormItem className="baseForm" {...formItemLayout} label={<span style={{color:'#848484',fontSize:12}}>注</span>}>
+					<span style={{color:'#848484',fontSize:12}}>推荐尺寸为750 X 350的图片，显示效果最佳。</span>
+				</FormItem>
 			</Modal>
 		)
 	}

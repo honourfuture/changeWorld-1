@@ -62,7 +62,14 @@ export default class ActivityList extends BaseComponent{
 				dataIndex: 'is_recommend',
 				width: '10%',
 				render: (text, record) => this.renderSwitch(text, record, 'is_recommend'),
-			}, 
+			},
+			{
+                title: "热门商品",
+                dataIndex: "is_hot",
+                width: "10%",
+                render: (text, record) =>
+                    this.renderSwitch(text, record, "is_hot")
+            },
 			{
 				title: '操作',
 				dataIndex: 'operation',
@@ -103,11 +110,16 @@ export default class ActivityList extends BaseComponent{
 			</Upload>:<img className='img-uploader'  style={{width:'120px'}} src={Base.getImgUrl(icon)} alt=''/>}
 		</div>
 	}
-	renderSwitch(text,record,column){
-		return (
-			<Switch checked={parseInt(record.is_recommend,10)===1} onChange={(value)=>this.onSwitch(record.id,value?1:0,column)} />
-		)
-	}
+	renderSwitch(text, record, column) {
+        return (
+            <Switch
+                checked={parseInt(record[column], 10) === 1}
+                onChange={value =>
+                    this.onSwitch(record.id, value ? 1 : 0, column)
+                }
+            />
+        );
+    }
 	@action.bound
 	onRead(id,names){
 		this.refs.detail.show(id,names);
@@ -118,10 +130,14 @@ export default class ActivityList extends BaseComponent{
 	}
 	//保存
 	@action.bound
-	onSave(id,value) {
+	onSave(id,value,column) {
+		const recommend = {act:'activity',op:'recommend',mod:'admin',id:id,is_recommend:value};
+		const hot = {act:'activity',op:'hot',mod:'admin',id:id,is_hot:value};
+		const test = (column == 'is_hot') ? hot : recommend;
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
-		Base.POST({act:'activity',op:'recommend',mod:'admin',id:id,is_recommend:value},(res)=>{
+		Base.POST({...test},(res)=>{
+		// Base.POST({act:'activity',op:'recommend',mod:'admin',id:id,...test},(res)=>{
 			itemData.updated_at = Base.getTimeFormat(new Date().getTime()/1000,2);
 			itemData.id === 0 && (itemData.id = res.data.id);
 			this.store.list = list;
@@ -134,7 +150,7 @@ export default class ActivityList extends BaseComponent{
 		const list = this.store.list.slice();
 		const itemData = list.find(item=>id === item.id);
 		itemData[column] = value;
-		this.onSave(id,value);
+		this.onSave(id,value,column);
 	}
 	//上传
 	@action.bound

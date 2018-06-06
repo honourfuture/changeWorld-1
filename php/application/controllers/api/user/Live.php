@@ -349,12 +349,53 @@ class Live extends API_Controller {
 	public function init()
 	{
 		$this->load->model('Room_model');
-		$this->db->select('cover_image, title, live_class, slide_photo, price, city_partner_rate, two_level_rate');
+		$this->db->select('cover_image,title,live_class,slide_photo,price,city_partner_rate,two_level_rate,start_at');
 		if(!$info = $this->Room_model->get_by(['anchor_uid' => $this->user_id, 'type' => 2])){
 			$info = [];
 		}
 
 		$this->ajaxReturn($info);
+	}
+
+	/**
+	 * @api {get} /api/user/live/del 我的直播-删除预告
+	 * @apiVersion 1.0.0
+	 * @apiName live_del
+	 * @apiGroup user
+	 *
+	 * @apiSampleRequest /api/user/live/del
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 *  {
+	 *     "data": {
+	 *         },
+	 *         "album": 0,
+	 *         "work": 0
+	 *     },
+	 *     "status": 0,
+	 *     "message": "成功"
+	 * }
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+	public function del()
+	{
+		$this->load->model('Room_model');
+		//限定预告仅一个
+		$this->Room_model->delete_by(['anchor_uid' => $this->user_id, 'type' => 2]);
+		$this->ajaxReturn();
 	}
 
 	protected function check_add_params($act, $params)
