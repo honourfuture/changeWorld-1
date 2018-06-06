@@ -31,10 +31,16 @@ export default class LecturerNobleManager extends BaseComponent{
 		super(props);
 		this.columns = [
 			{
-				title: 'id',
-				dataIndex: 'id',
+				title: '排序',
+				dataIndex: 'sort',
 				width: '10%',
+				render: (text, record) => this.renderInput(text, record, 'sort'),
 			}, 
+			// {
+			// 	title: 'id',
+			// 	dataIndex: 'id',
+			// 	width: '10%',
+			// }, 
 			{
 				title: '等级',
 				dataIndex: 'name',
