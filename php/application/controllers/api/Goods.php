@@ -304,7 +304,7 @@ class Goods extends API_Controller {
 
 		//店家
 		$this->load->model('Users_model');
-		$this->db->select('nickname,v,header,summary');
+		$this->db->select('nickname,v,header,summary,address');
 		$ret['seller'] = $this->Users_model->get($info['seller_uid']);
 
 		//在售商品
@@ -318,6 +318,11 @@ class Goods extends API_Controller {
 		//收藏状态
 		$this->load->model('Users_collection_model');
 		$ret['favorite'] = $this->Users_collection_model->check_favorite($this->user_id, $goods_id, 40);
+
+		//月销量
+		$this->db->select('sum(num) as total');
+		$order_items = $this->Order_items_model->get_by(['goods_id' => $goods_id, 'created_time >' => strtotime('-30 days')]);
+		$ret['sale_num'] = $order_items ? $order_items['total'] : 0;
 
 		$this->ajaxReturn($ret);
 	}
