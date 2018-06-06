@@ -8,7 +8,10 @@ import { Hots } from "../../components/Hots";
 import { Vanity } from "../../components/Vanity";
 
 export default class ShopIndex extends BaseComponent {
-    store = { tabs: [], cartCount: 0, reddot: 0 };
+    store = { tabs: [], cartCount: 0, reddot: 0, keyword: "" };
+    onSearch(e) {
+        Base.sendEvt("com.shopindex.search", e);
+    }
     componentDidMount() {
         Base.GET({ act: "goods_class", op: "index" }, res => {
             const tabs = res.data.map(item => {
@@ -71,7 +74,10 @@ export default class ShopIndex extends BaseComponent {
                         </Flex>
                     }
                 >
-                    <SearchBar placeholder="商品或产品名称" />
+                    <SearchBar
+                        placeholder="商品或产品名称"
+                        onSubmit={this.onSearch}
+                    />
                 </NavBar>
                 <div className="nav-tabs">
                     <Tabs

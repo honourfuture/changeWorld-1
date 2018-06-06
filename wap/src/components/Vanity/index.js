@@ -101,15 +101,30 @@ export class Vanity extends BaseComponent {
     store = {
         ad: [],
         pretty: [],
-        pretty_count: []
+        pretty_count: [],
+        keyword: ""
     };
     componentDidMount() {
-        Base.GET({ act: "shop", op: "pretty_index" }, res => {
-            const { ad, pretty, pretty_count } = res.data;
-            this.store.ad = ad;
-            this.store.pretty = pretty;
-            this.store.pretty_count = pretty_count;
+        this.requestData();
+        Base.addEvt("com.shopindex.search", (evt, keyword) => {
+            this.store.keyword = keyword;
+            this.requestData();
         });
+    }
+    @action.bound
+    requestData() {
+        Base.GET(
+            { act: "shop", op: "pretty_index", keyword: this.store.keyword },
+            res => {
+                const { ad, pretty, pretty_count } = res.data;
+                this.store.ad = ad;
+                this.store.pretty = pretty;
+                this.store.pretty_count = pretty_count;
+            }
+        );
+    }
+    componentWillUnmount() {
+        Base.removeEvt("com.shopindex.search");
     }
     @action.bound
     onChange(tab, index) {

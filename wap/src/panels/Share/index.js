@@ -4,6 +4,11 @@ import { NavBar, Button, Flex, Toast } from "antd-mobile";
 import { icon, share } from "../../images";
 import "./Share.less";
 import { action } from "mobx";
+const { offsetWidth, offsetHeight } = document.body;
+const middleW = (offsetWidth * 625) / 1125;
+const middleH = (offsetHeight * 1150) / 2001;
+const middleL = (offsetWidth * 250) / 1125;
+const middleT = (offsetHeight * 250) / 2001;
 
 export default class Share extends BaseComponent {
     store = { point: 0, iosUrl: "", andoridUrl: "" };
@@ -47,16 +52,44 @@ export default class Share extends BaseComponent {
     }
     render() {
         const { point } = this.store;
+        let { type = 0, bg = "" } = Base.getPageParams();
+        bg = unescape(bg);
+        let middleCon = null;
+        // if (bg) {
+        middleCon = (
+            <div
+                className="middle-con"
+                style={{
+                    backgroundImage: `url(${bg})`,
+                    width: middleW,
+                    height: middleH,
+                    left: middleT,
+                    top: middleT,
+                    borderRadius: 40
+                }}
+            >
+                <img
+                    src={share.mobile_bg}
+                    style={{
+                        width: middleW,
+                        height: middleH
+                    }}
+                    alt=""
+                />
+            </div>
+        );
+        // }
         return (
             <div className="Share">
                 <div
-                    className="base-content content"
+                    className="content"
                     style={{
                         backgroundImage: `url(${
                             share["share_bg_" + this.type]
                         })`
                     }}
                 >
+                    {middleCon}
                     <div className="operation-con">
                         <div className="integral-con">
                             <Flex className="icon-con">
