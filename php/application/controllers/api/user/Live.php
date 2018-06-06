@@ -254,7 +254,7 @@ class Live extends API_Controller {
 			$this->input->post(),
 			UPDATE_VALID
 		);
-		if($params['start_at'] === '' || $params['start_at'] == UPDATE_VALID){
+		if($data['start_at'] === '' || $data['start_at'] == UPDATE_VALID){
 			$this->ajaxReturn([], 501, '请传入直播开始时间');
 		}
 
