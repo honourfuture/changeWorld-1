@@ -322,7 +322,7 @@ class Goods extends API_Controller {
 		//月销量
 		$this->db->select('sum(num) as total');
 		$order_items = $this->Order_items_model->get_by(['goods_id' => $goods_id, 'created_time >' => strtotime('-30 days')]);
-		$ret['sale_num'] = $order_items ? $order_items['total'] : 0;
+		$ret['sale_num'] = ($order_items && $order_items['total']) ? $order_items['total'] : 0;
 
 		$this->ajaxReturn($ret);
 	}
