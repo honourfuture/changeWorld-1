@@ -89,7 +89,7 @@ class Live extends API_Controller {
 	}
 
 	/**
-	 * @api {post} /api/user/live/add 我的直播-创建
+	 * @api {post} /api/user/live/add 我的直播-开始直播
 	 * @apiVersion 1.0.0
 	 * @apiName live_add
 	 * @apiGroup user
@@ -102,7 +102,6 @@ class Live extends API_Controller {
 	 * @apiParam {String} title 标题
 	 * @apiParam {String} live_class 直播类型
 	 * @apiParam {String} slide_photo 幻灯片 json
-	 * @apiParam {Number} start_at 开始时间 time 1519707307
 	 * @apiParam {Number} price 门票价格
 	 * @apiParam {Number} city_partner_rate 城市分销比例
 	 * @apiParam {Number} two_level_rate 二级分销比例
@@ -138,7 +137,7 @@ class Live extends API_Controller {
 	{
 		$data = elements(
 			array(
-				'cover_image', 'title', 'live_class', 'slide_photo', 'start_at',
+				'cover_image', 'title', 'live_class', 'slide_photo',
 				'price', 'city_partner_rate', 'two_level_rate'
 			),
 			$this->input->post(),
@@ -146,6 +145,8 @@ class Live extends API_Controller {
 		);
 
 		$data['anchor_uid'] = $this->user_id;
+		$data['start_at'] = time();
+		$data['type'] = 1;
 		$this->check_add_params('add', $data);
 		$this->load->model('Room_model');
 		if($id = $this->Room_model->insert($data)){
@@ -197,18 +198,175 @@ class Live extends API_Controller {
 		}
 	}
 
+	/**
+	 * @api {post} /api/user/live/preview 我的直播-预告
+	 * @apiVersion 1.0.0
+	 * @apiName live_preview
+	 * @apiGroup user
+	 *
+	 * @apiSampleRequest /api/user/live/preview
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 * @apiParam {String} cover_image 封面图
+	 * @apiParam {String} title 标题
+	 * @apiParam {String} live_class 直播类型
+	 * @apiParam {String} slide_photo 幻灯片 json
+	 * @apiParam {Number} start_at 开始时间 time 1519707307
+	 * @apiParam {Number} price 门票价格
+	 * @apiParam {Number} city_partner_rate 城市分销比例
+	 * @apiParam {Number} two_level_rate 二级分销比例
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集
+	 * @apiSuccess {Number} data.room_id 房间号
+	 * @apiSuccess {Number} data.chat_room_id 聊天室ID
+	 * @apiSuccess {String} data.push_url 推送地址
+	 * @apiSuccess {Object} data.play_url 播放地址
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *    "data": {
+	 *		  "chat_room_id": 1,
+	 *        "room_id": 1,
+	 *        "push_url": "rtmp://6077.livepush.myqcloud.com/live/6077_zhumaidan-1-2?bizid=6077&txSecret=cbe8817ff9e6185dd783b09c99ea9f20&txTime=5A7AF498",
+	 *        "play_url": "{\"rtmp\":\"rtmp:\\/\\/6077.liveplay.myqcloud.com\\/live\\/6077_zhumaidan-1-2\",\"flv\":\"http:\\/\\/6077.liveplay.myqcloud.com\\/live\\/6077_zhumaidan-1-2.flv\",\"m3u8\":\"http:\\/\\/6077.liveplay.myqcloud.com\\/live\\/6077_zhumaidan-1-2.m3u8\"}"
+	 *    },
+	 *    "status": 0,
+	 *    "message": "成功"
+	 * }
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+	public function preview()
+	{
+		$data = elements(
+			array(
+				'cover_image', 'title', 'live_class', 'slide_photo', 'start_at',
+				'price', 'city_partner_rate', 'two_level_rate'
+			),
+			$this->input->post(),
+			UPDATE_VALID
+		);
+		if($params['start_at'] === '' || $params['start_at'] == UPDATE_VALID){
+			$this->ajaxReturn([], 501, '请传入直播开始时间');
+		}
+
+		$data['anchor_uid'] = $this->user_id;
+		$data['type'] = 2;
+		$this->check_add_params('preview', $data);
+		$this->load->model('Room_model');
+		//限定预告仅一个
+		$this->Room_model->delete_by(['anchor_uid' => $this->user_id, 'type' => 2]);
+		if($id = $this->Room_model->insert($data)){
+			//直播
+			$QLive = new Query();
+	        $config = config_item('live');
+	        $QLive->setAppInfo($config['appid'], $config['api_key'], $config['push_key'], $config['bizid']);
+	        $channel_id = $this->Room_model->channel_id($this->user_id, $id);
+	        $play_url = $QLive->getPlayUrl($channel_id);
+	        $update = array(
+	        	'push_url' => $QLive->getPushUrl($channel_id).'&record=aac&record_interval=5400&record_type=audio',
+	        	'play_url' => json_encode($play_url)
+	        );
+	        //融云
+	        $config = config_item('rongcloud');
+        	$rongCloud = new RongCloud($config['app_key'], $config['app_secret']);
+        	//聊天室
+	        $update['chat_room_id'] = 0;
+        	$chat_room_id = $id;
+        	$response = $rongCloud->Chatroom()->create([$chat_room_id => $data['title']]);
+        	if($response && $result = json_decode($response, true)){
+        		if($result['code'] == 200){
+        			$update['chat_room_id'] = $chat_room_id;
+        		}
+        	}
+        	//token
+        	/*$token = '';
+        	$user = $this->get_user();
+        	$this->load->model('Users_model');
+        	$response = $rongCloud->user()->getToken(
+        		$this->user_id,
+        		$user['nickname'],
+        		$this->Users_model->get_header($user['header'])
+        	);
+        	if($response && $result = json_decode($response, true)){
+        		if($result['code'] == 200){
+        			$token = $result['token'];
+        		}
+        	}*/
+
+	        $this->Room_model->update($id, $update);
+
+	        $update['room_id'] = $id;
+	        $update['play_url'] = $play_url;
+	        // $update['token'] = $token;
+			$this->ajaxReturn($update);
+		}else{
+			$this->ajaxReturn([], 1, '创建房间失败');
+		}
+	}
+
+	/**
+	 * @api {get} /api/user/live/init 我的直播-获取预告
+	 * @apiVersion 1.0.0
+	 * @apiName live_init
+	 * @apiGroup user
+	 *
+	 * @apiSampleRequest /api/user/live/init
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 *  {
+	 *     "data": {
+	 *         },
+	 *         "album": 0,
+	 *         "work": 0
+	 *     },
+	 *     "status": 0,
+	 *     "message": "成功"
+	 * }
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+	public function init()
+	{
+		$this->load->model('Room_model');
+		$this->db->select('cover_image', 'title', 'live_class', 'slide_photo', 'price', 'city_partner_rate', 'two_level_rate');
+		if(!$info = $this->Room_model->get_by(['anchor_uid' => $this->user_id, 'type' => 2])){
+			$info = [];
+		}
+
+		$this->ajaxReturn($info);
+	}
+
 	protected function check_add_params($act, $params)
 	{
 		switch($act){
 			case 'add':
+			case 'preview':
 				if($params['cover_image'] === '' || $params['cover_image'] == UPDATE_VALID){
 					$this->ajaxReturn([], 501, '请上传直播封面图');
 				}
 				if($params['title'] === '' || $params['title'] == UPDATE_VALID){
 					$this->ajaxReturn([], 501, '请输入直播标题');
-				}
-				if($params['start_at'] === '' || $params['start_at'] == UPDATE_VALID){
-					$this->ajaxReturn([], 501, '请传入直播开始时间');
 				}
 				break;
 			case 'save':

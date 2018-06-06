@@ -206,6 +206,105 @@
   },
   {
     "type": "post",
+    "url": "/api/admin/activity/hot",
+    "title": "活动-热门设置",
+    "version": "1.0.0",
+    "name": "activity_hot",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/admin/activity/hot"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "admin_id",
+            "description": "<p>管理员唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account",
+            "description": "<p>登录账号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>活动ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "is_hot",
+            "description": "<p>推荐 0否 1是</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": \"\",\n\t    \"status\": 0,\n\t    \"message\": \"\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Activity.php",
+    "groupTitle": "admin"
+  },
+  {
+    "type": "post",
     "url": "/api/admin/activity/img",
     "title": "活动-广告设置",
     "version": "1.0.0",
@@ -6998,7 +7097,7 @@
             "type": "Number",
             "optional": false,
             "field": "activity_class_id",
-            "description": "<p>活动分类ID</p>"
+            "description": "<p>活动分类ID 0表示热门</p>"
           }
         ]
       }
@@ -19746,7 +19845,7 @@
   {
     "type": "post",
     "url": "/api/user/live/add",
-    "title": "我的直播-创建",
+    "title": "我的直播-开始直播",
     "version": "1.0.0",
     "name": "live_add",
     "group": "user",
@@ -19799,13 +19898,6 @@
             "optional": false,
             "field": "slide_photo",
             "description": "<p>幻灯片 json</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "start_at",
-            "description": "<p>开始时间 time 1519707307</p>"
           },
           {
             "group": "Parameter",
@@ -20460,6 +20552,246 @@
       ]
     },
     "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Live_audio.php",
+    "groupTitle": "user"
+  },
+  {
+    "type": "get",
+    "url": "/api/user/live/init",
+    "title": "我的直播-获取预告",
+    "version": "1.0.0",
+    "name": "live_init",
+    "group": "user",
+    "sampleRequest": [
+      {
+        "url": "/api/user/live/init"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " {\n    \"data\": {\n        },\n        \"album\": 0,\n        \"work\": 0\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Live.php",
+    "groupTitle": "user"
+  },
+  {
+    "type": "post",
+    "url": "/api/user/live/preview",
+    "title": "我的直播-预告",
+    "version": "1.0.0",
+    "name": "live_preview",
+    "group": "user",
+    "sampleRequest": [
+      {
+        "url": "/api/user/live/preview"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "cover_image",
+            "description": "<p>封面图</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>标题</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "live_class",
+            "description": "<p>直播类型</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "slide_photo",
+            "description": "<p>幻灯片 json</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "start_at",
+            "description": "<p>开始时间 time 1519707307</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "price",
+            "description": "<p>门票价格</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "city_partner_rate",
+            "description": "<p>城市分销比例</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "two_level_rate",
+            "description": "<p>二级分销比例</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "data.room_id",
+            "description": "<p>房间号</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "data.chat_room_id",
+            "description": "<p>聊天室ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.push_url",
+            "description": "<p>推送地址</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data.play_url",
+            "description": "<p>播放地址</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n   \"data\": {\n\t\t  \"chat_room_id\": 1,\n       \"room_id\": 1,\n       \"push_url\": \"rtmp://6077.livepush.myqcloud.com/live/6077_zhumaidan-1-2?bizid=6077&txSecret=cbe8817ff9e6185dd783b09c99ea9f20&txTime=5A7AF498\",\n       \"play_url\": \"{\\\"rtmp\\\":\\\"rtmp:\\\\/\\\\/6077.liveplay.myqcloud.com\\\\/live\\\\/6077_zhumaidan-1-2\\\",\\\"flv\\\":\\\"http:\\\\/\\\\/6077.liveplay.myqcloud.com\\\\/live\\\\/6077_zhumaidan-1-2.flv\\\",\\\"m3u8\\\":\\\"http:\\\\/\\\\/6077.liveplay.myqcloud.com\\\\/live\\\\/6077_zhumaidan-1-2.m3u8\\\"}\"\n   },\n   \"status\": 0,\n   \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Live.php",
     "groupTitle": "user"
   },
   {
