@@ -21,6 +21,6 @@ class Goods_model extends MY_Model
 
     public function init_send_mode()
     {
-    	return array('卖家发货', '上门自提', '不用发货');
+    	return array('卖家发货', '上门自提', '虚拟产品，自动发货');
     }
 }

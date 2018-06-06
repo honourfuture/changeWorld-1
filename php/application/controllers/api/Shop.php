@@ -10,6 +10,7 @@ class Shop extends API_Controller {
 	public function __construct()
     {
         parent::__construct();
+        $this->keyword = trim($this->input->get_post('keyword'));
     }
 
     /**
@@ -142,6 +143,14 @@ class Shop extends API_Controller {
 			$where['goods_class_id'] = $goods_class_id;
 		}
 		$this->db->select('id,default_image,name,sale_price');
+		if($this->keyword){
+			$this->db->group_start();
+			$this->db->like('name', $this->keyword);
+			if(is_numeric($this->keyword)){
+				$this->db->or_where('id', $this->keyword);
+			}
+			$this->db->group_end();
+		}
 		return $this->Goods_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 	}
 
@@ -282,6 +291,12 @@ class Shop extends API_Controller {
 			$where['pretty_count'] = $pretty_count;
 		}else{
 			$where['is_pretty'] = 1;
+		}
+
+		if($this->keyword){
+			$this->db->group_start();
+			$this->db->like('pretty_id', $this->keyword);
+			$this->db->group_end();
 		}
 		$this->db->select('id,pretty_id,price');
 		return $this->Pretty_model->order_by($order_by)->get_many_by($where);//->limit($this->per_page, $this->offset)
