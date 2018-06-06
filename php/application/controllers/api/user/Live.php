@@ -349,7 +349,7 @@ class Live extends API_Controller {
 	public function init()
 	{
 		$this->load->model('Room_model');
-		$this->db->select('cover_image', 'title', 'live_class', 'slide_photo', 'price', 'city_partner_rate', 'two_level_rate');
+		$this->db->select('cover_image, title, live_class, slide_photo, price, city_partner_rate, two_level_rate');
 		if(!$info = $this->Room_model->get_by(['anchor_uid' => $this->user_id, 'type' => 2])){
 			$info = [];
 		}
