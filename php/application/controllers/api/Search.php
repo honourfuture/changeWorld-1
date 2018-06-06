@@ -220,6 +220,12 @@ class Search extends API_Controller {
 				$this->db->like('title', $this->keyword);
 				$a_user && $this->db->or_where_in('anchor_uid', $a_user);
 				$this->db->group_end();
+
+                if(is_numeric($this->keyword)){
+                    $this->db->or_group_start();
+                    $this->db->where('id', $this->keyword);
+                    $this->db->group_end();
+                }
                 $online = $this->Room_model->order_by($order_by)->get_all();
             }
         }
