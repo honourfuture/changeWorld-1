@@ -112,7 +112,7 @@ class Activity extends API_Controller
      *
      * @apiParam {Number} user_id 用户唯一ID
      * @apiParam {String} sign 校验签名
-     * @apiParam {Number} activity_class_id 活动分类ID
+     * @apiParam {Number} activity_class_id 活动分类ID 0表示热门
      *
      * @apiSuccess {Number} status 接口状态 0成功 其他异常
      * @apiSuccess {String} message 接口信息描述
@@ -162,15 +162,19 @@ class Activity extends API_Controller
         $ret = array('recommend' => [], 'count' => 0, 'list' => array());
 
         $activity_class_id = (int)$this->input->get_post('activity_class_id');
-        if($activity_class_id){
+        // if($activity_class_id){
             $this->load->model('Activity_model');
             $now_time = time();
             $common_where = array(
                 'enable' => 1,
-                'activity_class' => $activity_class_id,
                 'time_start <' => $now_time,
                 'time_end >' => $now_time
             );
+            if($activity_class_id){
+                $common_where['activity_class'] = $activity_class_id;
+            }else{
+                $common_where['is_hot'] = 1;
+            }
             //推荐
             $where = $common_where;
             $where['is_recommend'] = 1;
@@ -213,9 +217,9 @@ class Activity extends API_Controller
                 $this->Activity_model->common($ret);
             }
             $this->ajaxReturn($ret);
-        }else{
+        /*}else{
             $this->ajaxReturn([], 1, '活动分类ID错误');
-        }
+        }*/
     }
 
     /**

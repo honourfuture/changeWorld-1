@@ -132,6 +132,49 @@ class Activity extends API_Controller {
 	}
 
 	/**
+	 * @api {post} /api/admin/activity/hot 活动-热门设置
+	 * @apiVersion 1.0.0
+	 * @apiName activity_hot
+	 * @apiGroup admin
+	 *
+	 * @apiSampleRequest /api/admin/activity/hot
+	 *
+	 * @apiParam {Number} admin_id 管理员唯一ID
+	 * @apiParam {String} account 登录账号
+	 * @apiParam {String} sign 校验签名
+	 * @apiParam {Number} id 活动ID
+	 * @apiParam {Number} is_hot 推荐 0否 1是
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {String} data 接口数据集
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *	    "data": "",
+	 *	    "status": 0,
+	 *	    "message": ""
+	 *	}
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+	public function hot()
+	{
+		$id = (int)$this->input->get_post('id');
+		$is_hot = (int)$this->input->get_post('is_hot');
+		if($this->Activity_model->update($id, ['is_hot' => $is_hot])){
+			$this->ajaxReturn();
+		}else{
+			$this->ajaxReturn([], 1, '操作失败');
+		}
+	}
+
+	/**
 	 * @api {post} /api/admin/activity/img 活动-广告设置
 	 * @apiVersion 1.0.0
 	 * @apiName activity_img
