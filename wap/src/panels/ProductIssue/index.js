@@ -25,6 +25,7 @@ const alert = Modal.alert;
 class ImgItem extends BaseComponent {
     @action.bound
     onChangeImg(files, type, index) {
+        console.log(files, type, index);
         const { callBack } = this.props;
         if (type === "add") {
             const requestFile = files[files.length - 1];
@@ -36,7 +37,8 @@ class ImgItem extends BaseComponent {
                 },
                 res => {
                     requestFile.file_url = res.data.file_url;
-                    callBack && callBack(files);
+                    this.props.fileName.push(requestFile);
+                    // callBack && callBack(files);
                 }
             );
         } else {
@@ -56,7 +58,7 @@ class ImgItem extends BaseComponent {
                     onChange={this.onChangeImg}
                     onImageClick={(index, fs) => console.log(index, fs)}
                     selectable={fileName.length < 8}
-                    // multiple={true}
+                    multiple={true}
                 />
                 <div className="upImgTips">最多可上传8张图片</div>
             </div>
@@ -448,7 +450,7 @@ class ProductIssue extends BaseComponent {
                             moneyKeyboardAlign="right"
                             extra="%"
                         >
-                            二级分销比例
+                            联盟商
                         </InputItem>
                     </List>
                     <WhiteSpace />

@@ -71,7 +71,7 @@ export default class ShopIndex extends BaseComponent {
                         </Flex>
                     }
                 >
-                    <SearchBar placeholder="请输入昵称或ID" />
+                    <SearchBar placeholder="商品或产品名称" />
                 </NavBar>
                 <div className="nav-tabs">
                     <Tabs

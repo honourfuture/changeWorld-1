@@ -15,6 +15,8 @@ import {
 import "./GoodsDetail.less";
 import { icon } from "../../images";
 
+const wDevice = document.body.offsetWidth;
+
 class EvaluateItem extends BaseComponent {
     render() {
         const { header, nickname, remark } = this.props;
@@ -424,7 +426,17 @@ export default class GoodsDetail extends BaseComponent {
                             alt=""
                         />
                     ]}
-                />
+                >
+                    <div
+                        className="ellipsis"
+                        style={{
+                            width: (1 / 3) * wDevice,
+                            textAlign: "center"
+                        }}
+                    >
+                        {name}
+                    </div>
+                </NavBar>
                 <div className="base-content">
                     <Carousel autoplay={true} infinite>
                         {goodsImgs}
@@ -537,7 +549,7 @@ export default class GoodsDetail extends BaseComponent {
                                     Base.pushApp("openShopView", seller_uid)
                                 }
                             >
-                                <div className="right-des">讲师店铺</div>
+                                <div className="right-des">TA的店铺</div>
                                 <Icon type="right" color="#c9c9c9" />
                             </Flex>
                         </Flex>

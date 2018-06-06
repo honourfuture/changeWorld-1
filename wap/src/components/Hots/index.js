@@ -7,6 +7,7 @@ import "./Hots.less";
 
 import { GoodsItem } from "../../components/GoodsList";
 import { test } from "../../images";
+const height = document.body.offsetHeight - 88;
 export class Hots extends BaseComponent {
     constructor(props) {
         super(props);
@@ -37,17 +38,18 @@ export class Hots extends BaseComponent {
                 this.store.ad = res.data.ad;
                 this.store.goods = res.data.goods;
                 this.store.anchor = res.data.anchor;
-                this.setListHeight();
+                // this.setListHeight();
             }
         );
     }
-    @action.bound
-    setListHeight() {
-        this.store.height =
-            document.documentElement.clientHeight -
-            ReactDOM.findDOMNode(this.listView).offsetTop -
-            88;
-    }
+    // @action.bound
+    // setListHeight() {
+    //     this.store.height =
+    //         document.documentElement.clientHeight -
+    //         ReactDOM.findDOMNode(this.listView).offsetTop -
+    //         88;
+    //     console.log(this.store.height);
+    // }
     @action.bound
     renderGoodsItem(rowData, sectionID, rowID) {
         return <GoodsItem {...rowData} />;
@@ -94,11 +96,11 @@ export class Hots extends BaseComponent {
         this.requestData();
     }
     render() {
-        const { goods, refreshing, height, isLoading, ad } = this.store;
+        const { goods, refreshing, isLoading, ad } = this.store;
         const dataSource = this.dataSource.cloneWithRows(goods.slice());
         return (
             <div className="Hots base-content">
-                {ad.length > 0 ? (
+                {/* {ad.length > 0 ? (
                     <Carousel autoplay={true} infinite>
                         {ad.map(({ image, link }, index) => (
                             <NetImg
@@ -110,16 +112,33 @@ export class Hots extends BaseComponent {
                             />
                         ))}
                     </Carousel>
-                ) : null}
-                <WhiteSpace size="md" />
+                ) : null} */}
+                {/* <WhiteSpace size="md" />
                 <div className="anchor-recommend">
                     <span>主播推荐</span>
-                </div>
-                <WhiteSpace size="md" />
+                </div> */}
+                {/* <WhiteSpace size="md" /> */}
                 <ListView
                     ref={el => (this.listView = el)}
                     style={{ height }}
                     dataSource={dataSource}
+                    renderHeader={() =>
+                        ad.length > 0 ? (
+                            <Carousel autoplay={true} infinite>
+                                {ad.map(({ image, link }, index) => (
+                                    <NetImg
+                                        key={index}
+                                        onClick={() => Base.push(link)}
+                                        src={Base.getImgUrl(image)}
+                                        style={{
+                                            width: "100%",
+                                            height: "auto"
+                                        }}
+                                    />
+                                ))}
+                            </Carousel>
+                        ) : null
+                    }
                     renderRow={this.renderGoodsItem}
                     renderFooter={() => (
                         <div style={{ padding: 15, textAlign: "center" }}>
