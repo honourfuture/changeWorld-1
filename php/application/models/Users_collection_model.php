@@ -26,7 +26,7 @@ class Users_collection_model extends MY_Model
             case 20://已购声音
             case 30://喜欢
                 $this->load->model('Room_audio_model');
-                $this->db->select('id,cover_image,price,title,created_at,duration,video_url,play_times');
+                $this->db->select('id,cover_image,price,title,created_at,duration,video_url,play_times,album_id');
                 $audio = $this->Room_audio_model->get_many($a_id);
                 if($audio){
                     foreach($audio as $key=>$item){
