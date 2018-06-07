@@ -155,14 +155,14 @@ export default class ActivifyShare extends BaseComponent {
         const { id, vote } = enter;
         return (
             <div className="ActivifyShare">
-                <NavBar
+                {/* <NavBar
                     className="base-line"
                     mode="light"
                     icon={<img src={icon.back} alt="" />}
                     onLeftClick={Base.goBack}
                 >
                     活动分享
-                </NavBar>
+                </NavBar> */}
                 <div className="base-content">
                     <div className="share_box">
                         <div className="share_box_brank">猪买单</div>
