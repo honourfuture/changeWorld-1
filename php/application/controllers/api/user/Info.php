@@ -155,6 +155,10 @@ class Info extends API_Controller {
 			'sex' => $user['sex'],
 		);
 
+		$this->load->model('Grade_model');
+		$grade = $this->Grade_model->exp_to_grade($user['exp']);
+		$ret['lv'] = $grade['grade_name'];
+
 		$this->load->model('Users_vip_model');
 		$ret['vip'] = $this->Users_vip_model->vip_info($user['id']);
 
