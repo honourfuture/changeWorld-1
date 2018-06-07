@@ -20,10 +20,19 @@ export class Hots extends BaseComponent {
             refreshing: false,
             height: 0,
             isLoading: false,
-            ad: []
+            ad: [],
+            keyword: ""
         };
     }
+    componentWillUnmount() {
+        Base.removeEvt("com.shopindex.search");
+    }
     componentDidMount() {
+        Base.addEvt("com.shopindex.search", (evt, keyword) => {
+            this.store.keyword = keyword;
+            this.cur_page = 1;
+            this.requestData();
+        });
         const { id, is_hot } = this.props;
         Base.GET(
             {
@@ -64,7 +73,8 @@ export class Hots extends BaseComponent {
                 goods_class_id: id,
                 is_hot,
                 cur_page: this.cur_page || 1,
-                per_page: Global.PAGE_SIZE
+                per_page: Global.PAGE_SIZE,
+                keyword: this.store.keyword
             },
             res => {
                 const { goods } = res.data;

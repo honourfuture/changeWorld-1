@@ -50,7 +50,8 @@ export const share = {
     share_bg_0: require("./share/share_bg_0.png"),
     share_bg_1: require("./share/share_bg_1.png"),
     share_bg_2: require("./share/share_bg_2.png"),
-    share_bg_3: require("./share/share_bg_3.png")
+    share_bg_3: require("./share/share_bg_3.png"),
+    mobile_bg: require("./share/mobile_bg.png")
 };
 
 export const defaultImg = require("./default.png");
@@ -60,7 +61,7 @@ export const activify = {
     activify_02: require("./activify/activify_02.jpg"),
     activify_03: require("./activify/activify_03.jpg"),
     activify_04: require("./activify/activify_04.jpg"),
-    activify_05: require("./activify/activify_05.jpg"),
+    activify_05: require("./activify/activify_05.jpg")
 };
 // export const test = {
 //     test1: require("./test/1.jpg"),

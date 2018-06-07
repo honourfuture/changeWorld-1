@@ -164,7 +164,8 @@ export default class GoodsDetail extends BaseComponent {
         goods_attr: {},
         goods_info: {},
         seller: {},
-        address: []
+        address: [],
+        sale_num: 0
     };
     componentDidMount() {
         const { id } = Base.getPageParams();
@@ -175,7 +176,8 @@ export default class GoodsDetail extends BaseComponent {
                 goods_attr,
                 goods_info,
                 seller,
-                favorite
+                favorite,
+                sale_num
             } = res.data;
             this.store.evaluate = evaluate;
             this.store.goods = goods;
@@ -183,6 +185,7 @@ export default class GoodsDetail extends BaseComponent {
             this.store.goods_info = goods_info;
             this.store.seller = seller;
             this.store.favorite = favorite;
+            this.store.sale_num = sale_num || "0";
             Base.GET(
                 { act: "address", op: "index" },
                 res => {
@@ -310,7 +313,8 @@ export default class GoodsDetail extends BaseComponent {
             goods = {},
             goods_info = {},
             seller = {},
-            address = []
+            address = [],
+            sale_num
         } = this.store;
         let {
             goods_image = "",
@@ -405,6 +409,7 @@ export default class GoodsDetail extends BaseComponent {
         //     }
         // }
         const chatData = { ...seller, id: seller_uid };
+        const seller_address = seller.address || "";
         return (
             <div className="GoodsDetail">
                 <NavBar
@@ -434,7 +439,7 @@ export default class GoodsDetail extends BaseComponent {
                             textAlign: "center"
                         }}
                     >
-                        {name}
+                        商品详情
                     </div>
                 </NavBar>
                 <div className="base-content">
@@ -454,6 +459,24 @@ export default class GoodsDetail extends BaseComponent {
                             ) : null}
                             {name}
                         </div>
+                        <Flex
+                            style={{
+                                fontSize: 13,
+                                color: "#999",
+                                marginTop: 10
+                            }}
+                        >
+                            <Flex style={{ marginRight: 20 }}>
+                                <div>月销量：</div>
+                                <div style={{ color: "red" }}>{sale_num}</div>
+                                <div>笔</div>
+                            </Flex>
+                            {seller_address ? (
+                                <Flex>
+                                    <div>{seller_address}</div>
+                                </Flex>
+                            ) : null}
+                        </Flex>
                     </div>
                     <div className="discounts-con">
                         {goodsTickets}

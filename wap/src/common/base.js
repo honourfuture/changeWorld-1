@@ -8,7 +8,7 @@
 import { action, observable, useStrict } from "mobx";
 import { observer } from "mobx-react";
 import { Component } from "react";
-// import {PubSub} from 'pubsub-js';
+import { PubSub } from "pubsub-js";
 import Global from "./global";
 import { Toast } from "antd-mobile";
 import reqwest from "reqwest";
@@ -294,19 +294,19 @@ export const Base = {
     //清除本地数据
     removeLocalData(s_storageName) {
         Store.remove(s_storageName);
+    },
+    //监听事件
+    addEvt(name, func) {
+        PubSub.subscribe(name, func);
+    },
+    //移除事件
+    removeEvt(name) {
+        PubSub.unsubscribe(name);
+    },
+    //发送事件
+    sendEvt(name, data) {
+        PubSub.publish(name, data);
     }
-    // //监听事件
-    // addEvt(name,func){
-    // 	PubSub.subscribe(name,func);
-    // },
-    // //移除事件
-    // removeEvt(name){
-    // 	PubSub.unsubscribe(name);
-    // },
-    // //发送事件
-    // sendEvt(name,data){
-    // 	PubSub.publish(name,data);
-    // }
 };
 window.goBack = Base.goBack;
 //基础组件，内置store
