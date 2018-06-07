@@ -34,10 +34,32 @@ export default class ActivifyShare extends BaseComponent {
     };
     @action.bound
     setTime(value) {
-        const h = parseInt(value / 3600);
-        const m = parseInt((value % 3600) / 60);
-        const s = parseInt(value % 60);
+        // const h = parseInt(value / 3600);
+        // const m = parseInt((value % 3600) / 60);
+        // const s = parseInt(value % 60);
+        // this.store.time = { h, m, s };
+        const h = parseInt(value / 3600 / 24); //天
+        const m = parseInt((value % (3600 * 24)) / 3600); //小时
+        const s = parseInt((value % 3600) / 60); //分
         this.store.time = { h, m, s };
+    }
+    onDown() {
+        Base.GET({ act: "share", op: "index" }, res => {
+            const { app } = res.data;
+            // const iosUrl = (
+            //     (app || []).find(item => parseInt(item.platform, 10) === 0) ||
+            //     {}
+            // ).url;
+            // const andoridUrl = (
+            //     (app || []).find(item => parseInt(item.platform, 10) === 1) ||
+            //     {}
+            // ).url;
+            // if (Base.isIos) {
+            //     window.location.href = iosUrl || "";
+            // } else {
+            //     window.location.href = andoridUrl || "";
+            // }
+        });
     }
     @action.bound
     onVote() {
@@ -143,7 +165,7 @@ export default class ActivifyShare extends BaseComponent {
                 </NavBar>
                 <div className="base-content">
                     <div className="share_box">
-                        <div className="share_box_brank">{title}</div>
+                        <div className="share_box_brank">猪买单</div>
                         <div className="share_box_user">
                             <Flex className="user_box">
                                 <img
@@ -167,7 +189,11 @@ export default class ActivifyShare extends BaseComponent {
                                 justify="center"
                                 className="u_big_img"
                             >
-                                <img src={icon.logo} className="u_img" alt="" />
+                                <img
+                                    src={Base.getImgUrl(header)}
+                                    className="u_img"
+                                    alt=""
+                                />
                             </Flex>
                         </div>
                     </div>
@@ -212,9 +238,10 @@ export default class ActivifyShare extends BaseComponent {
                             >
                                 距结束仅剩：<span className="countDown">
                                     {h}
-                                </span>:<span className="countDown">{m}</span>:<span className="countDown">
+                                </span>天<span className="countDown">{m}</span>小时<span className="countDown">
                                     {s}
                                 </span>
+                                <span>分</span>
                             </Flex>
                         </div>
                         <div className="story_box">
@@ -307,29 +334,46 @@ export default class ActivifyShare extends BaseComponent {
                             />
                             <List className="my-list">
                                 <Item
-                                    extra={user_name}
+                                    // extra={user_name}
                                     // arrow="horizontal"
                                     onClick={() => {}}
                                 >
-                                    活动发起人
+                                    活动发起：
+                                    <span style={{ color: "#333" }}>
+                                        {user_name}
+                                    </span>
                                 </Item>
                             </List>
                             <List className="my-list">
-                                <Item extra={Base.getTimeFormat(time_end)}>
-                                    截止日期
+                                <Item>
+                                    截止日期：
+                                    <span style={{ color: "#333" }}>
+                                        还剩<span className="countDown nobg">
+                                            {h}
+                                        </span>天<span className="countDown nobg">
+                                            {m}
+                                        </span>小时<span className="countDown nobg">
+                                            {s}
+                                        </span>
+                                        <span>分</span>
+                                    </span>
                                 </Item>
                             </List>
                             <List className="my-list">
-                                <Item extra={rule}>投票规则</Item>
+                                <Item>
+                                    投票规则：<span style={{ color: "#333" }}>
+                                        {rule}
+                                    </span>
+                                </Item>
                             </List>
                         </div>
                     </div>
-                    {/* <Flex className="footer">
+                    <Flex className="footer" onClick={this.onDown}>
                         <Flex.Item className="footerItem issueBtn">
                             发布活动
                         </Flex.Item>
                         <Flex.Item className="footerItem">参加活动</Flex.Item>
-                    </Flex> */}
+                    </Flex>
                 </div>
             </div>
         );

@@ -55,30 +55,30 @@ export default class Share extends BaseComponent {
         let { type = 0, bg = "" } = Base.getPageParams();
         bg = unescape(bg);
         let middleCon = null;
-        // if (bg) {
-        middleCon = (
-            <div
-                className="middle-con"
-                style={{
-                    backgroundImage: `url(${bg})`,
-                    width: middleW,
-                    height: middleH,
-                    left: middleT,
-                    top: middleT,
-                    borderRadius: 40
-                }}
-            >
-                <img
-                    src={share.mobile_bg}
+        if (bg) {
+            middleCon = (
+                <div
+                    className="middle-con"
                     style={{
+                        backgroundImage: `url(${bg})`,
                         width: middleW,
-                        height: middleH
+                        height: middleH,
+                        left: middleT,
+                        top: middleT,
+                        borderRadius: 40
                     }}
-                    alt=""
-                />
-            </div>
-        );
-        // }
+                >
+                    <img
+                        src={share.mobile_bg}
+                        style={{
+                            width: middleW,
+                            height: middleH
+                        }}
+                        alt=""
+                    />
+                </div>
+            );
+        }
         return (
             <div className="Share">
                 <div
