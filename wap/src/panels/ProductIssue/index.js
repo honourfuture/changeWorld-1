@@ -61,6 +61,7 @@ class ImgItem extends BaseComponent {
                     multiple={true}
                 />
                 <div className="upImgTips">最多可上传8张图片</div>
+                <div className="upImgTips">注：推荐尺寸为640*640的图片</div>
             </div>
         );
     }
