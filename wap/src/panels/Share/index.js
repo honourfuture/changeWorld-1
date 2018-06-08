@@ -6,9 +6,11 @@ import "./Share.less";
 import { action } from "mobx";
 const { offsetWidth, offsetHeight } = document.body;
 const middleW = (offsetWidth * 625) / 1125;
-const middleH = (offsetHeight * 1150) / 2001;
+const middleH = (offsetHeight * 1150) / 1860;
 const middleL = (offsetWidth * 250) / 1125;
-const middleT = (offsetHeight * 250) / 2001;
+const middleT = (offsetHeight * 250) / 1860;
+const paddingL = (offsetWidth * 34) / 1125;
+const paddingT = (offsetHeight * 144) / 1860;
 
 export default class Share extends BaseComponent {
     store = { point: 0, iosUrl: "", andoridUrl: "" };
@@ -60,19 +62,20 @@ export default class Share extends BaseComponent {
                 <div
                     className="middle-con"
                     style={{
-                        backgroundImage: `url(${bg})`,
+                        backgroundImage: `url(${Base.getImgUrl(bg)})`,
                         width: middleW,
                         height: middleH,
-                        left: middleT,
-                        top: middleT,
-                        borderRadius: 40
+                        left: middleL,
+                        top: middleT
                     }}
                 >
                     <img
                         src={share.mobile_bg}
                         style={{
-                            width: middleW,
-                            height: middleH
+                            width: middleW + 2 * paddingL,
+                            height: middleH + 2 * paddingT,
+                            marginLeft: -paddingL,
+                            marginTop: -paddingT
                         }}
                         alt=""
                     />
