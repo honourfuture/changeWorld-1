@@ -276,10 +276,22 @@ class Knowledge extends API_Controller
             $ret['count'] = $this->Album_model->count_by($where);
             if($ret['count']){
                 $order_by = array('id' => 'desc');
-                $this->db->select('id,cover_image,title,price');
-                $ret['list'] = $this->Album_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
+                $this->db->select('id,cover_image,title,price,anchor_uid');
+                if($list = $this->Album_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where)){
+                    $a_uid = [];
+                    foreach($list as $item){
+                        $a_uid = $item['anchor_uid'];
+                    }
+                    $this->load->model('Users_model');
+                    $users = $this->Users_model->get_many_user($a_uid, 'id,nickname');
+                    foreach($list as $key=>$item){
+                        $list[$key]['nickname'] = isset($users[$item['anchor_uid']]) ? $users[$item['anchor_uid']]['nickname'] : '';
+                    }
 
-                $this->Album_model->audio($ret);
+                    $ret['list'] = $list;
+                    $this->Album_model->audio($ret);
+                }
+
             }
             $this->ajaxReturn($ret);
         }else{
