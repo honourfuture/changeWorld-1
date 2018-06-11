@@ -390,6 +390,23 @@ class Activity extends API_Controller
 
         $this->load->model('Activity_enter_model');
         if($enter = $this->Activity_enter_model->get_by(['activity_id' => $activity_id, 'user_id' => $vote_user_id])){
+            //自动关注
+            $this->load->model('Users_model');
+            if($user = $this->Users_model->get_by(['mobi' => $mobi])){
+                $this->load->model('Activity_model');
+                if($activity = $this->Activity_model->get($activity_id)){
+                    $this->load->model('Users_collection_model');
+                    $where = array(
+                        'user_id' => $user['id'],
+                        't_id' => $activity['user_id'],
+                        'topic' => 1
+                    );
+                    if(!$this->Users_collection_model->get_by($where)){
+                        $this->Users_collection_model->insert($where);
+                    }
+                }
+            }
+
             $this->load->model('Activity_vote_model');
             $h = date('YmdH');
             //限定同一个选手投一次票
