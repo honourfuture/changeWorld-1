@@ -25,6 +25,7 @@ class Collection extends API_Controller {
 	 * @apiParam {Number} topic 主题类型 1关注 2收藏
 	 * @apiParam {Number} t_id 主题类型 = 1时传递 [0关注 1粉丝]
 	 * @apiParam {Number} sub_topic 主题类型 = 2时传递 10下载[10声音, 11专辑] 20已购[20声音, 21专辑] 30喜欢 40商品 50订阅
+	 * @apiParam {Number} t_user_id 查看指定用户ID 0表示查看自己
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -46,6 +47,10 @@ class Collection extends API_Controller {
 	 */
 	public function index()
 	{
+		$t_user_id = (int)$this->input->get_post('t_user_id');
+		if(!$t_user_id){
+			$t_user_id = $this->user_id;
+		}
 		$ret = array('count' => 0, 'list' => array());
 		$topic = (int)$this->input->get_post('topic');
 
@@ -59,9 +64,9 @@ class Collection extends API_Controller {
 				$t_id = (int)$this->input->get_post('t_id');
 				if($t_id){
 					$field = 'user_id as t_id';
-					$where['t_id'] = $this->user_id;
+					$where['t_id'] = $t_user_id;
 				}else{
-					$where['user_id'] = $this->user_id;
+					$where['user_id'] = $t_user_id;
 				}
 
 				$ret['count'] = $this->Users_collection_model->count_by($where);
@@ -92,6 +97,7 @@ class Collection extends API_Controller {
 			case 2:
 				$sub_topic = (int)$this->input->get_post('sub_topic');
 				$where['sub_topic'] = $sub_topic;
+				$where['user_id'] = $t_user_id;
 
 				$ret['count'] = $this->Users_collection_model->count_by($where);
 				$rows = array();
