@@ -154,7 +154,7 @@ class OrderItem extends BaseComponent {
                         oneCallBack={() =>
                             Base.push("EvaluateOrder", {
                                 id: id,
-                                item: JSON.stringify(item)
+                                // item: JSON.stringify(item)
                             })
                         }
                         twoCallBack={() => Base.push("AfterMarket", { id: id })}
@@ -193,7 +193,7 @@ class OrderItem extends BaseComponent {
                 >
                     <Flex justify="between" className="orderItemTit base-line">
                         <span>订单编号：{order_sn}</span>
-                        <span>{states[status]}</span>
+                        <span>{parseInt(refund_status) >= 1 ? "" : states[status]}</span>
                     </Flex>
                     {(goods || []).map((item, key) => {
                         return <OrderGoodsItem key={key} item={item} />;

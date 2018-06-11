@@ -63,6 +63,14 @@ class OrderItem extends BaseComponent {
             null
         );
     }
+    @action.bound
+    yesRefund(id){
+        const { changeRefund } = this.props;
+        Base.POST({ act: "order_action", op: "seller",mod:'user',order_id:id,action:'complete'}, res => {
+            Toast.info(`同意退款！`, 1);
+            changeRefund && changeRefund(id);
+        });
+    }
     render() {
         const item = this.props;
         const {
@@ -136,6 +144,14 @@ class OrderItem extends BaseComponent {
                 break;
         }
         if (parseInt(refund_status) === 1) {
+            // btns = null;
+            btns = <OrderBtn
+                        btnTxt={["退款"]}
+                        oneCallBack={() => this.yesRefund(id)}
+                        isDouble={1}
+                    />
+        }
+        if (parseInt(refund_status) === 2) {
             btns = null;
         }
         return (
@@ -150,7 +166,7 @@ class OrderItem extends BaseComponent {
                 >
                     <Flex justify="between" className="orderItemTit base-line">
                         <span>订单编号：{order_sn}</span>
-                        <span>{states[status]}</span>
+                        <span>{parseInt(refund_status) >= 1 ? '' : states[status]}</span>
                     </Flex>
                     {(goods || []).map((item, key) => {
                         return <OrderGoodsItem key={key} item={item} />;
@@ -197,6 +213,7 @@ export default class SellOrder extends BaseComponent {
             <OrderItem
                 nowCur={this.store.curPage}
                 changeList={this.changeList}
+                changeRefund={this.changeRefund}
                 {...rowData}
             />
         );
@@ -211,6 +228,13 @@ export default class SellOrder extends BaseComponent {
     @action.bound
     changeList(id) {
         remove(this.store.list, item => id === item.id);
+    }
+    @action.bound
+    changeRefund(id) {
+        const list = this.store.list.slice();
+        const itemData = list.find(item => id === item.id);
+        itemData.refund_status = 2;
+        this.store.list = list;
     }
     @action.bound
     requestData(index, b_noToast = true) {
