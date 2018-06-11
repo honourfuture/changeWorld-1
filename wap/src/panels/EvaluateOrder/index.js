@@ -22,44 +22,59 @@ class EvaluateOrder extends BaseComponent {
     store = {
         files: [],
         storeList: [],
-        is_anonymous: true
+        is_anonymous: true,
+        goods: []
     }
     @action.bound
     onChange = (files, type, index) => {
-        if(type === 'add'){
+        if (type === 'add') {
             const requestFile = files[files.length - 1];
-            Base.POST({act:'common',op:'base64FileUpload',base64_image_content:requestFile.url},(res)=>{
+            Base.POST({ act: 'common', op: 'base64FileUpload', base64_image_content: requestFile.url }, (res) => {
                 requestFile.file_url = res.data.file_url;
                 this.store.files = files;
             });
         }
     }
+    componentDidMount() {
+        const order_id = parseInt(Base.getPageParams("id"));
+        Base.GET(
+            {
+                act: "order",
+                op: "view",
+                mod: "user",
+                order_id: order_id,
+                status: -1
+            },
+            res => {
+                this.store.goods = res.data.goods;
+            }
+        );
+    }
     @action.bound
-    submitHandler(){
+    submitHandler() {
         const id = parseInt(Base.getPageParams('id'));
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 values.is_anonymous = values.is_anonymous ? values.is_anonymous : this.store.is_anonymous;
-                const goodsImg = this.store.files.map(item=>item.file_url);
-                Base.POST({ act: "order_action", op: "buyer",mod:'user',order_id:id,action:'evaluate',photos:JSON.stringify(goodsImg),...values}, res => {
+                const goodsImg = this.store.files.map(item => item.file_url);
+                Base.POST({ act: "order_action", op: "buyer", mod: 'user', order_id: id, action: 'evaluate', photos: JSON.stringify(goodsImg), ...values }, res => {
                     Toast.info(`评价成功！`, 1);
-                    setTimeout(()=>{
+                    setTimeout(() => {
                         Base.goBack();
-                    },1000)
+                    }, 1000)
                 });
             }
         });
     }
     @action.bound
-    agreeChange(){
+    agreeChange() {
         this.store.is_anonymous = !this.store.is_anonymous;
     }
     render() {
-        const { storeList, files,is_anonymous } = this.store;
+        const { storeList, files, is_anonymous, goods } = this.store;
         const { getFieldProps, getFieldError } = this.props.form;
-        const item = JSON.parse(Base.getPageParams('item'));
-        
-        const goodsItem = item.goods.map((item, key) => {
+
+        const goodsItem = goods.map((item, key) => {
             return <OrderGoodsItem key={key} item={item} />;
         });
 
@@ -82,7 +97,7 @@ class EvaluateOrder extends BaseComponent {
                             autoHeight
                             error={!!getFieldError('remark')}
                             {...getFieldProps('remark', {
-                                rules: [{ required: true, message:'请输入输入您对商品的描述'}],
+                                rules: [{ required: true, message: '请输入输入您对商品的描述' }],
                             })}
                         />
                         <ImagePicker
@@ -92,8 +107,8 @@ class EvaluateOrder extends BaseComponent {
                             multiple={true}
                         />
                         <Flex className="anonymity" justify="end">
-                            <AgreeItem 
-                                defaultChecked 
+                            <AgreeItem
+                                defaultChecked
                                 onClick={this.agreeChange}
                                 {...getFieldProps('is_anonymous')}
                             >匿名评价</AgreeItem>

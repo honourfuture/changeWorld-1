@@ -145,7 +145,7 @@ class OrderBtnItem extends BaseComponent {
                         oneCallBack={() =>
                             Base.push("EvaluateOrder", {
                                 id: id,
-                                item: JSON.stringify(item)
+                                // item: JSON.stringify(item)
                             })
                         }
                         twoCallBack={() => Base.push("AfterMarket", { id: id })}

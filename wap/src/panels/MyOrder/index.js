@@ -154,7 +154,7 @@ class OrderItem extends BaseComponent {
                         oneCallBack={() =>
                             Base.push("EvaluateOrder", {
                                 id: id,
-                                item: JSON.stringify(item)
+                                // item: JSON.stringify(item)
                             })
                         }
                         twoCallBack={() => Base.push("AfterMarket", { id: id })}
@@ -361,7 +361,7 @@ export default class MyOrder extends BaseComponent {
                                         {isLoading
                                             ? "加载中..."
                                             : showList.length >=
-                                              Global.PAGE_SIZE
+                                                Global.PAGE_SIZE
                                                 ? "加载完成"
                                                 : ""}
                                     </div>
@@ -373,16 +373,16 @@ export default class MyOrder extends BaseComponent {
                                     />
                                 }
                                 onEndReached={this.onEndReached}
-                                // pageSize={2}
+                            // pageSize={2}
                             />
                         ) : (
-                            <NoData
-                                img={blankImg.order}
-                                label={"暂无数据"}
-                                btnLabel={"去逛逛"}
-                                onClick={this.goShop}
-                            />
-                        )}
+                                <NoData
+                                    img={blankImg.order}
+                                    label={"暂无数据"}
+                                    btnLabel={"去逛逛"}
+                                    onClick={this.goShop}
+                                />
+                            )}
                     </Tabs>
                 </div>
             </div>
