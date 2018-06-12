@@ -91,6 +91,7 @@ class Collection extends API_Controller {
 						foreach($ret['list'] as $key=>$item){
 							$ret['list'][$key]['fans'] = isset($fans[$item['id']]) ? $fans[$item['id']] : 0;
 							$ret['list'][$key]['music'] = isset($audio[$item['id']]) ? $audio[$item['id']] : 0;
+							$ret['list'][$key]['hasFans'] = $this->Users_collection_model->check_fans($item['id'], $t_user_id);
 
 							$grade = $this->Grade_model->exp_to_grade($item['exp']);
 							$ret['list'][$key]['lv'] = $grade['grade_name'];
