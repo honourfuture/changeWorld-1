@@ -25,6 +25,7 @@ class Activity extends API_Controller {
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
 	 * @apiParam {String} tab {self:发布的活动, join:参加的活动}
+	 * @apiParam {Number} t_user_id 查看用户唯一ID
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -60,9 +61,13 @@ class Activity extends API_Controller {
     {
     	$result = ['count' => 0, 'list' => []];
 
+    	if(!$t_user_id = $this->input->get_post('t_user_id')){
+    		$t_user_id = $this->user_id;
+    	}
+
     	$tab = $this->input->get_post('tab');
     	if($tab == 'self'){
-    		$where = ['user_id' => $this->user_id];
+    		$where = ['user_id' => $t_user_id];
     		$order_by = array('id' => 'desc');
 			$result['count'] = $this->Activity_model->count_by($where);
 			if($result['count']){
