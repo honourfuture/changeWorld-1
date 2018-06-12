@@ -85,11 +85,15 @@ class Collection extends API_Controller {
 					$ret['list'] = $this->Users_model->get_many($a_id);
 					if($ret['list']){
 						$fans = $this->Users_collection_model->get_many_count_fans($a_id);
+						$this->load->model('Grade_model');
 						$this->load->model('Room_audio_model');
 	                	$audio = $this->Room_audio_model->get_many_count_music($a_id);
 						foreach($ret['list'] as $key=>$item){
 							$ret['list'][$key]['fans'] = isset($fans[$item['id']]) ? $fans[$item['id']] : 0;
 							$ret['list'][$key]['music'] = isset($audio[$item['id']]) ? $audio[$item['id']] : 0;
+
+							$grade = $this->Grade_model->exp_to_grade($item['exp']);
+							$ret['list'][$key]['lv'] = $grade['grade_name'];
 						}
 					}
 				}

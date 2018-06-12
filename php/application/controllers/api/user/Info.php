@@ -69,8 +69,16 @@ class Info extends API_Controller {
 		$a_uid = explode(',', $s_uid);
 		if($a_uid){
 			$this->load->model('Users_model');
-			$this->db->select('id,nickname,header,summary');
-			$ret = $this->Users_model->get_many($a_uid);
+			$this->db->select('id,nickname,header,summary,exp');
+			$rows = $this->Users_model->get_many($a_uid);
+			if($rows){
+				$this->load->model('Grade_model');
+				foreach($rows as $item){
+					$grade = $this->Grade_model->exp_to_grade($item['exp']);
+					$item['lv'] = $grade['grade_name'];
+					$ret[] = $item;
+				}
+			}
 		}
 
 		$this->ajaxReturn($ret);
