@@ -71,7 +71,7 @@ class Activity extends API_Controller {
     		$order_by = array('id' => 'desc');
 			$result['count'] = $this->Activity_model->count_by($where);
 			if($result['count']){
-				$this->db->select('id,title,prize');
+				$this->db->select('id,title,prize,summary');
 				$result['list'] = $this->Activity_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 			}
     	}elseif($tab == 'join'){
@@ -83,7 +83,7 @@ class Activity extends API_Controller {
 				$this->db->select('GROUP_CONCAT(activity_id) as s_activity_id');
 				$row = $this->Activity_enter_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_by($where);
 				if($row){
-					$this->db->select('id,title,prize');
+					$this->db->select('id,title,prize,summary');
 					$result['list'] = $this->Activity_model->get_many(explode(',', $row['s_activity_id']));
 				}
 			}
