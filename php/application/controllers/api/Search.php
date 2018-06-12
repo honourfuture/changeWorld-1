@@ -140,7 +140,7 @@ class Search extends API_Controller {
                     $grade = $this->Grade_model->exp_to_grade($item['exp']);
                     $item['lv'] = $grade['grade_name'];
 
-                    $ret['list'] = $item;
+                    $ret['list'][] = $item;
                 }
             }
         }
