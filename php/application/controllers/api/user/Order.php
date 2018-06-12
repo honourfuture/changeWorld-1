@@ -220,36 +220,39 @@ class Order extends API_Controller {
 			$order_by = array('id' => 'desc');
 			$this->search();
 			$this->db->select('id,created_at,status,order_sn,real_total_amount,use_ticket_amount,use_point_amount,seller_uid,buyer_uid,deleted,refund_status');
-			$ret['list'] = $this->Order_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
-
-			$a_order_id = [];
-			$a_uid = [];
-			if($ret['list']){
-				foreach($ret['list'] as $item){
-					$a_order_id[] = $item['id'];
-					$a_uid[] = $item['seller_uid'];
-					$a_uid[] = $item['buyer_uid'];
+			if($ret['list'] = $this->Order_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where)){
+				$a_order_id = [];
+				$a_uid = [];
+				if($ret['list']){
+					foreach($ret['list'] as $item){
+						$a_order_id[] = $item['id'];
+						$a_uid[] = $item['seller_uid'];
+						$a_uid[] = $item['buyer_uid'];
+					}
 				}
+
+				if($a_order_id){
+					$this->load->model('Order_items_model');
+					$this->db->select('id,order_id,goods_id,goods_price,num,freight_fee,goods_attr,name,default_image');
+					$order_item = $this->Order_items_model->get_many_by('order_id', $a_order_id);
+					$k_order_item = [];
+					foreach($order_item as $item){
+						!isset($k_order_item[$item['order_id']]) && $k_order_item[$item['order_id']] = [];
+						$k_order_item[$item['order_id']][] = $item;
+					}
+
+					$this->load->model('Users_model');
+					$k_uid_item = $this->Users_model->get_many_user($a_uid, 'id,nickname,header,mobi', true);
+
+					foreach($ret['list'] as $key=>$item){
+						$ret['list'][$key]['goods'] = isset($k_order_item[$item['id']]) ? $k_order_item[$item['id']] : [];
+						$ret['list'][$key]['user'] = isset($k_uid_item[$item[$user_field]]) ? $k_uid_item[$item[$user_field]] : [];
+					}
+				}
+			}else{
+				$ret['list'] = [];
 			}
 
-			if($a_order_id){
-				$this->load->model('Order_items_model');
-				$this->db->select('id,order_id,goods_id,goods_price,num,freight_fee,goods_attr,name,default_image');
-				$order_item = $this->Order_items_model->get_many_by('order_id', $a_order_id);
-				$k_order_item = [];
-				foreach($order_item as $item){
-					!isset($k_order_item[$item['order_id']]) && $k_order_item[$item['order_id']] = [];
-					$k_order_item[$item['order_id']][] = $item;
-				}
-
-				$this->load->model('Users_model');
-				$k_uid_item = $this->Users_model->get_many_user($a_uid, 'id,nickname,header,mobi', true);
-
-				foreach($ret['list'] as $key=>$item){
-					$ret['list'][$key]['goods'] = isset($k_order_item[$item['id']]) ? $k_order_item[$item['id']] : [];
-					$ret['list'][$key]['user'] = isset($k_uid_item[$item[$user_field]]) ? $k_uid_item[$item[$user_field]] : [];
-				}
-			}
 		}
 
 		$this->ajaxReturn($ret);

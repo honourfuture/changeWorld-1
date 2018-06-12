@@ -280,7 +280,7 @@ class Knowledge extends API_Controller
                 if($list = $this->Album_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where)){
                     $a_uid = [];
                     foreach($list as $item){
-                        $a_uid = $item['anchor_uid'];
+                        $a_uid[] = $item['anchor_uid'];
                     }
                     $this->load->model('Users_model');
                     $users = $this->Users_model->get_many_user($a_uid, 'id,nickname');
