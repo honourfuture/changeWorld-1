@@ -217,7 +217,7 @@ class Order extends API_Controller {
 		$this->search();
 		$ret['count'] = $this->Order_model->count_by($where);
 		if($ret['count']){
-			$order_by = array('id' => 'desc');
+			$order_by = array('refund_status' => 'asc', 'id' => 'desc');
 			$this->search();
 			$this->db->select('id,created_at,status,order_sn,real_total_amount,use_ticket_amount,use_point_amount,seller_uid,buyer_uid,deleted,refund_status');
 			if($ret['list'] = $this->Order_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where)){
