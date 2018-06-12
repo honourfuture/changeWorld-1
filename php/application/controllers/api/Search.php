@@ -19,7 +19,7 @@ class Search extends API_Controller {
     	if($keyword === '' || is_null($keyword)){
     		$this->ajaxReturn([], 1, '请输入关键词搜索');
     	}
-    	if(! in_array($from, array('shop', 'knowledge'))){
+    	if(! in_array($from, array('shop', 'knowledge', 'chat'))){
     		$this->ajaxReturn([], 2, '搜索模块暂不支持');
     	}
 
@@ -39,7 +39,7 @@ class Search extends API_Controller {
      * @apiParam {Number} user_id 用户唯一ID
      * @apiParam {String} sign 校验签名
      * @apiParam {String} keyword 搜索词
-     * @apiParam {String} from 来源 知识：knowledge 商城：shop
+     * @apiParam {String} from 来源 知识：knowledge 商城：shop 聊天：chat
      * @apiParam {String} tab 显示卡项 专辑：album 主播：anchor 直播：live 音频：audio
      *
      * @apiSuccess {Number} status 接口状态 0成功 其他异常
@@ -102,9 +102,50 @@ class Search extends API_Controller {
     				$ret = $this->_audio();
     				break;
     		}
-    	}
+    	}elseif($this->from == 'chat'){
+            $ret = $this->_user();
+        }
 
     	$this->ajaxReturn($ret);
+    }
+
+    //会员
+    protected function _user()
+    {
+        $ret = array('count' => 0, 'list' => array());
+        $where = array('enable' => 1);
+
+        $this->db->group_start();
+        $this->db->like('nickname', $this->keyword);
+        $this->db->or_where('id', $this->keyword);
+        $this->db->group_end();
+
+        $this->load->model('Users_model');
+
+        $ret['count'] = $this->Users_model->count_by($where);
+        if($ret['count']){
+            $order_by = array('sort' => 'desc', 'updated_at' => 'desc');
+            $this->db->select('id,nickname,v,exp,header,summary');
+
+            $this->db->group_start();
+            $this->db->like('nickname', $this->keyword);
+            $this->db->or_where('id', $this->keyword);
+            $this->db->group_end();
+
+            $list = $this->Users_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
+
+            if($list){
+                $this->load->model('Grade_model');
+                foreach($list as $item){
+                    $grade = $this->Grade_model->exp_to_grade($item['exp']);
+                    $item['lv'] = $grade['grade_name'];
+
+                    $ret['list'] = $item;
+                }
+            }
+        }
+
+        return $ret;
     }
 
     //专辑
