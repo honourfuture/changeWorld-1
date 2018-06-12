@@ -98,7 +98,7 @@ class Activity extends API_Controller {
 	            foreach($row['prize'] as $item){
 	                $result['list'][$key]['total'] = round($item['num'] * $item['sale_price'] + $result['list'][$key]['total'], 2);
 	            }
-	            unset($result['list'][$key]['prize']);
+	            // unset($result['list'][$key]['prize']);
             }
     	}
 
