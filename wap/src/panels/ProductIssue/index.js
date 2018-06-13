@@ -315,7 +315,7 @@ class ProductIssue extends BaseComponent {
                                 ]
                             })}
                             clear
-                            type="money"
+                            type="digit"
                             placeholder="￥0.00"
                             moneyKeyboardAlign="right"
                         >
@@ -345,7 +345,7 @@ class ProductIssue extends BaseComponent {
                                 ]
                             })}
                             clear
-                            type="money"
+                            type="digit"
                             placeholder="￥0.00"
                         >
                             邮费<em>*</em>
@@ -370,7 +370,7 @@ class ProductIssue extends BaseComponent {
                                         {...getFieldProps("full_amount")}
                                         labelNumber={2}
                                         clear
-                                        type="money"
+                                        type="digit"
                                         placeholder="￥0.00"
                                     >
                                         满
@@ -380,7 +380,7 @@ class ProductIssue extends BaseComponent {
                                         {...getFieldProps("free_amount")}
                                         labelNumber={2}
                                         clear
-                                        type="money"
+                                        type="digit"
                                         placeholder="￥0.00"
                                     >
                                         减
