@@ -203,7 +203,7 @@ class Vip extends API_Controller {
 
         switch($params['payment_type']){
         	case 'balance':
-        		$this->balance($order_id);
+        		$this->balance($order_id, $log['order_sn']);
         		break;
         	case 'wechat':
         		$this->wechat($log['order_sn']);
@@ -243,7 +243,7 @@ class Vip extends API_Controller {
         $this->user_vip = $user_vip;
     }
 
-    protected function balance($order_id)
+    protected function balance($order_id, $order_sn)
 	{
 		$user = $this->get_user();
 		if($user && $user['balance'] >= $this->amount){
@@ -286,6 +286,20 @@ class Vip extends API_Controller {
             ];
             $this->load->model('Gold_log_model');
             $this->Gold_log_model->insert($gold_log);
+
+            //消费记录
+            $consume_record = [
+            	'type' => 0,
+            	'user_id' => $this->user_id,
+            	'item_title' => $this->vip['name'],
+            	'item_id' => $this->vip['id'],
+            	'item_amount' => $this->amount,
+            	'order_sn' => $order_sn,
+            	'topic' => 0,
+            	'payment_type' => 'balance'
+            ];
+            $this->load->model('Consume_record_model');
+            $this->Consume_record_model->insert($consume_record);
 
 			$this->ajaxReturn();
 		}else{

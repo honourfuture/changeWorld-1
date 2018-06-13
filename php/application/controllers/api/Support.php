@@ -136,6 +136,7 @@ class Support extends API_Controller {
 			$this->ajaxReturn([], 1, '活动ID错误');
 		}
 
+		$params['title'] = $activity['title'];
 		$params['to_user_id'] = $activity['user_id'];
         if($params['to_user_id'] == $this->user_id){
         	$this->ajaxReturn([], 1, '请勿自己给自己转账');
@@ -191,6 +192,20 @@ class Support extends API_Controller {
 	            'activity_id' => $params['activity_id']
 	        ];
 	        $this->Users_support_model->insert($data);
+
+	        //消费记录
+            $consume_record = [
+            	'type' => 0,
+            	'user_id' => $this->user_id,
+            	'item_title' => $params['title'],
+            	'item_id' => $data['activity_id'],
+            	'item_amount' => $data['pay_money'],
+            	'order_sn' => $data['order_sn'],
+            	'topic' => 6,
+            	'payment_type' => 'balance'
+            ];
+            $this->load->model('Consume_record_model');
+            $this->Consume_record_model->insert($consume_record);
 
 			$this->ajaxReturn();
 		}else{

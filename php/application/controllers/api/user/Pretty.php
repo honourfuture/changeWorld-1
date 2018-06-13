@@ -117,7 +117,7 @@ class Pretty extends API_Controller {
 
         switch($payment_type){
         	case 'balance':
-        		$this->balance($order_id);
+        		$this->balance($order_id, $log['order_sn']);
         		break;
         	case 'wechat':
         		$this->wechat($log['order_sn']);
@@ -150,7 +150,7 @@ class Pretty extends API_Controller {
         $this->service = 3;
     }
 
-    protected function balance($order_id)
+    protected function balance($order_id, $order_sn)
 	{
 		$user = $this->get_user();
 		if($user && $user['balance'] >= $this->row['price']){
@@ -170,6 +170,20 @@ class Pretty extends API_Controller {
 			//更新销售状态
 			$this->Pretty_model->update($this->row['id'], ['status' => 1, 'buyer_id' => $this->user_id]);
 			//余额明细
+
+			//消费记录
+            $consume_record = [
+            	'type' => 0,
+            	'user_id' => $this->user_id,
+            	'item_title' => $this->row['pretty_id'],
+            	'item_id' => $this->row['id'],
+            	'item_amount' => $this->row['price'],
+            	'order_sn' => $order_sn,
+            	'topic' => 1,
+            	'payment_type' => 'balance'
+            ];
+            $this->load->model('Consume_record_model');
+            $this->Consume_record_model->insert($consume_record);
 
 			$this->ajaxReturn();
 		}else{

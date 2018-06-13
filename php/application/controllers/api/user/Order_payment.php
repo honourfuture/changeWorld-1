@@ -117,6 +117,38 @@ class Order_payment extends API_Controller {
 			}
 			//分佣
 
+            //商品销售记录
+            $this->load->model('Order_items_model');
+            if($goods = $this->Order_items_model->get_many_by(['order_id' => $order_id])){
+                $this->load->model('Record_goods_model');
+                $data = [];
+                $consume_record = [];
+                foreach($goods as $item){
+                    $data[] = [
+                        'goods_id' => $item['goods_id'],
+                        'seller_uid' => $item['seller_uid'],
+                        'num' => $item['num'],
+                        'order_id' => $item['order_id']
+                    ];
+
+                    //消费记录
+                    $consume_record[] = [
+                        'type' => 0,
+                        'user_id' => $this->user_id,
+                        'item_title' => $item['name'],
+                        'item_id' => $item['goods_id'],
+                        'item_amount' => $item['total_price'],
+                        'order_sn' => $item['order_sn'],
+                        'topic' => 5,
+                        'payment_type' => 'balance'
+                    ];
+                }
+                $this->Record_goods_model->insert_many($data);
+
+                $this->load->model('Consume_record_model');
+                $this->Consume_record_model->insert_many($consume_record);
+            }
+
 			$this->ajaxReturn();
 		}else{
 			$this->ajaxReturn([], 2, '账户余额不足');

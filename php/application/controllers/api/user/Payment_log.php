@@ -180,6 +180,7 @@ class Payment_log extends API_Controller {
 			'user_id' => $this->user_id,
 			'payment_type' => $payment_type,
 			't_id' => $this->t_id,
+			'title' => $this->row['title'],
 			'service' => $this->service
 		];
 		if(! $order_id = $this->Payment_log_model->insert($log)){
@@ -188,7 +189,7 @@ class Payment_log extends API_Controller {
 
         switch($payment_type){
         	case 'balance':
-        		$this->balance($order_id);
+        		$this->balance($order_id, $log['order_sn']);
         		break;
         	case 'wechat':
         		$this->wechat($log['order_sn']);
@@ -238,7 +239,7 @@ class Payment_log extends API_Controller {
         $this->row = $row;
     }
 
-    protected function balance($order_id)
+    protected function balance($order_id, $order_sn)
 	{
 		$user = $this->get_user();
 		if($user && $user['balance'] >= $this->row['price']){
@@ -267,6 +268,20 @@ class Payment_log extends API_Controller {
 				$this->Users_collection_model->insert($data);
 			}
 			//余额明细
+
+			//消费记录
+            $consume_record = [
+            	'type' => 0,
+            	'user_id' => $this->user_id,
+            	'item_title' => $this->row['title'],
+            	'item_id' => $this->row['id'],
+            	'item_amount' => $this->row['price'],
+            	'order_sn' => $order_sn,
+            	'topic' => $this->service + 2,
+            	'payment_type' => 'balance'
+            ];
+            $this->load->model('Consume_record_model');
+            $this->Consume_record_model->insert($consume_record);
 
 			$this->ajaxReturn();
 		}else{

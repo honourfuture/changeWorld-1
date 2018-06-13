@@ -20,6 +20,7 @@ class Notify extends API_Controller
     // 微信收款码转账
     public function wechat_support()
     {
+        $this->payment_type = 'wechat';
         $this->setting = config_item('wechat');
         $app = new Application($this->setting);
         $response = $app->payment->handleNotify(function($notify, $successful){
@@ -64,6 +65,23 @@ class Notify extends API_Controller
                 ];
                 $this->load->model('Gold_log_model');
                 $this->Gold_log_model->insert($gold_log);*/
+
+                //消费记录
+                $this->load->model('Activity_model');
+                $this->db->select('id,title,user_id');
+                $activity = $this->Activity_model->get($recharge['activity_id']);
+                $consume_record = [
+                    'type' => 0,
+                    'user_id' => $recharge['user_id'],
+                    'item_title' => $activity ? $activity['title'] : '',
+                    'item_id' => $recharge['activity_id'],
+                    'item_amount' => $recharge['pay_money'],
+                    'order_sn' => $notify->out_trade_no,
+                    'topic' => 6,
+                    'payment_type' => $this->payment_type
+                ];
+                $this->load->model('Consume_record_model');
+                $this->Consume_record_model->insert($consume_record);
             }
         }else{
             $update['status'] = 2;
@@ -76,6 +94,7 @@ class Notify extends API_Controller
     // 支付宝收款码转账
     public function alipay_support()
     {
+        $this->payment_type = 'alipay';
         $this->setting = config_item('yansongda');
         $app = new Pay($this->setting);
         if($notify = $app->driver('alipay')->gateway('app')->verify($_REQUEST)){
@@ -90,6 +109,7 @@ class Notify extends API_Controller
     // 微信靓号
     public function wechat_pretty_payment()
     {
+        $this->payment_type = 'wechat';
         $this->setting = config_item('wechat');
         $app = new Application($this->setting);
         $response = $app->payment->handleNotify(function($notify, $successful){
@@ -129,6 +149,20 @@ class Notify extends API_Controller
                 //更新个人靓号
                 $this->load->model('Users_model');
                 $this->Users_model->update($service_log['user_id'], ['pretty_id' => $pretty['pretty_id']]);
+
+                //消费记录
+                $consume_record = [
+                    'type' => 0,
+                    'user_id' => $service_log['user_id'],
+                    'item_title' => $pretty['pretty_id'],
+                    'item_id' => $pretty['id'],
+                    'item_amount' => $service_log['amount'],
+                    'order_sn' => $notify->out_trade_no,
+                    'topic' => 1,
+                    'payment_type' => $this->payment_type
+                ];
+                $this->load->model('Consume_record_model');
+                $this->Consume_record_model->insert($consume_record);
             }
         }else{
             $update['status'] = 2;
@@ -143,6 +177,7 @@ class Notify extends API_Controller
     // 支付宝良好
     public function alipay_pretty_payment()
     {
+        $this->payment_type = 'alipay';
         $this->setting = config_item('yansongda');
         $app = new Pay($this->setting);
         if($notify = $app->driver('alipay')->gateway('app')->verify($_REQUEST)){
@@ -157,6 +192,7 @@ class Notify extends API_Controller
     // 微信服务
     public function wechat_service_payment()
     {
+        $this->payment_type = 'wechat';
         $this->setting = config_item('wechat');
         $app = new Application($this->setting);
         $response = $app->payment->handleNotify(function($notify, $successful){
@@ -199,6 +235,20 @@ class Notify extends API_Controller
                     'sub_topic' => $sub_topic
                 ];
                 $this->Users_collection_model->insert($data);
+
+                //消费记录
+                $consume_record = [
+                    'type' => 0,
+                    'user_id' => $service_log['user_id'],
+                    'item_title' => $service_log['title'],
+                    'item_id' => $service_log['t_id'],
+                    'item_amount' => $service_log['amount'],
+                    'order_sn' => $notify->out_trade_no,
+                    'topic' => $service_log['service'] + 2,
+                    'payment_type' => $this->payment_type
+                ];
+                $this->load->model('Consume_record_model');
+                $this->Consume_record_model->insert($consume_record);
             }
         }else{
             $update['status'] = 2;
@@ -213,6 +263,7 @@ class Notify extends API_Controller
     // 支付宝服务
     public function alipay_service_payment()
     {
+        $this->payment_type = 'alipay';
         $this->setting = config_item('yansongda');
         $app = new Pay($this->setting);
         if($notify = $app->driver('alipay')->gateway('app')->verify($_REQUEST)){
@@ -227,6 +278,7 @@ class Notify extends API_Controller
     // 微信贵族
     public function wechat_vip_payment()
     {
+        $this->payment_type = 'wechat';
         $this->setting = config_item('wechat');
         $app = new Application($this->setting);
         $response = $app->payment->handleNotify(function($notify, $successful){
@@ -295,6 +347,20 @@ class Notify extends API_Controller
             ];
             $this->load->model('Gold_log_model');
             $this->Gold_log_model->insert($gold_log);
+
+            //消费记录
+            $consume_record = [
+                'type' => 0,
+                'user_id' => $vip_log['user_id'],
+                'item_title' => $vip['name'],
+                'item_id' => $vip['id'],
+                'item_amount' => $vip_log['amount'],
+                'order_sn' => $notify->out_trade_no,
+                'topic' => 0,
+                'payment_type' => $this->payment_type
+            ];
+            $this->load->model('Consume_record_model');
+            $this->Consume_record_model->insert($consume_record);
         }else{
             $update['status'] = 2;
         }
@@ -308,6 +374,7 @@ class Notify extends API_Controller
     // 支付宝贵族
     public function alipay_vip_payment()
     {
+        $this->payment_type = 'alipay';
         $this->setting = config_item('yansongda');
         $app = new Pay($this->setting);
         if($notify = $app->driver('alipay')->gateway('app')->verify($_REQUEST)){
@@ -322,6 +389,7 @@ class Notify extends API_Controller
     // 微信商品订单
     public function wechat_order_payment()
     {
+        $this->payment_type = 'wechat';
         $this->setting = config_item('wechat');
         $app = new Application($this->setting);
         $response = $app->payment->handleNotify(function($notify, $successful){
@@ -373,6 +441,7 @@ class Notify extends API_Controller
             if($goods = $this->Order_items_model->get_many_by(['order_id' => $a_order_id])){
                 $this->load->model('Record_goods_model');
                 $data = [];
+                $consume_record = [];
                 foreach($goods as $item){
                     $data[] = [
                         'goods_id' => $item['goods_id'],
@@ -380,8 +449,23 @@ class Notify extends API_Controller
                         'num' => $item['num'],
                         'order_id' => $item['order_id']
                     ];
+
+                    //消费记录
+                    $consume_record[] = [
+                        'type' => 0,
+                        'user_id' => $order[0]['buyer_uid'],
+                        'item_title' => $item['name'],
+                        'item_id' => $item['goods_id'],
+                        'item_amount' => $item['total_price'],
+                        'order_sn' => $item['order_sn'],
+                        'topic' => 5,
+                        'payment_type' => $this->payment_type
+                    ];
                 }
                 $this->Record_goods_model->insert_many($data);
+
+                $this->load->model('Consume_record_model');
+                $this->Consume_record_model->insert_many($consume_record);
             }
             //分佣
         }else{
@@ -395,6 +479,7 @@ class Notify extends API_Controller
     // 支付宝商品订单
     public function alipay_order_payment()
     {
+        $this->payment_type = 'alipay';
         $this->setting = config_item('yansongda');
         $app = new Pay($this->setting);
         if($notify = $app->driver('alipay')->gateway('app')->verify($_REQUEST)){
