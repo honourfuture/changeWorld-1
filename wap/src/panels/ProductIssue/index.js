@@ -23,12 +23,16 @@ const Item = List.Item;
 const alert = Modal.alert;
 
 class ImgItem extends BaseComponent {
+    store = { temImgLength: 0 };
     @action.bound
-    onChangeImg(files, type, index) {
-        console.log(files, type, index);
+    onChangeImg(files, type) {
         const { callBack } = this.props;
         if (type === "add") {
             const requestFile = files[files.length - 1];
+            if (this.store.temImgLength >= 16) {
+                return;
+            }
+            this.store.temImgLength += 1;
             Base.POST(
                 {
                     act: "common",
@@ -43,10 +47,13 @@ class ImgItem extends BaseComponent {
             );
         } else {
             callBack && callBack(files);
+            this.store.temImgLength -= 1;
         }
     }
     render() {
         const { title, fileName, isRequired } = this.props;
+        const { temImgLength } = this.store;
+        const limitCls = temImgLength >= 16 ? "upImgTips red" : "upImgTips";
         return (
             <div className="productImg">
                 <div className="mainTit">
@@ -57,10 +64,10 @@ class ImgItem extends BaseComponent {
                     files={fileName}
                     onChange={this.onChangeImg}
                     onImageClick={(index, fs) => console.log(index, fs)}
-                    selectable={fileName.length < 8}
+                    selectable={fileName.length < 16}
                     multiple={true}
                 />
-                <div className="upImgTips">最多可上传8张图片</div>
+                <div className={limitCls}>最多可上传16张图片</div>
                 <div className="upImgTips">注：推荐尺寸为640*640的图片</div>
             </div>
         );
