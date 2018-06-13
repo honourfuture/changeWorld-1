@@ -69,6 +69,9 @@ class Config_model extends MY_Model
                 'rule_point' => '积分规则',
                 'rule_grade' => '等级说明',
             ),
+            'goods' => array(
+                'goods_explain' => '商品说明',
+            ),
     	);
     }
 }

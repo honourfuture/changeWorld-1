@@ -64,28 +64,31 @@ class Order_evaluate extends API_Controller {
 		$ret['count'] = $this->Order_evaluate_model->count_by($where);
 		if($ret['count']){
 			$this->db->select('id,created_at,status,order_id,order_sn,user_id,seller_uid,remark,photos,is_anonymous');
-			$ret['list'] = $this->Order_evaluate_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
-
-			$a_uid = $a_order = [];
-			foreach($ret['list'] as $item){
-				$a_order[] = $item['order_id'];
-				$a_uid[] = $item['seller_uid'];
-				$a_uid[] = $item['user_id'];
-			}
-			$k_user = [];
-			//用户信息
-			$this->load->model('Users_model');
-			$this->db->select('id,mobi,header,nickname,v,exp,sex,balance,point,gold');
-			$users = $this->Users_model->get_many($a_uid);
-			foreach($users as $item){
-				$ret['user'][$item['id']] = $item;
-			}
-			//订单信息
-			$this->load->model('Order_model');
-			$this->db->select('id,total_amount,real_total_amount');
-			$order = $this->Order_model->get_many($a_order);
-			foreach($order as $item){
-				$ret['order'][$item['id']] = $item;
+			if($ret['list'] = $this->Order_evaluate_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where)){
+				$a_uid = $a_order = [];
+				foreach($ret['list'] as $key=>$item){
+					$ret['list'][$key]['photos'] = json_decode($item['photos'], true);
+					$a_order[] = $item['order_id'];
+					$a_uid[] = $item['seller_uid'];
+					$a_uid[] = $item['user_id'];
+				}
+				$k_user = [];
+				//用户信息
+				$this->load->model('Users_model');
+				$this->db->select('id,mobi,header,nickname,v,exp,sex,balance,point,gold');
+				$users = $this->Users_model->get_many($a_uid);
+				foreach($users as $item){
+					$ret['user'][$item['id']] = $item;
+				}
+				//订单信息
+				$this->load->model('Order_model');
+				$this->db->select('id,total_amount,real_total_amount');
+				$order = $this->Order_model->get_many($a_order);
+				foreach($order as $item){
+					$ret['order'][$item['id']] = $item;
+				}
+			}else{
+				$ret['list'] = [];
 			}
 		}
 

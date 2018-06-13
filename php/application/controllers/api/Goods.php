@@ -282,6 +282,10 @@ class Goods extends API_Controller {
 	{
 		$ret = array();
 
+		$this->load->model('Config_model');
+		$siteConfig = $this->Config_model->siteConfig();
+		$ret['goods_explain'] = isset($siteConfig['goods_explain']) ? $siteConfig['goods_explain'] : '';
+
 		//详情
 		$goods_id = $this->input->get_post('goods_id');
 		$info = $this->Goods_model->get($goods_id);
