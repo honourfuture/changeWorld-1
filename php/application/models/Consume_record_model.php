@@ -37,7 +37,7 @@ class Consume_record_model extends MY_Model
             '专辑',// 4
             '商品',// 5
             '赞助',// 6
-            '转金币',// 7
+            // '转金币',// 7
     	];
     }
 

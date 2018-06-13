@@ -13484,7 +13484,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "from",
-            "description": "<p>来源 知识：knowledge 商城：shop</p>"
+            "description": "<p>来源 知识：knowledge 商城：shop 聊天：chat</p>"
           },
           {
             "group": "Parameter",
@@ -15733,6 +15733,13 @@ define({ "api": [
             "optional": false,
             "field": "tab",
             "description": "<p>{self:发布的活动, join:参加的活动}</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "t_user_id",
+            "description": "<p>查看用户唯一ID</p>"
           }
         ]
       }
@@ -18414,6 +18421,13 @@ define({ "api": [
             "optional": false,
             "field": "sub_topic",
             "description": "<p>主题类型 = 2时传递 10下载[10声音, 11专辑] 20已购[20声音, 21专辑] 30喜欢 40商品 50订阅</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "t_user_id",
+            "description": "<p>查看指定用户ID 0表示查看自己</p>"
           }
         ]
       }
@@ -18561,6 +18575,119 @@ define({ "api": [
       ]
     },
     "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Collection.php",
+    "groupTitle": "user"
+  },
+  {
+    "type": "get",
+    "url": "/api/user/consume_record",
+    "title": "消费记录",
+    "version": "1.0.0",
+    "name": "consume_record",
+    "group": "user",
+    "sampleRequest": [
+      {
+        "url": "/api/user/consume_record"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "data.count",
+            "description": "<p>记录总数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data.list",
+            "description": "<p>记录列表</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data.type",
+            "description": "<p>消费类型</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data.topic",
+            "description": "<p>消费主题</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data.payment_type",
+            "description": "<p>支付类型</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"count\": 5,\n        \"list\": [\n            {\n                \"id\": \"740\",\n                \"created_at\": \"2018-06-13 13:26:19\",\n                \"type\": \"0\",\n                \"user_id\": \"3\",\n                \"item_title\": \"666666\",\n                \"item_id\": \"19\",\n                \"item_amount\": \"999.00\",\n                \"order_sn\": \"110077289973048003\",\n                \"topic\": \"1\",\n                \"payment_type\": \"alipay\"\n            }\n        ],\n        \"type\": [\n            \"人民币\",\n            \"金币\"\n        ],\n        \"topic\": [\n            \"贵族\",\n            \"靓号\",\n            \"直播\",\n            \"音频\",\n            \"专辑\",\n            \"商品\",\n            \"赞助\"\n        ],\n        \"payment_type\": {\n            \"gold\": \"金币\",\n            \"balance\": \"余额\",\n            \"wechat\": \"微信\",\n            \"alipay\": \"支付宝\"\n        }\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Consume_record.php",
     "groupTitle": "user"
   },
   {
@@ -20552,6 +20679,84 @@ define({ "api": [
       ]
     },
     "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Live_audio.php",
+    "groupTitle": "user"
+  },
+  {
+    "type": "get",
+    "url": "/api/user/live/del",
+    "title": "我的直播-删除预告",
+    "version": "1.0.0",
+    "name": "live_del",
+    "group": "user",
+    "sampleRequest": [
+      {
+        "url": "/api/user/live/del"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " {\n    \"data\": {\n        },\n        \"album\": 0,\n        \"work\": 0\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Live.php",
     "groupTitle": "user"
   },
   {
