@@ -170,18 +170,28 @@ class ProductIssue extends BaseComponent {
                         goods_attr: JSON.stringify(goods_attr)
                     },
                     res => {
-                        alert("恭喜您", "发布成功！", [
-                            {
-                                text: "继续发布",
-                                onPress: () => {
-                                    window.location.reload();
+                        const { id } = Base.getPageParams();
+                        if (id) {
+                            alert("恭喜您", "编辑成功！", [
+                                {
+                                    text: "我的产品",
+                                    onPress: () => Base.push("MyProduct")
                                 }
-                            },
-                            {
-                                text: "我的产品",
-                                onPress: () => Base.push("MyProduct")
-                            }
-                        ]);
+                            ]);
+                        } else {
+                            alert("恭喜您", "发布成功！", [
+                                {
+                                    text: "继续发布",
+                                    onPress: () => {
+                                        window.location.reload();
+                                    }
+                                },
+                                {
+                                    text: "我的产品",
+                                    onPress: () => Base.push("MyProduct")
+                                }
+                            ]);
+                        }
                     }
                 );
             } else {
