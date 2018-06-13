@@ -151,7 +151,10 @@ class ProductIssue extends BaseComponent {
                 delete values["full_amount"];
                 delete values["free_amount"];
                 delete values["e_invoice"];
-
+                const { id } = Base.getPageParams();
+                if (id) {
+                    values.id = id;
+                }
                 Base.POST(
                     {
                         act: "goods",
@@ -219,6 +222,85 @@ class ProductIssue extends BaseComponent {
                 return { label: name, value: id };
             });
             this.store.point_rate = point_rate;
+            const { id } = Base.getPageParams();
+            if (id) {
+                Base.GET({ act: "goods", op: "view", goods_id: id }, res => {
+                    const { goods_info } = res.data;
+                    const {
+                        name,
+                        sale_price,
+                        stock,
+                        goods_class_id,
+                        freight_fee,
+                        send_mode,
+                        full_amount,
+                        free_amount,
+                        use_point_rate,
+                        e_invoice,
+                        city_partner_rate,
+                        two_level_rate,
+                        goods_image,
+                        goods_detail,
+                        goods_attr
+                    } = goods_info;
+                    const { setFieldsValue } = this.props.form;
+                    let init_goods_image = [];
+                    try {
+                        init_goods_image = JSON.parse(goods_image) || [];
+                    } catch (error) {
+                        init_goods_image = [];
+                    }
+                    init_goods_image = init_goods_image.map(item => {
+                        return {
+                            file_url: item,
+                            orientation: 1,
+                            url: Base.getImgUrl(item)
+                        };
+                    });
+                    let init_goods_detail = [];
+                    try {
+                        init_goods_detail = JSON.parse(goods_detail) || [];
+                    } catch (error) {
+                        init_goods_detail = [];
+                    }
+                    init_goods_detail = init_goods_detail.map(item => {
+                        return {
+                            file_url: item,
+                            orientation: 1,
+                            url: Base.getImgUrl(item)
+                        };
+                    });
+                    let init_goods_attr = {};
+                    try {
+                        init_goods_attr = JSON.parse(goods_attr) || {};
+                    } catch (error) {
+                        init_goods_attr = {};
+                    }
+                    const store_goods_attr = this.store.goods_attr;
+                    store_goods_attr.map((item, index) => {
+                        const { id, list } = item;
+                        if (init_goods_attr[id]) {
+                            store_goods_attr[index].list = init_goods_attr[id];
+                        }
+                    });
+                    setFieldsValue({
+                        name,
+                        stock,
+                        sale_price,
+                        goods_class_id: [goods_class_id],
+                        freight_fee,
+                        send_mode: [send_mode],
+                        full_amount,
+                        free_amount,
+                        e_invoice: parseInt(e_invoice),
+                        city_partner_rate,
+                        two_level_rate
+                    });
+                    this.store.use_point_rate = use_point_rate;
+                    this.store.goods_image = init_goods_image;
+                    this.store.goods_detail = init_goods_detail;
+                });
+            }
         });
     }
     render() {

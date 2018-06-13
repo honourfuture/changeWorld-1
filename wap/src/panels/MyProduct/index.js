@@ -31,6 +31,11 @@ class Item extends BaseComponent {
         });
         e.stopPropagation();
     }
+    @action.bound
+    onEdit(e) {
+        Base.push("ProductIssue", { id: this.props.data.id });
+        e.stopPropagation();
+    }
     render() {
         const { default_image, name, sale_price, id, enable } = this.props.data;
         // const goodsType =
@@ -63,14 +68,30 @@ class Item extends BaseComponent {
                         <span className="goodsPrice">
                             ￥ {Base.getNumFormat(sale_price)}
                         </span>
-                        <Button
-                            onClick={this.onSave}
-                            type="warning"
-                            inline
-                            size="small"
-                        >
-                            {parseInt(enable, 10) === 1 ? "下架" : "上架"}
-                        </Button>
+                        <Flex>
+                            <Button
+                                onClick={this.onEdit}
+                                type="warning"
+                                inline
+                                size="small"
+                                className="item-btn"
+                            >
+                                <div style={{ fontSize: 10 }}>编辑</div>
+                            </Button>
+                            <Button
+                                onClick={this.onSave}
+                                type="warning"
+                                inline
+                                size="small"
+                                className="item-btn"
+                            >
+                                <div style={{ fontSize: 10 }}>
+                                    {parseInt(enable, 10) === 1
+                                        ? "下架"
+                                        : "上架"}
+                                </div>
+                            </Button>
+                        </Flex>
                     </Flex>
                 </div>
                 {/* {goodsType} */}
