@@ -168,7 +168,12 @@ class ProductIssue extends BaseComponent {
                     },
                     res => {
                         alert("恭喜您", "发布成功！", [
-                            { text: "继续发布", onPress: null },
+                            {
+                                text: "继续发布",
+                                onPress: () => {
+                                    window.location.reload();
+                                }
+                            },
                             {
                                 text: "我的产品",
                                 onPress: () => Base.push("MyProduct")
