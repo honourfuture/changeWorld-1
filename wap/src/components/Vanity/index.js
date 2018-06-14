@@ -163,7 +163,7 @@ export class Vanity extends BaseComponent {
                         {ads}
                     </Carousel>
                 ) : null}
-                <div className="vanity-num">
+                {/* <div className="vanity-num">
                     <Tabs
                         tabs={tabs}
                         swipeable={false}
@@ -173,6 +173,11 @@ export class Vanity extends BaseComponent {
                             {vanifyNum}
                         </Flex>
                     </Tabs>
+                </div> */}
+                <div className="vanity-num">
+                    <Flex wrap="wrap" className="vanity-num-list">
+                        {vanifyNum}
+                    </Flex>
                 </div>
             </div>
         );

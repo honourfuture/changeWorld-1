@@ -453,7 +453,7 @@ export default class GoodsDetail extends BaseComponent {
                             </div>
                             {/* <div className='old-price'>原价<em>￥489</em></div> */}
                         </Flex>
-                        <div className="title">
+                        <div className="title ellipsis2">
                             {freight_fee === 0 ? (
                                 <Badge className="badge" text="包邮" />
                             ) : null}
@@ -585,6 +585,7 @@ export default class GoodsDetail extends BaseComponent {
                         <div className="image-text-con">
                             <div className="title-con">图文详情</div>
                             {goodsDetailImgs}
+                            {/* <div className="title-con">价格说明</div> */}
                             <div className="bottom-tips">
                                 别再拉了~=￣ω￣=~没有了
                             </div>
@@ -610,7 +611,7 @@ export default class GoodsDetail extends BaseComponent {
                                     )
                                 }
                             >
-                                <img src={icon.customerIcon} alt="" />
+                                <img src={icon.chat} alt="" />
                                 <div className="label">客服</div>
                             </Flex.Item>
                             <Flex.Item onClick={this.collectHandler}>

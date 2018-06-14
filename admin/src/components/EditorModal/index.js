@@ -59,7 +59,9 @@ export class EditorModal extends BaseComponent {
                         base64_image_content: encodeURIComponent(info)
                     },
                     res => {
-                        resolve({ data: Base.getImgUrl(res.data.file_url) });
+                        resolve({
+                            data: { link: Base.getImgUrl(res.data.file_url) }
+                        });
                     },
                     null,
                     res => {

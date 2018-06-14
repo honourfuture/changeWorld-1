@@ -14,7 +14,8 @@ export const icon = {
     vipIcon: require("./icon/vipIcon.png"),
     logo: require("./icon/logo.png"),
     ios: require("./icon/ios.png"),
-    android: require("./icon/android.png")
+    android: require("./icon/android.png"),
+    chat: require('./icon/chat.png')
 };
 
 export const addr = {

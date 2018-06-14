@@ -6,8 +6,8 @@ import { WhiteSpace, Carousel, ListView, PullToRefresh } from "antd-mobile";
 import "./Hots.less";
 
 import { GoodsItem } from "../../components/GoodsList";
-import { test } from "../../images";
 const height = document.body.offsetHeight - 88;
+const width = document.body.offsetWidth;
 export class Hots extends BaseComponent {
     constructor(props) {
         super(props);
@@ -132,23 +132,25 @@ export class Hots extends BaseComponent {
                     ref={el => (this.listView = el)}
                     style={{ height }}
                     dataSource={dataSource}
-                    renderHeader={() =>
-                        ad.length > 0 ? (
-                            <Carousel autoplay={true} infinite>
-                                {ad.map(({ image, link }, index) => (
-                                    <NetImg
-                                        key={index}
-                                        onClick={() => Base.push(link)}
-                                        src={Base.getImgUrl(image)}
-                                        style={{
-                                            width: "100%",
-                                            height: "auto"
-                                        }}
-                                    />
-                                ))}
-                            </Carousel>
-                        ) : null
-                    }
+                    renderHeader={() => (
+                        <div style={{ width }}>
+                            {ad.length > 0 ? (
+                                <Carousel autoplay={false} infinite>
+                                    {ad.map(({ image, link }, index) => (
+                                        <NetImg
+                                            key={index}
+                                            onClick={() => Base.push(link)}
+                                            src={Base.getImgUrl(image)}
+                                            style={{
+                                                width: "100%",
+                                                height: "auto"
+                                            }}
+                                        />
+                                    ))}
+                                </Carousel>
+                            ) : null}
+                        </div>
+                    )}
                     renderRow={this.renderGoodsItem}
                     renderFooter={() => (
                         <div style={{ padding: 15, textAlign: "center" }}>
