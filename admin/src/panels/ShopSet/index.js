@@ -21,7 +21,7 @@ export default class ShopSet extends BaseComponent{
 	render(){
 		const {list} = this.store;
 		const panes = [
-	      	{ title: '商城设置', content: <ShopSetItem item={list} />, key: '1' },
+	      	{ title: '商城设置', content: <ShopSetItem />, key: '1' },
 	     	{ title: '默认搜索', content: <SearchItem item={list} />, key: '2' },
 	     	{ title: '热门搜索', content: <HotWrod />, key: '3' },
 	    ];

@@ -135,7 +135,7 @@ export class Hots extends BaseComponent {
                     renderHeader={() => (
                         <div style={{ width }}>
                             {ad.length > 0 ? (
-                                <Carousel autoplay={false} infinite>
+                                <Carousel autoplay={true} infinite>
                                     {ad.map(({ image, link }, index) => (
                                         <NetImg
                                             key={index}

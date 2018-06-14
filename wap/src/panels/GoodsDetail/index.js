@@ -10,7 +10,8 @@ import {
     Checkbox,
     Stepper,
     Button,
-    Toast
+    Toast,
+    WhiteSpace
 } from "antd-mobile";
 import "./GoodsDetail.less";
 import { icon } from "../../images";
@@ -165,7 +166,8 @@ export default class GoodsDetail extends BaseComponent {
         goods_info: {},
         seller: {},
         address: [],
-        sale_num: 0
+        sale_num: 0,
+        goods_explain:''
     };
     componentDidMount() {
         const { id } = Base.getPageParams();
@@ -177,8 +179,10 @@ export default class GoodsDetail extends BaseComponent {
                 goods_info,
                 seller,
                 favorite,
-                sale_num
+                sale_num,
+                goods_explain
             } = res.data;
+            console.log(res.data)
             this.store.evaluate = evaluate;
             this.store.goods = goods;
             this.store.goods_attr = goods_attr;
@@ -186,6 +190,7 @@ export default class GoodsDetail extends BaseComponent {
             this.store.seller = seller;
             this.store.favorite = favorite;
             this.store.sale_num = sale_num || "0";
+            this.store.goods_explain = goods_explain;
             Base.GET(
                 { act: "address", op: "index" },
                 res => {
@@ -314,7 +319,8 @@ export default class GoodsDetail extends BaseComponent {
             goods_info = {},
             seller = {},
             address = [],
-            sale_num
+            sale_num,
+            goods_explain
         } = this.store;
         let {
             goods_image = "",
@@ -330,6 +336,7 @@ export default class GoodsDetail extends BaseComponent {
             id,
             default_image = ""
         } = goods_info;
+        // console.log(goods_info)
         try {
             goods_attr = JSON.parse(goods_attr);
         } catch (error) {
@@ -585,12 +592,16 @@ export default class GoodsDetail extends BaseComponent {
                         <div className="image-text-con">
                             <div className="title-con">图文详情</div>
                             {goodsDetailImgs}
-                            {/* <div className="title-con">价格说明</div> */}
-                            <div className="bottom-tips">
+                            {/* <div className="bottom-tips">
                                 别再拉了~=￣ω￣=~没有了
-                            </div>
+                            </div> */}
                         </div>
                     ) : null}
+                    <WhiteSpace size='lg' />
+                    <div className="image-text-con">
+                        <div className="title-con">价格说明</div>
+                        <div dangerouslySetInnerHTML={{__html:goods_explain}}></div>
+                    </div>
                 </div>
                 <Flex className="footer">
                     <Flex.Item>

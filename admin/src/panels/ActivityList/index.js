@@ -80,7 +80,7 @@ export default class ActivityList extends BaseComponent{
 					<div className="editable-row-operations">
 						<span>
 							<a onClick={() => this.onRead(id,user.nickname)}>详情</a>&nbsp;&nbsp;
-							{/* <a onClick={() => this.onAddImg(id,is_ad)}>广告位</a> */}
+							<a onClick={() => this.onAddImg(id,is_ad)}>广告位</a>
 						</span>
 					</div>
 					);

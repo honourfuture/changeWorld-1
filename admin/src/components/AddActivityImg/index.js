@@ -31,8 +31,9 @@ class AddActivityImg extends BaseComponent{
 			<Switch defaultChecked={parseInt(values,10) === 1} onChange={this.onSwitch} />
 		)
 	}
+	@action.bound
 	onSwitch(value){
-		console.log(value)
+		// console.log(value)
 		// value ? this.store.uploadDis = false : this.store.uploadDis = true;
 	}
 	@action.bound
@@ -40,7 +41,6 @@ class AddActivityImg extends BaseComponent{
 		const {loading,uploadDis} = this.store;
 		return (
 			<Upload
-				disabled={uploadDis}
 				name="field"
 				data={{ field: "field" }}
 				listType="picture-card"
