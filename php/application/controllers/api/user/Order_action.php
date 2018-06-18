@@ -126,6 +126,10 @@ class Order_action extends API_Controller {
                     $this->ajaxReturn([], 4, '订单操作状态不支持');
                 }
                 if($this->Order_model->update($this->order['id'], ['status' => 4])){
+                    //经验值
+                    $this->load->model('Grade_rule_model');
+                    $this->Grade_rule_model->add($this->user_id, 'buyer', $this->order['real_total_amount']);
+
                     $this->ajaxReturn();
                 }else{
                     $this->ajaxReturn([], 5, '取消订单操作失败');
