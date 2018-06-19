@@ -111,7 +111,11 @@ class Partner extends API_Controller {
 			}
 			if($users){
 				$k_users = [];
+				$this->load->model('Grade_model');
 				foreach($users as $item){
+					$grade = $this->Grade_model->exp_to_grade($item['exp']);
+					$item['lv'] = $grade['grade_name'];
+
 					$k_users[$item[$filed]] = $item;
 				}
 

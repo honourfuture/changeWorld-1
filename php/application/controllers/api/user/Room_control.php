@@ -106,14 +106,18 @@ class Room_control extends API_Controller {
 		if($keyword){
 			$this->load->model('Users_model');
 
-			$this->db->select('id,nickname,mobi,header,sex,summary');
+			$this->db->select('id,nickname,mobi,header,sex,summary,exp');
 			$this->db->where('id', $keyword);
 			$this->db->or_like('nickname', $keyword);
 			$this->db->or_like('mobi', $keyword);
 			if($result = $this->Users_model->order_by('id', 'desc')->limit($this->per_page, $this->offset)->get_all()){
+				$this->load->model('Grade_model');
 				foreach($result as $key=>$item){
 					$row = $this->Room_control_model->get_by(['room_control_user_id' => $item['id']]);
 					$item['room_control'] = $row ? 1 : 0;
+
+					$grade = $this->Grade_model->exp_to_grade($item['exp']);
+					$item['lv'] = $grade['grade_name'];
 
 					$ret[] = $item;
 				}
