@@ -17,5 +17,5 @@ export default {
         avatar:
             "https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png"
     },
-    PAGE_SIZE: 5
+    PAGE_SIZE: 20
 };
