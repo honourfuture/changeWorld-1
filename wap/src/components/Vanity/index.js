@@ -159,7 +159,7 @@ export class Vanity extends BaseComponent {
         return (
             <div className="Vanity base-content">
                 {ads.length > 0 ? (
-                    <Carousel autoplay={false} infinite dots={false}>
+                    <Carousel autoplay={true} infinite dots={false}>
                         {ads}
                     </Carousel>
                 ) : null}

@@ -87,4 +87,44 @@ class Users_grade extends API_Controller {
 		$init = $this->Grade_rule_model->init();
 		return isset($init[$name]) ? $init[$name] : '未知';
 	}
+
+	/**
+	 * @api {post} /api/users_grade/add 经验值-增加
+	 * @apiVersion 1.0.0
+	 * @apiName users_grade_add
+	 * @apiGroup api
+	 *
+	 * @apiSampleRequest /api/users_grade/add
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 * @apiParam {String} type 涨经验类型[live:开播, live_view:听直播, audio:听音频]
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *     "data": "",
+	 *     "status": 0,
+	 *     "message": "成功"
+	 * }
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+	public function add()
+	{
+		$type = $this->input->get_post('type');
+		$this->load->model('Grade_rule_model');
+		$this->Grade_rule_model->add($this->user_id, $type);
+
+
+		$this->ajaxReturn();
+	}
 }

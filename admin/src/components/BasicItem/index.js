@@ -30,6 +30,7 @@ const FormItem = Form.Item;
 const { TextArea } = Input;
 class BasicItem extends BaseComponent {
     store = {
+		list:{},
         editorState: EditorState.createEmpty()
     };
     showProps = [
@@ -58,9 +59,8 @@ class BasicItem extends BaseComponent {
         },
         { key: "closed_reason", label: "关闭原因" },
         { key: "phone", label: "客服联系电话" },
-        { key: "email", label: "电子邮箱" }
-        // {key:'goods_explain',label:'价格说明'},
-    ];
+        { key: "email", label: "电子邮箱" },
+	];
     renderTextArea(value) {
         return <TextArea autosize={{ minRows: 4 }} />;
     }
@@ -73,12 +73,11 @@ class BasicItem extends BaseComponent {
                 unCheckedChildren="关"
             />
         );
-    }
-    @action.bound
+	}
+	@action.bound
     onEditorStateChange(editorState) {
         this.store.editorState = editorState;
     }
-    @action.bound
     onUploadCallback(file) {
         return new Promise((resolve, reject) => {
             getBase64(file, info => {
@@ -105,21 +104,17 @@ class BasicItem extends BaseComponent {
     //是否启用
     @action.bound
     onSwitch(value) {
-        const { callBack } = this.props;
-        callBack && callBack(value);
+		this.store.list.site_status = value;
     }
     @action.bound
-    onSaveBasic(value) {
+    onSaveBasic() {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 const content = draftToHtml(
-                    convertToRaw(
-                        this.refs.editor.state.editorState.getCurrentContent()
-                    )
-                );
+					convertToRaw(this.refs.editor.state.editorState.getCurrentContent())
+				);
                 values.site_status = values.site_status ? 1 : 0;
                 values.goods_explain = content;
-                // console.log(values);
                 Base.POST(
                     { act: "config", op: "save", mod: "admin", ...values },
                     res => {
@@ -129,28 +124,26 @@ class BasicItem extends BaseComponent {
                 );
             }
         });
-    }
-    @action.bound
+	}
+	componentDidMount(){
+		Base.GET({act:'config',op:'index',mod:'admin'},(res)=>{
+			this.store.list = res.data;
+			const contentBlock = htmlToDraft(res.data.goods_explain);
+			if (contentBlock) {
+				const contentState = ContentState.createFromBlockArray(
+					contentBlock.contentBlocks
+				);
+				const editorState = EditorState.createWithContent(contentState);
+				this.store.editorState = editorState;
+			}
+		},this);
+	}
     render() {
-        const { editorState } = this.store;
+		const { list,editorState } = this.store;
         const { getFieldDecorator } = this.props.form;
         const { showProps } = this;
-        const readItem = this.props.item || {};
         const items = showProps.map((item, index) => {
-            const { key, label, render } = item;
-            // if(key == 'goods_explain'){
-            // const html = readItem[key];
-            // console.log(html)
-            // const contentBlock = htmlToDraft(html);
-            // if (contentBlock) {
-            // 	const contentState = ContentState.createFromBlockArray(
-            // 		contentBlock.contentBlocks
-            // 	);
-            // 	const editorState = EditorState.createWithContent(contentState);
-            // this.store.editorState = editorState;
-            // this.store.editorState = html;
-            // }
-            // }
+			const { key, label, render } = item;
             if (!render) {
                 return (
                     <FormItem
@@ -160,7 +153,7 @@ class BasicItem extends BaseComponent {
                         label={label}
                     >
                         {getFieldDecorator(key, {
-                            initialValue: readItem[key]
+                            initialValue: list[key]
                         })(<Input placeholder={`请输入${label}`} />)}
                     </FormItem>
                 );
@@ -173,8 +166,8 @@ class BasicItem extends BaseComponent {
                         label={label}
                     >
                         {getFieldDecorator(key, {
-                            initialValue: readItem[key]
-                        })(render(readItem[key]))}
+                            initialValue: list[key]
+                        })(render(list[key]))}
                     </FormItem>
                 );
             }
@@ -182,27 +175,27 @@ class BasicItem extends BaseComponent {
         return (
             <div className="BasicItem">
                 {items}
-                {/* <FormItem
+                <FormItem
                     className="baseForm"
                     {...formItemLayout}
                     label={"价格说明"}
                 >
                     <Editor
-                        ref="editor"
-                        wrapperClassName="editor-con"
-                        editorState={editorState}
-                        onEditorStateChange={this.onEditorStateChange}
-                        toolbar={{
-                            image: {
-                                uploadCallback: this.onUploadCallback,
-                                previewImage: true
-                            }
-                        }}
-                        localization={{
-                            locale: "zh"
-                        }}
-                    />
-                </FormItem> */}
+						ref="editor"
+						wrapperClassName="editor-con"
+						editorState={editorState}
+						onEditorStateChange={this.onEditorStateChange}
+						toolbar={{
+							image: {
+								uploadCallback: this.onUploadCallback,
+								previewImage: true
+							}
+						}}
+						localization={{
+							locale: "zh"
+						}}
+					/>
+                </FormItem>
                 <Row>
                     <Col span={6} />
                     <Col>

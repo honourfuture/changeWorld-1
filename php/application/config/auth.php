@@ -22,4 +22,6 @@ $config['unLogin'] = [//控制器=>方法
 	'api/activity' => ['*'],
 	'api/activity_class' => ['index'],
 	'api/activity_enter' => ['details'],
+	'api/goods' => ['index', 'view', 'evaluate'],
+	'api/address' => ['index'],
 ];

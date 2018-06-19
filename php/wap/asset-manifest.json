@@ -1,8 +1,15 @@
 {
+<<<<<<< HEAD
   "main.css": "static/css/main.529edbb7.css",
   "main.css.map": "static/css/main.529edbb7.css.map",
   "main.js": "static/js/main.df0eff09.js",
   "main.js.map": "static/js/main.df0eff09.js.map",
+=======
+  "main.css": "static/css/main.dd4c2d89.css",
+  "main.css.map": "static/css/main.dd4c2d89.css.map",
+  "main.js": "static/js/main.ac9d11f7.js",
+  "main.js.map": "static/js/main.ac9d11f7.js.map",
+>>>>>>> 391956c545b39bea620bcb42f7f9ef880cf730d6
   "static/media/activify_01.jpg": "static/media/activify_01.24fa3fef.jpg",
   "static/media/activify_02.jpg": "static/media/activify_02.4d659aa7.jpg",
   "static/media/activify_03.jpg": "static/media/activify_03.4be0fc34.jpg",
@@ -21,6 +28,5 @@
   "static/media/share_bg_1.png": "static/media/share_bg_1.be234493.png",
   "static/media/share_bg_2.png": "static/media/share_bg_2.33468fb7.png",
   "static/media/share_bg_3.png": "static/media/share_bg_3.a60ea543.png",
-  "static/media/shopCart.png": "static/media/shopCart.0dd50406.png",
-  "static/media/uBg.png": "static/media/uBg.88ee006a.png"
+  "static/media/shopCart.png": "static/media/shopCart.0dd50406.png"
 }

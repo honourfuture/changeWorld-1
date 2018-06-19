@@ -168,6 +168,9 @@ class Live_gift extends API_Controller {
         ];
         $this->load->model('Gold_log_model');
         $this->Gold_log_model->insert($gold_log);
+        //经验值
+        $this->load->model('Grade_rule_model');
+		$this->Grade_rule_model->add($this->user_id, 'gift', $gold);
 
         $this->db->trans_complete();
         if ($this->db->trans_status() === FALSE){
