@@ -83,7 +83,7 @@ export class Hots extends BaseComponent {
                         ? [].concat(goods)
                         : this.store.goods.concat(goods);
                 this.store.refreshing = false;
-                this.store.isLoading = goods.length > 0;
+                this.store.isLoading = false;
                 if (goods.length > 0) {
                     this.cur_page++;
                 }
@@ -101,6 +101,9 @@ export class Hots extends BaseComponent {
     }
     @action.bound
     onEndReached() {
+        if (this.store.isLoading || this.store.refreshing) {
+            return;
+        }
         this.store.isLoading = true;
         this.store.refreshing = true;
         this.requestData();
@@ -154,7 +157,11 @@ export class Hots extends BaseComponent {
                     renderRow={this.renderGoodsItem}
                     renderFooter={() => (
                         <div style={{ padding: 15, textAlign: "center" }}>
-                            {isLoading ? "加载中..." : "加载完成"}
+                            {isLoading
+                                ? "加载中..."
+                                : goods.length >= Global.PAGE_SIZE
+                                    ? "加载完成"
+                                    : ""}
                         </div>
                     )}
                     pullToRefresh={
