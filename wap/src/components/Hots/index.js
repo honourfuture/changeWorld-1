@@ -87,9 +87,9 @@ export class Hots extends BaseComponent {
                 if (goods.length > 0) {
                     this.cur_page++;
                 }
-            },
-            false,
-            true
+            }
+            // false,
+            // true
         );
     }
     @action.bound
