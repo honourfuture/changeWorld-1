@@ -6,6 +6,8 @@ import { WhiteSpace, Carousel, ListView, PullToRefresh } from "antd-mobile";
 import "./Hots.less";
 
 import { GoodsItem } from "../../components/GoodsList";
+import Mescroll from "../Mescroll/mescroll.m";
+import "../Mescroll/mescroll.min.css";
 const height = document.body.offsetHeight - 88;
 const width = document.body.offsetWidth;
 const PAGE_SIZE = 20;
@@ -34,6 +36,16 @@ export class Hots extends BaseComponent {
             this.cur_page = 1;
             this.requestData();
         });
+        this.mescroll = new Mescroll("mescroll", {
+            down: {
+                callback: this.onRefresh,
+                auto: false
+            },
+            up: {
+                callback: this.onEndReached,
+                auto: false
+            }
+        });
         const { id, is_hot } = this.props;
         Base.GET(
             {
@@ -49,6 +61,7 @@ export class Hots extends BaseComponent {
                 this.store.goods = res.data.goods;
                 this.store.anchor = res.data.anchor;
                 // this.setListHeight();
+                this.mescroll.endSuccess();
             }
         );
     }
@@ -79,12 +92,15 @@ export class Hots extends BaseComponent {
             },
             res => {
                 const { goods } = res.data;
+                this.mescroll.endSuccess();
+                this.mescroll.endSuccess(
+                    goods.length,
+                    goods.length >= PAGE_SIZE
+                );
                 this.store.goods =
                     this.cur_page === 1
                         ? [].concat(goods)
                         : this.store.goods.concat(goods);
-                this.store.refreshing = false;
-                this.store.isLoading = false;
                 if (goods.length > 0) {
                     this.cur_page++;
                 }
@@ -95,26 +111,19 @@ export class Hots extends BaseComponent {
     }
     @action.bound
     onRefresh() {
-        if (this.store.isLoading || this.store.refreshing) {
-            return;
-        }
-        this.store.refreshing = true;
-        this.store.isLoading = false;
         this.cur_page = 1;
         this.requestData();
     }
     @action.bound
     onEndReached() {
-        if (this.store.isLoading || this.store.refreshing) {
-            return;
-        }
-        this.store.isLoading = true;
-        this.store.refreshing = true;
         this.requestData();
     }
     render() {
         const { goods, refreshing, isLoading, ad } = this.store;
-        const dataSource = this.dataSource.cloneWithRows(goods.slice());
+        // const dataSource = this.dataSource.cloneWithRows(goods.slice());
+        const items = goods.map(item => {
+            return <GoodsItem key={item.id} {...item} />;
+        });
         return (
             <div className="Hots base-content">
                 {/* {ad.length > 0 ? (
@@ -135,7 +144,39 @@ export class Hots extends BaseComponent {
                     <span>主播推荐</span>
                 </div> */}
                 {/* <WhiteSpace size="md" /> */}
-                <ListView
+                <div id="mescroll" className="mescroll">
+                    <div className="scroll-con">
+                        {ad.length > 0 ? (
+                            <Carousel
+                                style={{ marginBottom: 10 }}
+                                autoplay={true}
+                                infinite
+                            >
+                                {ad.map(({ image, link }, index) => (
+                                    <NetImg
+                                        key={index}
+                                        onClick={() => Base.push(link)}
+                                        src={Base.getImgUrl(image)}
+                                        style={{
+                                            width: "100%",
+                                            height: "auto"
+                                        }}
+                                        onLoaded={this.setListHeight}
+                                    />
+                                ))}
+                            </Carousel>
+                        ) : null}
+                        {items}
+                    </div>
+                </div>
+                {/* <Scroll
+                    style={{ height }}
+                    f_pullUpScroll={this.onEndReached}
+                    f_pullDownScroll={this.onRefresh}
+                >
+                    {items}
+                </Scroll> */}
+                {/* <ListView
                     ref={el => (this.listView = el)}
                     style={{ height }}
                     dataSource={dataSource}
@@ -177,7 +218,7 @@ export class Hots extends BaseComponent {
                     onEndReached={this.onEndReached}
                     initialListSize={8}
                     // pageSize={2}
-                />
+                /> */}
             </div>
         );
     }
