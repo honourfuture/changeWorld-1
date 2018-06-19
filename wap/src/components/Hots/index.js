@@ -94,6 +94,9 @@ export class Hots extends BaseComponent {
     }
     @action.bound
     onRefresh() {
+        if (this.store.isLoading || this.store.refreshing) {
+            return;
+        }
         this.store.refreshing = true;
         this.store.isLoading = false;
         this.cur_page = 1;
