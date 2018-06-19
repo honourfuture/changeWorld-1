@@ -1,15 +1,8 @@
 {
-<<<<<<< HEAD
-  "main.css": "static/css/main.529edbb7.css",
-  "main.css.map": "static/css/main.529edbb7.css.map",
-  "main.js": "static/js/main.df0eff09.js",
-  "main.js.map": "static/js/main.df0eff09.js.map",
-=======
   "main.css": "static/css/main.dd4c2d89.css",
   "main.css.map": "static/css/main.dd4c2d89.css.map",
-  "main.js": "static/js/main.ac9d11f7.js",
-  "main.js.map": "static/js/main.ac9d11f7.js.map",
->>>>>>> 391956c545b39bea620bcb42f7f9ef880cf730d6
+  "main.js": "static/js/main.db24517b.js",
+  "main.js.map": "static/js/main.db24517b.js.map",
   "static/media/activify_01.jpg": "static/media/activify_01.24fa3fef.jpg",
   "static/media/activify_02.jpg": "static/media/activify_02.4d659aa7.jpg",
   "static/media/activify_03.jpg": "static/media/activify_03.4be0fc34.jpg",
