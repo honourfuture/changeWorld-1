@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { action } from "mobx";
 import { Base, BaseComponent, NetImg, Global } from "../../common";
@@ -6,19 +6,17 @@ import { WhiteSpace, Carousel, ListView, PullToRefresh } from "antd-mobile";
 import "./Hots.less";
 
 import { GoodsItem } from "../../components/GoodsList";
-import Mescroll from "../Mescroll/mescroll.m";
-import "../Mescroll/mescroll.min.css";
 const height = document.body.offsetHeight - 88;
 const width = document.body.offsetWidth;
 const PAGE_SIZE = 20;
-export class Hots extends BaseComponent {
+export class Hots extends Component {
     constructor(props) {
         super(props);
         this.dataSource = new ListView.DataSource({
             rowHasChanged: (row1, row2) => row1 !== row2
         });
         this.cur_page = 1;
-        this.store = {
+        this.state = {
             goods: [],
             refreshing: false,
             height: 0,
@@ -32,19 +30,9 @@ export class Hots extends BaseComponent {
     }
     componentDidMount() {
         Base.addEvt("com.shopindex.search", (evt, keyword) => {
-            this.store.keyword = keyword;
+            this.setState({ keyword });
             this.cur_page = 1;
             this.requestData();
-        });
-        this.mescroll = new Mescroll("mescroll", {
-            down: {
-                callback: this.onRefresh,
-                auto: false
-            },
-            up: {
-                callback: this.onEndReached,
-                auto: false
-            }
         });
         const { id, is_hot } = this.props;
         Base.GET(
@@ -57,11 +45,9 @@ export class Hots extends BaseComponent {
             },
             res => {
                 this.cur_page++;
-                this.store.ad = res.data.ad;
-                this.store.goods = res.data.goods;
-                this.store.anchor = res.data.anchor;
+                const { ad, goods, anchor } = res.data;
+                this.setState({ ad, goods, anchor });
                 // this.setListHeight();
-                this.mescroll.endSuccess();
             }
         );
     }
@@ -88,22 +74,22 @@ export class Hots extends BaseComponent {
                 is_hot,
                 cur_page: this.cur_page || 1,
                 per_page: PAGE_SIZE,
-                keyword: this.store.keyword
+                keyword: this.state.keyword
             },
             res => {
                 const { goods } = res.data;
-                this.mescroll.endSuccess();
-                this.mescroll.endSuccess(
-                    goods.length,
-                    goods.length >= PAGE_SIZE
-                );
-                this.store.goods =
+                let new_goods =
                     this.cur_page === 1
                         ? [].concat(goods)
-                        : this.store.goods.concat(goods);
+                        : this.state.goods.concat(goods);
                 if (goods.length > 0) {
                     this.cur_page++;
                 }
+                this.setState({
+                    refreshing: false,
+                    isLoading: false,
+                    goods: new_goods
+                });
             }
             // false,
             // true
@@ -111,19 +97,26 @@ export class Hots extends BaseComponent {
     }
     @action.bound
     onRefresh() {
+        if (this.state.isLoading || this.state.refreshing) {
+            return;
+        }
+        this.state.refreshing = true;
+        this.state.isLoading = false;
         this.cur_page = 1;
         this.requestData();
     }
     @action.bound
     onEndReached() {
+        if (this.state.isLoading || this.state.refreshing) {
+            return;
+        }
+        this.state.isLoading = true;
+        this.state.refreshing = true;
         this.requestData();
     }
     render() {
-        const { goods, refreshing, isLoading, ad } = this.store;
-        // const dataSource = this.dataSource.cloneWithRows(goods.slice());
-        const items = goods.map(item => {
-            return <GoodsItem key={item.id} {...item} />;
-        });
+        const { goods, refreshing, isLoading, ad } = this.state;
+        const dataSource = this.dataSource.cloneWithRows(goods);
         return (
             <div className="Hots base-content">
                 {/* {ad.length > 0 ? (
@@ -144,39 +137,7 @@ export class Hots extends BaseComponent {
                     <span>主播推荐</span>
                 </div> */}
                 {/* <WhiteSpace size="md" /> */}
-                <div id="mescroll" className="mescroll">
-                    <div className="scroll-con">
-                        {ad.length > 0 ? (
-                            <Carousel
-                                style={{ marginBottom: 10 }}
-                                autoplay={true}
-                                infinite
-                            >
-                                {ad.map(({ image, link }, index) => (
-                                    <NetImg
-                                        key={index}
-                                        onClick={() => Base.push(link)}
-                                        src={Base.getImgUrl(image)}
-                                        style={{
-                                            width: "100%",
-                                            height: "auto"
-                                        }}
-                                        onLoaded={this.setListHeight}
-                                    />
-                                ))}
-                            </Carousel>
-                        ) : null}
-                        {items}
-                    </div>
-                </div>
-                {/* <Scroll
-                    style={{ height }}
-                    f_pullUpScroll={this.onEndReached}
-                    f_pullDownScroll={this.onRefresh}
-                >
-                    {items}
-                </Scroll> */}
-                {/* <ListView
+                <ListView
                     ref={el => (this.listView = el)}
                     style={{ height }}
                     dataSource={dataSource}
@@ -218,7 +179,7 @@ export class Hots extends BaseComponent {
                     onEndReached={this.onEndReached}
                     initialListSize={8}
                     // pageSize={2}
-                /> */}
+                />
             </div>
         );
     }
