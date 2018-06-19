@@ -8,7 +8,7 @@ import "./Hots.less";
 import { GoodsItem } from "../../components/GoodsList";
 const height = document.body.offsetHeight - 88;
 const width = document.body.offsetWidth;
-const PAGE_SIZE = 50;
+const PAGE_SIZE = 20;
 export class Hots extends BaseComponent {
     constructor(props) {
         super(props);
@@ -175,6 +175,7 @@ export class Hots extends BaseComponent {
                         />
                     }
                     onEndReached={this.onEndReached}
+                    initialListSize={8}
                     // pageSize={2}
                 />
             </div>
