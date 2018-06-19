@@ -605,6 +605,11 @@ class Notify extends API_Controller
                         $insert['room_id'] = $room_id;
                         $insert['anchor_uid'] = $this->Room_model->user_id;
 
+                        if($room_info = $this->Room_model->get($room_id)){
+                            $insert['title'] = $room_info['title'];
+                            $insert['cover_image'] = $room_info['cover_image'];
+                        }
+
                         $this->Room_audio_model->insert($insert);
                     }
                     break;
