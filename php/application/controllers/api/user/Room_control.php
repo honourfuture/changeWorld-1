@@ -192,7 +192,11 @@ class Room_control extends API_Controller {
 			if($users = $this->Users_model->get_many($a_room_control_user_id)){
 				$k_users = [];
 				$a_id = array();
+				$this->load->model('Grade_model');
 				foreach($users as $item){
+					$grade = $this->Grade_model->exp_to_grade($item['exp']);
+					$item['lv'] = $grade['grade_name'];
+
 					$k_users[$item['user_id']] = $item;
 					$a_id[] = $item['user_id'];
 				}
@@ -277,6 +281,9 @@ class Room_control extends API_Controller {
 				$this->load->model('Users_model');
 				if(! $this->Users_model->get($params['room_control_user_id'])){
 					$this->ajaxReturn([], 3, '选择场控账号不存在');
+				}
+				if($this->Room_control_model->get_by($params)){
+					$this->ajaxReturn([], 4, '该用户已添加');
 				}
 				break;
 			case 'edit':

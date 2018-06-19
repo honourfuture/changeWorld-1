@@ -54,6 +54,19 @@ class Area_model extends MY_Model
     	];
     }
 
+    public function parent_id(&$pid)
+    {
+        $city = [
+            110100 => 110000,
+            120100 => 120000,
+            310100 => 310000,
+            500100 => 500000,
+        ];
+        if(isset($city[$pid])){
+            $pid = $city[$pid];
+        }
+    }
+
     public function one_city_key()
     {
     	$result = [];
