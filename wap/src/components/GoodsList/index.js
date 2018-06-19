@@ -15,9 +15,9 @@ export class GoodsItem extends BaseComponent {
         return (
             <div className="recommend-goodsItem" onClick={this.onClick}>
                 <div className="recommend-goodsItem-img">
-                    <NetImg
+                    <img
                         src={Base.getImgUrl(default_image)}
-                        style={{height:goodsImgHeight}}
+                        style={{ height: goodsImgHeight }}
                     />
                 </div>
                 <div className="recommend-goodsItem-body">

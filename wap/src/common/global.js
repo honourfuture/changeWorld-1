@@ -5,16 +5,17 @@
  * @Last Modified time: 2018-01-01 22:55:36
  * 全局数据
  */
-import { observable } from 'mobx';
+import { observable } from "mobx";
 export default {
-	API_URL:'http://aiping.qichebaby.com/api',
-    RES_URL:'http://aiping.qichebaby.com',
+    API_URL: "http://aiping.qichebaby.com/api",
+    RES_URL: "http://aiping.qichebaby.com",
     store: observable({
-        isCollapsed: false, // menu是否收起
+        isCollapsed: false // menu是否收起
     }),
     userInfo: {
-        name: '代汉桥',
-        avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png'
+        name: "代汉桥",
+        avatar:
+            "https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png"
     },
-    PAGE_SIZE:20,
-}
+    PAGE_SIZE: 5
+};

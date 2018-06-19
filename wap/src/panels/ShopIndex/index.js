@@ -14,7 +14,8 @@ export default class ShopIndex extends BaseComponent {
     }
     componentDidMount() {
         Base.GET({ act: "goods_class", op: "index" }, res => {
-            const tabs = res.data.map(item => {
+            const list = res.data.filter(item => parseInt(item.enable));
+            const tabs = list.map(item => {
                 const { id, name } = item;
                 return { key: id, title: name, component: <Hots id={id} /> };
             });
