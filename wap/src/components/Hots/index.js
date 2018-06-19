@@ -8,6 +8,7 @@ import "./Hots.less";
 import { GoodsItem } from "../../components/GoodsList";
 const height = document.body.offsetHeight - 88;
 const width = document.body.offsetWidth;
+const PAGE_SIZE = 50;
 export class Hots extends BaseComponent {
     constructor(props) {
         super(props);
@@ -40,7 +41,7 @@ export class Hots extends BaseComponent {
                 op: "index",
                 is_hot,
                 goods_class_id: id,
-                per_page: Global.PAGE_SIZE
+                per_page: PAGE_SIZE
             },
             res => {
                 this.cur_page++;
@@ -73,7 +74,7 @@ export class Hots extends BaseComponent {
                 goods_class_id: id,
                 is_hot,
                 cur_page: this.cur_page || 1,
-                per_page: Global.PAGE_SIZE,
+                per_page: PAGE_SIZE,
                 keyword: this.store.keyword
             },
             res => {
@@ -162,7 +163,7 @@ export class Hots extends BaseComponent {
                         <div style={{ padding: 15, textAlign: "center" }}>
                             {isLoading
                                 ? "加载中..."
-                                : goods.length >= Global.PAGE_SIZE
+                                : goods.length >= PAGE_SIZE
                                     ? "加载完成"
                                     : ""}
                         </div>
