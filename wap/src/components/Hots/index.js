@@ -2,7 +2,13 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { action } from "mobx";
 import { Base, BaseComponent, NetImg, Global } from "../../common";
-import { WhiteSpace, Carousel, ListView, PullToRefresh } from "antd-mobile";
+import {
+    WhiteSpace,
+    Carousel,
+    ListView,
+    PullToRefresh,
+    Toast
+} from "antd-mobile";
 import "./Hots.less";
 
 import { GoodsItem } from "../../components/GoodsList";
@@ -66,6 +72,7 @@ export class Hots extends Component {
     @action.bound
     requestData() {
         const { id, is_hot } = this.props;
+        Toast.loading("加载中", 0);
         Base.GET(
             {
                 act: "shop",
@@ -90,9 +97,12 @@ export class Hots extends Component {
                     isLoading: false,
                     goods: new_goods
                 });
-            }
-            // false,
-            // true
+                setTimeout(() => {
+                    Toast.hide();
+                }, 1000);
+            },
+            false,
+            true
         );
     }
     @action.bound
