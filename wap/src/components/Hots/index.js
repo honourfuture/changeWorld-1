@@ -1,22 +1,28 @@
-import React from "react";
+import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { action } from "mobx";
 import { Base, BaseComponent, NetImg, Global } from "../../common";
-import { WhiteSpace, Carousel, ListView, PullToRefresh } from "antd-mobile";
+import {
+    WhiteSpace,
+    Carousel,
+    ListView,
+    PullToRefresh,
+    Toast
+} from "antd-mobile";
 import "./Hots.less";
 
 import { GoodsItem } from "../../components/GoodsList";
 const height = document.body.offsetHeight - 88;
 const width = document.body.offsetWidth;
-const PAGE_SIZE = 50;
-export class Hots extends BaseComponent {
+const PAGE_SIZE = 20;
+export class Hots extends Component {
     constructor(props) {
         super(props);
         this.dataSource = new ListView.DataSource({
             rowHasChanged: (row1, row2) => row1 !== row2
         });
         this.cur_page = 1;
-        this.store = {
+        this.state = {
             goods: [],
             refreshing: false,
             height: 0,
@@ -30,7 +36,7 @@ export class Hots extends BaseComponent {
     }
     componentDidMount() {
         Base.addEvt("com.shopindex.search", (evt, keyword) => {
-            this.store.keyword = keyword;
+            this.setState({ keyword });
             this.cur_page = 1;
             this.requestData();
         });
@@ -45,9 +51,8 @@ export class Hots extends BaseComponent {
             },
             res => {
                 this.cur_page++;
-                this.store.ad = res.data.ad;
-                this.store.goods = res.data.goods;
-                this.store.anchor = res.data.anchor;
+                const { ad, goods, anchor } = res.data;
+                this.setState({ ad, goods, anchor });
                 // this.setListHeight();
             }
         );
@@ -67,6 +72,7 @@ export class Hots extends BaseComponent {
     @action.bound
     requestData() {
         const { id, is_hot } = this.props;
+        Toast.loading("加载中", 0);
         Base.GET(
             {
                 act: "shop",
@@ -75,46 +81,52 @@ export class Hots extends BaseComponent {
                 is_hot,
                 cur_page: this.cur_page || 1,
                 per_page: PAGE_SIZE,
-                keyword: this.store.keyword
+                keyword: this.state.keyword
             },
             res => {
                 const { goods } = res.data;
-                this.store.goods =
+                let new_goods =
                     this.cur_page === 1
                         ? [].concat(goods)
-                        : this.store.goods.concat(goods);
-                this.store.refreshing = false;
-                this.store.isLoading = false;
+                        : this.state.goods.concat(goods);
                 if (goods.length > 0) {
                     this.cur_page++;
                 }
-            }
-            // false,
-            // true
+                this.setState({
+                    refreshing: false,
+                    isLoading: false,
+                    goods: new_goods
+                });
+                setTimeout(() => {
+                    Toast.hide();
+                }, 1000);
+            },
+            false,
+            true
         );
     }
     @action.bound
     onRefresh() {
-        if (this.store.isLoading || this.store.refreshing) {
+        if (this.state.isLoading || this.state.refreshing) {
             return;
         }
-        this.store.refreshing = true;
-        this.store.isLoading = false;
+        this.state.refreshing = true;
+        this.state.isLoading = false;
         this.cur_page = 1;
         this.requestData();
     }
     @action.bound
     onEndReached() {
-        if (this.store.isLoading || this.store.refreshing) {
+        if (this.state.isLoading || this.state.refreshing) {
             return;
         }
-        this.store.isLoading = true;
-        this.store.refreshing = true;
+        this.state.isLoading = true;
+        this.state.refreshing = true;
         this.requestData();
     }
     render() {
-        const { goods, refreshing, isLoading, ad } = this.store;
-        const dataSource = this.dataSource.cloneWithRows(goods.slice());
+        const { goods, refreshing, isLoading, ad } = this.state;
+        const dataSource = this.dataSource.cloneWithRows(goods);
         return (
             <div className="Hots base-content">
                 {/* {ad.length > 0 ? (
@@ -175,6 +187,7 @@ export class Hots extends BaseComponent {
                         />
                     }
                     onEndReached={this.onEndReached}
+                    initialListSize={8}
                     // pageSize={2}
                 />
             </div>
