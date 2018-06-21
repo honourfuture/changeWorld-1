@@ -118,9 +118,10 @@ class Live_album extends API_Controller {
 	public function view()
 	{
 		$id = (int)$this->input->get_post('id');
-		$this->db->select('id,cover_image,title,album_class,album_tag,price,city_partner_rate,two_level_rate,public');
+		$this->db->select('id,cover_image,title,album_class,album_tag,price,city_partner_rate,two_level_rate,public,summary');
 		$info = $this->Album_model->get($id);
 		if($info){
+			$info['summary'] = $info['summary'] ? json_decode($info['summary'], true) : [];
 			$info['album_class_name'] = '';
 			if($info['album_class']){
 				$this->load->model('Album_class_model');

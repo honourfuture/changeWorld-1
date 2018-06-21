@@ -13873,7 +13873,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "type",
-            "description": "<p>商店：goods 简介：info 专辑：album 直播：live</p>"
+            "description": "<p>商店：goods 简介：info 专辑：album 直播：live 回听：video</p>"
           }
         ]
       }
@@ -20434,6 +20434,13 @@ define({ "api": [
             "optional": false,
             "field": "deleted",
             "description": "<p>删除 1删除 不传或0不处理</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "summary",
+            "description": "<p>简介图 json</p>"
           }
         ]
       }
