@@ -23,7 +23,7 @@ class Seller extends API_Controller {
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
 	 * @apiParam {Number} seller_uid 店铺唯一ID
-	 * @apiParam {String} type 商店：goods 简介：info 专辑：album 直播：live
+	 * @apiParam {String} type 商店：goods 简介：info 专辑：album 直播：live 回听：video
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -90,6 +90,9 @@ class Seller extends API_Controller {
 				$liveing = $this->Room_model->get_by(array('anchor_uid' => $seller_uid, 'status' => 1));
 				$liveing && $liveing['play_url'] = json_decode($liveing['play_url'], true);
 				$ret['liveing'] = $liveing ? $liveing : [];
+				break;
+			case 'video':
+				$ret['audio'] = $this->_audio($seller_uid, false);
 				break;
 			default :
 				$this->ajaxReturn([], 1, '类型不支持');
@@ -273,13 +276,17 @@ class Seller extends API_Controller {
 		}
 	}
 
-	protected function _audio($seller_uid)
+	protected function _audio($seller_uid, $album = true)
 	{
 		$this->field = 'title';
 		$ret = array('count' => 0, 'list' => array());
 		$where = array('enable' => 1);
 		$where['anchor_uid'] = $seller_uid;
-		$where['album_id >'] = 0;
+		if($album){
+			$where['album_id >'] = 0;
+		}else{
+			$where['album_id'] = 0;
+		}
 		$this->load->model('Room_audio_model');
 
 		$this->search();
@@ -288,7 +295,9 @@ class Seller extends API_Controller {
 			$order_by = array('updated_at' => 'desc', 'id' => 'desc');
 			$this->search();
 			$this->db->select('id,cover_image,title,price,updated_at,duration,play_times,album_id');
-			$ret['list'] = $this->Room_audio_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
+			if(!$ret['list'] = $this->Room_audio_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where)){
+				$ret['list'] = [];
+			}
 		}
 
 		return $ret;
