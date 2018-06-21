@@ -89,12 +89,13 @@ class Album extends API_Controller {
 	public function view()
 	{
 		$id = (int)$this->input->get_post('id');
-		$this->db->select('id,cover_image,updated_at,title,album_class,album_tag,price,public,anchor_uid');
+		$this->db->select('id,cover_image,updated_at,title,album_class,album_tag,price,public,anchor_uid,summary');
 		$info = $this->Album_model->get($id);
 		if($info){
 			if(!$info['public'] && $info['anchor_uid'] != $this->user_id){
 				$this->ajaxReturn([], 2, '主播专辑未公开');
 			}
+			$info['summary'] = $info['summary'] ? json_decode($info['summary'], true) : [];
 			//专辑类型
 			$info['album_class_name'] = '';
 			if($info['album_class']){
