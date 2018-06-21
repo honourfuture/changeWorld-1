@@ -152,6 +152,7 @@ class Live_album extends API_Controller {
 	 * @apiParam {Number} two_level_rate 二级分销比例
 	 * @apiParam {Number} public 是否公开 0否 1是
 	 * @apiParam {Number} deleted 删除 1删除 不传或0不处理
+	 * @apiParam {String} summary 简介图 json
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -178,7 +179,7 @@ class Live_album extends API_Controller {
 			$params = elements(
 				array(
 					'cover_image', 'title', 'album_class', 'album_tag', 'price',
-					'city_partner_rate', 'two_level_rate', 'public', 'deleted'
+					'city_partner_rate', 'two_level_rate', 'public', 'deleted', 'summary'
 				),
 				$this->input->post(),
 				UPDATE_VALID
@@ -195,7 +196,7 @@ class Live_album extends API_Controller {
 			$params = elements(
 				array(
 					'cover_image', 'title', 'album_class', 'album_tag', 'price',
-					'city_partner_rate', 'two_level_rate', 'public'
+					'city_partner_rate', 'two_level_rate', 'public', 'summary'
 				),
 				$this->input->post(),
 				UPDATE_VALID
