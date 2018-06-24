@@ -326,6 +326,14 @@ const menuData = [
                 path: "ShopSet"
             },
             {
+                name: "管理员列表",
+                path: "AdminManage"
+            },
+            {
+                name: "管理员角色列表",
+                path: "AdminRoleList"
+            },
+            {
                 name: "快递公司",
                 path: "ExpressSet"
             },

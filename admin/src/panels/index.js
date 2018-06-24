@@ -53,7 +53,25 @@ import AppVersion from "./AppVersion";
 import AppGuideManager from "./AppGuideManager";
 import ActivityList from './ActivityList';
 import ActivityClassManage from './ActivityClassManage';
+import AdminManage from './AdminManage';
+import AdminRoleList from './AdminRoleList';
+import AccessSetting from './AccessSetting';
 export const panelsList = [
+    {
+        path:'/system/AccessSetting',
+        component:AccessSetting,
+        title:'权限设置',
+    },
+    {
+        path:'/system/AdminRoleList',
+        component:AdminRoleList,
+        title:'管理员角色',
+    },
+    {
+        path:'/system/AdminManage',
+        component:AdminManage,
+        title:'管理员管理',
+    },
     {
         path:'/activity/ActivityClassManage',
         component:ActivityClassManage,
