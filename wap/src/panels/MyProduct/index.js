@@ -38,9 +38,7 @@ class Item extends BaseComponent {
     }
     @action.bound
     onTop(e) {
-        const data = { ...this.props.data };
-        const enable = 1 - parseInt(data.enable);
-        Base.POST({ act: "goods", op: "save", ...data, enable }, res => {
+        Base.POST({ act: "goods", op: "top", id: this.props.data.id }, () => {
             Toast.success("置顶成功");
         });
         e.stopPropagation();
@@ -229,7 +227,7 @@ export default class MyProduct extends BaseComponent {
                             />
                         }
                         onEndReached={this.onEndReached}
-                        // pageSize={2}
+                    // pageSize={2}
                     />
                 </div>
             </div>
