@@ -299,6 +299,11 @@ class Goods extends API_Controller {
 	{
 		$ret = array();
 
+		//积分抵扣金额
+		$rule = $this->sitePointsRule();
+		$rate = isset($rule['goods_exchange']) ? $rule['goods_exchange'] : 0;
+		$ret['rate'] = $rate * 0.01;
+
 		$this->load->model('Config_model');
 		$siteConfig = $this->Config_model->siteConfig();
 		$ret['goods_explain'] = isset($siteConfig['goods_explain']) ? $siteConfig['goods_explain'] : '';
