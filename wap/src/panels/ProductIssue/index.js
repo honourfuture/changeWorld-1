@@ -111,7 +111,7 @@ class ImgItem extends BaseComponent {
                         <input
                             type="file"
                             accept="image/*"
-                            multiple
+                            multiple="multiple"
                             onChange={this.onChange}
                             className="image-select-input"
                         />
@@ -443,7 +443,7 @@ class ProductIssue extends BaseComponent {
                                         }
                                     ]
                                 })}
-                                clear
+                                // clear
                                 placeholder="请输入产品名称"
                                 autoHeight
                                 labelNumber={1}
