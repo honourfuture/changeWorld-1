@@ -1,7 +1,7 @@
 import React from "react";
 import { action } from "mobx";
 import { createForm } from "rc-form";
-import { BaseComponent, Base } from "../../common";
+import { BaseComponent, Base, Global } from "../../common";
 import {
     Flex,
     Button,
@@ -10,11 +10,13 @@ import {
     List,
     InputItem,
     Switch,
-    ImagePicker,
+    // ImagePicker,
     WingBlank,
     Toast,
     Picker,
-    Modal, TextareaItem
+    Modal,
+    TextareaItem,
+    Icon
 } from "antd-mobile";
 import "./ProductIssue.less";
 import { icon } from "../../images";
@@ -22,53 +24,100 @@ import { icon } from "../../images";
 const Item = List.Item;
 const alert = Modal.alert;
 
+const selectImgW = (document.body.offsetWidth - 30) / 4;
+const getBase64 = (img, callback) => {
+    const reader = new FileReader();
+    reader.addEventListener("load", () => callback(reader.result));
+    reader.readAsDataURL(img);
+};
+
 class ImgItem extends BaseComponent {
-    store = { temImgLength: 0 };
+    store = { isShowTips: false };
     @action.bound
-    onChangeImg(files, type) {
-        const { callBack, isRequired } = this.props;
+    onDel(index) {
+        this.props.fileName.splice(index, 1);
+    }
+    @action.bound
+    onChange(e) {
+        const { isRequired } = this.props;
         const limit = isRequired ? 6 : 16;
-        if (type === "add") {
-            const requestFile = files[files.length - 1];
-            if (this.store.temImgLength >= limit) {
-                return;
+        const files = e.target.files;
+        let index = 0;
+        const onUpload = () => {
+            const file = files.item(index);
+            if (this.props.fileName.length >= limit) {
+                return (this.store.isShowTips = true);
             }
-            this.store.temImgLength += 1;
-            Base.POST(
-                {
-                    act: "common",
-                    op: "base64FileUpload",
-                    base64_image_content: requestFile.url
-                },
-                res => {
-                    requestFile.file_url = res.data.file_url;
-                    this.props.fileName.push(requestFile);
-                    // callBack && callBack(files);
-                }
-            );
-        } else {
-            callBack && callBack(files);
-            this.store.temImgLength -= 1;
-        }
+            if (file) {
+                getBase64(file, res => {
+                    Base.POST(
+                        {
+                            act: "common",
+                            op: "base64FileUpload",
+                            base64_image_content: res
+                        },
+                        res => {
+                            file.file_url = res.data.file_url;
+                            this.props.fileName.push(file);
+                            index++;
+                            onUpload();
+                        }
+                    );
+                });
+            }
+        };
+        onUpload();
     }
     render() {
         const { title, fileName, isRequired } = this.props;
         const limit = isRequired ? 6 : 16;
-        const { temImgLength } = this.store;
-        const limitCls = temImgLength >= limit ? "upImgTips red" : "upImgTips";
+        const { isShowTips } = this.store;
+        const limitCls = isShowTips ? "upImgTips red" : "upImgTips";
         return (
             <div className="productImg">
                 <div className="mainTit">
                     {title}
                     {isRequired ? <em>*</em> : null}
                 </div>
-                <ImagePicker
-                    files={fileName}
-                    onChange={this.onChangeImg}
-                    onImageClick={(index, fs) => console.log(index, fs)}
-                    selectable={fileName.length < limit}
-                    multiple={true}
-                />
+                <Flex className="image-picker" wrap="wrap">
+                    {fileName.map((item, index) => {
+                        return (
+                            <div
+                                key={index}
+                                className="select-img-con"
+                                style={{
+                                    width: selectImgW,
+                                    height: selectImgW
+                                }}
+                            >
+                                <img
+                                    src={Base.getImgUrl(item.file_url)}
+                                    alt=""
+                                />
+                                <Icon
+                                    onClick={() => this.onDel(index)}
+                                    className="del"
+                                    type="cross-circle-o"
+                                    size="sm"
+                                    color="rgba(0,0,0,0.5)"
+                                />
+                            </div>
+                        );
+                    })}
+                    <div
+                        className="select-img-con"
+                        style={{ width: selectImgW, height: selectImgW }}
+                    >
+                        <input
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            onChange={this.onChange}
+                            className="image-select-input"
+                        />
+                        <img src={icon.addImg} alt="" />
+                    </div>
+                </Flex>
                 <div className={limitCls}>最多可上传{limit}张图片</div>
                 <div className="upImgTips">注：推荐尺寸为640*640的图片</div>
             </div>
@@ -375,8 +424,13 @@ class ProductIssue extends BaseComponent {
                 <div className="base-content">
                     <WhiteSpace />
                     <List className="productBasic">
-                        <Flex justify='between' className='textarea-con base-line'>
-                            <div style={{ paddingLeft: 15 }}>产品名称<em style={{ color: "#e21b1a" }}>*</em></div>
+                        <Flex
+                            justify="between"
+                            className="textarea-con base-line"
+                        >
+                            <div style={{ paddingLeft: 15 }}>
+                                产品名称<em style={{ color: "#e21b1a" }}>*</em>
+                            </div>
                             <TextareaItem
                                 // style={{ width: 120 }}
                                 maxLength={38}
@@ -393,9 +447,7 @@ class ProductIssue extends BaseComponent {
                                 placeholder="请输入产品名称"
                                 autoHeight
                                 labelNumber={1}
-                            >
-
-                            </TextareaItem>
+                            />
                         </Flex>
                         <InputItem
                             error={!!getFieldError("stock")}
@@ -510,7 +562,7 @@ class ProductIssue extends BaseComponent {
                                     <em>
                                         {parseInt(point_rate, 10)
                                             ? parseInt(use_point_rate, 10) /
-                                            parseInt(point_rate, 10)
+                                              parseInt(point_rate, 10)
                                             : "0"}
                                     </em>
                                 </div>

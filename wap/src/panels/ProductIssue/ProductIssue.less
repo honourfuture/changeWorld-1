@@ -6,14 +6,14 @@
         text-align: right;
         direction: rtl;
     }
-    .textarea-con{
-        &:after{
+    .textarea-con {
+        &:after {
             background: #ddd;
         }
-        .am-textarea-control{
+        .am-textarea-control {
             text-align: right;
         }
-        textarea{
+        textarea {
             text-align: right;
         }
     }
@@ -121,12 +121,41 @@
             }
         }
     }
+
     .productImg {
         padding: 20px 15px;
         background: #fff;
-        .am-image-picker {
-            margin-top: 16px;
+        .image-picker {
+            padding: 10px 0;
+            .select-img-con {
+                position: relative;
+                box-sizing: border-box;
+                padding: 5px;
+                input {
+                    width: 100%;
+                    height: 100%;
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    opacity: 0;
+                    z-index: 1;
+                }
+                img {
+                    width: 100%;
+                    height: 100%;
+                }
+                .del {
+                    position: absolute;
+                    // width: 20px;
+                    // height: 20px;
+                    right: 10px;
+                    top: 10px;
+                }
+            }
         }
+        // .am-image-picker {
+        //     margin-top: 16px;
+        // }
         .upImgTips {
             font-size: 14px;
             color: #999;
