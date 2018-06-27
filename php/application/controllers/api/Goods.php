@@ -13,6 +13,20 @@ class Goods extends API_Controller {
         $this->load->model('Goods_model');
     }
 
+    public function top()
+    {
+    	$id = (int)$this->input->get_post('id');
+    	if($max = $this->Goods_model->order_by('sort', 'desc')->get_by(['seller_uid' => $this->user_id])){
+    		if($row = $this->Goods_model->get($id)){
+    			if($row['seller_uid'] == $this->user_id){
+    				$this->Goods_model->update($id, ['sort' => $max['sort'] + 1]);
+    			}
+    		}
+    	}
+
+    	$this->ajaxReturn();
+    }
+
     /**
 	 * @api {get} /api/goods 商品-列表
 	 * @apiVersion 1.0.0
@@ -119,6 +133,9 @@ class Goods extends API_Controller {
 		$ret['goods']['count'] = $this->Goods_model->count_by($where);
 		if($ret['goods']['count']){
 			$order_by = array('updated_at' => 'desc', 'id' => 'desc');
+			if($this->user_id){
+				$order_by = array_merge(['sort' => 'desc'], $order_by);
+			}
 			$this->search();
 			$ret['goods']['list'] = $this->Goods_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 
