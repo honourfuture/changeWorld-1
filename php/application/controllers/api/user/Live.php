@@ -150,6 +150,7 @@ class Live extends API_Controller {
 		$this->check_add_params('add', $data);
 		$this->load->model('Room_model');
 		if($id = $this->Room_model->insert($data)){
+			$this->Room_model->delete_by(['anchor_uid' => $this->user_id, 'type' => 2]);
 			//直播
 			$QLive = new Query();
 	        $config = config_item('live');
