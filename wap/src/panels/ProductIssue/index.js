@@ -14,7 +14,7 @@ import {
     WingBlank,
     Toast,
     Picker,
-    Modal
+    Modal, TextareaItem
 } from "antd-mobile";
 import "./ProductIssue.less";
 import { icon } from "../../images";
@@ -26,10 +26,11 @@ class ImgItem extends BaseComponent {
     store = { temImgLength: 0 };
     @action.bound
     onChangeImg(files, type) {
-        const { callBack } = this.props;
+        const { callBack, isRequired } = this.props;
+        const limit = isRequired ? 6 : 16;
         if (type === "add") {
             const requestFile = files[files.length - 1];
-            if (this.store.temImgLength >= 16) {
+            if (this.store.temImgLength >= limit) {
                 return;
             }
             this.store.temImgLength += 1;
@@ -52,8 +53,9 @@ class ImgItem extends BaseComponent {
     }
     render() {
         const { title, fileName, isRequired } = this.props;
+        const limit = isRequired ? 6 : 16;
         const { temImgLength } = this.store;
-        const limitCls = temImgLength >= 16 ? "upImgTips red" : "upImgTips";
+        const limitCls = temImgLength >= limit ? "upImgTips red" : "upImgTips";
         return (
             <div className="productImg">
                 <div className="mainTit">
@@ -64,10 +66,10 @@ class ImgItem extends BaseComponent {
                     files={fileName}
                     onChange={this.onChangeImg}
                     onImageClick={(index, fs) => console.log(index, fs)}
-                    selectable={fileName.length < 16}
+                    selectable={fileName.length < limit}
                     multiple={true}
                 />
-                <div className={limitCls}>最多可上传16张图片</div>
+                <div className={limitCls}>最多可上传{limit}张图片</div>
                 <div className="upImgTips">注：推荐尺寸为640*640的图片</div>
             </div>
         );
@@ -373,22 +375,28 @@ class ProductIssue extends BaseComponent {
                 <div className="base-content">
                     <WhiteSpace />
                     <List className="productBasic">
-                        <InputItem
-                            maxLength={25}
-                            error={!!getFieldError("name")}
-                            {...getFieldProps("name", {
-                                rules: [
-                                    {
-                                        required: true,
-                                        message: "请输入产品名称"
-                                    }
-                                ]
-                            })}
-                            clear
-                            placeholder="请输入产品名称"
-                        >
-                            产品名称<em>*</em>
-                        </InputItem>
+                        <Flex justify='between' className='textarea-con base-line'>
+                            <div style={{ paddingLeft: 15 }}>产品名称<em style={{ color: "#e21b1a" }}>*</em></div>
+                            <TextareaItem
+                                // style={{ width: 120 }}
+                                maxLength={38}
+                                error={!!getFieldError("name")}
+                                {...getFieldProps("name", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: "请输入产品名称"
+                                        }
+                                    ]
+                                })}
+                                clear
+                                placeholder="请输入产品名称"
+                                autoHeight
+                                labelNumber={1}
+                            >
+
+                            </TextareaItem>
+                        </Flex>
                         <InputItem
                             error={!!getFieldError("stock")}
                             {...getFieldProps("stock", {
@@ -502,7 +510,7 @@ class ProductIssue extends BaseComponent {
                                     <em>
                                         {parseInt(point_rate, 10)
                                             ? parseInt(use_point_rate, 10) /
-                                              parseInt(point_rate, 10)
+                                            parseInt(point_rate, 10)
                                             : "0"}
                                     </em>
                                 </div>

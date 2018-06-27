@@ -36,6 +36,15 @@ class Item extends BaseComponent {
         Base.push("ProductIssue", { id: this.props.data.id });
         e.stopPropagation();
     }
+    @action.bound
+    onTop(e) {
+        const data = { ...this.props.data };
+        const enable = 1 - parseInt(data.enable);
+        Base.POST({ act: "goods", op: "save", ...data, enable }, res => {
+            Toast.success("置顶成功");
+        });
+        e.stopPropagation();
+    }
     render() {
         const { default_image, name, sale_price, id, enable } = this.props.data;
         // const goodsType =
@@ -68,30 +77,37 @@ class Item extends BaseComponent {
                         <span className="goodsPrice">
                             ￥ {Base.getNumFormat(sale_price)}
                         </span>
-                        <Flex>
-                            <Button
-                                onClick={this.onEdit}
-                                type="warning"
-                                inline
-                                size="small"
-                                className="item-btn"
-                            >
-                                <div style={{ fontSize: 10 }}>编辑</div>
-                            </Button>
-                            <Button
-                                onClick={this.onSave}
-                                type="warning"
-                                inline
-                                size="small"
-                                className="item-btn"
-                            >
-                                <div style={{ fontSize: 10 }}>
-                                    {parseInt(enable, 10) === 1
-                                        ? "下架"
-                                        : "上架"}
-                                </div>
-                            </Button>
-                        </Flex>
+                    </Flex>
+                    <Flex justify="end" style={{ marginTop: 10 }}>
+                        <Button
+                            onClick={this.onTop}
+                            type="warning"
+                            inline
+                            size="small"
+                            className="item-btn"
+                        >
+                            <div style={{ fontSize: 10 }}>置顶</div>
+                        </Button>
+                        <Button
+                            onClick={this.onEdit}
+                            type="warning"
+                            inline
+                            size="small"
+                            className="item-btn"
+                        >
+                            <div style={{ fontSize: 10 }}>编辑</div>
+                        </Button>
+                        <Button
+                            onClick={this.onSave}
+                            type="warning"
+                            inline
+                            size="small"
+                            className="item-btn"
+                        >
+                            <div style={{ fontSize: 10 }}>
+                                {parseInt(enable, 10) === 1 ? "下架" : "上架"}
+                            </div>
+                        </Button>
                     </Flex>
                 </div>
                 {/* {goodsType} */}
