@@ -428,7 +428,7 @@ class ProductIssue extends BaseComponent {
                             justify="between"
                             className="textarea-con base-line"
                         >
-                            <div style={{ paddingLeft: 15 }}>
+                            <div style={{ paddingLeft: 15,width:80 }}>
                                 产品名称<em style={{ color: "#e21b1a" }}>*</em>
                             </div>
                             <TextareaItem
