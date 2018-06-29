@@ -23,7 +23,7 @@ class Partner_model extends MY_Model
     {
         return [
             '城市合伙人',
-            '二级分销'
+            '我的加盟商'
         ];
     }
 }
