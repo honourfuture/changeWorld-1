@@ -16,6 +16,52 @@ class Bind extends API_Controller {
     }
 
     /**
+	 * @api {post} /api/user/bind/share 会员绑定-分享
+	 * @apiVersion 1.0.0
+	 * @apiName bind_share
+	 * @apiGroup user
+	 *
+	 * @apiSampleRequest /api/user/bind/share
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 * @apiParam {String} shop_id 店铺ID
+	 * @apiParam {String} invite_uid 邀请人ID
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 *	{
+	 *	    "data": "",
+	 *	    "status": 0,
+	 *	    "message": "成功"
+	 *	}
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+    public function share()
+    {
+    	$shop_id = (int)$this->input->get_post('shop_id');
+    	$invite_uid = (int)$this->input->get_post('invite_uid');
+    	if($shop_id && $invite_uid){
+    		$this->load->model('Bind_shop_user_model');
+    		$where = ['shop_id' => $shop_id, 'invite_uid' => $invite_uid, 'user_id' => $this->user_id];
+    		if(! $this->Bind_shop_user_model->get_by($where)){
+    			$this->Bind_shop_user_model->insert($where);
+    		}
+    	}
+
+    	$this->ajaxReturn();
+    }
+
+    /**
 	 * @api {get} /api/user/bind 账号绑定-列表
 	 * @apiVersion 1.0.0
 	 * @apiName bind

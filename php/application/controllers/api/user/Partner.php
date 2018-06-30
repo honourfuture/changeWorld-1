@@ -314,4 +314,136 @@ class Partner extends API_Controller {
 				break;
 		}
 	}
+
+	/**
+	 * @api {post} /api/user/partner/member 推荐人-列表(加盟商详情)
+	 * @apiVersion 1.0.0
+	 * @apiName partner_member
+	 * @apiGroup user
+	 *
+	 * @apiSampleRequest /api/user/partner/member
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 * @apiParam {String} shop_id 店铺ID
+	 * @apiParam {String} invite_uid 邀请人ID(加盟商用户ID)
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 *	{
+	 *	    "data": "",
+	 *	    "status": 0,
+	 *	    "message": "成功"
+	 *	}
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+	public function member()
+	{
+		$ret = array('count' => 0, 'list' => array());
+
+		$shop_id = (int)$this->input->get_post('shop_id');
+    	$invite_uid = (int)$this->input->get_post('invite_uid');
+    	if($shop_id && $invite_uid){
+    		$this->load->model('Bind_shop_user_model');
+    		$where = ['shop_id' => $shop_id, 'invite_uid' => $invite_uid];
+
+    		$order_by = array('id' => 'desc');
+			$ret['count'] = $this->Bind_shop_user_model->count_by($where);
+			if($ret['count']){
+				$this->db->select('user_id');
+				$rows = $this->Bind_shop_user_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
+
+				if($rows){
+					$a_user = [];
+					foreach($rows as $item){
+						$a_user[] = $item['user_id'];
+					}
+
+					$this->load->model('Users_model');
+					$this->db->select('id user_id,nickname,header,v,exp,mobi');
+					$users = $this->Users_model->get_many(array_values($a_user));
+					if($users){
+						$k_users = [];
+						$this->load->model('Grade_model');
+						foreach($users as $item){
+							$grade = $this->Grade_model->exp_to_grade($item['exp']);
+							$item['lv'] = $grade['grade_name'];
+
+							$ret['list'][] = $item;
+						}
+					}
+				}
+			}
+    	}
+
+    	$this->ajaxReturn($ret);
+	}
+
+	/**
+	 * @api {post} /api/user/partner/member_add 推荐人-添加
+	 * @apiVersion 1.0.0
+	 * @apiName partner_member_add
+	 * @apiGroup user
+	 *
+	 * @apiSampleRequest /api/user/partner/member_add
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 * @apiParam {String} shop_id 店铺ID
+	 * @apiParam {String} invite_uid 邀请人ID(加盟商用户ID)
+	 * @apiParam {String} mobi 推荐人手机号
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 *	{
+	 *	    "data": "",
+	 *	    "status": 0,
+	 *	    "message": "成功"
+	 *	}
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+	public function member_add()
+    {
+    	$shop_id = (int)$this->input->get_post('shop_id');
+    	$invite_uid = (int)$this->input->get_post('invite_uid');
+    	$mobi = $this->input->get_post('mobi');
+
+    	if($shop_id && $invite_uid && $mobi){
+    		$this->load->model('Users_model');
+    		if($user = $this->Users_model->get_by(['mobi' => $mobi])){
+	    		$this->load->model('Bind_shop_user_model');
+	    		$where = ['shop_id' => $shop_id, 'user_id' => $user['id']];
+	    		if($this->Bind_shop_user_model->get_by($where)){
+	    			$this->ajaxReturn([], 3, '推荐人已是加盟商会员');
+	    		}else{
+	    			$where['invite_uid'] = $invite_uid;
+	    			$this->Bind_shop_user_model->insert($where);
+
+	    			$this->ajaxReturn();
+	    		}
+    		}else{
+    			$this->ajaxReturn([], 2, '推荐人手机号未注册');
+    		}
+    	}else{
+    		$this->ajaxReturn([], 1, '添加推荐人参数错误');
+    	}
+    }
 }
