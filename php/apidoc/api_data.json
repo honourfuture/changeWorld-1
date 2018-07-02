@@ -20018,7 +20018,7 @@
             "type": "Number",
             "optional": false,
             "field": "type",
-            "description": "<p>0销售 1二级分销 2城市合伙人</p>"
+            "description": "<p>0销售 1加盟商 2城市合伙人</p>"
           },
           {
             "group": "Parameter",
@@ -20107,20 +20107,6 @@
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.list.item_title",
-            "description": "<p>项目标题</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "data.list.item_id",
-            "description": "<p>项目ID</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
             "field": "data.list.amount",
             "description": "<p>收益金额</p>"
           },
@@ -20130,6 +20116,112 @@
             "optional": false,
             "field": "data.list.gold",
             "description": "<p>收益金币</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"count\": 2,\n        \"list\": [\n            {\n                \"id\": \"4\",\n                \"updated_at\": \"2018-03-16 09:41:12\",\n                \"sub_topic\": \"2\",\n                \"name\": \"马化腾\",\n                \"mobi\": \"\",\n                \"item_title\": \"如果超人会飞\",\n                \"item_id\": \"1\",\n                \"amount\": \"10.00\",\n                \"gold\": \"0\"\n            },\n            {\n                \"id\": \"1\",\n                \"updated_at\": \"2018-03-16 09:29:09\",\n                \"sub_topic\": \"1\",\n                \"name\": \"马云\",\n                \"mobi\": \"\",\n                \"item_title\": \"[超人系列]\",\n                \"item_id\": \"1\",\n                \"amount\": \"200.00\",\n                \"gold\": \"0\"\n            }\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Income.php",
+    "groupTitle": "user"
+  },
+  {
+    "type": "get",
+    "url": "/api/user/income/distribution",
+    "title": "收益明细-我是",
+    "version": "1.0.0",
+    "name": "income_distribution",
+    "group": "user",
+    "sampleRequest": [
+      {
+        "url": "/api/user/income/distribution"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "type",
+            "description": "<p>0销售 1加盟商 2城市合伙人</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "shop_id",
+            "description": "<p>店铺ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "data.count",
+            "description": "<p>总记录数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data.list",
+            "description": "<p>列表</p>"
           }
         ]
       },

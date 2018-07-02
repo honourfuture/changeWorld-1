@@ -252,6 +252,8 @@ class Notify extends API_Controller
             $this->Consume_record_model->insert($consume_record);
 
             //收益明细
+            $this->load->model('Users_model');
+            $user = $this->Users_model->get($service_log['user_id']);
             $this->t_id = $service_log['t_id'];
             $this->service = $service_log['service'];
             $this->service_format();

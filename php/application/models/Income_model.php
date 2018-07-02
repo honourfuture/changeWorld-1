@@ -80,7 +80,9 @@ class Income_model extends MY_Model
                     'amount' => $price_2,
                     'type' => 1,
                     'item' => json_encode($item),
-                    'level' => 1
+                    'level' => 1,
+                    'shop_id' => $user['to_user_id'],
+                    'from_id' => $user['id']
                 ];
             }
 
@@ -129,6 +131,8 @@ class Income_model extends MY_Model
                 'amount' => $price,
                 'type' => 0,
                 'item' => json_encode($item),
+                'shop_id' => $user['to_user_id'],
+                'from_id' => $user['id']
             ];
         }
 
@@ -187,7 +191,9 @@ class Income_model extends MY_Model
                     'gold' => $price_2,
                     'type' => 1,
                     'item' => json_encode($item),
-                    'level' => 1
+                    'level' => 1,
+                    'shop_id' => $user['to_user_id'],
+                    'from_id' => $user['id']
                 ];
             }
 
@@ -236,6 +242,8 @@ class Income_model extends MY_Model
                 'gold' => $price,
                 'type' => 0,
                 'item' => json_encode($item),
+                'shop_id' => $user['to_user_id'],
+                'from_id' => $user['id']
             ];
         }
 
@@ -308,7 +316,9 @@ class Income_model extends MY_Model
                     'amount' => $price_2,
                     'type' => 1,
                     'item' => json_encode($item),
-                    'level' => 1
+                    'level' => 1,
+                    'shop_id' => $user['to_user_id'],
+                    'from_id' => $user['id']
                 ];
             }
 
@@ -359,7 +369,9 @@ class Income_model extends MY_Model
                     'mobi' => $user['mobi'],
                     'amount' => $price,
                     'type' => 0,
-                    'item' => json_encode($goods[$seller['seller_uid']])
+                    'item' => json_encode($goods[$seller['seller_uid']]),
+                    'shop_id' => $user['to_user_id'],
+                    'from_id' => $user['id']
                 ];
             }
         }
