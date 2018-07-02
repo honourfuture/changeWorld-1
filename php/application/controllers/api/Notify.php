@@ -236,20 +236,36 @@ class Notify extends API_Controller
                 ];
                 $this->Users_collection_model->insert($data);
 
-                //消费记录
-                $consume_record = [
-                    'type' => 0,
-                    'user_id' => $service_log['user_id'],
-                    'item_title' => $service_log['title'],
-                    'item_id' => $service_log['t_id'],
-                    'item_amount' => $service_log['amount'],
-                    'order_sn' => $notify->out_trade_no,
-                    'topic' => $service_log['service'] + 2,
-                    'payment_type' => $this->payment_type
-                ];
-                $this->load->model('Consume_record_model');
-                $this->Consume_record_model->insert($consume_record);
             }
+            //消费记录
+            $consume_record = [
+                'type' => 0,
+                'user_id' => $service_log['user_id'],
+                'item_title' => $service_log['title'],
+                'item_id' => $service_log['t_id'],
+                'item_amount' => $service_log['amount'],
+                'order_sn' => $notify->out_trade_no,
+                'topic' => $service_log['service'] + 2,
+                'payment_type' => $this->payment_type
+            ];
+            $this->load->model('Consume_record_model');
+            $this->Consume_record_model->insert($consume_record);
+
+            //收益明细
+            $this->t_id = $service_log['t_id'];
+            $this->service = $service_log['service'];
+            $this->service_format();
+            $user['to_user_id'] = $this->row['anchor_uid'];
+            $this->load->model('Bind_shop_user_model');
+            if($bind = $this->Bind_shop_user_model->get_by(['shop_id' => $this->row['anchor_uid'], 'user_id' => $service_log['user_id']])){
+                $user['pid'] = $bind['invite_uid'];
+            }else{
+                $user['pid'] = 0;
+            }
+            $this->load->model('Income_model');
+            $order_data = $this->row;
+            $order_data['service']  = $this->service;
+            $this->Income_model->service($user, $order_data, $user['pid']);
         }else{
             $update['status'] = 2;
         }
@@ -258,6 +274,39 @@ class Notify extends API_Controller
         $this->Payment_log_model->update($service_log['id'], $update);
 
         return true;
+    }
+
+    protected function service_format()
+    {
+        switch($this->service){
+            case 0:
+                $this->load->model('Room_model');
+                $this->db->select('id,anchor_uid,cover_image,title,price,city_partner_rate,two_level_rate');
+                $row = $this->Room_model->get($this->t_id);
+                $message = '直播间不存在';
+                break;
+            case 1:
+                $this->load->model('Room_audio_model');
+                $this->db->select('id,anchor_uid,cover_image,title,price,city_partner_rate,two_level_rate');
+                $row = $this->Room_audio_model->get($this->t_id);
+                $message = '音频信息不存在';
+                break;
+            case 2:
+                $this->load->model('Album_model');
+                $this->db->select('id,anchor_uid,cover_image,title,price,city_partner_rate,two_level_rate');
+                $row = $this->Album_model->get($this->t_id);
+                $message = '专辑信息不存在';
+                break;
+            default :
+                $this->ajaxReturn([], 1, '支付主题错误');
+                break;
+        }
+
+        if(! $row){
+            $this->ajaxReturn([], 2, $message);
+        }
+
+        $this->row = $row;
     }
 
     // 支付宝服务
