@@ -126,6 +126,19 @@ class Order_action extends API_Controller {
                     $this->ajaxReturn([], 4, '订单操作状态不支持');
                 }
                 if($this->Order_model->update($this->order['id'], ['status' => 4])){
+                    //收益明细
+                    $this->load->model('Users_model');
+                    $user = $this->Users_model->get($this->order['buyer_uid']);
+                    $user['to_user_id'] = $this->order['seller_uid'];
+                    $this->load->model('Bind_shop_user_model');
+                    if($bind = $this->Bind_shop_user_model->get_by(['shop_id' => $this->order['seller_uid'], 'user_id' => $this->order['buyer_uid']])){
+                        $user['pid'] = $bind['invite_uid'];
+                    }else{
+                        $user['pid'] = 0;
+                    }
+                    $this->load->model('Income_model');
+                    $order_data = ['id' => [$this->order['id']], 'real_total_amount' => $this->order['real_total_amount']];
+                    $this->Income_model->goods($user, $order_data, $user['pid']);
                     //经验值
                     $this->load->model('Grade_rule_model');
                     $this->Grade_rule_model->add($this->user_id, 'buyer', $this->order['real_total_amount']);

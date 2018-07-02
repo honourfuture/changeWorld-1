@@ -22,7 +22,7 @@ class Income extends API_Controller {
 	 *
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
-	 * @apiParam {Number} type 0销售 1二级分销 2城市合伙人
+	 * @apiParam {Number} type 0销售 1加盟商 2城市合伙人
 	 * @apiParam {Number} topic 主题 0知识 1直播 2商品
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
@@ -35,8 +35,6 @@ class Income extends API_Controller {
 	 * @apiSuccess {String} data.list.sub_topic 知识主题才需要 1专辑 2音频
 	 * @apiSuccess {String} data.list.name 关联用户名称
 	 * @apiSuccess {String} data.list.mobi 关联用户手机
-	 * @apiSuccess {String} data.list.item_title 项目标题
-	 * @apiSuccess {String} data.list.item_id 项目ID
 	 * @apiSuccess {String} data.list.amount 收益金额
 	 * @apiSuccess {String} data.list.gold 收益金币
 	 *
@@ -106,8 +104,14 @@ class Income extends API_Controller {
 		$order_by = array('id' => 'desc');
 		$ret['count'] = $this->Income_model->count_by($where);
 		if($ret['count']){
-			$this->db->select('id,updated_at,sub_topic,name,mobi,item_title,item_id,amount,gold');
-			$ret['list'] = $this->Income_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
+			$this->db->select('id,updated_at,sub_topic,name,mobi,amount,gold,item,level');
+			if($list = $this->Income_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where)){
+				foreach($list as $key=>$item){
+					$item['lv_name'] = $item['level'] ? ($item['level'] == 1 ? '一级会员' : '二级会员') : '销售';
+					$item['item'] = json_decode($item['item'], TRUE);
+					$ret['list'][] = $item;
+				}
+			}
 		}
 
 		$this->ajaxReturn($ret);
