@@ -148,10 +148,21 @@ class Live_gift extends API_Controller {
 
 		//送减
 		$this->Users_model->update($user_from['id'], ['gold' => round($user_from['gold'] - $gold, 2)]);
+		//收益明细
+        $user_from['to_user_id'] = $to_user_id;
+        $this->load->model('Bind_shop_user_model');
+        if($bind = $this->Bind_shop_user_model->get_by(['shop_id' => $user_from['to_user_id'], 'user_id' => $user_from['id']])){
+            $user_from['pid'] = $bind['invite_uid'];
+        }else{
+            $user_from['pid'] = 0;
+        }
+        $this->load->model('Income_model');
+        $order_data = ['id' => $gift_id, 'real_total_amount' => $gold, 'title' => $gift['title']];
+        $this->Income_model->gold($user_from, $order_data, $user_from['pid']);
 		//收加
-		$this->db->set('gold', 'gold + '.$gold, false);
+		/*$this->db->set('gold', 'gold + '.$gold, false);
 		$this->db->where('id', $to_user_id);
-		$this->db->update($this->Users_model->table());
+		$this->db->update($this->Users_model->table());*/
 		//直播间加
 		$this->load->model('Room_model');
 		$this->db->set('income_gold', 'income_gold + '.$gold, false);
