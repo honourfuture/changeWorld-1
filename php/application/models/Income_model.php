@@ -197,6 +197,7 @@ class Income_model extends MY_Model
 
     public function gold($user, $order, $invite_uid, $topic = 1, $sub_topic = 0)
     {
+        return true;
         $this->load->model('Users_model');
         $anchor = $this->Users_model->get($user['to_user_id']);
 

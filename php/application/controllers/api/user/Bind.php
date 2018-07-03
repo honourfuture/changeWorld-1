@@ -192,6 +192,16 @@ class Bind extends API_Controller {
 				if($info){
 					if($info['verify'] == $code){
 						$update = array('mobi' => $mobi);
+						$this->load->model('Users_bind_model');
+						$created_at = date("Y-m-d H:i:s");
+						$data = [
+							'user_id' => $this->user_id,
+							'account_type' => 0,
+							'unique_id' => $mobi,
+							'created_at' => $created_at,
+							'updated_at' => $created_at
+						];
+						$this->db->replace($this->Users_bind_model->table(), $data);
 					}else{
 						$this->ajaxReturn([], 4, '验证码错误');
 					}
