@@ -17,6 +17,23 @@ class Common extends API_Controller
         parent::__construct();
     }
 
+    public function version()
+    {
+        $ret = [];
+
+        $platform = $this->input->get_post('platform');
+        $version_alias = $this->input->get_post('version_alias');
+        if($platform && $version_alias){
+            $this->load->model('App_version_model');
+            $this->db->select('version,version_alias,explain,url');
+            if($row = $this->App_version_model->get_by(['platform' => $platform, 'version_alias >' => $version_alias])){
+                $ret = $row;
+            }
+        }
+
+        $this->ajaxReturn($ret);
+    }
+
     //验证码
     public function captcha()
     {
