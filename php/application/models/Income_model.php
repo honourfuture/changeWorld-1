@@ -19,6 +19,37 @@ class Income_model extends MY_Model
         parent::__construct();
     }
 
+    public function city($user_id, $address)
+    {
+        $uid = 0;
+        if(! $address){
+            return $uid;
+        }
+        $a_addr = explode(' ', $address);
+        if(count($a_addr) == 2){
+            $city = $a_addr[0];
+        }elseif(count($a_addr) > 2){
+            $city = $a_addr[1];
+        }else{
+            return $uid;
+        }
+
+        $this->load->model('Partner_model');
+        $where = [
+            'user_id' => $user_id,
+            'type' => 0
+        ];
+        $this->db->like('area', $city);
+        if($row = $this->Partner_model->limit(1)->get_by($where)){
+            $this->load->model('Users_model');
+            if($uer = $this->Users_model->get_by(['mobi' => $row['mobi']])){
+                $uid = $user['id'];
+            }
+        }
+
+        return $uid;
+    }
+
     public function service($user, $order, $invite_uid, $topic = 0, $sub_topic = 0)
     {
         $item = [];
@@ -42,7 +73,8 @@ class Income_model extends MY_Model
 
         $siteConfig = [
             'distribution_one' => $order['two_level_rate'],
-            'distribution_commission' => 0
+            'distribution_commission' => 0,
+            'city_partner_rate' => $order['city_partner_rate']
         ];
         // $siteConfig = $this->Config_model->siteConfig();
         // $siteConfig = $this->Shop_model->get_shop_by_user($user['to_user_id']);
@@ -109,6 +141,28 @@ class Income_model extends MY_Model
                     ];
                 }
             }*/
+        }
+
+        //城市合伙人
+        if($uid = $this->city($user['to_user_id'], $user['address'])){
+            $price_3 = round($order['price'] * $siteConfig['city_partner_rate'] * 0.01, 2);
+            if($price_3 > 0){
+                $this->db->set('balance', 'balance +'.$price_3, false);
+                $this->db->where('id', $uid);
+                $this->db->update($this->Users_model->table());
+
+                $insert[] = [
+                    'topic' => $topic,
+                    'sub_topic' => $sub_topic,
+                    'user_id' => $uid,
+                    'name' => $user['nickname'],
+                    'mobi' => $user['mobi'],
+                    'amount' => $price_3,
+                    'type' => 2,
+                    'item' => json_encode($item),
+                    'level' => 1
+                ];
+            }
         }
 
         //销售收益
@@ -220,6 +274,29 @@ class Income_model extends MY_Model
                     ];
                 }
             }*/
+        }
+
+        //城市合伙人
+        if($uid = $this->city($user['to_user_id'], $user['address'])){
+            $city_partner_rate = isset($siteConfig['city_partner_rate']) ? $siteConfig['city_partner_rate'] : 0;
+            $price_3 = round($order['real_total_amount'] * $city_partner_rate * 0.01, 2);
+            if($price_3 > 0){
+                $this->db->set('balance', 'balance +'.$price_3, false);
+                $this->db->where('id', $uid);
+                $this->db->update($this->Users_model->table());
+
+                $insert[] = [
+                    'topic' => $topic,
+                    'sub_topic' => $sub_topic,
+                    'user_id' => $uid,
+                    'name' => $user['nickname'],
+                    'mobi' => $user['mobi'],
+                    'amount' => $price_3,
+                    'type' => 2,
+                    'item' => json_encode($item),
+                    'level' => 1
+                ];
+            }
         }
 
         //销售收益
@@ -345,6 +422,29 @@ class Income_model extends MY_Model
                     ];
                 }
             }*/
+        }
+
+        //城市合伙人
+        if($uid = $this->city($user['to_user_id'], $user['address'])){
+            $city_partner_rate = isset($siteConfig['city_partner_rate']) ? $siteConfig['city_partner_rate'] : 0;
+            $price_3 = round($order['real_total_amount'] * $city_partner_rate * 0.01, 2);
+            if($price_3 > 0){
+                $this->db->set('balance', 'balance +'.$price_3, false);
+                $this->db->where('id', $uid);
+                $this->db->update($this->Users_model->table());
+
+                $insert[] = [
+                    'topic' => $topic,
+                    'sub_topic' => $sub_topic,
+                    'user_id' => $uid,
+                    'name' => $user['nickname'],
+                    'mobi' => $user['mobi'],
+                    'amount' => $price_3,
+                    'type' => 2,
+                    'item' => json_encode($item),
+                    'level' => 1
+                ];
+            }
         }
 
         //销售收益

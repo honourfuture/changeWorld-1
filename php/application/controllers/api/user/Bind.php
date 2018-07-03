@@ -112,7 +112,8 @@ class Bind extends API_Controller {
 
 		$this->load->model('Users_bind_model');
 		$ret['account_type'] = $this->Users_bind_model->account_type();
-		// unset($ret['account_type'][0]);
+		unset($ret['account_type'][2]);
+		unset($ret['account_type'][3]);
 
 		$this->db->select('account_type,unique_id,other');
 		$ret['list'] = $this->Users_bind_model->get_many_by('user_id', $this->user_id);
