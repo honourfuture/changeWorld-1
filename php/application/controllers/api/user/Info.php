@@ -161,6 +161,7 @@ class Info extends API_Controller {
 			'address' => $user['address'],
 			'bg_image' => $user['bg_image'],
 			'sex' => $user['sex'],
+			'headhunter' => $user['headhunter'],
 		);
 
 		$this->load->model('Grade_model');
