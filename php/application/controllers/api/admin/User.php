@@ -59,7 +59,7 @@ class User extends API_Controller {
 		$order_by = array('id' => 'desc');
 		$ret['count'] = $this->Users_model->count_by($where);
 		if($ret['count']){
-			$this->db->select('id,created_at,updated_at,mobi,account,header,nickname,v,anchor,seller,exp,reg_ip,balance,point,gold');
+			$this->db->select('id,created_at,updated_at,mobi,account,header,nickname,v,anchor,seller,exp,reg_ip,balance,point,gold,headhunter');
 			$ret['list'] = $this->Users_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 		}
 
