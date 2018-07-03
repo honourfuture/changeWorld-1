@@ -26,8 +26,9 @@ class Article_model extends MY_Model
     		'join_us' => '加入我们',
     		'contact_us' => '联系我们',
     		'protocol' => '用户协议',
-    		'copyright' => '版权申明',
+            'protocol_anchor' => '主播协议',
             'protocol_shop' => '店铺协议',
+    		'copyright' => '版权申明',
             'rule_shop' => '平台规则',
     	);
     }
