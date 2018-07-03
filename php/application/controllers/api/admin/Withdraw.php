@@ -136,8 +136,8 @@ class Withdraw extends API_Controller {
 		if($params['status'] == 1){
 			$this->load->model('Config_model');
 			$siteConfig = $this->Config_model->siteConfig();
-			$withdraw_system = isset($siteConfig['withdraw_system']) ? $siteConfig['withdraw_system'] : 0;
-			$withdraw_headhunter = isset($siteConfig['withdraw_headhunter']) ? $siteConfig['withdraw_headhunter'] : 0;
+			$withdraw_system = isset($siteConfig['withdraw_system']) ? $siteConfig['withdraw_system'] * 0.01 : 0;
+			$withdraw_headhunter = isset($siteConfig['withdraw_headhunter']) ? $siteConfig['withdraw_headhunter'] * 0.01 : 0;
 
 		}
 

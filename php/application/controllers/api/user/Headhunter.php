@@ -88,6 +88,49 @@ class Headhunter extends API_Controller {
 		$this->ajaxReturn($ret);
 	}
 
+	/**
+	 * @api {get} /api/user/headhunter/withdraw 猎头用户-返利列表
+	 * @apiVersion 1.0.0
+	 * @apiName headhunter_withdraw
+	 * @apiGroup user
+	 *
+	 * @apiSampleRequest /api/user/headhunter/withdraw
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 * @apiParam {String} to_user_id 猎头会员ID
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *     "data": {
+	 *         "list": [
+	 *             {
+	 *                 "id": "1",
+	 *                 "created_at": "2018-04-02 15:56:26",
+	 *                 "updated_at": "2018-04-02 15:56:26",
+	 *                 "deleted": "0",
+	 *                 "status": "0",
+	 *                 "enable": "1",
+	 *                 "sort": "0",
+	 *                 "url": "http://ww.baidu.com"
+	 *             }
+	 *         ]
+	 *     },
+	 *     "status": 0,
+	 *     "message": "成功"
+	 * }
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
 	public function withdraw()
 	{
 		$ret = ['count' => 0, 'list' => [], 'total' => 0];
