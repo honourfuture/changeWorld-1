@@ -20368,6 +20368,169 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/api/user/headhunter",
+    "title": "猎头用户-列表",
+    "version": "1.0.0",
+    "name": "headhunter",
+    "group": "user",
+    "sampleRequest": [
+      {
+        "url": "/api/user/headhunter"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"list\": [\n            {\n                \"id\": \"1\",\n                \"created_at\": \"2018-04-02 15:56:26\",\n                \"updated_at\": \"2018-04-02 15:56:26\",\n                \"deleted\": \"0\",\n                \"status\": \"0\",\n                \"enable\": \"1\",\n                \"sort\": \"0\",\n                \"url\": \"http://ww.baidu.com\"\n            }\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Headhunter.php",
+    "groupTitle": "user"
+  },
+  {
+    "type": "get",
+    "url": "/api/user/headhunter/withdraw",
+    "title": "猎头用户-返利列表",
+    "version": "1.0.0",
+    "name": "headhunter_withdraw",
+    "group": "user",
+    "sampleRequest": [
+      {
+        "url": "/api/user/headhunter/withdraw"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "to_user_id",
+            "description": "<p>猎头会员ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n        \"list\": [\n            {\n                \"id\": \"1\",\n                \"created_at\": \"2018-04-02 15:56:26\",\n                \"updated_at\": \"2018-04-02 15:56:26\",\n                \"deleted\": \"0\",\n                \"status\": \"0\",\n                \"enable\": \"1\",\n                \"sort\": \"0\",\n                \"url\": \"http://ww.baidu.com\"\n            }\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Headhunter.php",
+    "groupTitle": "user"
+  },
+  {
+    "type": "get",
     "url": "/api/user/income",
     "title": "收益明细",
     "version": "1.0.0",
