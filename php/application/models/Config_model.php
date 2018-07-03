@@ -72,6 +72,10 @@ class Config_model extends MY_Model
             'goods' => array(
                 'goods_explain' => '商品说明',
             ),
+            'withdraw' => [
+                'withdraw_system' => '提现手续费',
+                'withdraw_headhunter' => '提现猎头返利'
+            ]
     	);
     }
 }

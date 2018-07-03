@@ -131,10 +131,48 @@ class Withdraw extends API_Controller {
 			$this->ajaxReturn([], 2, '状态错误');
 		}
 
-		if($this->Withdraw_model->update_many($params['s_id'], ['status' => $params['status']])){
-			$this->ajaxReturn([]);
-		}else{
-			$this->ajaxReturn([], 3, '操作失败');
+		$withdraw_system = 0;
+		$withdraw_headhunter = 0;
+		if($params['status'] == 1){
+			$this->load->model('Config_model');
+			$siteConfig = $this->Config_model->siteConfig();
+			$withdraw_system = isset($siteConfig['withdraw_system']) ? $siteConfig['withdraw_system'] : 0;
+			$withdraw_headhunter = isset($siteConfig['withdraw_headhunter']) ? $siteConfig['withdraw_headhunter'] : 0;
+
 		}
+
+		$this->load->model('Headhunter_model');
+		foreach($params['s_id'] as $id){
+			if($row = $this->Withdraw_model->get($id)){
+				$update = [
+					'status' => $params['status'],
+					'withdraw_system' => round($row['amount'] * $withdraw_system, 2),
+					'withdraw_headhunter' => round($row['amount'] * $withdraw_system * $withdraw_headhunter, 2)
+				];
+
+				$this->Withdraw_model->update($id, $update);
+
+				if($update['withdraw_headhunter'] > 0){
+					if($item = $this->Headhunter_model->get_by(['to_user_id' => $row['user_id']])){
+						$insert = [
+							'withdraw_id' => $id,
+							'withdraw_amount' => $row['amount'],
+							'reward_amount' => $update['withdraw_headhunter'],
+							'from_user_id' => $row['user_id'],
+							'to_user_id' => $item['user_id']
+						];
+						$this->load->model('Withdraw_headhunter_model');
+						$this->Withdraw_headhunter_model->insert($insert);
+
+						$this->load->model('Users_model');
+						$this->db->set('balance', 'balance + '.$update['withdraw_headhunter'], false);
+						$this->db->where('id', $insert['to_user_id']);
+						$this->db->update($this->Users_model->table());
+					}
+				}
+			}
+		}
+
+		$this->ajaxReturn([]);
 	}
 }
