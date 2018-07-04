@@ -69,7 +69,7 @@ class Headhunter extends API_Controller {
 			}
 
 			$this->load->model('Users_model');
-			$user = $this->Users_model->get_many_user($a_uid, 'id,nickname,header,mobi,exp');
+			$user = $this->Users_model->get_many_user($a_uid, 'id,nickname,header,mobi,exp,address');
 			$this->load->model('Grade_model');
 			foreach($list as $item){
 				$item['nickname'] = '';
@@ -81,7 +81,7 @@ class Headhunter extends API_Controller {
 				$grade = $this->Grade_model->exp_to_grade($item['exp']);
 				$item['lv'] = $grade['grade_name'];
 
-				$ret['list'] = $item;
+				$ret['list'][] = $item;
 			}
 		}
 

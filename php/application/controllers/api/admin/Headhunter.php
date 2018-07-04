@@ -80,7 +80,7 @@ class Headhunter extends API_Controller {
 					$item['mobi'] = '';
 					isset($user[$item['to_user_id']]) && $item = array_merge($item, $user[$item['to_user_id']]);
 
-					$ret['list'] = $item;
+					$ret['list'][] = $item;
 				}
 			}
 		}
