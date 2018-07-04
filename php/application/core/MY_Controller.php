@@ -115,17 +115,20 @@ class MY_Controller extends CI_Controller
         $sign = $this->input->get_post('sign');
         $this->user_id = $this->input->get_post('user_id');
         $this->admin_id = $this->input->get_post('admin_id');
-        if($this->user_id){
-            $pri_id = $this->user_id;
-            $token = $this->get_user_token();
-            $sign_key = $this->_user_key;
-        }elseif($this->admin_id){
+
+        if($this->admin_id){
             $pri_id = $this->admin_id;
             $this->account = $this->input->get_post('account');//登录账号
             $token = $this->get_admin_token();
             $sign_key = $this->_admin_key;
         }else{
-            $this->ajaxReturn([], LOGIN_STATUS, '非法请求来源');
+            if($this->user_id){
+                $pri_id = $this->user_id;
+                $token = $this->get_user_token();
+                $sign_key = $this->_user_key;
+            }else{
+                $this->ajaxReturn([], LOGIN_STATUS, '非法请求来源');
+            }
         }
 
         if(empty($token)){
