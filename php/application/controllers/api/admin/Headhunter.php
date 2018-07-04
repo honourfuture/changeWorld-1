@@ -66,7 +66,7 @@ class Headhunter extends API_Controller {
 			$order_by = array('id' => 'desc');
 			$where = ['user_id' => $user_id];
 			$ret['count'] = $this->Headhunter_model->count_by($where);
-			if($list = $this->Headhunter_model->order_by($order_by)->limit($this->cur_page, $this->offset)->get_many_by($where)){
+			if($list = $this->Headhunter_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where)){
 				$a_uid = [];
 				foreach($list as $item){
 					$a_uid[] = $item['to_user_id'];
