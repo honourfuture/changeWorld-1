@@ -60,7 +60,12 @@ class BasicItem extends BaseComponent {
         { key: "closed_reason", label: "关闭原因" },
         { key: "phone", label: "客服联系电话" },
         { key: "email", label: "电子邮箱" },
-	];
+        { key: "withdraw_system", label: "提现手续费",render: value => this.renderText(value) },
+        { key: "withdraw_headhunter", label: "提现猎头返利",render: value => this.renderText(value) },
+    ];
+    renderText(value){
+        return <Input addonAfter="%" />
+    }
     renderTextArea(value) {
         return <TextArea autosize={{ minRows: 4 }} />;
     }

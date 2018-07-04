@@ -59,6 +59,22 @@ export default class WithdrawalMananger extends BaseComponent {
                     this.renderText(text, record, "amount")
             },
             {
+                title: "手续费",
+                dataIndex: "withdraw_system",
+                render: (text, record) =>
+                    this.renderText(text, record, "withdraw_system")
+            },
+            {
+                title: "猎头返利",
+                dataIndex: "withdraw_headhunter",
+                render: (text, record) =>
+                    this.renderText(text, record, "withdraw_headhunter")
+            },
+            {
+                title: "转账金额",
+                render: (text, record) => parseInt(record.amount) - parseInt(record.withdraw_system)
+            },
+            {
                 title: "更新时间",
                 dataIndex: "updated_at",
                 width: "20%",

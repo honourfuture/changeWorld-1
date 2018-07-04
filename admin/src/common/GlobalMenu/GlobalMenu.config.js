@@ -78,18 +78,18 @@ const menuData = [
                 name: "直播类型",
                 path: "LiveClass"
             },
-            {
-                name: "直播标签",
-                path: "LiveTag"
-            },
+            // {
+            //     name: "直播标签",
+            //     path: "LiveTag"
+            // },
             {
                 name: "专辑类型",
                 path: "SpecialClass"
             },
-            {
-                name: "专辑标签",
-                path: "SpecialTag"
-            },
+            // {
+            //     name: "专辑标签",
+            //     path: "SpecialTag"
+            // },
             {
                 name: "礼物管理",
                 path: "GiftManager"

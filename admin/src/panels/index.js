@@ -56,7 +56,13 @@ import ActivityClassManage from './ActivityClassManage';
 import AdminManage from './AdminManage';
 import AdminRoleList from './AdminRoleList';
 import AccessSetting from './AccessSetting';
+import HeadHuntingList from './HeadHuntingList';
 export const panelsList = [
+    {
+        path:'/member/HeadHuntingList',
+        component:HeadHuntingList,
+        title:'猎头列表',
+    },
     {
         path:'/system/AccessSetting',
         component:AccessSetting,
