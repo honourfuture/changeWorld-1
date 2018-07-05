@@ -45,7 +45,9 @@ class Users_model extends MY_Model
 
     public function rmb_to_gold_rate()
     {
-        return 100;
+        $this->load->model('Config_model');
+        $siteConfig = $this->Config_model->siteConfig();
+        return isset($siteConfig['rmb_to_gold']) ? $siteConfig['rmb_to_gold'] : 100;
     }
 
     public function rmb_to_gold($money)
@@ -56,7 +58,9 @@ class Users_model extends MY_Model
 
     public function gold_to_rmb_rate()
     {
-        return 100;
+        $this->load->model('Config_model');
+        $siteConfig = $this->Config_model->siteConfig();
+        return isset($siteConfig['gold_to_rmb']) ? $siteConfig['gold_to_rmb'] : 100;
     }
 
     public function gold_to_rmb($gold)

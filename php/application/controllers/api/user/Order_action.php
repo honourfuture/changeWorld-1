@@ -142,6 +142,28 @@ class Order_action extends API_Controller {
                     //经验值
                     $this->load->model('Grade_rule_model');
                     $this->Grade_rule_model->add($this->user_id, 'buyer', $this->order['real_total_amount']);
+                    //送积分
+                    $seller = $this->Users_model->get($this->order['seller_uid']);
+                    if($seller['reward_point']){
+                        $sitePointsRule = $this->sitePointsRule();
+                        $rate = isset($sitePointsRule['points_pay']) ? $sitePointsRule['points_pay'] : 0;
+                        $point = 0;
+                        if($rate){
+                            $point = round($this->order['real_total_amount'] / $rate, 2);
+                        }
+                        if($point > 0){
+                            $this->load->model('Users_points_model');
+                            $data = array();
+                            $data['value'] = $point;
+                            $data['user_id'] = $user['id'];
+                            $data['rule_name'] = 'points_pay';
+                            $data['remark'] = '确认收货商家返积分';
+                            $this->Users_points_model->insert($data);
+
+                            $update = array('point' => $user['point'] + $data['value']);
+                            $this->Users_model->update($user['id'], $update);
+                        }
+                    }
 
                     $this->ajaxReturn();
                 }else{

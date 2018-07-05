@@ -36,7 +36,7 @@ class Shop_model extends MY_Model
         $result['total'] = $this->db->count_all_results('shop', false);
 
         if($result['total']){
-            $this->db->select('users.mobi,users.sex,users.header,users.nickname,users.summary,users.v,users.exp,shop.*');
+            $this->db->select('users.mobi,users.sex,users.header,users.nickname,users.summary,users.v,users.exp,users.reward_point,shop.*');
             $this->db->limit($limit, $offset);
             $this->db->order_by('users.id', 'DESC');
             $result['list'] = $this->db->get()->result_array();

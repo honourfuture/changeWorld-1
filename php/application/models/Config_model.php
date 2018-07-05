@@ -68,6 +68,8 @@ class Config_model extends MY_Model
             'rule' => array(
                 'rule_point' => '积分规则',
                 'rule_grade' => '等级说明',
+                'rmb_to_gold' => '兑金币',
+                'gold_to_rmb' => '转余额',
             ),
             'goods' => array(
                 'goods_explain' => '商品说明',
