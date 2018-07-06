@@ -191,7 +191,7 @@ class Bind extends API_Controller {
 				$info = $this->Sms_email_record_model->order_by('id', 'DESC')->get_by('account', $mobi);
 				if($info){
 					if($info['verify'] == $code){
-						$update = array('mobi' => $mobi);
+						$update = array('mobi' => $mobi, 'account' => $mobi);
 						$this->load->model('Users_bind_model');
 						$created_at = date("Y-m-d H:i:s");
 						$data = [
