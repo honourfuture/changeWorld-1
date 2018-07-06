@@ -12,10 +12,10 @@ const menuData = [
             //     name: "V认证",
             //     path: "MemberVCertification"
             // },
-            {
-                name: "主播类型",
-                path: "AnchorType"
-            },
+            // {
+            //     name: "主播类型",
+            //     path: "AnchorType"
+            // },
             {
                 name: "主播管理",
                 path: "AnchorList"
@@ -102,7 +102,7 @@ const menuData = [
         path: "shop",
         children: [
             {
-                name: "店铺管理",
+                name: "店铺审核",
                 path: "ShopCheckList"
             }
             // {
