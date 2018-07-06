@@ -139,31 +139,32 @@ class Income extends API_Controller {
 	 * @apiSuccessExample {json} Success-Response:
 	 * {
 	 *     "data": {
-	 *         "count": 2,
+	 *         "count": 4,
 	 *         "list": [
 	 *             {
-	 *                 "id": "4",
-	 *                 "updated_at": "2018-03-16 09:41:12",
-	 *                 "sub_topic": "2",
-	 *                 "name": "马化腾",
-	 *                 "mobi": "",
-	 *                 "item_title": "如果超人会飞",
-	 *                 "item_id": "1",
-	 *                 "amount": "10.00",
-	 *                 "gold": "0"
-	 *             },
-	 *             {
-	 *                 "id": "1",
-	 *                 "updated_at": "2018-03-16 09:29:09",
-	 *                 "sub_topic": "1",
-	 *                 "name": "马云",
-	 *                 "mobi": "",
-	 *                 "item_title": "[超人系列]",
-	 *                 "item_id": "1",
-	 *                 "amount": "200.00",
-	 *                 "gold": "0"
+	 *                 "id": "7",
+	 *                 "updated_at": "2018-07-03 00:57:13",
+	 *                 "nickname": "k哥",
+	 *                 "mobi": "13430332489",
+	 *                 "topic": "1",
+	 *                 "amount": "0.00",
+	 *                 "gold": "1.00",
+	 *                 "from_id": "3",
+	 *                 "header": "http://thirdwx.qlogo.cn/mmopen/vi_32//132"
 	 *             }
-	 *         ]
+	 *         ],
+	 *         "topic": [
+	 *             "知识",
+	 *             "直播",
+	 *             "商品"
+	 *         ],
+	 *         "total": {
+	 *             "member": 1,
+	 *             "live": "3.00",
+	 *             "video": 0,
+	 *             "goods": "9.60",
+	 *             "sum": 12.6
+	 *         }
 	 *     },
 	 *     "status": 0,
 	 *     "message": "成功"
@@ -184,6 +185,7 @@ class Income extends API_Controller {
 		$shop_id = $this->input->get_post('shop_id');
 
 		$this->load->model('Income_model');
+		$ret['topic'] = $this->Income_model->topic();
 
 		$a_type = $this->Income_model->type();
 		if(! isset($a_type[$type])){
@@ -193,12 +195,36 @@ class Income extends API_Controller {
 		$where = array('type' => $type, 'shop_id' => $shop_id);
 		if($this->user_id){
 			$where['user_id'] = $this->user_id;
+			//统计
+			$ret['total'] = ['member' => 0, 'live' => 0, 'video' => 0, 'goods' => 0];
+
+			$this->db->group_by('from_id');
+			$where_count = $where;
+			$ret['total']['member'] = $this->Income_model->count_by($where_count);
+
+			$this->db->select('sum(gold) gold');
+			$where_count['topic'] = 1;
+			$result = $this->Income_model->get_by($where_count);
+			$ret['total']['live'] = $result['gold'] ? $result['gold'] : 0;
+
+			$this->db->select('sum(amount) amount');
+			$where_count['topic'] = 0;
+			$result = $this->Income_model->get_by($where_count);
+			$ret['total']['video'] = $result['amount'] ? $result['amount'] : 0;
+
+			$this->db->select('sum(amount) amount');
+			$where_count['topic'] = 2;
+			$result = $this->Income_model->get_by($where_count);
+			$ret['total']['goods'] = $result['amount'] ? $result['amount'] : 0;
+
+			$ret['total']['sum'] = round($ret['total']['live'] + $ret['total']['video'] + $ret['total']['goods'], 2);
 		}
+
 
 		$order_by = array('id' => 'desc');
 		$ret['count'] = $this->Income_model->count_by($where);
 		if($ret['count']){
-			$this->db->select('id,updated_at,topic,amount,gold,from_id');
+			$this->db->select('id,updated_at,name nickname,mobi,topic,amount,gold,from_id');
 			if($list = $this->Income_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where)){
 				$a_uid = [];
 				foreach($list as $item){
@@ -211,9 +237,9 @@ class Income extends API_Controller {
 						$user = $users[$item['from_id']];
 					}else{
 						$user = [
-							'nickname' => '',
+							// 'nickname' => '',
 							'header' => '',
-							'mobi' => ''
+							// 'mobi' => ''
 						];
 					}
 					$ret['list'][] = array_merge($item, $user);
