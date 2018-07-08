@@ -83,9 +83,20 @@ class Anchor extends API_Controller {
 		$this->search();
 		$ret['count'] = $this->Users_anchor_model->count_by($where);
 		if($ret['count']){
-			$this->db->select('id,created_at,updated_at,status,mobi,email,nickname,realname');
+			$this->db->select('id,created_at,updated_at,status,mobi,email,nickname,realname,user_id');
 			$this->search();
-			$ret['list'] = $this->Users_anchor_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
+			if($list = $this->Users_anchor_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where)){
+				$a_uid = [];
+				foreach($list as $item){
+					$a_uid[] = $item['user_id'];
+				}
+				$this->load->model('Users_model');
+				$user = $this->Users_model->get_many_user($a_uid, 'id,reward_point');
+				foreach($list as $item){
+					$item['reward_point'] = isset($user[$item['user_id']]) ? $user[$item['user_id']]['reward_point'] : 0;
+					$ret['list'][] = $item;
+				}
+			}
 		}
 
 		$this->ajaxReturn($ret);
