@@ -10,8 +10,8 @@ import { Layout, Menu, Icon } from "antd";
 import { Link } from "react-router-dom";
 import logo from "../../images/logo.png";
 import { getMenuData } from "./GlobalMenu.config";
-import { Global, BaseComponent } from "../../common";
-import { action } from "mobx";
+import { Global, BaseComponent, Base } from "../../common";
+import { action, observable } from "mobx";
 import "./GlobalMenu.less";
 
 const { Sider } = Layout;
@@ -21,7 +21,7 @@ const { store } = Global;
 /**
  * 根据菜单取得重定向地址.
  */
-const redirectData = [];
+const redirectData = observable([]);
 const getRedirect = item => {
     if (item && item.children) {
         if (item.children[0] && item.children[0].path) {
@@ -42,10 +42,38 @@ export { redirectData };
 export class GlobalMenu extends BaseComponent {
     constructor(props) {
         super(props);
-        this.menus = getMenuData();
+        this.store = { menus: getMenuData() };
         this.state = {
             openKeys: this.getDefaultCollapsedSubMenus(props)
         };
+        //切换后台
+        Global.observeUserInfo(() => {
+            this.setAccess();
+        });
+    }
+    componentDidMount() {
+        this.setAccess();
+    }
+    @action.bound
+    setAccess() {
+        Base.GET({ act: "admin", op: "access", mod: "admin" }, res => {
+            const { is_root, access } = res.data;
+            if (parseInt(is_root)) {
+                redirectData.clear();
+                let list = getMenuData();
+                list.forEach(getRedirect);
+                this.store.menus = list;
+            } else {
+                const subAccess = (access.access || "").split(",");
+                let list = getMenuData(subAccess);
+                list = list.filter(
+                    item => item.children && item.children.length > 0
+                );
+                redirectData.clear();
+                list.forEach(getRedirect);
+                this.store.menus = list;
+            }
+        });
     }
     getFlatMenuKeys(menus) {
         let keys = [];
@@ -61,7 +89,7 @@ export class GlobalMenu extends BaseComponent {
     }
     getSelectedMenuKeys = path => {
         if (!this.flatMenuKeys) {
-            this.flatMenuKeys = this.getFlatMenuKeys(this.menus);
+            this.flatMenuKeys = this.getFlatMenuKeys(this.store.menus);
         }
         if (this.flatMenuKeys.indexOf(path.replace(/^\//, "")) > -1) {
             return [path.replace(/^\//, "")];
@@ -87,7 +115,10 @@ export class GlobalMenu extends BaseComponent {
         }
     }
     getDefaultCollapsedSubMenus(props) {
-        const { location: { pathname } } = props || this.props;
+        const {
+            location: { pathname }
+        } =
+            props || this.props;
         const snippets = pathname.split("/").slice(1, -1);
         const currentPathSnippets = snippets.map((item, index) => {
             const arr = snippets.filter((_, i) => i <= index);
@@ -100,7 +131,7 @@ export class GlobalMenu extends BaseComponent {
             );
         });
         if (currentMenuSelectedKeys.length === 0) {
-            return [this.menus[0].path];
+            return [this.store.menus[0].path];
         }
         return currentMenuSelectedKeys;
     }
@@ -161,7 +192,7 @@ export class GlobalMenu extends BaseComponent {
     }
     handleOpenChange = openKeys => {
         const lastOpenKey = openKeys[openKeys.length - 1];
-        const isMainMenu = this.menus.some(
+        const isMainMenu = this.store.menus.some(
             item =>
                 lastOpenKey &&
                 (item.key === lastOpenKey || item.path === lastOpenKey)
@@ -175,7 +206,9 @@ export class GlobalMenu extends BaseComponent {
         store.isCollapsed = !store.onCollapse;
     }
     render() {
-        const { location: { pathname } } = this.props;
+        const {
+            location: { pathname }
+        } = this.props;
         const { openKeys } = this.state;
         const menuProps = store.isCollapsed
             ? {}
@@ -210,7 +243,7 @@ export class GlobalMenu extends BaseComponent {
                     selectedKeys={selectedKeys}
                     style={{ padding: "16px 0", width: "100%" }}
                 >
-                    {this.getNavMenuItems(this.menus)}
+                    {this.getNavMenuItems(this.store.menus)}
                 </Menu>
             </Sider>
         );

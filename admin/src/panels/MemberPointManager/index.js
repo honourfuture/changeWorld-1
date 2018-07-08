@@ -12,8 +12,8 @@ export default class MemberPointManager extends BaseComponent {
     render() {
         const panes = [
             { title: "积分明细", content: <PointDetail />, key: "1" },
-            { title: "规则设置", content: <PointRuleSet />, key: "2" },
-            { title: "积分增减", content: <PointSet />, key: "3" }
+            { title: "规则设置", content: <PointRuleSet />, key: "2" }
+            // { title: "积分增减", content: <PointSet />, key: "3" }
         ];
         const tabPan = panes.map(item => {
             const { title, key, content } = item;

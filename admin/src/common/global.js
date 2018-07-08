@@ -5,20 +5,38 @@
  * @Last Modified time: 2018-01-01 22:55:36
  * 全局数据
  */
-import { observable } from 'mobx';
+import { Base } from "./base";
+import { observable } from "mobx";
 export default {
-    API_URL:'http://aiping.qichebaby.com/api',
-    RES_URL:'http://aiping.qichebaby.com',
+    API_URL: "http://aiping.qichebaby.com/api",
+    RES_URL: "http://aiping.qichebaby.com",
     // API_URL:'http://192.168.1.138/project/taskusbipowggnphe/php/index.php/api',
-    get UPLOAD_URL(){
+    get UPLOAD_URL() {
         return `${this.API_URL}/common/fileUpload`;
     },
-    PAGE_SIZE:10,//默认pagesize
+    PAGE_SIZE: 10, //默认pagesize
     store: observable({
-        isCollapsed: false, // menu是否收起
+        isCollapsed: false // menu是否收起
     }),
-    userInfo: {
-        account: 'admin',
-        header: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png'
+    _userInfo: observable.map({
+        "global.userInfo": { account: "", header: "" }
+    }),
+    observeUserInfo(callBack) {
+        this._userInfo.observe(callBack);
     },
-}
+    set userInfo(data) {
+        Base.setLocalData("admin.user.data", data);
+        this._userInfo.set("global.userInfo", data || {});
+    },
+    get userInfo() {
+        const data = this._userInfo.get("global.userInfo");
+        if (!data || !data.account) {
+            const localData = Base.getLocalData("admin.user.data");
+            if (localData) {
+                this.userInfo = localData;
+            }
+            return localData || {};
+        }
+        return data;
+    }
+};

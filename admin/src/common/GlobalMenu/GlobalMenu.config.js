@@ -74,10 +74,10 @@ const menuData = [
         icon: "play-circle-o",
         path: "live",
         children: [
-            {
-                name: "直播类型",
-                path: "LiveClass"
-            },
+            // {
+            //     name: "直播类型",
+            //     path: "LiveClass"
+            // },
             // {
             //     name: "直播标签",
             //     path: "LiveTag"
@@ -96,25 +96,25 @@ const menuData = [
             }
         ]
     },
-    {
-        name: "店铺",
-        icon: "shop",
-        path: "shop",
-        children: [
-            {
-                name: "店铺管理",
-                path: "ShopCheckList"
-            }
-            // {
-            //     name: '店铺等级',
-            //     path: 'ShopLv',
-            // },
-            // {
-            //     name: '店铺分类',
-            //     path: 'ShopClassify',
-            // },
-        ]
-    },
+    // {
+    //     name: "店铺",
+    //     icon: "shop",
+    //     path: "shop",
+    //     children: [
+    //         {
+    //             name: "店铺管理",
+    //             path: "ShopCheckList"
+    //         }
+    //         // {
+    //         //     name: '店铺等级',
+    //         //     path: 'ShopLv',
+    //         // },
+    //         // {
+    //         //     name: '店铺分类',
+    //         //     path: 'ShopClassify',
+    //         // },
+    //     ]
+    // },
     {
         name: "交易",
         icon: "pay-circle-o",
@@ -150,21 +150,21 @@ const menuData = [
             // },
         ]
     },
-    {
-        name: "分销",
-        icon: "team",
-        path: "partner",
-        children: [
-            {
-                name: "审核",
-                path: "PartnerAudit"
-            }
-            // {
-            //     name: "列表",
-            //     path: "PartnerList"
-            // }
-        ]
-    },
+    // {
+    //     name: "分销",
+    //     icon: "team",
+    //     path: "partner",
+    //     children: [
+    //         {
+    //             name: "审核",
+    //             path: "PartnerAudit"
+    //         }
+    //         // {
+    //         //     name: "列表",
+    //         //     path: "PartnerList"
+    //         // }
+    //     ]
+    // },
     {
         name: "活动管理",
         icon: "team",
@@ -185,10 +185,10 @@ const menuData = [
         icon: "pie-chart",
         path: "operation",
         children: [
-            {
-                name: "充值优惠",
-                path: "RechargeManager"
-            },
+            // {
+            //     name: "充值优惠",
+            //     path: "RechargeManager"
+            // },
             {
                 name: "银行管理",
                 path: "BankManager"
@@ -321,10 +321,10 @@ const menuData = [
                 name: "基础设置",
                 path: "SystemSet"
             },
-            {
-                name: "商城设置",
-                path: "ShopSet"
-            },
+            // {
+            //     name: "商城设置",
+            //     path: "ShopSet"
+            // },
             {
                 name: "管理员列表",
                 path: "AdminManage"
@@ -349,14 +349,20 @@ const menuData = [
     }
 ];
 
-function formatter(data, parentPath = "") {
-    const list = [];
+function formatter(data, parentPath = "", pathList) {
+    let list = [];
     data.forEach(item => {
         if (item.children) {
+            let children = item.children;
+            if (pathList) {
+                children = item.children.filter(
+                    item => pathList.indexOf(item.path) !== -1
+                );
+            }
             list.push({
                 ...item,
                 path: `${parentPath}${item.path}`,
-                children: formatter(item.children, `${parentPath}${item.path}/`)
+                children: formatter(children, `${parentPath}${item.path}/`)
             });
         } else {
             list.push({
@@ -368,4 +374,4 @@ function formatter(data, parentPath = "") {
     return list;
 }
 
-export const getMenuData = () => formatter(menuData);
+export const getMenuData = pathList => formatter(menuData, "", pathList);

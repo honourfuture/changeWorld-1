@@ -247,8 +247,10 @@ export default class AdminManage extends BaseComponent {
                                 </Option>
                             ))}
                         </Select>
+                    ) : curIndex === 0 ? (
+                        "未选择角色"
                     ) : (
-                        curIndex === 0 ? '未选择角色' : role[curIndex].name
+                        role[curIndex].name
                     )}
                 </div>
             );
@@ -326,7 +328,7 @@ export default class AdminManage extends BaseComponent {
             account: "",
             password: "",
             header: "",
-            role_id: '0',
+            role_id: "0",
             editable: true,
             deleted: "0",
             enable: "1",
@@ -383,7 +385,7 @@ export default class AdminManage extends BaseComponent {
             return parseInt(item.deleted, 10) === 0;
         });
         return (
-            <Spin ref="spin" className="AdminManage" spinning={false}>
+            <Spin ref="spin" wrapperClassName="AdminManage" spinning={false}>
                 <div className="pd10">
                     <Button onClick={this.onAdd}>新增+</Button>
                 </div>

@@ -74,7 +74,7 @@ export class BasicLayout extends React.PureComponent {
                                 <Redirect
                                     exact
                                     from="/"
-                                    to="/goods/ShopNavList"
+                                    to="/member/MemberManager"
                                 />
                                 <Route render={NotFound} />
                             </Switch>
