@@ -79,6 +79,7 @@ class Withdraw extends API_Controller {
 		if($ret['count']){
 			$this->search();
 			if($list = $this->Withdraw_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_all()){
+				$ret['list'] = $list;
 				$a_uid = [];
 				foreach($list as $item){
 					$a_uid[] = $item['user_id'];
