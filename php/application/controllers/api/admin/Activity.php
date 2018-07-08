@@ -57,9 +57,11 @@ class Activity extends API_Controller {
 		}
 
 
+		$this->search();
 		$ret['count'] = $this->Activity_model->count_all();
 		if($ret['count']){
 			$order_by = array('id' => 'desc');
+			$this->search();
 			if($ret['list'] = $this->Activity_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_all()){
 				$this->Activity_model->common($ret);
 
@@ -80,6 +82,14 @@ class Activity extends API_Controller {
 		}
 
 		$this->ajaxReturn($ret);
+	}
+
+	protected function search()
+	{
+		$title = $this->input->get_post('title');
+		if(! empty($title)){
+			$this->db->like('title', $title);
+		}
 	}
 
 	// 查看
