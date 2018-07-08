@@ -51,42 +51,42 @@ import RefundMananger from "./RefundMananger";
 import EvaluateMananger from "./EvaluateMananger";
 import AppVersion from "./AppVersion";
 import AppGuideManager from "./AppGuideManager";
-import ActivityList from './ActivityList';
-import ActivityClassManage from './ActivityClassManage';
-import AdminManage from './AdminManage';
-import AdminRoleList from './AdminRoleList';
-import AccessSetting from './AccessSetting';
-import HeadHuntingList from './HeadHuntingList';
+import ActivityList from "./ActivityList";
+import ActivityClassManage from "./ActivityClassManage";
+import AdminManage from "./AdminManage";
+import AdminRoleList from "./AdminRoleList";
+import AccessSetting from "./AccessSetting";
+import HeadHuntingList from "./HeadHuntingList";
 export const panelsList = [
     {
-        path:'/member/HeadHuntingList',
-        component:HeadHuntingList,
-        title:'猎头列表',
+        path: "/member/HeadHuntingList",
+        component: HeadHuntingList,
+        title: "猎头列表"
     },
     {
-        path:'/system/AccessSetting',
-        component:AccessSetting,
-        title:'权限设置',
+        path: "/system/AccessSetting",
+        component: AccessSetting,
+        title: "权限设置"
     },
     {
-        path:'/system/AdminRoleList',
-        component:AdminRoleList,
-        title:'管理员角色',
+        path: "/system/AdminRoleList",
+        component: AdminRoleList,
+        title: "管理员角色"
     },
     {
-        path:'/system/AdminManage',
-        component:AdminManage,
-        title:'管理员管理',
+        path: "/system/AdminManage",
+        component: AdminManage,
+        title: "管理员管理"
     },
     {
-        path:'/activity/ActivityClassManage',
-        component:ActivityClassManage,
-        title:'活动分类管理',
+        path: "/activity/ActivityClassManage",
+        component: ActivityClassManage,
+        title: "活动分类管理"
     },
     {
-        path:'/activity/ActivityList',
-        component:ActivityList,
-        title:'活动列表',
+        path: "/activity/ActivityList",
+        component: ActivityList,
+        title: "活动列表"
     },
     {
         path: "/mobile/AppGuideManager",
@@ -194,7 +194,7 @@ export const panelsList = [
         title: "直播类型"
     },
     {
-        path: "/shop/ShopCheckList",
+        path: "/member/ShopCheckList",
         component: ShopCheckList,
         title: "店铺管理"
     },
