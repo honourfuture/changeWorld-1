@@ -71,13 +71,40 @@ class Withdraw extends API_Controller {
 	{
 		$ret = array('count' => 0, 'list' => array());
 
+		$ret['status'] = $this->Withdraw_model->status();
+
 		$order_by = array('id' => 'desc');
+		$this->search();
 		$ret['count'] = $this->Withdraw_model->count_all();
 		if($ret['count']){
-			$ret['list'] = $this->Withdraw_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_all();
+			$this->search();
+			if($list = $this->Withdraw_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_all()){
+				$a_uid = [];
+				foreach($list as $item){
+					$a_uid[] = $item['user_id'];
+				}
+				$this->load->model('Users_model');
+				$ret['user'] = $this->Users_model->get_many_user($a_uid);
+			}
 		}
 
 		$this->ajaxReturn($ret);
+	}
+
+	protected function search()
+	{
+		$keyword = $this->input->get_post('keyword');
+		if(! empty($keyword)){
+			$this->db->group_start();
+			$this->db->like('user_name', $keyword);
+			$this->db->or_like('mobi', $keyword);
+			$this->db->group_end();
+		}
+
+		$status = $this->input->get_post('status');
+		if($status > -1){
+			$this->db->where('status', $status);
+		}
 	}
 
 	/**
