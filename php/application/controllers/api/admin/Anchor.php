@@ -83,7 +83,7 @@ class Anchor extends API_Controller {
 		$this->search();
 		$ret['count'] = $this->Users_anchor_model->count_by($where);
 		if($ret['count']){
-			$this->db->select('id,created_at,updated_at,status,mobi,email,nickname,realname');
+			$this->db->select('id,created_at,updated_at,status,mobi,email,nickname,realname,reward_point');
 			$this->search();
 			$ret['list'] = $this->Users_anchor_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 		}
