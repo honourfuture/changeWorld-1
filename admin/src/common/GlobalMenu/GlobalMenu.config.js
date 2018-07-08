@@ -12,10 +12,10 @@ const menuData = [
             //     name: "V认证",
             //     path: "MemberVCertification"
             // },
-            {
-                name: "主播类型",
-                path: "AnchorType"
-            },
+            // {
+            //     name: "主播类型",
+            //     path: "AnchorType"
+            // },
             {
                 name: "主播管理",
                 path: "AnchorList"

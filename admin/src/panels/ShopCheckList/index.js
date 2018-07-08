@@ -80,6 +80,12 @@ export default class ShopCheckList extends BaseComponent {
                     this.renderText(text, record, "summary")
             },
             {
+				title: '是否返积分',
+                dataIndex: 'reward_point',
+                render: (text, record) => 
+                    this.renderSwitch(text, record, 'reward_point')
+			}, 
+            {
                 title: "编辑时间",
                 dataIndex: "updated_at",
                 width: "15%",
@@ -132,6 +138,32 @@ export default class ShopCheckList extends BaseComponent {
     renderText(text, record, column) {
         return <div>{text}</div>;
     }
+    renderSwitch(text,record,column){
+		return (
+			<Switch checked={parseInt(record.reward_point,10)===1} onChange={(value)=>this.onSwitch(record.id,value?1:0,column)} />
+		)
+    }
+    //是否启用
+	@action.bound
+	onSwitch(id,value,column){
+		const list = this.store.list.slice();
+        const itemData = list.find(item=>id === item.id);
+        itemData[column] = value;
+        this.onSave(id);
+    }
+    //保存
+	@action.bound
+	onSave(id) {
+		const list = this.store.list.slice();
+		const itemData = this.store.list.find(item=>id === item.id);
+		Base.POST({act:'shop',op:'reward_point',mod:'admin',...itemData},(res)=>{
+			// itemData.editable = false;
+			itemData.updated_at = Base.getTimeFormat(new Date().getTime()/1000,2);
+			itemData.id === 0 && (itemData.id = res.data.id);
+			this.store.list = list;
+			this.cacheData = list.map(item => ({ ...item }));
+		},this);
+	}
     @action.bound
     onCheck(id, status) {
         const list = this.store.list.slice();

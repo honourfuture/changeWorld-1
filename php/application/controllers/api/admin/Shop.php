@@ -16,6 +16,51 @@ class Shop extends API_Controller {
     }
 
     /**
+	 * @api {post} /api/admin/shop/reward_point 店铺管理-消费返积分开关
+	 * @apiVersion 1.0.0
+	 * @apiName shop_reward_point
+	 * @apiGroup admin
+	 *
+	 * @apiSampleRequest /api/admin/shop/reward_point
+	 *
+	 * @apiParam {Number} admin_id 管理员唯一ID
+	 * @apiParam {String} account 登录账号
+	 * @apiParam {String} sign 校验签名
+	 * @apiParam {Number} user_id 商家会员ID
+	 * @apiParam {Number} onoff 0关闭 1开启
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {String} data 接口数据集
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *	    "data": "",
+	 *	    "status": 0,
+	 *	    "message": ""
+	 *	}
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+    public function reward_point()
+    {
+    	$user_id = $this->input->get_post('user_id');
+    	$onoff = (int)$this->input->get_post('onoff');
+
+    	$this->load->model('Users_model');
+    	if($this->Users_model->update($user_id, ['reward_point' => $onoff])){
+    		$this->ajaxReturn();
+    	}else{
+    		$this->ajaxReturn([], 1, '设置商家消费返积分开关失败');
+    	}
+    }
+
+    /**
 	 * @api {get} /api/admin/shop/check_list 店铺管理-待审核列表
 	 * @apiVersion 1.0.0
 	 * @apiName shop_check_list

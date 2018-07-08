@@ -191,17 +191,16 @@ class Bind extends API_Controller {
 				$info = $this->Sms_email_record_model->order_by('id', 'DESC')->get_by('account', $mobi);
 				if($info){
 					if($info['verify'] == $code){
-						$update = array('mobi' => $mobi);
+						$update = array('mobi' => $mobi, 'account' => $mobi);
 						$this->load->model('Users_bind_model');
+						$this->Users_bind_model->delete_by(['user_id' => $this->user_id, 'account_type' => 0]);
 						$created_at = date("Y-m-d H:i:s");
 						$data = [
 							'user_id' => $this->user_id,
 							'account_type' => 0,
 							'unique_id' => $mobi,
-							'created_at' => $created_at,
-							'updated_at' => $created_at
 						];
-						$this->db->replace($this->Users_bind_model->table(), $data);
+						$this->Users_bind_model->insert($data);
 					}else{
 						$this->ajaxReturn([], 4, '验证码错误');
 					}

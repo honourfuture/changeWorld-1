@@ -7291,6 +7291,105 @@
     "groupTitle": "admin"
   },
   {
+    "type": "post",
+    "url": "/api/admin/shop/reward_point",
+    "title": "店铺管理-消费返积分开关",
+    "version": "1.0.0",
+    "name": "shop_reward_point",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/admin/shop/reward_point"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "admin_id",
+            "description": "<p>管理员唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account",
+            "description": "<p>登录账号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>商家会员ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "onoff",
+            "description": "<p>0关闭 1开启</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": \"\",\n\t    \"status\": 0,\n\t    \"message\": \"\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Shop.php",
+    "groupTitle": "admin"
+  },
+  {
     "type": "get",
     "url": "/api/admin/user",
     "title": "用户管理-列表",
@@ -20773,7 +20872,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    \"data\": {\n        \"count\": 2,\n        \"list\": [\n            {\n                \"id\": \"4\",\n                \"updated_at\": \"2018-03-16 09:41:12\",\n                \"sub_topic\": \"2\",\n                \"name\": \"马化腾\",\n                \"mobi\": \"\",\n                \"item_title\": \"如果超人会飞\",\n                \"item_id\": \"1\",\n                \"amount\": \"10.00\",\n                \"gold\": \"0\"\n            },\n            {\n                \"id\": \"1\",\n                \"updated_at\": \"2018-03-16 09:29:09\",\n                \"sub_topic\": \"1\",\n                \"name\": \"马云\",\n                \"mobi\": \"\",\n                \"item_title\": \"[超人系列]\",\n                \"item_id\": \"1\",\n                \"amount\": \"200.00\",\n                \"gold\": \"0\"\n            }\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": {\n        \"count\": 4,\n        \"list\": [\n            {\n                \"id\": \"7\",\n                \"updated_at\": \"2018-07-03 00:57:13\",\n                \"nickname\": \"k哥\",\n                \"mobi\": \"13430332489\",\n                \"topic\": \"1\",\n                \"amount\": \"0.00\",\n                \"gold\": \"1.00\",\n                \"from_id\": \"3\",\n                \"header\": \"http://thirdwx.qlogo.cn/mmopen/vi_32//132\"\n            }\n        ],\n        \"topic\": [\n            \"知识\",\n            \"直播\",\n            \"商品\"\n        ],\n        \"total\": {\n            \"member\": 1,\n            \"live\": \"3.00\",\n            \"video\": 0,\n            \"goods\": \"9.60\",\n            \"sum\": 12.6\n        }\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]

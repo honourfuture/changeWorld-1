@@ -62,6 +62,8 @@ class BasicItem extends BaseComponent {
         { key: "email", label: "电子邮箱" },
         { key: "withdraw_system", label: "提现手续费",render: value => this.renderText(value) },
         { key: "withdraw_headhunter", label: "提现猎头返利",render: value => this.renderText(value) },
+        { key: "rmb_to_gold", label: "现金兑换金币" },
+        { key: "gold_to_rmb", label: "金币兑换现金" },
     ];
     renderText(value){
         return <Input addonAfter="%" />
