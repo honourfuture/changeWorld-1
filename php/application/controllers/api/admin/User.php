@@ -57,13 +57,26 @@ class User extends API_Controller {
 		$where['1 >'] = 0;
 
 		$order_by = array('id' => 'desc');
+		$this->search();
 		$ret['count'] = $this->Users_model->count_by($where);
 		if($ret['count']){
 			$this->db->select('id,created_at,updated_at,mobi,account,header,nickname,v,anchor,seller,exp,reg_ip,balance,point,gold,headhunter,reward_point');
+			$this->search();
 			$ret['list'] = $this->Users_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 		}
 
 		$this->ajaxReturn($ret);
+	}
+
+	protected function search()
+	{
+		$keyword = $this->input->get_post('keyword');
+		if(! empty($keyword)){
+			$this->db->group_start();
+			$this->db->like('nickname', $keyword);
+			$this->db->or_like('mobi', $keyword);
+			$this->db->group_end();
+		}
 	}
 
 	/**
