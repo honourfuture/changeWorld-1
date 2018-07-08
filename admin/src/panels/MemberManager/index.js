@@ -30,7 +30,7 @@ export default class MemberManager extends BaseComponent {
                 title: "昵称",
                 dataIndex: "nickname",
                 width: 150,
-                fixed: 'left',
+                fixed: "left",
                 render: (text, record) =>
                     this.renderText(text, record, "nickname")
             },
@@ -101,68 +101,90 @@ export default class MemberManager extends BaseComponent {
                     this.renderText(text, record, "created_at")
             },
             {
-				title: '是否猎头',
-                dataIndex: 'headhunter',
-                width:120,
-                fixed: 'right',
-                render: (text, record) => 
-                    this.renderSwitch(text, record, 'headhunter')
-			}, 
+                title: "是否猎头",
+                dataIndex: "headhunter",
+                width: 120,
+                fixed: "right",
+                render: (text, record) =>
+                    this.renderSwitch(text, record, "headhunter")
+            },
             {
-				title: '操作',
-                dataIndex: 'operation',
-                width:150,
-                fixed: 'right',
-				render: (text, record) => {
-                    const { headhunter,id } = record;
-					return (
-					<div className="editable-row-operations">
-						{
-						parseInt(headhunter) ?
-							<span>
-								<a onClick={() => Base.push('HeadHuntingList',{id:id})}>猎头用户</a>
-							</span>
-							:null
-						}
-					</div>
-					);
-				},
-			}
+                title: "操作",
+                dataIndex: "operation",
+                width: 150,
+                fixed: "right",
+                render: (text, record) => {
+                    const { headhunter, id } = record;
+                    return (
+                        <div className="editable-row-operations">
+                            {parseInt(headhunter) ? (
+                                <span>
+                                    <a
+                                        onClick={() =>
+                                            Base.push("HeadHuntingList", {
+                                                id: id
+                                            })
+                                        }
+                                    >
+                                        猎头用户
+                                    </a>
+                                </span>
+                            ) : null}
+                        </div>
+                    );
+                }
+            }
         ];
     }
     renderImg(text, record, column) {
-        return <img className="header" src={record[column]} alt="" />;
+        return (
+            <div className="header-con">
+                <img className="header" src={record[column]} alt="" />
+            </div>
+        );
     }
     renderText(text, record, column) {
         return <div>{text}</div>;
     }
-    renderSwitch(text,record,column){
-		return (
-			<Switch checked={parseInt(record.headhunter,10)===1} onChange={(value)=>this.onSwitch(record.id,value?1:0,column)} />
-		)
+    renderSwitch(text, record, column) {
+        return (
+            <Switch
+                checked={parseInt(record.headhunter, 10) === 1}
+                onChange={value =>
+                    this.onSwitch(record.id, value ? 1 : 0, column)
+                }
+            />
+        );
     }
     //是否启用
-	@action.bound
-	onSwitch(id,value,column){
-		const list = this.store.list.slice();
-        const itemData = list.find(item=>id === item.id);
+    @action.bound
+    onSwitch(id, value, column) {
+        const list = this.store.list.slice();
+        const itemData = list.find(item => id === item.id);
         itemData[column] = value;
-        console.log(itemData,"itemData")
+        console.log(itemData, "itemData");
         this.onSave(id);
     }
     //保存
-	@action.bound
-	onSave(id) {
-		const list = this.store.list.slice();
-		const itemData = this.store.list.find(item=>id === item.id);
-		Base.POST({act:'headhunter',op:'onoff',mod:'admin',...itemData},(res)=>{
-			itemData.editable = false;
-			itemData.updated_at = Base.getTimeFormat(new Date().getTime()/1000,2);
-			itemData.id === 0 && (itemData.id = res.data.id);
-			this.store.list = list;
-			this.cacheData = list.map(item => ({ ...item }));
-		},this);
-	}
+    @action.bound
+    onSave(id) {
+        const list = this.store.list.slice();
+        const itemData = this.store.list.find(item => id === item.id);
+        Base.POST(
+            { act: "headhunter", op: "onoff", mod: "admin", ...itemData },
+            res => {
+                itemData.editable = false;
+                itemData.updated_at = Base.getTimeFormat(
+                    new Date().getTime() / 1000,
+                    2
+                );
+                itemData.id === 0 && (itemData.id = res.data.id);
+                this.store.list = list;
+                this.cacheData = list.map(item => ({ ...item }));
+            },
+            this
+        );
+    }
     //搜索
     searchStr = "";
     @action.bound
@@ -184,7 +206,7 @@ export default class MemberManager extends BaseComponent {
                 act: "user",
                 op: "index",
                 mod: "admin",
-                nickname: this.searchStr || "",
+                keyword: this.searchStr || "",
                 cur_page: this.current || 1,
                 per_page: Global.PAGE_SIZE
             },
@@ -210,10 +232,10 @@ export default class MemberManager extends BaseComponent {
             <Spin ref="spin" wrapperClassName="MemberManager" spinning={false}>
                 <div className="pb10">
                     <Search
-                        placeholder="搜索昵称"
+                        placeholder="搜索昵称/手机号"
                         enterButton
                         onSearch={this.onSearch}
-                        style={{ width: 130, marginLeft: 10 }}
+                        style={{ width: 200, marginLeft: 10 }}
                     />
                 </div>
                 <Table

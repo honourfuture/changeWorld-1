@@ -19,7 +19,8 @@ const Option = Select.Option;
 
 export default class WithdrawalMananger extends BaseComponent {
     store = {
-        list: []
+        list: [],
+        status: -1
     };
     constructor(props) {
         super(props);
@@ -27,34 +28,45 @@ export default class WithdrawalMananger extends BaseComponent {
             {
                 title: "提现人",
                 dataIndex: "user_name",
-                width: "12%",
+                // width: "12%",
                 render: (text, record) =>
                     this.renderText(text, record, "user_name")
             },
             {
+                title: "昵称",
+                dataIndex: "nickname",
+                // width: "12%",
+                render: (text, record) => {
+                    const user_id = record.user_id;
+                    const user = this.user || {};
+                    const nickname = (user[user_id] || {}).nickname;
+                    return this.renderText(nickname, record, "nickname");
+                }
+            },
+            {
                 title: "手机号",
                 dataIndex: "mobi",
-                width: "15%",
+                // width: "15%",
                 render: (text, record) => this.renderText(text, record, "mobi")
             },
             {
                 title: "卡号",
                 dataIndex: "user_card",
-                width: "20%",
+                // width: "20%",
                 render: (text, record) =>
                     this.renderText(text, record, "user_card")
             },
             {
                 title: "提现银行",
                 dataIndex: "bank_name",
-                width: "13%",
+                // width: "13%",
                 render: (text, record) =>
                     this.renderText(text, record, "bank_name")
             },
             {
                 title: "提现金额",
                 dataIndex: "amount",
-                width: "10%",
+                // width: "10%",
                 render: (text, record) =>
                     this.renderText(text, record, "amount")
             },
@@ -72,12 +84,13 @@ export default class WithdrawalMananger extends BaseComponent {
             },
             {
                 title: "转账金额",
-                render: (text, record) => parseInt(record.amount) - parseInt(record.withdraw_system)
+                render: (text, record) =>
+                    parseInt(record.amount) - parseInt(record.withdraw_system)
             },
             {
                 title: "更新时间",
                 dataIndex: "updated_at",
-                width: "20%",
+                // width: "20%",
                 render: (text, record) =>
                     this.renderText(text, record, "updated_at")
             },
@@ -109,7 +122,7 @@ export default class WithdrawalMananger extends BaseComponent {
         ];
     }
     renderText(text, record, column) {
-        return <div>{record[column]}</div>;
+        return <div>{text}</div>;
     }
     //搜索
     searchStr = "";
@@ -144,6 +157,12 @@ export default class WithdrawalMananger extends BaseComponent {
         );
     }
     @action.bound
+    onStatusSelect(e) {
+        this.current = 1;
+        this.store.status = e;
+        this.requestData();
+    }
+    @action.bound
     onTableHandler({ current, pageSize }) {
         this.current = current;
         this.requestData();
@@ -156,12 +175,15 @@ export default class WithdrawalMananger extends BaseComponent {
                 act: "withdraw",
                 op: "record",
                 mod: "admin",
-                user_name: this.searchStr || "",
+                keyword: this.searchStr || "",
+                status: this.store.status,
                 cur_page: this.current || 1,
                 per_page: Global.PAGE_SIZE
             },
             res => {
-                const { list, count } = res.data;
+                const { list, count, user, status } = res.data;
+                this.status = status;
+                this.user = user;
                 this.store.list = list;
                 this.store.total = count;
             },
@@ -176,6 +198,23 @@ export default class WithdrawalMananger extends BaseComponent {
         const showList = list.filter(item => {
             return parseInt(item.deleted, 10) === 0;
         });
+        const { status = {} } = this;
+        const statusCon = [];
+        for (const key in status) {
+            if (status.hasOwnProperty(key)) {
+                const item = status[key];
+                statusCon.push(
+                    <Option value={key} key={key}>
+                        {item}
+                    </Option>
+                );
+            }
+        }
+        statusCon.unshift(
+            <Option value={-1} key={-1}>
+                全部
+            </Option>
+        );
         return (
             <Spin
                 ref="spin"
@@ -184,13 +223,22 @@ export default class WithdrawalMananger extends BaseComponent {
             >
                 <div className="pb10">
                     <Search
-                        placeholder="搜索提现人"
+                        placeholder="搜索提现人/手机号"
                         enterButton
                         onSearch={this.onSearch}
-                        style={{ width: 160, marginLeft: 10 }}
+                        style={{ width: 200, marginRight: 10 }}
                     />
+                    {statusCon.length > 0 ? (
+                        <Select
+                            onChange={this.onStatusSelect}
+                            defaultValue={-1}
+                        >
+                            {statusCon}
+                        </Select>
+                    ) : null}
                 </div>
                 <Table
+                    size="small"
                     className="mt16"
                     onChange={this.onTableHandler}
                     bordered

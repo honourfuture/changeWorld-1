@@ -179,14 +179,14 @@ export default class AnchorList extends BaseComponent {
                 key: "anchor_video",
                 label: "主播视频",
                 render: value => {
-                    if(!value){
-                        return '';
+                    if (!value) {
+                        return "";
                     }
                     const list = JSON.parse(value);
                     return (
-                            <video width="320" height="240" controls>
-                                <source src={list[0].video_url} type="video/mp4" />
-                            </video>
+                        <video width="320" height="240" controls>
+                            <source src={list[0].video_url} type="video/mp4" />
+                        </video>
                     );
                 }
             },
@@ -250,7 +250,7 @@ export default class AnchorList extends BaseComponent {
                 op: "index",
                 mod: "admin",
                 status: this.store.status,
-                mobi: this.searchStr || "",
+                keyword: this.searchStr || "",
                 cur_page: this.current || 1,
                 per_page: Global.PAGE_SIZE
             },
@@ -309,10 +309,10 @@ export default class AnchorList extends BaseComponent {
             <Spin ref="spin" wrapperClassName="AnchorList" spinning={false}>
                 <div className="pb10">
                     <Search
-                        placeholder="搜索手机号"
+                        placeholder="搜索昵称/手机号"
                         enterButton
                         onSearch={this.onSearch}
-                        style={{ width: 160, marginRight: 10 }}
+                        style={{ width: 200, marginRight: 10 }}
                     />
                     {statusCon.length > 0 ? (
                         <Select
