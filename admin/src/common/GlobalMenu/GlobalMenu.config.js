@@ -20,6 +20,10 @@ const menuData = [
                 name: "主播管理",
                 path: "AnchorList"
             },
+            {
+                name: "店铺管理",
+                path: "ShopCheckList"
+            },
             // {
             //     name: "等级管理",
             //     path: "MemberLvManager"
@@ -298,14 +302,14 @@ const menuData = [
         icon: "book",
         path: "article",
         children: [
-            {
-                name: "文章分类",
-                path: "ArticleCategory"
-            },
-            {
-                name: "文章列表",
-                path: "ArticleList"
-            },
+            // {
+            //     name: "文章分类",
+            //     path: "ArticleCategory"
+            // },
+            // {
+            //     name: "文章列表",
+            //     path: "ArticleList"
+            // },
             {
                 name: "单页管理",
                 path: "ArticleSingleManager"

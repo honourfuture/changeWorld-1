@@ -80,11 +80,11 @@ export default class ShopCheckList extends BaseComponent {
                     this.renderText(text, record, "summary")
             },
             {
-				title: '是否返积分',
-                dataIndex: 'reward_point',
-                render: (text, record) => 
-                    this.renderSwitch(text, record, 'reward_point')
-			}, 
+                title: "是否返积分",
+                dataIndex: "reward_point",
+                render: (text, record) =>
+                    this.renderSwitch(text, record, "reward_point")
+            },
             {
                 title: "编辑时间",
                 dataIndex: "updated_at",
@@ -138,32 +138,44 @@ export default class ShopCheckList extends BaseComponent {
     renderText(text, record, column) {
         return <div>{text}</div>;
     }
-    renderSwitch(text,record,column){
-		return (
-			<Switch checked={parseInt(record.reward_point,10)===1} onChange={(value)=>this.onSwitch(record.id,value?1:0,column)} />
-		)
+    renderSwitch(text, record, column) {
+        return (
+            <Switch
+                checked={parseInt(record.reward_point, 10) === 1}
+                onChange={value =>
+                    this.onSwitch(record.id, value ? 1 : 0, column)
+                }
+            />
+        );
     }
     //是否启用
-	@action.bound
-	onSwitch(id,value,column){
-		const list = this.store.list.slice();
-        const itemData = list.find(item=>id === item.id);
+    @action.bound
+    onSwitch(id, value, column) {
+        const list = this.store.list.slice();
+        const itemData = list.find(item => id === item.id);
         itemData[column] = value;
         this.onSave(id);
     }
     //保存
-	@action.bound
-	onSave(id) {
-		const list = this.store.list.slice();
-		const itemData = this.store.list.find(item=>id === item.id);
-		Base.POST({act:'shop',op:'reward_point',mod:'admin',...itemData},(res)=>{
-			// itemData.editable = false;
-			itemData.updated_at = Base.getTimeFormat(new Date().getTime()/1000,2);
-			itemData.id === 0 && (itemData.id = res.data.id);
-			this.store.list = list;
-			this.cacheData = list.map(item => ({ ...item }));
-		},this);
-	}
+    @action.bound
+    onSave(id) {
+        const list = this.store.list.slice();
+        const itemData = this.store.list.find(item => id === item.id);
+        Base.POST(
+            { act: "shop", op: "reward_point", mod: "admin", ...itemData },
+            res => {
+                // itemData.editable = false;
+                itemData.updated_at = Base.getTimeFormat(
+                    new Date().getTime() / 1000,
+                    2
+                );
+                itemData.id === 0 && (itemData.id = res.data.id);
+                this.store.list = list;
+                this.cacheData = list.map(item => ({ ...item }));
+            },
+            this
+        );
+    }
     @action.bound
     onCheck(id, status) {
         const list = this.store.list.slice();
@@ -199,7 +211,7 @@ export default class ShopCheckList extends BaseComponent {
                 op: "check_list",
                 mod: "admin",
                 status: -1,
-                nickname: this.searchStr || "",
+                keyword: this.searchStr || "",
                 cur_page: this.current || 1,
                 per_page: Global.PAGE_SIZE
             },
@@ -223,12 +235,12 @@ export default class ShopCheckList extends BaseComponent {
             <Spin ref="spin" wrapperClassName="ShopCheckList" spinning={false}>
                 <div className="pb10">
                     {/* <Button onClick={this.onAdd}>新增+</Button> */}
-                    {/* <Search
-                        placeholder="搜索标题"
+                    <Search
+                        placeholder="搜索店铺名称/手机号"
                         enterButton
                         onSearch={this.onSearch}
-                        style={{ width: 130, marginLeft: 10 }}
-                    /> */}
+                        style={{ width: 200, marginLeft: 10 }}
+                    />
                 </div>
                 <Table
                     className="mt16"
