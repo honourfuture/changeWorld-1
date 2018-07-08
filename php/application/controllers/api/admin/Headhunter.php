@@ -140,8 +140,8 @@ class Headhunter extends API_Controller {
 		if($user = $this->Users_model->get_by(['mobi' => $params['mobi']])){
 			$params['to_user_id'] = $user['id'];
 
-			if($this->Headhunter_model->get_by(['user_id' => $params['user_id'], 'to_user_id' => $params['to_user_id']])){
-				$this->ajaxReturn([], 2, '已是猎头会员');
+			if($row = $this->Headhunter_model->get_by(['to_user_id' => $params['to_user_id']])){
+				$this->ajaxReturn([], 2, '一个会员限定属于一个猎头');
 			}
 
 			if(! $id = $this->Headhunter_model->insert($params)){
