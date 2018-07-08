@@ -211,7 +211,7 @@ export default class ShopCheckList extends BaseComponent {
                 op: "check_list",
                 mod: "admin",
                 status: -1,
-                keyword: this.searchStr || "",
+                nickname: this.searchStr || "",
                 cur_page: this.current || 1,
                 per_page: Global.PAGE_SIZE
             },
@@ -235,12 +235,12 @@ export default class ShopCheckList extends BaseComponent {
             <Spin ref="spin" wrapperClassName="ShopCheckList" spinning={false}>
                 <div className="pb10">
                     {/* <Button onClick={this.onAdd}>新增+</Button> */}
-                    <Search
-                        placeholder="搜索店铺名称/手机号"
+                    {/* <Search
+                        placeholder="搜索标题"
                         enterButton
                         onSearch={this.onSearch}
-                        style={{ width: 200, marginLeft: 10 }}
-                    />
+                        style={{ width: 130, marginLeft: 10 }}
+                    /> */}
                 </div>
                 <Table
                     className="mt16"

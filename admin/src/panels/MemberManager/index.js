@@ -82,17 +82,17 @@ export default class MemberManager extends BaseComponent {
                         "v"
                     )
             },
-            {
-                title: "店铺",
-                dataIndex: "seller",
-                width: 150,
-                render: (text, record) =>
-                    this.renderText(
-                        this.seller_status[record.seller],
-                        record,
-                        "v"
-                    )
-            },
+            // {
+            //     title: "店铺",
+            //     dataIndex: "seller",
+            //     width: 150,
+            //     render: (text, record) =>
+            //         this.renderText(
+            //             this.seller_status[record.seller],
+            //             record,
+            //             "v"
+            //         )
+            // },
             {
                 title: "注册时间",
                 dataIndex: "created_at",
