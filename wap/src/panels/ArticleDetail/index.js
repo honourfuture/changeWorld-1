@@ -11,6 +11,7 @@ const config = {
     protocol: "用户协议",
     copyright: "版权申明",
     protocol_shop: "店铺协议",
+    protocol_anchor: '主播协议',
     rule_shop: "平台规则"
 };
 export default class ArticleDetail extends BaseComponent {
