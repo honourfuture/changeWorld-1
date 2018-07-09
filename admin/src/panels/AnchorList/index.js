@@ -80,6 +80,12 @@ export default class AnchorList extends BaseComponent {
                     this.renderText(text, record, "updated_at")
             },
             {
+                title: "是否返积分",
+                dataIndex: "reward_point",
+                render: (text, record) =>
+                    this.renderSwitch(text, record, "reward_point")
+            },
+            {
                 title: "操作",
                 dataIndex: "status",
                 width: "15%",
@@ -198,6 +204,49 @@ export default class AnchorList extends BaseComponent {
     }
     renderText(text, record, column) {
         return <div>{text}</div>;
+    }
+    renderSwitch(text, record, column) {
+        return (
+            <Switch
+                checked={parseInt(record[column], 10) === 1}
+                onChange={value =>
+                    this.onSwitch(
+                        record.id,
+                        value ? 1 : 0,
+                        column,
+                        record.user_id
+                    )
+                }
+            />
+        );
+    }
+    //是否启用
+    @action.bound
+    onSwitch(id, value, column, user_id) {
+        const list = this.store.list.slice();
+        const itemData = list.find(item => id === item.id);
+        itemData[column] = value;
+        this.onSave(id, value, user_id);
+    }
+    //保存
+    @action.bound
+    onSave(id, onoff, user_id) {
+        const list = this.store.list.slice();
+        const itemData = this.store.list.find(item => id === item.id);
+        Base.POST(
+            { act: "shop", op: "reward_point", mod: "admin", onoff, user_id },
+            res => {
+                // itemData.editable = false;
+                itemData.updated_at = Base.getTimeFormat(
+                    new Date().getTime() / 1000,
+                    2
+                );
+                itemData.id === 0 && (itemData.id = res.data.id);
+                this.store.list = list;
+                this.cacheData = list.map(item => ({ ...item }));
+            },
+            this
+        );
     }
     //搜索
     searchStr = "";
