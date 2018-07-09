@@ -30,7 +30,9 @@ export default class ActivifyShare extends BaseComponent {
         enter: {},
         enter_count: 0,
         vote_count: 0,
-        isVote: 0
+        isVote: 0,
+        iosUrl: "", 
+        andoridUrl: ""
     };
     @action.bound
     setTime(value) {
@@ -46,19 +48,19 @@ export default class ActivifyShare extends BaseComponent {
     onDown() {
         Base.GET({ act: "share", op: "index" }, res => {
             const { app } = res.data;
-            // const iosUrl = (
-            //     (app || []).find(item => parseInt(item.platform, 10) === 0) ||
-            //     {}
-            // ).url;
-            // const andoridUrl = (
-            //     (app || []).find(item => parseInt(item.platform, 10) === 1) ||
-            //     {}
-            // ).url;
-            // if (Base.isIos) {
-            //     window.location.href = iosUrl || "";
-            // } else {
-            //     window.location.href = andoridUrl || "";
-            // }
+            const iosUrl = (
+                (app || []).find(item => parseInt(item.platform, 10) === 0) ||
+                {}
+            ).url;
+            const andoridUrl = (
+                (app || []).find(item => parseInt(item.platform, 10) === 1) ||
+                {}
+            ).url;
+            if (Base.isIos) {
+                window.location.href = iosUrl || "";
+            } else {
+                window.location.href = andoridUrl || "";
+            }
         });
     }
     @action.bound
@@ -78,9 +80,10 @@ export default class ActivifyShare extends BaseComponent {
                 mobi
             },
             res => {
-                Toast.success("恭喜您，投票成功！");
+                Toast.success("恭喜您，投票成功！",2);
                 this.store.isVote = true;
-                this.requestData();
+                // this.requestData();
+                this.onDown();
             }
         );
     }
@@ -180,7 +183,7 @@ export default class ActivifyShare extends BaseComponent {
                                         <span>14</span> */}
                                     </Flex>
                                     <div className="user_box_info number">
-                                        {id}号
+                                        我是{id}号，请投我一票
                                     </div>
                                 </div>
                             </Flex>
