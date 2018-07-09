@@ -205,7 +205,8 @@ class Knowledge extends API_Controller
         //预告直播
         $order_by = array('sort' => 'desc', 'id' => 'desc');
         $this->db->select('id as room_id,title,cover_image,play_url,live_tag_id,anchor_uid,views,price');
-        $where = array('start_at >' => time());
+        // $where = array('start_at >' => time());
+        $where = array('type' => 2);
         !empty($a_room_id) && $this->db->where_not_in('id', $a_room_id);
         $trailer = $this->Room_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
         $trailer = $this->Room_model->live_anchor($trailer, 0);
