@@ -101,7 +101,7 @@ class Seller extends API_Controller {
 				$ret['liveing'] = $liveing ? $liveing : [];
 				//直播预告
 				$this->load->model('Room_model');
-				$this->db->select('id,views,play_url,cover_image,title,price,chat_room_id');
+				$this->db->select('id,views,play_url,cover_image,title,price,chat_room_id,start_at');
 				$preview = $this->Room_model->get_by(array('anchor_uid' => $seller_uid, 'type' => 2));
 				$preview && $preview['play_url'] = json_decode($preview['play_url'], true);
 				$ret['preview'] = $preview ? $preview : [];
