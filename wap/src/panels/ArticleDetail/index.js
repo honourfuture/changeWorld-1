@@ -9,7 +9,9 @@ const config = {
     join_us: "加入我们",
     contact_us: "联系我们",
     protocol: "用户协议",
-    copyright: "版权申明"
+    copyright: "版权申明",
+    protocol_shop: "店铺协议",
+    rule_shop: "平台规则"
 };
 export default class ArticleDetail extends BaseComponent {
     store = { data: {} };
