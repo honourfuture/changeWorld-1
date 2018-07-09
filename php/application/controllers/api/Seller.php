@@ -67,6 +67,9 @@ class Seller extends API_Controller {
 		$ret['user']['gold_in'] = 0;
 		$ret['user']['gold_out'] = 0;
 
+		$this->load->model('Users_vip_model');
+		$ret['vip'] = $this->Users_vip_model->vip_info($seller_uid);
+
 		switch($type){
 			case 'goods':
 				$ret[$type] = $this->_goods($seller_uid);
