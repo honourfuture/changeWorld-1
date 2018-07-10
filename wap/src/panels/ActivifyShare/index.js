@@ -80,9 +80,10 @@ export default class ActivifyShare extends BaseComponent {
                 mobi
             },
             res => {
-                Toast.success("恭喜您，投票成功！",2);
-                this.store.isVote = true;
+                // Toast.success("恭喜您，投票成功！",2);
+                // this.store.isVote = true;
                 // this.requestData();
+                // setTimeout(()=>this.onDown(),2000);
                 this.onDown();
             }
         );
@@ -371,7 +372,7 @@ export default class ActivifyShare extends BaseComponent {
                             </List>
                         </div>
                     </div>
-                    <Flex className="footer" onClick={this.onDown}>
+                    <Flex className="footer" onClick={()=>this.onDown()}>
                         <Flex.Item className="footerItem issueBtn">
                             发布活动
                         </Flex.Item>
