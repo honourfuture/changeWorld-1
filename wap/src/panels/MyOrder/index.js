@@ -17,7 +17,7 @@ import { OrderGoodsItem } from "../../components/OrderGoodsItem";
 import { OrderBtn } from "../../components/OrderBtn";
 import { NoData } from "../../components/NoData";
 
-const height = document.body.offsetHeight - 134;
+const height = document.body.offsetHeight - 90;
 
 class OrderItem extends BaseComponent {
     @action.bound
@@ -153,7 +153,7 @@ class OrderItem extends BaseComponent {
                         btnTxt={["评价订单", "退款/退货", "联系商家"]}
                         oneCallBack={() =>
                             Base.push("EvaluateOrder", {
-                                id: id,
+                                id: id
                                 // item: JSON.stringify(item)
                             })
                         }
@@ -193,7 +193,9 @@ class OrderItem extends BaseComponent {
                 >
                     <Flex justify="between" className="orderItemTit base-line">
                         <span>订单编号：{order_sn}</span>
-                        <span>{parseInt(refund_status) >= 1 ? "" : states[status]}</span>
+                        <span>
+                            {parseInt(refund_status) >= 1 ? "" : states[status]}
+                        </span>
                     </Flex>
                     {(goods || []).map((item, key) => {
                         return <OrderGoodsItem key={key} item={item} />;
@@ -338,7 +340,7 @@ export default class MyOrder extends BaseComponent {
                     我的订单
                 </NavBar>
                 <div>
-                    <SearchBar placeholder="搜索历史订单" maxLength={8} />
+                    {/* <SearchBar placeholder="搜索历史订单" maxLength={8} /> */}
                     <Tabs
                         className="nav-tabs"
                         tabs={tabs}
@@ -361,7 +363,7 @@ export default class MyOrder extends BaseComponent {
                                         {isLoading
                                             ? "加载中..."
                                             : showList.length >=
-                                                Global.PAGE_SIZE
+                                              Global.PAGE_SIZE
                                                 ? "加载完成"
                                                 : ""}
                                     </div>
@@ -373,16 +375,16 @@ export default class MyOrder extends BaseComponent {
                                     />
                                 }
                                 onEndReached={this.onEndReached}
-                            // pageSize={2}
+                                // pageSize={2}
                             />
                         ) : (
-                                <NoData
-                                    img={blankImg.order}
-                                    label={"暂无数据"}
-                                    btnLabel={"去逛逛"}
-                                    onClick={this.goShop}
-                                />
-                            )}
+                            <NoData
+                                img={blankImg.order}
+                                label={"暂无数据"}
+                                btnLabel={"去逛逛"}
+                                onClick={this.goShop}
+                            />
+                        )}
                     </Tabs>
                 </div>
             </div>

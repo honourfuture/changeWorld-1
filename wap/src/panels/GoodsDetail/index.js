@@ -65,7 +65,7 @@ class AddressItem extends BaseComponent {
                 <img src={icon.addressIcon} alt="" />
                 <Flex.Item className="ellipsis">{`${
                     parseInt(is_default, 10) ? "[默认]" : ""
-                    }${address}`}</Flex.Item>
+                }${address}`}</Flex.Item>
                 <Checkbox checked={checked} />
             </Flex>
         );
@@ -97,7 +97,7 @@ class AttrSelect extends BaseComponent {
                     <div
                         className={`select-item ${disable ? "disable" : ""} ${
                             curIndex === index ? "selected" : ""
-                            }`}
+                        }`}
                     >
                         {item}
                     </div>
@@ -167,7 +167,7 @@ export default class GoodsDetail extends BaseComponent {
         seller: {},
         address: [],
         sale_num: 0,
-        goods_explain: ''
+        goods_explain: ""
     };
     componentDidMount() {
         const { id } = Base.getPageParams();
@@ -180,9 +180,10 @@ export default class GoodsDetail extends BaseComponent {
                 seller,
                 favorite,
                 sale_num,
-                goods_explain, rate
+                goods_explain,
+                rate
             } = res.data;
-            console.log(res.data)
+            console.log(res.data);
             this.store.evaluate = evaluate;
             this.store.goods = goods;
             this.store.goods_attr = goods_attr;
@@ -303,7 +304,7 @@ export default class GoodsDetail extends BaseComponent {
                 imageUrl: Base.getImgUrl(default_image),
                 linkUrl: `${
                     Global.RES_URL
-                    }/wap/index.html#/Share?invite_uid=${user_id}&type=0`
+                }/wap/index.html#/Share?invite_uid=${user_id}&type=0`
             };
             Base.pushApp("openShareView", JSON.stringify(shareData));
         });
@@ -336,7 +337,7 @@ export default class GoodsDetail extends BaseComponent {
             seller_uid = "",
             goods_attr = "",
             id,
-            default_image = "",
+            default_image = ""
         } = goods_info;
         // console.log(goods_info)
         try {
@@ -357,7 +358,11 @@ export default class GoodsDetail extends BaseComponent {
                 <NetImg
                     key={index}
                     src={Base.getImgUrl(val)}
-                    style={{ width: "100%", verticalAlign: "top" }}
+                    style={{
+                        width: wDevice,
+                        height: wDevice,
+                        verticalAlign: "top"
+                    }}
                 />
             );
         });
@@ -495,7 +500,12 @@ export default class GoodsDetail extends BaseComponent {
                                     <div className="title">积分</div>
                                     <div className="des">
                                         该商品可使用<em>{use_point_rate}</em>积分抵扣
-                                        <em>{parseInt(parseFloat(rate) * parseFloat(use_point_rate))}</em>元
+                                        <em>
+                                            {parseInt(
+                                                parseFloat(rate) *
+                                                    parseFloat(use_point_rate)
+                                            )}
+                                        </em>元
                                     </div>
                                 </Flex>
                             </div>
@@ -515,10 +525,10 @@ export default class GoodsDetail extends BaseComponent {
                                             {address[curAddressIndex].address}
                                         </Flex.Item>
                                     ) : (
-                                            <Flex.Item className="des ellipsis">
-                                                新建配送地址
+                                        <Flex.Item className="des ellipsis">
+                                            新建配送地址
                                         </Flex.Item>
-                                        )}
+                                    )}
                                 </Flex>
                                 <Icon type="right" color="#c9c9c9" />
                             </Flex>
@@ -600,10 +610,12 @@ export default class GoodsDetail extends BaseComponent {
                             </div> */}
                         </div>
                     ) : null}
-                    <WhiteSpace size='lg' />
+                    <WhiteSpace size="lg" />
                     <div className="image-text-con">
                         <div className="title-con">价格说明</div>
-                        <div dangerouslySetInnerHTML={{ __html: goods_explain }}></div>
+                        <div
+                            dangerouslySetInnerHTML={{ __html: goods_explain }}
+                        />
                     </div>
                 </div>
                 <Flex className="footer">
