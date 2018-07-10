@@ -21,7 +21,7 @@ import { OrderBtn } from "../../components/OrderBtn";
 import { NoData } from "../../components/NoData";
 
 const prompt = Modal.prompt;
-const height = document.body.offsetHeight - 134;
+const height = document.body.offsetHeight - 90;
 class OrderItem extends BaseComponent {
     @action.bound
     modifyPrice(id) {
@@ -64,12 +64,21 @@ class OrderItem extends BaseComponent {
         );
     }
     @action.bound
-    yesRefund(id){
+    yesRefund(id) {
         const { changeRefund } = this.props;
-        Base.POST({ act: "order_action", op: "seller",mod:'user',order_id:id,action:'complete'}, res => {
-            Toast.info(`同意退款！`, 1);
-            changeRefund && changeRefund(id);
-        });
+        Base.POST(
+            {
+                act: "order_action",
+                op: "seller",
+                mod: "user",
+                order_id: id,
+                action: "complete"
+            },
+            res => {
+                Toast.info(`同意退款！`, 1);
+                changeRefund && changeRefund(id);
+            }
+        );
     }
     render() {
         const item = this.props;
@@ -145,11 +154,13 @@ class OrderItem extends BaseComponent {
         }
         if (parseInt(refund_status) === 1) {
             // btns = null;
-            btns = <OrderBtn
-                        btnTxt={["退款"]}
-                        oneCallBack={() => this.yesRefund(id)}
-                        isDouble={1}
-                    />
+            btns = (
+                <OrderBtn
+                    btnTxt={["退款"]}
+                    oneCallBack={() => this.yesRefund(id)}
+                    isDouble={1}
+                />
+            );
         }
         if (parseInt(refund_status) === 2) {
             btns = null;
@@ -166,7 +177,9 @@ class OrderItem extends BaseComponent {
                 >
                     <Flex justify="between" className="orderItemTit base-line">
                         <span>订单编号：{order_sn}</span>
-                        <span>{parseInt(refund_status) >= 1 ? '' : states[status]}</span>
+                        <span>
+                            {parseInt(refund_status) >= 1 ? "" : states[status]}
+                        </span>
                     </Flex>
                     {(goods || []).map((item, key) => {
                         return <OrderGoodsItem key={key} item={item} />;
@@ -326,7 +339,7 @@ export default class SellOrder extends BaseComponent {
                     卖出的订单
                 </NavBar>
                 <div className="base-content">
-                    <SearchBar placeholder="搜索历史订单" maxLength={8} />
+                    {/* <SearchBar placeholder="搜索历史订单" maxLength={8} /> */}
                     <Tabs
                         className="nav-tabs"
                         tabs={tabs}

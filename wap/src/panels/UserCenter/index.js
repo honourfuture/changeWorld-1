@@ -14,9 +14,14 @@ const orderSatus = [
     { title: "退货", key: -2, img: userCenter.thIco }
 ];
 export default class UserCenter extends BaseComponent {
-    store = { data: {} };
+    store = { data: {}, user_id: "" };
     componentDidMount() {
         this.requestData();
+        Base.getAuthData(
+            action(({ user_id }) => {
+                this.store.user_id = user_id;
+            })
+        );
     }
     @action.bound
     requestData() {
@@ -106,8 +111,18 @@ export default class UserCenter extends BaseComponent {
                 </NavBar>
                 <div className="base-content">
                     <Flex className="userInfo" align="start">
-                        <NetImg src={Base.getImgUrl(header)} className="uImg" />
-                        <div className="userInfoName">{nickname}</div>
+                        <Flex>
+                            <NetImg
+                                src={Base.getImgUrl(header)}
+                                className="uImg"
+                            />
+                            <div>
+                                <div className="userInfoName">{nickname}</div>
+                                <div className="userInfoId">
+                                    ID:{this.store.user_id}
+                                </div>
+                            </div>
+                        </Flex>
                     </Flex>
                     <div className="uOrderItem">
                         <List className="shopMenu">
