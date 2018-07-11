@@ -52,6 +52,10 @@ class ComposerStaticInit3790068b8dbf2bd53b30a84b0a522fc6
         array (
             'Monolog\\' => 8,
         ),
+        'J' => 
+        array (
+            'JPush\\' => 6,
+        ),
         'G' => 
         array (
             'GuzzleHttp\\Psr7\\' => 16,
@@ -121,6 +125,10 @@ class ComposerStaticInit3790068b8dbf2bd53b30a84b0a522fc6
         'Monolog\\' => 
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
+        ),
+        'JPush\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jpush/jpush/src/JPush',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (

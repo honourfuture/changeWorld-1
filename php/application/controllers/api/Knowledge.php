@@ -284,9 +284,10 @@ class Knowledge extends API_Controller
                         $a_uid[] = $item['anchor_uid'];
                     }
                     $this->load->model('Users_model');
-                    $users = $this->Users_model->get_many_user($a_uid, 'id,nickname');
+                    $users = $this->Users_model->get_many_user($a_uid, 'id,nickname,pretty_id');
                     foreach($list as $key=>$item){
                         $list[$key]['nickname'] = isset($users[$item['anchor_uid']]) ? $users[$item['anchor_uid']]['nickname'] : '';
+                        $list[$key]['pretty_id'] = isset($users[$item['anchor_uid']]) ? $users[$item['anchor_uid']]['pretty_id'] : '';
                     }
 
                     $ret['list'] = $list;

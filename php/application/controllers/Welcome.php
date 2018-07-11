@@ -3,6 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 use QCloud\Live\Query;
 use RongCloud\RongCloud;
+use JPush\Client;
 
 class Welcome extends Web_Controller {
 
@@ -25,6 +26,14 @@ class Welcome extends Web_Controller {
 	{
 		$this->load->view('welcome_message');
 	}
+
+    public function push()
+    {
+        $appKey = 'a66dd3d42daeddb7ac31383a';
+        $masterSecret = 'f3f6e0c11711d2f70bb7a33a';
+        $logFile = APPPATH.'logs'.DIRECTORY_SEPARATOR.'jpush.log';
+        $client = new Client($appKey, $masterSecret, $logFile);
+    }
 
     public function truncate()
     {

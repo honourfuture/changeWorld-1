@@ -6,6 +6,7 @@
         "himi/qcloud_live": "^1.0",
         "rongcloud/php-sdk": "^2.0",
         "overtrue/wechat": "^3.3",
-        "yansongda/pay": "^1.3"
+        "yansongda/pay": "^1.3",
+        "jpush/jpush": "^3.6"
     }
 }

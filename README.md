@@ -83,7 +83,7 @@ QQ开发者平台：2898264786 ，Yangguang521
 快递接口 （快递100）
   平台账号：13923771616  密码：Yangguang521
   系统账号：zmd13923771616 密码：Yangguang521
-
+极光推送   zhumaidanAPP   Yangguang521
 
 # 开放平台应用申请资料
 名称：猪买单

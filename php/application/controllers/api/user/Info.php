@@ -69,7 +69,7 @@ class Info extends API_Controller {
 		$a_uid = explode(',', $s_uid);
 		if($a_uid){
 			$this->load->model('Users_model');
-			$this->db->select('id,nickname,header,summary,exp');
+			$this->db->select('id,nickname,header,summary,exp,pretty_id');
 			$rows = $this->Users_model->get_many($a_uid);
 			if($rows){
 				$this->load->model('Grade_model');
