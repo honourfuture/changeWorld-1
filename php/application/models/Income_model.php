@@ -42,7 +42,7 @@ class Income_model extends MY_Model
         $this->db->like('area', $city);
         if($row = $this->Partner_model->limit(1)->get_by($where)){
             $this->load->model('Users_model');
-            if($uer = $this->Users_model->get_by(['mobi' => $row['mobi']])){
+            if($user = $this->Users_model->get_by(['mobi' => $row['mobi']])){
                 $uid = $user['id'];
             }
         }
