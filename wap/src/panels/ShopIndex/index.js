@@ -27,14 +27,14 @@ export default class ShopIndex extends BaseComponent {
             tabs.splice(1, 0, { key: 0, title: "靓号", component: <Vanity /> });
             this.store.tabs = tabs;
         });
-        Base.GET(
-            { act: "cart", op: "count", mod: "user" },
-            res => {
-                this.store.cartCount = res.data.count;
-            },
-            null,
-            true
-        );
+        // Base.GET(
+        //     { act: "cart", op: "count", mod: "user" },
+        //     res => {
+        //         this.store.cartCount = res.data.count;
+        //     },
+        //     null,
+        //     true
+        // );
         Base.GET(
             { act: "mailbox", op: "reddot" },
             res => {
