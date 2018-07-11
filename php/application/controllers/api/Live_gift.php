@@ -60,7 +60,7 @@ class Live_gift extends API_Controller {
 		$where = array();
 		if($this->user_id){
 			$where['enable'] = 1;
-			$this->db->select('id,title,img,amount,exchange_type');
+			$this->db->select('id,title,img,amount,exchange_type,gif');
 		}else{
 			$deleted = (int)$this->input->get('deleted');
 			$where['deleted'] = $deleted;
@@ -236,7 +236,7 @@ class Live_gift extends API_Controller {
 		if($id){
 			$params = elements(
 				array(
-					'title', 'sort', 'img', 'exchange_type', 'amount', 'deleted', 'enable'
+					'title', 'sort', 'img', 'exchange_type', 'amount', 'deleted', 'enable', 'gif'
 				),
 				$this->input->post(),
 				UPDATE_VALID
@@ -255,7 +255,7 @@ class Live_gift extends API_Controller {
 		}else{
 			$params = elements(
 				array(
-					'title', 'sort', 'img', 'exchange_type', 'amount'
+					'title', 'sort', 'img', 'exchange_type', 'amount', 'gif'
 				),
 				$this->input->post(),
 				UPDATE_VALID
