@@ -56,6 +56,12 @@ export default class GiftManager extends BaseComponent {
                 render: (text, record) => this.renderImg(text, record, "img")
             },
             {
+                title: "特效图片",
+                dataIndex: "gif",
+                width: "12%",
+                render: (text, record) => this.renderImg(text, record, "gif")
+            },
+            {
                 title: "兑换类型",
                 dataIndex: "exchange_type",
                 width: "12%",
@@ -123,7 +129,8 @@ export default class GiftManager extends BaseComponent {
         ];
     }
     renderImg(text, record, column) {
-        const { editable, img, loading } = record;
+        const { editable,img, } = record;
+        const loading = record[column];
         return (
             <div>
                 {editable ? (
@@ -133,10 +140,10 @@ export default class GiftManager extends BaseComponent {
                         listType="picture-card"
                         showUploadList={false}
                         action={Global.UPLOAD_URL}
-                        onChange={e => this.onUploadChange(e, record.id)}
+                        onChange={e => this.onUploadChange(e, record.id,column)}
                     >
-                        {img ? (
-                            <img className="img-uploader" src={img} alt="" />
+                        {text ? (
+                            <img className="img-uploader" src={Base.getImgUrl(text)} alt="" />
                         ) : (
                             <div>
                                 <Icon type={loading ? "loading" : "plus"} />
@@ -147,7 +154,7 @@ export default class GiftManager extends BaseComponent {
                 ) : (
                     <img
                         className="img-uploader"
-                        src={Base.getImgUrl(img)}
+                        src={Base.getImgUrl(text)}
                         alt=""
                     />
                 )}
@@ -222,16 +229,16 @@ export default class GiftManager extends BaseComponent {
     }
     //上传
     @action.bound
-    onUploadChange(info, id) {
+    onUploadChange(info, id, column) {
         const list = this.store.list.slice();
         const itemData = list.find(item => id === item.id);
         if (info.file.status === "uploading") {
-            itemData.loading = true;
+            itemData[column] = true;
             return (this.store.list = list);
         }
         if (info.file.status === "done") {
-            itemData.loading = false;
-            itemData.img = info.file.response.data.file_url;
+            itemData[column] = false;
+            itemData[column] = info.file.response.data.file_url;
             return (this.store.list = list);
         }
     }
@@ -248,6 +255,7 @@ export default class GiftManager extends BaseComponent {
     onSave(id) {
         const list = this.store.list.slice();
         const itemData = list.find(item => id === item.id);
+        itemData.exchange_type = 1;
         Base.POST(
             { act: "live_gift", op: "save", ...itemData },
             res => {
