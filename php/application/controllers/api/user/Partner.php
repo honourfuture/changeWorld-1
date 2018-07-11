@@ -57,6 +57,7 @@ class Partner extends API_Controller {
 		$user = $this->get_user();
 		$ret['nickname'] = $user['nickname'];
 		$ret['header'] = $user['header'];
+		$ret['pretty_id'] = $user['pretty_id'];
 		$ret['check_city_partners'] = $user['check_city_partners'];
 
 		$this->ajaxReturn($ret);

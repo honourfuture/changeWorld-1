@@ -73,6 +73,7 @@ class Live extends API_Controller {
 			'name' => $user['nickname'] ? $user['nickname'] : ($anchor['nickname'] ? $anchor['nickname'] : $anchor['realname']),
 			'updated_at' => $date,
 			'header' => $user['header'],
+			'pretty_id' => $user['pretty_id']
 		);
 
 		//专辑
