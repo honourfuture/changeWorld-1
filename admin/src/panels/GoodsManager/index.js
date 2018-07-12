@@ -21,36 +21,37 @@ export default class GoodsManager extends BaseComponent {
         super(props);
         this.columns = [
             {
+                title: "ID",
+                dataIndex: "id",
+                render: (text, record) => this.renderInput(text, record, "id")
+            },
+            {
                 title: "sort",
                 dataIndex: "sort",
-                width: "10%",
                 render: (text, record) => this.renderInput(text, record, "sort")
             },
             {
                 title: "发布时间",
                 dataIndex: "updated_at",
-                width: "10%",
                 render: (text, record) =>
                     this.renderText(text, record, "updated_at")
             },
             {
                 title: "发布人",
                 dataIndex: "seller_uid",
-                width: "10%",
                 render: (text, record) =>
                     this.renderStoreInfo(text, record, "seller_uid")
             },
             {
                 title: "商品图片",
                 dataIndex: "default_image",
-                width: "10%",
                 render: (text, record) =>
                     this.renderImg(text, record, "default_image")
             },
             {
                 title: "商品名称",
                 dataIndex: "name",
-                width: "10%",
+                width: 200,
                 render: (text, record) => this.renderText(text, record, "name")
             },
             {
@@ -73,21 +74,18 @@ export default class GoodsManager extends BaseComponent {
             {
                 title: "热门商品",
                 dataIndex: "is_hot",
-                width: "10%",
                 render: (text, record) =>
                     this.renderSwitch(text, record, "is_hot")
             },
             {
                 title: "上/下架",
                 dataIndex: "enable",
-                width: "10%",
                 render: (text, record) =>
                     this.renderSwitch(text, record, "enable")
             },
             {
                 title: "操作",
                 dataIndex: "operation",
-                width: "15%",
                 render: (text, record) => {
                     const { editable, id, seller_uid } = record;
                     return (
@@ -352,6 +350,7 @@ export default class GoodsManager extends BaseComponent {
                     ) : null}
                 </div>
                 <Table
+                    size="small"
                     className="mt16"
                     bordered
                     onChange={this.onTableHandler}
