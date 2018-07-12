@@ -278,7 +278,7 @@ class Partner extends API_Controller {
 			}
 
 			$this->load->model('Users_model');
-			$this->db->select('id user_id,nickname,header,v,exp,mobi');
+			$this->db->select('id user_id,nickname,header,v,exp,mobi,pretty_id');
 			if($project){
 				$users = $this->Users_model->get_many($a_mobi);
 			}else{
@@ -370,7 +370,7 @@ class Partner extends API_Controller {
 					}
 
 					$this->load->model('Users_model');
-					$this->db->select('id user_id,nickname,header,v,exp,mobi');
+					$this->db->select('id user_id,nickname,header,v,exp,mobi,pretty_id');
 					$users = $this->Users_model->get_many(array_values($a_user));
 					if($users){
 						$k_users = [];

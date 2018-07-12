@@ -81,7 +81,7 @@ class Collection extends API_Controller {
 					}
 
 					$this->load->model('Users_model');
-					$this->db->select('id,nickname,header,v,exp,summary');
+					$this->db->select('id,nickname,header,v,exp,summary,pretty_id');
 					$ret['list'] = $this->Users_model->get_many($a_id);
 					if($ret['list']){
 						$fans = $this->Users_collection_model->get_many_count_fans($a_id);

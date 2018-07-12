@@ -106,7 +106,7 @@ class Room_control extends API_Controller {
 		if($keyword){
 			$this->load->model('Users_model');
 
-			$this->db->select('id,nickname,mobi,header,sex,summary,exp');
+			$this->db->select('id,nickname,mobi,header,sex,summary,exp,pretty_id');
 			$this->db->where('id', $keyword);
 			$this->db->or_like('nickname', $keyword);
 			$this->db->or_like('mobi', $keyword);
@@ -192,7 +192,7 @@ class Room_control extends API_Controller {
 			}
 
 			$this->load->model('Users_model');
-			$this->db->select('id user_id,nickname,header,v,exp,mobi,summary');
+			$this->db->select('id user_id,nickname,header,v,exp,mobi,summary,pretty_id');
 			if($users = $this->Users_model->get_many($a_room_control_user_id)){
 				$k_users = [];
 				$a_id = array();
