@@ -57,7 +57,13 @@ import AdminManage from "./AdminManage";
 import AdminRoleList from "./AdminRoleList";
 import AccessSetting from "./AccessSetting";
 import HeadHuntingList from "./HeadHuntingList";
+import PushMsg from './PushMsg';
 export const panelsList = [
+    {
+        path:'/system/PushMsg',
+        component:PushMsg,
+        title:'推送',
+    },
     {
         path: "/member/HeadHuntingList",
         component: HeadHuntingList,
