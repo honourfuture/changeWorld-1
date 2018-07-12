@@ -198,14 +198,18 @@ class Live extends API_Controller {
 
 	        $user = $this->get_user();
 	        //消息推送
-	        $setting = config_item('push');
-            $client = new Client($setting['app_key'], $setting['master_secret'], $setting['log_file']);
+	        try {
+		        $setting = config_item('push');
+	            $client = new Client($setting['app_key'], $setting['master_secret'], $setting['log_file']);
 
-            $result = $client->push()
-                             ->setPlatform('all')
-                             ->addTag($this->Users_model->live_group_tag($this->user_id))
-                             ->setNotificationAlert($user['nickname'].'开播了')
-                             ->send();
+	            $result = $client->push()
+	                             ->setPlatform('all')
+	                             ->addTag($this->Users_model->live_group_tag($this->user_id))
+	                             ->setNotificationAlert($user['nickname'].'开播了')
+	                             ->send();
+	        } catch (Exception $e) {
+	        	
+	        }
 
 			$this->ajaxReturn($update);
 		}else{
