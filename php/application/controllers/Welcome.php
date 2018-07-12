@@ -34,10 +34,12 @@ class Welcome extends Web_Controller {
         $logFile = APPPATH.'logs'.DIRECTORY_SEPARATOR.'jpush.log';
         $client = new Client($appKey, $masterSecret, $logFile);
 
+        $registrationId = '1517bfd3f796d7071c1';
         $result = $client->push()
                                 ->setPlatform('all')
-                                ->addAllAudience()
-                                ->setNotificationAlert('Hello JPush')
+                                // ->addAllAudience()
+                                ->addRegistrationId($registrationId)
+                                ->setNotificationAlert('还会再来购买了雪糕')
                                 ->send();
 
         var_export($result);

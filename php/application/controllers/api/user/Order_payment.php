@@ -110,11 +110,10 @@ class Order_payment extends API_Controller {
 			}
 
 			$order_update = ['status' => 2, 'payment_type' => 'balance'];
-			if(is_array($order_id)){
-				$this->Order_model->update_many($order_id, $order_update);
-			}else{
-				$this->Order_model->update($order_id, $order_update);
+			if(!is_array($order_id)){
+				$order_id = [$order_id];
 			}
+			$this->Order_model->update_many($order_id, $order_update);
 			//分佣
 
             //商品销售记录
@@ -148,6 +147,24 @@ class Order_payment extends API_Controller {
                 $this->load->model('Consume_record_model');
                 $this->Consume_record_model->insert_many($consume_record);
             }
+
+            //消息推送
+            $order = $this->Order_model->get_many($order_id);
+			foreach($order as $item){
+				if($user_to = $this->Users_model->get($item['seller_uid'])){
+		            $cid = $user_to['device_uuid'];
+		            if(!empty($cid)){
+			        	$setting = config_item('push');
+				        $client = new Client($setting['app_key'], $setting['master_secret'], $setting['log_file']);
+
+				        $result = $client->push()
+			                             ->setPlatform('all')
+			                             ->addRegistrationId($cid)
+			                             ->setNotificationAlert($user['nickname'].'在您店铺购买了商品，请尽快发货')
+			                             ->send();
+		            }
+				}
+			}
 
 			$this->ajaxReturn();
 		}else{
