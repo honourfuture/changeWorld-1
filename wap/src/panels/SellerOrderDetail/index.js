@@ -1,11 +1,11 @@
 import React from "react";
 import { action } from "mobx";
 import { BaseComponent, Base } from "../../common";
-import { Flex, Button, NavBar, WhiteSpace } from "antd-mobile";
+import { Flex, Button, NavBar, WhiteSpace,Modal,Toast } from "antd-mobile";
 import "../OrderDetail/OrderDetail.less";
 import { test, icon, addr } from "../../images";
-
 import { OrderBtn } from "../../components/OrderBtn";
+const prompt = Modal.prompt;
 class Invoice extends BaseComponent {
     render() {
         const {
@@ -75,6 +75,87 @@ class OrderGoodsItem extends BaseComponent {
 }
 
 class OrderBtnItem extends BaseComponent {
+    @action.bound
+    modifyPrice(id) {
+        const { changePrice } = this.props;
+        prompt(
+            "修改价格",
+            "",
+            [
+                { text: "取消" },
+                {
+                    text: "确认",
+                    onPress: value =>
+                        new Promise((resolve, reject) => {
+                            let yz = /^(([1-9]\d*)|0)(\.\d{0,2}?)?$/;
+                            if (yz.test(value)) {
+                                Toast.info(`改价成功！`, 1);
+                                Base.POST(
+                                    {
+                                        act: "order_action",
+                                        op: "seller",
+                                        mod: "user",
+                                        order_id: id,
+                                        action: "change_price",
+                                        real_total_amount: value
+                                    },
+                                    res => {
+                                        changePrice && changePrice(id, value);
+                                    }
+                                );
+                                resolve();
+                            } else {
+                                Toast.info("请输入正确的价格", 1);
+                                reject();
+                            }
+                        })
+                }
+            ],
+            "money",
+            null
+        );
+    }
+    @action.bound
+    yesRefund(id) {
+        const { callBack } = this.props;
+        Base.POST(
+            {
+                act: "order_action",
+                op: "seller",
+                mod: "user",
+                order_id: id,
+                action: "complete"
+            },
+            res => {
+                Toast.info(`同意退款！`, 1);
+                callBack && callBack(id);
+            }
+        );
+    }
+    @action.bound
+    onWriteExInfo() {
+        const { styleType } = this.props;
+        const { id, callBack } = this.props.data;
+        if (parseInt(styleType) === 4) {
+            Base.POST(
+                {
+                    act: "order_action",
+                    op: "seller",
+                    mod: "user",
+                    order_id: id,
+                    action: "goods_send",
+                    express_id: "1",
+                    number: "10000"
+                },
+                res => {
+                    Toast.info(`发货成功！`, 1);
+                    callBack && callBack();
+                }
+            );
+        } else {
+            Base.push("WriteExInfo", { id: id });
+        }
+    }
     render() {
         const { status, refund_status, id, order_sn, buyer_uid } =
             this.props.data || {};
@@ -85,47 +166,63 @@ class OrderBtnItem extends BaseComponent {
             case 0: //待付款
                 btns = (
                     <OrderBtn
-                        btnTxt={["修改价格", "联系顾客"]}
-                        oneCallBack={() => this.modifyPrice(id)}
-                        twoCallBack={() =>
-                            Base.pushApp("openChatView", JSON.stringify(user))
-                        }
-                        isDouble={2}
+                        btns={[
+                            {
+                                label:'修改价格',
+                                onPress:() => {this.modifyPrice(id)}
+                            },
+                            {
+                                label:'联系顾客',
+                                onPress:() => {Base.pushApp("openChatView", JSON.stringify(user))}
+                            }
+                        ]}
                     />
                 );
                 break;
             case 2: //代发货
                 btns = (
                     <OrderBtn
-                        btnTxt={["发货", "联系顾客"]}
-                        oneCallBack={() => Base.push("WriteExInfo", { id: id })}
-                        twoCallBack={() =>
-                            Base.pushApp("openChatView", JSON.stringify(user))
-                        }
-                        isDouble={2}
+                        btns={[
+                            {
+                                label:'发货',
+                                onPress:() => {Base.push("WriteExInfo", { id: id })}
+                            },
+                            {
+                                label:'联系顾客',
+                                onPress:() => {Base.pushApp("openChatView", JSON.stringify(user))}
+                            }
+                        ]}
                     />
                 );
                 break;
             case 3: //待收货
                 btns = (
                     <OrderBtn
-                        btnTxt={["查看物流", "联系顾客"]}
-                        oneCallBack={() => Base.push("ExLog", { id: id })}
-                        twoCallBack={() =>
-                            Base.pushApp("openChatView", JSON.stringify(user))
-                        }
-                        isDouble={2}
+                        btns={[
+                            {
+                                label:'查看物流',
+                                onPress:() => {Base.push("ExLog", { 
+                                    id: id, 
+                                    // op: "seller" 
+                                })}
+                            },
+                            {
+                                label:'联系顾客',
+                                onPress:() => {Base.pushApp("openChatView", JSON.stringify(user))}
+                            }
+                        ]}
                     />
                 );
                 break;
             case 4: //待评价
                 btns = (
                     <OrderBtn
-                        btnTxt={["联系顾客"]}
-                        oneCallBack={() =>
-                            Base.pushApp("openChatView", JSON.stringify(user))
-                        }
-                        isDouble={1}
+                        btns={[
+                            {
+                                label:'联系顾客',
+                                onPress:() => {Base.pushApp("openChatView", JSON.stringify(user))}
+                            }
+                        ]}
                     />
                 );
                 break;
@@ -143,7 +240,15 @@ export default class SellerOrderDetail extends BaseComponent {
         curPage: 0
     };
     @action.bound
+    changePrice(id, price) {
+        this.store.detail.order.real_total_amount = price;
+    }
+    @action.bound
     componentDidMount() {
+        this.onRequest();
+    }
+    @action.bound
+    onRequest() {
         const order_id = parseInt(Base.getPageParams("order_id"));
         const nowCur = parseInt(Base.getPageParams("nowCur"));
         this.store.curPage = nowCur;
@@ -265,7 +370,13 @@ export default class SellerOrderDetail extends BaseComponent {
                 {parseInt(order.refund_status) === 1 ||
                 parseInt(this.store.curPage) === -2 ? null : (
                     <Flex className="footer" justify="end" align="center">
-                        <OrderBtnItem data={order} good={goods} user={user} />
+                        <OrderBtnItem 
+                            data={order} 
+                            good={goods} 
+                            user={user} 
+                            callBack={this.onRequest}
+                            changePrice={this.changePrice}
+                        />
                     </Flex>
                 )}
             </div>

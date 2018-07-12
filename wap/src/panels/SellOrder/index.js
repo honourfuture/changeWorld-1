@@ -25,7 +25,7 @@ const height = document.body.offsetHeight - 90;
 class OrderItem extends BaseComponent {
     @action.bound
     modifyPrice(id) {
-        const { changeList, changePrice } = this.props;
+        const { changePrice } = this.props;
         prompt(
             "修改价格",
             "",
@@ -107,47 +107,87 @@ class OrderItem extends BaseComponent {
             case 0: //待付款
                 btns = (
                     <OrderBtn
-                        btnTxt={["修改价格", "联系顾客"]}
-                        oneCallBack={() => this.modifyPrice(id)}
-                        twoCallBack={() =>
-                            Base.pushApp("openChatView", JSON.stringify(user))
-                        }
-                        isDouble={2}
+                        btns={[
+                            {
+                                label: "修改价格",
+                                onPress: () => {
+                                    this.modifyPrice(id);
+                                }
+                            },
+                            {
+                                label: "联系顾客",
+                                onPress: () => {
+                                    // Base.pushApp("openChatView", buyer_uid);
+                                    Base.pushApp("openChatView", JSON.stringify(user))
+                                }
+                            }
+                        ]}
                     />
                 );
                 break;
             case 2: //代发货
                 btns = (
                     <OrderBtn
-                        btnTxt={["发货", "联系顾客"]}
-                        oneCallBack={() => Base.push("WriteExInfo", { id: id })}
-                        twoCallBack={() =>
-                            Base.pushApp("openChatView", JSON.stringify(user))
-                        }
-                        isDouble={2}
+                        btns={[
+                            {
+                                label: "发货",
+                                onPress: () => {
+                                    // this.onWriteExInfo(id);
+                                    Base.push("WriteExInfo", { id: id })
+                                }
+                            },
+                            {
+                                label: "联系顾客",
+                                onPress: () => {
+                                    // Base.pushApp("openChatView", buyer_uid);
+                                    Base.pushApp("openChatView", JSON.stringify(user))
+                                }
+                            }
+                        ]}
+                        // btnTxt={["发货", "联系顾客"]}
+                        // oneCallBack={() => Base.push("WriteExInfo", { id: id })}
+                        // twoCallBack={() =>
+                        //     Base.pushApp("openChatView", JSON.stringify(user))
+                        // }
+                        // isDouble={2}
                     />
                 );
                 break;
             case 3: //待收货
                 btns = (
                     <OrderBtn
-                        btnTxt={["查看物流", "联系顾客"]}
-                        oneCallBack={() => Base.push("ExLog", { id: id })}
-                        twoCallBack={() =>
-                            Base.pushApp("openChatView", JSON.stringify(user))
-                        }
-                        isDouble={2}
+                        btns={[
+                            {
+                                label: "查看物流",
+                                onPress: () => {
+                                    Base.push("ExLog", {
+                                        id: id,
+                                        // op: "seller"
+                                    });
+                                }
+                            },
+                            {
+                                label: "联系顾客",
+                                onPress: () => {
+                                    Base.pushApp("openChatView", JSON.stringify(user))
+                                }
+                            }
+                        ]}
                     />
                 );
                 break;
             case 4: //待评价
                 btns = (
                     <OrderBtn
-                        btnTxt={["联系顾客"]}
-                        oneCallBack={() =>
-                            Base.pushApp("openChatView", JSON.stringify(user))
-                        }
-                        isDouble={1}
+                        btns={[
+                            {
+                                label: "联系顾客",
+                                onPress: () => {
+                                    // Base.pushApp("openChatView", buyer_uid);
+                                    Base.pushApp("openChatView", JSON.stringify(user))
+                                }
+                            }
+                        ]}
                     />
                 );
                 break;
@@ -156,9 +196,14 @@ class OrderItem extends BaseComponent {
             // btns = null;
             btns = (
                 <OrderBtn
-                    btnTxt={["退款"]}
-                    oneCallBack={() => this.yesRefund(id)}
-                    isDouble={1}
+                    btns={[
+                        {
+                            label: "退款",
+                            onPress: () => {
+                                this.yesRefund(id);
+                            }
+                        }
+                    ]}
                 />
             );
         }

@@ -95,85 +95,158 @@ class OrderItem extends BaseComponent {
             case 0: //待付款
                 btns = (
                     <OrderBtn
-                        btnTxt={["取消订单", "付款", "联系商家"]}
-                        oneCallBack={() => this.cancelOrder(id)}
-                        twoCallBack={() => Base.push("pay", { order_sn })}
-                        threeCallBack={() =>
-                            Base.pushApp("openChatView", JSON.stringify(user))
-                        }
-                        isDouble={3}
+                        btns={[
+                            {
+                                label: "取消订单",
+                                onPress: () => {
+                                    this.cancelOrder(id);
+                                }
+                            },
+                            {
+                                label: "付款",
+                                onPress: () => {
+                                    Base.push("pay", { order_sn });
+                                }
+                            },
+                            {
+                                label: "联系商家",
+                                onPress: () => {
+                                    Base.pushApp("openChatView", seller_uid);
+                                }
+                            }
+                        ]}
                     />
                 );
                 break;
             case 1: //已取消
                 btns = (
                     <OrderBtn
-                        btnTxt={["删除订单"]}
-                        oneCallBack={() => this.delOrder(id)}
-                        isDouble={1}
+                        btns={[
+                            {
+                                label: "删除订单",
+                                onPress: () => {
+                                    this.delOrder(id);
+                                }
+                            }
+                        ]}
                     />
                 );
                 break;
             case 2: //代发货
                 btns = (
                     <OrderBtn
-                        btnTxt={["退款/退货", "联系商家"]}
-                        oneCallBack={() => Base.push("AfterMarket", { id: id })}
-                        twoCallBack={() =>
-                            Base.pushApp("openChatView", JSON.stringify(user))
-                        }
-                        isDouble={2}
+                        btns={[
+                            {
+                                label: "退款/退货",
+                                onPress: () => {
+                                    Base.push("AfterMarket", { id: id });
+                                }
+                            },
+                            {
+                                label: "联系商家",
+                                onPress: () => {
+                                    Base.pushApp("openChatView", seller_uid);
+                                }
+                            }
+                        ]}
                     />
                 );
                 break;
             case 3: //待收货
                 btns = (
                     <OrderBtn
-                        btnTxt={[
-                            "查看物流",
-                            "确认收货",
-                            "退款/退货",
-                            "联系商家"
+                        btns={[
+                            {
+                                label: "查看物流",
+                                onPress: () => {
+                                    Base.push("ExLog", { id: id });
+                                }
+                            },
+                            {
+                                label: "确认收货",
+                                onPress: () => {
+                                    this.goods_confirm(id);
+                                }
+                            },
+                            {
+                                label: "退款/退货",
+                                onPress: () => {
+                                    Base.push("AfterMarket", { id: id });
+                                }
+                            },
+                            {
+                                label: "联系商家",
+                                onPress: () => {
+                                    Base.pushApp(
+                                        "openChatView",
+                                        // seller_uid
+                                        JSON.stringify(user)
+                                    );
+                                }
+                            }
                         ]}
-                        oneCallBack={() => Base.push("ExLog", { id: id })}
-                        twoCallBack={() => this.goods_confirm(id)}
-                        threeCallBack={() =>
-                            Base.push("AfterMarket", { id: id })
-                        }
-                        fourCallBack={() =>
-                            Base.pushApp("openChatView", JSON.stringify(user))
-                        }
-                        isDouble={4}
+                        // btnTxt={[
+                        //     "查看物流",
+                        //     "确认收货",
+                        //     "退款/退货",
+                        //     "联系商家"
+                        // ]}
+                        // oneCallBack={() => Base.push("ExLog", { id: id })}
+                        // twoCallBack={() => this.goods_confirm(id)}
+                        // threeCallBack={() =>
+                        //     Base.push("AfterMarket", { id: id })
+                        // }
+                        // fourCallBack={() =>
+                        //     Base.pushApp("openChatView", JSON.stringify(user))
+                        // }
+                        // isDouble={4}
                     />
                 );
                 break;
             case 4: //待评价
                 btns = (
                     <OrderBtn
-                        btnTxt={["评价订单", "退款/退货", "联系商家"]}
-                        oneCallBack={() =>
-                            Base.push("EvaluateOrder", {
-                                id: id
-                                // item: JSON.stringify(item)
-                            })
-                        }
-                        twoCallBack={() => Base.push("AfterMarket", { id: id })}
-                        threeCallBack={() =>
-                            Base.pushApp("openChatView", JSON.stringify(user))
-                        }
-                        isDouble={3}
+                        btns={[
+                            {
+                                label: "评价订单",
+                                onPress: () => {
+                                    Base.push("EvaluateOrder", { id: id });
+                                }
+                            },
+                            {
+                                label: "退款/退货",
+                                onPress: () => {
+                                    Base.push("AfterMarket", { id: id });
+                                }
+                            },
+                            {
+                                label: "联系商家",
+                                onPress: () => {
+                                    // Base.pushApp("openChatView", seller_uid);
+                                    Base.pushApp("openChatView", JSON.stringify(user))
+                                }
+                            }
+                        ]}
                     />
                 );
                 break;
             case 5: //完成
                 btns = (
                     <OrderBtn
-                        btnTxt={["申请发票", "退款/退货"]}
-                        oneCallBack={() =>
-                            Base.push("ApplyInvoice", { id: id })
-                        }
-                        twoCallBack={() => Base.push("AfterMarket", { id: id })}
-                        isDouble={2}
+                        btns={[
+                            {
+                                label: "申请发票",
+                                onPress: () => {
+                                    Base.push("ApplyInvoice", { id: id });
+                                }
+                            },
+                            {
+                                label: "退款/退货",
+                                onPress: () => {
+                                    Base.push("AfterMarket", { id: id });
+                                }
+                            }
+                        ]}
                     />
                 );
                 break;
