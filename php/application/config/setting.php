@@ -57,8 +57,8 @@ $config['live'] = array(
 
 // 融云
 $config['rongcloud'] = array(
-	'app_key' => 'p5tvi9dspn5p4',
-	'app_secret' => 'JzSzGK49rqMy'
+	'app_key' => 'n19jmcy5n81n9',//n19jmcy5n81n9 p5tvi9dspn5p4
+	'app_secret' => 'XQXnYJVnTW6iFM',//XQXnYJVnTW6iFM JzSzGK49rqMy
 );
 
 // 微信
