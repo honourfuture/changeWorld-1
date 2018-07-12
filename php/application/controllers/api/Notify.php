@@ -9,6 +9,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 use EasyWeChat\Foundation\Application;
 use Yansongda\Pay\Pay;
 use QCloud\Live\Query;
+use JPush\Client;
 class Notify extends API_Controller
 {
 
@@ -519,6 +520,23 @@ class Notify extends API_Controller
                 $this->Consume_record_model->insert_many($consume_record);
             }
             //分佣
+            //消息推送
+            $user = $this->Users_model->get($order[0]['buyer_uid']);
+            foreach($order as $item){
+                if($user_to = $this->Users_model->get($item['seller_uid'])){
+                    $cid = $user_to['device_uuid'];
+                    if(!empty($cid)){
+                        $setting = config_item('push');
+                        $client = new Client($setting['app_key'], $setting['master_secret'], $setting['log_file']);
+
+                        $result = $client->push()
+                                         ->setPlatform('all')
+                                         ->addRegistrationId($cid)
+                                         ->setNotificationAlert($user['nickname'].'在您店铺购买了商品，请尽快发货')
+                                         ->send();
+                    }
+                }
+            }
         }else{
             log_message('error', '[wechat_order_payment] '.$notify);
         }

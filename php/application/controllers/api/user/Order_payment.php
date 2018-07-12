@@ -9,6 +9,7 @@ use EasyWeChat\Foundation\Application;
 use EasyWeChat\Payment\Order;
 
 use Yansongda\Pay\Pay;
+use JPush\Client;
 
 class Order_payment extends API_Controller {
 
