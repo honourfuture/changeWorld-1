@@ -21,6 +21,11 @@ class Users_model extends MY_Model
         parent::__construct();
     }
 
+    public function live_group_tag($user_id)
+    {
+        return 'live_group_'.$user_id;
+    }
+
     // 主播状态
     public function anchor()
     {

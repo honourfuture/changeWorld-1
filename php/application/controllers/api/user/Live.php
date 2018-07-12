@@ -7,6 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 use QCloud\Live\Query;
 use RongCloud\RongCloud;
+use JPush\Client;
 class Live extends API_Controller {
 
 	public function __construct()
@@ -194,6 +195,18 @@ class Live extends API_Controller {
 	        $update['room_id'] = $id;
 	        $update['play_url'] = $play_url;
 	        // $update['token'] = $token;
+
+	        $user = $this->get_user();
+	        //消息推送
+	        $setting = config_item('push');
+            $client = new Client($setting['app_key'], $setting['master_secret'], $setting['log_file']);
+
+            $result = $client->push()
+                             ->setPlatform('all')
+                             ->addTag($this->Users_model->live_group_tag($this->user_id))
+                             ->setNotificationAlert($user['nickname'].'开播了')
+                             ->send();
+
 			$this->ajaxReturn($update);
 		}else{
 			$this->ajaxReturn([], 1, '创建房间失败');

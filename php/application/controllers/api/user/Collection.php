@@ -5,6 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @email webljx@163.com
  * @link www.aicode.org.cn
  */
+use JPush\Client;
 class Collection extends API_Controller {
 
 	public function __construct()
@@ -183,6 +184,19 @@ class Collection extends API_Controller {
 			$this->ajaxReturn([], 0, '取消成功');
 		}else{
 			if($this->Users_collection_model->insert($where)){
+				//添加极光标签
+				if($topic == 1){
+					$this->load->model('Users_model');
+					$user = $this->Users_model->get($this->user_id);
+					$cid = $user['device_uuid'];
+                    if(!empty($cid)){
+                        $setting = config_item('push');
+                        $client = new Client($setting['app_key'], $setting['master_secret'], $setting['log_file']);
+
+                        $result = $client->device()
+                                         ->addTags($cid, $this->Users_model->live_group_tag($t_id));
+                    }
+				}
 				$this->ajaxReturn();
 			}else{
 				$this->ajaxReturn([], 3, '保存异常请重试');
