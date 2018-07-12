@@ -24,35 +24,31 @@ export class ExpLvSet extends BaseComponent {
             {
                 title: "会员等级",
                 dataIndex: "grade_name",
-                width: "10%",
                 render: (text, record) =>
                     this.renderInput(text, record, "grade_name")
             },
             {
                 title: "晋级值",
                 dataIndex: "grade_demand",
-                width: "10%",
                 render: (text, record) =>
                     this.renderInput(text, record, "grade_demand")
             },
-            {
-                title: "等级图",
-                dataIndex: "grade_logo",
-                width: "10%",
-                render: (text, record) =>
-                    this.renderImg(text, record, "grade_logo")
-            },
+            // {
+            //     title: "等级图",
+            //     dataIndex: "grade_logo",
+            //     width: "10%",
+            //     render: (text, record) =>
+            //         this.renderImg(text, record, "grade_logo")
+            // },
             {
                 title: "启用",
                 dataIndex: "enable",
-                width: "10%",
                 render: (text, record) =>
                     this.renderSwitch(text, record, "enable")
             },
             {
                 title: "操作",
                 dataIndex: "operation",
-                width: "15%",
                 render: (text, record) => {
                     const { editable, id } = record;
                     return (
