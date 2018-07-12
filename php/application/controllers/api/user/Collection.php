@@ -181,6 +181,20 @@ class Collection extends API_Controller {
 		);
 		if($info = $this->Users_collection_model->get_by($where)){
 			$this->Users_collection_model->delete($info['id']);
+
+			//添加极光标签
+			if($topic == 1){
+				$this->load->model('Users_model');
+				$user = $this->Users_model->get($this->user_id);
+				$cid = $user['device_uuid'];
+                if(!empty($cid)){
+                    $setting = config_item('push');
+                    $client = new Client($setting['app_key'], $setting['master_secret'], $setting['log_file']);
+
+                    $result = $client->device()
+                                     ->removeTags($cid, $this->Users_model->live_group_tag($t_id));
+                }
+			}
 			$this->ajaxReturn([], 0, '取消成功');
 		}else{
 			if($this->Users_collection_model->insert($where)){
