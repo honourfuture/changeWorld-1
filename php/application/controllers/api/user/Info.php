@@ -15,6 +15,46 @@ class Info extends API_Controller {
     }
 
     /**
+	 * @api {post} /api/user/info/bind_device_uuid 用户信息-绑定极光registration_id
+	 * @apiVersion 1.0.0
+	 * @apiName info_bind_device_uuid
+	 * @apiGroup user
+	 *
+	 * @apiSampleRequest /api/user/info/bind_device_uuid
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 * @apiParam {String} registration_id 个推唯一码
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 *	{
+	 *	    "data": "",
+	 *	    "status": 0,
+	 *	    "message": "成功"
+	 *	}
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+    public function bind_device_uuid()
+    {
+    	$registration_id = trim($this->input->get_post('registration_id'));
+    	if($registration_id){
+    		$this->Users_model->update($this->user_id, ['device_uuid' => $registration_id]);
+    	}
+
+    	$this->ajaxReturn();
+    }
+
+    /**
 	 * @api {get} /api/user/info/bitch 用户信息-批量获取
 	 * @apiVersion 1.0.0
 	 * @apiName info_bitch

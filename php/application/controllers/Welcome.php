@@ -33,6 +33,29 @@ class Welcome extends Web_Controller {
         $masterSecret = 'f3f6e0c11711d2f70bb7a33a';
         $logFile = APPPATH.'logs'.DIRECTORY_SEPARATOR.'jpush.log';
         $client = new Client($appKey, $masterSecret, $logFile);
+
+        $result = $client->push()
+                                ->setPlatform('all')
+                                ->addAllAudience()
+                                ->setNotificationAlert('Hello JPush')
+                                ->send();
+
+        var_export($result);
+        // $this->testSimplePushToAll();
+    }
+
+    public function testSimplePushToAll() {
+        $payload = $this->payload;
+        $result = $payload->build();
+
+        var_export($result);exit();
+
+        $this->assertTrue(is_array($result));
+        $this->assertEquals(4, count($result));
+        $this->assertArrayHasKey('platform', $result);
+        $this->assertArrayHasKey('audience', $result);
+        $this->assertArrayHasKey('notification', $result);
+        $this->assertArrayHasKey('options', $result);
     }
 
     public function truncate()
