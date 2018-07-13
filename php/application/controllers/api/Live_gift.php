@@ -66,7 +66,7 @@ class Live_gift extends API_Controller {
 			$where['deleted'] = $deleted;
 		}
 		$order_by = array('sort' => 'desc', 'id' => 'asc');
-		$ret = $this->Live_gift_model->order_by($order_by)->get_many_by($where);
+		$ret = $this->Live_gift_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 		$this->ajaxReturn($ret);
 	}
 
