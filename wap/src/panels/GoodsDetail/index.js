@@ -45,7 +45,7 @@ class GoodsItem extends BaseComponent {
         return (
             <div className="goods-item" onClick={this.onClick}>
                 <NetImg src={Base.getImgUrl(default_image)} />
-                <div className="title">{name}</div>
+                <div className="title ellipsis2">{name}</div>
                 <div className="price">￥{sale_price}</div>
             </div>
         );
@@ -346,7 +346,7 @@ export default class GoodsDetail extends BaseComponent {
             goods_attr = {};
         }
         const goodsAttrDic = this.store.goods_attr;
-        const { header = "", nickname = "", summary = "", v = "" } = seller;
+        const { header = "", nickname = "", summary = "", v = "",reward_point='' } = seller;
         const { list = [], total = "" } = goods;
         try {
             goods_image = JSON.parse(goods_image);
@@ -461,10 +461,13 @@ export default class GoodsDetail extends BaseComponent {
                         {goodsImgs}
                     </Carousel>
                     <div className="info-con">
-                        <Flex>
+                        <Flex justify="between">
                             <div className="price">
                                 ￥{Base.getNumFormat(sale_price)}
                             </div>
+                            {parseInt(reward_point)?<div style={{ fontSize: 11, color: "red" }}>
+                                等价积分赠送
+                            </div>:null}
                             {/* <div className='old-price'>原价<em>￥489</em></div> */}
                         </Flex>
                         <div className="title ellipsis2">

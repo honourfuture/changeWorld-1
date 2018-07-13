@@ -25,7 +25,7 @@ export default class GiftManager extends BaseComponent {
             {
                 name: "金币",
                 id: "1"
-            },
+            }
             // {
             //     name: "积分",
             //     id: "2"
@@ -129,7 +129,7 @@ export default class GiftManager extends BaseComponent {
         ];
     }
     renderImg(text, record, column) {
-        const { editable,img, } = record;
+        const { editable, img } = record;
         const loading = record[column];
         return (
             <div>
@@ -140,10 +140,16 @@ export default class GiftManager extends BaseComponent {
                         listType="picture-card"
                         showUploadList={false}
                         action={Global.UPLOAD_URL}
-                        onChange={e => this.onUploadChange(e, record.id,column)}
+                        onChange={e =>
+                            this.onUploadChange(e, record.id, column)
+                        }
                     >
                         {text ? (
-                            <img className="img-uploader" src={Base.getImgUrl(text)} alt="" />
+                            <img
+                                className="img-uploader"
+                                src={Base.getImgUrl(text)}
+                                alt=""
+                            />
                         ) : (
                             <div>
                                 <Icon type={loading ? "loading" : "plus"} />
@@ -324,7 +330,7 @@ export default class GiftManager extends BaseComponent {
             },
             res => {
                 this.store.list = res.data;
-                // this.store.total = ad.count;
+                this.store.total = res.data.length;
                 this.cacheData = res.data.map(item => ({ ...item }));
             },
             this
