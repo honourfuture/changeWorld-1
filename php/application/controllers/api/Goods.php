@@ -330,7 +330,7 @@ class Goods extends API_Controller {
 
 		//店家
 		$this->load->model('Users_model');
-		$this->db->select('nickname,v,header,summary,address');
+		$this->db->select('nickname,v,header,summary,address,reward_point');
 		$ret['seller'] = $this->Users_model->get($info['seller_uid']);
 
 		//在售商品
