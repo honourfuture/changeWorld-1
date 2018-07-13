@@ -325,6 +325,10 @@ const menuData = [
                 name: "基础设置",
                 path: "SystemSet"
             },
+            {
+                name: "推送",
+                path: "PushMsg"
+            },
             // {
             //     name: "商城设置",
             //     path: "ShopSet"
