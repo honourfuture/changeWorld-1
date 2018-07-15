@@ -160,7 +160,9 @@ class Income_model extends MY_Model
                     'amount' => $price_3,
                     'type' => 2,
                     'item' => json_encode($item),
-                    'level' => 1
+                    'level' => 1,
+                    'shop_id' => $user['to_user_id'],
+                    'from_id' => $user['id']
                 ];
             }
         }
@@ -295,7 +297,9 @@ class Income_model extends MY_Model
                     'amount' => $price_3,
                     'type' => 2,
                     'item' => json_encode($item),
-                    'level' => 1
+                    'level' => 1,
+                    'shop_id' => $user['to_user_id'],
+                    'from_id' => $user['id']
                 ];
             }
         }
@@ -338,27 +342,16 @@ class Income_model extends MY_Model
         }else{
             $order_id = $order['id'];
         }
-        $this->load->model('Order_items_model');
-        $order_item = $this->Order_items_model->get_many_by(['order_id' => $order_id]);
-        $item = $goods = [];
-        foreach($order_item as $val){
-            $item[] = [
-                'id' => $val['goods_id'],
-                'title' => $val['name'],
-                'price' => $val['total_price']
-            ];
-            !isset($goods[$val['seller_uid']]) && $goods[$val['seller_uid']] = [];
-            $goods[$val['seller_uid']][] = [
-                'id' => $val['goods_id'],
-                'title' => $val['name'],
-                'price' => $val['total_price']
-            ];
-        }
 
         $this->load->model('Users_model');
         $this->load->model('Config_model');
         $this->load->model('Shop_model');
-        $siteConfig = $this->Config_model->siteConfig();
+        $siteConfig = [
+            'distribution_commission' => 0,
+            'distribution_one' => 0,
+            'city_partner_rate' => 0
+        ];
+        // $siteConfig = $this->Config_model->siteConfig();
         // $siteConfig = $this->Shop_model->get_shop_by_user($user['to_user_id']);
         //平台提成
         $distribution_commission = isset($siteConfig['distribution_commission']) ? $siteConfig['distribution_commission'] : 0;
@@ -374,85 +367,117 @@ class Income_model extends MY_Model
         }
 
         $insert = [];
-        //分销
-        $price_2 = $price_3 = 0;
-        if($invite_uid){
-            //1级分销
-            $distribution_one = isset($siteConfig['distribution_one']) ? $siteConfig['distribution_one'] : 0;
-            $price_2 = round($order['real_total_amount'] * $distribution_one * 0.01, 2);
-            if($price_2 > 0){
-                $this->db->set('balance', 'balance +'.$price_2, false);
-                $this->db->where('id', $invite_uid);
-                $this->db->update($this->Users_model->table());
-
-                $insert[] = [
-                    'topic' => $topic,
-                    'sub_topic' => $sub_topic,
-                    'user_id' => $invite_uid,
-                    'name' => $user['nickname'],
-                    'mobi' => $user['mobi'],
-                    'amount' => $price_2,
-                    'type' => 1,
-                    'item' => json_encode($item),
-                    'level' => 1,
-                    'shop_id' => $user['to_user_id'],
-                    'from_id' => $user['id']
-                ];
-            }
-
-            //2级分销
-            /*$p_user = $this->Users_model->get($invite_uid);
-            if($p_user && $p_user['pid']){
-                $distribution_two = isset($siteConfig['distribution_two']) ? $siteConfig['distribution_two'] : 0;
-                $price_3 = round($order['real_total_amount'] * $distribution_two * 0.01, 2);
-                if($price_3 > 0){
-                    $this->db->set('balance', 'balance +'.$price_3, false);
-                    $this->db->where('id', $p_user['pid']);
-                    $this->db->update($this->Users_model->table());
-
-                    $insert[] = [
-                        'topic' => $topic,
-                        'sub_topic' => $sub_topic,
-                        'user_id' => $p_user['pid'],
-                        'name' => $user['nickname'],
-                        'mobi' => $user['mobi'],
-                        'amount' => $price_3,
-                        'type' => 1,
-                        'item' => json_encode($item),
-                        'level' => 2
-                    ];
-                }
-            }*/
-        }
-
-        //城市合伙人
-        if($uid = $this->city($user['to_user_id'], $user['address'])){
-            $city_partner_rate = isset($siteConfig['city_partner_rate']) ? $siteConfig['city_partner_rate'] : 0;
-            $price_3 = round($order['real_total_amount'] * $city_partner_rate * 0.01, 2);
-            if($price_3 > 0){
-                $this->db->set('balance', 'balance +'.$price_3, false);
-                $this->db->where('id', $uid);
-                $this->db->update($this->Users_model->table());
-
-                $insert[] = [
-                    'topic' => $topic,
-                    'sub_topic' => $sub_topic,
-                    'user_id' => $uid,
-                    'name' => $user['nickname'],
-                    'mobi' => $user['mobi'],
-                    'amount' => $price_3,
-                    'type' => 2,
-                    'item' => json_encode($item),
-                    'level' => 1
-                ];
-            }
-        }
-
         //销售收益
+        $this->load->model('Goods_model');
+        $this->load->model('Order_items_model');
         $this->load->model('Order_model');
         $order = $this->Order_model->get_many($order_id);
+        $goods = [];
         foreach($order as $seller){
-            $price = round($seller['real_total_amount'] - $price_1 - $price_2 - $price_3, 2);
+            $sum = 0;
+            $order_item = $this->Order_items_model->get_many_by(['order_id' => $seller['id']]);
+            foreach($order_item as $val){
+                $goods_row = $this->Goods_model->get($val['goods_id']);
+                if($goods_row){
+                    $siteConfig['distribution_one'] = $goods_row['two_level_rate'];
+                    $siteConfig['city_partner_rate'] = $goods_row['city_partner_rate'];
+                }
+
+                $item = [];
+                $item[] = [
+                    'id' => $val['goods_id'],
+                    'title' => $val['name'],
+                    'price' => $val['total_price']
+                ];
+                !isset($goods[$val['seller_uid']]) && $goods[$val['seller_uid']] = [];
+                $goods[$val['seller_uid']][] = [
+                    'id' => $val['goods_id'],
+                    'title' => $val['name'],
+                    'price' => $val['total_price']
+                ];
+
+
+                $rate = $seller['total_amount'] > 0 ? ($seller['real_total_amount'] * $val['total_price']) / $seller['total_amount'] : 0;
+                //分销
+                $price_2 = $price_3 = 0;
+                if($invite_uid){
+                    //1级分销
+                    $distribution_one = isset($siteConfig['distribution_one']) ? $siteConfig['distribution_one'] : 0;
+                    $price_2 = round($rate * $distribution_one * 0.01, 2);
+                    if($price_2 > 0){
+                        $this->db->set('balance', 'balance +'.$price_2, false);
+                        $this->db->where('id', $invite_uid);
+                        $this->db->update($this->Users_model->table());
+
+                        $insert[] = [
+                            'topic' => $topic,
+                            'sub_topic' => $sub_topic,
+                            'user_id' => $invite_uid,
+                            'name' => $user['nickname'],
+                            'mobi' => $user['mobi'],
+                            'amount' => $price_2,
+                            'type' => 1,
+                            'item' => json_encode($item),
+                            'level' => 1,
+                            'shop_id' => $user['to_user_id'],
+                            'from_id' => $user['id']
+                        ];
+                    }
+
+                    //2级分销
+                    /*$p_user = $this->Users_model->get($invite_uid);
+                    if($p_user && $p_user['pid']){
+                        $distribution_two = isset($siteConfig['distribution_two']) ? $siteConfig['distribution_two'] : 0;
+                        $price_3 = round($order['real_total_amount'] * $distribution_two * 0.01, 2);
+                        if($price_3 > 0){
+                            $this->db->set('balance', 'balance +'.$price_3, false);
+                            $this->db->where('id', $p_user['pid']);
+                            $this->db->update($this->Users_model->table());
+
+                            $insert[] = [
+                                'topic' => $topic,
+                                'sub_topic' => $sub_topic,
+                                'user_id' => $p_user['pid'],
+                                'name' => $user['nickname'],
+                                'mobi' => $user['mobi'],
+                                'amount' => $price_3,
+                                'type' => 1,
+                                'item' => json_encode($item),
+                                'level' => 2
+                            ];
+                        }
+                    }*/
+                }
+
+                //城市合伙人
+                if($uid = $this->city($user['to_user_id'], $user['address'])){
+                    $city_partner_rate = isset($siteConfig['city_partner_rate']) ? $siteConfig['city_partner_rate'] : 0;
+                    $price_3 = round($rate * $city_partner_rate * 0.01, 2);
+                    if($price_3 > 0){
+                        $this->db->set('balance', 'balance +'.$price_3, false);
+                        $this->db->where('id', $uid);
+                        $this->db->update($this->Users_model->table());
+
+                        $insert[] = [
+                            'topic' => $topic,
+                            'sub_topic' => $sub_topic,
+                            'user_id' => $uid,
+                            'name' => $user['nickname'],
+                            'mobi' => $user['mobi'],
+                            'amount' => $price_3,
+                            'type' => 2,
+                            'item' => json_encode($item),
+                            'level' => 1,
+                            'shop_id' => $user['to_user_id'],
+                            'from_id' => $user['id']
+                        ];
+                    }
+                }
+
+                $sum = $sum + $price_2 + $price_3;
+            }
+
+            $price = round($seller['real_total_amount'] - $price_1 - $sum, 2);
             //修正设置不合理导致数据异常
             $price = max($price, 0);
             if($price > 0){
