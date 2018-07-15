@@ -394,7 +394,7 @@ class Order_action extends API_Controller {
                 if($this->order['refund_status'] != 1){
                     $this->ajaxReturn([], 4, '订单操作状态不支持');
                 }
-                if($this->Order_model->update($this->order['id'], ['refund_status' => 2])){
+                if($this->Order_model->update($this->order['id'], ['refund_status' => 2, 'status' => 6])){
                     $this->ajaxReturn();
                 }else{
                     $this->ajaxReturn([], 5, '取消订单操作失败');
