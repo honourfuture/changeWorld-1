@@ -58,7 +58,25 @@ import AdminRoleList from "./AdminRoleList";
 import AccessSetting from "./AccessSetting";
 import HeadHuntingList from "./HeadHuntingList";
 import PushMsg from './PushMsg';
+import RobotHeaderManager from './RobotHeaderManager';
+import RobotNickNameManager from './RobotNickNameManager';
+import RobotManager from './RobotManager';
 export const panelsList = [
+    {
+        path:'/robot/RobotManager',
+        component:RobotManager,
+        title:'机器人管理',
+    },
+    {
+        path:'/robot/RobotNickNameManager',
+        component:RobotNickNameManager,
+        title:'昵称管理',
+    },
+    {
+        path:'/robot/RobotHeaderManager',
+        component:RobotHeaderManager,
+        title:'头像管理',
+    },
     {
         path:'/system/PushMsg',
         component:PushMsg,

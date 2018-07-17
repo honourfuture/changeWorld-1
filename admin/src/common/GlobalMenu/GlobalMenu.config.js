@@ -354,6 +354,16 @@ const menuData = [
                 path: "SystemLog"
             }
         ]
+    },
+    {
+        name: "机器人",
+        icon: "team",
+        path: "robot",
+        children: [
+            { name: "机器人管理", path: "RobotManager" },
+            { name: "头像管理", path: "RobotHeaderManager" },
+            { name: "昵称管理", path: "RobotNickNameManager" }
+        ]
     }
 ];
 
