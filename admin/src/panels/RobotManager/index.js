@@ -106,7 +106,7 @@ export default class RobotManager extends BaseComponent {
         return (
             <Spin ref="spin" wrapperClassName="RobotManager" spinning={false}>
                 <div className="pb10">
-                    <Button onClick={this.onGen}>批量生产</Button>
+                    <Button onClick={this.onGen}>批量生成</Button>
                 </div>
                 <Table
                     className="mt16"
@@ -134,7 +134,7 @@ export default class RobotManager extends BaseComponent {
                             e => (this.store.num = e.target.value)
                         )}
                         value={num}
-                        placeholder="请输入生产个数"
+                        placeholder="请输入生成个数"
                     />
                 </Modal>
             </Spin>
