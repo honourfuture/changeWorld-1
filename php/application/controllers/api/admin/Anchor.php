@@ -91,9 +91,10 @@ class Anchor extends API_Controller {
 					$a_uid[] = $item['user_id'];
 				}
 				$this->load->model('Users_model');
-				$user = $this->Users_model->get_many_user($a_uid, 'id,reward_point');
+				$user = $this->Users_model->get_many_user($a_uid, 'id,reward_point,nickname');
 				foreach($list as $item){
 					$item['reward_point'] = isset($user[$item['user_id']]) ? $user[$item['user_id']]['reward_point'] : 0;
+					$item['nickname'] = isset($user[$item['user_id']]) ? $user[$item['user_id']]['nickname'] : 0;
 					$ret['list'][] = $item;
 				}
 			}
