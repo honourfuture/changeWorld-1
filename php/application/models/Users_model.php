@@ -200,7 +200,7 @@ class Users_model extends MY_Model
         }
 
         $max_id = $this->Users_model->get_next_id();
-        if(! $max_id){
+        if(! $max_id || strlen($max_id) < 8){
             $max_id = 10000000;
         }
         $this->load->model('Pretty_model');
