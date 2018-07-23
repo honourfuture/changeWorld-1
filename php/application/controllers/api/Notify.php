@@ -655,7 +655,10 @@ class Notify extends API_Controller
             $update = [];
             switch($data['event_type']){
                 case 0://断流
-                    $update['status'] = 2;
+                    $room = $this->Room_model->get($room_id);
+                    if($room['status'] != 4){
+                        $update['status'] = 2;
+                    }
                     break;
                 case 1://推流
                     $update['status'] = 1;
