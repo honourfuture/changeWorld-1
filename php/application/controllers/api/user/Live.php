@@ -376,7 +376,7 @@ class Live extends API_Controller {
 
 		$stop = $this->Room_model->order_by('id', 'desc')->get_by(['anchor_uid' => $this->user_id, 'status' => 2]);
 		if($stop && strtotime($stop['created_at']) > strtotime('-1 day')){
-			$info['stop'] = $stop
+			$info['stop'] = $stop;
 		}
 
 		$this->ajaxReturn($info);
