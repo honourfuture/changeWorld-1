@@ -154,7 +154,7 @@ class Pretty extends API_Controller {
 	{
 		$user = $this->get_user();
 		if($user && $user['balance'] >= $this->row['price']){
-			if($this->row['price'] > 0){
+			// if($this->row['price'] > 0){
 				$this->Users_model->update(
 					$this->user_id,
 					[
@@ -162,7 +162,7 @@ class Pretty extends API_Controller {
 						'pretty_id' => $this->row['pretty_id']
 					]
 				);
-			}
+			// }
 
 			//更新流水状态
 			$order_update = ['status' => 1];
