@@ -199,6 +199,16 @@ class Users_model extends MY_Model
             }
         }
 
+        $max_id = $this->Users_model->get_next_id();
+        if(! $max_id){
+            $max_id = 10000000;
+        }
+        $this->load->model('Pretty_model');
+        while ( $this->Pretty_model->get_by(['pretty_id' => $max_id]) ) {
+            $max_id += 3;
+        }
+        $data['id'] = $max_id;
+
         $user_id = $this->Users_model->insert($data);
 
         if($data['point']){
