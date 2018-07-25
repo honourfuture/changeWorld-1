@@ -108,6 +108,7 @@ class Room_control extends API_Controller {
 
 			$this->db->select('id,nickname,mobi,header,sex,summary,exp,pretty_id');
 			$this->db->where('id', $keyword);
+			$this->db->or_where('pretty_id', $keyword);
 			$this->db->or_like('nickname', $keyword);
 			$this->db->or_like('mobi', $keyword);
 			if($result = $this->Users_model->order_by('id', 'desc')->limit($this->per_page, $this->offset)->get_all()){
