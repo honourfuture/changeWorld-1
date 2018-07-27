@@ -68,17 +68,50 @@ class Queue extends API_Controller {
 	    			if($list){
 	    				$this->load->model('Users_collection_model');
 	    				foreach($list as $item){
-	    					$item['fans'] = $this->Users_collection_model->count_by(['topic' => 1, 't_id' => $item['sub_type']]);
 	    					$item['params'] = json_decode($item['params'], true);
+
+	    					$item['fans'] = $this->Users_collection_model->count_by(['topic' => 1, 't_id' => $item['params']['id']]);
 	    					$ret['list'][] = $item;
 	    				}
 	    			}
 	    			break;
 	    		case 'audio_play':
-	    			# code...
+	    			$list = $this->Queue_model->order_by('id', 'desc')->limit($this->per_page, $this->offset)->get_many_by($where);
+	    			if($list){
+	    				$this->load->model('Room_audio_model');
+	    				foreach($list as $item){
+	    					$item['params'] = json_decode($item['params'], true);
+
+	    					$item['play_times'] = 0;
+	    					$item['video_url'] = $item['title'] = '';
+
+	    					$this->db->select('play_times,video_url,title');
+	    					if($audio = $this->Room_audio_model->get($item['params']['id'])){
+	    						$item = array_merge($item, $audio);
+	    					}
+	    					$ret['list'][] = $item;
+	    				}
+	    			}
 	    			break;
 	    		case 'album_collection':
-	    			# code...
+	    			$list = $this->Queue_model->order_by('id', 'desc')->limit($this->per_page, $this->offset)->get_many_by($where);
+	    			if($list){
+	    				$this->load->model('Users_collection_model');
+	    				$this->load->model('Album_model');
+	    				foreach($list as $item){
+	    					$item['params'] = json_decode($item['params'], true);
+
+	    					$item['favorite'] = $this->Users_collection_model->count_by(['topic' => 2, 'sub_topic' => 50, 't_id' => $item['params']['id']]);
+
+	    					$item['title'] = '';
+	    					$this->db->select('title');
+	    					if($album = $this->Album_model->get($item['params']['id'])){
+	    						$item = array_merge($item, $album);
+	    					}
+
+	    					$ret['list'][] = $item;
+	    				}
+	    			}
 	    			break;
 	    		case 'activity':
 	    			# code...
