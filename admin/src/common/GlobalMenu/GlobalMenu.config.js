@@ -362,7 +362,8 @@ const menuData = [
         children: [
             { name: "机器人管理", path: "RobotManager" },
             { name: "头像管理", path: "RobotHeaderManager" },
-            { name: "昵称管理", path: "RobotNickNameManager" }
+            { name: "昵称管理", path: "RobotNickNameManager" },
+            { name: "粉丝任务", path: "FansTask" }
         ]
     }
 ];

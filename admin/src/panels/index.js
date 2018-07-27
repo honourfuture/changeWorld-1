@@ -61,7 +61,13 @@ import PushMsg from './PushMsg';
 import RobotHeaderManager from './RobotHeaderManager';
 import RobotNickNameManager from './RobotNickNameManager';
 import RobotManager from './RobotManager';
+import FansTask from './FansTask';
 export const panelsList = [
+    {
+        path:'/robot/FansTask',
+        component:FansTask,
+        title:'粉丝任务',
+    },
     {
         path:'/robot/RobotManager',
         component:RobotManager,
