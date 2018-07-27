@@ -42,9 +42,10 @@ export default class AnchorList extends BaseComponent {
         this.columns = [
             {
                 title: "编号",
-                dataIndex: "id",
+                dataIndex: "user_id",
                 width: "10%",
-                render: (text, record) => this.renderText(text, record, "id")
+                render: (text, record) =>
+                    this.renderText(text, record, "user_id")
             },
             {
                 title: "昵称",

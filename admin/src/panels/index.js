@@ -62,7 +62,13 @@ import RobotHeaderManager from './RobotHeaderManager';
 import RobotNickNameManager from './RobotNickNameManager';
 import RobotManager from './RobotManager';
 import FansTask from './FansTask';
+import PlayTask from './PlayTask';
 export const panelsList = [
+    {
+        path:'/robot/PlayTask',
+        component:PlayTask,
+        title:'播放量任务',
+    },
     {
         path:'/robot/FansTask',
         component:FansTask,
