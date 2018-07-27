@@ -70,7 +70,7 @@ class Queue extends API_Controller {
 	    				foreach($list as $item){
 	    					$item['fans'] = $this->Users_collection_model->count_by(['topic' => 1, 't_id' => $item['sub_type']]);
 	    					$item['params'] = json_decode($item['params'], true);
-	    					$ret['list'] = $item;
+	    					$ret['list'][] = $item;
 	    				}
 	    			}
 	    			break;
