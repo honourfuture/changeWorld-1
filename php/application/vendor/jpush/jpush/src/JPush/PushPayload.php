@@ -445,7 +445,7 @@ class PushPayload {
         if (isset($opts['apns_production'])) {
             $options['apns_production'] = (bool)$opts['apns_production'];
         } else {
-            $options['apns_production'] = false;
+            $options['apns_production'] = true;
         }
         if (isset($opts['apns_collapse_id'])) {
             $options['apns_collapse_id'] = $opts['apns_collapse_id'];
