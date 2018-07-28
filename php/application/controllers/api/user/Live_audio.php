@@ -72,19 +72,29 @@ class Live_audio extends API_Controller {
 	{
 		$ret = array('count' => 0, 'list' => array());
 
-		$where = array('enable' => 1, 'anchor_uid' => $this->user_id);
+		$where = array('enable' => 1);
+		if($this->user_id){
+			$where['anchor_uid'] = $this->user_id;
+		}
 		$ret['count'] = $this->Room_audio_model->count_by($where);
 		if($ret['count']){
 			$order_by = array('id' => 'desc');
-			$this->db->select('id,created_at,duration,video_url,album_id,title,price,cover_image,room_id');
+			$this->db->select('id,created_at,duration,video_url,album_id,title,price,cover_image,room_id,anchor_uid');
 			$ret['list'] = $this->Room_audio_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 
 			if($ret['list']){
 				$a_room_id = $a_album_id = array();
+				$a_uid = [];
 				foreach($ret['list'] as $key=>$item){
+					$a_uid[] = $item['anchor_uid'];
 					$ret['list'][$key]['album_title'] = '';
 					(empty($item['title']) && empty($item['cover_image'])) && $a_room_id[] = $item['room_id'];
 					$item['album_id'] && $a_album_id[] = $item['album_id'];
+				}
+
+				if($this->admin_id){
+					$this->load->model('Users_model');
+					$ret['user'] = $this->Users_model->get_many_user($a_uid);
 				}
 
 				$k_room = $k_album = array();
@@ -117,6 +127,8 @@ class Live_audio extends API_Controller {
 						isset($k_album[$item['album_id']]) && $ret['list'][$key] = array_merge($ret['list'][$key], $k_album[$item['album_id']]);
 					}
 				}
+			}else{
+				$ret['list'] = [];
 			}
 		}
 		$this->ajaxReturn($ret);

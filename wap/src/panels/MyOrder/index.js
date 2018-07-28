@@ -231,24 +231,25 @@ class OrderItem extends BaseComponent {
                 );
                 break;
             case 5: //完成
-                btns = (
-                    <OrderBtn
-                        btns={[
-                            {
-                                label: "申请发票",
-                                onPress: () => {
-                                    Base.push("ApplyInvoice", { id: id });
-                                }
-                            },
-                            {
-                                label: "退款/退货",
-                                onPress: () => {
-                                    Base.push("AfterMarket", { id: id });
-                                }
-                            }
-                        ]}
-                    />
-                );
+                // btns = (
+                //     <OrderBtn
+                //         btns={[
+                //             {
+                //                 label: "申请发票",
+                //                 onPress: () => {
+                //                     Base.push("ApplyInvoice", { id: id });
+                //                 }
+                //             },
+                //             {
+                //                 label: "退款/退货",
+                //                 onPress: () => {
+                //                     Base.push("AfterMarket", { id: id });
+                //                 }
+                //             }
+                //         ]}
+                //     />
+                // );
+                btns = null;
                 break;
         }
         if (parseInt(refund_status) === 1) {
