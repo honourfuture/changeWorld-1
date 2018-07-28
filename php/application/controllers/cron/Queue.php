@@ -33,7 +33,7 @@ class Queue extends MY_Controller
 
     public function fans()
     {
-    	$rows = $this->Queue_model->get_many_by(['main_type' => 'fans', 'status' => 0]);
+    	$rows = $this->Queue_model->order_by('exe_times')->limit(5, 0)->get_many_by(['main_type' => 'fans', 'status' => 0]);
     	if($rows){
     		$this->load->model('Users_model');
     		$this->load->model('Users_collection_model');
@@ -88,7 +88,7 @@ class Queue extends MY_Controller
 
     public function audio_play()
     {
-    	$rows = $this->Queue_model->get_many_by(['main_type' => 'audio_play', 'status' => 0]);
+    	$rows = $this->Queue_model->order_by('exe_times')->limit(5, 0)->get_many_by(['main_type' => 'audio_play', 'status' => 0]);
     	if($rows){
     		$this->load->model('Room_audio_model');
     		foreach($rows as $row){
@@ -123,7 +123,7 @@ class Queue extends MY_Controller
 
     public function album_collection()
     {
-    	$rows = $this->Queue_model->get_many_by(['main_type' => 'album_collection', 'status' => 0]);
+    	$rows = $this->Queue_model->order_by('exe_times')->limit(5, 0)->get_many_by(['main_type' => 'album_collection', 'status' => 0]);
     	if($rows){
     		$this->load->model('Users_model');
     		$this->load->model('Users_collection_model');
@@ -179,7 +179,7 @@ class Queue extends MY_Controller
 
     public function activity()
     {
-    	$rows = $this->Queue_model->get_many_by(['main_type' => 'activity', 'status' => 0]);
+    	$rows = $this->Queue_model->order_by('exe_times')->limit(5, 0)->get_many_by(['main_type' => 'activity', 'status' => 0]);
     	if($rows){
     		$this->load->model('Activity_model');
     		// $thsi->load->model('Activity_enter_model');
@@ -217,16 +217,19 @@ class Queue extends MY_Controller
 
     public function live_join()
     {
-        $rows = $this->Queue_model->get_many_by(['main_type' => 'live_join', 'status' => 0]);
+        $rows = $this->Queue_model->order_by('exe_times')->limit(1, 0)->get_many_by(['main_type' => 'live_join', 'status' => 0]);
         if($rows){
             $this->load->model('Users_model');
             $this->load->model('Room_model');
+
+            $config    = config_item('rongcloud');
+            $rongCloud = new RongCloud($config['app_key'], $config['app_secret']);
             foreach($rows as $row){
                 $this->Queue_model->update($row['id'], ['status' => 1, 'exe_times' => $row['exe_times'] + 1]);
 
                 $row['params'] = json_decode($row['params'], true);
-                $room = $this->Room_model->get($row['params']['id']);
-                /*if(!$room || $row['status'] != 1){
+                /*$room = $this->Room_model->get($row['params']['id']);
+                if(!$room || $row['status'] != 1){
                     continue;
                 }*/
                 $step_num = $this->step_num($row);
@@ -252,9 +255,6 @@ class Queue extends MY_Controller
                             $this->Queue_model->update($row['id'], ['status' => 0]);
                         }
 
-                        $config    = config_item('rongcloud');
-                        $rongCloud = new RongCloud($config['app_key'], $config['app_secret']);
-
                         foreach($user as $item){
                             $cache[] = $item['id'];
 
@@ -264,7 +264,7 @@ class Queue extends MY_Controller
                                 "cmd" => "enter",
                                 "userId" => $item['id'],
                                 "name" => $item['nickname'],
-                                "lv" => 1,
+                                "lv" => mt_rand(1, 5),
                                 "avtar" => $item['header'],
                                 "vip" => "",
                                 "icon" => "",
