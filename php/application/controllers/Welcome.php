@@ -98,7 +98,7 @@ class Welcome extends Web_Controller
         ];
 
         //直播
-        $live_id = 50;
+        $live_id = 52;
         $params      = [
             'step_times' => 5,
             'step_num'   => '10-99',

@@ -255,12 +255,21 @@ class Queue extends MY_Controller
                             $this->Queue_model->update($row['id'], ['status' => 0]);
                         }
 
+                        $chat_room_id = [$row['params']['id']];
+                        $content = [
+                            'cmd' => 'enter_batch',
+                            'user' => []
+                        ];
                         foreach($user as $item){
                             $cache[] = $item['id'];
 
-                            // $rongCloud->Chatroom()->join($item['id'], $row['params']['id']);
-                            $chat_room_id = [$row['params']['id']];
-                            $content      = [
+                            $content['user'][] = [
+                                "userId" => $item['id'],
+                                "name" => $item['nickname'],
+                                "lv" => mt_rand(1, 5)
+                            ];
+
+                            /*$content      = [
                                 "cmd" => "enter",
                                 "userId" => $item['id'],
                                 "name" => $item['nickname'],
@@ -270,7 +279,7 @@ class Queue extends MY_Controller
                                 "icon" => "",
                             ];
                             $result = $rongCloud->message()->publishChatroom($item['id'], $chat_room_id, 'RC:TxtMsg', json_encode(['content' => json_encode($content)]));
-                            log_message('debug', 'cron live_join:'.$result);
+                            log_message('debug', 'cron live_join:'.$result);*/
 
                         }
                         $this->cache->file->save($cache_id, $cache, 0);
@@ -278,6 +287,8 @@ class Queue extends MY_Controller
                         $this->db->set('views', 'views +'.count($user), false);
                         $this->db->where('id', $row['id']);
                         $this->db->update($this->Room_model->table());
+
+                        $result = $rongCloud->message()->publishChatroom($user[0]['id'], $chat_room_id, 'RC:TxtMsg', json_encode(['content' => json_encode($content)]));
                     }else{
                         $this->Queue_model->update($row['id'], ['status' => 2]);
                     }
@@ -296,6 +307,8 @@ class Queue extends MY_Controller
         $room = $this->Room_model->get_many_by(['status' => 1]);
         if($room){
             $this->load->model('Users_model');
+            $config    = config_item('rongcloud');
+            $rongCloud = new RongCloud($config['app_key'], $config['app_secret']);
             foreach($room as $item){
                 $row = $this->Queue_model->order_by('id', 'desc')->get_by(['main_type' => 'live_join', 'sub_type' => $item['id']]);
                 // var_export($row);
@@ -331,15 +344,23 @@ class Queue extends MY_Controller
                             $this->Queue_model->update($row['id'], ['status' => 0]);
                         }*/
 
-                        $config    = config_item('rongcloud');
-                        $rongCloud = new RongCloud($config['app_key'], $config['app_secret']);
-
+                        $chat_room_id = [$row['params']['id']];
+                        $content = [
+                            'cmd' => 'say_batch',
+                            'user' => []
+                        ];
                         foreach($user as $item){
                             // $cache[] = $item['id'];
 
+                            $content['user'][] = [
+                                "userId" => $item['id'],
+                                "name" => $item['nickname'],
+                                "lv" => mt_rand(1, 5),
+                                "text" => '主播为您报时：'.date("Y-m-d H:i:s")
+                            ];
+
                             // $rongCloud->Chatroom()->join($item['id'], $row['params']['id']);
-                            $chat_room_id = [$row['params']['id']];
-                            $content      = [
+                            /*$content      = [
                                 "cmd" => "user",
                                 "userId" => $item['id'],
                                 "name" => $item['nickname'],
@@ -348,7 +369,7 @@ class Queue extends MY_Controller
                                 "text" => '主播为您报时：'.date("Y-m-d H:i:s"),
                             ];
                             $result = $rongCloud->message()->publishChatroom($item['id'], $chat_room_id, 'RC:TxtMsg', json_encode(['content' => json_encode($content)]));
-                            log_message('debug', 'cron live_chat:'.$result);
+                            log_message('debug', 'cron live_chat:'.$result);*/
 
                         }
                         // $this->cache->file->save($cache_id, $cache, 0);
@@ -356,6 +377,8 @@ class Queue extends MY_Controller
                         /*$this->db->set('views', 'views +'.count($user), false);
                         $this->db->where('id', $row['id']);
                         $this->db->update($this->Room_model->table());*/
+
+                        $result = $rongCloud->message()->publishChatroom($user[0]['id'], $chat_room_id, 'RC:TxtMsg', json_encode(['content' => json_encode($content)]));
                     }else{
                         // $this->Queue_model->update($row['id'], ['status' => 2]);
                     }
