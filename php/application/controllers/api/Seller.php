@@ -64,8 +64,15 @@ class Seller extends API_Controller {
 		$where = array('t_id' => $seller_uid, 'topic' => 1, 'enable' => 1);
 		$ret['user']['fans'] = $this->Users_collection_model->count_by($where);
 
-		$ret['user']['gold_in'] = 0;
-		$ret['user']['gold_out'] = 0;
+		$this->load->model('Gold_log_model');
+
+		$this->db->select_sum('gold');
+		$gold = $this->Gold_log_model->get_by(['to_user_id' => $seller_uid]);
+		$ret['user']['gold_in'] = $gold ? $gold['gold'] : 0;
+
+		$this->db->select_sum('gold');
+		$gold = $this->Gold_log_model->get_by(['from_user_id' => $seller_uid]);
+		$ret['user']['gold_out'] = $gold ? $gold['gold'] : 0;
 
 		$this->load->model('Users_vip_model');
 		$ret['vip'] = $this->Users_vip_model->vip_info($seller_uid);
