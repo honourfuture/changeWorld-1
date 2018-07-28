@@ -64,12 +64,29 @@ class Live_album extends API_Controller {
 	{
 		$ret = array('count' => 0, 'list' => array());
 
-		$where = array('enable' => 1, 'anchor_uid' => $this->user_id);
+		$where = array('enable' => 1);
+		if($this->user_id){
+			$where['anchor_uid'] = $this->user_id;
+		}
 		$ret['count'] = $this->Album_model->count_by($where);
 		if($ret['count']){
 			$order_by = array('sort' => 'desc', 'id' => 'desc');
-			$this->db->select('id,updated_at,cover_image,title,price');
-			$ret['list'] = $this->Album_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
+			if($this->user_id){
+				$this->db->select('id,updated_at,cover_image,title,price');
+			}
+			$list = $this->Album_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
+			if($list){
+				$a_uid = [];
+				foreach($list as $item){
+					$a_uid[] = $item['anchor_uid'];
+					$ret['list'][] = $item;
+				}
+
+				if($this->admin_id){
+					$this->load->model('Users_model');
+					$ret['user'] = $this->Users_model->get_many_user($a_uid);
+				}
+			}
 		}
 		$this->ajaxReturn($ret);
 	}
