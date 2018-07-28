@@ -63,7 +63,25 @@ import RobotNickNameManager from './RobotNickNameManager';
 import RobotManager from './RobotManager';
 import FansTask from './FansTask';
 import PlayTask from './PlayTask';
+import AudioManager from './AudioManager';
+import AlbumManager from './AlbumManager';
+import DirectManager from './DirectManager';
 export const panelsList = [
+    {
+        path:'/live/DirectManager',
+        component:DirectManager,
+        title:'直播间管理',
+    },
+    {
+        path:'/live/AlbumManager',
+        component:AlbumManager,
+        title:'专辑管理',
+    },
+    {
+        path:'/live/AudioManager',
+        component:AudioManager,
+        title:'音频管理',
+    },
     {
         path:'/robot/PlayTask',
         component:PlayTask,

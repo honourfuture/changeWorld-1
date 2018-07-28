@@ -139,7 +139,7 @@ export default class MemberManager extends BaseComponent {
     renderImg(text, record, column) {
         return (
             <div className="header-con">
-                <img className="header" src={record[column]} alt="" />
+                <img className="header" src={Base.getImgUrl(text)} alt="" />
             </div>
         );
     }
