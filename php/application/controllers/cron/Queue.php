@@ -303,17 +303,17 @@ class Queue extends MY_Controller
     public function live_chat()
     {
         $this->load->model('Room_model');
-        $this->db->select('id');
-        $room = $this->Room_model->get_many_by(['status' => 1]);
-        if($room){
+        $this->db->select('id,status');
+        $rooms = $this->Room_model->get_many_by(['status' => 1]);
+        if($rooms){
             $this->load->model('Users_model');
             $config    = config_item('rongcloud');
             $rongCloud = new RongCloud($config['app_key'], $config['app_secret']);
-            foreach($room as $item){
-                if($item['status'] != 1){
+            foreach($rooms as $room){
+                if($room['status'] != 1){
                     continue;
                 }
-                $row = $this->Queue_model->order_by('id', 'desc')->get_by(['main_type' => 'live_join', 'sub_type' => $item['id']]);
+                $row = $this->Queue_model->order_by('id', 'desc')->get_by(['main_type' => 'live_join', 'sub_type' => $room['id']]);
                 // var_export($row);
 
                 // $this->Queue_model->update($row['id'], ['status' => 1, 'exe_times' => $row['exe_times'] + 1]);
