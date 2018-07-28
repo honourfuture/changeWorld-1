@@ -114,10 +114,42 @@ class Queue extends API_Controller {
 	    			}
 	    			break;
 	    		case 'activity':
-	    			# code...
+	    			$list = $this->Queue_model->order_by('id', 'desc')->limit($this->per_page, $this->offset)->get_many_by($where);
+	    			if($list){
+	    				$this->load->model('Activity_model');
+	    				foreach($list as $item){
+	    					$item['params'] = json_decode($item['params'], true);
+
+	    					$item['views'] = 0;
+	    					$item['title'] = '';
+
+	    					$this->db->select('views,title');
+	    					if($activity = $this->Activity_model->get($item['params']['id'])){
+	    						$item = array_merge($item, $activity);
+	    					}
+	    					$ret['list'][] = $item;
+	    				}
+	    			}
 	    			break;
 	    		case 'live_join':
-	    			# code...
+	    			$list = $this->Queue_model->order_by('id', 'desc')->limit($this->per_page, $this->offset)->get_many_by($where);
+	    			if($list){
+	    				$this->load->model('Room_model');
+	    				foreach($list as $item){
+	    					$item['params'] = json_decode($item['params'], true);
+
+	    					$item['views'] = 0;
+	    					$item['play_url'] = [];
+	    					$item['title'] = '';
+
+	    					$this->db->select('views,title,play_url');
+	    					if($room = $this->Room_model->get($item['params']['id'])){
+	    						$room['play_url'] = json_decode($room['play_url'], true);
+	    						$item = array_merge($item, $room);
+	    					}
+	    					$ret['list'][] = $item;
+	    				}
+	    			}
 	    			break;
 	    		default:
 	    			# code...
