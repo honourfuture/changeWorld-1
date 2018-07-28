@@ -23,10 +23,11 @@ class PointRuleSet extends BaseComponent {
         // { key: "points_reg", label: "会员注册" },
         // { key: "points_login", label: "会员登陆" },
         // { key: "points_evaluate", label: "会员评论" },
-        { key: "points_pay", label: "消费" }
+        // { key: "points_pay", label: "消费" },
         // { key: "points_order", label: "订单上限" },
         // { key: "line", label: "积分兑换商品规则" }
-        // { key: "goods_exchange", label: "抵扣积分" }
+        { key: "points_pay", label: "消费立返" },
+        { key: "goods_exchange", label: "消费抵扣" }
     ];
     @action.bound
     onSaveBasic(value) {

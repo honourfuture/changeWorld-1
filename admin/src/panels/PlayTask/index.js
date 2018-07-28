@@ -138,7 +138,7 @@ export default class PlayTask extends BaseComponent {
             }
         ];
         this.addColumns = [
-            { key: "video_url", label: "播放地址" },
+            { key: "id", label: "音频id" },
             { key: "step_times", label: "多少秒内播放" },
             { key: "step_num", label: "单次播放数" },
             { key: "max", label: "本次任务总播放量" }

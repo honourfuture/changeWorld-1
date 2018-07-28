@@ -97,6 +97,18 @@ const menuData = [
             {
                 name: "礼物管理",
                 path: "GiftManager"
+            },
+            {
+                name: "直播间管理",
+                path: "DirectManager"
+            },
+            {
+                name: "专辑管理",
+                path: "AlbumManager"
+            },
+            {
+                name: "音频管理",
+                path: "AudioManager"
             }
         ]
     },
