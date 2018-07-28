@@ -246,7 +246,7 @@ class Queue extends MY_Controller
 
                 $step_num = min($step_num, $row['params']['max'] - $cache_num);
                 if($step_num > 0){
-                    $this->db->select('id,header,nickname');
+                    $this->db->select('id,nickname');//header,
                     $user = $this->Users_model->limit($step_num, 0)->get_many_by(['robot' => 1]);
                     if($user){
                         if($step_num > count($user)){
@@ -313,13 +313,19 @@ class Queue extends MY_Controller
                 if($room['status'] != 1){
                     continue;
                 }
+
+                $random_num = mt_rand(1, 10);
+                if($random_num != 5){
+                    continue;
+                }
+
                 $row = $this->Queue_model->order_by('id', 'desc')->get_by(['main_type' => 'live_join', 'sub_type' => $room['id']]);
                 // var_export($row);
 
                 // $this->Queue_model->update($row['id'], ['status' => 1, 'exe_times' => $row['exe_times'] + 1]);
 
                 $row['params'] = json_decode($row['params'], true);
-                $step_num = mt_rand(3, 5);//$this->step_num($row);
+                $step_num = mt_rand(1, 5);//$this->step_num($row);
 
                 $cache_id = 'live_join_'.$row['params']['id'].'_'.$row['id'];
                 $cache = $this->cache->file->get($cache_id);
@@ -329,12 +335,12 @@ class Queue extends MY_Controller
 
                 // $step_num = min($step_num, $row['params']['max'] - $cache_num);
                 if($step_num > 0){
-                    $this->db->select('id,header,nickname');
                     $random_keys = array_rand($cache, $step_num);
                     $a_uid = [];
                     foreach($random_keys as $key=>$uid){
                         $a_uid[] = $cache[$uid];
                     }
+                    $this->db->select('id,nickname');//header,
                     $user = $this->Users_model->get_many($a_uid);
                     if($user){
                         /*if($step_num > count($user)){
