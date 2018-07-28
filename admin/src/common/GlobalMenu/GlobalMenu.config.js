@@ -376,7 +376,8 @@ const menuData = [
             { name: "头像管理", path: "RobotHeaderManager" },
             { name: "昵称管理", path: "RobotNickNameManager" },
             { name: "粉丝任务", path: "FansTask" },
-            { name: "播放量任务", path: "PlayTask" }
+            { name: "播放量任务", path: "PlayTask" },
+            { name: "收藏任务", path: "CollectTask" }
         ]
     }
 ];

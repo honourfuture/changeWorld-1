@@ -66,7 +66,13 @@ import PlayTask from './PlayTask';
 import AudioManager from './AudioManager';
 import AlbumManager from './AlbumManager';
 import DirectManager from './DirectManager';
+import CollectTask from './CollectTask';
 export const panelsList = [
+    {
+        path:'/robot/CollectTask',
+        component:CollectTask,
+        title:'收藏任务',
+    },
     {
         path:'/live/DirectManager',
         component:DirectManager,
