@@ -26,6 +26,7 @@ class Room extends API_Controller {
 	 * @apiParam {Number} admin_id 管理员唯一ID
 	 * @apiParam {String} account 登录账号
 	 * @apiParam {String} sign 校验签名
+	 * @apiParam {Number} status -1全部
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -49,7 +50,17 @@ class Room extends API_Controller {
 	{
 		$ret = array('count' => 0, 'list' => array());
 
-		$where = array('status' => 1);
+		$where = [];
+		$status = $this->input->get_post('status');
+		if($status < 0){
+			$where['1 >'] = 0;
+		}else{
+			if($status == 1){
+				$where['status'] = $status;
+			}else{
+				$where['status !='] = 1;
+			}
+		}
 		$ret['count'] = $this->Room_model->count_by($where);
 		if($ret['count']){
 			$order_by = array('sort' => 'desc', 'id' => 'desc');
