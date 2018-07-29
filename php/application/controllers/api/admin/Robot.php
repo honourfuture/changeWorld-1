@@ -298,6 +298,59 @@ class Robot extends API_Controller {
 		$this->ajaxReturn($ret);
 	}
 
+	/**
+	 * @api {get} /api/admin/robot/save 机器人-编辑
+	 * @apiVersion 1.0.0
+	 * @apiName robot_save
+	 * @apiGroup admin
+	 *
+	 * @apiSampleRequest /api/admin/robot/save
+	 *
+	 * @apiParam {Number} admin_id 管理员唯一ID
+	 * @apiParam {String} account 登录账号
+	 * @apiParam {String} sign 校验签名
+	 * @apiParam {Number} id 机器人唯一ID
+	 * @apiParam {String} nickname 昵称
+	 * @apiParam {String} header 头像
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *     "data": {
+	 *     },
+	 *     "status": 0,
+	 *     "message": "成功"
+	 * }
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+	public function save()
+	{
+		$params = elements(
+			array(
+				'nickname', 'header', 'id'
+			),
+			$this->input->post(),
+			''
+		);
+		$id = $params['id'];
+		unset($params['id']);
+		$this->load->model('Users_model');
+		if($this->Users_model->update($id, $params)){
+			$this->ajaxReturn();
+		}else{
+			$this->ajaxReturn([], 1, '操作失败');
+		}
+	}
+
 	protected function search()
 	{
 		$keyword = $this->input->get_post('keyword');
