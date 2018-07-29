@@ -80,33 +80,25 @@ export default class AudioManager extends BaseComponent {
                 dataIndex: "created_at",
                 render: (text, record) =>
                     this.renderText(text, record, "created_at")
+            },
+            {
+                title: "操作",
+                dataIndex: "operation",
+                // width: 150,
+                // fixed: "right",
+                render: (text, record) => {
+                    const { id } = record;
+                    return (
+                        <div className="editable-row-operations">
+                            <span>
+								<Popconfirm title="确认删除?" okText='确定' cancelText='取消' onConfirm={() => this.onDelete(id)}>
+									<a className='ml10 gray'>删除</a>
+								</Popconfirm>
+							</span>
+                        </div>
+                    );
+                }
             }
-            // {
-            //     title: "操作",
-            //     dataIndex: "operation",
-            //     width: 150,
-            //     fixed: "right",
-            //     render: (text, record) => {
-            //         const { headhunter, id } = record;
-            //         return (
-            //             <div className="editable-row-operations">
-            //                 {parseInt(headhunter) ? (
-            //                     <span>
-            //                         <a
-            //                             onClick={() =>
-            //                                 Base.push("HeadHuntingList", {
-            //                                     id: id
-            //                                 })
-            //                             }
-            //                         >
-            //                             猎头用户
-            //                         </a>
-            //                     </span>
-            //                 ) : null}
-            //             </div>
-            //         );
-            //     }
-            // }
         ];
     }
     renderImg(text, record, column) {
@@ -166,6 +158,10 @@ export default class AudioManager extends BaseComponent {
     //     this.searchStr = value;
     //     this.requestData();
     // }
+    @action.bound
+	onDelete(id){
+		Base.POST({act:'live_audio',op:'save',mod:'user',id,deleted:"1"},()=>remove(this.store.list,item=>id === item.id),this);
+	}
     @action.bound
     onTableHandler({ current, pageSize }) {
         this.current = current;
