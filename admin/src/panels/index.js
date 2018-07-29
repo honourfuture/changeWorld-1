@@ -67,7 +67,19 @@ import AudioManager from './AudioManager';
 import AlbumManager from './AlbumManager';
 import DirectManager from './DirectManager';
 import CollectTask from './CollectTask';
+import LiveStart from './LiveStart';
+import ActivityTask from './ActivityTask';
 export const panelsList = [
+    {
+        path:'/robot/ActivityTask',
+        component:ActivityTask,
+        title:'活动任务',
+    },
+    {
+        path:'/robot/LiveStart',
+        component:LiveStart,
+        title:'直播开播任务',
+    },
     {
         path:'/robot/CollectTask',
         component:CollectTask,
