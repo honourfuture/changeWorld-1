@@ -276,18 +276,32 @@ class Welcome extends Web_Controller
     public function area()
     {
         $this->load->model('Area_model');
-        $this->db->select('id,fullname,pid,level');
+        $this->db->select('id,name,fullname,pid,level');
         $area = $this->Area_model->order_by('pid', 'asc')->get_all();
         $rows = array();
+        $city = [110000, 120000, 310000, 500000, 810000, 820000];
         foreach ($area as $item) {
+            if(in_array($item['id'], [710000])){
+                continue;
+            }
             switch ($item['level']) {
                 case 1:
                     $pid        = $item['id'];
-                    $rows[$pid] = array('value' => $item['id'], 'label' => $item['fullname'], 'children' => array());
+                    if(in_array($pid, $city)){
+                        $rows[$pid] = array('value' => $item['id'], 'label' => $item['name'], 'children' => array(
+                            $pid => array('value' => $item['id'], 'label' => $item['fullname'], 'children' => array())
+                        ));
+                    }else{
+                        $rows[$pid] = array('value' => $item['id'], 'label' => $item['fullname'], 'children' => array());
+                    }
                     break;
                 case 2:
                     $pid                                 = $item['pid'];
-                    $rows[$pid]['children'][$item['id']] = array('value' => $item['id'], 'label' => $item['fullname'], 'children' => array());
+                    if(in_array($pid, $city)){
+                        $rows[$pid]['children'][$pid]['children'][] = array('value' => $item['id'], 'label' => $item['fullname'], 'children' => array());
+                    }else{
+                        $rows[$pid]['children'][$item['id']] = array('value' => $item['id'], 'label' => $item['fullname'], 'children' => array());
+                    }
                     break;
                 case 3:
                     $o_pid                                        = str_pad(substr($item['pid'], 0, 2), 6, 0);

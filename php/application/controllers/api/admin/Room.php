@@ -81,6 +81,26 @@ class Room extends API_Controller {
 		$this->ajaxReturn($ret);
 	}
 
+	public function chat_file()
+	{
+		$id = $this->input->get_post('id');
+		$filename = $this->input->get_post('filename');
+		$file = FCPATH.$filename;
+		if($id){
+			if(file_exists($file)){
+				if(! $a_line = file($file)){
+					$this->ajaxReturn([], 3, '读取文件失败: '.$file);
+				}
+				$this->Room_model->update($id, ['chat_file' => $file, 'chat_line' => 0]);
+				$this->ajaxReturn();
+			}else{
+				$this->ajaxReturn([], 2, '聊天文件(TXT)未上传');
+			}
+		}else{
+			$this->ajaxReturn([], 1, '直播间ID错误');
+		}
+	}
+
 	protected function check_params($act, $params)
 	{
 		switch($act){
