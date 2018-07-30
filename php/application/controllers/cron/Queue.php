@@ -110,17 +110,36 @@ class Queue extends MY_Controller
     	if($rows){
     		$this->load->model('Room_audio_model');
     		foreach($rows as $row){
-    			$this->Queue_model->update($row['id'], ['status' => 1, 'exe_times' => $row['exe_times'] + 1]);
-
     			$row['params'] = json_decode($row['params'], true);
-    			$step_num = $this->step_num($row);
-
     			$cache_id = 'audio_play_'.$row['params']['id'].'_'.$row['id'];
-    			$cache = $this->cache->file->get($cache_id);
-    			if(! $cache){
-    				$cache = 0;
-    			}
+                if(file_exists(APPPATH.'cache/'.$cache_id)){
+                    $ntime = time();
+                    $mtime = filemtime(APPPATH.'cache/'.$cache_id);
+                    clearstatcache();
+                    if($ntime > $mtime + $row['params']['step_times']){
+                        $job = true;
+                    }else{
+                        $job = false;
+                    }
+                }else{
+                    $job = true;
+                }
 
+                if($job){
+                    $this->Queue_model->update($row['id'], ['status' => 1, 'exe_times' => $row['exe_times'] + 1]);
+                }else{
+                    $this->Queue_model->update($row['id'], ['status' => 0, 'exe_times' => $row['exe_times'] + 1]);
+                    continue;
+                }
+
+
+
+                $cache = $this->cache->file->get($cache_id);
+                if(! $cache){
+                    $cache = 0;
+                }
+
+                $step_num = $this->step_num($row);
     			$step_num = min($step_num, $row['params']['max'] - $cache);
     			if($step_num > 0){
     				$this->Queue_model->update($row['id'], ['status' => 0]);
@@ -146,21 +165,39 @@ class Queue extends MY_Controller
     		$this->load->model('Users_model');
     		$this->load->model('Users_collection_model');
     		foreach($rows as $row){
-    			$this->Queue_model->update($row['id'], ['status' => 1, 'exe_times' => $row['exe_times'] + 1]);
-
     			$row['params'] = json_decode($row['params'], true);
-    			$step_num = $this->step_num($row);
-
     			$cache_id = 'album_collection_'.$row['params']['id'].'_'.$row['id'];
-    			$cache = $this->cache->file->get($cache_id);
-    			if($cache){
-    				$cache_num = count($cache);
-    				$this->db->where_not_in('id', $cache);
-    			}else{
-    				$cache_num = 0;
-    				$cache = [];
-    			}
+                if(file_exists(APPPATH.'cache/'.$cache_id)){
+                    $ntime = time();
+                    $mtime = filemtime(APPPATH.'cache/'.$cache_id);
+                    clearstatcache();
+                    if($ntime > $mtime + $row['params']['step_times']){
+                        $job = true;
+                    }else{
+                        $job = false;
+                    }
+                }else{
+                    $job = true;
+                }
 
+                if($job){
+                    $this->Queue_model->update($row['id'], ['status' => 1, 'exe_times' => $row['exe_times'] + 1]);
+                }else{
+                    $this->Queue_model->update($row['id'], ['status' => 0, 'exe_times' => $row['exe_times'] + 1]);
+                    continue;
+                }
+
+
+                $cache = $this->cache->file->get($cache_id);
+                if($cache){
+                    $cache_num = count($cache);
+                    $this->db->where_not_in('id', $cache);
+                }else{
+                    $cache_num = 0;
+                    $cache = [];
+                }
+
+                $step_num = $this->step_num($row);
     			$step_num = min($step_num, $row['params']['max'] - $cache_num);
     			if($step_num > 0){
 	    			$this->db->select('id');
@@ -202,17 +239,36 @@ class Queue extends MY_Controller
     		$this->load->model('Activity_model');
     		// $thsi->load->model('Activity_enter_model');
     		foreach($rows as $row){
-    			$this->Queue_model->update($row['id'], ['status' => 1, 'exe_times' => $row['exe_times'] + 1]);
-
     			$row['params'] = json_decode($row['params'], true);
-    			$step_num = $this->step_num($row);
-
     			$cache_id = 'activity_'.$row['params']['id'].'_'.$row['id'];
-    			$cache = $this->cache->file->get($cache_id);
-    			if(! $cache){
-    				$cache = 0;
-    			}
+                if(file_exists(APPPATH.'cache/'.$cache_id)){
+                    $ntime = time();
+                    $mtime = filemtime(APPPATH.'cache/'.$cache_id);
+                    clearstatcache();
+                    if($ntime > $mtime + $row['params']['step_times']){
+                        $job = true;
+                    }else{
+                        $job = false;
+                    }
+                }else{
+                    $job = true;
+                }
 
+                if($job){
+                    $this->Queue_model->update($row['id'], ['status' => 1, 'exe_times' => $row['exe_times'] + 1]);
+                }else{
+                    $this->Queue_model->update($row['id'], ['status' => 0, 'exe_times' => $row['exe_times'] + 1]);
+                    continue;
+                }
+
+
+
+                $cache = $this->cache->file->get($cache_id);
+                if(! $cache){
+                    $cache = 0;
+                }
+
+                $step_num = $this->step_num($row);
     			$step_num = min($step_num, $row['params']['max'] - $cache);
     			if($step_num > 0){
     				$this->Queue_model->update($row['id'], ['status' => 0]);
@@ -243,16 +299,33 @@ class Queue extends MY_Controller
             $config    = config_item('rongcloud');
             $rongCloud = new RongCloud($config['app_key'], $config['app_secret']);
             foreach($rows as $row){
-                $this->Queue_model->update($row['id'], ['status' => 1, 'exe_times' => $row['exe_times'] + 1]);
-
                 $row['params'] = json_decode($row['params'], true);
+                $cache_id = 'live_join_'.$row['params']['id'].'_'.$row['id'];
+                if(file_exists(APPPATH.'cache/'.$cache_id)){
+                    $ntime = time();
+                    $mtime = filemtime(APPPATH.'cache/'.$cache_id);
+                    clearstatcache();
+                    if($ntime > $mtime + $row['params']['step_times']){
+                        $job = true;
+                    }else{
+                        $job = false;
+                    }
+                }else{
+                    $job = true;
+                }
+
+                if($job){
+                    $this->Queue_model->update($row['id'], ['status' => 1, 'exe_times' => $row['exe_times'] + 1]);
+                }else{
+                    $this->Queue_model->update($row['id'], ['status' => 0, 'exe_times' => $row['exe_times'] + 1]);
+                    continue;
+                }
+
                 /*$room = $this->Room_model->get($row['params']['id']);
                 if(!$room || $row['status'] != 1){
                     continue;
                 }*/
-                $step_num = $this->step_num($row);
 
-                $cache_id = 'live_join_'.$row['params']['id'].'_'.$row['id'];
                 $cache = $this->cache->file->get($cache_id);
                 if($cache){
                     $cache_num = count($cache);
@@ -262,6 +335,7 @@ class Queue extends MY_Controller
                     $cache = [];
                 }
 
+                $step_num = $this->step_num($row);
                 $step_num = min($step_num, $row['params']['max'] - $cache_num);
                 if($step_num > 0){
                     $this->db->select('id,nickname');//header,
@@ -339,14 +413,29 @@ class Queue extends MY_Controller
                 }
 
                 $row = $this->Queue_model->order_by('id', 'desc')->get_by(['main_type' => 'live_join', 'sub_type' => $room['id']]);
-                // var_export($row);
-
-                // $this->Queue_model->update($row['id'], ['status' => 1, 'exe_times' => $row['exe_times'] + 1]);
 
                 $row['params'] = json_decode($row['params'], true);
-                $step_num = mt_rand(1, 5);//$this->step_num($row);
-
                 $cache_id = 'live_join_'.$row['params']['id'].'_'.$row['id'];
+                /*if(file_exists(APPPATH.'cache/'.$cache_id)){
+                    $ntime = time();
+                    $mtime = filemtime(APPPATH.'cache/'.$cache_id);
+                    clearstatcache();
+                    if($ntime > $mtime + $row['params']['step_times']){
+                        $job = true;
+                    }else{
+                        $job = false;
+                    }
+                }else{
+                    $job = true;
+                }
+
+                if($job){
+                    $this->Queue_model->update($row['id'], ['status' => 1, 'exe_times' => $row['exe_times'] + 1]);
+                }else{
+                    $this->Queue_model->update($row['id'], ['status' => 0, 'exe_times' => $row['exe_times'] + 1]);
+                    continue;
+                }*/
+
                 $cache = $this->cache->file->get($cache_id);
                 if(! $cache){
                     continue;
@@ -355,6 +444,7 @@ class Queue extends MY_Controller
                     continue;
                 }
 
+                $step_num = mt_rand(1, 10);//$this->step_num($row);
                 // $step_num = min($step_num, $row['params']['max'] - $cache_num);
                 if($step_num > 0){
                     $random_keys = array_rand($cache, $step_num);
