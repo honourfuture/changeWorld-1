@@ -242,7 +242,11 @@ class Live_audio extends API_Controller {
 			$this->check_params('edit', $params);
 			if($params['deleted'] == 1){
 				$update = array('deleted' => 1, 'enable' => 0);
-				$flag = $this->Room_audio_model->update_by(array('anchor_uid' => $this->user_id, 'id' => $id), $update);
+				$where = ['id' => $id];
+				if($this->user_id){
+					$where['anchor_uid'] = $this->user_id;
+				}
+				$flag = $this->Room_audio_model->update_by($where, $update);
 			}else{
 				unset($params['deleted']);
 				$flag = $this->Room_audio_model->update_by(array('anchor_uid' => $this->user_id, 'id' => $id), $params);
