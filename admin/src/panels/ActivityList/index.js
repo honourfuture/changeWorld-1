@@ -42,6 +42,10 @@ export default class ActivityList extends BaseComponent {
         super(props);
         this.columns = [
             {
+                title:'活动ID',
+                dataIndex: "id"
+            },
+            {
                 title: "活动分类",
                 width: "10%",
                 dataIndex: "activity_class_name"

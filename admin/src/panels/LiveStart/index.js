@@ -49,7 +49,7 @@ export default class LiveStart extends BaseComponent{
                     )
             },
             {
-                title: "峰值时间",
+                title: "秒/次 ",
                 dataIndex: "step_times",
                 render: (text, record) =>
                     this.renderText(
@@ -59,7 +59,7 @@ export default class LiveStart extends BaseComponent{
                     )
             },
             {
-                title: "峰值在线人数",
+                title: "范围随机值或固定值",
                 dataIndex: "step_num",
                 render: (text, record) =>
                     this.renderText(
@@ -69,7 +69,7 @@ export default class LiveStart extends BaseComponent{
                     )
             },
             {
-                title: "峰值后浮动人数",
+                title: "结果最大数量",
                 dataIndex: "max",
                 render: (text, record) =>
                     this.renderText(
@@ -94,29 +94,34 @@ export default class LiveStart extends BaseComponent{
                 title: "暂停/启动",
                 dataIndex: "enable",
                 render: (text, record) => {
-                    const { id } = record;
+                    const { id,status } = record;
+                    let btns = null;
+                    if(parseInt(status) === 0 || parseInt(status) === 1){
+                        btns = <span>
+                                    <Popconfirm
+                                        title="确认暂停?"
+                                        okText="确定"
+                                        cancelText="取消"
+                                        onConfirm={() => this.onEnable(id, "stop")}
+                                    >
+                                        <a className="ml10 gray">暂停</a>
+                                    </Popconfirm>
+                                </span>
+                    }else if(parseInt(status) === 3 || parseInt(status) === 4 || parseInt(status) === 5){
+                        btns = <span>
+                                    <Popconfirm
+                                        title="确认启动?"
+                                        okText="确定"
+                                        cancelText="取消"
+                                        onConfirm={() => this.onEnable(id, "start")}
+                                    >
+                                        <a className="ml10">启动</a>
+                                    </Popconfirm>
+                                </span>
+                    }
                     return (
                         <div className="editable-row-operations">
-                            <span>
-                                <Popconfirm
-                                    title="确认暂停?"
-                                    okText="确定"
-                                    cancelText="取消"
-                                    onConfirm={() => this.onEnable(id, "stop")}
-                                >
-                                    <a className="ml10 gray">暂停</a>
-                                </Popconfirm>
-                            </span>
-                            <span>
-                                <Popconfirm
-                                    title="确认启动?"
-                                    okText="确定"
-                                    cancelText="取消"
-                                    onConfirm={() => this.onEnable(id, "start")}
-                                >
-                                    <a className="ml10">启动</a>
-                                </Popconfirm>
-                            </span>
+                            {btns}
                         </div>
                     );
                 }
@@ -145,9 +150,9 @@ export default class LiveStart extends BaseComponent{
         ];
         this.addColumns = [
             { key: "id", label: "房间id" },
-            { key: "step_times", label: "峰值时间（秒）" },
-            { key: "step_num", label: "峰值在线人数" },
-            { key: "max", label: "峰值后浮动人数" }
+            { key: "step_times", label: "秒/次" },
+            { key: "step_num", label: "范围随机值或固定值" },
+            { key: "max", label: "结果最大数量" }
         ];
     }
     renderText(text, record, column) {

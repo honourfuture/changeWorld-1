@@ -150,14 +150,15 @@ export default class AudioManager extends BaseComponent {
     //         this
     //     );
     // }
-    // //搜索
-    // searchStr = "";
-    // @action.bound
-    // onSearch(value) {
-    //     this.current = 1;
-    //     this.searchStr = value;
-    //     this.requestData();
-    // }
+    //搜索
+    searchType = ""; //搜索类型
+    searchStr = "";
+    @action.bound
+    onSearch(value) {
+        this.current = 1;
+        this.searchStr = value;
+        this.requestData();
+    }
     @action.bound
 	onDelete(id){
 		Base.POST({act:'live_audio',op:'save',mod:'user',id,deleted:"1"},()=>remove(this.store.list,item=>id === item.id),this);
@@ -175,6 +176,7 @@ export default class AudioManager extends BaseComponent {
                 act: "live_audio",
                 op: "index",
                 mod: "user",
+                type:this.searchType || 'uid',
                 keyword: this.searchStr || "",
                 cur_page: this.current || 1,
                 per_page: Global.PAGE_SIZE
@@ -198,14 +200,28 @@ export default class AudioManager extends BaseComponent {
         let tableWidth = this.columns.length * 150;
         return (
             <Spin ref="spin" wrapperClassName="AudioManager" spinning={false}>
-                {/* <div className="pb10">
+                <div className="pb10">
+                    <Select
+                        defaultValue={'uid'}
+                        style={{ width: 120 }}
+                        onChange={value =>
+                            this.searchType = value
+                        }
+                    >
+                        <Option value='uid'>
+                            {"主播ID"}
+                        </Option>
+                        <Option value='title'>
+                            {"标题"}
+                        </Option>
+                    </Select>
                     <Search
                         placeholder="搜索昵称/手机号"
                         enterButton
                         onSearch={this.onSearch}
                         style={{ width: 200, marginLeft: 10 }}
                     />
-                </div> */}
+                </div>
                 <Table
                     size="small"
                     className="mt16"

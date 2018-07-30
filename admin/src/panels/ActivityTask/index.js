@@ -48,7 +48,7 @@ export default class ActivityTask extends BaseComponent{
                     )
             },
             {
-                title: "持续时间（秒）",
+                title: "秒/次 ",
                 dataIndex: "step_times",
                 render: (text, record) =>
                     this.renderText(
@@ -58,7 +58,7 @@ export default class ActivityTask extends BaseComponent{
                     )
             },
             {
-                title: "投票数",
+                title: "范围随机值或固定值",
                 dataIndex: "step_num",
                 render: (text, record) =>
                     this.renderText(
@@ -68,7 +68,7 @@ export default class ActivityTask extends BaseComponent{
                     )
             },
             {
-                title: "浏览量",
+                title: "结果最大数量",
                 dataIndex: "max",
                 render: (text, record) =>
                     this.renderText(
@@ -93,29 +93,34 @@ export default class ActivityTask extends BaseComponent{
                 title: "暂停/启动",
                 dataIndex: "enable",
                 render: (text, record) => {
-                    const { id } = record;
+                    const { id,status } = record;
+                    let btns = null;
+                    if(parseInt(status) === 0 || parseInt(status) === 1){
+                        btns = <span>
+                                    <Popconfirm
+                                        title="确认暂停?"
+                                        okText="确定"
+                                        cancelText="取消"
+                                        onConfirm={() => this.onEnable(id, "stop")}
+                                    >
+                                        <a className="ml10 gray">暂停</a>
+                                    </Popconfirm>
+                                </span>
+                    }else if(parseInt(status) === 3 || parseInt(status) === 4 || parseInt(status) === 5){
+                        btns = <span>
+                                    <Popconfirm
+                                        title="确认启动?"
+                                        okText="确定"
+                                        cancelText="取消"
+                                        onConfirm={() => this.onEnable(id, "start")}
+                                    >
+                                        <a className="ml10">启动</a>
+                                    </Popconfirm>
+                                </span>
+                    }
                     return (
                         <div className="editable-row-operations">
-                            <span>
-                                <Popconfirm
-                                    title="确认暂停?"
-                                    okText="确定"
-                                    cancelText="取消"
-                                    onConfirm={() => this.onEnable(id, "stop")}
-                                >
-                                    <a className="ml10 gray">暂停</a>
-                                </Popconfirm>
-                            </span>
-                            <span>
-                                <Popconfirm
-                                    title="确认启动?"
-                                    okText="确定"
-                                    cancelText="取消"
-                                    onConfirm={() => this.onEnable(id, "start")}
-                                >
-                                    <a className="ml10">启动</a>
-                                </Popconfirm>
-                            </span>
+                            {btns}
                         </div>
                     );
                 }
@@ -144,9 +149,9 @@ export default class ActivityTask extends BaseComponent{
         ];
         this.addColumns = [
             { key: "id", label: "活动id" },
-            { key: "step_times", label: "持续时间（秒）" },
-            { key: "step_num", label: "投票数" },
-            { key: "max", label: "浏览量" }
+            { key: "step_times", label: "秒/次" },
+            { key: "step_num", label: "范围随机值或固定值" },
+            { key: "max", label: "结果最大数量" }
         ];
     }
     renderText(text, record, column) {

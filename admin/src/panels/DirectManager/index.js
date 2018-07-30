@@ -8,6 +8,7 @@ import {
 	Spin,
 	Select,
 	message,
+	Switch,
 	Icon
 } from "antd";
 import './DirectManager.less';
@@ -95,7 +96,12 @@ export default class DirectManager extends BaseComponent{
                 title: "更新时间",
                 dataIndex: "updated_at",
                 render: (text, record) => this.renderText(text, record, "updated_at")
-            },
+			},
+			{
+				title: '开启/关闭自动聊天',
+				dataIndex: 'chat_stop',
+				render: (text, record) => this.renderSwitch(text, record, 'chat_stop'),
+			}, 
             {
                 title: "聊天文件操作",
                 dataIndex: "operation",
@@ -134,6 +140,32 @@ export default class DirectManager extends BaseComponent{
 						/> : null
 			}
 		</div>
+	}
+	renderSwitch(text,record,column){
+		return (
+			<Switch checked={parseInt(record.chat_stop,10)===1} onChange={(value)=>this.onSwitch(record.id,value?1:0,column)} />
+		)
+	}
+	//是否启用
+	@action.bound
+	onSwitch(id,value,column){
+		const list = this.store.list.slice();
+		const itemData = list.find(item=>id === item.id);
+		itemData[column] = value;
+		this.onSave(id);
+	}
+	//保存
+	@action.bound
+	onSave(id) {
+		const list = this.store.list.slice();
+		const itemData = list.find(item=>id === item.id);
+		Base.POST({act:'room',op:'chat_stop',mod:'admin',id:id,val:itemData.chat_stop},(res)=>{
+			// itemData.editable = false;
+			itemData.updated_at = Base.getTimeFormat(new Date().getTime()/1000,2);
+			itemData.id === 0 && (itemData.id = res.data.id);
+			this.store.list = list;
+			this.cacheData = list.map(item => ({ ...item }));
+		},this);
 	}
 	@action.bound
     onUploadChange(info,id) {
