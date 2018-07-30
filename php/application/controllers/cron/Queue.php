@@ -38,21 +38,39 @@ class Queue extends MY_Controller
     		$this->load->model('Users_model');
     		$this->load->model('Users_collection_model');
     		foreach($rows as $row){
-    			$this->Queue_model->update($row['id'], ['status' => 1, 'exe_times' => $row['exe_times'] + 1]);
-
     			$row['params'] = json_decode($row['params'], true);
-    			$step_num = $this->step_num($row);
-
     			$cache_id = 'fans_'.$row['params']['id'].'_'.$row['id'];
-    			$cache = $this->cache->file->get($cache_id);
-    			if($cache){
-    				$cache_num = count($cache);
-    				$this->db->where_not_in('id', $cache);
-    			}else{
-    				$cache_num = 0;
-    				$cache = [];
-    			}
+                if(file_exists(APPPATH.'cache/'.$cache_id)){
+                    $ntime = time();
+                    $mtime = filemtime(APPPATH.'cache/'.$cache_id);
+                    clearstatcache();
+                    if($ntime > $mtime + $row['params']['step_times']){
+                        $job = true;
+                    }else{
+                        $job = false;
+                    }
+                }else{
+                    $job = true;
+                }
 
+                if($job){
+                    $this->Queue_model->update($row['id'], ['status' => 1, 'exe_times' => $row['exe_times'] + 1]);
+                }else{
+                    $this->Queue_model->update($row['id'], ['status' => 0, 'exe_times' => $row['exe_times'] + 1]);
+                    continue;
+                }
+
+
+                $cache = $this->cache->file->get($cache_id);
+                if($cache){
+                    $cache_num = count($cache);
+                    $this->db->where_not_in('id', $cache);
+                }else{
+                    $cache_num = 0;
+                    $cache = [];
+                }
+
+                $step_num = $this->step_num($row);
     			$step_num = min($step_num, $row['params']['max'] - $cache_num);
     			if($step_num > 0){
 	    			$this->db->select('id');
