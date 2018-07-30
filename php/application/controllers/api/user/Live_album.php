@@ -23,6 +23,8 @@ class Live_album extends API_Controller {
 	 *
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
+	 * @apiParam {String} type [uid, title]
+	 * @apiParam {String} keyword 搜索词
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -68,12 +70,15 @@ class Live_album extends API_Controller {
 		if($this->user_id){
 			$where['anchor_uid'] = $this->user_id;
 		}
+
+		$this->search();
 		$ret['count'] = $this->Album_model->count_by($where);
 		if($ret['count']){
 			$order_by = array('sort' => 'desc', 'id' => 'desc');
 			if($this->user_id){
 				$this->db->select('id,updated_at,cover_image,title,price,anchor_uid');
 			}
+			$this->search();
 			$list = $this->Album_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 			if($list){
 				$a_uid = [];
@@ -89,6 +94,21 @@ class Live_album extends API_Controller {
 			}
 		}
 		$this->ajaxReturn($ret);
+	}
+
+	protected function search()
+	{
+		$type = $this->input->get_post('type');
+		if(in_array($type, ['uid', 'title'])){
+			$keyword = $this->input->get_post('keyword');
+			if($keyword){
+				if($type == 'uid'){
+					$this->db->where('anchor_uid', $keyword);
+				}else{
+					$this->db->like('title', $keyword);
+				}
+			}
+		}
 	}
 
 	/**

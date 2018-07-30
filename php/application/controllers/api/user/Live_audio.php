@@ -23,6 +23,8 @@ class Live_audio extends API_Controller {
 	 *
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
+	 * @apiParam {String} type [uid, title]
+	 * @apiParam {String} keyword 搜索词
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -76,10 +78,13 @@ class Live_audio extends API_Controller {
 		if($this->user_id){
 			$where['anchor_uid'] = $this->user_id;
 		}
+
+		$this->search();
 		$ret['count'] = $this->Room_audio_model->count_by($where);
 		if($ret['count']){
 			$order_by = array('id' => 'desc');
 			$this->db->select('id,created_at,duration,video_url,album_id,title,price,cover_image,room_id,anchor_uid');
+			$this->search();
 			$ret['list'] = $this->Room_audio_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 
 			if($ret['list']){
@@ -132,6 +137,21 @@ class Live_audio extends API_Controller {
 			}
 		}
 		$this->ajaxReturn($ret);
+	}
+
+	protected function search()
+	{
+		$type = $this->input->get_post('type');
+		if(in_array($type, ['uid', 'title'])){
+			$keyword = $this->input->get_post('keyword');
+			if($keyword){
+				if($type == 'uid'){
+					$this->db->where('anchor_uid', $keyword);
+				}else{
+					$this->db->like('title', $keyword);
+				}
+			}
+		}
 	}
 
 	/**
