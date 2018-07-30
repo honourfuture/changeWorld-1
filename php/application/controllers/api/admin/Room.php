@@ -121,6 +121,17 @@ class Room extends API_Controller {
 		}
 	}
 
+	public function chat_stop()
+	{
+		$id = $this->input->get_post('id');
+		$val = (int)$this->input->get_post('val');
+		if($this->Room_model->update($id, ['chat_stop' => $val])){
+			$this->ajaxReturn();
+		}else{
+			$this->ajaxReturn([], 1, '操作失败');
+		}
+	}
+
 	protected function check_params($act, $params)
 	{
 		switch($act){

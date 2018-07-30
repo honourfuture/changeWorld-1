@@ -395,22 +395,26 @@ class Queue extends MY_Controller
     public function live_chat()
     {
         $this->load->model('Room_model');
-        $this->db->select('id,status,chat_file,chat_line');
+        $this->db->select('id,status,chat_file,chat_line,chat_stop');
         $rooms = $this->Room_model->get_many_by(['status' => 1]);
         if($rooms){
             $this->load->model('Users_model');
             $config    = config_item('rongcloud');
             $rongCloud = new RongCloud($config['app_key'], $config['app_secret']);
             foreach($rooms as $room){
+                if($room['chat_stop']){
+                    continue;
+                }
+                $file = $room['chat_file'];
+                if(!$file || !file_exists($file)){
+                    continue;
+                }
+
                 $random_num = mt_rand(1, 5);
                 if($random_num != 5){
                     continue;
                 }
 
-                $file = $room['chat_file'];
-                if(!$file || !file_exists($file)){
-                    continue;
-                }
 
                 $row = $this->Queue_model->order_by('id', 'desc')->get_by(['main_type' => 'live_join', 'sub_type' => $room['id']]);
 
