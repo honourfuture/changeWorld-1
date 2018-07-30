@@ -285,7 +285,7 @@ class Queue extends MY_Controller
                         $this->cache->file->save($cache_id, $cache, 0);
 
                         $this->db->set('views', 'views +'.count($user), false);
-                        $this->db->where('id', $row['id']);
+                        $this->db->where('id', $row['params']['id']);
                         $this->db->update($this->Room_model->table());
 
                         $result = $rongCloud->message()->publishChatroom($user[0]['id'], $chat_room_id, 'RC:TxtMsg', json_encode(['content' => json_encode($content)]));
