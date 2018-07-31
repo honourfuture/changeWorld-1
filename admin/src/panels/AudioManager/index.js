@@ -203,7 +203,6 @@ export default class AudioManager extends BaseComponent {
                 <div className="pb10">
                     <Select
                         defaultValue={'uid'}
-                        style={{ width: 120 }}
                         onChange={value =>
                             this.searchType = value
                         }
@@ -216,7 +215,7 @@ export default class AudioManager extends BaseComponent {
                         </Option>
                     </Select>
                     <Search
-                        placeholder="搜索昵称/手机号"
+                        placeholder="搜索主播ID/标题"
                         enterButton
                         onSearch={this.onSearch}
                         style={{ width: 200, marginLeft: 10 }}

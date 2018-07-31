@@ -4,7 +4,8 @@ import {BaseComponent,Base,Global} from '../../common';
 import {
 	Table,
 	Upload,
-    Button,
+	Button,
+	Input,
 	Spin,
 	Select,
 	message,
@@ -13,6 +14,7 @@ import {
 } from "antd";
 import './DirectManager.less';
 const Option = Select.Option;
+const Search = Input.Search;
 
 export default class DirectManager extends BaseComponent{
 	listStatus = [
@@ -204,6 +206,8 @@ export default class DirectManager extends BaseComponent{
                 act: "room",
                 op: "index",
 				mod: "admin",
+				type:this.searchType || 'uid',
+				keyword: this.searchStr || '',
 				status: this.store.status,
                 cur_page: this.current || 1,
                 per_page: Global.PAGE_SIZE
@@ -226,6 +230,15 @@ export default class DirectManager extends BaseComponent{
         this.current = 1;
         this.store.status = e;
         this.requestData();
+	}
+	//搜索
+    searchType = ""; //搜索类型
+    searchStr = "";
+    @action.bound
+    onSearch(value) {
+        this.current = 1;
+        this.searchStr = value;
+        this.requestData();
     }
 	render(){
 		let { list, total, isShowModal, params } = this.store;
@@ -246,6 +259,27 @@ export default class DirectManager extends BaseComponent{
 		return (
 			<div className='DirectManager'>
 				<div className="pb10">
+					<Select
+                        defaultValue={'uid'}
+                        onChange={value =>
+                            this.searchType = value
+                        }
+                    >
+                        <Option value='uid'>
+                            {"主播ID"}
+                        </Option>
+                        <Option value='title'>
+                            {"标题"}
+                        </Option>
+                    </Select>
+					<Search
+                        placeholder="搜索主播ID/房间名称"
+                        enterButton
+                        onSearch={this.onSearch}
+                        style={{ width: 200, marginLeft: 10 }}
+                    />
+					&nbsp;&nbsp;
+					状态筛选：
                     {statusCon.length > 0 ? (
                         <Select
                             onChange={this.onStatusSelect}
