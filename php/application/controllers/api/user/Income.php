@@ -98,7 +98,11 @@ class Income extends API_Controller {
 
 		$where = array('topic' => $topic, 'type' => $type);
 		if($this->user_id){
-			$where['user_id'] = $this->user_id;
+			if($type == 0){
+				$where['user_id'] = $this->user_id;
+			}else{
+				$where['shop_id'] = $this->user_id;
+			}
 		}
 
 		$order_by = array('id' => 'desc');
