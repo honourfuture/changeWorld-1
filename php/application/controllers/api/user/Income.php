@@ -211,10 +211,10 @@ class Income extends API_Controller {
 			$result = $this->Income_model->get_by($where_count);
 			$ret['total']['live'] = $result['gold'] ? $result['gold'] : 0;
 
-			$this->db->select('sum(amount) amount');
+			$this->db->select('sum(service_amount) service_amount');
 			$where_count['topic'] = 0;
 			$result = $this->Income_model->get_by($where_count);
-			$ret['total']['video'] = $result['amount'] ? $result['amount'] : 0;
+			$ret['total']['video'] = $result['service_amount'] ? $result['service_amount'] : 0;
 
 			$this->db->select('sum(amount) amount');
 			$where_count['topic'] = 2;
@@ -226,9 +226,11 @@ class Income extends API_Controller {
 
 
 		$order_by = array('id' => 'desc');
+		$this->db->group_by('from_id');
 		$ret['count'] = $this->Income_model->count_by($where);
 		if($ret['count']){
-			$this->db->select('id,updated_at,name nickname,mobi,topic,amount,gold,from_id');
+			$this->db->select('id,updated_at,name nickname,mobi,topic,sum(amount) amount,sum(service_amount) service_amount,from_id');
+			$this->db->group_by('from_id');
 			if($list = $this->Income_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where)){
 				$a_uid = [];
 				foreach($list as $item){
