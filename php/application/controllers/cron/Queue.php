@@ -393,12 +393,16 @@ class Queue extends MY_Controller
                 }
 
                 if($cache && $over){
-                    $content = [
-                        'cmd' => 'randomWatchNum',
-                        'min' => 500,
-                        'max' => 1000
-                    ];
-                    $result = $rongCloud->message()->publishChatroom($cache[0], $chat_room_id, 'RC:TxtMsg', json_encode(['content' => json_encode($content)]));
+                    $range = isset($row['params']['range']) ? $row['params']['range'] : $row['params']['max'].'-'.$row['params']['max']*2;
+                    if(strpos($range, '-')){
+                        list($min, $max) = explode('-', $range);
+                        $content = [
+                            'cmd' => 'randomWatchNum',
+                            'min' => $min,
+                            'max' => $max
+                        ];
+                        $result = $rongCloud->message()->publishChatroom($cache[0], $chat_room_id, 'RC:TxtMsg', json_encode(['content' => json_encode($content)]));
+                    }
                 }
             }
         }

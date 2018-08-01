@@ -176,6 +176,7 @@ class Queue extends API_Controller {
 	 * @apiParam {Number} step_times 秒/次
 	 * @apiParam {String} step_num 变动值 支持格式： 5 或者 10-99
 	 * @apiParam {Number} max 任务最大值
+	 * @apiParam {String} range 浮动范围 支持格式： 10-99
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -198,7 +199,7 @@ class Queue extends API_Controller {
     public function add()
     {
     	$params = elements(
-			['id', 'step_times', 'step_num', 'max'],
+			['id', 'step_times', 'step_num', 'max', 'range'],
 			$this->input->post(),
 			0
 		);
