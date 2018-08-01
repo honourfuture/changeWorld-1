@@ -337,17 +337,19 @@ class Queue extends MY_Controller
 
                 $step_num = $this->step_num($row);
                 $step_num = min($step_num, $row['params']['max'] - $cache_num);
+                $chat_room_id = [$row['params']['id']];
+                $over = false;
                 if($step_num > 0){
                     $this->db->select('id,nickname');//header,
                     $user = $this->Users_model->limit($step_num, 0)->get_many_by(['robot' => 1]);
                     if($user){
                         if($step_num > count($user)){
                             $this->Queue_model->update($row['id'], ['status' => 2]);
+                            $over = true;
                         }else{
                             $this->Queue_model->update($row['id'], ['status' => 0]);
                         }
 
-                        $chat_room_id = [$row['params']['id']];
                         $content = [
                             'cmd' => 'enter_batch',
                             'user' => []
@@ -383,11 +385,21 @@ class Queue extends MY_Controller
                         $result = $rongCloud->message()->publishChatroom($user[0]['id'], $chat_room_id, 'RC:TxtMsg', json_encode(['content' => json_encode($content)]));
                     }else{
                         $this->Queue_model->update($row['id'], ['status' => 2]);
+                        $over = true;
                     }
                 }else{
                     $this->Queue_model->update($row['id'], ['status' => 2]);
+                    $over = true;
                 }
 
+                if($cache && $over){
+                    $content = [
+                        'cmd' => 'randomWatchNum',
+                        'min' => 500,
+                        'max' => 1000
+                    ];
+                    $result = $rongCloud->message()->publishChatroom($cache[0], $chat_room_id, 'RC:TxtMsg', json_encode(['content' => json_encode($content)]));
+                }
             }
         }
     }
