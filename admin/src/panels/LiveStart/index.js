@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { action } from "mobx";
 import { BaseComponent, Base, Global } from "../../common";
 import {
@@ -13,7 +13,7 @@ import {
     Form
 } from "antd";
 import { remove } from "lodash";
-import './LiveStart.less';
+import "./LiveStart.less";
 
 const FormItem = Form.Item;
 const formItemLayout = {
@@ -27,15 +27,14 @@ const formItemLayout = {
     }
 };
 
-
-export default class LiveStart extends BaseComponent{
-	store = {
+export default class LiveStart extends BaseComponent {
+    store = {
         list: [],
         total: 1,
         isShowModal: false,
         params: {}
-	};
-	constructor(props) {
+    };
+    constructor(props) {
         super(props);
         this.columns = [
             {
@@ -85,6 +84,17 @@ export default class LiveStart extends BaseComponent{
                 render: (text, record) => this.renderText(text, record, "title")
             },
             {
+                title: "浮动范围",
+                dataIndex: "range",
+                width: 200,
+                render: (text, record) =>
+                    this.renderText(
+                        record.params ? record.params.range : "",
+                        record,
+                        "range"
+                    )
+            },
+            {
                 title: "任务状态",
                 dataIndex: "status",
                 render: (text, record) =>
@@ -94,35 +104,41 @@ export default class LiveStart extends BaseComponent{
                 title: "暂停/启动",
                 dataIndex: "enable",
                 render: (text, record) => {
-                    const { id,status } = record;
+                    const { id, status } = record;
                     let btns = null;
-                    if(parseInt(status) === 0 || parseInt(status) === 1){
-                        btns = <span>
-                                    <Popconfirm
-                                        title="确认暂停?"
-                                        okText="确定"
-                                        cancelText="取消"
-                                        onConfirm={() => this.onEnable(id, "stop")}
-                                    >
-                                        <a className="ml10 gray">暂停</a>
-                                    </Popconfirm>
-                                </span>
-                    }else if(parseInt(status) === 3 || parseInt(status) === 4 || parseInt(status) === 5){
-                        btns = <span>
-                                    <Popconfirm
-                                        title="确认启动?"
-                                        okText="确定"
-                                        cancelText="取消"
-                                        onConfirm={() => this.onEnable(id, "start")}
-                                    >
-                                        <a className="ml10">启动</a>
-                                    </Popconfirm>
-                                </span>
+                    if (parseInt(status) === 0 || parseInt(status) === 1) {
+                        btns = (
+                            <span>
+                                <Popconfirm
+                                    title="确认暂停?"
+                                    okText="确定"
+                                    cancelText="取消"
+                                    onConfirm={() => this.onEnable(id, "stop")}
+                                >
+                                    <a className="ml10 gray">暂停</a>
+                                </Popconfirm>
+                            </span>
+                        );
+                    } else if (
+                        parseInt(status) === 3 ||
+                        parseInt(status) === 4 ||
+                        parseInt(status) === 5
+                    ) {
+                        btns = (
+                            <span>
+                                <Popconfirm
+                                    title="确认启动?"
+                                    okText="确定"
+                                    cancelText="取消"
+                                    onConfirm={() => this.onEnable(id, "start")}
+                                >
+                                    <a className="ml10">启动</a>
+                                </Popconfirm>
+                            </span>
+                        );
                     }
                     return (
-                        <div className="editable-row-operations">
-                            {btns}
-                        </div>
+                        <div className="editable-row-operations">{btns}</div>
                     );
                 }
             },
@@ -152,7 +168,8 @@ export default class LiveStart extends BaseComponent{
             { key: "id", label: "房间id" },
             { key: "step_times", label: "秒/次" },
             { key: "step_num", label: "范围随机值或固定值" },
-            { key: "max", label: "结果最大数量" }
+            { key: "max", label: "结果最大数量" },
+            { key: "range", label: "浮动范围" }
         ];
     }
     renderText(text, record, column) {
@@ -270,8 +287,8 @@ export default class LiveStart extends BaseComponent{
     componentDidMount() {
         this.requestData();
     }
-	render(){
-		let { list, total, isShowModal, params } = this.store;
+    render() {
+        let { list, total, isShowModal, params } = this.store;
         const showList = list.slice();
         return (
             <Spin ref="spin" wrapperClassName="LiveStart" spinning={false}>
@@ -313,7 +330,11 @@ export default class LiveStart extends BaseComponent{
                                     <Input
                                         value={params[key]}
                                         onChange={e => this.onAddChange(e, key)}
-                                        placeholder={`请输入${label}`}
+                                        placeholder={
+                                            key !== "range"
+                                                ? `请输入${label}`
+                                                : `请输入${label}，如1000-2000`
+                                        }
                                     />
                                 </FormItem>
                             );
@@ -323,4 +344,4 @@ export default class LiveStart extends BaseComponent{
             </Spin>
         );
     }
-};
+}

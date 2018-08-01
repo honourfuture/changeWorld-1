@@ -42,7 +42,7 @@ export default class ActivityList extends BaseComponent {
         super(props);
         this.columns = [
             {
-                title:'活动ID',
+                title: "活动ID",
                 dataIndex: "id"
             },
             {
@@ -109,12 +109,14 @@ export default class ActivityList extends BaseComponent {
                                 <a onClick={() => this.onAddImg(id, is_ad)}>
                                     广告位
                                 </a>
-                                <a
-                                    style={{ marginLeft: 10 }}
-                                    onClick={() => this.onDel(id)}
+                                <Popconfirm
+                                    title="确认删除?"
+                                    okText="确定"
+                                    cancelText="取消"
+                                    onConfirm={() => this.onDel(id)}
                                 >
-                                    删除
-                                </a>
+                                    <a className="ml10 gray">删除</a>
+                                </Popconfirm>
                             </span>
                         </div>
                     );
@@ -291,7 +293,7 @@ export default class ActivityList extends BaseComponent {
         return (
             <Spin ref="spin" spinning={false} className="ActivityList">
                 <div className="pb10">
-                    <Button onClick={this.onAdd}>新增+</Button>
+                    {/* <Button onClick={this.onAdd}>新增+</Button> */}
                     <Search
                         placeholder="搜索标题"
                         enterButton
