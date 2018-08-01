@@ -25,7 +25,11 @@ class Welcome extends Web_Controller
      */
     public function index()
     {
-        $this->load->view('welcome_message');
+        $this->load->driver('cache');
+        $cache_id = 'live_join_93_55';
+        $cache = $this->cache->file->get($cache_id);
+
+        var_export($cache);
     }
 
     public function cron()

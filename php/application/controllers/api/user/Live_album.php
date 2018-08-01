@@ -13,6 +13,19 @@ class Live_album extends API_Controller {
         $this->load->model('Album_model');
     }
 
+    public function top()
+    {
+    	$id = $this->input->get_post('id');
+
+    	$max = $this->Album_model->order_by('sort', 'desc')->get_by(['id >' => 0]);
+    	$sort = $max['sort'] + 10;
+    	if($this->Album_model->update($id, ['sort' => $sort])){
+    		$this->ajaxReturn();
+    	}else{
+    		$this->ajaxReturn([], 1, '置顶失败');
+    	}
+    }
+
     /**
 	 * @api {get} /api/user/live_album 我的专辑-列表
 	 * @apiVersion 1.0.0
