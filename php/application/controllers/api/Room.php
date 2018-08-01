@@ -93,6 +93,7 @@ class Room extends API_Controller {
 			}else{
 				$update = array('offline' => $info['offline'] + 1);
 			}
+			$update['views'] = $info['views'] - 1;
 			$this->Room_model->update($room_id, $update);
 
 			$this->load->model('Live_online_model');
