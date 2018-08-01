@@ -102,6 +102,7 @@ class Income extends API_Controller {
 				$where['user_id'] = $this->user_id;
 			}else{
 				$where['shop_id'] = $this->user_id;
+				$where['user_id !='] = $this->user_id;
 			}
 		}
 
