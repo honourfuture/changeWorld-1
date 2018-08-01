@@ -105,10 +105,37 @@ class Income extends API_Controller {
 			}
 		}
 
-		$order_by = array('id' => 'desc');
+		if($topic == 2){
+			$where['amount >'] = 0;
+			$field = 'id,updated_at,sub_topic,name,mobi,amount,gold,item,level';
+		}else{
+			$where['service_amount >'] = 0;
+			$field = 'id,updated_at,sub_topic,name,mobi,service_amount as amount,gold,item,level';
+		}
+
+		if($this->user_id){
+			//统计
+			$ret['total'] = ['member' => 0, 'amount' => 0];
+
+			$this->db->group_by('user_id');
+			$where_count = $where;
+			$ret['total']['member'] = $this->Income_model->count_by($where_count);
+
+			if($topic == 2){
+				$this->db->select('sum(amount) amount');
+				$result = $this->Income_model->get_by($where_count);
+				$ret['total']['amount'] = $result['amount'] ? $result['amount'] : 0;
+			}else{
+				$this->db->select('sum(service_amount) service_amount');
+				$result = $this->Income_model->get_by($where_count);
+				$ret['total']['amount'] = $result['service_amount'] ? $result['service_amount'] : 0;
+			}
+		}
+
 		$ret['count'] = $this->Income_model->count_by($where);
 		if($ret['count']){
-			$this->db->select('id,updated_at,sub_topic,name,mobi,amount,gold,item,level');
+			$order_by = array('id' => 'desc');
+			$this->db->select($field);
 			if($list = $this->Income_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where)){
 				foreach($list as $key=>$item){
 					$item['lv_name'] = $item['level'] ? ($item['level'] == 1 ? '一级会员' : '二级会员') : '销售';
