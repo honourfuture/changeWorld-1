@@ -20,7 +20,7 @@ const Option = Select.Option;
 export default class AlbumManager extends BaseComponent {
     store = {
         list: [],
-        article_class: [],
+        article_class: []
     };
     curData = {};
     constructor(props) {
@@ -91,10 +91,23 @@ export default class AlbumManager extends BaseComponent {
                     return (
                         <div className="editable-row-operations">
                             <span>
-								<Popconfirm title="确认删除?" okText='确定' cancelText='取消' onConfirm={() => this.onDelete(id)}>
-									<a className='ml10 gray'>删除</a>
-								</Popconfirm>
-							</span>
+                                <Popconfirm
+                                    title="确认置顶?"
+                                    okText="确定"
+                                    cancelText="取消"
+                                    onConfirm={() => this.onTop(id)}
+                                >
+                                    <a className="ml10">置顶</a>
+                                </Popconfirm>
+                                <Popconfirm
+                                    title="确认删除?"
+                                    okText="确定"
+                                    cancelText="取消"
+                                    onConfirm={() => this.onDelete(id)}
+                                >
+                                    <a className="ml10 gray">删除</a>
+                                </Popconfirm>
+                            </span>
                         </div>
                     );
                 }
@@ -160,10 +173,29 @@ export default class AlbumManager extends BaseComponent {
         this.requestData();
     }
     //删除
-	@action.bound
-	onDelete(id){
-		Base.POST({act:'live_album',op:'save',mod:'user',id,deleted:"1"},()=>remove(this.store.list,item=>id === item.id),this);
-	}
+    @action.bound
+    onDelete(id) {
+        Base.POST(
+            { act: "live_album", op: "save", mod: "user", id, deleted: "1" },
+            () => remove(this.store.list, item => id === item.id),
+            this
+        );
+    }
+    @action.bound
+    onTop(id) {
+        Base.GET(
+            {
+                act: "live_album",
+                op: "top",
+                mod: "user",
+                id
+            },
+            () => {
+                this.current = 1;
+                this.requestData();
+            }
+        );
+    }
     @action.bound
     onTableHandler({ current, pageSize }) {
         this.current = current;
@@ -177,7 +209,7 @@ export default class AlbumManager extends BaseComponent {
                 act: "live_album",
                 op: "index",
                 mod: "user",
-                type:this.searchType || 'uid',
+                type: this.searchType || "uid",
                 keyword: this.searchStr || "",
                 cur_page: this.current || 1,
                 per_page: Global.PAGE_SIZE
@@ -203,17 +235,11 @@ export default class AlbumManager extends BaseComponent {
             <Spin ref="spin" wrapperClassName="AlbumManager" spinning={false}>
                 <div className="pb10">
                     <Select
-                        defaultValue={'uid'}
-                        onChange={value =>
-                            this.searchType = value
-                        }
+                        defaultValue={"uid"}
+                        onChange={value => (this.searchType = value)}
                     >
-                        <Option value='uid'>
-                            {"主播ID"}
-                        </Option>
-                        <Option value='title'>
-                            {"标题"}
-                        </Option>
+                        <Option value="uid">{"主播ID"}</Option>
+                        <Option value="title">{"标题"}</Option>
                     </Select>
                     <Search
                         placeholder="搜索主播ID/标题"
