@@ -214,7 +214,7 @@ class Activity extends API_Controller {
 			$params['summary'] = mb_substr(strip_tags($params['details']), 0, 88);
 			if($params['deleted'] == 1){
 				$update = array('deleted' => 1, 'enable' => 0);
-				$flag = $this->Activity_model->update($id, $update);
+				$flag = $this->Activity_model->delete($id);//($id, $update);
 			}else{
 				unset($params['deleted']);
 				if(isset($params['enable']) && $params['enable']){
