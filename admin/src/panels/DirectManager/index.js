@@ -145,7 +145,7 @@ export default class DirectManager extends BaseComponent{
 	}
 	renderSwitch(text,record,column){
 		return (
-			<Switch checked={parseInt(record.chat_stop,10)===1} onChange={(value)=>this.onSwitch(record.id,value?1:0,column)} />
+			<Switch checked={parseInt(record.chat_stop,10)===0} onChange={(value)=>this.onSwitch(record.id,value?0:1,column)} />
 		)
 	}
 	//是否启用
