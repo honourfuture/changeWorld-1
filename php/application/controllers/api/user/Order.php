@@ -375,7 +375,7 @@ class Order extends API_Controller {
 
 			if($seller[$seller_id]['point']){
 				$flag_point = true;
-				$use_point_amount = $seller[$seller_id]['point'] * 100 / $point['rule'];
+				$use_point_amount = $seller[$seller_id]['point'] / $point['rule'];
 			}
 			//实付金额
 			$real_total_amount = round($rows['total'] - $rows['ticket'] - $use_point_amount, 2);
