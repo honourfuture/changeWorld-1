@@ -165,7 +165,10 @@ export const Base = {
         if (this.DEBUG) {
             user_verify_data = user_verify_data
                 ? JSON.parse(user_verify_data)
-                : { sign: "5be7a71ace613a901c48b07568a1f371", user_id: 22 };
+                : {
+                      sign: "0112ed6782778106f8df6b9adc6083fd",
+                      user_id: 10000028
+                  };
         } else {
             user_verify_data = user_verify_data
                 ? JSON.parse(user_verify_data)
