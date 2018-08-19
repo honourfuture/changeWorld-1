@@ -59,6 +59,7 @@ class Shop extends API_Controller {
 		$user = $this->get_user();
 		$ret['header'] = $user['header'];
 		$ret['nickname'] = $user['nickname'];
+		$ret['pretty_id'] = $user['pretty_id'];
 		//主播标识
 		$ret['anchor'] = $user['anchor'];
 		//商家标识（限定主播才能申请开店）
