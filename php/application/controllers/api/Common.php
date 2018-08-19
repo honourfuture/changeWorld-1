@@ -58,7 +58,7 @@ class Common extends API_Controller
 
         $this->load->library('upload', $config);
         if(! $this->upload->validate_upload_path()){
-            mkdir($this->upload->upload_path, 0700, true);
+            mkdir($this->upload->upload_path, 0777, true);
         }
     }
 
