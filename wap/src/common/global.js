@@ -7,8 +7,8 @@
  */
 import { observable } from "mobx";
 export default {
-    API_URL: "http://aiping.qichebaby.com/api",
-    RES_URL: "http://aiping.qichebaby.com",
+    API_URL: "http://www.zhumaidan.com/api",
+    RES_URL: "http://www.zhumaidan.com",
     store: observable({
         isCollapsed: false // menu是否收起
     }),
