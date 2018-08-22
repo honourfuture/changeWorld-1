@@ -52,8 +52,10 @@ export default class UserCenter extends BaseComponent {
             buyer = {},
             seller = {},
             seller_status,
-            anchor
+            anchor,
+            pretty_id
         } = this.store.data;
+        console.log(pretty_id);
         const is_seller = parseInt(seller_status, 10) === 2;
         const buyerItems = [];
         const sellerItems = [];
@@ -119,7 +121,8 @@ export default class UserCenter extends BaseComponent {
                             <div>
                                 <div className="userInfoName">{nickname}</div>
                                 <div className="userInfoId">
-                                    ID:{this.store.user_id}
+                                    ID:
+                                    {pretty_id || this.store.user_id}
                                 </div>
                             </div>
                         </Flex>
