@@ -57,15 +57,28 @@ class Payment_log extends API_Controller {
 	public function dialog()
 	{
 		$flag = false;
+
+		$this->load->model('White_model');
+
 		switch($this->topic){
 			case 'live':
-				$flag = $this->Payment_log_model->live($this->user_id, $this->t_id);
+				$type = 1;
+				if($this->White_model->get_by(['t_id' => $this->t_id, 'type' => $type, 'uid' => $this->user_id])){
+					$flag = true;
+				}else{
+					$flag = $this->Payment_log_model->live($this->user_id, $this->t_id);
+				}
 				break;
 			case 'audio':
 				$flag = $this->Payment_log_model->audio($this->user_id, $this->t_id);
 				break;
 			case 'album':
-				$flag = $this->Payment_log_model->album($this->user_id, $this->t_id);
+				$type = 2;
+				if($this->White_model->get_by(['t_id' => $this->t_id, 'type' => $type, 'uid' => $this->user_id])){
+					$flag = true;
+				}else{
+					$flag = $this->Payment_log_model->album($this->user_id, $this->t_id);
+				}
 				break;
 			default :
 				$this->ajaxReturn([], 1, '支付主题错误');
