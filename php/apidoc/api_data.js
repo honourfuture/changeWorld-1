@@ -29007,6 +29007,112 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/api/user/white/search",
+    "title": "白名单-搜索",
+    "version": "1.0.0",
+    "name": "white_search",
+    "group": "user",
+    "sampleRequest": [
+      {
+        "url": "/api/user/white/search"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "type",
+            "description": "<p>1直播 2专辑</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "t_id",
+            "description": "<p>被关联唯一ID，直播传直播ID，专辑传专辑ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "keyword",
+            "description": "<p>搜索词 支持：会员号，手机号，昵称</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.user_id",
+            "description": "<p>为0表示添加的城市场控手机号未注册</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": [\n        {\n            \"id\": \"3\",\n            \"nickname\": \"꯭諾꯭\",\n            \"mobi\": \"13923771616\",\n            \"header\": \"http://thirdwx.qlogo.cn/mmopen/vi_32//132\",\n            \"sex\": \"0\",\n            \"summary\": \"\"\n        }\n    ],\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/White.php",
+    "groupTitle": "user"
+  },
+  {
+    "type": "get",
     "url": "/api/user/withdraw",
     "title": "提现",
     "version": "1.0.0",
