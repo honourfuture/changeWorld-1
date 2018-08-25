@@ -152,7 +152,12 @@ class Live extends API_Controller {
 		$this->check_add_params('add', $data);
 		$this->load->model('Room_model');
 		if($id = $this->Room_model->insert($data)){
-			$this->Room_model->delete_by(['anchor_uid' => $this->user_id, 'type' => 2]);
+			if($row = $this->Room_model->order_by('id', 'desc')->get_by(['anchor_uid' => $this->user_id, 'type' => 2])){
+				$this->Room_model->delete_by(['anchor_uid' => $this->user_id, 'type' => 2]);
+
+				$this->load->model('White_model');
+				$this->White_model->update_by(['type' => 1, 't_id' => $row['id']], ['t_id' => $id]);
+			}
 			//直播
 			$QLive = new Query();
 	        $config = config_item('live');
