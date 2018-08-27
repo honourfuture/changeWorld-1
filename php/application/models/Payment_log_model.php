@@ -40,13 +40,27 @@ class Payment_log_model extends MY_Model
 
     public function live($user_id, $room_id)
     {
+        //主播自己
         $this->load->model('Room_model');
         if($room = $this->Room_model->get($room_id)){
             if($room['anchor_uid'] == $user_id){
                 return true;
             }
+        }else{
+            return false;
         }
 
+        //场控
+        $this->lod->model('Room_control_model');
+        $where = [
+            'user_id' => $room['anchor_uid'],
+            'room_control_user_id' => $user_id
+        ];
+        if($this->Room_control_model->get_by($where)){
+            return true;
+        }
+
+        //已付款
         $where = [
             'user_id' => $user_id,
             't_id' => $room_id,
