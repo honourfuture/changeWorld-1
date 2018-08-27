@@ -268,9 +268,9 @@ class Room_control extends API_Controller {
 			$this->input->post(),
 			''
 		);
+		$params['user_id'] = $this->user_id;
 		$this->check_params('add', $params);
 
-		$params['user_id'] = $this->user_id;
 
 		if($this->Room_control_model->insert($params)){
 			$this->ajaxReturn();
