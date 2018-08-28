@@ -51,7 +51,7 @@ class Payment_log_model extends MY_Model
         }
 
         //场控
-        $this->lod->model('Room_control_model');
+        $this->load->model('Room_control_model');
         $where = [
             'user_id' => $room['anchor_uid'],
             'room_control_user_id' => $user_id
