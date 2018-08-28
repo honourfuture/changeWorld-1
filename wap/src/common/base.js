@@ -309,6 +309,38 @@ export const Base = {
     //发送事件
     sendEvt(name, data) {
         PubSub.publish(name, data);
+    },
+    uploadFile(file, f_succBack, b_noShowProgress, b_noHideProgress) {
+        let self = this;
+        let s_requestUrl = Global.UPLOAD_URL;
+        let body = new FormData();
+        body.append("file", file);
+        body.append("field", "file");
+        console.log(body);
+        !b_noShowProgress && Toast.loading("加载中", 0);
+        fetch(s_requestUrl, {
+            method: "POST",
+            headers: {
+                Accept: "application/json"
+            },
+            body
+        })
+            .then(response => response.json())
+            .then(res => {
+                self.DEBUG && console.log(res);
+                !b_noHideProgress && Toast.hide();
+                switch (parseInt(res.status)) {
+                    case 0:
+                        f_succBack && action(f_succBack)(res);
+                        break;
+                    case -1:
+                        self.pushApp("openLoginView");
+                        break;
+                    default:
+                        Toast.fail(res.message);
+                        break;
+                }
+            });
     }
 };
 window.goBack = Base.goBack;
