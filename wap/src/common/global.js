@@ -9,6 +9,9 @@ import { observable } from "mobx";
 export default {
     API_URL: "http://www.zhumaidan.com/api",
     RES_URL: "http://www.zhumaidan.com",
+    get UPLOAD_URL() {
+        return `${this.API_URL}/common/fileUpload`;
+    },
     store: observable({
         isCollapsed: false // menu是否收起
     }),

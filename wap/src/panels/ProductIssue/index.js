@@ -49,20 +49,12 @@ class ImgItem extends BaseComponent {
                 return (this.store.isShowTips = true);
             }
             if (file) {
-                getBase64(file, res => {
-                    Base.POST(
-                        {
-                            act: "common",
-                            op: "base64FileUpload",
-                            base64_image_content: res
-                        },
-                        res => {
-                            file.file_url = res.data.file_url;
-                            this.props.fileName.push(file);
-                            index++;
-                            onUpload();
-                        }
-                    );
+                console.log(file);
+                Base.uploadFile(file, res => {
+                    file.file_url = res.data.file_url;
+                    this.props.fileName.push(file);
+                    index++;
+                    onUpload();
                 });
             }
         };
@@ -118,7 +110,11 @@ class ImgItem extends BaseComponent {
                         <img src={icon.addImg} alt="" />
                     </div>
                 </Flex>
-                <div className={limitCls}>最多可上传{limit}张图片</div>
+                <div className={limitCls}>
+                    最多可上传
+                    {limit}
+                    张图片
+                </div>
                 <div className="upImgTips">注：推荐尺寸为640*640的图片</div>
             </div>
         );
@@ -428,8 +424,9 @@ class ProductIssue extends BaseComponent {
                             justify="between"
                             className="textarea-con base-line"
                         >
-                            <div style={{ paddingLeft: 15,width:80 }}>
-                                产品名称<em style={{ color: "#e21b1a" }}>*</em>
+                            <div style={{ paddingLeft: 15, width: 80 }}>
+                                产品名称
+                                <em style={{ color: "#e21b1a" }}>*</em>
                             </div>
                             <TextareaItem
                                 // style={{ width: 120 }}
@@ -465,7 +462,8 @@ class ProductIssue extends BaseComponent {
                             placeholder="请输入产品总量"
                             moneyKeyboardAlign="right"
                         >
-                            总量<em>*</em>
+                            总量
+                            <em>*</em>
                         </InputItem>
                         <InputItem
                             error={!!getFieldError("sale_price")}
@@ -483,7 +481,8 @@ class ProductIssue extends BaseComponent {
                             placeholder="￥0.00"
                             moneyKeyboardAlign="right"
                         >
-                            产品价格<em>*</em>
+                            产品价格
+                            <em>*</em>
                         </InputItem>
                         <Picker
                             data={goods_class}
@@ -491,7 +490,8 @@ class ProductIssue extends BaseComponent {
                             {...getFieldProps("goods_class_id")}
                         >
                             <Item className="pick-item" arrow="horizontal">
-                                产品分类<em>*</em>
+                                产品分类
+                                <em>*</em>
                             </Item>
                         </Picker>
                     </List>
@@ -512,7 +512,8 @@ class ProductIssue extends BaseComponent {
                             type="digit"
                             placeholder="￥0.00"
                         >
-                            邮费<em>*</em>
+                            邮费
+                            <em>*</em>
                         </InputItem>
                         <Picker
                             data={send_mode}
@@ -520,7 +521,8 @@ class ProductIssue extends BaseComponent {
                             {...getFieldProps("send_mode")}
                         >
                             <Item className="pick-item" arrow="horizontal">
-                                发货模式<em>*</em>
+                                发货模式
+                                <em>*</em>
                             </Item>
                         </Picker>
                     </List>
@@ -568,7 +570,8 @@ class ProductIssue extends BaseComponent {
                                 </div>
                             }
                         >
-                            积分兑换比例{` ${point_rate}:1`}
+                            积分兑换比例
+                            {` ${point_rate}:1`}
                         </Item>
                         <InputItem
                             clear
