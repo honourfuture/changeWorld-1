@@ -60,11 +60,34 @@ class ImgItem extends BaseComponent {
         };
         onUpload();
     }
+    @action.bound
+    onAndroidUpload() {
+        const { isRequired } = this.props;
+        const self = this;
+        const limit = isRequired ? 6 : 16;
+        const len = limit - self.props.fileName.length;
+        if (len <= 0) {
+            return (this.store.isShowTips = true);
+        }
+        window.inputMultiple = data => {
+            action(() => {
+                self.props.fileName.push({ file_url: data });
+                if (self.props.fileName.length >= limit) {
+                    self.store.isShowTips = true;
+                }
+            })();
+        };
+        window.Native.callImagePickActionSheet(
+            (limit - self.props.fileName.length).toString(),
+            "inputMultiple"
+        );
+    }
     render() {
         const { title, fileName, isRequired } = this.props;
         const limit = isRequired ? 6 : 16;
         const { isShowTips } = this.store;
         const limitCls = isShowTips ? "upImgTips red" : "upImgTips";
+        const isAndroid = window.Native;
         return (
             <div className="productImg">
                 <div className="mainTit">
@@ -100,13 +123,25 @@ class ImgItem extends BaseComponent {
                         className="select-img-con"
                         style={{ width: selectImgW, height: selectImgW }}
                     >
-                        <input
-                            type="file"
-                            accept="image/*"
-                            multiple="multiple"
-                            onChange={this.onChange}
-                            className="image-select-input"
-                        />
+                        {isAndroid ? (
+                            <div
+                                // disabled="disabled"
+                                // type="file"
+                                // accept="image/*"
+                                // multiple="multiple"
+                                // onChange={this.onChange}
+                                className="image-select-input"
+                                onClick={this.onAndroidUpload}
+                            />
+                        ) : (
+                            <input
+                                type="file"
+                                accept="image/*"
+                                multiple="multiple"
+                                onChange={this.onChange}
+                                className="image-select-input"
+                            />
+                        )}
                         <img src={icon.addImg} alt="" />
                     </div>
                 </Flex>

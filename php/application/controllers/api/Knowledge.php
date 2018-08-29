@@ -272,11 +272,44 @@ class Knowledge extends API_Controller
 
         $album_class_id = (int)$this->input->get_post('album_class_id');
         if($album_class_id){
+            $this->load->model('Room_audio_model');
             $this->load->model('Album_model');
-            $where = array('enable' => 1, 'public' => 1, 'album_class' => $album_class_id);
+
+            $this->db->select(
+                'album.id,album.`cover_image`,album.`title`,album.`price`,album.`anchor_uid`,
+                COUNT(audio.id) AS audio_num,SUM(audio.play_times) AS play_times'
+            );
+            $this->db->join($this->Album_model->table(), 'album.id = audio.album_id', 'right');
+            $this->db->where('audio.album_id >', 0);
+            $this->db->where('album.enable', 1);
+            $this->db->where('album.public', 1);
+            $this->db->where('album.album_class', $album_class_id);
+            $this->db->group_by('audio.album_id');
+            $ret['count'] = $this->db->count_all_results($this->Room_audio_model->table().' as audio', false);
+
+            if($ret['count']){
+                $this->db->limit($this->per_page, $this->offset);
+                $this->db->order_by('play_times desc, id desc');
+                $list = $this->db->get()->result_array();
+                if($list){
+                    $a_uid = [];
+                    foreach($list as $item){
+                        $a_uid[] = $item['anchor_uid'];
+                    }
+                    $this->load->model('Users_model');
+                    $users = $this->Users_model->get_many_user($a_uid, 'id,nickname,pretty_id');
+                    foreach($list as $key=>$item){
+                        $list[$key]['nickname'] = isset($users[$item['anchor_uid']]) ? $users[$item['anchor_uid']]['nickname'] : '';
+                        $list[$key]['pretty_id'] = isset($users[$item['anchor_uid']]) ? $users[$item['anchor_uid']]['pretty_id'] : '';
+                    }
+
+                    $ret['list'] = $list;
+                }
+            }
+            /*$where = array('enable' => 1, 'public' => 1, 'album_class' => $album_class_id);
             $ret['count'] = $this->Album_model->count_by($where);
             if($ret['count']){
-                $order_by = array('sort' => 'desc', 'id' => 'desc');
+                $order_by = array('sort' => 'desc', 'play_times' => 'desc', 'id' => 'desc');
                 $this->db->select('id,cover_image,title,price,anchor_uid');
                 if($list = $this->Album_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where)){
                     $a_uid = [];
@@ -294,7 +327,7 @@ class Knowledge extends API_Controller
                     $this->Album_model->audio($ret);
                 }
 
-            }
+            }*/
             $this->ajaxReturn($ret);
         }else{
             $this->ajaxReturn([], 1, '专辑分类ID错误');

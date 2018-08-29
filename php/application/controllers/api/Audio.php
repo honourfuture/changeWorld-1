@@ -92,8 +92,11 @@ class Audio extends API_Controller {
 			$this->db->select('nickname,header,v');
 			$ret['user'] = $this->Users_model->get($info['anchor_uid']);
 			//专辑
-			$this->db->select('cover_image,title');
 			$this->load->model('Album_model');
+			/*$this->db->set('play_times', 'play_times + 1', false);
+			$this->db->where('id', $info['album_id']);
+			$this->db->update($this->Album_model->table());*/
+			$this->db->select('cover_image,title');
 			$ret['album'] = $this->Album_model->get($info['album_id']);
 			$ret['album']['audio_num'] = $this->Room_audio_model->count_by(['album_id' => $info['album_id']]);
 
