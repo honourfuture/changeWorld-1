@@ -269,7 +269,7 @@ class Live_audio extends API_Controller {
 				$flag = $this->Room_audio_model->update_by($where, $update);
 			}else{
 				unset($params['deleted']);
-				if($params['album_id']){
+				/*if($params['album_id']){
 					$audio = $this->Room_audio_model->get($id);
 					if($audio && $audio['play_times'] && $audio['album_id'] != $params['album_id']){
 						$this->load->model('Album_model');
@@ -281,7 +281,7 @@ class Live_audio extends API_Controller {
 						$this->db->where('id', $audio['album_id']);
 						$this->db->update($this->Album_model->table());
 					}
-				}
+				}*/
 				$flag = $this->Room_audio_model->update_by(array('anchor_uid' => $this->user_id, 'id' => $id), $params);
 			}
 		}else{
