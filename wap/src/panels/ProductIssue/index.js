@@ -66,15 +66,17 @@ class ImgItem extends BaseComponent {
         window.inputMultiple = data => {
             action(() => self.props.fileName.push({ file_url: data }))();
         };
-        window.Native.callImagePickActionSheet("6", "inputMultiple");
+        window.Native.callImagePickActionSheet(
+            (6 - self.props.fileName.length).toString(),
+            "inputMultiple"
+        );
     }
     render() {
         const { title, fileName, isRequired } = this.props;
         const limit = isRequired ? 6 : 16;
         const { isShowTips } = this.store;
         const limitCls = isShowTips ? "upImgTips red" : "upImgTips";
-        // const isAndroid = window.Native;
-        const isAndroid = true;
+        const isAndroid = window.Native;
         return (
             <div className="productImg">
                 <div className="mainTit">
