@@ -64,7 +64,7 @@ class ImgItem extends BaseComponent {
     onAndroidUpload() {
         const self = this;
         window.inputMultiple = data => {
-            self.props.fileName.push({ file_url: data });
+            action(() => self.props.fileName.push({ file_url: data }))();
         };
         window.Native.callImagePickActionSheet("6", "inputMultiple");
     }
