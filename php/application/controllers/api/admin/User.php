@@ -57,20 +57,21 @@ class User extends API_Controller {
 		$ret = array();
 		$id = $this->input->get_post('id');
 		$job = $this->input->get_post('job');
+
+		$update = [];
 		switch($job){
-			case 'header':
+			case 'edit':
 				$header = $this->input->get_post('header');
 				if(!$header){
 					$this->ajaxReturn([], 1, '请上传头像');
 				}
-				$update = array('header' => $header);
-				break;
-			case 'nickname':
+				$update['header'] = $header;
+
 				$nickname = $this->input->get_post('nickname');
 				if(!$nickname){
 					$this->ajaxReturn([], 1, '请输入昵称');
 				}
-				$update = array('nickname' => $nickname);
+				$update['nickname'] = $nickname;
 				break;
 			case 'enable':
 				$enable = $this->input->get_post('enable');
