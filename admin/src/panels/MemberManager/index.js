@@ -111,7 +111,7 @@ export default class MemberManager extends BaseComponent {
                     this.renderSwitch(text, record, "headhunter")
             },
             {
-                title: "是否冻结",
+                title: "冻结",
                 dataIndex: "enable",
                 width: 120,
                 // fixed: "right",
@@ -143,7 +143,7 @@ export default class MemberManager extends BaseComponent {
                             {
                                 editable ?
                                 <span>
-                                    <a onClick={() => this.onSaveState(id)}>保存</a>
+                                    <a onClick={() => this.onSaveState(id,"edit")}>保存</a>
                                     <a className='ml10 gray' onClick={() => this.onCancel(id)}>取消</a>
                                 </span>
                                 :
@@ -184,7 +184,7 @@ export default class MemberManager extends BaseComponent {
     //     );
     // }
     renderImg(text,record,column){
-		const {editable,icon,loading} = record;
+		const {editable,header,loading} = record;
 		return <div>
 			{editable?<Upload
 				name="field"
@@ -194,11 +194,11 @@ export default class MemberManager extends BaseComponent {
 				action={Global.UPLOAD_URL}
 				onChange={(e)=>this.onUploadChange(e,record.id)}
 			>
-				{icon?<img className='img-uploader' style={{width:'120px'}} src={Base.getImgUrl(icon)} alt=''/>:<div>
+				{header?<img className='img-uploader' style={{width:'120px'}} src={Base.getImgUrl(header)} alt=''/>:<div>
 					<Icon type={loading ? 'loading' : 'plus'} />
 					<div className="ant-upload-text">上传</div>
 				</div>}
-			</Upload>:<img className='img-uploader'  style={{width:'120px'}} src={Base.getImgUrl(icon)} alt=''/>}
+			</Upload>:<img className='img-uploader'  style={{width:'120px'}} src={Base.getImgUrl(header)} alt=''/>}
 		</div>
     }
     //上传
@@ -220,14 +220,25 @@ export default class MemberManager extends BaseComponent {
         return <div>{text}</div>;
     }
     renderSwitch(text, record, column) {
-        return (
-            <Switch
-                checked={parseInt(record[column], 10) === 1}
-                onChange={value =>
-                    this.onSwitch(record.id, value ? 1 : 0, column)
-                }
-            />
-        );
+        if(column === 'enable'){
+            return (
+                <Switch
+                    checked={parseInt(record[column], 10) === 0}
+                    onChange={value =>
+                        this.onSwitch(record.id, value ? 0 : 1, column)
+                    }
+                />
+            );
+        }else {
+            return (
+                <Switch
+                    checked={parseInt(record[column], 10) === 1}
+                    onChange={value =>
+                        this.onSwitch(record.id, value ? 1 : 0, column)
+                    }
+                />
+            );
+        }
     }
     //是否启用
     @action.bound
@@ -236,7 +247,7 @@ export default class MemberManager extends BaseComponent {
         const itemData = list.find(item => id === item.id);
         itemData[column] = value;
         if(column === 'enable'){
-            console.log(id);
+            this.onSaveState(id,column);
         }else{
             this.onSave(id);
         }
@@ -248,13 +259,11 @@ export default class MemberManager extends BaseComponent {
     }
     //test
     @action.bound
-    onSaveState(id){
+    onSaveState(id,option){
         const list = this.store.list.slice();
         const itemData = this.store.list.find(item => id === item.id);
-
-        // console.log(itemData,"itemDataitemDataitemDataitemData")
-        Base.POST(
-            { act: "user", op: "save", mod: "admin", ...itemData },
+        Base.GET(
+            {act: "user", op: "save", mod: "admin", job:option, ...itemData},
             res => {
                 itemData.editable = false;
                 itemData.updated_at = Base.getTimeFormat(
