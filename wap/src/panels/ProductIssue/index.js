@@ -64,6 +64,8 @@ class ImgItem extends BaseComponent {
     onAndroidUpload() {
         const self = this;
         window.inputMultiple = data => {
+            alert(typeof data);
+            alert(data);
             let arr = [];
             try {
                 arr = JSON.parse(data) || [];
