@@ -417,6 +417,7 @@ class Robot extends API_Controller {
 				$this->ajaxReturn([], 5, '请先上传机器人昵称');
 			}
 
+			$count = 0;
 			$c_header = count($a_header) - 1;
 			$c_nickname = count($a_nickname) - 1;
 			for($i = 0; $i < $num; $i++){
@@ -426,9 +427,11 @@ class Robot extends API_Controller {
 				$k_nickname = mt_rand(0, $c_nickname);
 				$nickname = $a_nickname[$k_nickname]['nickname'];
 
-				$rows[] = [
-					'created_at' => $date,
-					'updated_at' => $date,
+				$get_next_id = $this->Users_model->get_next_id();
+				$rows = [
+					'id' => mt_rand($get_next_id, $get_next_id + 10000),
+					// 'created_at' => $date,
+					// 'updated_at' => $date,
 					'account' => $nickname,
 					'password' => $this->Users_model->get_password($password),
 					'header' => $header,
@@ -436,12 +439,14 @@ class Robot extends API_Controller {
 					'sex' => mt_rand(0, 2),
 					'robot' => 1
 				];
+				$this->Users_model->insert($rows);
+				$count++;
 			}
 
-			$count = count($rows);
+			/*$count = count($rows);
 			if($rows){
 				$this->db->insert_batch($this->Users_model->table(), $rows);
-			}
+			}*/
 			$this->ajaxReturn([], 0, '生成机器人数: '.$count);
 		}else{
 			$this->ajaxReturn([], 1, '请输入本次生成机器人数量');
