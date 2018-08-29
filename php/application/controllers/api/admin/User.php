@@ -16,6 +16,86 @@ class User extends API_Controller {
     }
 
     /**
+	 * @api {post} /api/admin/user/save 用户信息-修改
+	 * @apiVersion 1.0.0
+	 * @apiName user_save
+	 * @apiGroup admin
+	 *
+	 * @apiSampleRequest /api/admin/user/save
+	 *
+	 * @apiParam {Number} admin_id 管理员唯一ID
+	 * @apiParam {String} account 登录账号
+	 * @apiParam {String} sign 校验签名
+	 * @apiParam {Number} id 会员唯一ID
+	 * @apiParam {String} job 操作动作 [头像:header, 昵称:nickname, 停启用:enable]
+	 *
+	 * @apiDescription
+	 * header传递参数：header
+	 * nickname传递参数：nickname
+	 * enable传递参数：enable 0禁用 1启用
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 *	{
+	 *	    "data": "",
+	 *	    "status": 0,
+	 *	    "message": "成功"
+	 *	}
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+	public function save()
+	{
+		$ret = array();
+		$id = $this->input->get_post('id');
+		$job = $this->input->get_post('job');
+		switch($job){
+			case 'header':
+				$header = $this->input->get_post('header');
+				if(!$header){
+					$this->ajaxReturn([], 1, '请上传头像');
+				}
+				$update = array('header' => $header);
+				break;
+			case 'nickname':
+				$nickname = $this->input->get_post('nickname');
+				if(!$nickname){
+					$this->ajaxReturn([], 1, '请输入昵称');
+				}
+				$update = array('nickname' => $nickname);
+				break;
+			case 'enable':
+				$enable = $this->input->get_post('enable');
+				if(!in_array($enable, array(0, 1))){
+					$this->ajaxReturn([], 1, '0禁用 1启用');
+				}
+				$update = array('enable' => $enable);
+				break;
+			default :
+				$this->ajaxReturn([], 1, '未知操作');
+				break;
+		}
+
+		$flag = $this->Users_model->update($id, $update);
+		if($flag){
+			$status = 0;
+			$message = '成功';
+		}else{
+			$status = 1;
+			$message = '失败';
+		}
+		$this->ajaxReturn($ret, $status, '操作'.$message);
+	}
+
+    /**
 	 * @api {get} /api/admin/user 用户管理-列表
 	 * @apiVersion 1.0.0
 	 * @apiName user
