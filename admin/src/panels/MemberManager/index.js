@@ -9,7 +9,9 @@ import {
     Button,
     Spin,
     message,
-    Select
+    Select,
+    Upload,
+    Icon
 } from "antd";
 import { remove } from "lodash";
 import { EditorModal } from "../../components/EditorModal";
@@ -30,9 +32,9 @@ export default class MemberManager extends BaseComponent {
                 title: "昵称",
                 dataIndex: "nickname",
                 width: 150,
-                fixed: "left",
+                // fixed: "left",
                 render: (text, record) =>
-                    this.renderText(text, record, "nickname")
+                    this.renderInput(text, record, "nickname")
             },
             {
                 title: "手机号",
@@ -104,21 +106,29 @@ export default class MemberManager extends BaseComponent {
                 title: "是否猎头",
                 dataIndex: "headhunter",
                 width: 120,
-                fixed: "right",
+                // fixed: "right",
                 render: (text, record) =>
                     this.renderSwitch(text, record, "headhunter")
+            },
+            {
+                title: "是否冻结",
+                dataIndex: "enable",
+                width: 120,
+                // fixed: "right",
+                render: (text, record) =>
+                    this.renderSwitch(text, record, "enable")
             },
             {
                 title: "操作",
                 dataIndex: "operation",
                 width: 150,
-                fixed: "right",
+                // fixed: "right",
                 render: (text, record) => {
-                    const { headhunter, id } = record;
+                    const { headhunter, editable,id } = record;
                     return (
                         <div className="editable-row-operations">
                             {parseInt(headhunter) ? (
-                                <span>
+                                <span className="mr10">
                                     <a
                                         onClick={() =>
                                             Base.push("HeadHuntingList", {
@@ -130,26 +140,89 @@ export default class MemberManager extends BaseComponent {
                                     </a>
                                 </span>
                             ) : null}
+                            {
+                                editable ?
+                                <span>
+                                    <a onClick={() => this.onSaveState(id)}>保存</a>
+                                    <a className='ml10 gray' onClick={() => this.onCancel(id)}>取消</a>
+                                </span>
+                                :
+                                <span>
+                                    <a onClick={() => this.onEditChange(id,true,'editable')}>编辑</a>
+                                </span>
+                            }
                         </div>
                     );
                 }
             }
         ];
     }
-    renderImg(text, record, column) {
-        return (
-            <div className="header-con">
-                <img className="header" src={Base.getImgUrl(text)} alt="" />
-            </div>
-        );
+    //编辑
+	@action.bound
+	onEditChange(id,value,column) {
+		const list = this.store.list.slice();
+		const itemData = list.find(item=>id === item.id);
+		itemData[column] = value;
+		this.store.list = list;
+	}
+    renderInput(text, record, column){
+		const {editable} = record;
+		return (
+			<div>
+				{editable
+					? <Input style={{ margin: '-5px 0' }} value={text} type={column==='sort'?'number':'text'} onChange={e => this.onEditChange(record.id, e.target.value, column)} />
+					: text
+				}
+			</div>
+		)
+	}
+    // renderImg(text, record, column) {
+    //     return (
+    //         <div className="header-con">
+    //             <img className="header" src={Base.getImgUrl(text)} alt="" />
+    //         </div>
+    //     );
+    // }
+    renderImg(text,record,column){
+		const {editable,icon,loading} = record;
+		return <div>
+			{editable?<Upload
+				name="field"
+				data={{'field':'field'}}
+				listType="picture-card"
+				showUploadList={false}
+				action={Global.UPLOAD_URL}
+				onChange={(e)=>this.onUploadChange(e,record.id)}
+			>
+				{icon?<img className='img-uploader' style={{width:'120px'}} src={Base.getImgUrl(icon)} alt=''/>:<div>
+					<Icon type={loading ? 'loading' : 'plus'} />
+					<div className="ant-upload-text">上传</div>
+				</div>}
+			</Upload>:<img className='img-uploader'  style={{width:'120px'}} src={Base.getImgUrl(icon)} alt=''/>}
+		</div>
     }
+    //上传
+	@action.bound
+	onUploadChange(info,id){
+		const list = this.store.list.slice();
+		const itemData = list.find(item=>id === item.id);
+		if (info.file.status === 'uploading') {
+			itemData.loading = true;
+			return this.store.list = list;
+		}
+		if (info.file.status === 'done') {
+			itemData.loading = false;
+			itemData.header = info.file.response.data.file_url;
+			return this.store.list = list;
+		}
+	}
     renderText(text, record, column) {
         return <div>{text}</div>;
     }
     renderSwitch(text, record, column) {
         return (
             <Switch
-                checked={parseInt(record.headhunter, 10) === 1}
+                checked={parseInt(record[column], 10) === 1}
                 onChange={value =>
                     this.onSwitch(record.id, value ? 1 : 0, column)
                 }
@@ -162,8 +235,38 @@ export default class MemberManager extends BaseComponent {
         const list = this.store.list.slice();
         const itemData = list.find(item => id === item.id);
         itemData[column] = value;
-        console.log(itemData, "itemData");
-        this.onSave(id);
+        if(column === 'enable'){
+            console.log(id);
+        }else{
+            this.onSave(id);
+        }
+    }
+    //取消
+	@action.bound
+	onCancel(id) {
+		this.store.list = this.cacheData.map(item => ({ ...item }));
+    }
+    //test
+    @action.bound
+    onSaveState(id){
+        const list = this.store.list.slice();
+        const itemData = this.store.list.find(item => id === item.id);
+
+        // console.log(itemData,"itemDataitemDataitemDataitemData")
+        Base.POST(
+            { act: "user", op: "save", mod: "admin", ...itemData },
+            res => {
+                itemData.editable = false;
+                itemData.updated_at = Base.getTimeFormat(
+                    new Date().getTime() / 1000,
+                    2
+                );
+                itemData.id === 0 && (itemData.id = res.data.id);
+                this.store.list = list;
+                this.cacheData = list.map(item => ({ ...item }));
+            },
+            this
+        );
     }
     //保存
     @action.bound
