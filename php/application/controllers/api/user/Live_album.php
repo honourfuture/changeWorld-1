@@ -26,6 +26,17 @@ class Live_album extends API_Controller {
     	}
     }
 
+    public function untop()
+    {
+    	$id = $this->input->get_post('id');
+
+    	if($this->Album_model->update($id, ['sort' => 0])){
+    		$this->ajaxReturn();
+    	}else{
+    		$this->ajaxReturn([], 1, '置顶失败');
+    	}
+    }
+
     /**
 	 * @api {get} /api/user/live_album 我的专辑-列表
 	 * @apiVersion 1.0.0
