@@ -62,12 +62,23 @@ class ImgItem extends BaseComponent {
     }
     @action.bound
     onAndroidUpload() {
+        const { isRequired } = this.props;
         const self = this;
+        const limit = isRequired ? 6 : 16;
+        const len = limit - self.props.fileName.length;
+        if (len <= 0) {
+            return (this.store.isShowTips = true);
+        }
         window.inputMultiple = data => {
-            action(() => self.props.fileName.push({ file_url: data }))();
+            action(() => {
+                self.props.fileName.push({ file_url: data });
+                if (self.props.fileName.length >= limit) {
+                    self.store.isShowTips = true;
+                }
+            })();
         };
         window.Native.callImagePickActionSheet(
-            (6 - self.props.fileName.length).toString(),
+            (limit - self.props.fileName.length).toString(),
             "inputMultiple"
         );
     }
