@@ -94,6 +94,9 @@ class Audio extends API_Controller {
 			//专辑
 			$this->db->select('cover_image,title');
 			$this->load->model('Album_model');
+			$this->db->set('play_times', 'play_times + 1', false);
+			$this->db->where('id', $info['album_id']);
+			$this->db->update($this->Album_model->table());
 			$ret['album'] = $this->Album_model->get($info['album_id']);
 			$ret['album']['audio_num'] = $this->Room_audio_model->count_by(['album_id' => $info['album_id']]);
 

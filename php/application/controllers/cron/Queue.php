@@ -109,6 +109,7 @@ class Queue extends MY_Controller
     	$rows = $this->Queue_model->order_by('exe_times')->limit(5, 0)->get_many_by(['main_type' => 'audio_play', 'status' => 0]);
     	if($rows){
     		$this->load->model('Room_audio_model');
+            $this->load->model('Album_model');
     		foreach($rows as $row){
     			$row['params'] = json_decode($row['params'], true);
     			$cache_id = 'audio_play_'.$row['params']['id'].'_'.$row['id'];
@@ -147,6 +148,15 @@ class Queue extends MY_Controller
     				$this->db->set('play_times', 'play_times +'.$step_num, false);
     				$this->db->where('id', $row['params']['id']);
     				$this->db->update($this->Room_audio_model->table());
+
+
+                    $this->db->select('album_id');
+                    $audio = $this->Room_audio_model->get($row['params']['id']);
+                    if($audio && $audio['album_id']){
+                        $this->db->set('play_times', 'play_times +'.$step_num, false);
+                        $this->db->where('id', $audio['album_id']);
+                        $this->db->update($this->Album_model->table());
+                    }
 
     				$cache += $step_num;
     				$this->cache->file->save($cache_id, $cache, 0);

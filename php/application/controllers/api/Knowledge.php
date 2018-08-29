@@ -276,7 +276,7 @@ class Knowledge extends API_Controller
             $where = array('enable' => 1, 'public' => 1, 'album_class' => $album_class_id);
             $ret['count'] = $this->Album_model->count_by($where);
             if($ret['count']){
-                $order_by = array('sort' => 'desc', 'id' => 'desc');
+                $order_by = array('sort' => 'desc', 'play_times' => 'desc', 'id' => 'desc');
                 $this->db->select('id,cover_image,title,price,anchor_uid');
                 if($list = $this->Album_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where)){
                     $a_uid = [];
