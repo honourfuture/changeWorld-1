@@ -135,8 +135,8 @@ class User extends API_Controller {
 		$ret['seller_status'] = $this->Users_model->seller();
 
 		$where = [];
-		$where['1 >'] = 0;
-		// $where['robot'] = 0;
+		// $where['1 >'] = 0;
+		$where['robot'] = 0;
 
 		$order_by = array('id' => 'desc');
 		$this->search();

@@ -105,13 +105,14 @@ class Room extends API_Controller {
 	{
 		$id = $this->input->get_post('id');
 		$filename = $this->input->get_post('filename');
+		$origin_filename = $this->input->get_post('origin_filename');
 		$file = FCPATH.$filename;
 		if($id){
 			if(file_exists($file)){
 				if(! $a_line = file($file)){
 					$this->ajaxReturn([], 3, '读取文件失败: '.$file);
 				}
-				$this->Room_model->update($id, ['chat_file' => $file, 'chat_line' => 0]);
+				$this->Room_model->update($id, ['chat_file' => $file, 'chat_line' => 0, 'origin_filename' => $origin_filename]);
 				$this->ajaxReturn();
 			}else{
 				$this->ajaxReturn([], 2, '聊天文件(TXT)未上传');
