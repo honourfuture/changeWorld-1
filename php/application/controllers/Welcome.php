@@ -162,7 +162,7 @@ class Welcome extends Web_Controller
             'article_class', 'bank', 'config', 'express', 'goods_attr_category',
             'goods_class', 'grade', 'help', 'live_class', 'live_gift',
             'live_tag', 'mailbox', 'pretty', 'recharge', 'search_words',
-            'security_question', 'vip',
+            'security_question', 'vip', 'robot_nickname', 'robot_header'
         ];
         $tables = $this->db->list_tables();
 
