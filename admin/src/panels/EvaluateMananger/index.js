@@ -43,21 +43,18 @@ export default class EvaluateMananger extends BaseComponent {
             {
                 title: "订单编号",
                 dataIndex: "order_sn",
-                width: "15%",
                 render: (text, record) =>
                     this.renderText(text, record, "order_sn")
             },
             {
                 title: "买家姓名",
                 dataIndex: "user_id",
-                width: "10%",
                 render: (text, record) =>
                     this.renderText(this.user[text].nickname, record, "user_id")
             },
             {
                 title: "卖家姓名",
                 dataIndex: "seller_uid",
-                width: "10%",
                 render: (text, record) =>
                     this.renderText(
                         this.user[text].nickname,
@@ -81,23 +78,42 @@ export default class EvaluateMananger extends BaseComponent {
             {
                 title: "评价时间",
                 dataIndex: "created_at",
-                width: "15%",
                 render: (text, record) =>
                     this.renderText(text, record, "created_at")
             },
             {
                 title: "评价内容",
                 dataIndex: "remark",
-                width: "20%",
+                width: 300,
                 render: (text, record) =>
                     this.renderText(text, record, "remark")
             },
             {
                 title: "评价图片",
                 dataIndex: "photos",
-                width: "15%",
                 render: (text, record) =>
                     this.renderPhotos(text, record, "photos")
+            },
+            {
+                title: "操作",
+                dataIndex: "operation",
+                render: (text, record) => {
+                    const { editable, id } = record;
+                    return (
+                        <div className="editable-row-operations">
+                            <span>
+                                <Popconfirm
+                                    title="确认删除?"
+                                    okText="确定"
+                                    cancelText="取消"
+                                    onConfirm={() => this.onDelete(id)}
+                                >
+                                    <a>删除</a>
+                                </Popconfirm>
+                            </span>
+                        </div>
+                    );
+                }
             }
         ];
     }
@@ -122,6 +138,14 @@ export default class EvaluateMananger extends BaseComponent {
             );
         }
         return <div>无评价图片</div>;
+    }
+    onDelete(id) {
+        Base.POST(
+            { act: "order_evaluate", op: "del", mod: "admin", id },
+            res => {
+                remove(this.store.list, item => id === item.id);
+            }
+        );
     }
     //搜索
     searchStr = "";
@@ -180,14 +204,14 @@ export default class EvaluateMananger extends BaseComponent {
                 wrapperClassName="EvaluateMananger"
                 spinning={false}
             >
-                <div className="pb10">
+                {/* <div className="pb10">
                     <Search
                         placeholder="搜索订单号"
                         enterButton
                         onSearch={this.onSearch}
                         style={{ width: 160, marginRight: 10 }}
                     />
-                </div>
+                </div> */}
                 <Table
                     className="mt16"
                     onChange={this.onTableHandler}

@@ -69,7 +69,13 @@ import DirectManager from './DirectManager';
 import CollectTask from './CollectTask';
 import LiveStart from './LiveStart';
 import ActivityTask from './ActivityTask';
+import LiveEvaluateManager from './LiveEvaluateManager';
 export const panelsList = [
+    {
+        path:'/live/LiveEvaluateManager',
+        component:LiveEvaluateManager,
+        title:'专辑评价',
+    },
     {
         path:'/robot/ActivityTask',
         component:ActivityTask,

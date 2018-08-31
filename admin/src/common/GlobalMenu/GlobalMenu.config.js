@@ -109,6 +109,10 @@ const menuData = [
             {
                 name: "音频管理",
                 path: "AudioManager"
+            },
+            {
+                name: "专辑评价",
+                path: "LiveEvaluateManager"
             }
         ]
     },
