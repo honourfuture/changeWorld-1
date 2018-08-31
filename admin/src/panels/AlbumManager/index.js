@@ -87,7 +87,7 @@ export default class AlbumManager extends BaseComponent {
                 // width: 150,
                 // fixed: "right",
                 render: (text, record) => {
-                    const { id } = record;
+                    const { id,sort } = record;
                     return (
                         <div className="editable-row-operations">
                             <span>
@@ -99,6 +99,17 @@ export default class AlbumManager extends BaseComponent {
                                 >
                                     <a className="ml10">置顶</a>
                                 </Popconfirm>
+                                {
+                                    sort > 0 ? <Popconfirm
+                                                    title="确认取消置顶?"
+                                                    okText="确定"
+                                                    cancelText="取消"
+                                                    onConfirm={() => this.onUnTop(id)}
+                                                >
+                                                    <a className="ml10 gray">取消置顶</a>
+                                                </Popconfirm> :
+                                            null
+                                }
                                 <Popconfirm
                                     title="确认删除?"
                                     okText="确定"
@@ -187,6 +198,21 @@ export default class AlbumManager extends BaseComponent {
             {
                 act: "live_album",
                 op: "top",
+                mod: "user",
+                id
+            },
+            () => {
+                this.current = 1;
+                this.requestData();
+            }
+        );
+    }
+    @action.bound
+    onUnTop(id) {
+        Base.GET(
+            {
+                act: "live_album",
+                op: "untop",
                 mod: "user",
                 id
             },
