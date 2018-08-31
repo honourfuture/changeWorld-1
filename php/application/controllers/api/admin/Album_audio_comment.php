@@ -82,14 +82,14 @@ class Album_audio_comment extends API_Controller {
 				//专辑信息
 				$this->load->model('Album_model');
 				$this->db->select('id,title,price');
-				$order = $this->Album_model->get_many($a_order);
+				$order = $this->Album_model->get_many($a_album);
 				foreach($order as $item){
 					$ret['album'][$item['id']] = $item;
 				}
 				//音频信息
 				$this->load->model('Room_audio_model');
 				$this->db->select('id,title,price');
-				$order = $this->Room_audio_model->get_many($a_order);
+				$order = $this->Room_audio_model->get_many($a_audio);
 				foreach($order as $item){
 					$ret['audio'][$item['id']] = $item;
 				}
