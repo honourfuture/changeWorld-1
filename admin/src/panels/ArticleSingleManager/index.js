@@ -120,7 +120,11 @@ export default class ArticleSingleManager extends BaseComponent{
 				<span>{item.title}</span>
 			</Menu.Item>
 		})
-		const content = curData.content || '';
+		// const content = curData.content || '';
+		let content = curData.content || "";
+        try {
+            content = decodeURIComponent(content);
+        } catch (error) {}
 		return (
 			<Spin ref='spin' wrapperClassName='ArticleSingleManager' spinning={false}>
 				<Row type='flex'>

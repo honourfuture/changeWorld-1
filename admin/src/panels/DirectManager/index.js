@@ -103,7 +103,7 @@ export default class DirectManager extends BaseComponent{
 				title: '开启/关闭自动聊天',
 				dataIndex: 'chat_stop',
 				render: (text, record) => this.renderSwitch(text, record, 'chat_stop'),
-			}, 
+			},
             {
                 title: "聊天文件操作",
                 dataIndex: "operation",
@@ -126,7 +126,12 @@ export default class DirectManager extends BaseComponent{
                         </div>
                     );
                 }
-            }
+			},
+			{
+                title: "文件名",
+                dataIndex: "origin_filename",
+                render: (text, record) => this.renderText(text, record, "origin_filename")
+			},
         ];
 	}
 	renderText(text, record, column) {
@@ -171,6 +176,7 @@ export default class DirectManager extends BaseComponent{
 	}
 	@action.bound
     onUploadChange(info,id) {
+		console.log(info,"info")
         if (info.file.status === "uploading") {
             return false;
         }
@@ -181,7 +187,8 @@ export default class DirectManager extends BaseComponent{
                     op: "chat_file",
 					mod: "admin",
 					id:id,
-                    filename: info.file.response.data.file_url
+					filename: info.file.response.data.file_url,
+					origin_filename:info.file.name
                 },
                 res => {
                     this.cur_page = 1;

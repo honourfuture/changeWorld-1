@@ -22,7 +22,11 @@ export class EditorModal extends BaseComponent {
         this.store.isEdit = true;
         this.curId = id;
 
-        const html = content || "";
+        // const html = content || "";
+        let html = content || "";
+        try {
+            html = decodeURIComponent(html);
+        } catch (error) {}
         const contentBlock = htmlToDraft(html);
         if (contentBlock) {
             const contentState = ContentState.createFromBlockArray(
@@ -43,7 +47,7 @@ export class EditorModal extends BaseComponent {
             convertToRaw(this.refs.editor.state.editorState.getCurrentContent())
         );
         const { onComplete } = this.props;
-        onComplete && onComplete(content, this.curId);
+        onComplete && onComplete(encodeURIComponent(content), this.curId);
     }
     @action.bound
     onEditorStateChange(editorState) {
@@ -59,9 +63,10 @@ export class EditorModal extends BaseComponent {
                         base64_image_content: encodeURIComponent(info)
                     },
                     res => {
-                        resolve({
-                            data: { link: Base.getImgUrl(res.data.file_url) }
-                        });
+                        // resolve({
+                        //     data: { link: Base.getImgUrl(res.data.file_url) }
+                        // });
+                        resolve({ data: Base.getImgUrl(res.data.file_url) });
                     },
                     null,
                     res => {
