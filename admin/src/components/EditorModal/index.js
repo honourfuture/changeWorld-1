@@ -22,7 +22,6 @@ export class EditorModal extends BaseComponent {
         this.store.isEdit = true;
         this.curId = id;
 
-        // const html = content || "";
         let html = content || "";
         try {
             html = decodeURIComponent(html);
@@ -63,10 +62,9 @@ export class EditorModal extends BaseComponent {
                         base64_image_content: encodeURIComponent(info)
                     },
                     res => {
-                        // resolve({
-                        //     data: { link: Base.getImgUrl(res.data.file_url) }
-                        // });
-                        resolve({ data: Base.getImgUrl(res.data.file_url) });
+                        resolve({
+                            data: { link: Base.getImgUrl(res.data.file_url) }
+                        });
                     },
                     null,
                     res => {
