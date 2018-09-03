@@ -23,7 +23,7 @@ class Article_model extends MY_Model
     {
     	return array(
     		'about_us' => '关于我们',
-    		'join_us' => '加入我们',
+    		// 'join_us' => '加入我们',
     		'contact_us' => '联系我们',
     		'protocol' => '用户协议',
             'protocol_anchor' => '主播协议',
