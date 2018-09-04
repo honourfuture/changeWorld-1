@@ -126,7 +126,7 @@ class Search extends API_Controller {
         $ret['count'] = $this->Users_model->count_by($where);
         if($ret['count']){
             $order_by = array('sort' => 'desc', 'updated_at' => 'desc');
-            $this->db->select('id,nickname,v,exp,header,summary');
+            $this->db->select('id,nickname,v,exp,header,summary,pretty_id');
 
             $this->db->group_start();
             $this->db->like('nickname', $this->keyword);
@@ -188,7 +188,7 @@ class Search extends API_Controller {
 		$ret['count'] = $this->Users_model->count_by($where);
 		if($ret['count']){
 			$order_by = array('sort' => 'desc', 'updated_at' => 'desc');
-			$this->db->select('id,nickname,v,exp,header,summary');
+			$this->db->select('id,nickname,v,exp,header,summary,pretty_id');
 
 			$this->db->group_start();
 			$this->db->like('nickname', $this->keyword);
