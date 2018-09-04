@@ -14,6 +14,14 @@ class Info extends API_Controller {
         $this->load->model('Users_model');
     }
 
+    public function onoff()
+    {
+    	$ret = [];
+    	$ret['onoff'] = 0;
+
+    	$this->ajaxReturn($ret);
+    }
+
     /**
 	 * @api {post} /api/user/info/bind_device_uuid 用户信息-绑定极光registration_id
 	 * @apiVersion 1.0.0
