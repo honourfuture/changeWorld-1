@@ -680,6 +680,7 @@ class Notify extends API_Controller
                         if($room_info = $this->Room_model->get($room_id)){
                             $insert['title'] = $room_info['title'];
                             $insert['cover_image'] = $room_info['cover_image'];
+                            $insert['play_times'] = $room_info['views'];
                         }
 
                         $this->Room_audio_model->insert($insert);
