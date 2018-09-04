@@ -118,6 +118,7 @@ class Search extends API_Controller {
         $this->db->group_start();
         $this->db->like('nickname', $this->keyword);
         $this->db->or_where('id', $this->keyword);
+        $this->db->or_where('pretty_id', $this->keyword);
         $this->db->group_end();
 
         $this->load->model('Users_model');
@@ -130,6 +131,7 @@ class Search extends API_Controller {
             $this->db->group_start();
             $this->db->like('nickname', $this->keyword);
             $this->db->or_where('id', $this->keyword);
+            $this->db->or_where('pretty_id', $this->keyword);
             $this->db->group_end();
 
             $list = $this->Users_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
