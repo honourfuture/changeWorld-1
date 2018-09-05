@@ -8,6 +8,7 @@ $config['unLogin'] = [//控制器=>方法
 	'api/user/login' => ['*'],
 	'api/user/register' => ['*'],
 	'api/user/cart' => ['count'],
+	'/api/user/info/' => ['onoff'],
 
 	'api/share' => ['*'],
 	'api/common' => ['*'],
