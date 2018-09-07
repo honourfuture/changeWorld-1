@@ -124,7 +124,7 @@ export default class MemberManager extends BaseComponent {
                 width: 150,
                 // fixed: "right",
                 render: (text, record) => {
-                    const { headhunter, editable,id } = record;
+                    const { headhunter, editable, id } = record;
                     return (
                         <div className="editable-row-operations">
                             {parseInt(headhunter) ? (
@@ -140,17 +140,37 @@ export default class MemberManager extends BaseComponent {
                                     </a>
                                 </span>
                             ) : null}
-                            {
-                                editable ?
+                            {editable ? (
                                 <span>
-                                    <a onClick={() => this.onSaveState(id,"edit")}>保存</a>
-                                    <a className='ml10 gray' onClick={() => this.onCancel(id)}>取消</a>
+                                    <a
+                                        onClick={() =>
+                                            this.onSaveState(id, "edit")
+                                        }
+                                    >
+                                        保存
+                                    </a>
+                                    <a
+                                        className="ml10 gray"
+                                        onClick={() => this.onCancel(id)}
+                                    >
+                                        取消
+                                    </a>
                                 </span>
-                                :
+                            ) : (
                                 <span>
-                                    <a onClick={() => this.onEditChange(id,true,'editable')}>编辑</a>
+                                    <a
+                                        onClick={() =>
+                                            this.onEditChange(
+                                                id,
+                                                true,
+                                                "editable"
+                                            )
+                                        }
+                                    >
+                                        编辑
+                                    </a>
                                 </span>
-                            }
+                            )}
                         </div>
                     );
                 }
@@ -158,24 +178,32 @@ export default class MemberManager extends BaseComponent {
         ];
     }
     //编辑
-	@action.bound
-	onEditChange(id,value,column) {
-		const list = this.store.list.slice();
-		const itemData = list.find(item=>id === item.id);
-		itemData[column] = value;
-		this.store.list = list;
-	}
-    renderInput(text, record, column){
-		const {editable} = record;
-		return (
-			<div>
-				{editable
-					? <Input style={{ margin: '-5px 0' }} value={text} type={column==='sort'?'number':'text'} onChange={e => this.onEditChange(record.id, e.target.value, column)} />
-					: text
-				}
-			</div>
-		)
-	}
+    @action.bound
+    onEditChange(id, value, column) {
+        const list = this.store.list.slice();
+        const itemData = list.find(item => id === item.id);
+        itemData[column] = value;
+        this.store.list = list;
+    }
+    renderInput(text, record, column) {
+        const { editable } = record;
+        return (
+            <div>
+                {editable ? (
+                    <Input
+                        style={{ margin: "-5px 0" }}
+                        value={text}
+                        type={column === "sort" ? "number" : "text"}
+                        onChange={e =>
+                            this.onEditChange(record.id, e.target.value, column)
+                        }
+                    />
+                ) : (
+                    text
+                )}
+            </div>
+        );
+    }
     // renderImg(text, record, column) {
     //     return (
     //         <div className="header-con">
@@ -183,44 +211,64 @@ export default class MemberManager extends BaseComponent {
     //         </div>
     //     );
     // }
-    renderImg(text,record,column){
-		const {editable,header,loading} = record;
-		return <div>
-			{editable?<Upload
-				name="field"
-				data={{'field':'field'}}
-				listType="picture-card"
-				showUploadList={false}
-				action={Global.UPLOAD_URL}
-				onChange={(e)=>this.onUploadChange(e,record.id)}
-			>
-				{header?<img className='img-uploader' style={{width:'120px'}} src={Base.getImgUrl(header)} alt=''/>:<div>
-					<Icon type={loading ? 'loading' : 'plus'} />
-					<div className="ant-upload-text">上传</div>
-				</div>}
-			</Upload>:<img className='img-uploader'  style={{width:'120px'}} src={Base.getImgUrl(header)} alt=''/>}
-		</div>
+    renderImg(text, record, column) {
+        const { editable, header, loading } = record;
+        return (
+            <div>
+                {editable ? (
+                    <Upload
+                        name="field"
+                        data={{ field: "field" }}
+                        listType="picture-card"
+                        showUploadList={false}
+                        action={Global.UPLOAD_URL}
+                        onChange={e => this.onUploadChange(e, record.id)}
+                    >
+                        {header ? (
+                            <img
+                                className="img-uploader"
+                                style={{ width: "120px" }}
+                                src={Base.getImgUrl(header)}
+                                alt=""
+                            />
+                        ) : (
+                            <div>
+                                <Icon type={loading ? "loading" : "plus"} />
+                                <div className="ant-upload-text">上传</div>
+                            </div>
+                        )}
+                    </Upload>
+                ) : (
+                    <img
+                        className="img-uploader"
+                        style={{ width: "120px" }}
+                        src={Base.getImgUrl(header)}
+                        alt=""
+                    />
+                )}
+            </div>
+        );
     }
     //上传
-	@action.bound
-	onUploadChange(info,id){
-		const list = this.store.list.slice();
-		const itemData = list.find(item=>id === item.id);
-		if (info.file.status === 'uploading') {
-			itemData.loading = true;
-			return this.store.list = list;
-		}
-		if (info.file.status === 'done') {
-			itemData.loading = false;
-			itemData.header = info.file.response.data.file_url;
-			return this.store.list = list;
-		}
-	}
+    @action.bound
+    onUploadChange(info, id) {
+        const list = this.store.list.slice();
+        const itemData = list.find(item => id === item.id);
+        if (info.file.status === "uploading") {
+            itemData.loading = true;
+            return (this.store.list = list);
+        }
+        if (info.file.status === "done") {
+            itemData.loading = false;
+            itemData.header = info.file.response.data.file_url;
+            return (this.store.list = list);
+        }
+    }
     renderText(text, record, column) {
         return <div>{text}</div>;
     }
     renderSwitch(text, record, column) {
-        if(column === 'enable'){
+        if (column === "enable") {
             return (
                 <Switch
                     checked={parseInt(record[column], 10) === 0}
@@ -229,7 +277,7 @@ export default class MemberManager extends BaseComponent {
                     }
                 />
             );
-        }else {
+        } else {
             return (
                 <Switch
                     checked={parseInt(record[column], 10) === 1}
@@ -246,24 +294,24 @@ export default class MemberManager extends BaseComponent {
         const list = this.store.list.slice();
         const itemData = list.find(item => id === item.id);
         itemData[column] = value;
-        if(column === 'enable'){
-            this.onSaveState(id,column);
-        }else{
+        if (column === "enable") {
+            this.onSaveState(id, column);
+        } else {
             this.onSave(id);
         }
     }
     //取消
-	@action.bound
-	onCancel(id) {
-		this.store.list = this.cacheData.map(item => ({ ...item }));
+    @action.bound
+    onCancel(id) {
+        this.store.list = this.cacheData.map(item => ({ ...item }));
     }
     //test
     @action.bound
-    onSaveState(id,option){
+    onSaveState(id, option) {
         const list = this.store.list.slice();
         const itemData = this.store.list.find(item => id === item.id);
         Base.GET(
-            {act: "user", op: "save", mod: "admin", job:option, ...itemData},
+            { act: "user", op: "save", mod: "admin", job: option, ...itemData },
             res => {
                 itemData.editable = false;
                 itemData.updated_at = Base.getTimeFormat(
@@ -349,6 +397,10 @@ export default class MemberManager extends BaseComponent {
                         onSearch={this.onSearch}
                         style={{ width: 200, marginLeft: 10 }}
                     />
+                    <span style={{ marginLeft: 20 }}>
+                        总数：
+                        {total}
+                    </span>
                 </div>
                 <Table
                     className="mt16"

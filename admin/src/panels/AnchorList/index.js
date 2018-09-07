@@ -372,6 +372,10 @@ export default class AnchorList extends BaseComponent {
                             {statusCon}
                         </Select>
                     ) : null}
+                    <span style={{ marginLeft: 20 }}>
+                        总数：
+                        {total}
+                    </span>
                 </div>
                 <Table
                     className="mt16"
