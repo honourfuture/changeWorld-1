@@ -450,8 +450,8 @@ class Robot extends API_Controller {
 				$this->Users_model->insert($rows);
 				$count++;
 
-				if($i && $i % 50 == 0){
-					sleep(1);
+				if($i && $i % 10 == 0){
+					usleep(5000);
 				}
 			}
 
