@@ -398,7 +398,7 @@ class Robot extends API_Controller {
 	{
 		set_time_limit(0);
 		$num = (int)$this->input->get_post('num');
-		$num = min($num, 500);
+		$num = min($num, 1000);
 		if($num){
 			$this->load->model('Users_model');
 			$rows = [];
@@ -449,6 +449,10 @@ class Robot extends API_Controller {
 				];
 				$this->Users_model->insert($rows);
 				$count++;
+
+				if($i && $i % 50 == 0){
+					sleep(1);
+				}
 			}
 
 			/*$count = count($rows);
