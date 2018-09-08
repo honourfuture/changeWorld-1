@@ -396,7 +396,9 @@ class Robot extends API_Controller {
 	 */
 	public function users_random()
 	{
+		set_time_limit(0);
 		$num = (int)$this->input->get_post('num');
+		$num = min($num, 500);
 		if($num){
 			$this->load->model('Users_model');
 			$rows = [];
