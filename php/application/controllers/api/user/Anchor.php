@@ -131,6 +131,13 @@ class Anchor extends API_Controller {
 			$this->input->post(),
 			UPDATE_VALID
 		);
+		$this->load->model('Users_model');
+		if($this->Users_model->get_by(['nickname' => $params['nickname']])){
+			$this->ajaxReturn([], 1, '主播昵称已存在');
+		}
+		if($this->Users_anchor_model->get_by(['nickname' => $params['nickname']])){
+			$this->ajaxReturn([], 1, '主播昵称已存在');
+		}
 		// $params['certificate_type'] = 1;//默认身份证
 		$params['user_id'] = $this->user_id;
 		$params['status'] = 1;//待审核
@@ -147,7 +154,6 @@ class Anchor extends API_Controller {
 			$this->Users_anchor_model->insert($params);
 		}
 
-		$this->load->model('Users_model');
 		$this->Users_model->update($this->user_id, ['anchor' => $params['status']]);
 
 		$this->ajaxReturn();
