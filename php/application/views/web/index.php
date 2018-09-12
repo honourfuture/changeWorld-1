@@ -13,6 +13,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 	.join .main ul li span{font-size: 24px;}
 	.join .main ul li span font{color:red;}
 	.join .main ul li p{line-height: 18px !important;height: 18px !important; padding-bottom: 5px !important;padding-left: 28px !important;}
+	.service .main ul li{padding: 15px !important;}
+	.service .main ul li span{line-height: 22px;height: 22px;font-size: 14px;margin: 5px;overflow: hidden;}
 </style>
 <link rel="stylesheet" href="assets/<?php echo $tpl;?>/css/style.css" />
 </head>
