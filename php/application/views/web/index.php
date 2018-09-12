@@ -39,8 +39,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 	<span class="banner_text" style="background:url('');">
 		<em style="position: absolute;top: 0px;font-size: 48px;color: #FFFF;">猪买单&middot;让世界免费！</em>
 		<em style="position: absolute;top: 0px;font-size: 32px;top: 64px;color: #FFFF;">Let the world free &middot; pig pay</em>
-    	<a href="">iPhone下载</a>
-    	<a href="">Andrond下载</a>
+    	<a href="https://itunes.apple.com/cn/app/%E7%8C%AA%E4%B9%B0%E5%8D%95/id1365334362?mt=8" target="_blank">iPhone下载</a>
+    	<a href="/uploads/2_1.0.1_20180905_legu_signed_zipalign.apk" target="_blank">Andrond下载</a>
     </span>
 </div>
 
@@ -138,7 +138,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
             <p>举例：邀请分享平台成功注册可以赠送积分参与抽奖有机会可得iphoneX等奖品 ！</p>
 
             <h2>【联系我们】</h2>
-            <p>官方网站：http://www.sizjshop.com</p>
+            <p>官方网站：<?php echo base_url();?></p>
             <p>官方微博：手机之家shop</p>
             <p>投诉建议：17603026456@163.com</p>
         </div>
