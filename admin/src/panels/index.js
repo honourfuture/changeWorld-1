@@ -70,7 +70,13 @@ import CollectTask from './CollectTask';
 import LiveStart from './LiveStart';
 import ActivityTask from './ActivityTask';
 import LiveEvaluateManager from './LiveEvaluateManager';
+import WebsiteGoods from './WebsiteGoods';
 export const panelsList = [
+    {
+        path:'/system/WebsiteGoods',
+        component:WebsiteGoods,
+        title:'官网产品',
+    },
     {
         path:'/live/LiveEvaluateManager',
         component:LiveEvaluateManager,
