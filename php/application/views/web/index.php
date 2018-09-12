@@ -9,7 +9,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>首页</title>
 <style type="text/css">
-	.join .main ul li{border: none !important;padding: 0px !important;}
+	.join .main ul li{border: none !important;padding: 0px !important;margin-bottom: 37px !important;}
 	.join .main ul li span{font-size: 24px;}
 	.join .main ul li span font{color:red;}
 	.join .main ul li p{line-height: 18px !important;height: 18px !important; padding-bottom: 5px !important;padding-left: 28px !important;}
@@ -25,9 +25,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
         <span class="nav">
 			<ul>
 				<li><a class="active" href="#section1">首页</a></li>
-				<!-- <li><a class="" href="#section2">下载APP</a></li> -->
-				<li><a class="" href="#section3">产品展示</a></li>
-				<li><a class="" href="#section4">关于我们</a></li>
+				<li><a class="" href="#section2">企业文化</a></li>
+				<li><a class="" href="#section3">最新动态</a></li>
+				<!-- <li><a class="" href="#section4">关于我们</a></li> -->
 				<!-- <li><a class="" href="#section5">申请入驻</a></li>
                 <li><a class="" href="#section6">加入我们</a></li> -->
 			</ul>
@@ -44,7 +44,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
     </span>
 </div>
 
-<div class="join" id="section">
+<div class="join" id="section2">
     <div class="main">
         <span class="title">企业文化<i></i><em>Culture Culture</em></span>
         <div style="width: 50%;float: left;padding-left: 10%;">
@@ -105,20 +105,23 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 <div class="service" id="section3">
 	<div class="main">
-    	<span class="title">名人推荐<i></i><em>Product Display</em></span>
+    	<span class="title">最新动态<i></i><em>Lastest News</em></span>
         <ul>
         	<?php if($goods){ ?>
         		<?php foreach ($goods as $key => $value) { ?>
-        			<li><a href="<?php echo $value['link'];?>" target="_blank">
-        				<img src="<?php echo $value['image'];?>">
-        			</a></li>
+        			<li>
+        				<a href="<?php echo $value['link'];?>" target="_blank">
+        					<img src="<?php echo $value['image'];?>">
+        					<span><?php echo $value['title'];?></span>
+	        			</a>
+	        		</li>
         		<?php } ?>
         	<?php } ?>
         </ul>
     </div>
 </div>
 
-<div class="about" id="section4">
+<!-- <div class="about" id="section4">
 	<div class="main">
     	<span class="title">关于我们<i></i><em>About Us</em></span>
         <span><img src="assets/<?php echo $tpl;?>/images/gy@img.png"></span>
@@ -143,7 +146,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
             <p>投诉建议：17603026456@163.com</p>
         </div>
    	</div>
-</div>
+</div> -->
 
 <!-- <div class="seller" id="section5">
     <div class="main">
@@ -234,14 +237,14 @@ defined('BASEPATH') or exit('No direct script access allowed');
 <div class="footer">
 	<div class="main">
     	<span class="temt">
-            <p>公司名称：深圳时创志信科技有限公司</p>
-            <p>公司地址：深圳市深圳市深圳市深圳市深圳市深圳市深圳市</p>
+            <p>公司名称：深圳亿万富翁有限公司</p>
+            <p>公司地址：深圳市前海深港合作区前湾一路1号A栋201室</p>
         </span>
         <span class="hone">
-        	<i>客服热线</i>
-            <em>075-8888888</em>
+        	<i>联系我们</i>
+            <em>zhumaidan@qq.com</em>
         </span>
-        <span class="wmau">Copyright ©2017 深圳时创志信科技有限公司 版权所有. All Rights reserved. 粤ICP备17001659号-1</span>
+        <span class="wmau">Copyright ©<?php echo date("Y");?> 深圳亿万富翁有限公司 版权所有. All Rights reserved. 粤ICP备17001659号-1</span>
     </div>
 </div>
 
