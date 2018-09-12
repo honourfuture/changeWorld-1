@@ -385,6 +385,16 @@ class Info extends API_Controller {
 				if(!$nickname){
 					$this->ajaxReturn([], 1, '请输入昵称');
 				}
+
+				$this->load->model('Users_model');
+				if($this->Users_model->get_by(['nickname' => $nickname])){
+					$this->ajaxReturn([], 1, '昵称已存在');
+				}
+				$this->load->model('Users_anchor_model');
+				if($this->Users_anchor_model->get_by(['nickname' => $nickname])){
+					$this->ajaxReturn([], 1, '昵称已存在');
+				}
+
 				$update = array('nickname' => $nickname);
 				break;
 			case 'sex':

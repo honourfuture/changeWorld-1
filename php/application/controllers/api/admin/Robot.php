@@ -396,7 +396,9 @@ class Robot extends API_Controller {
 	 */
 	public function users_random()
 	{
+		set_time_limit(0);
 		$num = (int)$this->input->get_post('num');
+		$num = min($num, 1000);
 		if($num){
 			$this->load->model('Users_model');
 			$rows = [];
@@ -404,28 +406,34 @@ class Robot extends API_Controller {
 			$password = 'aicode.org.cn';
 
 			$this->load->model('Robot_header_model');
-			$this->db->select('header');
-			$a_header = $this->Robot_header_model->get_all();
+			// $this->db->select('header');
+			$a_header = $this->Robot_header_model->count_all();
 			if(!$a_header){
 				$this->ajaxReturn([], 5, '请先上传机器人头像');
 			}
 
 			$this->load->model('Robot_nickname_model');
-			$this->db->select('nickname');
-			$a_nickname = $this->Robot_nickname_model->get_all();
+			// $this->db->select('nickname');
+			$a_nickname = $this->Robot_nickname_model->count_all();
 			if(!$a_nickname){
 				$this->ajaxReturn([], 5, '请先上传机器人昵称');
 			}
 
 			$count = 0;
-			$c_header = count($a_header) - 1;
-			$c_nickname = count($a_nickname) - 1;
+			/*$c_header = count($a_header) - 1;
+			$c_nickname = count($a_nickname) - 1;*/
 			for($i = 0; $i < $num; $i++){
-				$k_header = mt_rand(0, $c_header);
-				$header = $a_header[$k_header]['header'];
+				/*$k_header = mt_rand(0, $c_header);
+				$header = $a_header[$k_header]['header'];*/
+				$this->db->select('header');
+				$row = $this->Robot_header_model->order_by('', 'RANDOM')->limit(1)->get_by(['1 >' => 0]);
+				$header = $row['header'];
 
-				$k_nickname = mt_rand(0, $c_nickname);
-				$nickname = $a_nickname[$k_nickname]['nickname'];
+				/*$k_nickname = mt_rand(0, $c_nickname);
+				$nickname = $a_nickname[$k_nickname]['nickname'];*/
+				$this->db->select('nickname');
+				$row = $this->Robot_nickname_model->order_by('', 'RANDOM')->limit(1)->get_by(['1 >' => 0]);
+				$nickname = $row['nickname'];
 
 				$get_next_id = $this->Users_model->get_next_id();
 				$rows = [
@@ -441,6 +449,10 @@ class Robot extends API_Controller {
 				];
 				$this->Users_model->insert($rows);
 				$count++;
+
+				if($i && $i % 10 == 0){
+					usleep(5000);
+				}
 			}
 
 			/*$count = count($rows);

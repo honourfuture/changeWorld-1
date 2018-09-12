@@ -1,0 +1,156 @@
+@charset "utf-8";
+/* CSS Document */
+*{ margin:0px; padding:0px; border:none; color:#333; font-size:100%; /*font-weight:inherit;*/ font-family:"Microsoft YaHei"; list-style-type:none;}
+a{ color:#393939; text-decoration:none;}
+a:hover{ text-decoration:none; color:#FF205A;}
+html{ height:100%;}
+body{ height:100%; display:block;}
+
+
+.Head{ width:100%; float:left; position:fixed; top:0; left:0; z-index:1; /*box-shadow:0 0 8px rgba(0,0,0,0.20);*/}
+.Head .main{ width:1100px; height:88px; margin:0 auto;}
+.Head .main a.logo{ width:175px; height:50px; float:left; margin:19px 0; background:url(../images/logo_b.png) no-repeat; background-size:auto 50px;}
+.Head .main span.nav{ height:62px; float:right; padding:26px 0 0 0;}
+.Head .main span.nav ul{ height:62px; float:left;}
+.Head .main span.nav ul li{ height:62px; float:left;}
+.Head .main span.nav ul li a{ height:57px; float:left; color:#FFF; margin:0 0 0 50px; line-height:57px;}
+.Head .main span.nav ul li a.active{ color:#FFF; border-bottom:5px solid #FFF;}
+
+.navFix{ background:#FFF; box-shadow:0 0 3px rgba(0,0,0,0.20);}
+.navFix .main a.logo{ width:175px; height:50px; float:left; margin:19px 0; background:url(../images/logo.png) no-repeat; background-size:auto 50px;}
+.navFix .main span.nav ul li a{ height:57px; float:left; color:#333; margin:0 0 0 50px; line-height:57px;}
+.navFix .main span.nav ul li a.active{ color:#1556D4; border-bottom:5px solid #1556D4;}
+
+
+
+.footer{ width:100%; float:left; background:#292929;}
+.footer .main{ width:1100px; height:150px; display:block; margin:0 auto;}
+.footer .main span.temt{ width:700px; float:left; padding:30px 0;}
+.footer .main p{ width:700px; height:36px; float:left; line-height:36px; font-size:16px; color:#FFF;}
+.footer .main span.hone{ width:200px; height:46px; float:right; padding:38px 0 38px 56px; background:url(../images/dh_icon.png) left no-repeat; background-size:auto 38px;}
+.footer .main span.hone i{ width:100%; height:20px; float:left; line-height:20px; font-size:14px; font-style:normal; color:#FFF;}
+.footer .main span.hone em{ width:100%; height:26px; float:left; line-height:20px; line-height:26px; color:#FFF; font-size:24px; font-style:normal;}
+.footer .main span.wmau{ width:100%; height:30px; float:left; line-height:30px; font-size:12px; text-align:center; color:#747474;}
+
+
+
+span.title{ width:100%; height:71px; float:left; line-height:71px; padding:50px 0 4px 0; position:relative; font-size:32px; text-align:center;}
+span.title i{ width:124px; height:4px; background:#1556D4; position:absolute; bottom:0; bottom:0px; left:50%; margin:0 0 0 -62px;}
+span.title em{ width:100%; height:50px; float:left; line-height:50px; font-size:24px; position:absolute; top:125px; left:0px; font-style:normal;}
+
+.banner{ width:100%; height:671px; float:left; position:relative; text-align:center; background-color:#2E8DCA;}
+.banner_text{ width:529px; float:left; padding:200px 0 0 0; position:absolute; top:223px; left:50%; margin:0 0 0 -264px; background:url(../images/banner_text.png) top center no-repeat;}
+.banner_text a{ width:160px; height:46px; display: inline-block; overflow:hidden; margin:0 10px; color:#FFF; line-height:46px; text-align:center; font-size:16px; border:1px solid #FFF; border-radius:46px; background:rgba(255,255,255,0.66); color:#1556D4;}
+.banner_text a:hover{  background:#FFF; color:#1556D4;}
+
+.banner1{ width:100%; height:300px; float:left; margin:88px 0 0 0;}
+
+.load_app{ width:100%; float:left; padding:60px 0;}
+.load_app .main{ width:400px; height:460px; margin:0 auto; padding:0 0 0 298px; background:url(../images/app.png) left no-repeat;}
+.load_app .main span.app_title{ width:100%; float:left; padding:80px 0 17px 0;}
+.load_app .main span.app_title em{ width:100%; height:50px; float:left; line-height:50px; font-style:normal; font-size:30px;}
+.load_app .main span.app_title i{ height:22px; float:left; padding:0 20px; margin:9px 0; font-style:normal; border-left:1px solid rgba(0,0,0,0.10);}
+.load_app .main span.erm{ width:140px; float:left; margin:0 35px 0 0;}
+.load_app .main span.erm img{ width:100%; float:left;}
+.load_app .main span.erm em{ width:100%; height:40px; float:left; line-height:40px; text-align:center; font-style:normal;}
+
+
+
+
+.service{ width:100%; float:left; padding:0 0 60px 0; background:#F9F9F9;}
+.service .main{ width:1200px; margin:0 auto; overflow:hidden;} 
+.service .main ul{ width:100%; float:left; padding:100px 0 26px 0;}
+.service .main ul li{ width:270px; float:left; padding:0 15px;}
+.service .main ul li img{ width:100%; float:left; border-radius:5px; box-shadow:0 0 6px rgba(0,0,0,0.10);}
+.service .main p{ display:block; overflow:hidden; line-height:1.6em; padding:0 15px; text-indent:2em; text-align:justify;}
+
+
+
+.seller{ width:100%; float:left; background:#F9F9F9;}
+.seller .main{ width:1100px; margin:0 auto; display:block; overflow:hidden; padding:0 0 20px 0;}
+.seller .main dl{ width:514px; float:left; padding:30px 586px 0 0; position:relative;}
+.seller .main dl dd{ width:514px; float:left; position:relative; margin:15px 0 0 0; overflow:hidden; border-radius:8px;}
+.seller .main dl dd em{ width:166px; height:50px; float:left; line-height:50px; color:#FFF; text-align:center; font-style:normal; font-size:16px; background:#AEAEAE;}
+.seller .main dl dd input{ width:334px; height:48px; float:left; padding:0 0 0 12px; border:1px solid #AEAEAE; border-radius:0 8px 8px 0;}
+.seller .main dl dt{ width:514px; float:left; position:absolute; top:45px; right:0;}
+.seller .main dl dt em{ width:100%; height:49px; float:left; line-height:50px; font-style:normal; text-indent:20px; color:#FFF; font-size:16px; background:#AEAEAE; border-radius:8px 8px 0 0;}
+.seller .main dl dt textarea{ width:488px; height:170px; float:left; padding:12px; border:1px solid #AEAEAE; border-radius:0 0 8px 8px;}
+
+.seller .main a.submit{ width:20%; height:48px; float:left; line-height:48px; color:#FFF; text-align:center; font-size:16px; margin:40px 40%; background:#1556D4; border-radius:46px;}
+
+/*
+.seller .main dl.put_right dt{ width:100%; height:46px; float:left; padding:36px 0 0 0;}
+.seller .main dl.put_right dt a{ width:150px; height:46px; float:left; line-height:46px; font-size:18px; text-align:center; color:#FFF; border-radius:12px; background:#FF205A;}
+*/
+
+/*
+.service ul.canpin{ width:1200px; margin:0 auto; display:block; overflow:hidden; padding:50px 0 80px 0; clear:both;}
+.service ul.canpin li{ width:33.333%; height:84px; float:left; line-height:84px; padding:100px 0 0 0; font-size:28px; text-align:center;}
+.service ul.canpin li.w1{ background:url(../images/dx@icon.png) top no-repeat;}
+.service ul.canpin li.w2{ background:url(../images/dx@icon.png) top no-repeat;}
+.service ul.canpin li.w3{ background:url(../images/dx@icon.png) top no-repeat;}
+.service ul.jiazi{ width:1200px; margin:0 auto; display:block; overflow:hidden; padding:50px 0 53px 0; clear:both;}
+.service ul.jiazi li{ width:33.333%; height:84px; float:left; line-height:84px; padding:100px 0 0 0; font-size:28px; text-align:center;}
+.service ul.jiazi li.w1{ background:url(../images/cx@icon.png) top no-repeat;}
+.service ul.jiazi li.w2{ background:url(../images/hz@icon.png) top no-repeat;}
+.service ul.jiazi li.w3{ background:url(../images/xc@icon.png) top no-repeat;}
+
+.white{ background:#FFF;}
+.white ul.canpin{ width:1065px; margin:0 auto; display:block; overflow:hidden; padding:50px 0 0 0; clear:both;}
+.white ul.canpin li{ width:25%; height:84px; float:left; line-height:84px; padding:100px 0 0 0; font-size:24px; text-align:center;}
+.white ul.canpin li.w1{ background:url(../images/icx@icon.png) top no-repeat;}
+.white ul.canpin li.w2{ background:url(../images/ihz@icon.png) top no-repeat;}
+.white ul.canpin li.w3{ background:url(../images/ixc@icon.png) top no-repeat;}
+.white ul.canpin li.w4{ background:url(../images/ism@icon.png) top no-repeat;}
+.white ul.cwr{ width:798px; margin:0 auto; display:block; overflow:hidden; clear:both; padding:12px 0 0 0;}
+.white ul.cwr li{ width:33.333%; height:84px; float:left; line-height:84px; padding:100px 0 0 0; font-size:28px; text-align:center;}
+.white ul.cwr li.w1{ background:url(../images/izy@icon.png) top no-repeat;}
+.white ul.cwr li.w2{ background:url(../images/izz@icon.png) top no-repeat;}
+.white ul.cwr li.w3{ background:url(../images/igy@icon.png) top no-repeat;}
+
+
+.news{ width:100%; float:left;}
+.news .main{ width:1264px; margin:0 auto; display:block; overflow:hidden; padding:16px 0 110px 0;}
+.news .main ul{ width:100%; height:500px; margin:0 auto; overflow:hidden; padding:80px 0 0 0;}
+.news .main ul li{ width:560px; float:left; padding:35px 0; margin:0 36px; border-bottom:1px dashed #999;}
+.news .main ul li span.time{ width:64px; float:left; text-align:center;}
+.news .main ul li span.time i{ width:100%; height:33px; float:left; font-style:normal; font-size:28px; line-height:33px; border-bottom:1px solid #0B1726;}
+.news .main ul li span.time u{ width:100%; height:24px; float:left; font-style:normal; font-size:16px; line-height:24px; color:#999; text-decoration:none;}
+.news .main ul li span.text{ display:block; overflow:hidden; padding:0 0 0 38px;}
+.news .main ul li span.text a{ width:100%; height:32px; float:left; line-height:32px; overflow:hidden; font-style:normal; font-size:18px;}
+.news .main ul li span.text p{ width:100%; height:26px; float:left; line-height:26px; overflow:hidden; font-style:normal; font-size:18px; color:#666;}
+*/
+
+.about{ width:100%; float:left; padding:0 0 24px 0;}
+.about .main{ width:1200px; margin:0 auto; display:block; overflow:hidden; padding:16px 0 0 0;}
+.about span{ width:1200px; float:left; padding:64px 0 0 0;}
+.about span img{ width:100%; float:left; border-radius:4px;}
+.about .text{ width:1200px; float:left; padding:30px 0 50px 0; text-align:center;}
+.about .text h2{ width:100%; float:left; line-height:2em; padding:20px 0 5px 0;}
+.about .text p{ width:100%; float:left; font-size:16px; line-height:28px; color:#666; padding:10px 0 0 0;}
+.about .text p b{ font-weight:normal; color:#000;}
+
+.join{ width:100%; float:left;}
+.join .main{ width:1268px; margin:0 auto; display:block; overflow:hidden; padding:16px 0 26px 0;}
+.join .main ul{ width:100%; margin:0 auto; overflow:hidden; padding:80px 0 0 0;}
+.join .main ul li{ width:516px; float:left; padding:2px 22px 18px 22px; margin:0 36px 30px 36px; border:1px solid #E6E6E6; background:#FFF;}
+.join .main ul li span.time{ width:100%; height:41px; float:left;}
+.join .main ul li span.time i{ height:41px; float:left; font-style:normal; font-size:18px; line-height:41px;}
+.join .main ul li span.time u{ height:41px; float:right; font-style:normal; font-size:18px; line-height:41px; color:#1556D4; text-decoration:none;}
+.join .main ul li p{ width:100%; height:41px; float:left; line-height:41px; color:#666; padding:0 0 10px 0;}
+.join .main ul li a{ width:130px; height:30px; display:block; overflow:hidden; text-align:center; margin:0 auto; line-height:30px; color:#1556D4; font-size:14px; border:1px solid #1556D4; border-radius:30px;}
+
+.anchor{ width:100%; height:70px; float:left; border-bottom:1px solid #E5E5E5;}
+.anchor ul{ width:1100px; display:block; overflow:hidden; margin:0 auto;}
+.anchor ul li{ height:70px; float:left; line-height:70px; padding:0 10px 0 0; color:#999;}
+
+.wain{ width:1100px; display:block; overflow:hidden; margin:0 auto; padding:10px 0 120px 0;}
+.wain h1{ width:100%; height:88px; float:left; font-size:28px; line-height:88px; text-align:center;}
+.wain dl{ width:100%; float:left;}
+.wain dl dt{ width:100%; float:left; line-height:36px; font-weight:bold; padding:20px 0 6px 0;}
+.wain dl dd{ width:100%; float:left; line-height:36px;}
+
+
+.wain .text{ width:100%; float:left;}
+.wain .text img{ max-width:100%; display:block; margin:0 auto;}
+.wain .text p{ width:100%; float:left; text-align:justify; line-height:28px; padding:20px 0 0 0; text-indent:32px;}
