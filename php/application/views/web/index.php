@@ -36,7 +36,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 </div>
 
 <div class="banner" id="section1" style="background:url(assets/<?php echo $tpl;?>/images/banner.jpg) center no-repeat;">
-	<span class="banner_text">
+	<span class="banner_text" style="background:url('');">
+		<em style="position: absolute;top: 0px;font-size: 48px;color: #FFFF;">猪买单&middot;让世界免费！</em>
+		<em style="position: absolute;top: 0px;font-size: 32px;top: 64px;color: #FFFF;">Let the world free &middot; pig pay</em>
     	<a href="">iPhone下载</a>
     	<a href="">Andrond下载</a>
     </span>
@@ -107,7 +109,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
         <ul>
         	<?php if($goods){ ?>
         		<?php foreach ($goods as $key => $value) { ?>
-        			<li><img src="<?php echo $value['image'];?>"></li>
+        			<li><a href="<?php echo $value['link'];?>" target="_blank">
+        				<img src="<?php echo $value['image'];?>">
+        			</a></li>
         		<?php } ?>
         	<?php } ?>
         </ul>
