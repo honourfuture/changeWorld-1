@@ -105,10 +105,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 	<div class="main">
     	<span class="title">名人推荐<i></i><em>Product Display</em></span>
         <ul>
-        	<li><img src="assets/<?php echo $tpl;?>/images/003.jpg"></li>
-        	<li><img src="assets/<?php echo $tpl;?>/images/004.jpg"></li>
-        	<li><img src="assets/<?php echo $tpl;?>/images/002.jpg"></li>
-        	<li><img src="assets/<?php echo $tpl;?>/images/005.jpg"></li>
+        	<?php if($goods){ ?>
+        		<?php foreach ($goods as $key => $value) { ?>
+        			<li><img src="<?php echo $value['image'];?>"></li>
+        		<?php } ?>
+        	<?php } ?>
         </ul>
     </div>
 </div>
