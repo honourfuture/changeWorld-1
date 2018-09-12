@@ -97,3 +97,7 @@ QQ开发者平台：2898264786 ，Yangguang521
 > Android
 >  签名：1f7cc7ff235c9bfe363e1ab9497f3fa9
 >  包名：trilateral.com.mowtogether
+
+
+ALTER TABLE `ai_kuaimacode`.`room` AUTO_INCREMENT=200;
+UPDATE `pretty` SET `buyer_id` = 0,`status` = 0
