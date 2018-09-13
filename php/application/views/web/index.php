@@ -9,7 +9,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>首页</title>
 <style type="text/css">
-	.join .main ul li{border: none !important;padding: 0px !important;margin-bottom: 37px !important;}
+	.join .main ul li{border: none !important;padding: 0px !important;margin-bottom: 37px !important;background: none !important;}
 	.join .main ul li span{font-size: 24px;}
 	.join .main ul li span font{color:red;}
 	.join .main ul li p{line-height: 18px !important;height: 18px !important; padding-bottom: 5px !important;padding-left: 28px !important;}
@@ -46,7 +46,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
     </span>
 </div>
 
-<div class="join" id="section2">
+<div class="join" id="section2" style="background:url(assets/<?php echo $tpl;?>/images/Culture.png) center no-repeat;">
     <div class="main">
         <span class="title">企业文化<i></i><em>Culture Culture</em></span>
         <div style="width: 50%;float: left;padding-left: 10%;">
@@ -246,7 +246,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
         	<i>联系我们</i>
             <em>zhumaidan@qq.com</em>
         </span>
-        <span class="wmau">Copyright ©<?php echo date("Y");?> 深圳亿万富翁有限公司 版权所有. All Rights reserved. 粤ICP备17001659号-1</span>
+        <span class="wmau">Copyright ©<?php echo date("Y");?> 深圳亿万富翁有限公司 版权所有. All Rights reserved. 粤ICP备18098055号-1</span>
     </div>
 </div>
 
