@@ -31,6 +31,7 @@ export default class WebsiteGoods extends BaseComponent {
         this.columns = [
             {
                 title: "排序",
+                width: 100,
                 dataIndex: "sort",
                 render: (text, record) => this.renderInput(text, record, "sort")
             },
@@ -41,13 +42,13 @@ export default class WebsiteGoods extends BaseComponent {
                 render: (text, record) =>
                     this.renderInput(text, record, "title")
             },
-            {
-                title: "副标题",
-                dataIndex: "sub_title",
-                width: 150,
-                render: (text, record) =>
-                    this.renderInput(text, record, "sub_title")
-            },
+            // {
+            //     title: "副标题",
+            //     dataIndex: "sub_title",
+            //     width: 150,
+            //     render: (text, record) =>
+            //         this.renderInput(text, record, "sub_title")
+            // },
             {
                 title: "产品图",
                 dataIndex: "image",
