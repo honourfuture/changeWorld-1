@@ -72,9 +72,14 @@ class Live_audio extends API_Controller {
 	 */
 	public function index()
 	{
+		$album_id = (int)$this->input->get_post('album_id');
+
 		$ret = array('count' => 0, 'list' => array());
 
 		$where = array('enable' => 1);
+		if($album_id){
+			$where['album_id'] = $album_id;
+		}
 		if($this->user_id){
 			$where['anchor_uid'] = $this->user_id;
 		}
@@ -93,7 +98,7 @@ class Live_audio extends API_Controller {
 				foreach($ret['list'] as $key=>$item){
 					$a_uid[] = $item['anchor_uid'];
 					$ret['list'][$key]['album_title'] = '';
-					(empty($item['title']) && empty($item['cover_image'])) && $a_room_id[] = $item['room_id'];
+					(empty($item['title']) && empty($item['cover_image']) && $item['room_id']) && $a_room_id[] = $item['room_id'];
 					$item['album_id'] && $a_album_id[] = $item['album_id'];
 				}
 
