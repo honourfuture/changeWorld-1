@@ -48,6 +48,11 @@ class Queue extends MY_Controller
                 $max_nickname_id = 0;
             }
 
+            $max_robot = 3000000;
+            if($max_header_id > $max_robot || $max_nickname_id > $max_robot){
+                break;
+            }
+
             // $this->db->select('nickname');
             /*$a_nickname = $this->Robot_nickname_model->count_all();
             if(!$a_nickname){
