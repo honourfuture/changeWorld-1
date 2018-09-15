@@ -236,6 +236,10 @@ class Live_album extends API_Controller {
 	 */
 	public function save()
 	{
+		//兼容后台创建专辑
+		$anchor_uid = (int)$this->input->get_post('anchor_uid');
+		$anchor_uid = $anchor_uid ? $anchor_uid : $this->user_id;
+
 		$id = (int)$this->input->get_post('id');
 		if($id){
 			$params = elements(
@@ -250,13 +254,13 @@ class Live_album extends API_Controller {
 			if($params['deleted'] == 1){
 				$update = array('deleted' => 1, 'enable' => 0);
 				$where = ['id' => $id];
-				if($this->user_id){
-					$where['anchor_uid'] = $this->user_id;
+				if($anchor_uid){
+					$where['anchor_uid'] = $anchor_uid;
 				}
 				$flag = $this->Album_model->update_by($where, $update);
 			}else{
 				unset($params['deleted']);
-				$flag = $this->Album_model->update_by(array('anchor_uid' => $this->user_id, 'id' => $id), $params);
+				$flag = $this->Album_model->update_by(array('anchor_uid' => $anchor_uid, 'id' => $id), $params);
 			}
 		}else{
 			$params = elements(
@@ -268,7 +272,7 @@ class Live_album extends API_Controller {
 				UPDATE_VALID
 			);
 			$this->check_params('add', $params);
-			$params['anchor_uid'] = $this->user_id;
+			$params['anchor_uid'] = $anchor_uid;
 			if($flag = $this->Album_model->insert($params)){
 				$id = $flag;
 			}

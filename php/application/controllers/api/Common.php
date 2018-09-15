@@ -48,7 +48,7 @@ class Common extends API_Controller
     protected function init_upload()
     {
         $config['upload_path'] = FCPATH.'uploads/';
-        $config['allowed_types'] = 'gif|jpg|png|jpeg|apk|txt';
+        $config['allowed_types'] = 'gif|jpg|png|jpeg|apk|txt|aac|amr|ape|flac|m4r|mmf|mp2|mp3|ogg|wav|wma|wv';
         // $config['max_size'] = 2048;//K
         $config['file_ext_tolower'] = TRUE;
         $config['encrypt_name'] = TRUE;

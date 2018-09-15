@@ -19,6 +19,104 @@ class Queue extends MY_Controller
         $this->load->driver('cache');
     }
 
+    public function robot()
+    {
+        $num = 500;
+        if($num){
+            $this->load->model('Users_model');
+            $rows = [];
+            // $date = date("Y-m-d H:i:s");
+            $password = 'aicode.org.cn';
+            $password = $this->Users_model->get_password($password);
+
+            $this->load->model('Robot_header_model');
+            $this->load->model('Robot_nickname_model');
+            // $this->db->select('header');
+            /*$a_header = $this->Robot_header_model->count_all();
+            if(!$a_header){
+                $this->ajaxReturn([], 5, '请先上传机器人头像');
+            }*/
+            $cache_id_header = 'robot_header';
+            $max_header_id = $this->cache->file->get($cache_id_header);
+            if(!$max_header_id){
+                $max_header_id = 0;
+            }
+
+            $cache_id_nickname = 'robot_nickname';
+            $max_nickname_id = $this->cache->file->get($cache_id_nickname);
+            if(!$max_nickname_id){
+                $max_nickname_id = 0;
+            }
+
+            $max_robot = 3000000;
+            if($max_header_id > $max_robot || $max_nickname_id > $max_robot){
+                break;
+            }
+
+            // $this->db->select('nickname');
+            /*$a_nickname = $this->Robot_nickname_model->count_all();
+            if(!$a_nickname){
+                $this->ajaxReturn([], 5, '请先上传机器人昵称');
+            }*/
+
+            $count = 0;
+            /*$c_header = count($a_header) - 1;
+            $c_nickname = count($a_nickname) - 1;*/
+            for($i = 0; $i < $num; $i++){
+                /*$k_header = mt_rand(0, $c_header);
+                $header = $a_header[$k_header]['header'];*/
+                $this->db->select('id,header');
+                // $row_header = $this->Robot_header_model->order_by('', 'RANDOM')->limit(1)->get_by(['1 >' => 0]);
+                $row_header = $this->Robot_header_model->order_by('id', 'asc')->limit(1)->get_by(['id >' => $max_header_id]);
+                if(!$row_header){
+                    break;
+                }
+                $header = $row_header['header'];
+
+                /*$k_nickname = mt_rand(0, $c_nickname);
+                $nickname = $a_nickname[$k_nickname]['nickname'];*/
+                $this->db->select('id,nickname');
+                // $row = $this->Robot_nickname_model->order_by('', 'RANDOM')->limit(1)->get_by(['1 >' => 0]);
+                $row = $this->Robot_nickname_model->order_by('id', 'asc')->limit(1)->get_by(['id >' => $max_nickname_id]);
+                if(!$row){
+                    break;
+                }
+                $nickname = $row['nickname'];
+                $max_nickname_id = $row['id'];
+                $max_header_id = $row_header['id'];
+
+                $get_next_id = $this->Users_model->get_next_id();
+                $rows = [
+                    'id' => mt_rand($get_next_id, $get_next_id + 10000),
+                    // 'created_at' => $date,
+                    // 'updated_at' => $date,
+                    'account' => $nickname,
+                    'password' => $password,
+                    'header' => $header,
+                    'nickname' => $nickname,
+                    'sex' => mt_rand(0, 2),
+                    'robot' => 1
+                ];
+                $this->Users_model->insert($rows);
+                $count++;
+
+                if($i && $i % 49 == 0){
+                    // usleep(5000);
+                    sleep(1);
+                }
+            }
+
+            $this->cache->file->save($cache_id_header, $max_header_id, 0);
+            $this->cache->file->save($cache_id_nickname, $max_nickname_id, 0);
+
+            /*$count = count($rows);
+            if($rows){
+                $this->db->insert_batch($this->Users_model->table(), $rows);
+            }*/
+            // $this->ajaxReturn([], 0, '生成机器人数: '.$count);
+        }
+    }
+
     protected function step_num($row)
     {
     	if(is_numeric($row['params']['step_num'])){
