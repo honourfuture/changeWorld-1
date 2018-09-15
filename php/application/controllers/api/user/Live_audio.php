@@ -315,4 +315,110 @@ class Live_audio extends API_Controller {
 				break;
 		}
 	}
+
+	/**
+	 * @api {post} /api/user/live_audio/add 我的音频-新增 | 编辑
+	 * @apiVersion 1.0.0
+	 * @apiName live_audio_add
+	 * @apiGroup user
+	 *
+	 * @apiSampleRequest /api/user/live_audio/add
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 * @apiParam {Number} id 记录唯一ID 0表示新增 其他表示编辑
+	 * @apiParam {Number} album_id 专辑ID
+	 * @apiParam {String} duration 视频时长 秒
+	 * @apiParam {String} title 标题
+	 * @apiParam {Number} price 门票价格
+	 * @apiParam {String} cover_image 封面图
+	 * @apiParam {Number} city_partner_rate 城市分销比例
+	 * @apiParam {Number} two_level_rate 二级分销比例
+	 * @apiParam {Number} deleted 删除 1删除 不传或0不处理
+	 * @apiParam {String} video_url 文件地址
+	 * @apiParam {String} room_id 直播间号 默认0
+	 * @apiParam {String} play_times 播放次数
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {String} data 接口数据集
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *	    "data": "",
+	 *	    "status": 0,
+	 *	    "message": ""
+	 * }
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+	public function add()
+	{
+		$id = (int)$this->input->get_post('id');
+
+		$this->load->model('Room_audio_model');
+        $insert = elements(
+            array(
+                'duration', 'album_id', 'title', 'price', 'city_partner_rate',
+                'two_level_rate', 'video_url', 'room_id', 'cover_image', 'play_times',
+                'deleted'
+            ),
+            $this->input->post(),
+            0
+        );
+        $insert['start_time'] = time();
+        $insert['end_time'] = $insert['start_time'] + $insert['duration'];
+        $insert['file_id'] = md5($insert['start_time']);
+        $insert['file_size'] = '';
+        $insert['video_id'] = date("Ymd").'_'.$insert['file_id'];
+        $insert['room_id'] = 0;
+
+        $this->load->model('Album_model');
+        $album = $this->Album_model->get($insert['album_id']);
+        $insert['anchor_uid'] = $album ? $album['anchor_uid'] : 0;
+
+		if($id){
+			if($insert['deleted'] == 1){
+				$update = array('deleted' => 1, 'enable' => 0);
+				$where = ['id' => $id];
+				/*if($this->user_id){
+					$where['anchor_uid'] = $this->user_id;
+				}*/
+				$flag = $this->Room_audio_model->update_by($where, $update);
+			}else{
+				unset($insert['deleted']);
+				/*if($insert['album_id']){
+					$audio = $this->Room_audio_model->get($id);
+					if($audio && $audio['play_times'] && $audio['album_id'] != $insert['album_id']){
+						$this->load->model('Album_model');
+						$this->db->set('play_times', 'play_times + '.$audio['play_times'], false);
+						$this->db->where('id', $insert['album_id']);
+						$this->db->update($this->Album_model->table());
+
+						$this->db->set('play_times', 'play_times - '.$audio['play_times'], false);
+						$this->db->where('id', $audio['album_id']);
+						$this->db->update($this->Album_model->table());
+					}
+				}*/
+				$flag = $this->Room_audio_model->update($id, $insert);
+			}
+		}else{
+        	$flag = $this->Room_audio_model->insert($insert);
+        	$flag && $id = $flag;
+		}
+
+		if($flag){
+			$status = 0;
+			$message = '成功';
+		}else{
+			$status = 1;
+			$message = '失败';
+		}
+		$this->ajaxReturn(array('id' => $id), $status, '操作'.$message);
+	}
 }
