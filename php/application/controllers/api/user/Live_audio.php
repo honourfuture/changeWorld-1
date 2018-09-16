@@ -375,8 +375,12 @@ class Live_audio extends API_Controller {
         $insert['end_time'] = $insert['start_time'] + $insert['duration'];
         $insert['file_id'] = md5($insert['start_time']);
         $insert['file_size'] = '';
+        if(file_exists(FCPATH.$insert['video_url'])){
+        	$insert['file_size'] = @filesize(FCPATH.$insert['video_url']);
+        }
         $insert['video_id'] = date("Ymd").'_'.$insert['file_id'];
         $insert['room_id'] = 0;
+        $insert['video_url'] = base_url($insert['video_url']);
 
         $this->load->model('Album_model');
         $album = $this->Album_model->get($insert['album_id']);
