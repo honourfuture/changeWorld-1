@@ -9,18 +9,34 @@ import {
     Button,
     Spin,
     message,
-    Select
+    Select,
+    Modal,
+    Form,
+    Upload,
+    Icon
 } from "antd";
 import { remove } from "lodash";
-import { EditorModal } from "../../components/EditorModal";
 import "./AlbumManager.less";
 const Search = Input.Search;
 const Option = Select.Option;
+const FormItem = Form.Item;
+
+const formItemLayout = {
+    labelCol: {
+        xs: { span: 24 },
+        sm: { span: 8 }
+    },
+    wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 16 }
+    }
+};
 
 export default class AlbumManager extends BaseComponent {
     store = {
         list: [],
-        article_class: []
+        article_class: [],
+        addData: null
     };
     curData = {};
     constructor(props) {
@@ -87,10 +103,19 @@ export default class AlbumManager extends BaseComponent {
                 // width: 150,
                 // fixed: "right",
                 render: (text, record) => {
-                    const { id,sort } = record;
+                    const { id, sort } = record;
                     return (
                         <div className="editable-row-operations">
                             <span>
+                                <a
+                                    onClick={() => {
+                                        Base.push("UserAudio", {
+                                            album_id: record.id
+                                        });
+                                    }}
+                                >
+                                    音频列表
+                                </a>
                                 <Popconfirm
                                     title="确认置顶?"
                                     okText="确定"
@@ -99,17 +124,16 @@ export default class AlbumManager extends BaseComponent {
                                 >
                                     <a className="ml10">置顶</a>
                                 </Popconfirm>
-                                {
-                                    sort > 0 ? <Popconfirm
-                                                    title="确认取消置顶?"
-                                                    okText="确定"
-                                                    cancelText="取消"
-                                                    onConfirm={() => this.onUnTop(id)}
-                                                >
-                                                    <a className="ml10 gray">取消置顶</a>
-                                                </Popconfirm> :
-                                            null
-                                }
+                                {sort > 0 ? (
+                                    <Popconfirm
+                                        title="确认取消置顶?"
+                                        okText="确定"
+                                        cancelText="取消"
+                                        onConfirm={() => this.onUnTop(id)}
+                                    >
+                                        <a className="ml10 gray">取消置顶</a>
+                                    </Popconfirm>
+                                ) : null}
                                 <Popconfirm
                                     title="确认删除?"
                                     okText="确定"
@@ -124,6 +148,108 @@ export default class AlbumManager extends BaseComponent {
                 }
             }
         ];
+        this.addInfo = [
+            { key: "anchor_uid", label: "主播id" },
+            { key: "title", label: "标题" },
+            {
+                key: "album_class",
+                label: "专辑类型",
+                render: () => {
+                    const { addData } = this.store;
+                    const album_class_list = this.album_class_list;
+                    if (!album_class_list || album_class_list.length <= 0) {
+                        return null;
+                    }
+                    const options = album_class_list.map(item => {
+                        return (
+                            <Option key={item.id} value={item.id}>
+                                {item.name}
+                            </Option>
+                        );
+                    });
+                    return (
+                        <Select
+                            defaultValue={addData.album_class}
+                            onChange={action(value => {
+                                addData.album_class = value;
+                            })}
+                        >
+                            {options}
+                        </Select>
+                    );
+                }
+            },
+            {
+                key: "cover_image",
+                label: "封面图",
+                render: value => this.onAddImage("cover_image", value)
+            },
+            // { key: "album_tag", label: "专辑标签" },
+            { key: "price", label: "门票价格" },
+            { key: "city_partner_rate", label: "城市分销比例(%)" },
+            { key: "two_level_rate", label: "二级分销比例(%)" },
+            {
+                key: "public",
+                label: "是否公开",
+                render: () => {
+                    const { addData } = this.store;
+                    return (
+                        <Select
+                            defaultValue="1"
+                            onChange={action(value => {
+                                addData.public = value;
+                            })}
+                        >
+                            <Option value="0">不公开</Option>
+                            <Option value="1">公开</Option>
+                        </Select>
+                    );
+                }
+            },
+            {
+                key: "summary",
+                label: "简介图",
+                render: value => this.onAddImage("summary", value)
+            }
+        ];
+    }
+    @action.bound
+    onUploadChange(info, key) {
+        if (info.file.status === "done" || info.file.status === "removed") {
+            const { addData } = this.store;
+            const { fileList } = info;
+            if (key === "cover_image") {
+                addData[key] =
+                    fileList.length > 0
+                        ? fileList[0].response.data.file_url
+                        : "";
+            } else {
+                const list = fileList.map(item => {
+                    return item.response.data.file_url;
+                });
+                addData[key] = JSON.stringify(list);
+            }
+        }
+    }
+    onAddImage(key, value) {
+        return (
+            <div>
+                <Upload
+                    name="field"
+                    data={{ field: "field" }}
+                    action={Global.UPLOAD_URL}
+                    onChange={e => this.onUploadChange(e, key)}
+                >
+                    {key === "cover_image" && value ? (
+                        ""
+                    ) : (
+                        <Button>
+                            <Icon type="upload" /> 点击上传
+                        </Button>
+                    )}
+                </Upload>
+            </div>
+        );
     }
     renderImg(text, record, column) {
         return (
@@ -253,13 +379,100 @@ export default class AlbumManager extends BaseComponent {
     componentDidMount() {
         this.requestData();
     }
+    @action.bound
+    onAdd() {
+        const setData = action(() => {
+            this.store.addData = {
+                anchor_uid: "",
+                cover_image: "",
+                title: "",
+                album_class: this.album_class_list[0].id,
+                album_tag: "",
+                price: "",
+                city_partner_rate: "",
+                two_level_rate: "",
+                public: 1,
+                summary: "",
+                editable: true,
+                deleted: "0",
+                enable: "1"
+            };
+        });
+        if (!this.album_class_list || this.album_class_list.length <= 0) {
+            Base.GET(
+                { act: "album_class", op: "index" },
+                res => {
+                    this.album_class_list = res.data.filter(
+                        item => parseInt(item.enable) > 0
+                    );
+                    if (this.album_class_list.length <= 0) {
+                        return message.info("请设置专辑类型");
+                    }
+                    setData();
+                },
+                this
+            );
+        } else {
+            setData();
+        }
+    }
+    @action.bound
+    onCancelAdd() {
+        this.store.addData = null;
+    }
+    @action.bound
+    onAddSave() {
+        let tips = "";
+        const { addData } = this.store;
+        for (let i = 0; i < this.addInfo.length; i++) {
+            const { key, label } = this.addInfo[i];
+            if (!addData[key]) {
+                tips = label;
+                break;
+            }
+        }
+        if (tips) {
+            return message.error(`请输入${tips}`);
+        }
+        Base.POST(
+            { act: "live_album", op: "save", mod: "user", ...addData },
+            () => {
+                this.store.addData = null;
+                this.current = 1;
+                this.requestData();
+            },
+            this
+        );
+    }
     render() {
-        let { list, total } = this.store;
+        let { list, total, addData } = this.store;
         const showList = list.slice();
-        // let tableWidth = this.columns.length * 150;
+        let addItems = [];
+        if (addData) {
+            addItems = this.addInfo.map((item, index) => {
+                const { key, label, render } = item;
+                const value = render ? (
+                    render(addData[key])
+                ) : (
+                    <Input
+                        onChange={action(e => {
+                            addData[key] = e.target.value;
+                        })}
+                    />
+                );
+                return (
+                    <FormItem key={index} {...formItemLayout} label={label}>
+                        {value}
+                    </FormItem>
+                );
+            });
+        }
         return (
             <Spin ref="spin" wrapperClassName="AlbumManager" spinning={false}>
                 <div className="pb10">
+                    <Button style={{ marginRight: 20 }} onClick={this.onAdd}>
+                        创建专辑
+                    </Button>
                     <Select
                         defaultValue={"uid"}
                         onChange={value => (this.searchType = value)}
@@ -289,6 +502,17 @@ export default class AlbumManager extends BaseComponent {
                         defaultPageSize: Global.PAGE_SIZE
                     }}
                 />
+                <Modal
+                    closable={false}
+                    className="AlbumManager-Modal"
+                    visible={!!addData}
+                    okText="确定"
+                    cancelText="取消"
+                    onCancel={this.onCancelAdd}
+                    onOk={this.onAddSave}
+                >
+                    {addItems}
+                </Modal>
             </Spin>
         );
     }

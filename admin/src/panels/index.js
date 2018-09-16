@@ -71,7 +71,13 @@ import LiveStart from './LiveStart';
 import ActivityTask from './ActivityTask';
 import LiveEvaluateManager from './LiveEvaluateManager';
 import WebsiteGoods from './WebsiteGoods';
+import UserAudio from './UserAudio';
 export const panelsList = [
+    {
+        path:'/live/UserAudio',
+        component:UserAudio,
+        title:'音频列表',
+    },
     {
         path:'/system/WebsiteGoods',
         component:WebsiteGoods,
