@@ -21,6 +21,7 @@ class Room_audio_model extends MY_Model
 
     public function get_audio_info_by_album($a_album_id){
     	$this->db->select('album_id,count(`id`) as audio_num,sum(`play_times`) as play_times');
+        $this->db->where('enable', 1);
     	$this->db->where_in('album_id', $a_album_id);
     	$this->db->group_by('album_id');
     	$result = $this->db->get($this->_table)->result_array();
@@ -41,6 +42,7 @@ class Room_audio_model extends MY_Model
         $this->db->select('anchor_uid, COUNT(id) AS sum');
         $this->db->from($this->_table);
         $this->db->where('album_id >', 0);
+        $this->db->where('enable', 1);
         $this->db->where_in('anchor_uid', $a_user_id);
         $this->db->group_by('anchor_uid');
         $rows = $this->db->get()->result_array();

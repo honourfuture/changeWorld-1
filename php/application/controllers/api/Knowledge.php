@@ -280,7 +280,7 @@ class Knowledge extends API_Controller
                 COUNT(audio.id) AS audio_num,SUM(audio.play_times) AS play_times'
             );
             $this->db->join($this->Album_model->table(), 'album.id = audio.album_id', 'right');
-            $this->db->where('audio.album_id >', 0);
+            $this->db->where('audio.enable ', 1);
             $this->db->where('album.enable', 1);
             $this->db->where('album.public', 1);
             $this->db->where('album.album_class', $album_class_id);
