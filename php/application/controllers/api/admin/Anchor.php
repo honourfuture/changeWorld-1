@@ -111,7 +111,7 @@ class Anchor extends API_Controller {
 			$this->load->model('Users_model');
 			$this->db->select('id');
 			$this->db->like('nickname', $keyword);
-			if($row = $this->Users_model->get_by()){
+			if($row = $this->Users_model->get_by(['1 >' => 0])){
 				$keyword = $row['id'];
 			}
 			$this->db->group_start();
