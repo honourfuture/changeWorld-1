@@ -54,6 +54,15 @@ class Register extends API_Controller {
 			$this->ajaxReturn([], 1, '手机号注册参数错误');
 		}
 
+		if($step == 2){
+			$this->load->driver('cache');
+			$cache_id = 'r_'.$mobi;
+            if($this->cache->file->get($cache_id)){
+            	$this->ajaxReturn([], 2, '请勿重复点击注册');
+            }
+            $this->cache->file->save($cache_id, 1, 120);
+		}
+
 		$this->load->model('Users_model');
         $user = $this->Users_model->get_by('mobi', $mobi);
         if($user){
@@ -68,6 +77,9 @@ class Register extends API_Controller {
 					$this->ajaxReturn();
 				}elseif($step == 2){
 					$account = $this->input->get_post('account');
+					if(!$account){
+						$account = $mobi;
+					}
 					$password = $this->input->get_post('password');
 					$confirm_password = $this->input->get_post('confirm_password');
 					if(!$password){
@@ -76,10 +88,10 @@ class Register extends API_Controller {
 					if($password != $confirm_password){
 						$this->ajaxReturn([], 5, '确认密码不一致');
 					}
-					$user = $this->Users_model->get_by('account', $account);
+					/*$user = $this->Users_model->get_by('account', $account);
 			        if($user){
 			            $this->ajaxReturn([], 6, '账号已被注册');
-			        }
+			        }*/
 
 			        if($id = $this->Users_model->reg(['mobi' => $mobi, 'account' => $account, 'password' => $password])){
 			            $this->user_login_success($this->Users_model->get($id));

@@ -87,7 +87,7 @@ class Queue extends MY_Controller
 
                 $get_next_id = $this->Users_model->get_next_id();
                 $rows = [
-                    'id' => mt_rand($get_next_id, $get_next_id + 10000),
+                    'id' => mt_rand($get_next_id, $get_next_id + 50),
                     // 'created_at' => $date,
                     // 'updated_at' => $date,
                     'account' => $nickname,

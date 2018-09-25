@@ -67,8 +67,8 @@ class Login extends API_Controller {
 		}
 		$this->load->model('Users_model');
 		//手机号 or 账号
-		$info = $this->Users_model->get_by('account', $account);
-		!$info && $info = $this->Users_model->get_by('mobi', $account);
+		$info = $this->Users_model->get_by('mobi', $account);
+		!$info && $info = $this->Users_model->get_by('account', $account);
 		if($info){
 			if($info['password'] == $this->Users_model->get_password($password)){
 				$this->check_status($info);
