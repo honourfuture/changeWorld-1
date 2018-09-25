@@ -83,18 +83,19 @@ class Anchor extends API_Controller {
 		$this->search();
 		$ret['count'] = $this->Users_anchor_model->count_by($where);
 		if($ret['count']){
-			$this->db->select('id,created_at,updated_at,status,mobi,email,nickname,realname,user_id');
 			$this->search();
+			$this->db->select('id,created_at,updated_at,status,mobi,email,nickname,realname,user_id');
 			if($list = $this->Users_anchor_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where)){
 				$a_uid = [];
 				foreach($list as $item){
 					$a_uid[] = $item['user_id'];
 				}
 				$this->load->model('Users_model');
-				$user = $this->Users_model->get_many_user($a_uid, 'id,reward_point,nickname');
+				$user = $this->Users_model->get_many_user($a_uid, 'id,reward_point,nickname,pretty_id');
 				foreach($list as $item){
 					$item['reward_point'] = isset($user[$item['user_id']]) ? $user[$item['user_id']]['reward_point'] : 0;
 					$item['nickname'] = isset($user[$item['user_id']]) ? $user[$item['user_id']]['nickname'] : 0;
+					$item['pretty_id'] = isset($user[$item['user_id']]) ? $user[$item['user_id']]['pretty_id'] : 0;
 					$ret['list'][] = $item;
 				}
 			}
@@ -107,8 +108,15 @@ class Anchor extends API_Controller {
 	{
 		$keyword = $this->input->get_post('keyword');
 		if(! empty($keyword)){
-			$this->db->group_start();
+			$this->load->model('Users_model');
+			$this->db->select('id');
 			$this->db->like('nickname', $keyword);
+			if($row = $this->Users_model->get_by()){
+				$keyword = $row['id'];
+			}
+			$this->db->group_start();
+			$this->db->like('user_id', $keyword);
+			// $this->db->or_like('nickname', $keyword);
 			$this->db->or_like('mobi', $keyword);
 			$this->db->group_end();
 		}
