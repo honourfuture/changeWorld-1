@@ -78,4 +78,23 @@ class Room_model extends MY_Model
 
         return $live;
     }
+
+    // 直播类型
+    public function type()
+    {
+        return [
+            1 => '直播',
+            2 => '预告'
+        ];
+    }
+
+    public function status()
+    {
+        return [
+            '新房间',//0
+            '直播中',//1
+            '断流',//2
+            '禁播',//3
+            '已结束',//4
+    }
 }
