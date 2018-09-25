@@ -180,7 +180,7 @@ class Knowledge extends API_Controller
         //热门直播
         $this->load->model('Room_model');
 
-        $online = array();
+        /*$online = array();
         $QLive = new Query();
         $config = config_item('live');
         $QLive->setAppInfo($config['appid'], $config['api_key'], $config['push_key'], $config['bizid']);
@@ -201,13 +201,17 @@ class Knowledge extends API_Controller
                 $online = $this->Room_model->order_by($order_by)->get_many($a_room_id);
             }
         }
+        $online = $this->Room_model->live_anchor($online, 1);*/
+        //直播中
+        $order_by = array('sort' => 'desc', 'id' => 'desc');
+        $this->db->select('id as room_id,title,cover_image,play_url,live_tag_id,anchor_uid,views,price');
+        $where = array('status' => 1);
+        $online = $this->Room_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
         $online = $this->Room_model->live_anchor($online, 1);
         //预告直播
         $order_by = array('sort' => 'desc', 'id' => 'desc');
         $this->db->select('id as room_id,title,cover_image,play_url,live_tag_id,anchor_uid,views,price,start_at');
-        // $where = array('start_at >' => time());
-        $where = array('type' => 2);
-        !empty($a_room_id) && $this->db->where_not_in('id', $a_room_id);
+        $where = array('type' => 2, 'start_at >' => time());
         $trailer = $this->Room_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
         $trailer = $this->Room_model->live_anchor($trailer, 0);
 

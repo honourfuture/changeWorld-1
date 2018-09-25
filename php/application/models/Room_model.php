@@ -96,5 +96,6 @@ class Room_model extends MY_Model
             '断流',//2
             '禁播',//3
             '已结束',//4
+        ];
     }
 }
