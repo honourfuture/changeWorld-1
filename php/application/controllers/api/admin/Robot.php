@@ -353,12 +353,16 @@ class Robot extends API_Controller {
 
 	protected function search()
 	{
-		$keyword = $this->input->get_post('keyword');
-		if(! empty($keyword)){
-			$this->db->group_start();
-			$this->db->like('nickname', $keyword);
-			$this->db->or_like('mobi', $keyword);
-			$this->db->group_end();
+		$type = $this->input->get_post('type');
+		if(in_array($type, ['uid', 'title'])){
+			$keyword = $this->input->get_post('keyword');
+			if($keyword){
+				if($type == 'uid'){
+					$this->db->where('id', $keyword);
+				}else{
+					$this->db->like('account', $keyword);
+				}
+			}
 		}
 	}
 

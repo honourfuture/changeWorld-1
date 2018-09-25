@@ -240,7 +240,9 @@ class Goods extends API_Controller {
 		$this->db->select('id,name');
 		$ret['goods_attr'] = $this->Goods_attr_category_model->order_by($order_by)->get_many_by('deleted', 0);
 		//积分兑换比例
-		$ret['point_rate'] = 10;
+		$rule = $this->sitePointsRule();
+		$rate = isset($rule['goods_exchange']) ? $rule['goods_exchange'] : 0;
+		$ret['point_rate'] = $rate;
 
 		$this->load->model('Goods_class_model');
 		$this->db->select('id,name');

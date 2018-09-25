@@ -15,6 +15,30 @@ class Room extends API_Controller {
         $this->load->model('Room_model');
     }
 
+    public function top()
+    {
+    	$id = $this->input->get_post('id');
+
+    	$max = $this->Room_model->order_by('sort', 'desc')->get_by(['id >' => 0]);
+    	$sort = $max['sort'] + 10;
+    	if($this->Room_model->update($id, ['sort' => $sort])){
+    		$this->ajaxReturn();
+    	}else{
+    		$this->ajaxReturn([], 1, '置顶失败');
+    	}
+    }
+
+    public function untop()
+    {
+    	$id = $this->input->get_post('id');
+
+    	if($this->Room_model->update($id, ['sort' => 0])){
+    		$this->ajaxReturn();
+    	}else{
+    		$this->ajaxReturn([], 1, '取消置顶失败');
+    	}
+    }
+
     /**
 	 * @api {get} /api/admin/room 直播间-列表
 	 * @apiVersion 1.0.0

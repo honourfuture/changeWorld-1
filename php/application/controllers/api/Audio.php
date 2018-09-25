@@ -78,10 +78,10 @@ class Audio extends API_Controller {
 		$ret = [];
 
 		$id = (int)$this->input->get_post('id');
-		$this->db->select('id,duration,file_size,video_url,anchor_uid,album_id,title,price,cover_image,play_times');
+		$this->db->select('id,enable,duration,file_size,video_url,anchor_uid,album_id,title,price,cover_image,play_times');
 		$info = $this->Room_audio_model->get($id);
 		if($info){
-			if(! $info['album_id']){
+			if(! $info['album_id'] || !$info['enable']){
 				$this->ajaxReturn([], 2, '音频已下线');
 			}
 			$this->Room_audio_model->update($info['id'], ['play_times' => $info['play_times'] + 1]);
@@ -98,7 +98,7 @@ class Audio extends API_Controller {
 			$this->db->update($this->Album_model->table());*/
 			$this->db->select('cover_image,title');
 			$ret['album'] = $this->Album_model->get($info['album_id']);
-			$ret['album']['audio_num'] = $this->Room_audio_model->count_by(['album_id' => $info['album_id']]);
+			$ret['album']['audio_num'] = $this->Room_audio_model->count_by(['album_id' => $info['album_id', 'enable' => 1]]);
 
 			//订阅
 			$this->load->model('Users_collection_model');
