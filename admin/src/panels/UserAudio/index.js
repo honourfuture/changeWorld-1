@@ -13,7 +13,9 @@ import {
     Modal,
     Form,
     Upload,
-    Icon
+    Icon,
+    Row,
+    Col
 } from "antd";
 import { remove } from "lodash";
 import { EditorModal } from "../../components/EditorModal";
@@ -106,6 +108,9 @@ export default class UserAudio extends BaseComponent {
                     const { id } = record;
                     return (
                         <div className="editable-row-operations">
+                            <span onClick={() => this.onEdit(id)}>
+                                <a className="ml10">编辑</a>
+                            </span>
                             <span>
                                 <Popconfirm
                                     title="确认删除?"
@@ -151,16 +156,37 @@ export default class UserAudio extends BaseComponent {
         }
     }
     onAddImage(key, value) {
+        let fileName = "";
+        if (value) {
+            const arr = value.split("/");
+            fileName = arr[arr.length - 1];
+        }
         return (
             <div>
                 <Upload
                     name="field"
                     data={{ field: "field" }}
                     action={Global.UPLOAD_URL}
+                    showUploadList={false}
                     onChange={e => this.onUploadChange(e, key)}
                 >
                     {value ? (
-                        ""
+                        <div
+                            onClick={e => {
+                                e.stopPropagation();
+                            }}
+                        >
+                            <span>{fileName}</span>
+                            <Icon
+                                onClick={action(e => {
+                                    this.store.addData[key] = "";
+                                    e.stopPropagation();
+                                })}
+                                style={{ marginLeft: 20 }}
+                                type="close"
+                                theme="outlined"
+                            />
+                        </div>
                     ) : (
                         <Button>
                             <Icon type="upload" /> 点击上传
@@ -259,6 +285,12 @@ export default class UserAudio extends BaseComponent {
         this.requestData();
     }
     @action.bound
+    onEdit(id) {
+        const list = this.store.list.slice();
+        const itemData = list.find(item => id === item.id);
+        this.store.addData = { ...itemData };
+    }
+    @action.bound
     onAdd() {
         this.store.addData = {
             album_id: Base.getPageParams("album_id"),
@@ -315,6 +347,7 @@ export default class UserAudio extends BaseComponent {
                     render(addData[key])
                 ) : (
                     <Input
+                        value={addData[key]}
                         onChange={action(e => {
                             addData[key] = e.target.value;
                         })}

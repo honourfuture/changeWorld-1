@@ -54,15 +54,16 @@ export class GlobalHeader extends BaseComponent {
                 className="menu"
                 selectedKeys={[]}
             >
-                <Menu.Item disabled>
+                {/* <Menu.Item disabled>
                     <Icon type="user" />个人中心
                 </Menu.Item>
                 <Menu.Item disabled>
                     <Icon type="setting" />设置
                 </Menu.Item>
-                <Menu.Divider />
+                <Menu.Divider /> */}
                 <Menu.Item key="logout">
-                    <Icon type="logout" />退出登录
+                    <Icon type="logout" />
+                    退出登录
                 </Menu.Item>
             </Menu>
         );
