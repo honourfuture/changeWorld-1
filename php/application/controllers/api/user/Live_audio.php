@@ -88,8 +88,8 @@ class Live_audio extends API_Controller {
 		$ret['count'] = $this->Room_audio_model->count_by($where);
 		if($ret['count']){
 			$order_by = array('id' => 'desc');
-			$this->db->select('id,created_at,duration,video_url,album_id,title,price,cover_image,room_id,anchor_uid');
 			$this->search();
+			$this->db->select('id,created_at,duration,video_url,album_id,title,price,cover_image,room_id,anchor_uid');
 			$ret['list'] = $this->Room_audio_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 
 			if($ret['list']){
@@ -151,7 +151,13 @@ class Live_audio extends API_Controller {
 			$keyword = $this->input->get_post('keyword');
 			if($keyword){
 				if($type == 'uid'){
-					$this->db->where('anchor_uid', $keyword);
+					$a_uid = [$keyword];
+					$this->load->model('Users_model');
+					$this->db->select('id');
+					if($row = $this->Users_model->get_by(['pretty_id' => $keyword])){
+						$a_uid[] = $row['id'];
+					}
+					$this->db->where('anchor_uid', $a_uid);
 				}else{
 					$this->db->like('title', $keyword);
 				}
