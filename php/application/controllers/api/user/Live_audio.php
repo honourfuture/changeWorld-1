@@ -157,7 +157,7 @@ class Live_audio extends API_Controller {
 					if($row = $this->Users_model->get_by(['pretty_id' => $keyword])){
 						$a_uid[] = $row['id'];
 					}
-					$this->db->where('anchor_uid', $a_uid);
+					$this->db->where_in('anchor_uid', $a_uid);
 				}else{
 					$this->db->like('title', $keyword);
 				}
