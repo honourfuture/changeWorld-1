@@ -123,8 +123,8 @@ export default class UserAudio extends BaseComponent {
         ];
         this.addInfo = [
             { key: "title", label: "标题" },
-            { key: "duration", label: "播放时长" },
-            { key: "play_times", label: "播放次数(秒)" },
+            { key: "duration", label: "播放时长(秒)" },
+            { key: "play_times", label: "播放次数" },
             {
                 key: "cover_image",
                 label: "封面图",
@@ -142,6 +142,7 @@ export default class UserAudio extends BaseComponent {
     }
     @action.bound
     onUploadChange(info, key) {
+        console.log(info);
         if (info.file.status === "done" || info.file.status === "removed") {
             const { addData } = this.store;
             const { fileList } = info;
@@ -261,12 +262,12 @@ export default class UserAudio extends BaseComponent {
     onAdd() {
         this.store.addData = {
             album_id: Base.getPageParams("album_id"),
-            duration: "",
+            duration: "0",
             cover_image: "",
             title: "",
-            price: "",
-            city_partner_rate: "",
-            two_level_rate: "",
+            price: "0",
+            city_partner_rate: "0",
+            two_level_rate: "0",
             video_url: "",
             // room_id: 0,
             play_times: "",
