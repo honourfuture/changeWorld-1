@@ -10,9 +10,12 @@ import {
     message,
     Modal,
     Input,
-    Popconfirm
+    Popconfirm,
+    Select
 } from "antd";
 import "./RobotManager.less";
+const Search = Input.Search;
+const Option = Select.Option;
 
 export default class RobotManager extends BaseComponent {
     store = {
@@ -213,6 +216,14 @@ export default class RobotManager extends BaseComponent {
         this.current = current;
         this.requestData();
     }
+    searchType = ""; //搜索类型
+    searchStr = "";
+    @action.bound
+    onSearch(value) {
+        this.current = 1;
+        this.searchStr = value;
+        this.requestData();
+    }
     current = 1;
     @action.bound
     requestData() {
@@ -221,7 +232,8 @@ export default class RobotManager extends BaseComponent {
                 act: "robot",
                 op: "users",
                 mod: "admin",
-                title: this.searchStr || "",
+                type: this.searchType || "uid",
+                keyword: this.searchStr || "",
                 cur_page: this.current || 1,
                 per_page: Global.PAGE_SIZE
             },
@@ -265,6 +277,20 @@ export default class RobotManager extends BaseComponent {
             <Spin ref="spin" wrapperClassName="RobotManager" spinning={false}>
                 <div className="pb10">
                     <Button onClick={this.onGen}>批量生成</Button>
+                    <Select
+                        style={{ marginLeft: 10 }}
+                        defaultValue={"uid"}
+                        onChange={value => (this.searchType = value)}
+                    >
+                        <Option value="uid">{"ID"}</Option>
+                        <Option value="title">{"昵称"}</Option>
+                    </Select>
+                    <Search
+                        placeholder="搜索ID/昵称"
+                        enterButton
+                        onSearch={this.onSearch}
+                        style={{ width: 200, marginLeft: 10 }}
+                    />
                     <span style={{ marginLeft: 20 }}>
                         总数：
                         {total}

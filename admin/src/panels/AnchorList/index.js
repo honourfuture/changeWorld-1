@@ -43,40 +43,40 @@ export default class AnchorList extends BaseComponent {
             {
                 title: "编号",
                 dataIndex: "user_id",
-                width: "10%",
                 render: (text, record) =>
                     this.renderText(text, record, "user_id")
             },
             {
+                title: "靓号",
+                dataIndex: "pretty_id",
+                render: (text, record) =>
+                    this.renderText(text, record, "pretty_id")
+            },
+            {
                 title: "昵称",
                 dataIndex: "nickname",
-                width: "10%",
                 render: (text, record) =>
                     this.renderText(text, record, "nickname")
             },
             {
                 title: "真实姓名",
                 dataIndex: "realname",
-                width: "10%",
                 render: (text, record) =>
                     this.renderText(text, record, "realname")
             },
             {
                 title: "手机号",
                 dataIndex: "mobi",
-                width: "10%",
                 render: (text, record) => this.renderText(text, record, "mobi")
             },
             {
                 title: "邮箱",
                 dataIndex: "email",
-                width: "15%",
                 render: (text, record) => this.renderText(text, record, "email")
             },
             {
                 title: "编辑时间",
                 dataIndex: "updated_at",
-                width: "15%",
                 render: (text, record) =>
                     this.renderText(text, record, "updated_at")
             },
@@ -89,7 +89,7 @@ export default class AnchorList extends BaseComponent {
             {
                 title: "操作",
                 dataIndex: "status",
-                width: "15%",
+                width: 200,
                 render: (text, record) => {
                     const { id, status } = record;
                     return (
@@ -359,10 +359,10 @@ export default class AnchorList extends BaseComponent {
             <Spin ref="spin" wrapperClassName="AnchorList" spinning={false}>
                 <div className="pb10">
                     <Search
-                        placeholder="搜索昵称/手机号"
+                        placeholder="搜索昵称/手机号/id"
                         enterButton
                         onSearch={this.onSearch}
-                        style={{ width: 200, marginRight: 10 }}
+                        style={{ width: 240, marginRight: 10 }}
                     />
                     {statusCon.length > 0 ? (
                         <Select
@@ -378,6 +378,7 @@ export default class AnchorList extends BaseComponent {
                     </span>
                 </div>
                 <Table
+                    size="small"
                     className="mt16"
                     onChange={this.onTableHandler}
                     bordered

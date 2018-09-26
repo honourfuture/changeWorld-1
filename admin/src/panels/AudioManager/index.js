@@ -91,10 +91,15 @@ export default class AudioManager extends BaseComponent {
                     return (
                         <div className="editable-row-operations">
                             <span>
-								<Popconfirm title="确认删除?" okText='确定' cancelText='取消' onConfirm={() => this.onDelete(id)}>
-									<a className='ml10 gray'>删除</a>
-								</Popconfirm>
-							</span>
+                                <Popconfirm
+                                    title="确认删除?"
+                                    okText="确定"
+                                    cancelText="取消"
+                                    onConfirm={() => this.onDelete(id)}
+                                >
+                                    <a className="ml10 gray">删除</a>
+                                </Popconfirm>
+                            </span>
                         </div>
                     );
                 }
@@ -160,9 +165,13 @@ export default class AudioManager extends BaseComponent {
         this.requestData();
     }
     @action.bound
-	onDelete(id){
-		Base.POST({act:'live_audio',op:'save',mod:'user',id,deleted:"1"},()=>remove(this.store.list,item=>id === item.id),this);
-	}
+    onDelete(id) {
+        Base.POST(
+            { act: "live_audio", op: "save", mod: "user", id, deleted: "1" },
+            () => remove(this.store.list, item => id === item.id),
+            this
+        );
+    }
     @action.bound
     onTableHandler({ current, pageSize }) {
         this.current = current;
@@ -176,7 +185,7 @@ export default class AudioManager extends BaseComponent {
                 act: "live_audio",
                 op: "index",
                 mod: "user",
-                type:this.searchType || 'uid',
+                type: this.searchType || "uid",
                 keyword: this.searchStr || "",
                 cur_page: this.current || 1,
                 per_page: Global.PAGE_SIZE
@@ -202,20 +211,14 @@ export default class AudioManager extends BaseComponent {
             <Spin ref="spin" wrapperClassName="AudioManager" spinning={false}>
                 <div className="pb10">
                     <Select
-                        defaultValue={'uid'}
-                        onChange={value =>
-                            this.searchType = value
-                        }
+                        defaultValue={"uid"}
+                        onChange={value => (this.searchType = value)}
                     >
-                        <Option value='uid'>
-                            {"主播ID"}
-                        </Option>
-                        <Option value='title'>
-                            {"标题"}
-                        </Option>
+                        <Option value="uid">{"主播ID/靓号"}</Option>
+                        <Option value="title">{"标题"}</Option>
                     </Select>
                     <Search
-                        placeholder="搜索主播ID/标题"
+                        placeholder="搜索主播ID/靓号/标题"
                         enterButton
                         onSearch={this.onSearch}
                         style={{ width: 200, marginLeft: 10 }}
