@@ -55,7 +55,8 @@ class Sms
 
 	        $msg = $this->server_name.$msg;
 
-	        $data = array(
+            $this->n_send($mobile, $msg, $res);
+	        /*$data = array(
 	            'userid' => '',
 	            'account' => $sms['account'],
 	            'password' => strtoupper(md5($sms['password'])),
@@ -81,10 +82,49 @@ class Sms
 	        if(! $flag){
 	            $res['status'] = 2;
 	            $res['message'] = empty($message) ? '短信接口报错' : $message;
-	            log_message('error', 'sms = '.var_export($return, true));
-	        }
+	            log_message('error', var_export($data, true)."\r\n sms = ".var_export($return, true));
+	        }*/
         }
 
         return $res;
+    }
+
+    public function n_send($mobile, $content, &$res)
+    {
+        $account = 'ywfwhy';
+        $password = 'ywfwhy';
+        $post = [
+            'userid' => '153',
+            'timestamp' => date("YmdHis"),
+            'mobile' => $mobile,
+            'content' => $content,//'【猪买单平台】您的验证码是：1024。请不要把验证码泄露给其他人，若非本人操作请忽略。',
+            'sendTime' => '',
+            'action' => 'send',
+            'extno' => ''
+        ];
+        $post['sign'] = strtolower(md5($account.$password.$post['timestamp']));
+
+        $flag = false;
+        $message = '';
+        try {
+            $url = 'http://47.95.231.135:8888/v2sms.aspx';
+            $response = Requests::post($url, [], $post);
+            $xml = $response->body;
+            $ret = json_decode(json_encode((array) simplexml_load_string($xml)), true);
+            // var_export($ret);
+            if(strtoupper($ret['returnstatus']) == 'SUCCESS'){
+                $flag = true;
+            }
+            isset($ret['message']) && $message = $ret['message'];
+        } catch (Exception $e) {
+            $message = $e->getMessage();
+            $xml = $message;
+        }
+
+        if(! $flag){
+            $res['status'] = 2;
+            $res['message'] = empty($message) ? '短信接口报错' : $message;
+            log_message('error', var_export($post, true)."\r\n response = ".$xml);
+        }
     }
 }
