@@ -109,6 +109,14 @@ export default class AlbumManager extends BaseComponent {
                             <span>
                                 <a
                                     onClick={() => {
+                                        this.onEdit(id);
+                                    }}
+                                >
+                                    编辑
+                                </a>
+                                <a
+                                    className="ml10"
+                                    onClick={() => {
                                         Base.push("UserAudio", {
                                             album_id: record.id
                                         });
@@ -215,7 +223,7 @@ export default class AlbumManager extends BaseComponent {
     }
     @action.bound
     onUploadChange(info, key) {
-        if (info.file.status === "done" || info.file.status === "removed") {
+        if (info.file.status === "done") {
             const { addData } = this.store;
             const { fileList } = info;
             if (key === "cover_image") {
@@ -224,25 +232,77 @@ export default class AlbumManager extends BaseComponent {
                         ? fileList[0].response.data.file_url
                         : "";
             } else {
-                const list = fileList.map(item => {
-                    return item.response.data.file_url;
-                });
-                addData[key] = JSON.stringify(list);
+                const value = addData[key];
+                let fileList = [];
+                try {
+                    fileList = JSON.parse(value) || [];
+                } catch (error) {}
+                fileList.push(info.file.response.data.file_url);
+                addData[key] = JSON.stringify(fileList);
             }
         }
     }
     onAddImage(key, value) {
+        let fileNameList = [];
+        if (value) {
+            try {
+                if (key === "summary") {
+                    fileNameList = JSON.parse(value) || [];
+                } else {
+                    fileNameList = [value];
+                }
+                fileNameList = fileNameList.map(item => {
+                    const arr = item.split("/");
+                    return arr[arr.length - 1];
+                });
+            } catch (error) {}
+        }
         return (
             <div>
                 <Upload
                     name="field"
                     data={{ field: "field" }}
                     action={Global.UPLOAD_URL}
+                    showUploadList={false}
                     onChange={e => this.onUploadChange(e, key)}
                 >
-                    {key === "cover_image" && value ? (
-                        ""
-                    ) : (
+                    {fileNameList.map((fileName, index) => {
+                        return (
+                            <div
+                                key={index}
+                                style={{ marginBottom: 5, marginTop: 5 }}
+                                onClick={e => {
+                                    e.stopPropagation();
+                                }}
+                            >
+                                <span>{fileName}</span>
+                                <Icon
+                                    onClick={action(e => {
+                                        if (key === "cover_image") {
+                                            this.store.addData[key] = "";
+                                        } else {
+                                            const value = this.store.addData[
+                                                key
+                                            ];
+                                            try {
+                                                const fileList =
+                                                    JSON.parse(value) || [];
+                                                fileList.splice(index, 1);
+                                                this.store.addData[
+                                                    key
+                                                ] = JSON.stringify(fileList);
+                                            } catch (error) {}
+                                        }
+                                        e.stopPropagation();
+                                    })}
+                                    style={{ marginLeft: 20 }}
+                                    type="close"
+                                    theme="outlined"
+                                />
+                            </div>
+                        );
+                    })}
+                    {fileNameList.length > 0 && key === "cover_image" ? null : (
                         <Button>
                             <Icon type="upload" /> 点击上传
                         </Button>
@@ -388,9 +448,9 @@ export default class AlbumManager extends BaseComponent {
                 title: "",
                 album_class: this.album_class_list[0].id,
                 album_tag: "",
-                price: "",
-                city_partner_rate: "",
-                two_level_rate: "",
+                price: "0.00",
+                city_partner_rate: "0.00",
+                two_level_rate: "0.00",
                 public: 1,
                 summary: "",
                 editable: true,
@@ -419,6 +479,31 @@ export default class AlbumManager extends BaseComponent {
     @action.bound
     onCancelAdd() {
         this.store.addData = null;
+    }
+    @action.bound
+    onEdit(id) {
+        const list = this.store.list.slice();
+        const itemData = list.find(item => id === item.id);
+        const setData = action(() => {
+            this.store.addData = { ...itemData };
+        });
+        if (!this.album_class_list || this.album_class_list.length <= 0) {
+            Base.GET(
+                { act: "album_class", op: "index" },
+                res => {
+                    this.album_class_list = res.data.filter(
+                        item => parseInt(item.enable) > 0
+                    );
+                    if (this.album_class_list.length <= 0) {
+                        return message.info("请设置专辑类型");
+                    }
+                    setData();
+                },
+                this
+            );
+        } else {
+            setData();
+        }
     }
     @action.bound
     onAddSave() {
@@ -455,6 +540,7 @@ export default class AlbumManager extends BaseComponent {
                     render(addData[key])
                 ) : (
                     <Input
+                        value={addData[key]}
                         onChange={action(e => {
                             addData[key] = e.target.value;
                         })}
