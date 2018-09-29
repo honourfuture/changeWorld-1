@@ -386,7 +386,9 @@ class Live_audio extends API_Controller {
         }
         $insert['video_id'] = date("Ymd").'_'.$insert['file_id'];
         $insert['room_id'] = 0;
-        $insert['video_url'] = base_url($insert['video_url']);
+        if(strpos($insert['video_url'], '://') === false){
+        	$insert['video_url'] = base_url($insert['video_url']);
+        }
 
         $this->load->model('Album_model');
         $album = $this->Album_model->get($insert['album_id']);
