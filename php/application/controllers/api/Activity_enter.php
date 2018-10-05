@@ -51,7 +51,7 @@ class Activity_enter extends API_Controller
     {
         $params = elements(
             array(
-                'activity_id', 'summary', 'photos'
+                'activity_id', 'summary', 'photos', 'user_id'
             ),
             $this->input->post(),
             UPDATE_VALID
@@ -69,9 +69,9 @@ class Activity_enter extends API_Controller
                 $this->ajaxReturn([], 501, '报名展示图格式错误');
             }
 
-            $params['user_id'] = $this->user_id;
+            $this->user_id && $params['user_id'] = $this->user_id;
             $this->load->model('Activity_enter_model');
-            if($this->Activity_enter_model->get_by(['activity_id' => $params['activity_id'], 'user_id' => $this->user_id])){
+            if($this->Activity_enter_model->get_by(['activity_id' => $params['activity_id'], 'user_id' => $params['user_id']])){
                 $this->ajaxReturn([], 3, '请勿重复报名');
             }
 

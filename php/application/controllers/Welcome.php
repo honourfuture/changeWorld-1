@@ -328,4 +328,30 @@ class Welcome extends Web_Controller
         $this->load->library('sms');
         var_export($this->sms->send(13430332489, array('code' => 1024), 0));
     }
+
+    public function n_sms()
+    {
+        $account = 'ywfwhy';
+        $password = 'ywfwhy';
+        $post = [
+            'userid' => '153',
+            'timestamp' => date("YmdHis"),
+            'mobile' => '13430332489',
+            'content' => '【猪买单平台】您的验证码是：1024。请不要把验证码泄露给其他人，若非本人操作请忽略。',
+            'sendTime' => '',
+            'action' => 'send',
+            'extno' => ''
+        ];
+        $post['sign'] = strtolower(md5($account.$password.$post['timestamp']));
+
+        try {
+            $url = 'http://47.95.231.135:8888/v2sms.aspx';
+            $response = Requests::post($url, [], $post);
+            $xml = $response->body;
+            $result = json_decode(json_encode((array) simplexml_load_string($xml)), true);
+            var_export($result);
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
 }

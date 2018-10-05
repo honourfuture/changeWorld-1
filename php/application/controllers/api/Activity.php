@@ -216,6 +216,10 @@ class Activity extends API_Controller
 
                 $this->Activity_model->common($ret);
             }
+
+            if(!$ret['list']){
+                $ret['notice'] = [];
+            }
             $this->ajaxReturn($ret);
         /*}else{
             $this->ajaxReturn([], 1, '活动分类ID错误');
