@@ -162,7 +162,16 @@ class Queue extends MY_Controller
                 $cache = $this->cache->file->get($cache_id);
                 if($cache){
                     $cache_num = count($cache);
-                    $this->db->where_not_in('id', $cache);
+                    $cache_chunk = array_chunk($cache, 50);
+                    $this->db->group_start();
+                    foreach($cache_chunk as $k=>$cache_ids){
+                        if($k){
+                            $this->db->or_where_not_in('id', $cache_ids);
+                        }else{
+                            $this->db->where_not_in('id', $cache_ids);
+                        }
+                    }
+                    $this->db->group_end();
                 }else{
                     $cache_num = 0;
                     $cache = [];
