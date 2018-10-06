@@ -29,6 +29,12 @@ export default class MemberManager extends BaseComponent {
         super(props);
         this.columns = [
             {
+                title: "id",
+                dataIndex: "id",
+                width: 150,
+                render: (text, record) => this.renderText(text, record, "id")
+            },
+            {
                 title: "昵称",
                 dataIndex: "nickname",
                 width: 150,

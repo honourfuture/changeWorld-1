@@ -57,96 +57,108 @@ import AdminManage from "./AdminManage";
 import AdminRoleList from "./AdminRoleList";
 import AccessSetting from "./AccessSetting";
 import HeadHuntingList from "./HeadHuntingList";
-import PushMsg from './PushMsg';
-import RobotHeaderManager from './RobotHeaderManager';
-import RobotNickNameManager from './RobotNickNameManager';
-import RobotManager from './RobotManager';
-import FansTask from './FansTask';
-import PlayTask from './PlayTask';
-import AudioManager from './AudioManager';
-import AlbumManager from './AlbumManager';
-import DirectManager from './DirectManager';
-import CollectTask from './CollectTask';
-import LiveStart from './LiveStart';
-import ActivityTask from './ActivityTask';
-import LiveEvaluateManager from './LiveEvaluateManager';
-import WebsiteGoods from './WebsiteGoods';
-import UserAudio from './UserAudio';
+import PushMsg from "./PushMsg";
+import RobotHeaderManager from "./RobotHeaderManager";
+import RobotNickNameManager from "./RobotNickNameManager";
+import RobotManager from "./RobotManager";
+import FansTask from "./FansTask";
+import PlayTask from "./PlayTask";
+import AudioManager from "./AudioManager";
+import AlbumManager from "./AlbumManager";
+import DirectManager from "./DirectManager";
+import CollectTask from "./CollectTask";
+import LiveStart from "./LiveStart";
+import ActivityTask from "./ActivityTask";
+import LiveEvaluateManager from "./LiveEvaluateManager";
+import WebsiteGoods from "./WebsiteGoods";
+import UserAudio from "./UserAudio";
+import ActivityLike from "./ActivityLike";
+import ActivityPlay from './ActivityPlay';
 export const panelsList = [
     {
-        path:'/live/UserAudio',
-        component:UserAudio,
-        title:'音频列表',
+        path:'/robot/ActivityPlay',
+        component:ActivityPlay,
+        title:'活动选手',
     },
     {
-        path:'/system/WebsiteGoods',
-        component:WebsiteGoods,
-        title:'官网产品',
+        path: "/robot/ActivityLike",
+        component: ActivityLike,
+        title: "活动点赞任务"
     },
     {
-        path:'/live/LiveEvaluateManager',
-        component:LiveEvaluateManager,
-        title:'专辑评价',
+        path: "/live/UserAudio",
+        component: UserAudio,
+        title: "音频列表"
     },
     {
-        path:'/robot/ActivityTask',
-        component:ActivityTask,
-        title:'活动任务',
+        path: "/system/WebsiteGoods",
+        component: WebsiteGoods,
+        title: "官网产品"
     },
     {
-        path:'/robot/LiveStart',
-        component:LiveStart,
-        title:'直播开播任务',
+        path: "/live/LiveEvaluateManager",
+        component: LiveEvaluateManager,
+        title: "专辑评价"
     },
     {
-        path:'/robot/CollectTask',
-        component:CollectTask,
-        title:'收藏任务',
+        path: "/robot/ActivityTask",
+        component: ActivityTask,
+        title: "活动浏览量任务"
     },
     {
-        path:'/live/DirectManager',
-        component:DirectManager,
-        title:'直播间管理',
+        path: "/robot/LiveStart",
+        component: LiveStart,
+        title: "直播开播任务"
     },
     {
-        path:'/live/AlbumManager',
-        component:AlbumManager,
-        title:'专辑管理',
+        path: "/robot/CollectTask",
+        component: CollectTask,
+        title: "收藏任务"
     },
     {
-        path:'/live/AudioManager',
-        component:AudioManager,
-        title:'音频管理',
+        path: "/live/DirectManager",
+        component: DirectManager,
+        title: "直播间管理"
     },
     {
-        path:'/robot/PlayTask',
-        component:PlayTask,
-        title:'播放量任务',
+        path: "/live/AlbumManager",
+        component: AlbumManager,
+        title: "专辑管理"
     },
     {
-        path:'/robot/FansTask',
-        component:FansTask,
-        title:'粉丝任务',
+        path: "/live/AudioManager",
+        component: AudioManager,
+        title: "音频管理"
     },
     {
-        path:'/robot/RobotManager',
-        component:RobotManager,
-        title:'机器人管理',
+        path: "/robot/PlayTask",
+        component: PlayTask,
+        title: "播放量任务"
     },
     {
-        path:'/robot/RobotNickNameManager',
-        component:RobotNickNameManager,
-        title:'昵称管理',
+        path: "/robot/FansTask",
+        component: FansTask,
+        title: "粉丝任务"
     },
     {
-        path:'/robot/RobotHeaderManager',
-        component:RobotHeaderManager,
-        title:'头像管理',
+        path: "/robot/RobotManager",
+        component: RobotManager,
+        title: "机器人管理"
     },
     {
-        path:'/system/PushMsg',
-        component:PushMsg,
-        title:'推送',
+        path: "/robot/RobotNickNameManager",
+        component: RobotNickNameManager,
+        title: "昵称管理"
+    },
+    {
+        path: "/robot/RobotHeaderManager",
+        component: RobotHeaderManager,
+        title: "头像管理"
+    },
+    {
+        path: "/system/PushMsg",
+        component: PushMsg,
+        title: "推送"
     },
     {
         path: "/member/HeadHuntingList",

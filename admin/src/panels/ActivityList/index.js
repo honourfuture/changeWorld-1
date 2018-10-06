@@ -78,21 +78,21 @@ export default class ActivityList extends BaseComponent {
             },
             {
                 title: "推荐设置",
-                width: "10%",
+                width: 80,
                 dataIndex: "is_recommend",
                 render: (text, record) =>
                     this.renderSwitch(text, record, "is_recommend")
             },
             {
                 title: "热门商品",
-                width: "10%",
+                width: 80,
                 dataIndex: "is_hot",
                 render: (text, record) =>
                     this.renderSwitch(text, record, "is_hot")
             },
             {
                 title: "操作",
-                width: 150,
+                width: 180,
                 dataIndex: "operation",
                 render: (text, record) => {
                     const { id, user, is_ad } = record;
@@ -105,9 +105,20 @@ export default class ActivityList extends BaseComponent {
                                     }
                                 >
                                     详情
-                                </a>&nbsp;&nbsp;
+                                </a>
+                                &nbsp;&nbsp;
                                 <a onClick={() => this.onAddImg(id, is_ad)}>
                                     广告位
+                                </a>
+                                <a
+                                    className="ml10"
+                                    onClick={() => {
+                                        Base.push("/robot/ActivityPlay", {
+                                            id
+                                        });
+                                    }}
+                                >
+                                    选手
                                 </a>
                                 <Popconfirm
                                     title="确认删除?"
@@ -298,7 +309,7 @@ export default class ActivityList extends BaseComponent {
                         placeholder="搜索标题"
                         enterButton
                         onSearch={this.onSearch}
-                        style={{ width: 130, marginLeft: 10 }}
+                        style={{ width: 130 }}
                     />
                 </div>
                 <Table

@@ -387,7 +387,8 @@ const menuData = [
             { name: "播放量任务", path: "PlayTask" },
             { name: "收藏任务", path: "CollectTask" },
             { name: "直播任务", path: "LiveStart" },
-            { name: "活动任务", path: "ActivityTask" }
+            { name: "活动浏览量任务", path: "ActivityTask" },
+            { name: "活动点赞任务", path: "ActivityLike" }
         ]
     }
 ];
