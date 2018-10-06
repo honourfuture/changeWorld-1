@@ -499,7 +499,9 @@ class Queue extends MY_Controller
                                 ];
                                 $this->Activity_vote_model->insert($data);
 
-                                $this->Activity_enter_model->update($enter['id'], ['vote' => $enter['vote'] + 1]);
+                                $this->db->set('vote', 'vote +1', false);
+                                $this->db->where('id', $enter['id']);
+                                $this->db->update($this->Activity_enter_model->table());
                                 //点赞
 
                                 $cache[] = $item['id'];

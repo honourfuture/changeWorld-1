@@ -99,5 +99,5 @@ QQ开发者平台：2898264786 ，Yangguang521
 >  包名：trilateral.com.mowtogether
 
 
-ALTER TABLE `ai_kuaimacode`.`room` AUTO_INCREMENT=200;
+ALTER TABLE `ai_kuaimacode`.`room` AUTO_INCREMENT=100100;
 UPDATE `pretty` SET `buyer_id` = 0,`status` = 0
