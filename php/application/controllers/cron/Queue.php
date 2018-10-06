@@ -365,7 +365,7 @@ class Queue extends MY_Controller
     	$rows = $this->Queue_model->order_by('updated_at')->limit(5, 0)->get_many_by(['main_type' => 'activity', 'status' => 0]);
     	if($rows){
     		$this->load->model('Activity_model');
-    		// $thsi->load->model('Activity_enter_model');
+    		// $this->load->model('Activity_enter_model');
     		foreach($rows as $row){
     			$row['params'] = json_decode($row['params'], true);
     			$cache_id = 'activity_'.$row['params']['id'].'_'.$row['id'];
@@ -415,6 +415,108 @@ class Queue extends MY_Controller
 
     		}
     	}
+    }
+
+    public function activity_vote()
+    {
+        $rows = $this->Queue_model->order_by('updated_at')->limit(5, 0)->get_many_by(['main_type' => 'activity_vote', 'status' => 0]);
+        if($rows){
+            $this->load->model('Users_model');
+            $this->load->model('Activity_model');
+            $this->load->model('Activity_enter_model');
+            $this->load->model('Activity_vote_model');
+            $h = date('YmdH');
+            $ip = $this->input->ip_address();
+            foreach($rows as $row){
+                $row['params'] = json_decode($row['params'], true);
+                $cache_id = 'activity_vote_'.$row['params']['id'].'_'.$row['id'];
+                if(file_exists(APPPATH.'cache/'.$cache_id)){
+                    $ntime = time();
+                    $mtime = filemtime(APPPATH.'cache/'.$cache_id);
+                    clearstatcache();
+                    if($ntime > $mtime + $row['params']['step_times']){
+                        $job = true;
+                    }else{
+                        $job = false;
+                    }
+                }else{
+                    $job = true;
+                }
+
+                if($job){
+                    $this->Queue_model->update($row['id'], ['status' => 1, 'exe_times' => $row['exe_times'] + 1]);
+                }else{
+                    $this->Queue_model->update($row['id'], ['status' => 0, 'exe_times' => $row['exe_times'] + 1]);
+                    continue;
+                }
+
+
+                $cache = $this->cache->file->get($cache_id);
+                if($cache){
+                    $cache_num = count($cache);
+                    // $this->db->where_not_in('id', $cache);
+                    $cache_chunk = array_chunk($cache, 100);
+                    $this->db->group_start();
+                    foreach($cache_chunk as $k=>$cache_ids){
+                        if($k){
+                            $this->db->or_where_not_in('id', $cache_ids);
+                        }else{
+                            $this->db->where_not_in('id', $cache_ids);
+                        }
+                    }
+                    $this->db->group_end();
+                }else{
+                    $cache_num = 0;
+                    $cache = [];
+                }
+
+                $step_num = $this->step_num($row);
+                $step_num = min($step_num, $row['params']['max'] - $cache_num);
+                if($step_num > 0){
+                    $this->db->select('id');
+                    $user = $this->Users_model->limit($step_num, 0)->get_many_by(['robot' => 1]);
+                    if($user){
+                        if($step_num > count($user)){
+                            $this->Queue_model->update($row['id'], ['status' => 2]);
+                        }else{
+                            $this->Queue_model->update($row['id'], ['status' => 0]);
+                        }
+
+                        if($enter = $this->Activity_enter_model->get($row['params']['id'])){
+                            //浏览
+                            $this->db->set('views', 'views +'.count($user), false);
+                            $this->db->where('id', $enter['activity_id']);
+                            $this->db->update($this->Activity_model->table());
+
+                            foreach($user as $item){
+                                //投票
+                                $data = [
+                                    'activity_id' => $enter['activity_id'],
+                                    'user_id' => $enter['user_id'],
+                                    'mobi' => '',
+                                    'ip' => $ip,
+                                    'h' => $h
+                                ];
+                                $this->Activity_vote_model->insert($data);
+
+                                $this->Activity_enter_model->update($enter['id'], ['vote' => $enter['vote'] + 1]);
+                                //点赞
+
+                                $cache[] = $item['id'];
+                            }
+                            $this->cache->file->save($cache_id, $cache, 0);
+                        }else{
+                            $this->Queue_model->update($row['id'], ['status' => 2]);
+                        }
+                    }else{
+                        $this->Queue_model->update($row['id'], ['status' => 2]);
+                    }
+                }else{
+                    $this->Queue_model->update($row['id'], ['status' => 2]);
+                }
+
+            }
+        }
     }
 
     public function live_join()
