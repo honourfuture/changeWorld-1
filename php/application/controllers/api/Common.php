@@ -99,8 +99,8 @@ class Common extends API_Controller
         if($this->upload->do_upload($field)){
             $data = $this->upload->data();
             $ret['file_url'] = '/'.substr($data['full_path'], strpos($data['full_path'], 'uploads'));
-            /*$ret['width'] = $data['image_width'];
-            $ret['height'] = $data['image_height'];*/
+            $ret['width'] = $data['image_width'];
+            $ret['height'] = $data['image_height'];
             $this->formatResource($this->upload->file_ext, $ret);
 
             $this->ajaxReturn($ret, 0, '', true);
@@ -160,9 +160,9 @@ class Common extends API_Controller
             //写入操作
             if (file_put_contents($new_file, base64_decode(str_replace($result[1], '', $base64_image_content)))) {
                 $ret['file_url'] = '/'.substr($new_file, strpos($new_file, 'uploads'));
-                /*$this->upload->set_image_properties($new_file);
+                $this->upload->set_image_properties($new_file);
                 $ret['width'] = $this->upload->image_width;
-                $ret['height'] = $this->upload->image_height;*/
+                $ret['height'] = $this->upload->image_height;
                 $this->ajaxReturn($ret);
             } else {
                 $this->ajaxReturn($ret, 1, '保存失败');

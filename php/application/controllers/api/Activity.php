@@ -614,6 +614,9 @@ class Activity extends API_Controller
     {
         $enter_list = [];
         $select = 'id,user_id,photos,vote';
+        if($this->admin_id){
+            $select .= ',summary';
+        }
         if($this->rank){
             $select .= ',likes';
 

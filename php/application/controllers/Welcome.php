@@ -25,6 +25,15 @@ class Welcome extends Web_Controller
      */
     public function index()
     {
+        $this->db->where('id', 2);
+        $this->db->group_start();
+        $this->db->where_not_in('mobi', ['134', '8899']);
+        $this->db->or_where_not_in('mobi', ['134', '8899']);
+        $this->db->group_end();
+        $this->load->model('Users_model');
+        $this->Users_model->get_all();
+        echo $this->db->last_query();exit();
+
         $this->load->driver('cache');
         $cache_id = 'live_join_93_55';
         $cache = $this->cache->file->get($cache_id);
