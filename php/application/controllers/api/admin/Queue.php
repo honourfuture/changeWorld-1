@@ -6,7 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @link www.aicode.org.cn
  */
 class Queue extends API_Controller {
-	protected $a_task = ['fans', 'audio_play', 'album_collection', 'activity', 'live_join'];
+	protected $a_task = ['fans', 'audio_play', 'album_collection', 'activity', 'activity_vote', 'live_join'];
 
 	public function __construct()
     {
@@ -32,7 +32,7 @@ class Queue extends API_Controller {
 	 * @apiParam {Number} admin_id 管理员唯一ID
 	 * @apiParam {String} account 登录账号
 	 * @apiParam {String} sign 校验签名
-	 * @apiParam {String} task 任务类型 ['fans', 'audio_play', 'album_collection', 'activity', 'live_join']
+	 * @apiParam {String} task 任务类型 ['fans', 'audio_play', 'album_collection', 'activity', 'live_join', 'activity_vote']
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -125,6 +125,24 @@ class Queue extends API_Controller {
 
 	    					$this->db->select('views,title');
 	    					if($activity = $this->Activity_model->get($item['params']['id'])){
+	    						$item = array_merge($item, $activity);
+	    					}
+	    					$ret['list'][] = $item;
+	    				}
+	    			}
+	    			break;
+	    		case 'activity_vote':
+	    			$list = $this->Queue_model->order_by('id', 'desc')->limit($this->per_page, $this->offset)->get_many_by($where);
+	    			if($list){
+	    				$this->load->model('Activity_enter_model');
+	    				foreach($list as $item){
+	    					$item['params'] = json_decode($item['params'], true);
+
+	    					$item['views'] = 0;
+	    					$item['title'] = '';
+
+	    					$this->db->select('vote as views,summary as title');
+	    					if($activity = $this->Activity_enter_model->get($item['params']['id'])){
 	    						$item = array_merge($item, $activity);
 	    					}
 	    					$ret['list'][] = $item;
@@ -229,6 +247,13 @@ class Queue extends API_Controller {
     		case 'activity'://id 活动ID
     			$this->load->model('Activity_model');
     			$activity = $this->Activity_model->get($params['id']);
+    			if(! $activity){
+    				$this->ajaxReturn([], 1, '活动ID错误');
+    			}
+    			break;
+    		case 'activity_vote'://id 活动报名ID
+    			$this->load->model('Activity_enter_model');
+    			$activity = $this->Activity_enter_model->get($params['id']);
     			if(! $activity){
     				$this->ajaxReturn([], 1, '活动ID错误');
     			}
