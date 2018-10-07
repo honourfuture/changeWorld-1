@@ -45,11 +45,11 @@ export default class ActivityLike extends BaseComponent {
                         "id"
                     )
             },
-            // {
-            //     title: "主播粉丝数",
-            //     dataIndex: "fans",
-            //     render: (text, record) => this.renderText(text, record, "fans")
-            // },
+            {
+                title: "当前点赞数",
+                dataIndex: "views",
+                render: (text, record) => this.renderText(text, record, "views")
+            },
             {
                 title: "多少秒内投票",
                 dataIndex: "step_times",
