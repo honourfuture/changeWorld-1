@@ -14,6 +14,7 @@ class Chat extends API_Controller {
 
         //融云
         $config = config_item('rongcloud');
+        $this->app_key = $config['app_key'];
     	$this->rongCloud = new RongCloud($config['app_key'], $config['app_secret']);
     }
 
@@ -74,6 +75,7 @@ class Chat extends API_Controller {
     		$this->ajaxReturn([], 2, '获取授权token失败');
     	}
     	$ret['token'] = $token;
+    	$ret['app_key'] = $this->app_key;
 
 		$this->ajaxReturn($ret);
 	}
