@@ -33,7 +33,7 @@ fi
 
 
 PREFIX=${DIR}
-STEP=1
+STEP=10
 for ((i = 0; i < 60; i = (i+STEP) )); do
 	flock -xn ${LOCKDIR}php-queue-fans.lock -c "CI_ENV=$CI_ENV ${PHP} ${PREFIX}/index.php cron queue fans >> ${PREFIX}/application/logs/queue_fans.log 2>&1 &"
 	sleep $STEP
