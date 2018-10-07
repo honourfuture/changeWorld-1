@@ -74,7 +74,13 @@ import WebsiteGoods from "./WebsiteGoods";
 import UserAudio from "./UserAudio";
 import ActivityLike from "./ActivityLike";
 import ActivityPlay from './ActivityPlay';
+import IMPanel from './IMPanel';
 export const panelsList = [
+    {
+        path:'/robot/IMPanel',
+        component:IMPanel,
+        title:'聊天',
+    },
     {
         path:'/robot/ActivityPlay',
         component:ActivityPlay,

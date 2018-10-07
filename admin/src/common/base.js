@@ -185,6 +185,27 @@ export const Base = {
     // //发送事件
     sendEvt(name, data) {
         PubSub.publish(name, data);
+    },
+    //加载js
+    loadJs(s_url, f_callback) {
+        let dom = document.createElement("script");
+        dom.type = "text/javascript";
+        dom.src = s_url;
+        if (document.documentMode == 10 || document.documentMode == 9) {
+            dom.onerror = dom.onload = loaded;
+        } else {
+            dom.onreadystatechange = ready;
+            dom.onerror = dom.onload = loaded;
+        }
+        document.getElementsByTagName("head")[0].appendChild(dom);
+        function ready(s) {
+            if (s.readyState == "loaded" || s.readyState == "complete") {
+                f_callback();
+            }
+        }
+        function loaded() {
+            f_callback();
+        }
     }
 };
 

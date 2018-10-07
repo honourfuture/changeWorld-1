@@ -22,7 +22,9 @@ export default class RobotManager extends BaseComponent {
         list: [],
         total: 1,
         num: "",
-        isShowModal: false
+        targetId: "",
+        isShowModal: false,
+        isShowIdModal: false
     };
     constructor(props) {
         super(props);
@@ -84,6 +86,14 @@ export default class RobotManager extends BaseComponent {
                 }
             }
         ];
+        this.rowSelection = {
+            onChange: (selectedRowKeys, selectedRows) => {
+                this.selectedRowKeys = selectedRowKeys;
+            },
+            getCheckboxProps: record => ({
+                name: record.name
+            })
+        };
     }
     renderInput(text, record, column) {
         const { editable } = record;
@@ -227,6 +237,7 @@ export default class RobotManager extends BaseComponent {
     current = 1;
     @action.bound
     requestData() {
+        this.selectedRowKeys = [];
         Base.GET(
             {
                 act: "robot",
@@ -270,8 +281,39 @@ export default class RobotManager extends BaseComponent {
             }
         );
     }
+    @action.bound
+    onChat() {
+        console.log(this.selectedRowKeys);
+        if (!this.selectedRowKeys || this.selectedRowKeys.length <= 0) {
+            return message.error("请选择机器人");
+        }
+        const { targetId } = this.store;
+        if (!targetId) {
+            this.store.isShowIdModal = true;
+            return;
+        }
+        this.store.targetId = "";
+        this.store.isShowIdModal = false;
+        this.selectedRowKeys.forEach(item => {
+            // window.open(
+            //     `${
+            //         Global.RES_URL
+            //     }/admin/#/robot/IMPanel?id=${item}&targetId=${targetId}`
+            // );
+            window.open(
+                `http://localhost:3000/#/robot/IMPanel?id=${item}&targetId=${targetId}`
+            );
+        });
+    }
     render() {
-        let { list, total, num, isShowModal } = this.store;
+        let {
+            list,
+            total,
+            num,
+            isShowModal,
+            isShowIdModal,
+            targetId
+        } = this.store;
         const showList = list.slice();
         return (
             <Spin ref="spin" wrapperClassName="RobotManager" spinning={false}>
@@ -295,8 +337,12 @@ export default class RobotManager extends BaseComponent {
                         总数：
                         {total}
                     </span>
+                    <Button style={{ float: "right" }} onClick={this.onChat}>
+                        发起聊天
+                    </Button>
                 </div>
                 <Table
+                    rowSelection={this.rowSelection}
                     className="mt16"
                     onChange={this.onTableHandler}
                     bordered
@@ -323,6 +369,22 @@ export default class RobotManager extends BaseComponent {
                         )}
                         value={num}
                         placeholder="请输入生成个数"
+                    />
+                </Modal>
+                <Modal
+                    visible={!!isShowIdModal}
+                    okText="确定"
+                    cancelText="取消"
+                    closable={false}
+                    onOk={this.onChat}
+                    onCancel={action(() => (this.store.isShowIdModal = false))}
+                >
+                    <Input
+                        onChange={action(
+                            e => (this.store.targetId = e.target.value)
+                        )}
+                        value={targetId}
+                        placeholder="请输入聊天用户id"
                     />
                 </Modal>
             </Spin>
