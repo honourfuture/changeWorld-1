@@ -33,7 +33,7 @@ fi
 
 
 PREFIX=${DIR}
-STEP=1
+STEP=5
 for ((i = 0; i < 60; i = (i+STEP) )); do
 	flock -xn ${LOCKDIR}php-queue-live_join.lock -c "CI_ENV=$CI_ENV ${PHP} ${PREFIX}/index.php cron queue live_join >> ${PREFIX}/application/logs/queue_live_join.log 2>&1 &"
 	sleep $STEP

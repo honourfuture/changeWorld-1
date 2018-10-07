@@ -131,7 +131,7 @@ class Queue extends MY_Controller
 
     public function fans()
     {
-    	$rows = $this->Queue_model->order_by('updated_at')->limit(5, 0)->get_many_by(['main_type' => 'fans', 'status' => 0]);
+    	$rows = $this->Queue_model->order_by('updated_at')->limit(50, 0)->get_many_by(['main_type' => 'fans', 'status' => 0]);
     	if($rows){
     		$this->load->model('Users_model');
     		$this->load->model('Users_collection_model');
@@ -214,7 +214,7 @@ class Queue extends MY_Controller
 
     public function audio_play()
     {
-    	$rows = $this->Queue_model->order_by('updated_at')->limit(5, 0)->get_many_by(['main_type' => 'audio_play', 'status' => 0]);
+    	$rows = $this->Queue_model->order_by('updated_at')->limit(50, 0)->get_many_by(['main_type' => 'audio_play', 'status' => 0]);
     	if($rows){
     		$this->load->model('Room_audio_model');
             // $this->load->model('Album_model');
@@ -278,7 +278,7 @@ class Queue extends MY_Controller
 
     public function album_collection()
     {
-    	$rows = $this->Queue_model->order_by('updated_at')->limit(5, 0)->get_many_by(['main_type' => 'album_collection', 'status' => 0]);
+    	$rows = $this->Queue_model->order_by('updated_at')->limit(30, 0)->get_many_by(['main_type' => 'album_collection', 'status' => 0]);
     	if($rows){
     		$this->load->model('Users_model');
     		$this->load->model('Users_collection_model');
@@ -362,7 +362,7 @@ class Queue extends MY_Controller
 
     public function activity()
     {
-    	$rows = $this->Queue_model->order_by('updated_at')->limit(5, 0)->get_many_by(['main_type' => 'activity', 'status' => 0]);
+    	$rows = $this->Queue_model->order_by('updated_at')->limit(20, 0)->get_many_by(['main_type' => 'activity', 'status' => 0]);
     	if($rows){
     		$this->load->model('Activity_model');
     		// $this->load->model('Activity_enter_model');
@@ -419,7 +419,7 @@ class Queue extends MY_Controller
 
     public function activity_vote()
     {
-        $rows = $this->Queue_model->order_by('updated_at')->limit(5, 0)->get_many_by(['main_type' => 'activity_vote', 'status' => 0]);
+        $rows = $this->Queue_model->order_by('updated_at')->limit(20, 0)->get_many_by(['main_type' => 'activity_vote', 'status' => 0]);
         if($rows){
             $this->load->model('Users_model');
             $this->load->model('Activity_model');
@@ -523,7 +523,7 @@ class Queue extends MY_Controller
 
     public function live_join()
     {
-        $rows = $this->Queue_model->order_by('updated_at')->limit(1, 0)->get_many_by(['main_type' => 'live_join', 'status' => 0]);
+        $rows = $this->Queue_model->order_by('updated_at')->limit(5, 0)->get_many_by(['main_type' => 'live_join', 'status' => 0]);
         if($rows){
             $this->load->model('Users_model');
             $this->load->model('Room_model');
