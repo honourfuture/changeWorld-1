@@ -54,6 +54,9 @@ class Chat extends API_Controller {
 	{
 		$ret = array();
     	//token
+    	if($this->admin_id){
+    		$this->user_id = $this->input->get_post('robot_id');
+    	}
     	$user = $this->get_user();
     	if(! $user){
     		$this->ajaxReturn([], 1, '用户不存在');
