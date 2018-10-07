@@ -21,7 +21,7 @@ class Queue extends MY_Controller
 
     public function robot()
     {
-        $num = 500;
+        $num = 50;
         if($num){
             $this->load->model('Users_model');
             $rows = [];
