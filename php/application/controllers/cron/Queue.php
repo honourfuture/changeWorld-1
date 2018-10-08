@@ -823,7 +823,7 @@ class Queue extends MY_Controller
                 if($step_num > 0){
                     $this->Queue_model->update($row['id'], ['status' => 0]);
 
-                    foreach($i = 0; $i < $step_num; $i++){
+                    for($i = 0; $i < $step_num; $i++){
                         $this->db->select('id');
                         $user = $this->Users_model->order_by('', 'RANDOM')->limit(1)->get_by(['robot' => 1]);
                         $insert = [
