@@ -475,8 +475,9 @@ class Queue extends MY_Controller
                 if($step_num > 0){
                     $this->db->select('id');
                     $user = $this->Users_model->limit($step_num, 0)->get_many_by(['robot' => 1]);
+                    $c_user = count($user);
                     if($user){
-                        if($step_num > count($user)){
+                        if($step_num > $c_user){
                             $this->Queue_model->update($row['id'], ['status' => 2]);
                         }else{
                             $this->Queue_model->update($row['id'], ['status' => 0]);
@@ -484,7 +485,8 @@ class Queue extends MY_Controller
 
                         if($enter = $this->Activity_enter_model->get($row['params']['id'])){
                             //浏览
-                            $this->db->set('views', 'views +'.count($user), false);
+                            $views = $c_user * mt_rand(1, 5);
+                            $this->db->set('views', 'views +'.$views, false);
                             $this->db->where('id', $enter['activity_id']);
                             $this->db->update($this->Activity_model->table());
 
