@@ -63,6 +63,24 @@ class Queue extends API_Controller {
 
     	if($ret['count'] > 0){
 	    	switch ($this->task) {
+	    		case 'audio_comment':
+	    			$list = $this->Queue_model->order_by('id', 'desc')->limit($this->per_page, $this->offset)->get_many_by($where);
+	    			if($list){
+	    				$this->load->model('Room_audio_model');
+	    				foreach($list as $item){
+	    					$item['params'] = json_decode($item['params'], true);
+
+	    					$item['play_times'] = 0;
+	    					$item['video_url'] = $item['title'] = '';
+
+	    					$this->db->select('play_times,video_url,title');
+	    					if($audio = $this->Room_audio_model->get($item['params']['id'])){
+	    						$item = array_merge($item, $audio);
+	    					}
+	    					$ret['list'][] = $item;
+	    				}
+	    			}
+	    			break;
 	    		case 'fans':
 	    			$list = $this->Queue_model->order_by('id', 'desc')->limit($this->per_page, $this->offset)->get_many_by($where);
 	    			if($list){
