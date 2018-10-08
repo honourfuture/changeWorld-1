@@ -6,7 +6,55 @@ import "./IMPanel.less";
 const { TextArea } = Input;
 
 export default class IMPanel extends BaseComponent {
-    store = { content: "", list: [], isConnect: false };
+    store = {
+        content: "",
+        list: [],
+        isConnect: false,
+        leftHeader: "",
+        rightHeader: "",
+        title: ""
+    };
+    @action.bound
+    isMinStatus() {
+        let isMin = false;
+        //除了Internet Explorer浏览器，其他主流浏览器均支持Window outerHeight 和outerWidth 属性
+        if (window.outerWidth != undefined && window.outerHeight != undefined) {
+            isMin = window.outerWidth <= 160 && window.outerHeight <= 27;
+        } else {
+            isMin = window.outerWidth <= 160 && window.outerHeight <= 27;
+        }
+        //除了Internet Explorer浏览器，其他主流浏览器均支持Window screenY 和screenX 属性
+        if (window.screenY != undefined && window.screenX != undefined) {
+            isMin = window.screenY < -30000 && window.screenX < -30000; //FF Chrome
+        } else {
+            isMin = window.screenTop < -30000 && window.screenLeft < -30000; //IE
+        }
+        return isMin;
+    }
+    @action.bound
+    flash_title() {
+        //当窗口效果为最小化，或者没焦点状态下才闪动
+        if (this.isMinStatus() || !window.isFocus) {
+            console.log(2222);
+            this.newMsgCount();
+        } else {
+            document.title = this.store.title; //窗口没有消息的时候默认的title内容
+            window.clearInterval();
+        }
+    }
+    flag = false;
+    @action.bound
+    newMsgCount() {
+        console.log(111);
+        if (this.flag) {
+            this.flag = false;
+            document.title = "【新消息】";
+        } else {
+            this.flag = true;
+            document.title = "【　　　】";
+        }
+        window.setTimeout(this.flash_title, 380);
+    }
     @action.bound
     onMsgChange(e) {
         this.store.content = e.target.value;
@@ -73,6 +121,27 @@ export default class IMPanel extends BaseComponent {
         );
     }
     componentDidMount() {
+        window.onblur = function() {
+            window.isFocus = false;
+        };
+        window.onfocus = function() {
+            window.isFocus = true;
+        };
+        const { id, targetId } = Base.getPageParams();
+        Base.GET({ act: "info", op: "bitch", mod: "user", s_uid: id }, res => {
+            const { header, nickname } = res.data[0];
+            console.log(nickname);
+            document.title = nickname;
+            this.store.title = nickname;
+            this.store.rightHeader = Base.getImgUrl(header);
+        });
+        Base.GET(
+            { act: "info", op: "bitch", mod: "user", s_uid: targetId },
+            res => {
+                const { header } = res.data[0];
+                this.store.leftHeader = Base.getImgUrl(header);
+            }
+        );
         Base.GET(
             { act: "chat", op: "token", robot_id: Base.getPageParams("id") },
             res => {
@@ -172,6 +241,7 @@ export default class IMPanel extends BaseComponent {
                                 const data = { ...message };
                                 switch (data.messageType) {
                                     case RongIMClient.MessageType.TextMessage:
+                                        self.flash_title();
                                         action(() => {
                                             self.store.list.push(data);
                                         })();
@@ -218,15 +288,19 @@ export default class IMPanel extends BaseComponent {
         );
     }
     render() {
-        const { content, list, isConnect } = this.store;
+        const {
+            content,
+            list,
+            isConnect,
+            leftHeader,
+            rightHeader
+        } = this.store;
         const curUserId = Base.getPageParams("id");
         const items = list.map((item, index) => {
             const { content, senderUserId } = item;
             const key = curUserId === senderUserId ? "right" : "left";
             const header =
-                curUserId === senderUserId
-                    ? require("../../images/logo.png")
-                    : require("../../images/user.png");
+                curUserId === senderUserId ? rightHeader : leftHeader;
             return (
                 <div className={`${key}d`} key={index}>
                     <img src={header} alt="" className="header" />
