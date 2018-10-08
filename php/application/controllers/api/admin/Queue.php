@@ -233,7 +233,7 @@ class Queue extends API_Controller {
     			$params['filename'] = $this->input->get_post('filename');
     			$params['origin_filename'] = $this->input->get_post('origin_filename');
 
-    			$file = FCPATH.$filename;
+    			$file = FCPATH.$params['filename'];
     			if(file_exists($file)){
 					if(! $a_line = file($file)){
 						$this->ajaxReturn([], 3, '读取文件失败: '.$file);
