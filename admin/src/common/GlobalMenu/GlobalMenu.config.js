@@ -388,7 +388,8 @@ const menuData = [
             { name: "收藏任务", path: "CollectTask" },
             { name: "直播任务", path: "LiveStart" },
             { name: "活动浏览量任务", path: "ActivityTask" },
-            { name: "活动点赞任务", path: "ActivityLike" }
+            { name: "活动点赞任务", path: "ActivityLike" },
+            { name: "音频评论任务", path: "AudioComment" }
         ]
     }
 ];

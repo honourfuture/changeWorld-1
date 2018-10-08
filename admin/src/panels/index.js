@@ -75,7 +75,13 @@ import UserAudio from "./UserAudio";
 import ActivityLike from "./ActivityLike";
 import ActivityPlay from './ActivityPlay';
 import IMPanel from './IMPanel';
+import AudioComment from './AudioComment';
 export const panelsList = [
+    {
+        path:'/robot/AudioComment',
+        component:AudioComment,
+        title:'音频评论任务',
+    },
     {
         path:'/robot/IMPanel',
         component:IMPanel,

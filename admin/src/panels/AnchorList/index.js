@@ -35,7 +35,8 @@ export default class AnchorList extends BaseComponent {
     store = {
         list: [],
         status: -1,
-        curData: null
+        curData: null,
+        preImageUrl: ""
     };
     constructor(props) {
         super(props);
@@ -151,8 +152,10 @@ export default class AnchorList extends BaseComponent {
                 key: "anchor_photo",
                 label: "主播照片",
                 render: value => {
-                    const list = JSON.parse(value);
-                    console.log(list);
+                    let list = [];
+                    try {
+                        list = JSON.parse(value) || [];
+                    } catch (error) {}
                     return list.map((item, index) => {
                         return (
                             <img
@@ -160,6 +163,11 @@ export default class AnchorList extends BaseComponent {
                                 src={Base.getImgUrl(item)}
                                 className="photo"
                                 alt=""
+                                onClick={action(() => {
+                                    this.store.preImageUrl = Base.getImgUrl(
+                                        item
+                                    );
+                                })}
                             />
                         );
                     });
@@ -178,6 +186,9 @@ export default class AnchorList extends BaseComponent {
                             className="photo"
                             src={Base.getImgUrl(value)}
                             alt=""
+                            onClick={action(() => {
+                                this.store.preImageUrl = Base.getImgUrl(value);
+                            })}
                         />
                     );
                 }
@@ -324,7 +335,7 @@ export default class AnchorList extends BaseComponent {
         this.requestData();
     }
     render() {
-        let { list, total, curData } = this.store;
+        let { list, total, curData, preImageUrl } = this.store;
         const showList = list.slice();
         const { status = {} } = this;
         const statusCon = [];
@@ -408,6 +419,15 @@ export default class AnchorList extends BaseComponent {
                     ]}
                 >
                     <Form>{infoItems}</Form>
+                </Modal>
+                <Modal
+                    onCancel={action(() => {
+                        this.store.preImageUrl = "";
+                    })}
+                    visible={!!preImageUrl}
+                    footer={null}
+                >
+                    <img style={{ maxWidth: 400 }} src={preImageUrl} alt="" />
                 </Modal>
             </Spin>
         );
