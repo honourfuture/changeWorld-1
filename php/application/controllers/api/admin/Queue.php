@@ -6,7 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @link www.aicode.org.cn
  */
 class Queue extends API_Controller {
-	protected $a_task = ['fans', 'audio_play', 'album_collection', 'activity', 'activity_vote', 'live_join'];
+	protected $a_task = ['fans', 'audio_play', 'album_collection', 'activity', 'activity_vote', 'live_join', 'audio_comment'];
 
 	public function __construct()
     {
@@ -63,6 +63,24 @@ class Queue extends API_Controller {
 
     	if($ret['count'] > 0){
 	    	switch ($this->task) {
+	    		case 'audio_comment':
+	    			$list = $this->Queue_model->order_by('id', 'desc')->limit($this->per_page, $this->offset)->get_many_by($where);
+	    			if($list){
+	    				$this->load->model('Room_audio_model');
+	    				foreach($list as $item){
+	    					$item['params'] = json_decode($item['params'], true);
+
+	    					$item['play_times'] = 0;
+	    					$item['video_url'] = $item['title'] = '';
+
+	    					$this->db->select('play_times,video_url,title');
+	    					if($audio = $this->Room_audio_model->get($item['params']['id'])){
+	    						$item = array_merge($item, $audio);
+	    					}
+	    					$ret['list'][] = $item;
+	    				}
+	    			}
+	    			break;
 	    		case 'fans':
 	    			$list = $this->Queue_model->order_by('id', 'desc')->limit($this->per_page, $this->offset)->get_many_by($where);
 	    			if($list){
@@ -223,6 +241,25 @@ class Queue extends API_Controller {
 		);
 
 		switch ($this->task) {
+			case 'audio_comment'://id 音频ID
+				$this->load->model('Room_audio_model');
+    			$audio = $this->Room_audio_model->get($params['id']);
+    			if(! $audio){
+    				$this->ajaxReturn([], 1, '音频ID错误');
+    			}
+
+    			$params['filename'] = $this->input->get_post('filename');
+    			$params['origin_filename'] = $this->input->get_post('origin_filename');
+
+    			$file = FCPATH.$params['filename'];
+    			if(file_exists($file)){
+					if(! $a_line = file($file)){
+						$this->ajaxReturn([], 3, '读取文件失败: '.$file);
+					}
+				}else{
+					$this->ajaxReturn([], 2, '评论文件(TXT)未上传');
+				}
+				break;
     		case 'fans'://id 主播ID
 				$this->load->model('Users_model');
 		    	$user = $this->Users_model->get($params['id']);
