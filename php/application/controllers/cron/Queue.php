@@ -773,4 +773,76 @@ class Queue extends MY_Controller
             }
         }
     }
+
+    public function audio_comment()
+    {
+        $rows = $this->Queue_model->order_by('updated_at')->limit(50, 0)->get_many_by(['main_type' => 'audio_comment', 'status' => 0]);
+        if($rows){
+            $this->load->model('Album_audio_comment_model');
+            $this->load->model('Users_model');
+            foreach($rows as $row){
+                $row['params'] = json_decode($row['params'], true);
+                $file = FCPATH.$row['params']['filename'];
+                if(!$file || !file_exists($file)){
+                    continue;
+                }
+
+                $cache_id = 'audio_comment_'.$row['params']['id'].'_'.$row['id'];
+                if(file_exists(APPPATH.'cache/'.$cache_id)){
+                    $ntime = time();
+                    $mtime = filemtime(APPPATH.'cache/'.$cache_id);
+                    clearstatcache();
+                    if($ntime > $mtime + $row['params']['step_times']){
+                        $job = true;
+                    }else{
+                        $job = false;
+                    }
+                }else{
+                    $job = true;
+                }
+
+                if($job){
+                    $this->Queue_model->update($row['id'], ['status' => 1, 'exe_times' => $row['exe_times'] + 1]);
+                }else{
+                    $this->Queue_model->update($row['id'], ['status' => 0, 'exe_times' => $row['exe_times'] + 1]);
+                    continue;
+                }
+
+                $cache = $this->cache->file->get($cache_id);
+                if(! $cache){
+                    $cache = 0;
+                }
+
+                if(! $a_line = file($file)){
+                    continue;
+                }
+                $row['params']['max'] = count($a_line);
+
+                $step_num = $this->step_num($row);
+                $step_num = min($step_num, $row['params']['max'] - $cache);
+                if($step_num > 0){
+                    $this->Queue_model->update($row['id'], ['status' => 0]);
+
+                    foreach($i = 0; $i < $step_num; $i++){
+                        $this->db->select('id');
+                        $user = $this->Users_model->order_by('', 'RANDOM')->limit(1)->get_by(['robot' => 1]);
+                        $insert = [
+                            'audio_id' => $row['params']['id'],
+                            'comment' => $a_line[$cache+$i],
+                            'pid' => 0,
+                            'album_id' => $row['params']['album_id'],
+                            'user_id' => $user['id']
+                        ];
+                        $this->Album_audio_comment_model->insert($insert);
+                    }
+
+                    $cache += $step_num;
+                    $this->cache->file->save($cache_id, $cache, 0);
+                }else{
+                    $this->Queue_model->update($row['id'], ['status' => 2]);
+                }
+
+            }
+        }
+    }
 }
