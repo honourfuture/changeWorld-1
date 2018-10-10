@@ -91,6 +91,15 @@ export default class AudioManager extends BaseComponent {
                     return (
                         <div className="editable-row-operations">
                             <span>
+                                <a
+                                    onClick={() =>
+                                        Base.push("/robot/AudioComment", {
+                                            id
+                                        })
+                                    }
+                                >
+                                    评论任务
+                                </a>
                                 <Popconfirm
                                     title="确认删除?"
                                     okText="确定"

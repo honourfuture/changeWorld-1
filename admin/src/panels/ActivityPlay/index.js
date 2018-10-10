@@ -64,44 +64,35 @@ export default class ActivityPlay extends BaseComponent {
                 title: "票数",
                 dataIndex: "vote",
                 render: (text, record) => this.renderText(text, record, "vote")
-            }
+            },
             // {
             //     title: "简介",
             //     dataIndex: "summary",
             //     render: (text, record) =>
             //         this.renderText(text, record, "summary")
             // },
-            // {
-            //     title: "操作",
-            //     dataIndex: "operation",
-            //     render: (text, record) => {
-            //         const { id } = record;
-            //         return (
-            //             <div className="editable-row-operations">
-            //                 <span>
-            //                     <a
-            //                         onClick={() =>
-            //                             this.onEditChange(id, true, "editable")
-            //                         }
-            //                     >
-            //                         编辑
-            //                     </a>
-            //                     <Popconfirm
-            //                         title="确认删除?"
-            //                         okText="确定"
-            //                         cancelText="取消"
-            //                         onConfirm={() => this.onDelete(id)}
-            //                     >
-            //                         <a className="ml10 gray">删除</a>
-            //                     </Popconfirm>
-            //                     <a onClick={() => this.onEditTask(id)}>
-            //                         设置任务
-            //                     </a>
-            //                 </span>
-            //             </div>
-            //         );
-            //     }
-            // }
+            {
+                title: "操作",
+                dataIndex: "operation",
+                render: (text, record) => {
+                    const { id } = record;
+                    return (
+                        <div className="editable-row-operations">
+                            <span>
+                                <a
+                                    onClick={() =>
+                                        Base.push("ActivityLike", {
+                                            activity_id: id
+                                        })
+                                    }
+                                >
+                                    点赞任务
+                                </a>
+                            </span>
+                        </div>
+                    );
+                }
+            }
         ];
         this.addInfo = [
             { key: "user_id", label: "用户id" },

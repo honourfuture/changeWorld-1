@@ -11,7 +11,9 @@ export default class IMPanel extends BaseComponent {
         list: [],
         isConnect: false,
         leftHeader: "",
+        leftName: "",
         rightHeader: "",
+        rightName: "",
         title: ""
     };
     @action.bound
@@ -134,12 +136,14 @@ export default class IMPanel extends BaseComponent {
             document.title = nickname;
             this.store.title = nickname;
             this.store.rightHeader = Base.getImgUrl(header);
+            this.store.rightName = nickname;
         });
         Base.GET(
             { act: "info", op: "bitch", mod: "user", s_uid: targetId },
             res => {
-                const { header } = res.data[0];
+                const { header, nickname } = res.data[0];
                 this.store.leftHeader = Base.getImgUrl(header);
+                this.store.leftName = nickname;
             }
         );
         Base.GET(
@@ -293,7 +297,9 @@ export default class IMPanel extends BaseComponent {
             list,
             isConnect,
             leftHeader,
-            rightHeader
+            rightHeader,
+            rightName,
+            leftName
         } = this.store;
         const curUserId = Base.getPageParams("id");
         const items = list.map((item, index) => {
@@ -301,9 +307,13 @@ export default class IMPanel extends BaseComponent {
             const key = curUserId === senderUserId ? "right" : "left";
             const header =
                 curUserId === senderUserId ? rightHeader : leftHeader;
+            const nickname = curUserId === senderUserId ? rightName : leftName;
             return (
                 <div className={`${key}d`} key={index}>
-                    <img src={header} alt="" className="header" />
+                    <div className="header-con">
+                        <div>{nickname}</div>
+                        <img src={header} alt="" className="header" />
+                    </div>
                     <div className={`speech ${key}`}> {content.content} </div>
                 </div>
             );

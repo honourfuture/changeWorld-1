@@ -295,10 +295,13 @@ export default class RobotManager extends BaseComponent {
         this.store.targetId = "";
         this.store.isShowIdModal = false;
         this.selectedRowKeys.forEach(item => {
+            // window.open(
+            //     `${
+            //         Global.RES_URL
+            //     }/admin/#/robot/IMPanel?id=${item}&targetId=${targetId}`
+            // );
             window.open(
-                `${
-                    Global.RES_URL
-                }/admin/#/robot/IMPanel?id=${item}&targetId=${targetId}`
+                `http://localhost:3000/#/robot/IMPanel?id=${item}&targetId=${targetId}`
             );
         });
     }

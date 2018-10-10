@@ -196,7 +196,7 @@ export default class LiveStart extends BaseComponent {
                 id
             },
             () => {
-                this.current = 1;
+                // this.current = 1;
                 this.requestData();
             },
             this

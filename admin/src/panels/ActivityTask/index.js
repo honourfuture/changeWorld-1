@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { action } from "mobx";
 import { BaseComponent, Base, Global } from "../../common";
 import {
@@ -13,7 +13,7 @@ import {
     Form
 } from "antd";
 import { remove } from "lodash";
-import './ActivityTask.less';
+import "./ActivityTask.less";
 
 const FormItem = Form.Item;
 const formItemLayout = {
@@ -27,14 +27,14 @@ const formItemLayout = {
     }
 };
 
-export default class ActivityTask extends BaseComponent{
-	store = {
+export default class ActivityTask extends BaseComponent {
+    store = {
         list: [],
         total: 1,
         isShowModal: false,
         params: {}
-	};
-	constructor(props) {
+    };
+    constructor(props) {
         super(props);
         this.columns = [
             {
@@ -93,35 +93,41 @@ export default class ActivityTask extends BaseComponent{
                 title: "暂停/启动",
                 dataIndex: "enable",
                 render: (text, record) => {
-                    const { id,status } = record;
+                    const { id, status } = record;
                     let btns = null;
-                    if(parseInt(status) === 0 || parseInt(status) === 1){
-                        btns = <span>
-                                    <Popconfirm
-                                        title="确认暂停?"
-                                        okText="确定"
-                                        cancelText="取消"
-                                        onConfirm={() => this.onEnable(id, "stop")}
-                                    >
-                                        <a className="ml10 gray">暂停</a>
-                                    </Popconfirm>
-                                </span>
-                    }else if(parseInt(status) === 3 || parseInt(status) === 4 || parseInt(status) === 5){
-                        btns = <span>
-                                    <Popconfirm
-                                        title="确认启动?"
-                                        okText="确定"
-                                        cancelText="取消"
-                                        onConfirm={() => this.onEnable(id, "start")}
-                                    >
-                                        <a className="ml10">启动</a>
-                                    </Popconfirm>
-                                </span>
+                    if (parseInt(status) === 0 || parseInt(status) === 1) {
+                        btns = (
+                            <span>
+                                <Popconfirm
+                                    title="确认暂停?"
+                                    okText="确定"
+                                    cancelText="取消"
+                                    onConfirm={() => this.onEnable(id, "stop")}
+                                >
+                                    <a className="ml10 gray">暂停</a>
+                                </Popconfirm>
+                            </span>
+                        );
+                    } else if (
+                        parseInt(status) === 3 ||
+                        parseInt(status) === 4 ||
+                        parseInt(status) === 5
+                    ) {
+                        btns = (
+                            <span>
+                                <Popconfirm
+                                    title="确认启动?"
+                                    okText="确定"
+                                    cancelText="取消"
+                                    onConfirm={() => this.onEnable(id, "start")}
+                                >
+                                    <a className="ml10">启动</a>
+                                </Popconfirm>
+                            </span>
+                        );
                     }
                     return (
-                        <div className="editable-row-operations">
-                            {btns}
-                        </div>
+                        <div className="editable-row-operations">{btns}</div>
                     );
                 }
             },
@@ -178,7 +184,7 @@ export default class ActivityTask extends BaseComponent{
                 id
             },
             () => {
-                this.current = 1;
+                // this.current = 1;
                 this.requestData();
             },
             this
@@ -269,8 +275,8 @@ export default class ActivityTask extends BaseComponent{
     componentDidMount() {
         this.requestData();
     }
-	render(){
-		let { list, total, isShowModal, params } = this.store;
+    render() {
+        let { list, total, isShowModal, params } = this.store;
         const showList = list.slice();
         return (
             <Spin ref="spin" wrapperClassName="ActivityTask" spinning={false}>
@@ -321,5 +327,5 @@ export default class ActivityTask extends BaseComponent{
                 </Modal>
             </Spin>
         );
-	}
-};
+    }
+}

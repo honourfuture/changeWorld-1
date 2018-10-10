@@ -117,6 +117,14 @@ export default class AlbumManager extends BaseComponent {
                                 <a
                                     className="ml10"
                                     onClick={() => {
+                                        Base.push("/robot/CollectTask", { id });
+                                    }}
+                                >
+                                    收藏任务
+                                </a>
+                                <a
+                                    className="ml10"
+                                    onClick={() => {
                                         Base.push("UserAudio", {
                                             album_id: record.id
                                         });
