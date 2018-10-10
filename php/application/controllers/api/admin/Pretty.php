@@ -24,6 +24,7 @@ class Pretty extends API_Controller {
 	 * @apiParam {Number} admin_id 管理员唯一ID
 	 * @apiParam {String} account 登录账号
 	 * @apiParam {String} sign 校验签名
+	 * @apiParam {Number} status 出售状态 -1全部 0未售 1已售
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -88,9 +89,15 @@ class Pretty extends API_Controller {
 	public function index()
 	{
 		$ret = array('user' => array(), 'pretty' => array('count' => 0, 'list' => array()));
+		$ret['status'] = $this->Pretty_model->status();
 
 		$deleted = (int)$this->input->get('deleted');
+		$status = $this->input->get('status');
+
 		$where = array('deleted' => $deleted);
+		if(isset($ret['status'][$status])){
+			$where['status'] = $status;
+		}
 		$this->search();
 		$ret['pretty']['count'] = $this->Pretty_model->count_by($where);
 		if($ret['pretty']['count']){

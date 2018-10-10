@@ -74,7 +74,7 @@ class Queue extends API_Controller {
 	    					$item['play_times'] = $item['views'] = 0;
 	    					$item['video_url'] = $item['title'] = '';
 
-	    					$this->db->select('play_times,video_url,title');
+	    					$this->db->select('play_times,video_url,title,cover_image');
 	    					if($audio = $this->Room_audio_model->get($item['params']['id'])){
 	    						$item = array_merge($item, $audio);
 	    					}
