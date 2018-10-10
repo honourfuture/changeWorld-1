@@ -53,6 +53,18 @@ export default class AudioComment extends BaseComponent {
                 render: (text, record) => this.renderText(text, record, "views")
             },
             {
+                title: "音频名称",
+                dataIndex: "title",
+                width: 150,
+                render: (text, record) => this.renderText(text, record, "title")
+            },
+            {
+                title: "音频图片",
+                dataIndex: "cover_image",
+                render: (text, record) =>
+                    this.renderImg(text, record, "cover_image")
+            },
+            {
                 title: "多少秒内评论",
                 dataIndex: "step_times",
                 render: (text, record) =>
@@ -209,6 +221,15 @@ export default class AudioComment extends BaseComponent {
             </Upload>
         );
     }
+    renderImg(text, record, column) {
+        return (
+            <img
+                style={{ width: 100, height: 100 }}
+                src={Base.getImgUrl(text)}
+                alt=""
+            />
+        );
+    }
     renderText(text, record, column) {
         return <div>{text}</div>;
     }
@@ -233,7 +254,7 @@ export default class AudioComment extends BaseComponent {
                 id
             },
             () => {
-                this.current = 1;
+                // this.current = 1;
                 this.requestData();
             },
             this
@@ -264,7 +285,7 @@ export default class AudioComment extends BaseComponent {
         if (this.store.list.find(item => item.id === 0)) {
             return message.info("请保存后再新建");
         }
-        this.store.params = {};
+        this.store.params = { id: Base.getPageParams("id") || "" };
         this.store.isShowModal = true;
     }
     @action.bound

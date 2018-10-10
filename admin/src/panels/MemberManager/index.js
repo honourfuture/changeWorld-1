@@ -182,6 +182,14 @@ export default class MemberManager extends BaseComponent {
                 }
             }
         ];
+        this.rowSelection = {
+            onChange: (selectedRowKeys, selectedRows) => {
+                this.selectedRowKeys = selectedRowKeys;
+            },
+            getCheckboxProps: record => ({
+                name: record.name
+            })
+        };
     }
     //编辑
     @action.bound
@@ -367,6 +375,7 @@ export default class MemberManager extends BaseComponent {
     current = 1;
     @action.bound
     requestData() {
+        this.selectedRowKeys = [];
         Base.GET(
             {
                 act: "user",
@@ -387,10 +396,53 @@ export default class MemberManager extends BaseComponent {
             this
         );
     }
+    @action.bound
+    onChat() {
+        const { selectedRowKeys, ids } = this;
+        if (!selectedRowKeys || selectedRowKeys.length <= 0) {
+            return message.error("请选择聊天用户");
+        }
+        if (selectedRowKeys.length > 1 && ids.length > 1) {
+            return message.info("多个机器人不能对应选择多个用户进行聊天");
+        }
+        if (ids.length >= 1) {
+            const targetId = selectedRowKeys[0];
+            ids.forEach(item => {
+                window.open(
+                    `${
+                        Global.RES_URL
+                    }/admin/#/robot/IMPanel?id=${item}&targetId=${targetId}`
+                );
+                // window.open(
+                //     `http://localhost:3000/#/robot/IMPanel?id=${item}&targetId=${targetId}`
+                // );
+            });
+        } else if (selectedRowKeys.length > 1) {
+            const id = ids[0];
+            selectedRowKeys.forEach(item => {
+                window.open(
+                    `${
+                        Global.RES_URL
+                    }/admin/#/robot/IMPanel?id=${id}&targetId=${item}`
+                );
+                // window.open(
+                //     `http://localhost:3000/#/robot/IMPanel?id=${id}&targetId=${item}`
+                // );
+            });
+        }
+    }
+    ids = [];
     componentDidMount() {
+        const ids = Base.getPageParams("ids");
+        if (ids) {
+            try {
+                this.ids = JSON.parse(ids) || [];
+            } catch (error) {}
+        }
         this.requestData();
     }
     render() {
+        const { ids = [] } = this;
         let { list, total } = this.store;
         const showList = list.slice();
         let tableWidth = this.columns.length * 150;
@@ -407,8 +459,17 @@ export default class MemberManager extends BaseComponent {
                         总数：
                         {total}
                     </span>
+                    {ids.length > 0 ? (
+                        <Button
+                            style={{ float: "right" }}
+                            onClick={this.onChat}
+                        >
+                            发起聊天
+                        </Button>
+                    ) : null}
                 </div>
                 <Table
+                    rowSelection={ids.length > 0 ? this.rowSelection : null}
                     className="mt16"
                     onChange={this.onTableHandler}
                     bordered

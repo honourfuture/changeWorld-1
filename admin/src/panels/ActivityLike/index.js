@@ -181,7 +181,7 @@ export default class ActivityLike extends BaseComponent {
                 id
             },
             () => {
-                this.current = 1;
+                // this.current = 1;
                 this.requestData();
             },
             this
@@ -212,7 +212,7 @@ export default class ActivityLike extends BaseComponent {
         if (this.store.list.find(item => item.id === 0)) {
             return message.info("请保存后再新建");
         }
-        this.store.params = {};
+        this.store.params = { id: Base.getPageParams("activity_id") || "" };
         this.store.isShowModal = true;
     }
     @action.bound
