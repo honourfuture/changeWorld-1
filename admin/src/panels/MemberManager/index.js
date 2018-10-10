@@ -405,7 +405,7 @@ export default class MemberManager extends BaseComponent {
         if (selectedRowKeys.length > 1 && ids.length > 1) {
             return message.info("多个机器人不能对应选择多个用户进行聊天");
         }
-        if (ids.length > 1) {
+        if (ids.length >= 1) {
             const targetId = selectedRowKeys[0];
             ids.forEach(item => {
                 window.open(
