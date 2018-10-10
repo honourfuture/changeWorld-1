@@ -75,16 +75,25 @@ class Payment_log_model extends MY_Model
     {
         $this->load->model('Room_audio_model');
         if($audio = $this->Room_audio_model->get($audio_id)){
+            //归属者
             if($audio['anchor_uid'] == $user_id){
                 return true;
             }
         }
 
+        //专辑白名单
+        $this->load->model('White_model');
+        if($this->White_model->get_by(['t_id' => $audio['album_id'], 'type' => 2, 'uid' => $user_id])){
+            return true;
+        }
+
+        //购买专辑
         $flag = $this->album($user_id, $audio['album_id']);
         if($flag){
             return $flag;
         }
 
+        //购买音频
         $where = [
             'user_id' => $user_id,
             't_id' => $audio_id,
