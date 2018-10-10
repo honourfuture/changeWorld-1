@@ -22,8 +22,8 @@ class Pretty_model extends MY_Model
     public function status()
     {
     	return [
-    		'出售中',
-    		'已出售',
+    		'未售',
+    		'已售',
     	];
     }
 }

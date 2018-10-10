@@ -67,16 +67,19 @@ class Queue extends API_Controller {
 	    			$list = $this->Queue_model->order_by('id', 'desc')->limit($this->per_page, $this->offset)->get_many_by($where);
 	    			if($list){
 	    				$this->load->model('Room_audio_model');
+	    				$this->load->model('Album_audio_comment_model');
 	    				foreach($list as $item){
 	    					$item['params'] = json_decode($item['params'], true);
 
-	    					$item['play_times'] = 0;
+	    					$item['play_times'] = $item['views'] = 0;
 	    					$item['video_url'] = $item['title'] = '';
 
-	    					$this->db->select('play_times,video_url,title');
+	    					$this->db->select('play_times,video_url,title,cover_image');
 	    					if($audio = $this->Room_audio_model->get($item['params']['id'])){
 	    						$item = array_merge($item, $audio);
 	    					}
+	    					$item['views'] = $this->Album_audio_comment_model->count_by(['audio_id' => $item['params']['id']]);
+
 	    					$ret['list'][] = $item;
 	    				}
 	    			}
@@ -248,6 +251,7 @@ class Queue extends API_Controller {
     				$this->ajaxReturn([], 1, '音频ID错误');
     			}
 
+    			$params['album_id'] = $audio['album_id'];
     			$params['filename'] = $this->input->get_post('filename');
     			$params['origin_filename'] = $this->input->get_post('origin_filename');
 

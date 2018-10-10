@@ -115,7 +115,7 @@ class Album_audio_comment extends API_Controller {
 			if($pid){
 				$where = ['id' => $pid];
 			}else{
-				$where['album_id'] = $audio['album_id'];
+				$where['audio_id'] = $audio['id'];
 			}
 		}
 
