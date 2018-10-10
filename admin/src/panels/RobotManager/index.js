@@ -289,20 +289,23 @@ export default class RobotManager extends BaseComponent {
         }
         const { targetId } = this.store;
         if (!targetId) {
-            this.store.isShowIdModal = true;
+            Base.push("/member/MemberManager", {
+                ids: JSON.stringify(this.selectedRowKeys)
+            });
+            // this.store.isShowIdModal = true;
             return;
         }
         this.store.targetId = "";
         this.store.isShowIdModal = false;
         this.selectedRowKeys.forEach(item => {
-            // window.open(
-            //     `${
-            //         Global.RES_URL
-            //     }/admin/#/robot/IMPanel?id=${item}&targetId=${targetId}`
-            // );
             window.open(
-                `http://localhost:3000/#/robot/IMPanel?id=${item}&targetId=${targetId}`
+                `${
+                    Global.RES_URL
+                }/admin/#/robot/IMPanel?id=${item}&targetId=${targetId}`
             );
+            // window.open(
+            //     `http://localhost:3000/#/robot/IMPanel?id=${item}&targetId=${targetId}`
+            // );
         });
     }
     render() {
