@@ -202,7 +202,7 @@ class Queue extends API_Controller {
 	    					$this->db->select('vote as views,summary as title,user_id');
 	    					if($activity = $this->Activity_enter_model->get($item['params']['id'])){
 	    						$item = array_merge($item, $activity);
-	    						$a_uid[] = $album['user_id'];
+	    						$a_uid[] = $activity['user_id'];
 	    					}
 	    					$ret['list'][] = $item;
 	    				}
@@ -227,7 +227,7 @@ class Queue extends API_Controller {
 	    					if($room = $this->Room_model->get($item['params']['id'])){
 	    						$room['play_url'] = json_decode($room['play_url'], true);
 	    						$item = array_merge($item, $room);
-	    						$a_uid[] = $album['anchor_uid'];
+	    						$a_uid[] = $room['anchor_uid'];
 	    					}
 	    					$ret['list'][] = $item;
 	    				}
