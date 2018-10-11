@@ -5,6 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @email webljx@163.com
  * @link www.aicode.org.cn
  */
+use QCloud\Live\Task;
 class Room extends API_Controller {
 
 	public function __construct()
@@ -14,6 +15,59 @@ class Room extends API_Controller {
         // $this->check_operation();
         $this->load->model('Room_model');
     }
+
+    /**
+	 * @api {get} /api/admin/room/stop 直播间-禁播
+	 * @apiVersion 1.0.0
+	 * @apiName room_stop
+	 * @apiGroup admin
+	 *
+	 * @apiSampleRequest /api/admin/room/stop
+	 *
+	 * @apiParam {Number} admin_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 * @apiParam {Number} id 直播间ID
+	 * @apiParam {String} msg 说明原因
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *     "data": {
+	 *     },
+	 *     "status": 0,
+	 *     "message": "成功"
+	 * }
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+	public function stop()
+	{
+		$id = (int)$this->input->get_post('id');
+		$msg = trim($this->input->get_post('msg'));
+		if($id && $msg){
+			if($room = $this->Room_model->get($id)){
+				$this->Room_model->update($id, ['status' => 3, 'msg' => $msg]);
+
+				$QLive = new Task();
+		        $config = config_item('live');
+		        $QLive->setAppInfo($config['appid'], $config['api_key'], $config['push_key'], $config['bizid']);
+		        $channel_id = $this->Room_model->channel_id($room['anchor_uid'], $id);
+		        $play_url = $QLive->Live_Channel_SetStatus($channel_id, 0);
+			}else{
+				$this->ajaxReturn([], 2, '直播间不存在');
+			}
+		}else{
+			$this->ajaxReturn([], 1, '操作参数错误');
+		}
+	}
 
     public function top()
     {

@@ -175,7 +175,7 @@ class Search extends API_Controller {
     protected function _anchor()
     {
     	$ret = array('count' => 0, 'list' => array());
-		$where = array('enable' => 1);
+		$where = [];array('enable' => 1);
 		// $where['anchor'] = 2;
 		
 		$this->db->group_start();
@@ -185,7 +185,7 @@ class Search extends API_Controller {
 		
 		$this->load->model('Users_model');
 
-		$ret['count'] = $this->Users_model->count_by($where);
+		$ret['count'] = $this->Users_model->count_all($where);
 		if($ret['count']){
 			$order_by = array('sort' => 'desc', 'updated_at' => 'desc');
 			$this->db->select('id,nickname,v,exp,header,summary,pretty_id');
@@ -195,7 +195,7 @@ class Search extends API_Controller {
 			$this->db->or_where('pretty_id', $this->keyword);
 			$this->db->group_end();
 
-			$ret['list'] = $this->Users_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
+			$ret['list'] = $this->Users_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_all($where);
 
 			if($ret['list']){
 	            $a_id = array();
