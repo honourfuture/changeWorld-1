@@ -179,7 +179,7 @@ class Queue extends API_Controller {
 	    					$this->db->select('views,title,user_id');
 	    					if($activity = $this->Activity_model->get($item['params']['id'])){
 	    						$item = array_merge($item, $activity);
-	    						$a_uid[] = $album['user_id'];
+	    						$a_uid[] = $activity['user_id'];
 	    					}
 	    					$ret['list'][] = $item;
 	    				}
