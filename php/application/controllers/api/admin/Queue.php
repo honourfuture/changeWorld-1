@@ -88,30 +88,51 @@ class Queue extends API_Controller {
 	    			$list = $this->Queue_model->order_by('id', 'desc')->limit($this->per_page, $this->offset)->get_many_by($where);
 	    			if($list){
 	    				$this->load->model('Users_collection_model');
+	    				$a_uid = [];
 	    				foreach($list as $item){
 	    					$item['params'] = json_decode($item['params'], true);
+
+	    					$a_uid[] = $item['params']['id'];
 
 	    					$item['fans'] = $this->Users_collection_model->count_by(['topic' => 1, 't_id' => $item['params']['id']]);
 	    					$ret['list'][] = $item;
 	    				}
+
+	    				$this->load->model('Users_model');
+						$ret['user'] = $this->Users_model->get_many_user($a_uid);
 	    			}
 	    			break;
 	    		case 'audio_play':
 	    			$list = $this->Queue_model->order_by('id', 'desc')->limit($this->per_page, $this->offset)->get_many_by($where);
 	    			if($list){
 	    				$this->load->model('Room_audio_model');
+	    				$a_uid = $a_album = [];
 	    				foreach($list as $item){
 	    					$item['params'] = json_decode($item['params'], true);
 
 	    					$item['play_times'] = 0;
 	    					$item['video_url'] = $item['title'] = '';
 
-	    					$this->db->select('play_times,video_url,title');
+	    					$this->db->select('play_times,video_url,title,id as audio_id,anchor_uid,album_id');
 	    					if($audio = $this->Room_audio_model->get($item['params']['id'])){
+	    						$a_uid[] = $audio['anchor_uid'];
+	    						$a_album[] = $audio['album_id'];
 	    						$item = array_merge($item, $audio);
 	    					}
 	    					$ret['list'][] = $item;
 	    				}
+
+	    				$this->load->model('Users_model');
+						$ret['user'] = $this->Users_model->get_many_user($a_uid);
+
+						$ret['album'] = [];
+						$this->load->model('Album_model');
+						$this->db->select('id,title');
+						if($rows = $this->Album_model->get_many($a_album)){
+							foreach($rows as $item){
+								$ret['album'][$item['id']] = $item['title'];
+							}
+						}
 	    			}
 	    			break;
 	    		case 'album_collection':
