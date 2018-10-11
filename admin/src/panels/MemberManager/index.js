@@ -403,18 +403,18 @@ export default class MemberManager extends BaseComponent {
             return message.error("请选择聊天用户");
         }
         ids.forEach(item => {
-            // window.open(
-            //     `${
-            //         Global.RES_URL
-            //     }/admin/#/blank/IMPanel?id=${item}&targetId=${JSON.stringify(
-            //         selectedRowKeys
-            //     )}`
-            // );
             window.open(
-                `http://localhost:3000/#/blank/IMPanel?id=${item}&targetId=${JSON.stringify(
+                `${
+                    Global.RES_URL
+                }/admin/#/blank/IMPanel?id=${item}&targetId=${JSON.stringify(
                     selectedRowKeys
                 )}`
             );
+            // window.open(
+            //     `http://localhost:3000/#/blank/IMPanel?id=${item}&targetId=${JSON.stringify(
+            //         selectedRowKeys
+            //     )}`
+            // );
         });
     }
     ids = [];
