@@ -402,34 +402,20 @@ export default class MemberManager extends BaseComponent {
         if (!selectedRowKeys || selectedRowKeys.length <= 0) {
             return message.error("请选择聊天用户");
         }
-        if (selectedRowKeys.length > 1 && ids.length > 1) {
-            return message.info("多个机器人不能对应选择多个用户进行聊天");
-        }
-        if (ids.length >= 1) {
-            const targetId = selectedRowKeys[0];
-            ids.forEach(item => {
-                window.open(
-                    `${
-                        Global.RES_URL
-                    }/admin/#/robot/IMPanel?id=${item}&targetId=${targetId}`
-                );
-                // window.open(
-                //     `http://localhost:3000/#/robot/IMPanel?id=${item}&targetId=${targetId}`
-                // );
-            });
-        } else if (selectedRowKeys.length > 1) {
-            const id = ids[0];
-            selectedRowKeys.forEach(item => {
-                window.open(
-                    `${
-                        Global.RES_URL
-                    }/admin/#/robot/IMPanel?id=${id}&targetId=${item}`
-                );
-                // window.open(
-                //     `http://localhost:3000/#/robot/IMPanel?id=${id}&targetId=${item}`
-                // );
-            });
-        }
+        ids.forEach(item => {
+            window.open(
+                `${
+                    Global.RES_URL
+                }/admin/#/robot/IMPanel?id=${item}&targetId=${JSON.stringify(
+                    selectedRowKeys
+                )}`
+            );
+            // window.open(
+            //     `http://localhost:3000/#/robot/IMPanel?id=${item}&targetId=${JSON.stringify(
+            //         selectedRowKeys
+            //     )}`
+            // );
+        });
     }
     ids = [];
     componentDidMount() {
