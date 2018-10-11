@@ -60,7 +60,8 @@ class Room extends API_Controller {
 		        $config = config_item('live');
 		        $QLive->setAppInfo($config['appid'], $config['api_key'], $config['push_key'], $config['bizid']);
 		        $channel_id = $this->Room_model->channel_id($room['anchor_uid'], $id);
-		        $play_url = $QLive->Live_Channel_SetStatus($channel_id, 0);
+		        $QLive->Live_Channel_SetStatus($channel_id, 0);
+		        $this->ajaxReturn();
 			}else{
 				$this->ajaxReturn([], 2, '直播间不存在');
 			}
