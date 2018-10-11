@@ -57,7 +57,7 @@ class Collection extends API_Controller {
 
 		$this->load->model('Users_collection_model');
 		$field = 't_id';
-		$where = array('topic' => $topic, 'enable' => 1);
+		$where = array('topic' => $topic);
 
 		$a_id = array();
 		switch($topic){

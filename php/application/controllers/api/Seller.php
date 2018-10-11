@@ -59,9 +59,9 @@ class Seller extends API_Controller {
 
 		$this->load->model('Users_collection_model');
 		$ret['hasFans'] = $this->Users_collection_model->check_fans($this->user_id, $seller_uid);
-		$where = array('user_id' => $seller_uid, 'topic' => 1, 'enable' => 1);
+		$where = array('user_id' => $seller_uid, 'topic' => 1);
 		$ret['user']['follow'] = $this->Users_collection_model->count_by($where);
-		$where = array('t_id' => $seller_uid, 'topic' => 1, 'enable' => 1);
+		$where = array('t_id' => $seller_uid, 'topic' => 1);
 		$ret['user']['fans'] = $this->Users_collection_model->count_by($where);
 
 		$this->load->model('Gold_log_model');

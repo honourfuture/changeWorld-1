@@ -220,11 +220,11 @@ class Info extends API_Controller {
 		$ret['vip'] = $this->Users_vip_model->vip_info($user['id']);
 
 		$this->load->model('Users_collection_model');
-		$where = array('user_id' => $this->user_id, 'topic' => 2, 'enable' => 1);
+		$where = array('user_id' => $this->user_id, 'topic' => 2);
 		$ret['collection'] = $this->Users_collection_model->count_by($where);
-		$where = array('user_id' => $this->user_id, 'topic' => 1, 'enable' => 1);
+		$where = array('user_id' => $this->user_id, 'topic' => 1);
 		$ret['follow'] = $this->Users_collection_model->count_by($where);
-		$where = array('t_id' => $this->user_id, 'topic' => 1, 'enable' => 1);
+		$where = array('t_id' => $this->user_id, 'topic' => 1);
 		$ret['fans'] = $this->Users_collection_model->count_by($where);
 
 		$this->ajaxReturn($ret);
