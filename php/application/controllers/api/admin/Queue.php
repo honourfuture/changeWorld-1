@@ -68,50 +68,76 @@ class Queue extends API_Controller {
 	    			if($list){
 	    				$this->load->model('Room_audio_model');
 	    				$this->load->model('Album_audio_comment_model');
+	    				$a_uid = [];
 	    				foreach($list as $item){
 	    					$item['params'] = json_decode($item['params'], true);
 
 	    					$item['play_times'] = $item['views'] = 0;
 	    					$item['video_url'] = $item['title'] = '';
 
-	    					$this->db->select('play_times,video_url,title,cover_image');
+	    					$this->db->select('play_times,video_url,title,cover_image,anchor_uid');
 	    					if($audio = $this->Room_audio_model->get($item['params']['id'])){
 	    						$item = array_merge($item, $audio);
+	    						$a_uid = $audio['anchor_uid'];
 	    					}
 	    					$item['views'] = $this->Album_audio_comment_model->count_by(['audio_id' => $item['params']['id']]);
 
 	    					$ret['list'][] = $item;
 	    				}
+
+	    				$this->load->model('Users_model');
+						$ret['user'] = $this->Users_model->get_many_user($a_uid);
 	    			}
 	    			break;
 	    		case 'fans':
 	    			$list = $this->Queue_model->order_by('id', 'desc')->limit($this->per_page, $this->offset)->get_many_by($where);
 	    			if($list){
 	    				$this->load->model('Users_collection_model');
+	    				$a_uid = [];
 	    				foreach($list as $item){
 	    					$item['params'] = json_decode($item['params'], true);
+
+	    					$a_uid[] = $item['params']['id'];
 
 	    					$item['fans'] = $this->Users_collection_model->count_by(['topic' => 1, 't_id' => $item['params']['id']]);
 	    					$ret['list'][] = $item;
 	    				}
+
+	    				$this->load->model('Users_model');
+						$ret['user'] = $this->Users_model->get_many_user($a_uid);
 	    			}
 	    			break;
 	    		case 'audio_play':
 	    			$list = $this->Queue_model->order_by('id', 'desc')->limit($this->per_page, $this->offset)->get_many_by($where);
 	    			if($list){
 	    				$this->load->model('Room_audio_model');
+	    				$a_uid = $a_album = [];
 	    				foreach($list as $item){
 	    					$item['params'] = json_decode($item['params'], true);
 
 	    					$item['play_times'] = 0;
 	    					$item['video_url'] = $item['title'] = '';
 
-	    					$this->db->select('play_times,video_url,title');
+	    					$this->db->select('play_times,video_url,title,id as audio_id,anchor_uid,album_id');
 	    					if($audio = $this->Room_audio_model->get($item['params']['id'])){
+	    						$a_uid[] = $audio['anchor_uid'];
+	    						$a_album[] = $audio['album_id'];
 	    						$item = array_merge($item, $audio);
 	    					}
 	    					$ret['list'][] = $item;
 	    				}
+
+	    				$this->load->model('Users_model');
+						$ret['user'] = $this->Users_model->get_many_user($a_uid);
+
+						$ret['album'] = [];
+						$this->load->model('Album_model');
+						$this->db->select('id,title');
+						if($rows = $this->Album_model->get_many($a_album)){
+							foreach($rows as $item){
+								$ret['album'][$item['id']] = $item['title'];
+							}
+						}
 	    			}
 	    			break;
 	    		case 'album_collection':
@@ -119,61 +145,77 @@ class Queue extends API_Controller {
 	    			if($list){
 	    				$this->load->model('Users_collection_model');
 	    				$this->load->model('Album_model');
+	    				$a_uid = [];
 	    				foreach($list as $item){
 	    					$item['params'] = json_decode($item['params'], true);
 
 	    					$item['favorite'] = $this->Users_collection_model->count_by(['topic' => 2, 'sub_topic' => 50, 't_id' => $item['params']['id']]);
 
 	    					$item['title'] = '';
-	    					$this->db->select('title');
+	    					$this->db->select('title,anchor_uid');
 	    					if($album = $this->Album_model->get($item['params']['id'])){
 	    						$item = array_merge($item, $album);
+	    						$a_uid[] = $album['anchor_uid'];
 	    					}
 
 	    					$ret['list'][] = $item;
 	    				}
+
+	    				$this->load->model('Users_model');
+						$ret['user'] = $this->Users_model->get_many_user($a_uid);
 	    			}
 	    			break;
 	    		case 'activity':
 	    			$list = $this->Queue_model->order_by('id', 'desc')->limit($this->per_page, $this->offset)->get_many_by($where);
 	    			if($list){
 	    				$this->load->model('Activity_model');
+	    				$a_uid = [];
 	    				foreach($list as $item){
 	    					$item['params'] = json_decode($item['params'], true);
 
 	    					$item['views'] = 0;
 	    					$item['title'] = '';
 
-	    					$this->db->select('views,title');
+	    					$this->db->select('views,title,user_id');
 	    					if($activity = $this->Activity_model->get($item['params']['id'])){
 	    						$item = array_merge($item, $activity);
+	    						$a_uid[] = $activity['user_id'];
 	    					}
 	    					$ret['list'][] = $item;
 	    				}
+
+	    				$this->load->model('Users_model');
+						$ret['user'] = $this->Users_model->get_many_user($a_uid);
 	    			}
 	    			break;
 	    		case 'activity_vote':
 	    			$list = $this->Queue_model->order_by('id', 'desc')->limit($this->per_page, $this->offset)->get_many_by($where);
 	    			if($list){
 	    				$this->load->model('Activity_enter_model');
+	    				$a_uid = [];
 	    				foreach($list as $item){
 	    					$item['params'] = json_decode($item['params'], true);
 
 	    					$item['views'] = 0;
 	    					$item['title'] = '';
 
-	    					$this->db->select('vote as views,summary as title');
+	    					$this->db->select('vote as views,summary as title,user_id');
 	    					if($activity = $this->Activity_enter_model->get($item['params']['id'])){
 	    						$item = array_merge($item, $activity);
+	    						$a_uid[] = $activity['user_id'];
 	    					}
 	    					$ret['list'][] = $item;
 	    				}
+
+	    				$this->load->model('Users_model');
+						$ret['user'] = $this->Users_model->get_many_user($a_uid);
 	    			}
 	    			break;
 	    		case 'live_join':
 	    			$list = $this->Queue_model->order_by('id', 'desc')->limit($this->per_page, $this->offset)->get_many_by($where);
 	    			if($list){
 	    				$this->load->model('Room_model');
+	    				$a_uid = [];
 	    				foreach($list as $item){
 	    					$item['params'] = json_decode($item['params'], true);
 
@@ -181,13 +223,17 @@ class Queue extends API_Controller {
 	    					$item['play_url'] = [];
 	    					$item['title'] = '';
 
-	    					$this->db->select('views,title,play_url');
+	    					$this->db->select('views,title,play_url,anchor_uid');
 	    					if($room = $this->Room_model->get($item['params']['id'])){
 	    						$room['play_url'] = json_decode($room['play_url'], true);
 	    						$item = array_merge($item, $room);
+	    						$a_uid[] = $room['anchor_uid'];
 	    					}
 	    					$ret['list'][] = $item;
 	    				}
+
+	    				$this->load->model('Users_model');
+						$ret['user'] = $this->Users_model->get_many_user($a_uid);
 	    			}
 	    			break;
 	    		default:

@@ -106,8 +106,19 @@ class Live_album extends API_Controller {
 			$list = $this->Album_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 			if($list){
 				$a_uid = [];
+				$a_album_id = [];
 				foreach($list as $item){
+					$a_album_id[] = $item['id'];
 					$a_uid[] = $item['anchor_uid'];
+				}
+
+				$this->load->model('Room_audio_model');
+				$this->load->model('Users_collection_model');
+				$audio = $this->Room_audio_model->get_audio_info_by_album($a_album_id);
+				foreach($list as $item){
+					$item['audio_num'] = isset($audio[$item['id']]) ? $audio[$item['id']]['audio_num'] : 0;
+					$item['favorite'] = $this->Users_collection_model->count_by(['topic' => 2, 'sub_topic' => 50, 't_id' => $item['id']]);
+
 					$ret['list'][] = $item;
 				}
 
