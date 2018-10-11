@@ -301,10 +301,10 @@ export default class RobotManager extends BaseComponent {
             window.open(
                 `${
                     Global.RES_URL
-                }/admin/#/robot/IMPanel?id=${item}&targetId=${targetId}`
+                }/admin/#/blank/IMPanel?id=${item}&targetId=${targetId}`
             );
             // window.open(
-            //     `http://localhost:3000/#/robot/IMPanel?id=${item}&targetId=${targetId}`
+            //     `http://localhost:3000/#/blank/IMPanel?id=${item}&targetId=${targetId}`
             // );
         });
     }

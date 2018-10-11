@@ -65,6 +65,16 @@ export default class AudioComment extends BaseComponent {
                     this.renderImg(text, record, "cover_image")
             },
             {
+                title: "主播昵称",
+                dataIndex: "anchor_uid",
+                render: (text, record) =>
+                    this.renderText(
+                        this.user[record.anchor_uid].nickname,
+                        record,
+                        "anchor_uid"
+                    )
+            },
+            {
                 title: "多少秒内评论",
                 dataIndex: "step_times",
                 render: (text, record) =>
@@ -309,7 +319,7 @@ export default class AudioComment extends BaseComponent {
                 ...params
             },
             res => {
-                this.current = 1;
+                // this.current = 1;
                 this.requestData();
                 this.store.isShowModal = false;
             }
@@ -333,7 +343,8 @@ export default class AudioComment extends BaseComponent {
                 per_page: Global.PAGE_SIZE
             },
             res => {
-                const { list, status, count } = res.data;
+                const { list, status, count, user } = res.data;
+                this.user = user;
                 this.store.list = list;
                 this.status = status;
                 this.store.total = count;
@@ -352,6 +363,9 @@ export default class AudioComment extends BaseComponent {
             <Spin ref="spin" wrapperClassName="AudioComment" spinning={false}>
                 <div className="pb10">
                     <Button onClick={this.onAdd}>新增+</Button>
+                    <Button onClick={Base.goBack} style={{ float: "right" }}>
+                        返回
+                    </Button>
                 </div>
                 <Table
                     size="small"

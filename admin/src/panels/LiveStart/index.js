@@ -48,6 +48,17 @@ export default class LiveStart extends BaseComponent {
                     )
             },
             {
+                title: "主播昵称",
+                dataIndex: "nickname",
+                width: 200,
+                render: (text, record) =>
+                    this.renderText(
+                        this.user[record.anchor_uid].nickname,
+                        record,
+                        "nickname"
+                    )
+            },
+            {
                 title: "秒/次 ",
                 dataIndex: "step_times",
                 render: (text, record) =>
@@ -251,7 +262,7 @@ export default class LiveStart extends BaseComponent {
                 ...params
             },
             res => {
-                this.current = 1;
+                // this.current = 1;
                 this.requestData();
                 this.store.isShowModal = false;
             }
@@ -275,7 +286,8 @@ export default class LiveStart extends BaseComponent {
                 per_page: Global.PAGE_SIZE
             },
             res => {
-                const { list, status, count } = res.data;
+                const { list, status, count, user } = res.data;
+                this.user = user;
                 this.store.list = list;
                 this.status = status;
                 this.store.total = count;

@@ -48,6 +48,22 @@ export default class ActivityTask extends BaseComponent {
                     )
             },
             {
+                title: "用户昵称",
+                dataIndex: "user_id",
+                render: (text, record) =>
+                    this.renderText(
+                        this.user[record.user_id].nickname,
+                        record,
+                        "user_id"
+                    )
+            },
+            {
+                title: "当前浏览量",
+                dataIndex: "views",
+                render: (text, record) =>
+                    this.renderText(text, record, "user_id")
+            },
+            {
                 title: "秒/次 ",
                 dataIndex: "step_times",
                 render: (text, record) =>
@@ -239,7 +255,7 @@ export default class ActivityTask extends BaseComponent {
                 ...params
             },
             res => {
-                this.current = 1;
+                // this.current = 1;
                 this.requestData();
                 this.store.isShowModal = false;
             }
@@ -263,8 +279,9 @@ export default class ActivityTask extends BaseComponent {
                 per_page: Global.PAGE_SIZE
             },
             res => {
-                const { list, status, count } = res.data;
+                const { list, status, count, user } = res.data;
                 this.store.list = list;
+                this.user = user;
                 this.status = status;
                 this.store.total = count;
                 this.cacheData = list.map(item => ({ ...item }));

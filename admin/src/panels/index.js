@@ -73,24 +73,24 @@ import LiveEvaluateManager from "./LiveEvaluateManager";
 import WebsiteGoods from "./WebsiteGoods";
 import UserAudio from "./UserAudio";
 import ActivityLike from "./ActivityLike";
-import ActivityPlay from './ActivityPlay';
-import IMPanel from './IMPanel';
-import AudioComment from './AudioComment';
+import ActivityPlay from "./ActivityPlay";
+import IMPanel from "./IMPanel";
+import AudioComment from "./AudioComment";
 export const panelsList = [
     {
-        path:'/robot/AudioComment',
-        component:AudioComment,
-        title:'音频评论任务',
+        path: "/robot/AudioComment",
+        component: AudioComment,
+        title: "音频评论任务"
     },
     {
-        path:'/robot/IMPanel',
-        component:IMPanel,
-        title:'聊天',
+        path: "/blank/IMPanel",
+        component: IMPanel,
+        title: "聊天"
     },
     {
-        path:'/robot/ActivityPlay',
-        component:ActivityPlay,
-        title:'活动选手',
+        path: "/robot/ActivityPlay",
+        component: ActivityPlay,
+        title: "活动选手"
     },
     {
         path: "/robot/ActivityLike",

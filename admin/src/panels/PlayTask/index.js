@@ -36,6 +36,37 @@ export default class PlayTask extends BaseComponent {
         super(props);
         this.columns = [
             {
+                title: "主播名",
+                dataIndex: "anchor_uid",
+                render: (text, record) =>
+                    this.renderText(
+                        this.user[record.anchor_uid].nickname,
+                        record,
+                        "anchor_uid"
+                    )
+            },
+            {
+                title: "音频ID",
+                dataIndex: "audio_id",
+                render: (text, record) =>
+                    this.renderText(text, record, "audio_id")
+            },
+            {
+                title: "音频名",
+                dataIndex: "title",
+                render: (text, record) => this.renderText(text, record, "title")
+            },
+            {
+                title: "专辑名",
+                dataIndex: "album_id",
+                render: (text, record) =>
+                    this.renderText(
+                        this.album[record.album_id],
+                        record,
+                        "album_id"
+                    )
+            },
+            {
                 title: "音频播放量",
                 dataIndex: "play_times",
                 render: (text, record) =>
@@ -234,7 +265,7 @@ export default class PlayTask extends BaseComponent {
                 ...params
             },
             res => {
-                this.current = 1;
+                // this.current = 1;
                 this.requestData();
                 this.store.isShowModal = false;
             }
@@ -258,9 +289,11 @@ export default class PlayTask extends BaseComponent {
                 per_page: Global.PAGE_SIZE
             },
             res => {
-                const { list, status, count } = res.data;
+                const { list, status, count, user, album } = res.data;
                 this.store.list = list;
                 this.status = status;
+                this.user = user;
+                this.album = album;
                 this.store.total = count;
                 this.cacheData = list.map(item => ({ ...item }));
             },

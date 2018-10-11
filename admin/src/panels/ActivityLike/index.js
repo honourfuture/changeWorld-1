@@ -46,6 +46,21 @@ export default class ActivityLike extends BaseComponent {
                     )
             },
             {
+                title: "用户昵称",
+                dataIndex: "user_id",
+                render: (text, record) =>
+                    this.renderText(
+                        this.user[record.user_id].nickname,
+                        record,
+                        "user_id"
+                    )
+            },
+            {
+                title: "活动名称",
+                dataIndex: "title",
+                render: (text, record) => this.renderText(text, record, "title")
+            },
+            {
                 title: "当前点赞数",
                 dataIndex: "views",
                 render: (text, record) => this.renderText(text, record, "views")
@@ -236,7 +251,7 @@ export default class ActivityLike extends BaseComponent {
                 ...params
             },
             res => {
-                this.current = 1;
+                // this.current = 1;
                 this.requestData();
                 this.store.isShowModal = false;
             }
@@ -260,7 +275,8 @@ export default class ActivityLike extends BaseComponent {
                 per_page: Global.PAGE_SIZE
             },
             res => {
-                const { list, status, count } = res.data;
+                const { list, status, count, user } = res.data;
+                this.user = user;
                 this.store.list = list;
                 this.status = status;
                 this.store.total = count;

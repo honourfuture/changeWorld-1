@@ -31,7 +31,7 @@ const formItemLayout = {
         sm: { span: 16 }
     }
 };
-
+let global_current = 1;
 export default class AlbumManager extends BaseComponent {
     store = {
         list: [],
@@ -56,6 +56,12 @@ export default class AlbumManager extends BaseComponent {
                         record,
                         "nickname"
                     )
+            },
+            {
+                title: "收藏量",
+                dataIndex: "favorite",
+                render: (text, record) =>
+                    this.renderText(text, record, "favorite")
             },
             {
                 title: "手机号",
@@ -130,7 +136,8 @@ export default class AlbumManager extends BaseComponent {
                                         });
                                     }}
                                 >
-                                    音频列表
+                                    音频列表(
+                                    {record.audio_num || 0})
                                 </a>
                                 <Popconfirm
                                     title="确认置顶?"
@@ -373,7 +380,7 @@ export default class AlbumManager extends BaseComponent {
     searchStr = "";
     @action.bound
     onSearch(value) {
-        this.current = 1;
+        global_current = 1;
         this.searchStr = value;
         this.requestData();
     }
@@ -396,7 +403,7 @@ export default class AlbumManager extends BaseComponent {
                 id
             },
             () => {
-                this.current = 1;
+                global_current = 1;
                 this.requestData();
             }
         );
@@ -411,14 +418,14 @@ export default class AlbumManager extends BaseComponent {
                 id
             },
             () => {
-                this.current = 1;
+                global_current = 1;
                 this.requestData();
             }
         );
     }
     @action.bound
     onTableHandler({ current, pageSize }) {
-        this.current = current;
+        global_current = current;
         this.requestData();
     }
     current = 1;
@@ -431,7 +438,7 @@ export default class AlbumManager extends BaseComponent {
                 mod: "user",
                 type: this.searchType || "uid",
                 keyword: this.searchStr || "",
-                cur_page: this.current || 1,
+                cur_page: global_current || 1,
                 per_page: Global.PAGE_SIZE
             },
             res => {
@@ -531,7 +538,7 @@ export default class AlbumManager extends BaseComponent {
             { act: "live_album", op: "save", mod: "user", ...addData },
             () => {
                 this.store.addData = null;
-                this.current = 1;
+                // global_current = 1;
                 this.requestData();
             },
             this
@@ -592,7 +599,7 @@ export default class AlbumManager extends BaseComponent {
                     // scroll={{ x: tableWidth }}
                     pagination={{
                         total,
-                        current: this.current,
+                        current: global_current,
                         defaultPageSize: Global.PAGE_SIZE
                     }}
                 />

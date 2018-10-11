@@ -76,6 +76,12 @@ export default class AudioManager extends BaseComponent {
                     this.renderText(text, record, "video_url")
             },
             {
+                title: "播放量",
+                dataIndex: "play_times",
+                render: (text, record) =>
+                    this.renderText(text, record, "play_times")
+            },
+            {
                 title: "创建时间",
                 dataIndex: "created_at",
                 render: (text, record) =>
