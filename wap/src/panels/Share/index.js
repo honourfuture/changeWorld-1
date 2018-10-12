@@ -85,7 +85,7 @@ export default class Share extends BaseComponent {
         return (
             <div className="Share">
                 <div
-                    className="content"
+                    className="base-content"
                     style={{
                         backgroundImage: `url(${
                             share["share_bg_" + this.type]
@@ -100,7 +100,9 @@ export default class Share extends BaseComponent {
                                 <div className="tips-con">
                                     <div className="title">猪买单</div>
                                     <div className="tips">
-                                        下载APP 立送{point}积分
+                                        下载APP 立送
+                                        {point}
+                                        积分
                                     </div>
                                 </div>
                             </Flex>

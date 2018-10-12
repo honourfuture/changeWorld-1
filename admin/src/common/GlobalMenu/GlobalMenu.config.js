@@ -302,15 +302,15 @@ const menuData = [
             {
                 name: "APP版本",
                 path: "AppVersion"
-            },
+            }
             // {
             //     name: "启动图",
             //     path: "AppStartManager"
             // },
-            {
-                name: "引导图",
-                path: "AppGuideManager"
-            }
+            // {
+            //     name: "引导图",
+            //     path: "AppGuideManager"
+            // }
         ]
     },
     {
