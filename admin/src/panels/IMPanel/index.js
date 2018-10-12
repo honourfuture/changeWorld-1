@@ -254,6 +254,10 @@ export default class IMPanel extends BaseComponent {
                                                     self.layim = layim;
                                                     //基础配置
                                                     layim.config({
+                                                        // right: `${window
+                                                        //     .document.body
+                                                        //     .offsetWidth -
+                                                        //     200}px`,
                                                         title: "我的聊天",
                                                         isgroup: false,
                                                         init: {

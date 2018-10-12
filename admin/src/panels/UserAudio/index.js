@@ -329,7 +329,7 @@ export default class UserAudio extends BaseComponent {
             { act: "live_audio", op: "add", mod: "user", ...addData },
             () => {
                 this.store.addData = null;
-                this.current = 1;
+                // this.current = 1;
                 this.requestData();
             },
             this
@@ -365,6 +365,9 @@ export default class UserAudio extends BaseComponent {
                 <div className="pb10">
                     <Button style={{ marginRight: 20 }} onClick={this.onAdd}>
                         上传音频
+                    </Button>
+                    <Button style={{ float: "right" }} onClick={Base.goBack}>
+                        返回
                     </Button>
                 </div>
                 <Table

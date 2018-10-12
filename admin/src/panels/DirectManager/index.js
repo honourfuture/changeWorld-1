@@ -11,7 +11,8 @@ import {
     message,
     Switch,
     Icon,
-    Popconfirm
+    Popconfirm,
+    Modal
 } from "antd";
 import "./DirectManager.less";
 const Option = Select.Option;
@@ -33,6 +34,7 @@ export default class DirectManager extends BaseComponent {
         status: -1,
         total: 1,
         isShowModal: false,
+        msg: "",
         params: {}
     };
     constructor(props) {
@@ -163,6 +165,12 @@ export default class DirectManager extends BaseComponent {
                                         <a className="ml10 gray">取消置顶</a>
                                     </Popconfirm>
                                 ) : null}
+                                <a
+                                    onClick={() => this.onStop(id)}
+                                    className="ml10 gray"
+                                >
+                                    停播
+                                </a>
                             </span>
                         </div>
                     );
@@ -219,6 +227,21 @@ export default class DirectManager extends BaseComponent {
             () => {
                 this.current = 1;
                 this.requestData();
+            }
+        );
+    }
+    @action.bound
+    onStop(id) {
+        this.curId = id;
+        if (!this.store.msg) {
+            return (this.store.isShowModal = true);
+        }
+        Base.POST(
+            { act: "room", op: "stop", mod: "admin", id, msg: this.store.msg },
+            res => {
+                message.success("操作成功");
+                this.store.isShowModal = false;
+                this.store.msg = "";
             }
         );
     }
@@ -330,7 +353,7 @@ export default class DirectManager extends BaseComponent {
         this.requestData();
     }
     render() {
-        let { list, total, isShowModal, params } = this.store;
+        let { list, total, isShowModal, msg } = this.store;
         const showList = list.slice();
         const statusCon = [];
         this.listStatus.map((item, key) => {
@@ -385,6 +408,24 @@ export default class DirectManager extends BaseComponent {
                         defaultPageSize: Global.PAGE_SIZE
                     }}
                 />
+                <Modal
+                    onOk={() => this.onStop(this.curId)}
+                    okText="确定"
+                    cancelText="取消"
+                    closable={false}
+                    onCancel={action(e => {
+                        this.store.isShowModal = false;
+                        this.store.msg = "";
+                    })}
+                    visible={isShowModal}
+                >
+                    <Input
+                        value={msg}
+                        onChange={action(
+                            e => (this.store.msg = e.target.value)
+                        )}
+                    />
+                </Modal>
             </div>
         );
     }

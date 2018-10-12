@@ -46,6 +46,26 @@ export default class FansTask extends BaseComponent {
                     )
             },
             {
+                title: "昵称",
+                dataIndex: "nickname",
+                render: (text, record) =>
+                    this.renderText(
+                        this.user[record.params.id].nickname,
+                        record,
+                        "nickname"
+                    )
+            },
+            {
+                title: "头像",
+                dataIndex: "header",
+                render: (text, record) =>
+                    this.renderImg(
+                        this.user[record.params.id].header,
+                        record,
+                        "header"
+                    )
+            },
+            {
                 title: "主播粉丝数",
                 dataIndex: "fans",
                 render: (text, record) => this.renderText(text, record, "fans")
@@ -160,6 +180,9 @@ export default class FansTask extends BaseComponent {
     renderText(text, record, column) {
         return <div>{text}</div>;
     }
+    renderImg(text, record, column) {
+        return <img className="header" src={Base.getImgUrl(text)} alt="" />;
+    }
     renderSwitch(text, record, column) {
         return (
             <Switch
@@ -230,7 +253,7 @@ export default class FansTask extends BaseComponent {
         Base.POST(
             { act: "queue", op: "add", mod: "admin", task: "fans", ...params },
             res => {
-                this.current = 1;
+                // this.current = 1;
                 this.requestData();
                 this.store.isShowModal = false;
             }
@@ -254,8 +277,9 @@ export default class FansTask extends BaseComponent {
                 per_page: Global.PAGE_SIZE
             },
             res => {
-                const { list, status, count } = res.data;
+                const { list, status, count, user } = res.data;
                 this.store.list = list;
+                this.user = user;
                 this.status = status;
                 this.store.total = count;
                 this.cacheData = list.map(item => ({ ...item }));

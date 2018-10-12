@@ -48,6 +48,11 @@ export default class AnchorList extends BaseComponent {
                     this.renderText(text, record, "user_id")
             },
             {
+                title: "粉丝数",
+                dataIndex: "fans",
+                render: (text, record) => this.renderText(text, record, "fans")
+            },
+            {
                 title: "靓号",
                 dataIndex: "pretty_id",
                 render: (text, record) =>

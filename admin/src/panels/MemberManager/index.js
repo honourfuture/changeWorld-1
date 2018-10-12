@@ -406,12 +406,12 @@ export default class MemberManager extends BaseComponent {
             window.open(
                 `${
                     Global.RES_URL
-                }/admin/#/robot/IMPanel?id=${item}&targetId=${JSON.stringify(
+                }/admin/#/blank/IMPanel?id=${item}&targetId=${JSON.stringify(
                     selectedRowKeys
                 )}`
             );
             // window.open(
-            //     `http://localhost:3000/#/robot/IMPanel?id=${item}&targetId=${JSON.stringify(
+            //     `http://localhost:3000/#/blank/IMPanel?id=${item}&targetId=${JSON.stringify(
             //         selectedRowKeys
             //     )}`
             // );
