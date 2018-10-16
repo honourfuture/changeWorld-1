@@ -30,6 +30,7 @@ class Article_model extends MY_Model
             // 'protocol_shop' => '店铺协议',
     		// 'copyright' => '版权申明',
             // 'rule_shop' => '平台规则',
+            'privacy_policy' => '隐私政策',
     	);
     }
 }
