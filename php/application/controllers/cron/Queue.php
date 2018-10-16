@@ -670,10 +670,10 @@ class Queue extends MY_Controller
                     continue;
                 }
 
-                $random_num = mt_rand(1, 5);
+                /*$random_num = mt_rand(1, 5);
                 if($random_num != 5){
                     continue;
-                }
+                }*/
 
 
                 $row = $this->Queue_model->order_by('id', 'desc')->get_by(['main_type' => 'live_join', 'sub_type' => $room['id']]);
