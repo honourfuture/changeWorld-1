@@ -178,14 +178,18 @@ class Queue extends API_Controller {
 
 	    					$this->db->select('views,title,user_id');
 	    					if($activity = $this->Activity_model->get($item['params']['id'])){
-	    						$item = array_merge($item, $activity);
 	    						$a_uid[] = $activity['user_id'];
+	    						$item = array_merge($item, $activity);
+	    						$ret['list'][] = $item;
+	    					}else{
+	    						$ret['count'] -= 1;
 	    					}
-	    					$ret['list'][] = $item;
 	    				}
 
-	    				$this->load->model('Users_model');
-						$ret['user'] = $this->Users_model->get_many_user($a_uid);
+	    				if($a_uid){
+		    				$this->load->model('Users_model');
+							$ret['user'] = $this->Users_model->get_many_user($a_uid);
+	    				}
 	    			}
 	    			break;
 	    		case 'activity_vote':
