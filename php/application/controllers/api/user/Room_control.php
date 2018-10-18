@@ -273,8 +273,8 @@ class Room_control extends API_Controller {
 		$this->check_params('add', $params);
 
 
-		if($this->Room_control_model->insert($params)){
-			$this->ajaxReturn();
+		if($id = $this->Room_control_model->insert($params)){
+			$this->ajaxReturn(['id' => $id]);
 		}else{
 			$this->ajaxReturn([], 2, '保存场控人信息失败');
 		}
