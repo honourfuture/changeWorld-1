@@ -57,12 +57,18 @@ export default class ActivityList extends BaseComponent {
             {
                 title: "活动详情",
                 width: "15%",
-                dataIndex: "details"
+                dataIndex: "details",
+                render: text => {
+                    return <div className="detail-con">{text}</div>;
+                }
             },
             {
                 title: "活动描述",
                 width: "15%",
-                dataIndex: "summary"
+                dataIndex: "summary",
+                render: text => {
+                    return <div className="detail-con">{text}</div>;
+                }
             },
             {
                 title: "开始时间",
@@ -302,7 +308,7 @@ export default class ActivityList extends BaseComponent {
             return parseInt(item.deleted, 10) === 0;
         });
         return (
-            <Spin ref="spin" spinning={false} className="ActivityList">
+            <Spin ref="spin" spinning={false} wrapperClassName="ActivityList">
                 <div className="pb10">
                     {/* <Button onClick={this.onAdd}>新增+</Button> */}
                     <Search
