@@ -617,6 +617,8 @@ class Activity extends API_Controller
         if($this->admin_id){
             $select .= ',summary';
         }
+
+        $prize = [];
         if($this->rank){
             $select .= ',likes';
 
@@ -638,6 +640,13 @@ class Activity extends API_Controller
             $this->load->model('Users_model');
             $user = $this->Users_model->get_many_user($a_user_id);
 
+            $prize_key = [];
+            if($prize){
+                foreach($prize as $key=>$item){
+                    $fill = array_fill(count($prize_key), $item['num'], $key);
+                    $prize_key = array_merge($prize_key, $fill);
+                }
+            }
             foreach($enter as $key=>$item){
                 $item['photos'] = json_decode($item['photos'], true);
                 $item['nickname'] = '';
@@ -646,7 +655,8 @@ class Activity extends API_Controller
 
                 if($this->rank){
                     $item['likes'] = strpos($item['likes'], ','.$this->user_id.',') === false ? 0 : 1;
-                    $item['prize'] = isset($prize[$key]) ? $prize[$key]['name'] : '';
+                    $prize_index = $this->offset + $key;
+                    $item['prize'] = (isset($prize_index[$prize_index]) && isset($prize[$$prize_index[$prize_index]])) ? $prize[$$prize_index[$prize_index]]['name'] : '';
                 }
 
                 $enter_list[] = $item;
