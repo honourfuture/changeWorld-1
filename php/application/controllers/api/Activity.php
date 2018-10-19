@@ -217,9 +217,9 @@ class Activity extends API_Controller
                 $this->Activity_model->common($ret);
             }
 
-            if(!$ret['list']){
+            // if(!$ret['list']){
                 $ret['notice'] = [];
-            }
+            // }
             $this->ajaxReturn($ret);
         /*}else{
             $this->ajaxReturn([], 1, '活动分类ID错误');
@@ -656,7 +656,7 @@ class Activity extends API_Controller
                 if($this->rank){
                     $item['likes'] = strpos($item['likes'], ','.$this->user_id.',') === false ? 0 : 1;
                     $prize_index = $this->offset + $key;
-                    $item['prize'] = (isset($prize_index[$prize_index]) && isset($prize[$$prize_index[$prize_index]])) ? $prize[$$prize_index[$prize_index]]['name'] : '';
+                    $item['prize'] = (isset($prize_key[$prize_index]) && isset($prize[$prize_key[$prize_index]])) ? $prize[$prize_key[$prize_index]]['name'] : '';
                 }
 
                 $enter_list[] = $item;
