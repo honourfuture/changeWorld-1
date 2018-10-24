@@ -529,6 +529,7 @@ class Queue extends MY_Controller
         if($rows){
             $this->load->model('Users_model');
             $this->load->model('Room_model');
+            $this->load->model('Live_online_model');
 
             $config    = config_item('rongcloud');
             $rongCloud = new RongCloud($config['app_key'], $config['app_secret']);
@@ -594,12 +595,18 @@ class Queue extends MY_Controller
                             $this->Queue_model->update($row['id'], ['status' => 0]);
                         }
 
+                        $insert_online = [];
                         $content = [
                             'cmd' => 'enter_batch',
                             'user' => []
                         ];
                         foreach($user as $item){
                             $cache[] = $item['id'];
+
+                            $insert_online[] = [
+                                'room_id' => $row['params']['id'],
+                                'user_id' => $item['id']
+                            ];
 
                             $content['user'][] = [
                                 "userId" => $item['id'],
@@ -618,13 +625,16 @@ class Queue extends MY_Controller
                             ];
                             $result = $rongCloud->message()->publishChatroom($item['id'], $chat_room_id, 'RC:TxtMsg', json_encode(['content' => json_encode($content)]));
                             log_message('debug', 'cron live_join:'.$result);*/
-
                         }
                         $this->cache->file->save($cache_id, $cache, 0);
 
                         $this->db->set('views', 'views +'.count($user), false);
                         $this->db->where('id', $row['params']['id']);
                         $this->db->update($this->Room_model->table());
+
+                        if($insert_online){
+                            $this->Live_online_model->insert_many($insert_online);
+                        }
 
                         $result = $rongCloud->message()->publishChatroom($user[0]['id'], $chat_room_id, 'RC:TxtMsg', json_encode(['content' => json_encode($content)]));
                     }else{

@@ -17,7 +17,9 @@ class Info extends API_Controller {
     public function onoff()
     {
     	$ret = [];
-    	$ret['onoff'] = 0;
+    	$this->load->model('Config_model');
+    	$config = $this->Config_model->siteConfig();
+    	$ret['onoff'] = isset($config['gift']) ? $config['gift'] : 0;
 
     	$this->ajaxReturn($ret);
     }
