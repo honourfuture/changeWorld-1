@@ -372,13 +372,13 @@ export default class ActivifyShare extends BaseComponent {
                             </List>
                         </div>
                     </div>
-                    <Flex className="footer" onClick={()=>this.onDown()}>
-                        <Flex.Item className="footerItem issueBtn">
-                            发布活动
-                        </Flex.Item>
-                        <Flex.Item className="footerItem">参加活动</Flex.Item>
-                    </Flex>
                 </div>
+                <Flex className="footer" onClick={()=>this.onDown()}>
+                    <Flex.Item className="footerItem issueBtn">
+                        发布活动
+                    </Flex.Item>
+                    <Flex.Item className="footerItem">参加活动</Flex.Item>
+                </Flex>
             </div>
         );
     }

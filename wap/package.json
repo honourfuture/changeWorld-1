@@ -10,6 +10,7 @@
     "normalize.css": "^7.0.0",
     "pubsub-js": "^1.6.0",
     "rc-form": "^2.1.7",
+    "rc-queue-anim": "^1.6.6",
     "react": "^16.2.0",
     "react-document-title": "^2.0.3",
     "react-dom": "^16.2.0",
