@@ -77,7 +77,11 @@ class Config_model extends MY_Model
             'withdraw' => [
                 'withdraw_system' => '提现手续费',
                 'withdraw_headhunter' => '提现猎头返利'
-            ]
+            ],
+            'onoff' => [
+                'goods_check' => '商品上架审核',
+                'gift' => '虚拟礼物开放',//0隐藏 1显示
+            ],
     	);
     }
 }
