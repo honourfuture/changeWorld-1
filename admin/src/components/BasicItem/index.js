@@ -30,7 +30,7 @@ const FormItem = Form.Item;
 const { TextArea } = Input;
 class BasicItem extends BaseComponent {
     store = {
-		list:{},
+        list: {},
         editorState: EditorState.createEmpty()
     };
     showProps = [
@@ -55,33 +55,46 @@ class BasicItem extends BaseComponent {
         {
             key: "site_status",
             label: "站点状态",
-            render: value => this.renderSwitch(value)
+            render: value => this.renderSwitch(value, "site_status")
+        },
+        {
+            key: "gift",
+            label: "虚拟礼物开放",
+            render: value => this.renderSwitch(value, "gift")
         },
         { key: "closed_reason", label: "关闭原因" },
         { key: "phone", label: "客服联系电话" },
         { key: "email", label: "电子邮箱" },
-        { key: "withdraw_system", label: "提现手续费",render: value => this.renderText(value) },
-        { key: "withdraw_headhunter", label: "提现猎头返利",render: value => this.renderText(value) },
+        {
+            key: "withdraw_system",
+            label: "提现手续费",
+            render: value => this.renderText(value)
+        },
+        {
+            key: "withdraw_headhunter",
+            label: "提现猎头返利",
+            render: value => this.renderText(value)
+        },
         { key: "rmb_to_gold", label: "现金兑换金币" },
-        { key: "gold_to_rmb", label: "金币兑换现金" },
+        { key: "gold_to_rmb", label: "金币兑换现金" }
     ];
-    renderText(value){
-        return <Input addonAfter="%" />
+    renderText(value) {
+        return <Input addonAfter="%" />;
     }
     renderTextArea(value) {
         return <TextArea autosize={{ minRows: 4 }} />;
     }
-    renderSwitch(values) {
+    renderSwitch(values, key) {
         return (
             <Switch
                 checked={parseInt(values, 10) === 1}
-                onChange={value => this.onSwitch(value ? 1 : 0)}
+                onChange={value => this.onSwitch(value ? 1 : 0, key)}
                 checkedChildren="开"
                 unCheckedChildren="关"
             />
         );
-	}
-	@action.bound
+    }
+    @action.bound
     onEditorStateChange(editorState) {
         this.store.editorState = editorState;
     }
@@ -110,17 +123,20 @@ class BasicItem extends BaseComponent {
     }
     //是否启用
     @action.bound
-    onSwitch(value) {
-		this.store.list.site_status = value;
+    onSwitch(value, key) {
+        this.store.list[key] = value;
     }
     @action.bound
     onSaveBasic() {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 const content = draftToHtml(
-					convertToRaw(this.refs.editor.state.editorState.getCurrentContent())
-				);
+                    convertToRaw(
+                        this.refs.editor.state.editorState.getCurrentContent()
+                    )
+                );
                 values.site_status = values.site_status ? 1 : 0;
+                values.gift = values.gift ? 1 : 0;
                 values.goods_explain = content;
                 Base.POST(
                     { act: "config", op: "save", mod: "admin", ...values },
@@ -131,26 +147,32 @@ class BasicItem extends BaseComponent {
                 );
             }
         });
-	}
-	componentDidMount(){
-		Base.GET({act:'config',op:'index',mod:'admin'},(res)=>{
-			this.store.list = res.data;
-			const contentBlock = htmlToDraft(res.data.goods_explain);
-			if (contentBlock) {
-				const contentState = ContentState.createFromBlockArray(
-					contentBlock.contentBlocks
-				);
-				const editorState = EditorState.createWithContent(contentState);
-				this.store.editorState = editorState;
-			}
-		},this);
-	}
+    }
+    componentDidMount() {
+        Base.GET(
+            { act: "config", op: "index", mod: "admin" },
+            res => {
+                this.store.list = res.data;
+                const contentBlock = htmlToDraft(res.data.goods_explain);
+                if (contentBlock) {
+                    const contentState = ContentState.createFromBlockArray(
+                        contentBlock.contentBlocks
+                    );
+                    const editorState = EditorState.createWithContent(
+                        contentState
+                    );
+                    this.store.editorState = editorState;
+                }
+            },
+            this
+        );
+    }
     render() {
-		const { list,editorState } = this.store;
+        const { list, editorState } = this.store;
         const { getFieldDecorator } = this.props.form;
         const { showProps } = this;
         const items = showProps.map((item, index) => {
-			const { key, label, render } = item;
+            const { key, label, render } = item;
             if (!render) {
                 return (
                     <FormItem
@@ -188,20 +210,20 @@ class BasicItem extends BaseComponent {
                     label={"价格说明"}
                 >
                     <Editor
-						ref="editor"
-						wrapperClassName="editor-con"
-						editorState={editorState}
-						onEditorStateChange={this.onEditorStateChange}
-						toolbar={{
-							image: {
-								uploadCallback: this.onUploadCallback,
-								previewImage: true
-							}
-						}}
-						localization={{
-							locale: "zh"
-						}}
-					/>
+                        ref="editor"
+                        wrapperClassName="editor-con"
+                        editorState={editorState}
+                        onEditorStateChange={this.onEditorStateChange}
+                        toolbar={{
+                            image: {
+                                uploadCallback: this.onUploadCallback,
+                                previewImage: true
+                            }
+                        }}
+                        localization={{
+                            locale: "zh"
+                        }}
+                    />
                 </FormItem>
                 <Row>
                     <Col span={6} />
