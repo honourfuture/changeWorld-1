@@ -152,6 +152,9 @@ class Live extends API_Controller {
 		$this->check_add_params('add', $data);
 		$this->load->model('Room_model');
 		if($id = $this->Room_model->insert($data)){
+			// 直播中断重新创建
+			$this->Room_model->update_by(['status' => 4], ['anchor_uid' => $this->user_id, 'status' => 2]);
+
 			if($row = $this->Room_model->order_by('id', 'desc')->get_by(['anchor_uid' => $this->user_id, 'type' => 2])){
 				$this->Room_model->delete_by(['anchor_uid' => $this->user_id, 'type' => 2]);
 
