@@ -90,6 +90,8 @@ class Room extends API_Controller {
 		if($info = $this->Room_model->get($room_id)){
 			if($info['anchor_uid'] == $this->user_id){
 				$update = array('status' => 4);
+
+				$this->Room_model->update_by(['anchor_uid' => $this->user_id, 'status' => 2], ['status' => 4]);
 			}else{
 				$update = array('offline' => $info['offline'] + 1);
 			}
