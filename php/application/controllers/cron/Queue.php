@@ -722,6 +722,9 @@ class Queue extends MY_Controller
                 // $step_num = min($step_num, $row['params']['max'] - $cache_num);
                 if($step_num > 0){
                     $random_keys = array_rand($cache, $step_num);
+                    if(!$random_keys){
+                        continue;
+                    }
                     $a_uid = [];
                     foreach($random_keys as $key=>$uid){
                         $a_uid[] = $cache[$uid];

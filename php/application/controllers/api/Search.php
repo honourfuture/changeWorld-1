@@ -254,6 +254,7 @@ class Search extends API_Controller {
 
 				$this->load->model('Users_model');
 				$a_user = $this->Users_model->get_all();
+                $a_anchor_uid = [];
 
                 $order_by = array('sort' => 'desc', 'id' => 'desc');
                 $this->db->select('id as room_id,title,cover_image,play_url,live_tag_id,anchor_uid,views,price');
@@ -261,7 +262,12 @@ class Search extends API_Controller {
 
                 $this->db->group_start();
 				$this->db->like('title', $this->keyword);
-				$a_user && $this->db->or_where_in('anchor_uid', $a_user);
+                if($a_user){
+                    foreach($a_user as $item){
+                        $a_anchor_uid[] = $item['id'];
+                    }
+				    $this->db->or_where_in('anchor_uid', $a_anchor_uid);
+                }
 				$this->db->group_end();
 
                 if(is_numeric($this->keyword)){
