@@ -70,10 +70,12 @@ class Collection extends API_Controller {
 					$where['user_id'] = $t_user_id;
 				}
 
+				// $this->db->group_by('t_id');
 				$ret['count'] = $this->Users_collection_model->count_by($where);
 				$rows = array();
 				if($ret['count']){
 					$this->db->select($field);
+					$this->db->group_by('t_id');
 					$rows = $this->Users_collection_model->order_by('id', 'DESC')->limit($this->per_page, $this->offset)->get_many_by($where);
 				}
 				if($rows){
