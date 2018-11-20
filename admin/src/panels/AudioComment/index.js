@@ -69,7 +69,7 @@ export default class AudioComment extends BaseComponent {
                 dataIndex: "anchor_uid",
                 render: (text, record) =>
                     this.renderText(
-                        this.user[record.anchor_uid].nickname,
+                        (this.user[record.anchor_uid] || {}).nickname,
                         record,
                         "anchor_uid"
                     )
