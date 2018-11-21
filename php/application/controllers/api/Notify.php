@@ -521,6 +521,7 @@ class Notify extends API_Controller
             }
             //分佣
             //消息推送
+            $this->load->model('Users_model');
             $user = $this->Users_model->get($order[0]['buyer_uid']);
             foreach($order as $item){
                 if($user_to = $this->Users_model->get($item['seller_uid'])){
