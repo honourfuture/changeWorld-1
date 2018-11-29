@@ -5,8 +5,19 @@ use JPush\Client;
 use QCloud\Live\Query;
 use RongCloud\RongCloud;
 
+require_once(APPPATH.'vendor/james-heinrich/getid3/getid3/getid3.php');
+
 class Welcome extends Web_Controller
 {
+
+    public function audio()
+    {
+        $filename = FCPATH.'zz.mp3';
+        $getID3 = new getID3;
+        $info = $getID3->analyze($filename);
+        // playtime_seconds playtime_string
+        var_export($info);
+    }
 
     /**
      * Index Page for this controller.
