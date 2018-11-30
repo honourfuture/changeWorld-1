@@ -45,6 +45,20 @@ class MY_Controller extends CI_Controller
                 break;
             }
         }
+        //公共接收参数
+        switch($this->input->method()){
+            case 'get':
+                $this->requestData = $this->input->get();
+                break;
+            case 'post':
+                $this->requestData = $this->input->post();
+                break;
+            default :
+                if(! is_cli()){
+                    $this->ajaxReturn(['method' => $this->input->method()]);
+                }
+                break;
+        }
         //翻页
         $cur_page = intval($this->input->get_post('cur_page'));
         $offset = intval($this->input->get_post('offset'));

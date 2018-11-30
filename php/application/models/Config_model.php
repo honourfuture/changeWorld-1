@@ -22,10 +22,16 @@ class Config_model extends MY_Model
     public function siteConfig()
     {
         $config = array();
+
+        $json = [
+            'tpl_anchor_fans', 'tpl_audio_play', 'tpl_audio_comment',
+            'tpl_album_favorite', 'tpl_live_fans', 'tpl_live_comment'
+        ];
+
         $rows = $this->get_all();
         if($rows){
             foreach($rows as $item){
-                $config[$item['name']] = $item['value'];
+                $config[$item['name']] = in_array($item['name'], $json) ? json_decode($item['value'], true) : $item['value'];
             }
         }
 
@@ -81,6 +87,14 @@ class Config_model extends MY_Model
             'onoff' => [
                 'goods_check' => '商品上架审核',
                 'gift' => '虚拟礼物开放',//0隐藏 1显示
+            ],
+            'template' => [
+                'tpl_anchor_fans' => '主播粉丝',
+                'tpl_audio_play' => '音频播放',
+                'tpl_audio_comment' => '音频评论',
+                'tpl_album_favorite' => '专辑收藏',
+                'tpl_live_fans' => '直播粉丝',
+                'tpl_live_comment' => '直播评论',
             ],
     	);
     }

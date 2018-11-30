@@ -14,6 +14,50 @@ class Live_audio extends API_Controller {
     }
 
     /**
+	 * @api {get} /api/user/live_audio/sort 音频-排序
+	 * @apiVersion 1.0.0
+	 * @apiName live_audio_sort
+	 * @apiGroup api
+	 *
+	 * @apiSampleRequest /api/user/live_audio/sort
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} sign 校验签名
+	 * @apiParam {Number} id 音频ID
+	 * @apiParam {Number} sort 排序值 降序排列
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *     "data": {
+	 *     },
+	 *     "status": 0,
+	 *     "message": "成功"
+	 * }
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+    public function sort()
+    {
+    	$id = $this->input->get_post('id');
+    	$sort = $this->input->get_post('sort');
+
+    	if($this->Room_audio_model->update($id, ['sort' => $sort])){
+    		$this->ajaxReturn();
+    	}else{
+    		$this->ajaxReturn([], 1, '排序失败');
+    	}
+    }
+
+    /**
 	 * @api {get} /api/user/live_audio 我的音频-列表
 	 * @apiVersion 1.0.0
 	 * @apiName live_audio
@@ -87,7 +131,7 @@ class Live_audio extends API_Controller {
 		$this->search();
 		$ret['count'] = $this->Room_audio_model->count_by($where);
 		if($ret['count']){
-			$order_by = array('id' => 'desc');
+			$order_by = array('sort' => 'desc', 'id' => 'desc');
 			$this->search();
 			$this->db->select('id,created_at,duration,video_url,album_id,title,price,cover_image,room_id,anchor_uid,city_partner_rate,two_level_rate,play_times');
 			$ret['list'] = $this->Room_audio_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);

@@ -23,7 +23,7 @@ class Login extends API_Controller {
 	 *
 	 * @apiSampleRequest /api/user/login
 	 *
-	 * @apiParam {String} account 登录手机/账号
+	 * @apiParam {String} account 手机/靓号
 	 * @apiParam {String} password 登录密码
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
@@ -68,7 +68,7 @@ class Login extends API_Controller {
 		$this->load->model('Users_model');
 		//手机号 or 账号
 		$info = $this->Users_model->get_by('mobi', $account);
-		!$info && $info = $this->Users_model->get_by('account', $account);
+		!$info && $info = $this->Users_model->get_by('pretty_id', $account);
 		if($info){
 			if($info['password'] == $this->Users_model->get_password($password)){
 				$this->check_status($info);
