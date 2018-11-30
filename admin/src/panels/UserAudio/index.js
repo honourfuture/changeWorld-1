@@ -38,7 +38,8 @@ const formItemLayout = {
 export default class UserAudio extends BaseComponent {
     store = {
         list: [],
-        addData: null
+        addData: null,
+        batchLoading: false
     };
     curData = {};
     constructor(props) {
@@ -144,6 +145,29 @@ export default class UserAudio extends BaseComponent {
                 render: value => this.onAddImage("video_url", value)
             }
         ];
+    }
+    @action.bound
+    onAddUploadChange(info) {
+        this.store.batchLoading = true;
+        if (info.file.status === "done") {
+            const fileList = info.fileList;
+            const len = fileList.length;
+            let isAll = true;
+            for (let i = 0; i < len; i++) {
+                const { data } = fileList[i].response || {};
+                if (!data || !data.file_url) {
+                    isAll = false;
+                    break;
+                }
+            }
+            if (isAll) {
+                Global.audioList = fileList.map(item => item.response.data);
+                this.store.batchLoading = false;
+                Base.push("BatchAudio", {
+                    album_id: Base.getPageParams("album_id")
+                });
+            }
+        }
     }
     @action.bound
     onUploadChange(info, key) {
@@ -336,7 +360,7 @@ export default class UserAudio extends BaseComponent {
         );
     }
     render() {
-        let { list, total, addData } = this.store;
+        let { list, total, addData, batchLoading } = this.store;
         const showList = list.slice();
         // let tableWidth = this.columns.length * 150;
         let addItems = [];
@@ -366,6 +390,19 @@ export default class UserAudio extends BaseComponent {
                     <Button style={{ marginRight: 20 }} onClick={this.onAdd}>
                         上传音频
                     </Button>
+                    <Upload
+                        name="field"
+                        data={{ field: "field", audio: 1 }}
+                        multiple={true}
+                        action={Global.UPLOAD_URL}
+                        showUploadList={false}
+                        onChange={e => this.onAddUploadChange(e)}
+                    >
+                        <Button>
+                            <Icon type={batchLoading ? "loading" : "upload"} />{" "}
+                            批量上传
+                        </Button>
+                    </Upload>
                     <Button style={{ float: "right" }} onClick={Base.goBack}>
                         返回
                     </Button>

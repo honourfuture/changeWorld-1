@@ -76,7 +76,19 @@ import ActivityLike from "./ActivityLike";
 import ActivityPlay from "./ActivityPlay";
 import IMPanel from "./IMPanel";
 import AudioComment from "./AudioComment";
+import BatchAudio from './BatchAudio';
+import FansTemplate from './FansTemplate';
 export const panelsList = [
+    {
+        path:'/robot/FansTemplate',
+        component:FansTemplate,
+        title:'粉丝模板',
+    },
+    {
+        path:'/live/BatchAudio',
+        component:BatchAudio,
+        title:'音频上传',
+    },
     {
         path: "/robot/AudioComment",
         component: AudioComment,

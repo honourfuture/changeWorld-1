@@ -12,7 +12,7 @@ import {
     Modal,
     Form
 } from "antd";
-import "./FansTask.less";
+import "./FansTemplate.less";
 import { remove } from "lodash";
 const FormItem = Form.Item;
 const formItemLayout = {
@@ -25,7 +25,7 @@ const formItemLayout = {
         sm: { span: 16 }
     }
 };
-export default class FansTask extends BaseComponent {
+export default class FansTemplate extends BaseComponent {
     store = {
         list: [],
         total: 1,
@@ -35,41 +35,6 @@ export default class FansTask extends BaseComponent {
     constructor(props) {
         super(props);
         this.columns = [
-            {
-                title: "主播id",
-                dataIndex: "id",
-                render: (text, record) =>
-                    this.renderText(
-                        record.params ? record.params.id : "",
-                        record,
-                        "id"
-                    )
-            },
-            {
-                title: "昵称",
-                dataIndex: "nickname",
-                render: (text, record) =>
-                    this.renderText(
-                        this.user[record.params.id].nickname,
-                        record,
-                        "nickname"
-                    )
-            },
-            {
-                title: "头像",
-                dataIndex: "header",
-                render: (text, record) =>
-                    this.renderImg(
-                        this.user[record.params.id].header,
-                        record,
-                        "header"
-                    )
-            },
-            {
-                title: "主播粉丝数",
-                dataIndex: "fans",
-                render: (text, record) => this.renderText(text, record, "fans")
-            },
             {
                 title: "多少秒内加粉",
                 dataIndex: "step_times",
@@ -101,60 +66,20 @@ export default class FansTask extends BaseComponent {
                     )
             },
             {
-                title: "任务状态",
-                dataIndex: "status",
-                render: (text, record) =>
-                    this.renderText(this.status[text], record, "status")
-            },
-            {
-                title: "暂停/启动",
-                dataIndex: "enable",
-                render: (text, record) => {
-                    const { id, status } = record;
-                    let btns = null;
-                    if (parseInt(status) === 0 || parseInt(status) === 1) {
-                        btns = (
-                            <span>
-                                <Popconfirm
-                                    title="确认暂停?"
-                                    okText="确定"
-                                    cancelText="取消"
-                                    onConfirm={() => this.onEnable(id, "stop")}
-                                >
-                                    <a className="ml10 gray">暂停</a>
-                                </Popconfirm>
-                            </span>
-                        );
-                    } else if (
-                        parseInt(status) === 3 ||
-                        parseInt(status) === 4 ||
-                        parseInt(status) === 5
-                    ) {
-                        btns = (
-                            <span>
-                                <Popconfirm
-                                    title="确认启动?"
-                                    okText="确定"
-                                    cancelText="取消"
-                                    onConfirm={() => this.onEnable(id, "start")}
-                                >
-                                    <a className="ml10">启动</a>
-                                </Popconfirm>
-                            </span>
-                        );
-                    }
-                    return (
-                        <div className="editable-row-operations">{btns}</div>
-                    );
-                }
-            },
-            {
                 title: "操作",
                 dataIndex: "operation",
                 render: (text, record) => {
                     const { id } = record;
                     return (
                         <div className="editable-row-operations">
+                            <span>
+                                <a
+                                    className="ml10"
+                                    onClick={() => this.onPlay(id)}
+                                >
+                                    使用模板
+                                </a>
+                            </span>
                             <span>
                                 <Popconfirm
                                     title="确认删除?"
@@ -238,6 +163,15 @@ export default class FansTask extends BaseComponent {
         this.store.params = {};
         this.store.isShowModal = true;
     }
+    //使用模板
+    @action.bound
+    onPlay(id) {
+        const list = this.store.list.slice();
+        const itemData = list.find(item => id === item.id);
+        console.log(itemData);
+        this.store.params = { ...itemData };
+        this.store.isShowModal = true;
+    }
     @action.bound
     onAddSubmit() {
         const params = { ...this.store.params };
@@ -297,15 +231,9 @@ export default class FansTask extends BaseComponent {
         let { list, total, isShowModal, params } = this.store;
         const showList = list.slice();
         return (
-            <Spin ref="spin" wrapperClassName="FansTask" spinning={false}>
+            <Spin ref="spin" wrapperClassName="FansTemplate" spinning={false}>
                 <div className="pb10">
                     <Button onClick={this.onAdd}>新增+</Button>
-                    <Button
-                        style={{ marginLeft: 10 }}
-                        onClick={this.onSetTemplate}
-                    >
-                        模板管理
-                    </Button>
                 </div>
                 <Table
                     size="small"
