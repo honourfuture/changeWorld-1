@@ -30,4 +30,5 @@ $config['unLogin'] = [//控制器=>方法
 	// h5分享
 	'api/audio' => ['play'],
 	'api/album' => ['view'],
+	'api/user/album_audio_comment' => ['index'],
 ];
