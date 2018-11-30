@@ -367,32 +367,8 @@ class Live_audio extends API_Controller {
 	{
 		$id = (int)$this->input->get_post('id');
 
-		$this->load->model('Room_audio_model');
-        $insert = elements(
-            array(
-                'duration', 'album_id', 'title', 'price', 'city_partner_rate',
-                'two_level_rate', 'video_url', 'room_id', 'cover_image', 'play_times',
-                'deleted'
-            ),
-            $this->input->post(),
-            0
-        );
-        $insert['start_time'] = time();
-        $insert['end_time'] = $insert['start_time'] + $insert['duration'];
-        $insert['file_id'] = md5($insert['start_time']);
-        $insert['file_size'] = '';
-        if(file_exists(FCPATH.$insert['video_url'])){
-        	$insert['file_size'] = @filesize(FCPATH.$insert['video_url']);
-        }
-        $insert['video_id'] = date("Ymd").'_'.$insert['file_id'];
-        $insert['room_id'] = 0;
-        if(strpos($insert['video_url'], '://') === false){
-        	$insert['video_url'] = base_url($insert['video_url']);
-        }
-
-        $this->load->model('Album_model');
-        $album = $this->Album_model->get($insert['album_id']);
-        $insert['anchor_uid'] = $album ? $album['anchor_uid'] : 0;
+		$post = $this->input->post();
+		$insert = $this->_add($post);
 
 		if($id){
 			if($insert['deleted'] == 1){
@@ -432,5 +408,58 @@ class Live_audio extends API_Controller {
 			$message = '失败';
 		}
 		$this->ajaxReturn(array('id' => $id), $status, '操作'.$message);
+	}
+
+	private function _add($post)
+	{
+		$this->load->model('Room_audio_model');
+        $insert = elements(
+            array(
+                'duration', 'album_id', 'title', 'price', 'city_partner_rate',
+                'two_level_rate', 'video_url', 'room_id', 'cover_image', 'play_times',
+                'deleted'
+            ),
+            $post,
+            0
+        );
+        $insert['start_time'] = time();
+        $insert['end_time'] = $insert['start_time'] + $insert['duration'];
+        $insert['file_id'] = md5($insert['start_time']);
+        $insert['file_size'] = '';
+        if(file_exists(FCPATH.$insert['video_url'])){
+        	$insert['file_size'] = @filesize(FCPATH.$insert['video_url']);
+        }
+        $insert['video_id'] = date("Ymd").'_'.$insert['file_id'];
+        $insert['room_id'] = 0;
+        if(strpos($insert['video_url'], '://') === false){
+        	$insert['video_url'] = base_url($insert['video_url']);
+        }
+
+        $this->load->model('Album_model');
+        $album = $this->Album_model->get($insert['album_id']);
+        $insert['anchor_uid'] = $album ? $album['anchor_uid'] : 0;
+
+        return $insert;
+	}
+
+	public function add_batch()
+	{
+		$j_audio = $this->input->get_post('j_audio');
+		if($j_audio){
+			$a_audio = json_decode($j_audio, true);
+			if($a_audio){
+				$insert = [];
+				foreach($a_audio as $audio){
+					$insert[] = $this->_add($audio);
+				}
+
+				$this->Room_audio_model->insert_many($insert);
+				$this->ajaxReturn();
+			}else{
+				$this->ajaxReturn([], 1, '批量上传格式错误');
+			}
+		}else{
+			$this->ajaxReturn([], 2, '批量上传格式错误');
+		}
 	}
 }
