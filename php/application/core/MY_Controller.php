@@ -55,7 +55,7 @@ class MY_Controller extends CI_Controller
                 break;
             default :
                 if(! is_cli()){
-                    ajaxReturn(['method' => $this->input->method()]);
+                    $this->ajaxReturn(['method' => $this->input->method()]);
                 }
                 break;
         }
