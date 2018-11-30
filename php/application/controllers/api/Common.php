@@ -106,7 +106,7 @@ class Common extends API_Controller
 
             $audio = $this->input->get_post('audio');
             if($audio){
-                $ret['name'] = $data['raw_name'];
+                $ret['name'] = str_replace($data['file_ext'], '', $data['client_name']);
 
                 $getID3 = new getID3;
                 $file_info = $getID3->analyze($data['full_path']);
