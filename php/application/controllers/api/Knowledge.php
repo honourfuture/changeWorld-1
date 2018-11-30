@@ -278,6 +278,7 @@ class Knowledge extends API_Controller
         if($album_class_id){
             $this->load->model('Room_audio_model');
             $this->load->model('Album_model');
+            $this->load->model('Users_model');
 
             $this->db->select(
                 'album.id,album.`cover_image`,album.`title`,album.`price`,album.`anchor_uid`,
@@ -300,7 +301,7 @@ class Knowledge extends API_Controller
                     foreach($list as $item){
                         $a_uid[] = $item['anchor_uid'];
                     }
-                    $this->load->model('Users_model');
+
                     $users = $this->Users_model->get_many_user($a_uid, 'id,nickname,pretty_id');
                     foreach($list as $key=>$item){
                         $list[$key]['nickname'] = isset($users[$item['anchor_uid']]) ? $users[$item['anchor_uid']]['nickname'] : '';
@@ -332,6 +333,14 @@ class Knowledge extends API_Controller
                 }
 
             }*/
+            // 热门主播
+            $ret['anchor'] = [];
+            $this->db->select('id,nickname,header,v,exp,pretty_id,address,sex,summary');
+            $anchor = $this->Users_model->limit($this->per_page)->get_many_by(['anchor' => 2, 'is_hot' => 1]);
+            if($anchor){
+                $ret['anchor'] = $anchor;
+            }
+
             $this->ajaxReturn($ret);
         }else{
             $this->ajaxReturn([], 1, '专辑分类ID错误');
