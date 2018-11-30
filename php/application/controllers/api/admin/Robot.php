@@ -496,4 +496,121 @@ class Robot extends API_Controller {
 			$this->ajaxReturn([], 1, '请输入本次生成机器人数量');
 		}
 	}
+
+
+	/********************评论管理********************/
+
+	/**
+	 * @api {get} /api/admin/robot/comment_list 机器人-评论列表
+	 * @apiVersion 1.0.0
+	 * @apiName robot_comment_list
+	 * @apiGroup admin
+	 *
+	 * @apiSampleRequest /api/admin/robot/comment_list
+	 *
+	 * @apiParam {Number} admin_id 管理员唯一ID
+	 * @apiParam {String} account 登录账号
+	 * @apiParam {String} sign 校验签名
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *     "data": {
+	 *     },
+	 *     "status": 0,
+	 *     "message": "成功"
+	 * }
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+	public function comment_list()
+	{
+		$ret = array('count' => 0, 'list' => array());
+
+		$this->load->model('Robot_comment_model');
+		$ret['count'] = $this->Robot_comment_model->count_all();
+		if($ret['count']){
+			$order_by = array('id' => 'desc');
+			$ret['list'] = $this->Robot_comment_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_all();
+		}
+
+		$this->ajaxReturn($ret);
+	}
+
+	/**
+	 * @api {post} /api/admin/robot/comment_import 机器人-评论导入
+	 * @apiVersion 1.0.0
+	 * @apiName robot_comment_import
+	 * @apiGroup admin
+	 *
+	 * @apiSampleRequest /api/admin/robot/comment_import
+	 *
+	 * @apiParam {Number} admin_id 管理员唯一ID
+	 * @apiParam {String} account 登录账号
+	 * @apiParam {String} sign 校验签名
+	 * @apiParam {String} filename txt文件地址
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *     "data": {
+	 *     },
+	 *     "status": 0,
+	 *     "message": "成功"
+	 * }
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+	public function comment_import()
+	{
+		$filename = $this->input->get_post('filename');
+		if($filename){
+			$file = FCPATH.$filename;
+			if(file_exists($file)){
+				if($a_line = file($file)){
+					$rows = [];
+					$date = date("Y-m-d H:i:s");
+					foreach($a_line as $comment){
+						$comment = trim($comment);
+						if($comment){
+							$rows[] = [
+								'created_at' => $date,
+								'updated_at' => $date,
+								'comment' => $comment
+							];
+						}
+					}
+
+					$count = count($rows);
+					if($rows){
+						$this->load->model('Robot_comment_model');
+						$this->db->insert_batch($this->Robot_comment_model->table(), $rows);
+					}
+					$this->ajaxReturn([], 0, '成功导入: '.$count);
+				}else{
+					$this->ajaxReturn([], 3, '读取文件失败: '.$file);
+				}
+			}else{
+				$this->ajaxReturn([], 2, '上传txt文件不存在: '.$file);
+			}
+		}else{
+			$this->ajaxReturn([], 1, '请上传txt文件');
+		}
+	}
 }
