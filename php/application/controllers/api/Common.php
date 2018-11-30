@@ -8,6 +8,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  */
 use Gregwar\Captcha\CaptchaBuilder;
 use Gregwar\Captcha\PhraseBuilder;
+require_once(APPPATH.'vendor/james-heinrich/getid3/getid3/getid3.php');
 
 class Common extends API_Controller
 {
@@ -102,6 +103,16 @@ class Common extends API_Controller
             $ret['width'] = $data['image_width'];
             $ret['height'] = $data['image_height'];
             $this->formatResource($this->upload->file_ext, $ret);
+
+            $audio = $this->input->get_post('audio');
+            if($audio){
+                $ret['name'] = $data['raw_name'];
+
+                $getID3 = new getID3;
+                $file_info = $getID3->analyze($data['full_path']);
+                $ret['playtime_seconds'] = $file_info['playtime_seconds'];
+                $ret['playtime_string'] = $file_info['playtime_string'];
+            }
 
             $this->ajaxReturn($ret, 0, '', true);
         }else{
