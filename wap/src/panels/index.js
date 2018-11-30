@@ -36,7 +36,19 @@ import SellerOrderDetail from "./SellerOrderDetail";
 import Share from "./Share";
 import ActivifyShare from "./ActivifyShare";
 import ArticleDetail from './ArticleDetail';
+import H5Audio from './H5Audio';
+import H5Album from './H5Album';
 export const panelsList = [
+    {
+        path:'/H5Album',
+        component:H5Album,
+        title:'专辑',
+    },
+    {
+        path:'/H5Audio',
+        component:H5Audio,
+        title:'音频',
+    },
     {
         path:'/ArticleDetail',
         component:ArticleDetail,

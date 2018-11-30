@@ -65,6 +65,15 @@ export const activify = {
     activify_04: require("./activify/activify_04.jpg"),
     activify_05: require("./activify/activify_05.jpg")
 };
+
+export const h5 = {
+    audio_bg: require("./h5/audio_bg.png"),
+    audio_play: require("./h5/audio_play.png"),
+    audio_stop: require("./h5/audio_stop.png"),
+    audio_play_gray: require("./h5/audio_play_gray.png"),
+    audio_stop_gray: require("./h5/audio_stop_gray.png"),
+    audio_play_num: require("./h5/audio_play_num.png")
+};
 // export const test = {
 //     test1: require("./test/1.jpg"),
 //     test2: require("./test/2.jpg"),

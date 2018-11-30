@@ -1,6 +1,6 @@
 /*
- * @Author: daihanqiao@126.com 
- * @Date: 2018-01-01 15:37:11 
+ * @Author: daihanqiao@126.com
+ * @Date: 2018-01-01 15:37:11
  * @Last Modified by: daihanqiao@126.com
  * @Last Modified time: 2018-01-01 23:36:06
  * 基础工具类，组件基类
@@ -143,7 +143,12 @@ export const Base = {
                             self.pushApp("openLoginView");
                             break;
                         default:
-                            Toast.fail(res.message);
+                            f_failBack && f_failBack();
+                            if (f_failBack) {
+                                f_failBack(res);
+                            } else {
+                                Toast.fail(res.message);
+                            }
                             break;
                     }
                 },
@@ -236,8 +241,8 @@ export const Base = {
         return /http|data:/.test(img)
             ? img
             : img
-                ? `${Global.RES_URL}${img}`
-                : "";
+            ? `${Global.RES_URL}${img}`
+            : "";
     },
     get isWechat() {
         const ua = window.navigator.userAgent.toLowerCase();
