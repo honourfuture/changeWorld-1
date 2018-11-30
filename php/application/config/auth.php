@@ -27,5 +27,7 @@ $config['unLogin'] = [//控制器=>方法
 	'api/goods' => ['index', 'view', 'evaluate'],
 	'api/address' => ['index'],
 	'api/article' => ['page_view'],
+	// h5分享
 	'api/audio' => ['play'],
+	'api/album' => ['view'],
 ];
