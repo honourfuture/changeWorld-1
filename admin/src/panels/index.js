@@ -78,7 +78,13 @@ import IMPanel from "./IMPanel";
 import AudioComment from "./AudioComment";
 import BatchAudio from './BatchAudio';
 import FansTemplate from './FansTemplate';
+import PlayTemplate from './PlayTemplate';
 export const panelsList = [
+    {
+        path:'/robot/PlayTemplate',
+        component:PlayTemplate,
+        title:'音频播放量模板',
+    },
     {
         path:'/robot/FansTemplate',
         component:FansTemplate,

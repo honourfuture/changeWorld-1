@@ -303,6 +303,9 @@ export default class PlayTask extends BaseComponent {
     componentDidMount() {
         this.requestData();
     }
+    onSetTemplate() {
+        Base.push("PlayTemplate");
+    }
     render() {
         let { list, total, isShowModal, params } = this.store;
         const showList = list.slice();
@@ -310,6 +313,12 @@ export default class PlayTask extends BaseComponent {
             <Spin ref="spin" wrapperClassName="PlayTask" spinning={false}>
                 <div className="pb10">
                     <Button onClick={this.onAdd}>新增+</Button>
+                    <Button
+                        style={{ marginLeft: 10 }}
+                        onClick={this.onSetTemplate}
+                    >
+                        模板管理
+                    </Button>
                 </div>
                 <Table
                     size="small"

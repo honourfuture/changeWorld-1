@@ -12,7 +12,7 @@ import {
     Modal,
     Form
 } from "antd";
-import "./FansTemplate.less";
+import "./PlayTemplate.less";
 import { remove } from "lodash";
 const FormItem = Form.Item;
 const formItemLayout = {
@@ -25,7 +25,7 @@ const formItemLayout = {
         sm: { span: 16 }
     }
 };
-export default class FansTemplate extends BaseComponent {
+export default class PlayTemplate extends BaseComponent {
     store = {
         list: [],
         total: 1,
@@ -91,10 +91,10 @@ export default class FansTemplate extends BaseComponent {
             }
         ];
         this.addColumns = [
-            { key: "id", label: "主播id" },
-            { key: "step_times", label: "多少秒内加粉" },
-            { key: "step_num", label: "单次加粉数" },
-            { key: "max", label: "本次任务总粉丝" }
+            { key: "id", label: "音频id" },
+            { key: "step_times", label: "多少秒内播放" },
+            { key: "step_num", label: "单次播放数" },
+            { key: "max", label: "本次任务总播放量" }
         ];
     }
     renderText(text, record, column) {
@@ -123,7 +123,7 @@ export default class FansTemplate extends BaseComponent {
                 act: "config",
                 op: "save",
                 mod: "admin",
-                tpl_anchor_fans: JSON.stringify(list)
+                tpl_audio_play: JSON.stringify(list)
             },
             res => {
                 this.store.params = {};
@@ -180,7 +180,7 @@ export default class FansTemplate extends BaseComponent {
                     act: "queue",
                     op: "add",
                     mod: "admin",
-                    task: "fans",
+                    task: "audio_play",
                     ...params
                 },
                 res => {
@@ -199,13 +199,12 @@ export default class FansTemplate extends BaseComponent {
                 );
                 Object.assign(itemData, params);
             }
-            console.log(list);
             Base.POST(
                 {
                     act: "config",
                     op: "save",
                     mod: "admin",
-                    tpl_anchor_fans: JSON.stringify(list)
+                    tpl_audio_play: JSON.stringify(list)
                 },
                 res => {
                     this.store.params = {};
@@ -226,7 +225,7 @@ export default class FansTemplate extends BaseComponent {
     @action.bound
     requestData() {
         Base.GET({ act: "admin", op: "config" }, res => {
-            const list = res.data.tpl_anchor_fans || [];
+            const list = res.data.tpl_audio_play || [];
             this.store.list = list;
             this.cacheData = list.map(item => ({ ...item }));
         });
@@ -238,7 +237,7 @@ export default class FansTemplate extends BaseComponent {
         let { list, total, isShowModal, params } = this.store;
         const showList = list.slice();
         return (
-            <Spin ref="spin" wrapperClassName="FansTemplate" spinning={false}>
+            <Spin ref="spin" wrapperClassName="PlayTemplate" spinning={false}>
                 <div className="pb10">
                     <Button onClick={this.onAdd}>新增+</Button>
                 </div>
