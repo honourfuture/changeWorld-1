@@ -80,7 +80,19 @@ import BatchAudio from './BatchAudio';
 import FansTemplate from './FansTemplate';
 import PlayTemplate from './PlayTemplate';
 import CollectTemplate from './CollectTemplate';
+import RobotCommentManager from './RobotCommentManager';
+import LiveTemplate from './LiveTemplate';
 export const panelsList = [
+    {
+        path:'/robot/LiveTemplate',
+        component:LiveTemplate,
+        title:'直播任务模板',
+    },
+    {
+        path:'/robot/RobotCommentManager',
+        component:RobotCommentManager,
+        title:'公共评论库',
+    },
     {
         path:'/robot/CollectTemplate',
         component:CollectTemplate,
