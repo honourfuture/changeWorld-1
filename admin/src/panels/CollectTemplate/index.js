@@ -12,7 +12,7 @@ import {
     Modal,
     Form
 } from "antd";
-import "./PlayTemplate.less";
+import "./CollectTemplate.less";
 import { remove } from "lodash";
 const FormItem = Form.Item;
 const formItemLayout = {
@@ -25,7 +25,7 @@ const formItemLayout = {
         sm: { span: 16 }
     }
 };
-export default class PlayTemplate extends BaseComponent {
+export default class CollectTemplate extends BaseComponent {
     store = {
         list: [],
         total: 1,
@@ -36,19 +36,19 @@ export default class PlayTemplate extends BaseComponent {
         super(props);
         this.columns = [
             {
-                title: "多少秒内播放",
+                title: "多少秒内收藏",
                 dataIndex: "step_times",
                 render: (text, record) =>
                     this.renderText(text, record, "step_times")
             },
             {
-                title: "单次播放数",
+                title: "单次收藏数",
                 dataIndex: "step_num",
                 render: (text, record) =>
                     this.renderText(text, record, "step_num")
             },
             {
-                title: "本次任务总播放量",
+                title: "本次任务总收藏量",
                 dataIndex: "max",
                 render: (text, record) => this.renderText(text, record, "max")
             },
@@ -91,10 +91,10 @@ export default class PlayTemplate extends BaseComponent {
             }
         ];
         this.addColumns = [
-            { key: "id", label: "音频id" },
-            { key: "step_times", label: "多少秒内播放" },
-            { key: "step_num", label: "单次播放数" },
-            { key: "max", label: "本次任务总播放量" }
+            { key: "id", label: "专辑id" },
+            { key: "step_times", label: "多少秒内收藏" },
+            { key: "step_num", label: "单次收藏数" },
+            { key: "max", label: "本次任务总收藏量" }
         ];
     }
     renderText(text, record, column) {
@@ -123,7 +123,7 @@ export default class PlayTemplate extends BaseComponent {
                 act: "config",
                 op: "save",
                 mod: "admin",
-                tpl_audio_play: JSON.stringify(list)
+                tpl_album_favorite: JSON.stringify(list)
             },
             res => {
                 this.store.params = {};
@@ -180,7 +180,7 @@ export default class PlayTemplate extends BaseComponent {
                     act: "queue",
                     op: "add",
                     mod: "admin",
-                    task: "audio_play",
+                    task: "album_collection",
                     ...params
                 },
                 res => {
@@ -204,7 +204,7 @@ export default class PlayTemplate extends BaseComponent {
                     act: "config",
                     op: "save",
                     mod: "admin",
-                    tpl_audio_play: JSON.stringify(list)
+                    tpl_album_favorite: JSON.stringify(list)
                 },
                 res => {
                     this.store.params = {};
@@ -225,7 +225,7 @@ export default class PlayTemplate extends BaseComponent {
     @action.bound
     requestData() {
         Base.GET({ act: "admin", op: "config" }, res => {
-            const list = res.data.tpl_audio_play || [];
+            const list = res.data.tpl_album_favorite || [];
             this.store.list = list;
             this.cacheData = list.map(item => ({ ...item }));
         });
@@ -237,7 +237,11 @@ export default class PlayTemplate extends BaseComponent {
         let { list, total, isShowModal, params } = this.store;
         const showList = list.slice();
         return (
-            <Spin ref="spin" wrapperClassName="PlayTemplate" spinning={false}>
+            <Spin
+                ref="spin"
+                wrapperClassName="CollectTemplate"
+                spinning={false}
+            >
                 <div className="pb10">
                     <Button onClick={this.onAdd}>新增+</Button>
                 </div>

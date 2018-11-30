@@ -79,7 +79,13 @@ import AudioComment from "./AudioComment";
 import BatchAudio from './BatchAudio';
 import FansTemplate from './FansTemplate';
 import PlayTemplate from './PlayTemplate';
+import CollectTemplate from './CollectTemplate';
 export const panelsList = [
+    {
+        path:'/robot/CollectTemplate',
+        component:CollectTemplate,
+        title:'收藏模板',
+    },
     {
         path:'/robot/PlayTemplate',
         component:PlayTemplate,
