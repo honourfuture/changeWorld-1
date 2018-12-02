@@ -122,8 +122,9 @@ class Album extends API_Controller {
 			$order_by = array('sort' => 'desc', 'id' => 'desc');
 			$info['audio'] = $this->Room_audio_model->order_by($order_by)->get_many_by(['album_id' => $id, 'enable' => 1]);
 			if($info['audio']){
+				$this->load->model('Album_audio_comment_model');
 				foreach($info['audio'] as $key=>$item){
-					$info['audio'][$key]['comment'] = 0;
+					$info['audio'][$key]['comment'] = $this->Album_audio_comment_model->count_by(['audio_id' => $item['id']]);
 					$info['audio'][$key]['like'] = $this->Users_collection_model->check_favorite($this->user_id, $item['id'], 30);
 				}
 			}
