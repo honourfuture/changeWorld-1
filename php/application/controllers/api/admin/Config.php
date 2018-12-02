@@ -166,21 +166,25 @@ class Config extends API_Controller {
 
 		$params = elements(
 			array_keys($field),
-			$this->input->post(),
-			UPDATE_VALID
+			$this->input->post()
 		);
 		$this->check_params('add', $params);
 
-		$a_name = array_keys($params);
-		$a_name && $this->Config_model->delete_by('name', $a_name);
+		/*$a_name = array_keys($params);
+		$a_name && $this->Config_model->delete_by('name', $a_name);*/
+		$a_name = [];
 		$data = array();
 		if($params){
 			foreach($params as $key=>$val){
 				// list($value, $remark) = explode('###', $val);
-				$data[] = array('name' => $key, 'value' => $val, 'remark' => $field[$key]);
+				if(!is_null($val)){
+					$a_name[] = $key;
+					$data[] = array('name' => $key, 'value' => $val, 'remark' => $field[$key]);
+				}
 			}
 		}
 
+		$a_name && $this->Config_model->delete_by('name', $a_name);
 		$flag = true;
 		if($data && $flag = $this->Config_model->insert_many($data)){
 			$id = $flag;
