@@ -18,4 +18,12 @@ class Robot_comment_model extends MY_Model
     {
         parent::__construct();
     }
+
+    public function topic()
+    {
+    	return [
+    		'直播评论',
+    		'音频评论'
+    	];
+    }
 }

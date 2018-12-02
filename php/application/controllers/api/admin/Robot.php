@@ -511,6 +511,7 @@ class Robot extends API_Controller {
 	 * @apiParam {Number} admin_id 管理员唯一ID
 	 * @apiParam {String} account 登录账号
 	 * @apiParam {String} sign 校验签名
+	 * @apiParam {String} topic 评论主题
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -535,11 +536,14 @@ class Robot extends API_Controller {
 	{
 		$ret = array('count' => 0, 'list' => array());
 
+		$topic = (int)$this->input->get_post('topic');
+		$where = ['topic' => $topic];
+
 		$this->load->model('Robot_comment_model');
-		$ret['count'] = $this->Robot_comment_model->count_all();
+		$ret['count'] = $this->Robot_comment_model->count_by($where);
 		if($ret['count']){
 			$order_by = array('id' => 'desc');
-			$ret['list'] = $this->Robot_comment_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_all();
+			$ret['list'] = $this->Robot_comment_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 		}
 
 		$this->ajaxReturn($ret);
@@ -584,6 +588,7 @@ class Robot extends API_Controller {
 			$file = FCPATH.$filename;
 			if(file_exists($file)){
 				if($a_line = file($file)){
+					$topic = (int)$this->input->get_post('topic');
 					$rows = [];
 					$date = date("Y-m-d H:i:s");
 					foreach($a_line as $comment){
@@ -592,7 +597,8 @@ class Robot extends API_Controller {
 							$rows[] = [
 								'created_at' => $date,
 								'updated_at' => $date,
-								'comment' => $comment
+								'comment' => $comment,
+								'topic' => $topic
 							];
 						}
 					}
