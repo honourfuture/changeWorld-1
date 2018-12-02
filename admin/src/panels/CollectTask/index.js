@@ -30,7 +30,9 @@ export default class CollectTask extends BaseComponent {
         list: [],
         total: 1,
         isShowModal: false,
-        params: {}
+        params: {},
+        isShowTem: false,
+        temParams: {}
     };
     constructor(props) {
         super(props);
@@ -174,6 +176,28 @@ export default class CollectTask extends BaseComponent {
             { key: "step_num", label: "单次收藏数" },
             { key: "max", label: "本次任务总收藏量" }
         ];
+        this.temColumns = [
+            { key: "step_times", label: "多少秒内收藏" },
+            { key: "step_num", label: "单次收藏数" },
+            { key: "max", label: "本次任务总收藏量" },
+            {
+                key: "enable",
+                label: "是否启用",
+                render: value => {
+                    return (
+                        <Switch
+                            checked={parseInt(value, 10) === 1}
+                            onChange={value =>
+                                this.onTemChange(
+                                    { target: { value: value ? 1 : 0 } },
+                                    "enable"
+                                )
+                            }
+                        />
+                    );
+                }
+            }
+        ];
     }
     renderText(text, record, column) {
         return <div>{text}</div>;
@@ -291,11 +315,57 @@ export default class CollectTask extends BaseComponent {
     componentDidMount() {
         this.requestData();
     }
+    @action.bound
     onSetTemplate() {
-        Base.push("CollectTemplate");
+        Base.GET({ act: "admin", op: "config" }, res => {
+            const list = res.data.tpl_album_favorite || [];
+            this.store.temParams = list[0] || {};
+            this.store.isShowTem = true;
+        });
+    }
+    @action.bound
+    onTemChange(e, type) {
+        this.store.temParams = {
+            ...this.store.temParams,
+            [type]: e.target.value
+        };
+    }
+    @action.bound
+    onTemSubmit() {
+        const params = { ...this.store.temParams, id: new Date().getTime() };
+        let isTips = false;
+        this.temColumns.forEach(item => {
+            if (!params.hasOwnProperty(item.key)) {
+                isTips = true;
+            }
+        });
+        if (isTips) {
+            return message.error("请输入完整的任务参数");
+        }
+        Base.POST(
+            {
+                act: "config",
+                op: "save",
+                mod: "admin",
+                tpl_album_favorite: JSON.stringify([params])
+            },
+            res => {
+                message.success("模板编辑成功");
+                this.store.temParams = {};
+                this.store.isShowTem = false;
+            },
+            this
+        );
     }
     render() {
-        let { list, total, isShowModal, params } = this.store;
+        let {
+            list,
+            total,
+            isShowModal,
+            params,
+            isShowTem,
+            temParams
+        } = this.store;
         const showList = list.slice();
         return (
             <Spin ref="spin" wrapperClassName="CollectTask" spinning={false}>
@@ -345,6 +415,40 @@ export default class CollectTask extends BaseComponent {
                                         onChange={e => this.onAddChange(e, key)}
                                         placeholder={`请输入${label}`}
                                     />
+                                </FormItem>
+                            );
+                        })}
+                    </Form>
+                </Modal>
+                <Modal
+                    visible={isShowTem}
+                    title="模板任务"
+                    closable={false}
+                    okText="确定"
+                    cancelText="取消"
+                    onOk={this.onTemSubmit}
+                    onCancel={action(() => (this.store.isShowTem = false))}
+                >
+                    <Form>
+                        {this.temColumns.map((item, index) => {
+                            const { key, label, render } = item;
+                            return (
+                                <FormItem
+                                    key={key}
+                                    {...formItemLayout}
+                                    label={label}
+                                >
+                                    {render ? (
+                                        render(temParams[key])
+                                    ) : (
+                                        <Input
+                                            value={temParams[key]}
+                                            onChange={e =>
+                                                this.onTemChange(e, key)
+                                            }
+                                            placeholder={`请输入${label}`}
+                                        />
+                                    )}
                                 </FormItem>
                             );
                         })}

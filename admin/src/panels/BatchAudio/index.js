@@ -29,6 +29,15 @@ class CardItem extends BaseComponent {
         super(props);
         this.store = { cover_image: this.props.data.cover_image };
         this.addInfo = [
+            {
+                key: "video_url",
+                label: "音频文件",
+                render: (value, data) => {
+                    return (
+                        <div style={{ width: 150 }}>{`${data.title}.mp3`}</div>
+                    );
+                }
+            },
             { key: "title", label: "标题" },
             { key: "duration", label: "播放时长(秒)" },
             { key: "play_times", label: "播放次数" },
@@ -39,21 +48,7 @@ class CardItem extends BaseComponent {
             },
             { key: "price", label: "门票价格" },
             { key: "city_partner_rate", label: "城市分销比例(%)" },
-            { key: "two_level_rate", label: "二级分销比例(%)" },
-            {
-                key: "video_url",
-                label: "音频文件",
-                render: value => {
-                    let fileName = "";
-                    if (value) {
-                        const arr = value.split("/");
-                        fileName = arr[arr.length - 1];
-                    }
-                    return (
-                        <div style={{ width: 150 }}>{fileName.slice(20)}</div>
-                    );
-                }
-            }
+            { key: "two_level_rate", label: "二级分销比例(%)" }
         ];
     }
     @action.bound
@@ -116,7 +111,7 @@ class CardItem extends BaseComponent {
             return (
                 <FormItem key={index} {...formItemLayout} label={`${label}：`}>
                     {render ? (
-                        render(data[key])
+                        render(data[key], data)
                     ) : (
                         <Input
                             placeholder={`请输入${label}`}

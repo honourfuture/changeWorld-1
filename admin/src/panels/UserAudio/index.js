@@ -128,6 +128,11 @@ export default class UserAudio extends BaseComponent {
             }
         ];
         this.addInfo = [
+            {
+                key: "video_url",
+                label: "音频文件",
+                render: value => this.onAddImage("video_url", value)
+            },
             { key: "title", label: "标题" },
             { key: "duration", label: "播放时长(秒)" },
             { key: "play_times", label: "播放次数" },
@@ -138,12 +143,7 @@ export default class UserAudio extends BaseComponent {
             },
             { key: "price", label: "门票价格" },
             { key: "city_partner_rate", label: "城市分销比例(%)" },
-            { key: "two_level_rate", label: "二级分销比例(%)" },
-            {
-                key: "video_url",
-                label: "音频文件",
-                render: value => this.onAddImage("video_url", value)
-            }
+            { key: "two_level_rate", label: "二级分销比例(%)" }
         ];
     }
     @action.bound
@@ -175,8 +175,14 @@ export default class UserAudio extends BaseComponent {
         if (info.file.status === "done" || info.file.status === "removed") {
             const { addData } = this.store;
             const { fileList } = info;
-            addData[key] =
-                fileList.length > 0 ? fileList[0].response.data.file_url : "";
+            const data = fileList.length > 0 ? fileList[0].response.data : {};
+            addData[key] = data.file_url || "";
+            if (key === "video_url") {
+                addData.title = data.name || "";
+                addData.duration = data.playtime_seconds
+                    ? Base.getNumFormat(data.playtime_seconds, 0)
+                    : "";
+            }
         }
     }
     onAddImage(key, value) {
@@ -189,7 +195,10 @@ export default class UserAudio extends BaseComponent {
             <div>
                 <Upload
                     name="field"
-                    data={{ field: "field" }}
+                    data={{
+                        field: "field",
+                        audio: key === "video_url" ? 1 : 0
+                    }}
                     action={Global.UPLOAD_URL}
                     showUploadList={false}
                     onChange={e => this.onUploadChange(e, key)}

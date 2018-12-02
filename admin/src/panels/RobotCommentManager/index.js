@@ -45,6 +45,7 @@ export default class RobotCommentManager extends BaseComponent {
                 act: "robot",
                 op: "comment_list",
                 mod: "admin",
+                topic: 1,
                 title: this.searchStr || "",
                 cur_page: this.current || 1,
                 per_page: Global.PAGE_SIZE
@@ -67,6 +68,7 @@ export default class RobotCommentManager extends BaseComponent {
             Base.GET(
                 {
                     act: "robot",
+                    topic: 1,
                     op: "comment_import",
                     mod: "admin",
                     filename: info.file.response.data.file_url

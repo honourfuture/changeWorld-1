@@ -1,6 +1,6 @@
 /*
- * @Author: daihanqiao@126.com 
- * @Date: 2018-01-01 15:40:02 
+ * @Author: daihanqiao@126.com
+ * @Date: 2018-01-01 15:40:02
  * @Last Modified by: daihanqiao@126.com
  * @Last Modified time: 2018-01-01 15:40:43
  * 面板组件，脚本生成面板文件时，自动修改，无需手动维护
@@ -76,42 +76,48 @@ import ActivityLike from "./ActivityLike";
 import ActivityPlay from "./ActivityPlay";
 import IMPanel from "./IMPanel";
 import AudioComment from "./AudioComment";
-import BatchAudio from './BatchAudio';
-import FansTemplate from './FansTemplate';
-import PlayTemplate from './PlayTemplate';
-import CollectTemplate from './CollectTemplate';
-import RobotCommentManager from './RobotCommentManager';
-import LiveTemplate from './LiveTemplate';
+import BatchAudio from "./BatchAudio";
+import FansTemplate from "./FansTemplate";
+import PlayTemplate from "./PlayTemplate";
+import CollectTemplate from "./CollectTemplate";
+import RobotCommentManager from "./RobotCommentManager";
+import LiveTemplate from "./LiveTemplate";
+import RobotLiveCommentManager from "./RobotLiveCommentManager";
 export const panelsList = [
     {
-        path:'/robot/LiveTemplate',
-        component:LiveTemplate,
-        title:'直播任务模板',
+        path: "/robot/RobotLiveCommentManager",
+        component: RobotLiveCommentManager,
+        title: "直播评论库"
     },
     {
-        path:'/robot/RobotCommentManager',
-        component:RobotCommentManager,
-        title:'公共评论库',
+        path: "/robot/LiveTemplate",
+        component: LiveTemplate,
+        title: "直播任务模板"
     },
     {
-        path:'/robot/CollectTemplate',
-        component:CollectTemplate,
-        title:'收藏模板',
+        path: "/robot/RobotCommentManager",
+        component: RobotCommentManager,
+        title: "音频评论库"
     },
     {
-        path:'/robot/PlayTemplate',
-        component:PlayTemplate,
-        title:'音频播放量模板',
+        path: "/robot/CollectTemplate",
+        component: CollectTemplate,
+        title: "收藏模板"
     },
     {
-        path:'/robot/FansTemplate',
-        component:FansTemplate,
-        title:'粉丝模板',
+        path: "/robot/PlayTemplate",
+        component: PlayTemplate,
+        title: "音频播放量模板"
     },
     {
-        path:'/live/BatchAudio',
-        component:BatchAudio,
-        title:'音频上传',
+        path: "/robot/FansTemplate",
+        component: FansTemplate,
+        title: "粉丝模板"
+    },
+    {
+        path: "/live/BatchAudio",
+        component: BatchAudio,
+        title: "音频上传"
     },
     {
         path: "/robot/AudioComment",
