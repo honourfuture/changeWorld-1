@@ -118,11 +118,13 @@ class Album extends API_Controller {
 			$where = array('t_id' => $id, 'topic' => 2, 'sub_topic' => 50);
 			$info['favorite'] = $this->Users_collection_model->count_by($where);
 			//音频
-			$this->db->select('id,cover_image,price,title,created_at,duration,video_url,play_times');
-			$info['audio'] = $this->Room_audio_model->get_many_by(['album_id' => $id, 'enable' => 1]);
+			$this->db->select('id,cover_image,price,title,created_at,duration,video_url,play_times,sort');
+			$order_by = array('sort' => 'desc', 'id' => 'desc');
+			$info['audio'] = $this->Room_audio_model->order_by($order_by)->get_many_by(['album_id' => $id, 'enable' => 1]);
 			if($info['audio']){
+				$this->load->model('Album_audio_comment_model');
 				foreach($info['audio'] as $key=>$item){
-					$info['audio'][$key]['comment'] = 0;
+					$info['audio'][$key]['comment'] = $this->Album_audio_comment_model->count_by(['audio_id' => $item['id']]);
 					$info['audio'][$key]['like'] = $this->Users_collection_model->check_favorite($this->user_id, $item['id'], 30);
 				}
 			}

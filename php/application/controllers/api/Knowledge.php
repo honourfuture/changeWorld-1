@@ -294,7 +294,7 @@ class Knowledge extends API_Controller
 
             if($ret['count']){
                 $this->db->limit($this->per_page, $this->offset);
-                $this->db->order_by('sort desc, play_times desc, id desc');
+                $this->db->order_by('album.sort desc, play_times desc, id desc');
                 $list = $this->db->get()->result_array();
                 if($list){
                     $a_uid = [];
