@@ -177,12 +177,16 @@ export default class UserAudio extends BaseComponent {
     @action.bound
     onUploadChange(info, key) {
         console.log(info);
+        const { addData } = this.store;
+        if (key === "video_url") {
+            addData.loading = true;
+        }
         if (info.file.status === "done" || info.file.status === "removed") {
-            const { addData } = this.store;
             const { fileList } = info;
             const data = fileList.length > 0 ? fileList[0].response.data : {};
             addData[key] = data.file_url || "";
             if (key === "video_url") {
+                addData.loading = false;
                 addData.title = data.name || "";
                 addData.duration = data.playtime_seconds
                     ? Base.getNumFormat(data.playtime_seconds, 0)
@@ -227,7 +231,14 @@ export default class UserAudio extends BaseComponent {
                         </div>
                     ) : (
                         <Button>
-                            <Icon type="upload" /> 点击上传
+                            <Icon
+                                type={
+                                    this.store.addData.loading
+                                        ? "loading"
+                                        : "upload"
+                                }
+                            />{" "}
+                            点击上传
                         </Button>
                     )}
                 </Upload>
@@ -333,16 +344,17 @@ export default class UserAudio extends BaseComponent {
         this.store.addData = {
             album_id: Base.getPageParams("album_id"),
             duration: "0",
-            cover_image: "",
+            cover_image: Base.getPageParams("url"),
             title: "",
             price: "0",
             city_partner_rate: "0",
             two_level_rate: "0",
             video_url: "",
             // room_id: 0,
-            play_times: "",
+            play_times: "0",
             deleted: "0",
-            enable: "1"
+            enable: "1",
+            loading: false
         };
     }
     @action.bound
