@@ -132,7 +132,8 @@ export default class AlbumManager extends BaseComponent {
                                     className="ml10"
                                     onClick={() => {
                                         Base.push("UserAudio", {
-                                            album_id: record.id
+                                            album_id: record.id,
+                                            url: record.cover_image
                                         });
                                     }}
                                 >

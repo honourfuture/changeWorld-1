@@ -161,7 +161,12 @@ export default class UserAudio extends BaseComponent {
                 }
             }
             if (isAll) {
-                Global.audioList = fileList.map(item => item.response.data);
+                Global.audioList = fileList.map(item => {
+                    return {
+                        ...item.response.data,
+                        cover_image: Base.getPageParams("url")
+                    };
+                });
                 this.store.batchLoading = false;
                 Base.push("BatchAudio", {
                     album_id: Base.getPageParams("album_id")

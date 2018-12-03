@@ -139,17 +139,18 @@ export default class BatchAudio extends BaseComponent {
             return {
                 album_id: Base.getPageParams("album_id"),
                 duration: Base.getNumFormat(item.playtime_seconds, 0),
-                cover_image: "",
+                cover_image: item.cover_image,
                 title: item.name,
                 price: "0",
                 city_partner_rate: "0",
                 two_level_rate: "0",
                 video_url: item.file_url,
-                play_times: "10000",
+                play_times: "0",
                 deleted: "0",
                 enable: "1"
             };
         });
+        console.log(this.store.list);
         Global.audioList = [];
     }
     @action.bound
