@@ -841,7 +841,7 @@ class Queue extends MY_Controller
                         $user = $this->Users_model->order_by('', 'RANDOM')->limit(1)->get_by(['robot' => 1]);
                         $insert = [
                             'audio_id' => $row['params']['id'],
-                            'comment' => $a_line[$cache+$i],
+                            'comment' => trim($a_line[$cache+$i], ','),
                             'pid' => 0,
                             'album_id' => $row['params']['album_id'],
                             'user_id' => $user['id']
