@@ -200,6 +200,23 @@ class Live extends API_Controller {
 
 	        $this->Room_model->update($id, $update);
 
+	        //创建机器人任务
+			$this->load->model('Config_model');
+			$siteConfig = $this->Config_model->siteConfig();
+			if(isset($siteConfig['tpl_live_fans'])){
+				$tpl = $siteConfig['tpl_live_fans'][0];
+				$tpl['id'] = $id;
+
+				$queue = [
+		            'main_type' => 'live_join',
+		            'sub_type'  => $tpl['id'],
+		            'params'    => json_encode($tpl),
+		            'status' => 0
+		        ];
+		        $this->load->model('Queue_model');
+		        $this->Queue_model->insert($queue);
+			}
+
 	        $update['room_id'] = $id;
 	        $update['play_url'] = $play_url;
 	        // $update['token'] = $token;
