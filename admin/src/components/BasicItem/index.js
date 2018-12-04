@@ -153,7 +153,7 @@ class BasicItem extends BaseComponent {
             { act: "config", op: "index", mod: "admin" },
             res => {
                 this.store.list = res.data;
-                const contentBlock = htmlToDraft(res.data.goods_explain);
+                const contentBlock = htmlToDraft(res.data.goods_explain || "");
                 if (contentBlock) {
                     const contentState = ContentState.createFromBlockArray(
                         contentBlock.contentBlocks
