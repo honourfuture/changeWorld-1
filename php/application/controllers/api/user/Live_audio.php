@@ -447,8 +447,22 @@ class Live_audio extends API_Controller {
             $this->load->model('Config_model');
             $siteConfig = $this->Config_model->siteConfig();
             if(isset($siteConfig['tpl_audio_play'])){
-                $tpl = $siteConfig['tpl_audio_play'][0];
+            	$tpl = $siteConfig['tpl_audio_play'][0];
                 $tpl['id'] = $id;
+            	//音频评论
+				$where = ['topic' => 1];
+				$this->load->model('Robot_comment_model');
+				$max = mt_rand(1000, 10000);
+				$this->db->select('group_concat(comment, "\r\n") as text');
+				$row = $this->Robot_comment_model->order_by(10000, 'RANDOM')->limit($max, 0)->get_by($where);
+				if($row && $row['text']){
+					$filename = 'queue_'.mt_rand(10, 99).md5($id).'.txt';
+					file_put_contents(FCPATH.'uploads/'.$filename, $row['text']);
+
+					$tpl['album_id'] = $insert['album_id'];
+					$tpl['filename'] = 'uploads/'.$filename;
+					$tpl['origin_filename'] = $filename;
+				}
 
                 $queue = [
                     'main_type' => 'audio_play',
@@ -523,6 +537,21 @@ class Live_audio extends API_Controller {
 		            $tpl = $siteConfig['tpl_audio_play'][0];
 					foreach($ids as $id){
 		                $tpl['id'] = $id;
+
+		                //音频评论
+						$where = ['topic' => 1];
+						$this->load->model('Robot_comment_model');
+						$max = mt_rand(1000, 10000);
+						$this->db->select('group_concat(comment, "\r\n") as text');
+						$row = $this->Robot_comment_model->order_by(10000, 'RANDOM')->limit($max, 0)->get_by($where);
+						if($row && $row['text']){
+							$filename = 'queue_'.mt_rand(10, 99).md5($id).'.txt';
+							file_put_contents(FCPATH.'uploads/'.$filename, $row['text']);
+
+							$tpl['album_id'] = $a_audio[0]['album_id'];
+							$tpl['filename'] = 'uploads/'.$filename;
+							$tpl['origin_filename'] = $filename;
+						}
 
 		                $queue = [
 		                    'main_type' => 'audio_play',
