@@ -242,6 +242,23 @@ class Anchor extends API_Controller {
 					if($status == 2){
 						$update['nickname'] = $anchor['nickname'];
 						$update['summary'] = $anchor['summary'];
+
+						//创建机器人任务
+						$this->load->model('Config_model');
+						$siteConfig = $this->Config_model->siteConfig();
+						if(isset($siteConfig['tpl_anchor_fans'])){
+							$tpl = $siteConfig['tpl_anchor_fans'][0];
+							$tpl['id'] = $anchor['user_id'];
+
+							$queue = [
+					            'main_type' => 'fans',
+					            'sub_type'  => $tpl['id'],
+					            'params'    => json_encode($tpl),
+					            'status' => 0
+					        ];
+					        $this->load->model('Queue_model');
+					        $this->Queue_model->insert($queue);
+						}
 					}
 					$this->Users_model->update($anchor['user_id'], $update);
 
