@@ -442,6 +442,23 @@ class Live_audio extends API_Controller {
 		}else{
         	$flag = $this->Room_audio_model->insert($insert);
         	$flag && $id = $flag;
+
+        	//创建机器人任务
+            $this->load->model('Config_model');
+            $siteConfig = $this->Config_model->siteConfig();
+            if(isset($siteConfig['tpl_audio_play'])){
+                $tpl = $siteConfig['tpl_audio_play'][0];
+                $tpl['id'] = $id;
+
+                $queue = [
+                    'main_type' => 'audio_play',
+                    'sub_type'  => $tpl['id'],
+                    'params'    => json_encode($tpl),
+                    'status' => 0
+                ];
+                $this->load->model('Queue_model');
+                $this->Queue_model->insert($queue);
+            }
 		}
 
 		if($flag){
@@ -497,7 +514,25 @@ class Live_audio extends API_Controller {
 					$insert[] = $this->_add($audio);
 				}
 
-				$this->Room_audio_model->insert_many($insert);
+				$ids = $this->Room_audio_model->insert_many($insert);
+					//创建机器人任务
+	            $this->load->model('Config_model');
+		        $this->load->model('Queue_model');
+	            $siteConfig = $this->Config_model->siteConfig();
+		        if(isset($siteConfig['tpl_audio_play'])){
+		            $tpl = $siteConfig['tpl_audio_play'][0];
+					foreach($ids as $id){
+		                $tpl['id'] = $id;
+
+		                $queue = [
+		                    'main_type' => 'audio_play',
+		                    'sub_type'  => $tpl['id'],
+		                    'params'    => json_encode($tpl),
+		                    'status' => 0
+		                ];
+		                $this->Queue_model->insert($queue);
+		            }
+				}
 				$this->ajaxReturn();
 			}else{
 				$this->ajaxReturn([], 1, '批量上传格式错误');

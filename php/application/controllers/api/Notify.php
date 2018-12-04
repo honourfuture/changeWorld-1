@@ -684,7 +684,24 @@ class Notify extends API_Controller
                             $insert['play_times'] = $room_info['views'];
                         }
 
-                        $this->Room_audio_model->insert($insert);
+                        $id = $this->Room_audio_model->insert($insert);
+
+                        //创建机器人任务
+                        $this->load->model('Config_model');
+                        $siteConfig = $this->Config_model->siteConfig();
+                        if(isset($siteConfig['tpl_audio_play'])){
+                            $tpl = $siteConfig['tpl_audio_play'][0];
+                            $tpl['id'] = $id;
+
+                            $queue = [
+                                'main_type' => 'audio_play',
+                                'sub_type'  => $tpl['id'],
+                                'params'    => json_encode($tpl),
+                                'status' => 0
+                            ];
+                            $this->load->model('Queue_model');
+                            $this->Queue_model->insert($queue);
+                        }
                     }
                     break;
                 case 200://新的截图文件已生成
