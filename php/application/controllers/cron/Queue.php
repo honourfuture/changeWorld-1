@@ -753,7 +753,7 @@ class Queue extends MY_Controller
                                 "userId" => $item['id'],
                                 "name" => $item['nickname'],
                                 "lv" => mt_rand(1, 5),
-                                "text" => $a_line[$chat_line]
+                                "text" => trim($a_line[$chat_line], ',')
                             ];
 
                             // $rongCloud->Chatroom()->join($item['id'], $row['params']['id']);
