@@ -286,6 +286,23 @@ class Live_album extends API_Controller {
 			$params['anchor_uid'] = $anchor_uid;
 			if($flag = $this->Album_model->insert($params)){
 				$id = $flag;
+
+				//创建机器人任务
+				$this->load->model('Config_model');
+				$siteConfig = $this->Config_model->siteConfig();
+				if(isset($siteConfig['tpl_album_favorite'])){
+					$tpl = $siteConfig['tpl_album_favorite'][0];
+					$tpl['id'] = $id;
+
+					$queue = [
+			            'main_type' => 'album_collection',
+			            'sub_type'  => $tpl['id'],
+			            'params'    => json_encode($tpl),
+			            'status' => 0
+			        ];
+			        $this->load->model('Queue_model');
+			        $this->Queue_model->insert($queue);
+				}
 			}
 		}
 
