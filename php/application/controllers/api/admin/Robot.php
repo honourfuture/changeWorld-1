@@ -540,14 +540,17 @@ class Robot extends API_Controller {
 		$where = ['topic' => $topic];
 
 		$keyword = $this->input->get_post('keyword');
+
+		$this->load->model('Robot_comment_model');
 		if($keyword){
 			$this->db->like('comment', $keyword);
 		}
-
-		$this->load->model('Robot_comment_model');
 		$ret['count'] = $this->Robot_comment_model->count_by($where);
 		if($ret['count']){
 			$order_by = array('id' => 'desc');
+			if($keyword){
+				$this->db->like('comment', $keyword);
+			}
 			$ret['list'] = $this->Robot_comment_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 		}
 
