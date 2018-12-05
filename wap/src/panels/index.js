@@ -38,7 +38,13 @@ import ActivifyShare from "./ActivifyShare";
 import ArticleDetail from './ArticleDetail';
 import H5Audio from './H5Audio';
 import H5Album from './H5Album';
+import H5Live from './H5Live';
 export const panelsList = [
+    {
+        path:'/H5Live',
+        component:H5Live,
+        title:'直播',
+    },
     {
         path:'/H5Album',
         component:H5Album,

@@ -1,14 +1,39 @@
 import React from "react";
 import { action } from "mobx";
 import { BaseComponent, Base, Global } from "../../common";
-import { Table, Button, Spin, Upload, Icon } from "antd";
+import {
+    Table,
+    Button,
+    Spin,
+    Upload,
+    Icon,
+    Switch,
+    message,
+    Form,
+    Input,
+    Modal
+} from "antd";
 import "./RobotCommentManager.less";
-
+const FormItem = Form.Item;
+const formItemLayout = {
+    labelCol: {
+        xs: { span: 24 },
+        sm: { span: 8 }
+    },
+    wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 16 }
+    }
+};
 export default class RobotCommentManager extends BaseComponent {
     store = {
         list: [],
         positionList: [],
-        total: 1
+        total: 1,
+        isShowModal: false,
+        params: {},
+        isShowTem: false,
+        temParams: {}
     };
     constructor(props) {
         super(props);
@@ -23,6 +48,28 @@ export default class RobotCommentManager extends BaseComponent {
                 dataIndex: "comment",
                 render: (text, record) =>
                     this.renderText(text, record, "comment")
+            }
+        ];
+        this.temColumns = [
+            { key: "step_times", label: "多少秒内评论" },
+            { key: "step_num", label: "单次评论数" },
+            { key: "max", label: "本次任务总评论数" },
+            {
+                key: "enable",
+                label: "是否启用",
+                render: value => {
+                    return (
+                        <Switch
+                            checked={parseInt(value, 10) === 1}
+                            onChange={value =>
+                                this.onTemChange(
+                                    { target: { value: value ? 1 : 0 } },
+                                    "enable"
+                                )
+                            }
+                        />
+                    );
+                }
             }
         ];
     }
@@ -85,8 +132,57 @@ export default class RobotCommentManager extends BaseComponent {
     componentDidMount() {
         this.requestData();
     }
+    @action.bound
+    onSetTemplate() {
+        Base.GET({ act: "admin", op: "config" }, res => {
+            const list = res.data.tpl_audio_comment || [];
+            this.store.temParams = list[0] || { enable: "0" };
+            this.store.isShowTem = true;
+        });
+    }
+    @action.bound
+    onTemChange(e, type) {
+        this.store.temParams = {
+            ...this.store.temParams,
+            [type]: e.target.value
+        };
+    }
+    @action.bound
+    onTemSubmit() {
+        const params = { ...this.store.temParams, id: new Date().getTime() };
+        let isTips = false;
+        this.temColumns.forEach(item => {
+            if (!params.hasOwnProperty(item.key)) {
+                isTips = true;
+            }
+        });
+        if (isTips) {
+            return message.error("请输入完整的任务参数");
+        }
+        Base.POST(
+            {
+                act: "config",
+                op: "save",
+                mod: "admin",
+                tpl_audio_comment: JSON.stringify([params])
+            },
+            res => {
+                message.success("模板编辑成功");
+                this.store.temParams = {};
+                this.store.isShowTem = false;
+            },
+            this
+        );
+    }
     render() {
-        let { list, total } = this.store;
+        let {
+            list,
+            total,
+            isShowModal,
+            params,
+            isShowTem,
+            temParams
+        } = this.store;
         const showList = list.filter(item => {
             return parseInt(item.deleted, 10) === 0;
         });
@@ -114,6 +210,12 @@ export default class RobotCommentManager extends BaseComponent {
                             <Icon type="upload" /> txt批量上传
                         </Button>
                     </Upload>
+                    <Button
+                        style={{ marginLeft: 10 }}
+                        onClick={this.onSetTemplate}
+                    >
+                        模板管理
+                    </Button>
                 </div>
                 <Table
                     className="mt16"
@@ -128,6 +230,40 @@ export default class RobotCommentManager extends BaseComponent {
                         defaultPageSize: Global.PAGE_SIZE
                     }}
                 />
+                <Modal
+                    visible={isShowTem}
+                    title="模板任务"
+                    closable={false}
+                    okText="确定"
+                    cancelText="取消"
+                    onOk={this.onTemSubmit}
+                    onCancel={action(() => (this.store.isShowTem = false))}
+                >
+                    <Form>
+                        {this.temColumns.map((item, index) => {
+                            const { key, label, render } = item;
+                            return (
+                                <FormItem
+                                    key={key}
+                                    {...formItemLayout}
+                                    label={label}
+                                >
+                                    {render ? (
+                                        render(temParams[key])
+                                    ) : (
+                                        <Input
+                                            value={temParams[key]}
+                                            onChange={e =>
+                                                this.onTemChange(e, key)
+                                            }
+                                            placeholder={`请输入${label}`}
+                                        />
+                                    )}
+                                </FormItem>
+                            );
+                        })}
+                    </Form>
+                </Modal>
             </Spin>
         );
     }
