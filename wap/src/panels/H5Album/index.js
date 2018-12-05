@@ -4,6 +4,7 @@ import { BaseComponent, Base, Global } from "../../common";
 import "./H5Album.less";
 import { h5 } from "../../images";
 import { action } from "mobx";
+import AudioPlayer from "react-h5-audio-player";
 const wImg = document.body.offsetWidth;
 export default class H5Album extends BaseComponent {
     store = {
@@ -53,7 +54,7 @@ export default class H5Album extends BaseComponent {
         }
         const preAudio = this.refs[`audio_${play_id}`];
         if (preAudio) {
-            preAudio.pause();
+            preAudio.audio.pause();
         }
         if (id === play_id) {
             this.store.play_id = -1;
@@ -61,7 +62,7 @@ export default class H5Album extends BaseComponent {
             this.store.play_id = id;
             const curAudio = this.refs[`audio_${id}`];
             if (curAudio) {
-                curAudio.play();
+                curAudio.audio.play();
             }
         }
     }
@@ -104,6 +105,7 @@ export default class H5Album extends BaseComponent {
             modal_name,
             modal_type
         } = this.store;
+        const invite_uid = Base.getPageParams("invite_uid");
         const { cover_image, title } = info;
         const { video_url } = audio;
         const list = pageIndex
@@ -112,10 +114,14 @@ export default class H5Album extends BaseComponent {
         const items = list.map(item => {
             const { id, price, title } = item;
             return (
-                <Flex key={id} className="item-con">
-                    <audio ref={`audio_${id}`} src={item.video_url} />
+                <Flex
+                    key={id}
+                    className="item-con"
+                    onClick={() => {
+                        Base.push("H5Audio", { id, invite_uid });
+                    }}
+                >
                     <img
-                        onClick={() => this.onPlay(id, price, title)}
                         src={
                             play_id === id
                                 ? h5.audio_stop_gray
@@ -129,7 +135,6 @@ export default class H5Album extends BaseComponent {
         });
         return (
             <div className="H5Album">
-                <audio ref={`audio_${0}`} src={video_url} />
                 <Flex
                     justify="center"
                     direction="column"
@@ -168,6 +173,15 @@ export default class H5Album extends BaseComponent {
                         </Flex>
                     </Flex>
                     <div className="title">{title}</div>
+                    <div className="audio-player-con">
+                        <AudioPlayer
+                            autoPlay
+                            className="audio-player"
+                            ref={`audio_${0}`}
+                            src={video_url}
+                            onPlay={action(() => (this.store.play_id = 0))}
+                        />
+                    </div>
                     <input
                         className="mobi-input"
                         type="number"

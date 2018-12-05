@@ -4,6 +4,7 @@ import { BaseComponent, Base, Global } from "../../common";
 import "./H5Audio.less";
 import { h5 } from "../../images";
 import { action } from "mobx";
+import AudioPlayer from "react-h5-audio-player";
 const wImg = document.body.offsetWidth;
 export default class H5Audio extends BaseComponent {
     store = {
@@ -48,7 +49,7 @@ export default class H5Audio extends BaseComponent {
                             res => {
                                 this.store.commentList = res.data.list.slice(
                                     0,
-                                    10
+                                    15
                                 );
                             }
                         );
@@ -65,7 +66,7 @@ export default class H5Audio extends BaseComponent {
         }
         const preAudio = this.refs[`audio_${play_id}`];
         if (preAudio) {
-            preAudio.pause();
+            preAudio.audio.pause();
         }
         if (id === play_id) {
             this.store.play_id = -1;
@@ -73,7 +74,7 @@ export default class H5Audio extends BaseComponent {
             this.store.play_id = id;
             const curAudio = this.refs[`audio_${id}`];
             if (curAudio) {
-                curAudio.play();
+                curAudio.audio.play();
             }
         }
     }
@@ -121,13 +122,19 @@ export default class H5Audio extends BaseComponent {
         const list = pageIndex
             ? play_list.slice(0, pageIndex)
             : play_list.slice();
+        const invite_uid = Base.getPageParams("invite_uid");
         const items = list.map(item => {
             const { id, price, title } = item;
             return (
-                <Flex key={id} className="item-con">
-                    <audio ref={`audio_${id}`} src={item.video_url} />
+                <Flex
+                    key={id}
+                    className="item-con"
+                    onClick={() => {
+                        Base.push("H5Audio", { id, invite_uid });
+                        window.location.reload();
+                    }}
+                >
                     <img
-                        onClick={() => this.onPlay(id, price, title)}
                         src={
                             play_id === id
                                 ? h5.audio_stop_gray
@@ -152,7 +159,6 @@ export default class H5Audio extends BaseComponent {
         });
         return (
             <div className="H5Audio">
-                <audio ref={`audio_${0}`} src={video_url} />
                 <Flex
                     justify="center"
                     direction="column"
@@ -191,6 +197,15 @@ export default class H5Audio extends BaseComponent {
                         </Flex>
                     </Flex>
                     <div className="title">{title}</div>
+                    <div className="audio-player-con">
+                        <AudioPlayer
+                            autoPlay
+                            className="audio-player"
+                            ref={`audio_${0}`}
+                            src={video_url}
+                            onPlay={action(() => (this.store.play_id = 0))}
+                        />
+                    </div>
                     <input
                         className="mobi-input"
                         type="number"
@@ -237,6 +252,9 @@ export default class H5Audio extends BaseComponent {
                             <div className="nodata">暂无评论</div>
                         )}
                     </div>
+                </div>
+                <div className="more" onClick={this.onDown}>
+                    点击查看更多
                 </div>
                 <Modal
                     visible={!!modal_name}

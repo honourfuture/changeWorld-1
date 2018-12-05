@@ -6357,6 +6357,11 @@ react-error-overlay@^3.0.0:
   resolved "http://registry.npm.taobao.org/react-error-overlay/download/react-error-overlay-3.0.0.tgz#c2bc8f4d91f1375b3dad6d75265d51cd5eeaf655"
   integrity sha1-wryPTZHxN1s9rW11Jl1RzV7q9lU=
 
+react-h5-audio-player@^1.1.0:
+  version "1.1.0"
+  resolved "http://registry.npm.taobao.org/react-h5-audio-player/download/react-h5-audio-player-1.1.0.tgz#a75ad4b9a7f4d33ee722843ae7576d83147b8e99"
+  integrity sha1-p1rUuaf00z7nIoQ651dtgxR7jpk=
+
 react-native-camera-roll-picker@^1.2.1:
   version "1.2.3"
   resolved "http://registry.npm.taobao.org/react-native-camera-roll-picker/download/react-native-camera-roll-picker-1.2.3.tgz#b117fd3a2b9012dcccee1261a9bc427226b8d6d2"

@@ -3,6 +3,7 @@ import { BaseComponent, Base } from "../../common";
 import { Flex } from "antd-mobile";
 import "./H5Live.less";
 import { action } from "mobx";
+import { icon } from "../../images";
 
 export default class H5Live extends BaseComponent {
     store = { info: {} };
@@ -20,7 +21,7 @@ export default class H5Live extends BaseComponent {
                     res => {
                         this.store.info = res.data;
                         var options = {
-                            m3u8: res.data.play_url[0],
+                            m3u8: res.data.play_url.m3u8,
                             coverpic: {
                                 style: "cover",
                                 src: Base.getImgUrl(res.data.cover_image)
@@ -54,22 +55,19 @@ export default class H5Live extends BaseComponent {
     onDown() {
         Base.GET({ act: "share", op: "index", isNotNeedAuth: true }, res => {
             const { app } = res.data;
-            this.store.iosUrl = (
+            const iosUrl = (
                 (app || []).find(item => parseInt(item.platform, 10) === 0) ||
                 {}
             ).url;
-            this.store.andoridUrl = (
+            const andoridUrl = (
                 (app || []).find(item => parseInt(item.platform, 10) === 1) ||
                 {}
             ).url;
-            // if (Base.isIos) {
-            //     window.location.href =
-            //         "http://a.app.qq.com/o/simple.jsp?pkgname=com.qunen.yangyu.app";
-            // } else {
-            //     window.location.href =
-            //         "http://a.app.qq.com/o/simple.jsp?pkgname=com.qunen.yangyu.app";
-            // }
-            Base.callApp();
+            if (Base.isIos) {
+                window.location.href = iosUrl || "";
+            } else {
+                window.location.href = andoridUrl || "";
+            }
         });
     }
     render() {
@@ -80,7 +78,11 @@ export default class H5Live extends BaseComponent {
                 <div className="top-con">
                     <Flex justify="between">
                         <Flex className="left-con">
-                            <img className="header" src={header} alt="" />
+                            <img
+                                className="header"
+                                src={header || icon.logo}
+                                alt=""
+                            />
                             <div className="name-con">
                                 <div className="name">{nickname}</div>
                                 <div className="view">{views}人</div>
@@ -95,17 +97,22 @@ export default class H5Live extends BaseComponent {
                         {chat_room_id}
                     </span>
                 </div>
-                <Flex className="bottom-con">
-                    <Flex className="info-con" justify="between">
-                        <div className="label">
-                            {nickname}
-                            邀请你陪TA聊天
-                        </div>
-                        <div onClick={this.onDown} className="invite-con">
-                            接受
-                        </div>
+                <div className="bottom-con">
+                    <div className="tips">
+                        欢迎来到【猪买单平台】，请遵守国家相关法律，祝您愉快
+                    </div>
+                    <Flex onClick={this.onDown} justify="between">
+                        <Flex className="left-con">
+                            <img src={icon.logo} alt="" />
+                            <img src={icon.logo} alt="" />
+                        </Flex>
+                        <Flex className="right-con">
+                            <img src={icon.logo} alt="" />
+                            <img src={icon.logo} alt="" />
+                            <img src={icon.logo} alt="" />
+                        </Flex>
                     </Flex>
-                </Flex>
+                </div>
             </div>
         );
     }
