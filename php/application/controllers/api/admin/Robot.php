@@ -539,6 +539,11 @@ class Robot extends API_Controller {
 		$topic = (int)$this->input->get_post('topic');
 		$where = ['topic' => $topic];
 
+		$keyword = $this->input->get_post('keyword');
+		if($keyword){
+			$this->db->like('comment', $keyword);
+		}
+
 		$this->load->model('Robot_comment_model');
 		$ret['count'] = $this->Robot_comment_model->count_by($where);
 		if($ret['count']){
@@ -547,6 +552,16 @@ class Robot extends API_Controller {
 		}
 
 		$this->ajaxReturn($ret);
+	}
+
+	public function comment_del()
+	{
+		$id = $this->input->get_post('id');
+
+		$this->load->model('Robot_comment_model');
+		$this->Robot_comment_model->delete($id);
+
+		$this->ajaxReturn();
 	}
 
 	/**
