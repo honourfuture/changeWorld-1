@@ -464,13 +464,21 @@ class Live_audio extends API_Controller {
 					$tpl['origin_filename'] = $filename;
 				}
 
+                $this->load->model('Queue_model');
                 $queue = [
                     'main_type' => 'audio_play',
                     'sub_type'  => $tpl['id'],
                     'params'    => json_encode($tpl),
                     'status' => 0
                 ];
-                $this->load->model('Queue_model');
+                $this->Queue_model->insert($queue);
+
+                $queue = [
+                    'main_type' => 'audio_comment',
+                    'sub_type'  => $tpl['id'],
+                    'params'    => json_encode($tpl),
+                    'status' => 0
+                ];
                 $this->Queue_model->insert($queue);
             }
 		}
@@ -555,6 +563,14 @@ class Live_audio extends API_Controller {
 
 		                $queue = [
 		                    'main_type' => 'audio_play',
+		                    'sub_type'  => $tpl['id'],
+		                    'params'    => json_encode($tpl),
+		                    'status' => 0
+		                ];
+		                $this->Queue_model->insert($queue);
+
+		                $queue = [
+		                    'main_type' => 'audio_comment',
 		                    'sub_type'  => $tpl['id'],
 		                    'params'    => json_encode($tpl),
 		                    'status' => 0
