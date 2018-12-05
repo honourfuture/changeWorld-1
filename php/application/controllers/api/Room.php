@@ -184,6 +184,7 @@ class Room extends API_Controller {
 
         	$ret['views'] = $info['views'] + 1;
         	$ret['income_gold'] = $info['income_gold'];
+        	$ret['play_url'] = json_decode($info['play_url'], true);
 
         	$this->load->model('Users_model');
         	$user = $this->Users_model->get($info['anchor_uid']);
