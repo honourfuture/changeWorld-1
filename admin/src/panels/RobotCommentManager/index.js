@@ -11,10 +11,12 @@ import {
     message,
     Form,
     Input,
-    Modal
+    Modal,
+    Popconfirm
 } from "antd";
 import "./RobotCommentManager.less";
 const FormItem = Form.Item;
+const Search = Input.Search;
 const formItemLayout = {
     labelCol: {
         xs: { span: 24 },
@@ -48,6 +50,27 @@ export default class RobotCommentManager extends BaseComponent {
                 dataIndex: "comment",
                 render: (text, record) =>
                     this.renderText(text, record, "comment")
+            },
+            {
+                title: "操作",
+                dataIndex: "operation",
+                render: (text, record) => {
+                    const { id } = record;
+                    return (
+                        <div className="editable-row-operations">
+                            <span>
+                                <Popconfirm
+                                    title="确认删除?"
+                                    okText="确定"
+                                    cancelText="取消"
+                                    onConfirm={() => this.onDelete(id)}
+                                >
+                                    <a className="ml10 gray">删除</a>
+                                </Popconfirm>
+                            </span>
+                        </div>
+                    );
+                }
             }
         ];
         this.temColumns = [
@@ -93,7 +116,7 @@ export default class RobotCommentManager extends BaseComponent {
                 op: "comment_list",
                 mod: "admin",
                 topic: 1,
-                title: this.searchStr || "",
+                keyword: this.searchStr || "",
                 cur_page: this.current || 1,
                 per_page: Global.PAGE_SIZE
             },
@@ -174,6 +197,30 @@ export default class RobotCommentManager extends BaseComponent {
             this
         );
     }
+    @action.bound
+    onDelete(id) {
+        Base.GET(
+            {
+                act: "robot",
+                topic: 1,
+                op: "comment_del",
+                mod: "admin",
+                id
+            },
+            res => {
+                this.requestData();
+            },
+            this
+        );
+    }
+    //搜索
+    searchStr = "";
+    @action.bound
+    onSearch(value) {
+        this.current = 1;
+        this.searchStr = value;
+        this.requestData();
+    }
     render() {
         let {
             list,
@@ -198,6 +245,12 @@ export default class RobotCommentManager extends BaseComponent {
                 spinning={false}
             >
                 <div className="pb10">
+                    <Search
+                        placeholder="搜索关键词"
+                        enterButton
+                        onSearch={this.onSearch}
+                        style={{ width: 200, marginRight: 10 }}
+                    />
                     <Upload
                         accept="txt"
                         name="field"
