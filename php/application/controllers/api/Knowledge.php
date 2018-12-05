@@ -336,7 +336,7 @@ class Knowledge extends API_Controller
             // 热门主播
             $ret['anchor'] = [];
             $this->db->select('id,nickname,header,v,exp,pretty_id,address,sex,summary');
-            $anchor = $this->Users_model->limit($this->per_page)->get_many_by(['anchor' => 2, 'is_hot' => 1]);
+            $anchor = $this->Users_model->order_by('updated_at', 'desc')->limit($this->per_page)->get_many_by(['anchor' => 2]);//, 'is_hot' => 1
             if($anchor){
                 $this->load->model('Room_model');
                 foreach($anchor as $item){
