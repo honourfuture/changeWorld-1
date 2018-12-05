@@ -184,6 +184,19 @@ class Room extends API_Controller {
 
         	$ret['views'] = $info['views'] + 1;
         	$ret['income_gold'] = $info['income_gold'];
+
+        	$this->load->model('Users_model');
+        	$user = $this->Users_model->get($info['anchor_uid']);
+        	$ret['nickname'] = $user['nickname'];
+        	$ret['header'] = $user['header'];
+
+        	$ret['hasFans'] = $ret['fans'] = 0;
+        	if($this->user_id){
+	        	$this->load->model('Users_collection_model');
+				$ret['hasFans'] = $this->Users_collection_model->check_fans($this->user_id, $info['anchor_uid']);
+				$where = array('t_id' => $info['anchor_uid'], 'topic' => 1, 'enable' => 1);
+				$ret['fans'] = $this->Users_collection_model->count_by($where);
+        	}
         	//token
         	/*$token = '';
         	$user = $this->get_user();
