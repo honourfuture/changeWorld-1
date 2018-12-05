@@ -205,21 +205,24 @@ class Live extends API_Controller {
 			$siteConfig = $this->Config_model->siteConfig();
 			if(isset($siteConfig['tpl_live_fans'])){
 				//直播评论
-				$where = ['topic' => 0];
-				$this->load->model('Robot_comment_model');
-				$max = mt_rand(1000, 10000);
-				$this->db->select('group_concat(comment, "\r\n") as text');
-				$row = $this->Robot_comment_model->order_by(10000, 'RANDOM')->limit($max, 0)->get_by($where);
-				if($row && $row['text']){
-					$txt = FCPATH.'uploads/queue_'.mt_rand(10, 99).md5($id).'.txt';
-					file_put_contents($txt, $row['text']);
+				$tpl_comment = isset($siteConfig['tpl_live_comment']) ? $siteConfig['tpl_live_comment'][0] : [];
+				if($tpl_comment){
+					$where = ['topic' => 0];
+					$this->load->model('Robot_comment_model');
+					$max = $tpl_comment['max'];//mt_rand(1000, 10000);
+					$this->db->select('group_concat(comment, "\r\n") as text');
+					$row = $this->Robot_comment_model->order_by(10000, 'RANDOM')->limit($max, 0)->get_by($where);
+					if($row && $row['text']){
+						$txt = FCPATH.'uploads/queue_'.mt_rand(10, 99).md5($id).'.txt';
+						file_put_contents($txt, $row['text']);
 
-					$queue = [];
-					$queue['chat_stop'] = 0;
-					$queue['chat_line'] = 0;
-					$queue['chat_file'] = $txt;
+						$queue = [];
+						$queue['chat_stop'] = 0;
+						$queue['chat_line'] = 0;
+						$queue['chat_file'] = $txt;
 
-					$this->Room_model->update($id, $queue);
+						$this->Room_model->update($id, $queue);
+					}
 				}
 
 				$tpl = $siteConfig['tpl_live_fans'][0];
