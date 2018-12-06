@@ -72,7 +72,13 @@ export const h5 = {
     audio_stop: require("./h5/audio_stop.png"),
     audio_play_gray: require("./h5/audio_play_gray.png"),
     audio_stop_gray: require("./h5/audio_stop_gray.png"),
-    audio_play_num: require("./h5/audio_play_num.png")
+    audio_play_num: require("./h5/audio_play_num.png"),
+    live_0: require("./h5/live_0.png"),
+    live_1: require("./h5/live_1.png"),
+    live_2: require("./h5/live_2.png"),
+    live_3: require("./h5/live_3.png"),
+    live_4: require("./h5/live_4.png"),
+    live_bg: require("./h5/live_bg.png")
 };
 // export const test = {
 //     test1: require("./test/1.jpg"),

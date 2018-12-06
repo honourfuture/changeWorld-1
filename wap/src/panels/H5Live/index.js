@@ -3,7 +3,7 @@ import { BaseComponent, Base } from "../../common";
 import { Flex } from "antd-mobile";
 import "./H5Live.less";
 import { action } from "mobx";
-import { icon } from "../../images";
+import { icon, h5 } from "../../images";
 
 export default class H5Live extends BaseComponent {
     store = { info: {} };
@@ -24,7 +24,9 @@ export default class H5Live extends BaseComponent {
                             m3u8: res.data.play_url.m3u8,
                             coverpic: {
                                 style: "cover",
-                                src: Base.getImgUrl(res.data.cover_image)
+                                src:
+                                    // Base.getImgUrl(res.data.cover_image) ||
+                                    h5.live_bg
                             },
                             autoplay: true,
                             live: true,
@@ -73,7 +75,10 @@ export default class H5Live extends BaseComponent {
     render() {
         const { views, nickname, chat_room_id, header } = this.store.info;
         return (
-            <div className="H5Live">
+            <div
+                className="H5Live"
+                style={{ backgroundImage: "url(" + h5.live_bg + ")" }}
+            >
                 <div id="video-container" />
                 <div className="top-con">
                     <Flex justify="between">
@@ -103,13 +108,13 @@ export default class H5Live extends BaseComponent {
                     </div>
                     <Flex onClick={this.onDown} justify="between">
                         <Flex className="left-con">
-                            <img src={icon.logo} alt="" />
-                            <img src={icon.logo} alt="" />
+                            <img src={h5.live_0} alt="" />
+                            <img src={h5.live_1} alt="" />
                         </Flex>
                         <Flex className="right-con">
-                            <img src={icon.logo} alt="" />
-                            <img src={icon.logo} alt="" />
-                            <img src={icon.logo} alt="" />
+                            <img src={h5.live_2} alt="" />
+                            <img src={h5.live_3} alt="" />
+                            <img src={h5.live_4} alt="" />
                         </Flex>
                     </Flex>
                 </div>
