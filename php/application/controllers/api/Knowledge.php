@@ -343,7 +343,7 @@ class Knowledge extends API_Controller
                     // 直播信息
                     $item['live'] = [];
                     $this->db->select('id as room_id,status,play_url,cover_image,anchor_uid,title,price');
-                    $row = $this->Room_model->order_by('id', 'desc')->get(['anchor_uid' => $item['id']]);
+                    $row = $this->Room_model->order_by('id', 'desc')->get_by(['anchor_uid' => $item['id']]);
                     if($row && $row['status'] == 1){
                         $row['play_url'] = json_decode($row['play_url'], true);
                         $item['live'] = $row;
