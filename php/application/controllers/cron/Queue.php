@@ -720,6 +720,15 @@ class Queue extends MY_Controller
 
                 $step_num = mt_rand(1, 10);//$this->step_num($row);
                 // $step_num = min($step_num, $row['params']['max'] - $cache_num);
+                if(strpos($file, 'queue_') !== false){
+                    if(! isset($a_line[$room['chat_line']])){
+                        $step_num = 0;
+                    }else{
+                        $line = count($a_line) - $room['chat_line'];
+                        $step_num = min($step_num, $line);
+                    }
+                }
+
                 if($step_num > 0){
                     $random_keys = array_rand($cache, $step_num);
                     if(!$random_keys){
