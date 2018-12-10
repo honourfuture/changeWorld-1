@@ -1,5 +1,6 @@
 @import "../../common/theme.less";
 .H5Live {
+    position: relative;
     .top-con {
         position: absolute;
         // background: transparent;
@@ -44,6 +45,24 @@
             padding: 4px 10px;
             margin-top: 10px;
             display: inline-block;
+        }
+    }
+    .bag-con {
+        position: absolute;
+        right: 10px;
+        top: 30%;
+        font-size: 10px;
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        width: 54.4px;
+        height: 61.6px;
+        color: #fff;
+        text-align: center;
+        div {
+            padding-bottom: 2px;
+        }
+        .bottom-bag {
+            padding-bottom: 5px;
         }
     }
     .bottom-con {
@@ -129,5 +148,11 @@
         font-size: 13px;
         color: #fff;
         // background: rgba(255, 255, 255, 0.7);
+    }
+    .carousel-con {
+        position: absolute;
+        top: 90px;
+        width: 100%;
+        z-index: 1;
     }
 }
