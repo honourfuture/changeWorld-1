@@ -20,10 +20,10 @@ export class GlobalHeader extends BaseComponent {
         this.triggerResizeEvent.cancel();
     }
     @action.bound
-    toggle = () => {
-        Global.store.isCollapsed = !Global.store.isCollapsed;
+    toggle() {
         this.triggerResizeEvent();
-    };
+        Global.store.isCollapsed = !Global.store.isCollapsed;
+    }
     @Debounce(600)
     triggerResizeEvent() {
         const event = document.createEvent("HTMLEvents");
