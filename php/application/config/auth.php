@@ -10,6 +10,7 @@ $config['unLogin'] = [//控制器=>方法
 	'api/user/cart' => ['count'],
 	'api/user/info' => ['onoff'],
 
+	'api/chat' => ['token'],
 	'api/share' => ['*'],
 	'api/common' => ['*'],
 	'api/forget' => ['*'],
