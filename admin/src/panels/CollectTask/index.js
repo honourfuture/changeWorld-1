@@ -322,6 +322,7 @@ export default class CollectTask extends BaseComponent {
             this.store.temParams = list[0] || {};
             this.store.isShowTem = true;
         });
+        Base.push("CollectTemplate");
     }
     @action.bound
     onTemChange(e, type) {

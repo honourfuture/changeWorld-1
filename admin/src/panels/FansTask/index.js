@@ -316,11 +316,12 @@ export default class FansTask extends BaseComponent {
     }
     @action.bound
     onSetTemplate() {
-        Base.GET({ act: "admin", op: "config" }, res => {
-            const list = res.data.tpl_anchor_fans || [];
-            this.store.temParams = list[0] || {};
-            this.store.isShowTem = true;
-        });
+        Base.push("FansTemplate");
+        // Base.GET({ act: "admin", op: "config" }, res => {
+        //     const list = res.data.tpl_anchor_fans || [];
+        //     this.store.temParams = list[0] || {};
+        //     this.store.isShowTem = true;
+        // });
     }
     @action.bound
     onTemChange(e, type) {
