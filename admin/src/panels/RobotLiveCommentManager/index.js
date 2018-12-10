@@ -74,8 +74,8 @@ export default class RobotLiveCommentManager extends BaseComponent {
             }
         ];
         this.temColumns = [
-            { key: "step_times", label: "多少秒内评论" },
-            { key: "step_num", label: "单次评论数" },
+            // { key: "step_times", label: "多少秒内评论" },
+            // { key: "step_num", label: "单次评论数" },
             { key: "max", label: "本次任务总评论数" },
             {
                 key: "enable",
