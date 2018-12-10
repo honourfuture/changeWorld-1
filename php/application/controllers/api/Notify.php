@@ -690,7 +690,8 @@ class Notify extends API_Controller
                         $this->load->model('Config_model');
                         $siteConfig = $this->Config_model->siteConfig();
                         if(isset($siteConfig['tpl_audio_play'])){
-                            $tpl = $siteConfig['tpl_audio_play'][0];
+                            $rand = mt_rand(0, count($siteConfig['tpl_audio_play']));
+                            $tpl = $siteConfig['tpl_audio_play'][$rand];
                             $tpl['id'] = $id;
 
                             $queue = [

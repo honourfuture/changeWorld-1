@@ -449,7 +449,12 @@ class Live_audio extends API_Controller {
             if(isset($siteConfig['tpl_audio_play'])){
             	$this->load->model('Queue_model');
             	//音频评论
-            	$tpl_comment = isset($siteConfig['tpl_audio_comment']) ? $siteConfig['tpl_audio_comment'][0] : [];
+            	$tpl_comment = [];
+				if(isset($siteConfig['tpl_audio_comment'])){
+					$rand = mt_rand(0, count($siteConfig['tpl_audio_comment']));
+					$tpl_comment = $siteConfig['tpl_audio_comment'][$rand];
+				}
+            	// $tpl_comment = isset($siteConfig['tpl_audio_comment']) ? $siteConfig['tpl_audio_comment'][0] : [];
                 if($tpl_comment){
                 	$tpl_comment['id'] = $id;
 
@@ -478,7 +483,9 @@ class Live_audio extends API_Controller {
 					}
                 }
                 //音频播放
-				$tpl = $siteConfig['tpl_audio_play'][0];
+				// $tpl = $siteConfig['tpl_audio_play'][0];
+				$rand = mt_rand(0, count($siteConfig['tpl_audio_play']));
+				$tpl = $siteConfig['tpl_audio_play'][$rand];
                 $tpl['id'] = $id;
                 $queue = [
                     'main_type' => 'audio_play',
@@ -549,10 +556,15 @@ class Live_audio extends API_Controller {
 		        $this->load->model('Queue_model');
 	            $siteConfig = $this->Config_model->siteConfig();
 		        if(isset($siteConfig['tpl_audio_play'])){
-		            $tpl = $siteConfig['tpl_audio_play'][0];
-		            $tpl_comment = isset($siteConfig['tpl_audio_comment']) ? $siteConfig['tpl_audio_comment'][0] : [];
+		            // $tpl = $siteConfig['tpl_audio_play'][0];
+		            // $tpl_comment = isset($siteConfig['tpl_audio_comment']) ? $siteConfig['tpl_audio_comment'][0] : [];
 					foreach($ids as $id){
 		                //音频评论
+			            $tpl_comment = [];
+						if(isset($siteConfig['tpl_audio_comment'])){
+							$rand = mt_rand(0, count($siteConfig['tpl_audio_comment']));
+							$tpl_comment = $siteConfig['tpl_audio_comment'][$rand];
+						}
 		                if($tpl_comment){
 		                	$tpl_comment['id'] = $id;
 		                	$where = ['topic' => 1];
@@ -580,6 +592,8 @@ class Live_audio extends API_Controller {
 							}
 		                }
 						//音频播放
+						$rand = mt_rand(0, count($siteConfig['tpl_audio_play']));
+						$tpl = $siteConfig['tpl_audio_play'][$rand];
 						$tpl['id'] = $id;
 		                $queue = [
 		                    'main_type' => 'audio_play',
