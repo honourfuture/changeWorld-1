@@ -103,8 +103,40 @@ export default class H5Live extends BaseComponent {
                     </span>
                 </div>
                 <div className="bottom-con">
-                    <div className="tips">
-                        欢迎来到【猪买单平台】，请遵守国家相关法律，祝您愉快
+                    <div className="scroll-con">
+                        <div className="tips">
+                            欢迎来到【猪买单平台】，请遵守国家相关法律，祝您愉快
+                        </div>
+                        <div className="tips">
+                            欢迎来到【猪买单平台】，请遵守国家相关法律，祝您愉快
+                        </div>
+                        <div className="tips">
+                            <div className="vip-con">
+                                <img className="vip" src={h5.live_vip} alt="" />
+                                1
+                            </div>
+                            <span>
+                                小科比：1313133欢迎来到【猪买单平台】，请遵守国家相关法律，祝您愉快
+                            </span>
+                        </div>
+                        <div className="tips">
+                            <div className="vip-con">
+                                <img className="vip" src={h5.live_vip} alt="" />
+                                1
+                            </div>
+                            <span>
+                                小科比：1313133欢迎来到【猪买单平台】，请遵守国家相关法律，祝您愉快
+                            </span>
+                        </div>
+                        <div className="tips">
+                            <div className="vip-con">
+                                <img className="vip" src={h5.live_vip} alt="" />
+                                1
+                            </div>
+                            <span>
+                                小科比：1313133欢迎来到【猪买单平台】，请遵守国家相关法律，祝您愉快
+                            </span>
+                        </div>
                     </div>
                     <Flex onClick={this.onDown} justify="between">
                         <Flex className="left-con">

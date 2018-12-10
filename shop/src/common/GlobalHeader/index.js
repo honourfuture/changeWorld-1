@@ -1,6 +1,6 @@
 /*
- * @Author: daihanqiao@126.com 
- * @Date: 2018-01-01 15:38:27 
+ * @Author: daihanqiao@126.com
+ * @Date: 2018-01-01 15:38:27
  * @Last Modified by: daihanqiao@126.com
  * @Last Modified time: 2018-01-01 15:45:53
  * 通用头部组件
@@ -35,7 +35,7 @@ export class GlobalHeader extends BaseComponent {
         switch (key) {
             case "logout":
                 Base.GET(
-                    { act: "login_out", op: "index", mod: "admin" },
+                    { act: "login_out", op: "index", mod: "user" },
                     res => {
                         Base.setLocalData("verifyData", null);
                         Base.push("/user/login");
@@ -47,7 +47,7 @@ export class GlobalHeader extends BaseComponent {
         }
     }
     render() {
-        const { account, header } = Global.userInfo;
+        const { header } = Global.userInfo;
         const menu = (
             <Menu
                 onClick={this.menuItemHandler}
@@ -77,20 +77,15 @@ export class GlobalHeader extends BaseComponent {
                     onClick={this.toggle}
                 />
                 <div className="right">
-                    {account ? (
-                        <Dropdown overlay={menu}>
-                            <span className="account">
-                                <Avatar
-                                    size="small"
-                                    className="avatar"
-                                    src={Base.getImgUrl(header)}
-                                />
-                                <span className="name">{account}</span>
-                            </span>
-                        </Dropdown>
-                    ) : (
-                        <Spin size="small" style={{ marginLeft: 8 }} />
-                    )}
+                    <Dropdown overlay={menu}>
+                        <span className="account">
+                            <Avatar
+                                size="small"
+                                className="avatar"
+                                src={Base.getImgUrl(header)}
+                            />
+                        </span>
+                    </Dropdown>
                 </div>
             </Header>
         );
