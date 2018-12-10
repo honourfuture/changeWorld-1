@@ -1,0 +1,46 @@
+@import "../../common/theme.less";
+.OrderDetailModal {
+    .ant-modal-body {
+        max-height: 500px;
+        overflow-y: scroll;
+    }
+    .con-title {
+        position: relative;
+        padding: 10px 0;
+        padding-left: 15px;
+        &.goods:after {
+            position: absolute;
+            right: 0;
+            top: 0px;
+            left: 0;
+            height: 2px;
+            width: 100%;
+            content: "";
+            background-color: #eee;
+        }
+        &:before {
+            position: absolute;
+            right: 0;
+            top: 12px;
+            left: 0px;
+            height: 16px;
+            width: 4px;
+            content: "";
+            background-color: #1790ff;
+        }
+    }
+    .ant-form-item {
+        margin-bottom: 0px;
+    }
+    .goods-con {
+        border-bottom: 1px solid #eee;
+        padding: 10px 0;
+        &:last-of-type {
+            border-bottom: 0;
+        }
+        .goods-img {
+            width: 100px;
+            height: 100px;
+        }
+    }
+}
