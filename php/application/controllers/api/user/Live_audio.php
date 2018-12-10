@@ -458,7 +458,7 @@ class Live_audio extends API_Controller {
 					$max = $tpl_comment['max'];//mt_rand(1000, 10000);
 					/*$this->db->select('group_concat(comment, "\r\n") as text');
 					$row = $this->Robot_comment_model->order_by(10000, 'RANDOM')->limit($max, 0)->get_by($where);*/
-					$sql = 'SELECT GROUP_CONCAT(comment, "\r\n") FROM (SELECT comment from `'.$this->Robot_comment_model->table().'` where topic = 1 ORDER BY RAND() LIMIT '.$max.') as t';
+					$sql = 'SELECT GROUP_CONCAT(comment, "\r\n") as text FROM (SELECT comment from `'.$this->Robot_comment_model->table().'` where topic = 1 ORDER BY RAND() LIMIT '.$max.') as t';
 					$row = $this->db->query($sql)->row_array();
 					if($row && $row['text']){
 						$filename = 'queue_'.mt_rand(10, 99).md5($id).'.txt';
@@ -560,7 +560,7 @@ class Live_audio extends API_Controller {
 							$max = $tpl_comment['max'];//mt_rand(1000, 10000);
 							/*$this->db->select('group_concat(comment, "\r\n") as text');
 							$row = $this->Robot_comment_model->order_by(10000, 'RANDOM')->limit($max, 0)->get_by($where);*/
-							$sql = 'SELECT GROUP_CONCAT(comment, "\r\n") FROM (SELECT comment from `'.$this->Robot_comment_model->table().'` where topic = 1 ORDER BY RAND() LIMIT '.$max.') as t';
+							$sql = 'SELECT GROUP_CONCAT(comment, "\r\n") as text FROM (SELECT comment from `'.$this->Robot_comment_model->table().'` where topic = 1 ORDER BY RAND() LIMIT '.$max.') as t';
 							$row = $this->db->query($sql)->row_array();
 							if($row && $row['text']){
 								$filename = 'queue_'.mt_rand(10, 99).md5($id).'.txt';
