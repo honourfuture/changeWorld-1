@@ -732,7 +732,7 @@ class Queue extends MY_Controller
                 if($step_num > 0){
                     $step_num = min($step_num, count($cache));
                     $random_keys = array_rand($cache, $step_num);
-                    if(!$random_keys){
+                    if(!is_array($random_keys) || empty($random_keys)){
                         continue;
                     }
                     $a_uid = [];
