@@ -57,7 +57,14 @@ class Chat extends API_Controller {
     	if($this->admin_id){
     		$this->user_id = $this->input->get_post('robot_id');
     	}
-    	$user = $this->get_user();
+    	// 直播分享
+    	if(! $this->user_id){
+    		$this->load->model('Users_model');
+    		$this->db->select('id,nickname,header');
+    		$user = $this->Users_model->order_by(5000000, 'RANDOM')->limit(1)->get_by(['robot ' => 1]);
+    	}else{
+    		$user = $this->get_user();
+    	}
     	if(! $user){
     		$this->ajaxReturn([], 1, '用户不存在');
     	}
