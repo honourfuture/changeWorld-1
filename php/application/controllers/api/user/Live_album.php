@@ -100,7 +100,7 @@ class Live_album extends API_Controller {
 		if($ret['count']){
 			$order_by = array('sort' => 'desc', 'id' => 'desc');
 			// if($this->user_id){
-				$this->db->select('id,updated_at,cover_image,title,price,anchor_uid');
+				// $this->db->select('id,updated_at,cover_image,title,price,anchor_uid');
 			// }
 			$this->search();
 			$list = $this->Album_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
