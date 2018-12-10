@@ -68,6 +68,8 @@ class Chat extends API_Controller {
     	if(! $user){
     		$this->ajaxReturn([], 1, '用户不存在');
     	}
+
+    	$this->user_id = $user['id'];
     	$this->load->model('Users_model');
     	$response = $this->rongCloud->user()->getToken(
     		$this->user_id,
