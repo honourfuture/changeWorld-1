@@ -14,7 +14,13 @@ import AudioManager from "./AudioManager";
 import AlbumManager from "./AlbumManager";
 import UserAudio from "./UserAudio";
 import BatchAudio from "./BatchAudio";
+import UserInfo from './UserInfo';
 export const panelsList = [
+    {
+        path:'/UserInfo',
+        component:UserInfo,
+        title:'个人信息',
+    },
     {
         path: "/live/BatchAudio",
         component: BatchAudio,

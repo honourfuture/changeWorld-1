@@ -1,7 +1,12 @@
 const menuData = [
     {
+        name: "个人信息",
+        icon: "user",
+        path: "UserInfo"
+    },
+    {
         name: "专辑管理",
-        icon: "play-circle-o",
+        icon: "book",
         path: "live/AlbumManager"
     },
     {
