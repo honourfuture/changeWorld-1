@@ -30,8 +30,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 				<li><a class="" href="#section2">企业文化</a></li>
 				<li><a class="" href="#section3">最新动态</a></li>
 				<!-- <li><a class="" href="#section4">关于我们</a></li> -->
-				<!-- <li><a class="" href="#section5">申请入驻</a></li>
-                <li><a class="" href="#section6">加入我们</a></li> -->
+				<!-- <li><a class="" href="#section5">申请入驻</a></li> -->
+                <li><a class="" href="/shop" target="_blank">主播登录</a></li>
 			</ul>
 		</span>
     </div>

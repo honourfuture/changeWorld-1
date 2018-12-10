@@ -99,9 +99,9 @@ class Live_album extends API_Controller {
 		$ret['count'] = $this->Album_model->count_by($where);
 		if($ret['count']){
 			$order_by = array('sort' => 'desc', 'id' => 'desc');
-			if($this->user_id){
-				$this->db->select('id,updated_at,cover_image,title,price,anchor_uid');
-			}
+			// if($this->user_id){
+				// $this->db->select('id,updated_at,cover_image,title,price,anchor_uid');
+			// }
 			$this->search();
 			$list = $this->Album_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 			if($list){
@@ -291,7 +291,9 @@ class Live_album extends API_Controller {
 				$this->load->model('Config_model');
 				$siteConfig = $this->Config_model->siteConfig();
 				if(isset($siteConfig['tpl_album_favorite'])){
-					$tpl = $siteConfig['tpl_album_favorite'][0];
+					$rand = mt_rand(0, count($siteConfig['tpl_album_favorite']));
+					$tpl = $siteConfig['tpl_album_favorite'][$rand];
+					// $tpl = $siteConfig['tpl_album_favorite'][0];
 					$tpl['id'] = $id;
 
 					$queue = [

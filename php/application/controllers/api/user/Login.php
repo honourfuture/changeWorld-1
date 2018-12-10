@@ -25,6 +25,7 @@ class Login extends API_Controller {
 	 *
 	 * @apiParam {String} account 手机/靓号
 	 * @apiParam {String} password 登录密码
+	 * @apiParam {String} anchor 主播 1是 0否 默认0
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -60,6 +61,7 @@ class Login extends API_Controller {
 	 */
 	public function index()
 	{
+		$anchor = (int)$this->input->get_post('anchor');
 		$account = $this->input->get_post('account');
 		$password = $this->input->get_post('password');
 		if(!$account || !$password){
@@ -71,7 +73,11 @@ class Login extends API_Controller {
 		!$info && $info = $this->Users_model->get_by('pretty_id', $account);
 		if($info){
 			if($info['password'] == $this->Users_model->get_password($password)){
-				$this->check_status($info);
+				if($anchor && $info['anchor'] != 2){
+					$this->ajaxReturn([], 4, '仅开通主播才能登录');
+				}else{
+					$this->check_status($info);
+				}
 			}else{
 				$this->ajaxReturn([], 3, '登录密码错误');
 			}
