@@ -326,11 +326,12 @@ export default class LiveStart extends BaseComponent {
     }
     @action.bound
     onSetTemplate() {
-        Base.GET({ act: "admin", op: "config" }, res => {
-            const list = res.data.tpl_live_fans || [];
-            this.store.temParams = list[0] || {};
-            this.store.isShowTem = true;
-        });
+        // Base.GET({ act: "admin", op: "config" }, res => {
+        //     const list = res.data.tpl_live_fans || [];
+        //     this.store.temParams = list[0] || {};
+        //     this.store.isShowTem = true;
+        // });
+        Base.push("LiveTemplate");
     }
     @action.bound
     onTemChange(e, type) {

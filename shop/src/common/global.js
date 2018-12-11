@@ -25,9 +25,7 @@ export default {
     },
     set userInfo(data) {
         Base.setLocalData("shop.user.data", data);
-        action(() => {
-            this._userInfo.set("global.userInfo", data || {});
-        })();
+        this._userInfo.set("global.userInfo", data || {});
     },
     get userInfo() {
         const data = this._userInfo.get("global.userInfo");

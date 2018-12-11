@@ -64,17 +64,17 @@ export default class LiveTemplate extends BaseComponent {
                     const { key_id } = record;
                     return (
                         <div className="editable-row-operations">
-                            <span>
+                            {/* <span>
                                 <a
                                     className="ml10"
                                     onClick={() => this.onPlay(key_id)}
                                 >
                                     使用模板
                                 </a>
-                            </span>
+                            </span> */}
                             <span>
                                 <a
-                                    className="ml10"
+                                    // className="ml10"
                                     onClick={() => this.onEdit(key_id)}
                                 >
                                     编辑
@@ -156,6 +156,9 @@ export default class LiveTemplate extends BaseComponent {
     onAdd() {
         if (this.store.list.find(item => item.id === 0)) {
             return message.info("请保存后再新建");
+        }
+        if (this.store.list.length >= 10) {
+            return message.info("模板数量不得超过10条");
         }
         this.store.params = {};
         this.store.isShowModal = true;

@@ -79,7 +79,8 @@ export const h5 = {
     live_3: require("./h5/live_3.png"),
     live_4: require("./h5/live_4.png"),
     live_bg: require("./h5/live_bg.png"),
-    live_vip: require("./h5/live_vip.png")
+    live_vip: require("./h5/live_vip.png"),
+    live_bag: require("./h5/live_bag.png")
 };
 // export const test = {
 //     test1: require("./test/1.jpg"),

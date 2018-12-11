@@ -52,7 +52,7 @@ export default class Login extends Component {
                         const { auth, account, header } = res.data;
                         Base.setLocalData("shop.verifyData", auth);
                         Global.userInfo = {
-                            account,
+                            account: auth.user_id,
                             header: header || Global.userInfo.header
                         };
                         this.setState({ login: { submitting: false, type } });
