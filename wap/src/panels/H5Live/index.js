@@ -4,15 +4,17 @@ import { Flex, Carousel, Modal, Button } from "antd-mobile";
 import "./H5Live.less";
 import { action } from "mobx";
 import { icon, h5 } from "../../images";
-
+const width = document.body.offsetWidth;
+const height = document.body.offsetHeight;
 export default class H5Live extends BaseComponent {
     store = {
         info: {},
-        imgHeight: 200,
+        imgHeight: (width * 500) / 700,
         list: [],
         carouselList: [],
         rebagData: {},
-        isShowDown: false
+        isShowDown: false,
+        errorMsg: ""
     };
     RongInit(app_key, token, succ, receive) {
         const { RongIMClient, RongIMLib } = window;
@@ -121,6 +123,7 @@ export default class H5Live extends BaseComponent {
         });
     }
     componentDidMount() {
+        const self = this;
         Base.loadJs(
             "//imgcache.qq.com/open/qcloud/video/vcplayer/TcPlayer-2.2.2.js",
             () => {
@@ -135,16 +138,16 @@ export default class H5Live extends BaseComponent {
                         this.store.info = res.data;
                         var options = {
                             m3u8: res.data.play_url.m3u8,
-                            coverpic: {
-                                style: "cover",
-                                src:
-                                    // Base.getImgUrl(res.data.cover_image) ||
-                                    h5.live_bg
-                            },
+                            // coverpic: {
+                            //     style: "cover",
+                            //     src:
+                            //         // Base.getImgUrl(res.data.cover_image) ||
+                            //         h5.live_bg
+                            // },
                             autoplay: true,
                             live: true,
-                            width: document.body.offsetWidth,
-                            height: document.body.offsetHeight,
+                            width,
+                            height,
                             x5_type: "h5",
                             live: true,
                             wording: {
@@ -153,7 +156,17 @@ export default class H5Live extends BaseComponent {
                                 3: "该直播已停止直播，下载app和她私聊吧"
                                 // 2048: "请求m3u8文件失败，可能是网络错误或者跨域问题"
                             },
-                            controls: "none"
+                            controls: "none",
+                            listener(msg) {
+                                console.log(msg);
+                                if (msg.type == "error") {
+                                    action(
+                                        () =>
+                                            (self.store.errorMsg =
+                                                "该直播已停止直播，下载app和她私聊吧")
+                                    )();
+                                }
+                            }
                         };
 
                         var player = new window.TcPlayer(
@@ -264,13 +277,23 @@ export default class H5Live extends BaseComponent {
         });
     }
     render() {
-        const { list, carouselList, rebagData } = this.store;
+        const { list, carouselList, rebagData, errorMsg } = this.store;
         const { views, nickname, chat_room_id, header } = this.store.info;
         return (
             <div
                 className="H5Live"
-                style={{ backgroundImage: "url(" + h5.live_bg + ")" }}
+                // style={{ backgroundImage: "url(" + h5.live_bg + ")" }}
             >
+                <div
+                    className="bg-con"
+                    style={{
+                        backgroundImage: "url(" + h5.live_bg + ")",
+                        width,
+                        height
+                    }}
+                >
+                    {errorMsg}
+                </div>
                 <div id="video-container" />
                 <div className="top-con">
                     <Flex justify="between">
@@ -318,15 +341,16 @@ export default class H5Live extends BaseComponent {
                                         alt=""
                                         style={{
                                             width: "100%",
-                                            verticalAlign: "top"
+                                            verticalAlign: "top",
+                                            height: this.store.imgHeight
                                         }}
-                                        onLoad={action(() => {
-                                            // fire window resize event to change height
-                                            window.dispatchEvent(
-                                                new Event("resize")
-                                            );
-                                            this.store.imgHeight = "auto";
-                                        })}
+                                        // onLoad={action(() => {
+                                        // fire window resize event to change height
+                                        // window.dispatchEvent(
+                                        //     new Event("resize")
+                                        // );
+                                        // this.store.imgHeight = "auto";
+                                        // })}
                                     />
                                 </a>
                             ))}

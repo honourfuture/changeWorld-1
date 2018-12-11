@@ -1,6 +1,19 @@
 @import "../../common/theme.less";
 .H5Live {
     position: relative;
+    height: 100vh;
+    .bg-con {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        background-size: 100% 100%;
+        font-size: 14px;
+        color: #fff;
+        text-align: center;
+        padding-top: 50%;
+        box-sizing: border-box;
+    }
     .top-con {
         position: absolute;
         // background: transparent;
@@ -58,6 +71,7 @@
         height: 61.6px;
         color: #fff;
         text-align: center;
+        z-index: 100;
         div {
             padding-bottom: 2px;
         }
@@ -73,13 +87,13 @@
         left: 0;
         width: 100%;
         box-sizing: border-box;
-        bottom: 10px;
+        bottom: 0px;
         .scroll-con {
             overflow-y: auto;
-            max-height: 50vh;
+            max-height: 140px;
             width: 60%;
             box-sizing: border-box;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             .vip {
                 width: 8px;
                 height: 8px;
@@ -151,8 +165,9 @@
     }
     .carousel-con {
         position: absolute;
-        top: 90px;
+        top: 85px;
         width: 100%;
-        z-index: 1;
+        height: 200px;
+        z-index: 2;
     }
 }
