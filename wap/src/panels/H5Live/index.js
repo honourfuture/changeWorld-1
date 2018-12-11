@@ -158,13 +158,17 @@ export default class H5Live extends BaseComponent {
                             },
                             controls: "none",
                             listener(msg) {
-                                console.log(msg);
+                                // console.log(msg);
                                 if (msg.type == "error") {
                                     action(
                                         () =>
                                             (self.store.errorMsg =
                                                 "该直播已停止直播，下载app和她私聊吧")
                                     )();
+                                } else if (msg.type == "load") {
+                                    if (window.qcplayer) {
+                                        window.qcplayer.play();
+                                    }
                                 }
                             }
                         };
