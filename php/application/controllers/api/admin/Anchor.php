@@ -247,7 +247,7 @@ class Anchor extends API_Controller {
 						$this->load->model('Config_model');
 						$siteConfig = $this->Config_model->siteConfig();
 						if(isset($siteConfig['tpl_anchor_fans']) && is_array($siteConfig['tpl_anchor_fans']) && $siteConfig['tpl_anchor_fans']){
-							$rand = mt_rand(0, count($siteConfig['tpl_anchor_fans']));
+							$rand = mt_rand(0, count($siteConfig['tpl_anchor_fans']) - 1);
 							$tpl = $siteConfig['tpl_anchor_fans'][$rand];
 							$tpl['id'] = $anchor['user_id'];
 

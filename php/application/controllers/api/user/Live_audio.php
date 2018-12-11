@@ -451,7 +451,7 @@ class Live_audio extends API_Controller {
             	//音频评论
             	$tpl_comment = [];
 				if(isset($siteConfig['tpl_audio_comment']) && is_array($siteConfig['tpl_audio_comment']) && $siteConfig['tpl_audio_comment']){
-					$rand = mt_rand(0, count($siteConfig['tpl_audio_comment']));
+					$rand = mt_rand(0, count($siteConfig['tpl_audio_comment']) - 1);
 					$tpl_comment = $siteConfig['tpl_audio_comment'][$rand];
 				}
             	// $tpl_comment = isset($siteConfig['tpl_audio_comment']) ? $siteConfig['tpl_audio_comment'][0] : [];
@@ -484,7 +484,7 @@ class Live_audio extends API_Controller {
                 }
                 //音频播放
 				// $tpl = $siteConfig['tpl_audio_play'][0];
-				$rand = mt_rand(0, count($siteConfig['tpl_audio_play']));
+				$rand = mt_rand(0, count($siteConfig['tpl_audio_play']) - 1);
 				$tpl = $siteConfig['tpl_audio_play'][$rand];
                 $tpl['id'] = $id;
                 $queue = [
@@ -562,7 +562,7 @@ class Live_audio extends API_Controller {
 		                //音频评论
 			            $tpl_comment = [];
 						if(isset($siteConfig['tpl_audio_comment']) && is_array($siteConfig['tpl_audio_comment']) && $siteConfig['tpl_audio_comment']){
-							$rand = mt_rand(0, count($siteConfig['tpl_audio_comment']));
+							$rand = mt_rand(0, count($siteConfig['tpl_audio_comment']) - 1);
 							$tpl_comment = $siteConfig['tpl_audio_comment'][$rand];
 						}
 		                if($tpl_comment){
@@ -592,7 +592,7 @@ class Live_audio extends API_Controller {
 							}
 		                }
 						//音频播放
-						$rand = mt_rand(0, count($siteConfig['tpl_audio_play']));
+						$rand = mt_rand(0, count($siteConfig['tpl_audio_play']) - 1);
 						$tpl = $siteConfig['tpl_audio_play'][$rand];
 						$tpl['id'] = $id;
 		                $queue = [
