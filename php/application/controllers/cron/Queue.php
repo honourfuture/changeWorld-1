@@ -119,12 +119,18 @@ class Queue extends MY_Controller
 
     protected function step_num($row)
     {
-    	if(is_numeric($row['params']['step_num'])){
-			$step_num = $row['params']['step_num'];
-		}else{
-			list($min, $max) = explode('-', $row['params']['step_num']);
-			$step_num = mt_rand($min, $max);
-		}
+        $step_num = 1;
+        if(isset($row['params']['step_num'])){
+        	if(is_numeric($row['params']['step_num'])){
+    			$step_num = $row['params']['step_num'];
+    		}else{
+    			$arr = explode('-', $row['params']['step_num']);
+                if(count($arr) == 2){
+                    list($min, $max) = $arr;
+                    $step_num = mt_rand($min, $max);
+                }
+    		}
+        }
 
 		return $step_num;
     }

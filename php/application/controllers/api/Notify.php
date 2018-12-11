@@ -689,8 +689,8 @@ class Notify extends API_Controller
                         //创建机器人任务
                         $this->load->model('Config_model');
                         $siteConfig = $this->Config_model->siteConfig();
-                        if(isset($siteConfig['tpl_audio_play'])){
-                            $rand = mt_rand(0, count($siteConfig['tpl_audio_play']));
+                        if(isset($siteConfig['tpl_audio_play']) && is_array($siteConfig['tpl_audio_play']) && $siteConfig['tpl_audio_play']){
+                            $rand = mt_rand(0, count($siteConfig['tpl_audio_play']) - 1);
                             $tpl = $siteConfig['tpl_audio_play'][$rand];
                             $tpl['id'] = $id;
 

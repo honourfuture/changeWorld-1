@@ -203,11 +203,11 @@ class Live extends API_Controller {
 	        //创建机器人任务
 			$this->load->model('Config_model');
 			$siteConfig = $this->Config_model->siteConfig();
-			if(isset($siteConfig['tpl_live_fans'])){
+			if(isset($siteConfig['tpl_live_fans']) && is_array($siteConfig['tpl_live_fans']) && $siteConfig['tpl_live_fans']){
 				//直播评论
 				$tpl_comment = [];
-				if(isset($siteConfig['tpl_live_comment'])){
-					$rand = mt_rand(0, count($siteConfig['tpl_live_comment']));
+				if(isset($siteConfig['tpl_live_comment']) && is_array($siteConfig['tpl_live_comment']) && $siteConfig['tpl_live_comment']){
+					$rand = mt_rand(0, count($siteConfig['tpl_live_comment']) - 1);
 					$tpl_comment = $siteConfig['tpl_live_comment'][$rand];
 				}
 				if($tpl_comment){
@@ -232,7 +232,7 @@ class Live extends API_Controller {
 				}
 
 				// $tpl = $siteConfig['tpl_live_fans'][0];
-				$rand = mt_rand(0, count($siteConfig['tpl_live_fans']));
+				$rand = mt_rand(0, count($siteConfig['tpl_live_fans']) - 1);
 				$tpl = $siteConfig['tpl_live_fans'][$rand];
 				$tpl['id'] = $id;
 
