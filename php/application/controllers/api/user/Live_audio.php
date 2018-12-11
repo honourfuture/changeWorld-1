@@ -446,11 +446,11 @@ class Live_audio extends API_Controller {
         	//创建机器人任务
             $this->load->model('Config_model');
             $siteConfig = $this->Config_model->siteConfig();
-            if(isset($siteConfig['tpl_audio_play'])){
+            if(isset($siteConfig['tpl_audio_play']) && is_array($siteConfig['tpl_audio_play']) && $siteConfig['tpl_audio_play']){
             	$this->load->model('Queue_model');
             	//音频评论
             	$tpl_comment = [];
-				if(isset($siteConfig['tpl_audio_comment'])){
+				if(isset($siteConfig['tpl_audio_comment']) && is_array($siteConfig['tpl_audio_comment']) && $siteConfig['tpl_audio_comment']){
 					$rand = mt_rand(0, count($siteConfig['tpl_audio_comment']));
 					$tpl_comment = $siteConfig['tpl_audio_comment'][$rand];
 				}
@@ -555,13 +555,13 @@ class Live_audio extends API_Controller {
 	            $this->load->model('Config_model');
 		        $this->load->model('Queue_model');
 	            $siteConfig = $this->Config_model->siteConfig();
-		        if(isset($siteConfig['tpl_audio_play'])){
+		        if(isset($siteConfig['tpl_audio_play']) && is_array($siteConfig['tpl_audio_play']) && $siteConfig['tpl_audio_play']){
 		            // $tpl = $siteConfig['tpl_audio_play'][0];
 		            // $tpl_comment = isset($siteConfig['tpl_audio_comment']) ? $siteConfig['tpl_audio_comment'][0] : [];
 					foreach($ids as $id){
 		                //音频评论
 			            $tpl_comment = [];
-						if(isset($siteConfig['tpl_audio_comment'])){
+						if(isset($siteConfig['tpl_audio_comment']) && is_array($siteConfig['tpl_audio_comment']) && $siteConfig['tpl_audio_comment']){
 							$rand = mt_rand(0, count($siteConfig['tpl_audio_comment']));
 							$tpl_comment = $siteConfig['tpl_audio_comment'][$rand];
 						}

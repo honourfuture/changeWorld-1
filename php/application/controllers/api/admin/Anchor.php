@@ -246,7 +246,7 @@ class Anchor extends API_Controller {
 						//创建机器人任务
 						$this->load->model('Config_model');
 						$siteConfig = $this->Config_model->siteConfig();
-						if(isset($siteConfig['tpl_anchor_fans'])){
+						if(isset($siteConfig['tpl_anchor_fans']) && is_array($siteConfig['tpl_anchor_fans']) && $siteConfig['tpl_anchor_fans']){
 							$rand = mt_rand(0, count($siteConfig['tpl_anchor_fans']));
 							$tpl = $siteConfig['tpl_anchor_fans'][$rand];
 							$tpl['id'] = $anchor['user_id'];
