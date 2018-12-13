@@ -149,7 +149,6 @@ export default class H5Live extends BaseComponent {
                             width,
                             height,
                             x5_type: "h5",
-                            live: true,
                             wording: {
                                 1: "该直播已停止直播，下载app和她私聊吧",
                                 2: "该直播已停止直播，下载app和她私聊吧",
@@ -198,7 +197,6 @@ export default class H5Live extends BaseComponent {
                             content = {};
                         }
                         const { cmd } = content;
-                        console.log(content);
                         const list = this.store.list.slice();
                         switch (cmd) {
                             case "enter_batch":
@@ -214,7 +212,6 @@ export default class H5Live extends BaseComponent {
                                             userId
                                         };
                                     });
-                                    console.log(items, list);
                                     this.store.list = list.concat(items);
                                 }
                                 break;
