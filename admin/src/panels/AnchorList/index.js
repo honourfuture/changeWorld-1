@@ -234,7 +234,7 @@ export default class AnchorList extends BaseComponent {
                 checked={parseInt(record[column], 10) === 1}
                 onChange={value => {
                     if (column === "is_hot") {
-                        this.onOnOff(record.id, column, value);
+                        this.onOnOff(record.id, column, value ? 1 : 0);
                     } else {
                         this.onSwitch(
                             record.id,
