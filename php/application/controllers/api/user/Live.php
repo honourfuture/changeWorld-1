@@ -251,6 +251,16 @@ class Live extends API_Controller {
 	        // $update['token'] = $token;
 
 	        $user = $this->get_user();
+
+	        $this->load->driver('cache');
+	        $cache_id = 'live_sort_value';
+	        $cache_data = $this->_get($cache_id);
+	        if($cache_data === false){
+	        	$this->cache->file->save($cache_id, 0, 0);
+	        }
+	        if($sort = $this->cache->file->increment($cache_id)){
+	        	$this->Users_model->update($this->user_id, ['sort' => $sort]);
+	        }
 	        //消息推送
 	        try {
 		        $setting = config_item('push');

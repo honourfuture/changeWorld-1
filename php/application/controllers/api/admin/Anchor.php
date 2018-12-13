@@ -192,6 +192,70 @@ class Anchor extends API_Controller {
 	}
 
 	/**
+	 * @api {post} /api/admin/anchor/onoff 主播-开关
+	 * @apiVersion 1.0.0
+	 * @apiName anchor_onoff
+	 * @apiGroup admin
+	 *
+	 * @apiSampleRequest /api/admin/anchor/onoff
+	 *
+	 * @apiParam {Number} suid 账号唯一ID
+	 * @apiParam {String} suid_type 账号类型
+	 * @apiParam {String} sign 校验签名
+	 * @apiParam {Number} id 记录唯一ID
+	 * @apiParam {String} name 字段名称[is_hot]
+	 * @apiParam {Number} value [0, 1]
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {String} data 接口数据集
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *	    "data": "",
+	 *	    "status": 0,
+	 *	    "message": ""
+	 *	}
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+	public function onoff()
+	{
+		$id = (int)$this->input->get_post('id');
+		$name = trim($this->input->get_post('name'));
+		$value = (int)$this->input->get_post('value');
+
+		if(!$info = $this->Users_anchor_model->get($id)){
+			$this->ajaxReturn([], 1, '参数ID错误');
+		}
+		switch ($name) {
+			case 'is_hot':
+				$update = [$name => $value];
+				break;
+			default:
+				$update = [];
+				break;
+		}
+
+		$flag = false;
+		if($update){
+			$this->load->model('Users_model');
+			$flag = $this->Users_model->update($info['user_id'], $update);
+		}
+
+		if($flag){
+			$this->ajaxReturn();
+		}else{
+			$this->ajaxReturn([], 1, '操作失败');
+		}
+	}
+
+	/**
 	 * @api {post} /api/admin/anchor/save 主播管理--编辑
 	 * @apiVersion 1.0.0
 	 * @apiName anchor_save
