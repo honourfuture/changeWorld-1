@@ -173,7 +173,7 @@ export default class AlbumManager extends BaseComponent {
             }
         ];
         this.addInfo = [
-            { key: "anchor_uid", label: "主播id" },
+            // { key: "anchor_uid", label: "主播id" },
             { key: "title", label: "标题" },
             {
                 key: "album_class",
@@ -459,7 +459,7 @@ export default class AlbumManager extends BaseComponent {
     onAdd() {
         const setData = action(() => {
             this.store.addData = {
-                anchor_uid: "",
+                anchor_uid: Global.userInfo.account,
                 cover_image: "",
                 title: "",
                 album_class: this.album_class_list[0].id,
