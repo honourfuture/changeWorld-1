@@ -49,7 +49,7 @@ $config['live'] = array(
 	'appid' => '1256014700',
 	'api_key' => '03bf0596a1764280e524311cf5670fdc',
 	'push_key' => '18b06646116701e01d32dce38414c22a',
-	'bizid' => '21924',
+	'bizid' => '',//21924 变更为客户自己域名
 	//点播
 	'secret_id' => 'AKIDoV3RfhcWYfpD4rsuAF8SWQEWjliYokPv',
 	'secret_key' => 'Uq1d8NVSJySjuuiicKsHWfcR8f1c6OVh',
