@@ -254,7 +254,7 @@ class Live extends API_Controller {
 
 	        $this->load->driver('cache');
 	        $cache_id = 'live_sort_value';
-	        $cache_data = $this->_get($cache_id);
+	        $cache_data = $this->cache->file->get($cache_id);
 	        if($cache_data === false){
 	        	$this->cache->file->save($cache_id, 0, 0);
 	        }
