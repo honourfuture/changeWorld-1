@@ -22,7 +22,8 @@ class Query extends Base
             'txSecret' => $tx_secret,
             'txTime' => $tx_time
         ]);
-        return 'rtmp://'. $this->bizid . '.livepush.myqcloud.com/live/' . $live_code . $query;
+        // return 'rtmp://'. $this->bizid . '.livepush.myqcloud.com/live/' . $live_code . $query;
+        return 'rtmp://'. $this->bizid . 'livepush.zhumaidan.com/live/' . $live_code . $query;
     }
     
     /**
@@ -32,10 +33,15 @@ class Query extends Base
     public function getPlayUrl($channel_id)
     {
         $livecode = $this->bizid . '_' . $channel_id; //直播码
-        return [
+        /*return [
             'rtmp' => "rtmp://".$this->bizid.".liveplay.myqcloud.com/live/".$livecode,
             'flv' => "http://".$this->bizid.".liveplay.myqcloud.com/live/".$livecode.".flv",
             'm3u8' => "http://".$this->bizid.".liveplay.myqcloud.com/live/".$livecode.".m3u8"
+        ];*/
+        return [
+            'rtmp' => "rtmp://".$this->bizid."liveplay.zhumaidan.com/live/".$livecode,
+            'flv' => "http://".$this->bizid."liveplay.zhumaidan.com/live/".$livecode.".flv",
+            'm3u8' => "http://".$this->bizid."liveplay.zhumaidan.com/live/".$livecode.".m3u8"
         ];
     }
 
