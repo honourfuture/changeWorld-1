@@ -122,6 +122,9 @@ export default class H5Live extends BaseComponent {
             }
         });
     }
+    componentDidUpdate() {
+        this.refs.scroll.scrollTop = this.refs.scroll.scrollHeight;
+    }
     componentDidMount() {
         const self = this;
         Base.loadJs(
@@ -164,10 +167,10 @@ export default class H5Live extends BaseComponent {
                                             (self.store.errorMsg =
                                                 "该直播已停止直播，下载app和她私聊吧")
                                     )();
-                                } else if (msg.type == "load") {
-                                    if (window.qcplayer) {
-                                        window.qcplayer.play();
-                                    }
+                                    // } else if (msg.type == "load") {
+                                    //     // if (window.qcplayer) {
+                                    //         // window.qcplayer.play();
+                                    //     }
                                 }
                             }
                         };
@@ -371,7 +374,7 @@ export default class H5Live extends BaseComponent {
                     </Flex>
                 ) : null}
                 <div className="bottom-con">
-                    <div className="scroll-con">
+                    <div className="scroll-con" ref="scroll">
                         <div className="tips">
                             欢迎来到【猪买单平台】，请遵守国家相关法律，祝您愉快
                         </div>
