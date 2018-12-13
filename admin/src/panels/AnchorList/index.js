@@ -93,9 +93,15 @@ export default class AnchorList extends BaseComponent {
                     this.renderSwitch(text, record, "reward_point")
             },
             {
+                title: "热门主播",
+                dataIndex: "is_hot",
+                render: (text, record) =>
+                    this.renderSwitch(text, record, "is_hot")
+            },
+            {
                 title: "操作",
                 dataIndex: "status",
-                width: 200,
+                width: 150,
                 render: (text, record) => {
                     const { id, status } = record;
                     return (
@@ -226,15 +232,50 @@ export default class AnchorList extends BaseComponent {
         return (
             <Switch
                 checked={parseInt(record[column], 10) === 1}
-                onChange={value =>
-                    this.onSwitch(
-                        record.id,
-                        value ? 1 : 0,
-                        column,
-                        record.user_id
-                    )
-                }
+                onChange={value => {
+                    if (column === "is_hot") {
+                        this.onOnOff(record.id, column, value);
+                    } else {
+                        this.onSwitch(
+                            record.id,
+                            value ? 1 : 0,
+                            column,
+                            record.user_id
+                        );
+                    }
+                }}
             />
+        );
+    }
+    @action.bound
+    onOnOff(id, type, value) {
+        if (type !== "deleted") {
+            const list = this.store.list.slice();
+            const itemData = list.find(item => id === item.id);
+            itemData[type] = value;
+            this.store.list = list;
+        }
+        Base.POST(
+            {
+                act: "anchor",
+                op: "onoff",
+                id,
+                mod: "admin",
+                name: type,
+                value
+            },
+            () => {
+                switch (type) {
+                    case "deleted":
+                        {
+                            remove(this.store.list, item => id === item.id);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            },
+            this
         );
     }
     //是否启用
