@@ -123,7 +123,7 @@ export default class RobotLiveCommentTemplate extends BaseComponent {
                 act: "config",
                 op: "save",
                 mod: "admin",
-                tpl_audio_comment: JSON.stringify(list)
+                tpl_live_comment: JSON.stringify(list)
             },
             res => {
                 this.store.params = {};
@@ -207,7 +207,7 @@ export default class RobotLiveCommentTemplate extends BaseComponent {
                     act: "config",
                     op: "save",
                     mod: "admin",
-                    tpl_audio_comment: JSON.stringify(list)
+                    tpl_live_comment: JSON.stringify(list)
                 },
                 res => {
                     this.store.params = {};
@@ -228,7 +228,7 @@ export default class RobotLiveCommentTemplate extends BaseComponent {
     @action.bound
     requestData() {
         Base.GET({ act: "admin", op: "config" }, res => {
-            const list = res.data.tpl_audio_comment || [];
+            const list = res.data.tpl_live_comment || [];
             this.store.list = list;
             this.cacheData = list.map(item => ({ ...item }));
         });
