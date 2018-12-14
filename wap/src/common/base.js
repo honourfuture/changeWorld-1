@@ -143,7 +143,6 @@ export const Base = {
                             self.pushApp("openLoginView");
                             break;
                         default:
-                            f_failBack && f_failBack();
                             if (f_failBack) {
                                 f_failBack(res);
                             } else {

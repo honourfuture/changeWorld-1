@@ -143,14 +143,21 @@ export default class UserAudio extends BaseComponent {
             },
             { key: "price", label: "门票价格" },
             { key: "city_partner_rate", label: "城市分销比例(%)" },
-            { key: "two_level_rate", label: "二级分销比例(%)" }
+            { key: "two_level_rate", label: "加盟商分销比例(%)" }
         ];
     }
     @action.bound
     onAddUploadChange(info) {
         this.store.batchLoading = true;
         if (info.file.status === "done") {
-            const fileList = info.fileList;
+            if (info.file.response.status !== 0) {
+                this.store.batchLoading = false;
+                return message.error(info.file.response.message);
+            }
+            let { fileList } = info;
+            fileList = fileList.filter(
+                item => item.response.data && item.response.status === 0
+            );
             const len = fileList.length;
             let isAll = true;
             for (let i = 0; i < len; i++) {
@@ -176,13 +183,23 @@ export default class UserAudio extends BaseComponent {
     }
     @action.bound
     onUploadChange(info, key) {
-        console.log(info);
         const { addData } = this.store;
+        if (!addData) return;
         if (key === "video_url") {
             addData.loading = true;
         }
         if (info.file.status === "done" || info.file.status === "removed") {
-            const { fileList } = info;
+            if (
+                info.file.status === "done" &&
+                info.file.response.status !== 0
+            ) {
+                addData.loading = false;
+                return message.error(info.file.response.message);
+            }
+            let { fileList } = info;
+            fileList = fileList.filter(
+                item => item.response.data && item.response.status === 0
+            );
             const data = fileList.length > 0 ? fileList[0].response.data : {};
             addData[key] = data.file_url || "";
             if (key === "video_url") {
@@ -337,7 +354,7 @@ export default class UserAudio extends BaseComponent {
     onEdit(id) {
         const list = this.store.list.slice();
         const itemData = list.find(item => id === item.id);
-        this.store.addData = { ...itemData };
+        this.store.addData = { ...itemData, loading: false };
     }
     @action.bound
     onAdd() {

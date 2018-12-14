@@ -48,7 +48,7 @@ class CardItem extends BaseComponent {
             },
             { key: "price", label: "门票价格" },
             { key: "city_partner_rate", label: "城市分销比例(%)" },
-            { key: "two_level_rate", label: "二级分销比例(%)" }
+            { key: "two_level_rate", label: "加盟商分销比例(%)" }
         ];
     }
     @action.bound

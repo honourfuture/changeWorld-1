@@ -1,6 +1,6 @@
 import React from "react";
 import { BaseComponent, Base } from "../../common";
-import { Flex, Carousel, Modal, Button } from "antd-mobile";
+import { Flex, Carousel, Modal, Button, Toast, Input } from "antd-mobile";
 import "./H5Live.less";
 import { action } from "mobx";
 import { icon, h5 } from "../../images";
@@ -88,6 +88,7 @@ export default class H5Live extends BaseComponent {
         RongIMClient.setOnReceiveMessageListener({
             onReceived: function(message) {
                 const data = { ...message };
+                // console.log(data);
                 if (data.messageType === RongIMClient.MessageType.TextMessage) {
                     receive && receive(data);
                 }
@@ -219,6 +220,7 @@ export default class H5Live extends BaseComponent {
                                 }
                                 break;
                             case "user":
+                            case "system":
                                 {
                                     const { lv, name, text, userId } = content;
                                     list.push({
@@ -229,6 +231,22 @@ export default class H5Live extends BaseComponent {
                                         userId
                                     });
                                     this.store.list = list;
+                                }
+                                break;
+                            case "say_batch":
+                                {
+                                    const user = content.user || [];
+                                    const items = user.map(item => {
+                                        const { lv, name, userId, text } = item;
+                                        return {
+                                            cmd,
+                                            lv,
+                                            name,
+                                            text,
+                                            userId
+                                        };
+                                    });
+                                    this.store.list = list.concat(items);
                                 }
                                 break;
                             case "PPT":
@@ -260,6 +278,23 @@ export default class H5Live extends BaseComponent {
                 );
             });
         });
+    }
+    @action.bound
+    onReceive() {
+        const { mobi } = this;
+        if (!Base.checkMobile(mobi)) {
+            return Toast.fail("请输入正确的手机号");
+        }
+        const { invite_uid } = Base.getPageParams();
+        Base.POST(
+            { act: "share", op: "register", mobi, invite_uid },
+            res => {
+                this.onDown();
+            },
+            err => {
+                this.onDown();
+            }
+        );
     }
     @action.bound
     onDown() {
@@ -393,7 +428,11 @@ export default class H5Live extends BaseComponent {
                                         {item.lv}
                                     </div>
                                     <span>
-                                        {item.cmd === "user" ? (
+                                        {[
+                                            "user",
+                                            "say_batch",
+                                            "system"
+                                        ].indexOf(item.cmd) >= 0 ? (
                                             <span>
                                                 {`${item.name}:`}
                                                 <span style={{ color: "#fff" }}>
@@ -430,13 +469,19 @@ export default class H5Live extends BaseComponent {
                     onClose={action(() => (this.store.isShowDown = false))}
                 >
                     <div
-                        style={{ textAlign: "center" }}
+                        style={{ textAlign: "center", marginBottom: 20 }}
                         className="modal-title"
                     >
                         下载APP，体验更多精彩内容哦
                     </div>
+                    <input
+                        className="mobi-input"
+                        type="number"
+                        placeholder="请输入手机号"
+                        onChange={e => (this.mobi = e.target.value)}
+                    />
                     <Button
-                        onClick={this.onDown}
+                        onClick={this.onReceive}
                         className="open-btn"
                         type="warning"
                     >
