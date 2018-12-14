@@ -2,17 +2,28 @@
 .H5Live {
     position: relative;
     height: 100vh;
-    .bg-con {
+    background-size: 100% 100%;
+    .play-icon {
         position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 1;
-        background-size: 100% 100%;
-        font-size: 14px;
-        color: #fff;
+        top: calc(~"50% - 30px");
+        left: calc(~"50% - 30px");
+        transform: translate(-50% -50%);
+        width: 60px;
+        height: 60px;
+    }
+    .errorMsg-con {
         text-align: center;
-        padding-top: 50%;
-        box-sizing: border-box;
+        position: absolute;
+        top: 40%;
+        // left: 0;
+        width: 100%;
+        // z-index: 0;
+        // background-size: 100% 100%;
+        // font-size: 14px;
+        color: #fff;
+        // text-align: center;
+        // padding-top: 50%;
+        // box-sizing: border-box;
     }
     .top-con {
         position: absolute;

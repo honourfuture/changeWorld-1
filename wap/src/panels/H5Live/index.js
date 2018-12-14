@@ -14,7 +14,8 @@ export default class H5Live extends BaseComponent {
         carouselList: [],
         rebagData: {},
         isShowDown: false,
-        errorMsg: ""
+        errorMsg: "",
+        showPlay: Base.isIos
     };
     RongInit(app_key, token, succ, receive) {
         const { RongIMClient, RongIMLib } = window;
@@ -128,6 +129,13 @@ export default class H5Live extends BaseComponent {
     }
     componentDidMount() {
         const self = this;
+        document.body.addEventListener(
+            "touchstart",
+            action(() => {
+                this.store.showPlay = false;
+            }),
+            false
+        );
         Base.loadJs(
             "//imgcache.qq.com/open/qcloud/video/vcplayer/TcPlayer-2.2.2.js",
             () => {
@@ -316,24 +324,26 @@ export default class H5Live extends BaseComponent {
         });
     }
     render() {
-        const { list, carouselList, rebagData, errorMsg } = this.store;
+        const {
+            list,
+            carouselList,
+            rebagData,
+            errorMsg,
+            showPlay
+        } = this.store;
         const { views, nickname, chat_room_id, header } = this.store.info;
         return (
             <div
                 className="H5Live"
-                // style={{ backgroundImage: "url(" + h5.live_bg + ")" }}
+                style={{ backgroundImage: "url(" + h5.live_bg + ")" }}
             >
-                <div
-                    className="bg-con"
-                    style={{
-                        backgroundImage: "url(" + h5.live_bg + ")",
-                        width,
-                        height
-                    }}
-                >
-                    {errorMsg}
-                </div>
-                <div id="video-container" />
+                {errorMsg ? (
+                    <div className="errorMsg-con">{errorMsg}</div>
+                ) : null}
+                {showPlay ? (
+                    <img className="play-icon" src={h5.audio_play} alt="" />
+                ) : null}
+                <div id="video-container" style={{ opacity: 0 }} />
                 <div className="top-con">
                     <Flex justify="between">
                         <Flex className="left-con">
