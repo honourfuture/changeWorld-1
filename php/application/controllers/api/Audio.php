@@ -113,7 +113,9 @@ class Audio extends API_Controller {
 			$ret['audio']['has_favorite'] = $this->Users_collection_model->check_favorite($this->user_id, $id, 30);
 			$where = array('t_id' => $id, 'topic' => 2, 'sub_topic' => 30);
 			$ret['audio']['favorite'] = $this->Users_collection_model->count_by($where);
-			$ret['audio']['comment'] = 0;
+
+			$this->load->model('Album_audio_comment_model');
+			$ret['audio']['comment'] = $this->Album_audio_comment_model->count_by(['audio_id' => $id]);
 
 			$this->load->model('Audio_history_model');
 			$this->Audio_history_model->delete_by(['user_id' => $this->user_id, 'audio_id' => $id]);
