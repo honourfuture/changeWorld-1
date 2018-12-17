@@ -15,7 +15,7 @@ export default class H5Live extends BaseComponent {
         rebagData: {},
         isShowDown: false,
         errorMsg: "",
-        showPlay: Base.isIos
+        showPlay: Base.isWechat
     };
     RongInit(app_key, token, succ, receive) {
         const { RongIMClient, RongIMLib } = window;
