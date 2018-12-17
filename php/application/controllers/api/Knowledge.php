@@ -335,10 +335,30 @@ class Knowledge extends API_Controller
             }*/
             // 热门主播
             $ret['anchor'] = [];
+            $this->load->model('Room_model');
+            $this->db->select('anchor_uid');
+            $rows = $this->Room_model->order_by('id', 'desc')->limit($this->per_page)->get_many_by(['status' => 1]);
+            $a_uid = [];
+            if($rows){
+                foreach($rows as $item){
+                    $a_uid[] = $item['anchor_uid'];
+                }
+            }
+
             $this->db->select('id,nickname,header,v,exp,pretty_id,address,sex,summary');
-            $anchor = $this->Users_model->order_by(['sort' => 'desc', 'updated_at' => 'desc'])->limit($this->per_page)->get_many_by(['anchor' => 2, 'is_hot' => 1]);
+            if($a_uid){
+                $this->db->where_in('id', $a_uid);
+
+                $this->db->or_group_start();
+                $this->db->where('anchor', 2);
+                $this->db->where('is_hot', 1);
+                $this->db->group_end();
+            }else{
+                $this->db->where('anchor', 2);
+                $this->db->where('is_hot', 1);
+            }
+            $anchor = $this->Users_model->order_by(['sort' => 'desc', 'updated_at' => 'desc'])->limit($this->per_page)->get_all();
             if($anchor){
-                $this->load->model('Room_model');
                 foreach($anchor as $item){
                     // 直播信息
                     $item['live'] = [];
