@@ -331,7 +331,14 @@ export default class H5Live extends BaseComponent {
             errorMsg,
             showPlay
         } = this.store;
-        const { views, nickname, chat_room_id, header } = this.store.info;
+        const {
+            views,
+            nickname,
+            chat_room_id,
+            header,
+            price
+        } = this.store.info;
+        let isShowPrice = parseFloat(price) > 0;
         return (
             <div
                 className="H5Live"
@@ -473,16 +480,18 @@ export default class H5Live extends BaseComponent {
                     </Flex>
                 </div>
                 <Modal
-                    visible={this.store.isShowDown}
+                    visible={this.store.isShowDown || isShowPrice}
                     transparent={true}
-                    closable={true}
+                    closable={!isShowPrice}
                     onClose={action(() => (this.store.isShowDown = false))}
                 >
                     <div
                         style={{ textAlign: "center", marginBottom: 20 }}
                         className="modal-title"
                     >
-                        下载APP，体验更多精彩内容哦
+                        {isShowPrice
+                            ? "该直播为付费直播，请到app进行收听"
+                            : "下载APP，体验更多精彩内容哦"}
                     </div>
                     <input
                         className="mobi-input"
