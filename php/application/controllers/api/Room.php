@@ -159,6 +159,7 @@ class Room extends API_Controller {
 			$this->Live_online_model->insert($insert);
 
 			$ret = array();
+			$ret['price'] = $info['price'];
 			$ret['ppt'] = $info['ppt'];
 
 			$update = array();
