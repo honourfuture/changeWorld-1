@@ -357,7 +357,7 @@ class Partner extends API_Controller {
     		$this->load->model('Bind_shop_user_model');
     		$where = ['shop_id' => $shop_id, 'invite_uid' => $invite_uid];
 
-    		$this->db->select('group_concat(user_id, ",") as s_user_id');
+    		$this->db->select('group_concat(user_id) as s_user_id');
 			$row = $this->Bind_shop_user_model->get_by($where);
 
 			$this->db->where('pid', $invite_uid);
