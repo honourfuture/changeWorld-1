@@ -357,7 +357,32 @@ class Partner extends API_Controller {
     		$this->load->model('Bind_shop_user_model');
     		$where = ['shop_id' => $shop_id, 'invite_uid' => $invite_uid];
 
-    		$order_by = array('id' => 'desc');
+    		$this->db->select('group_concat(user_id, ",") as s_user_id');
+			$row = $this->Bind_shop_user_model->get_by($where);
+
+			$this->db->where('pid', $invite_uid);
+			if($row && $row['s_user_id']){
+				$this->db->or_where_in('id', explode(',', $row['s_user_id']));
+			}
+
+			$this->load->model('Users_model');
+			$ret['count'] = $this->db->count_all_results($this->Users_model->talbe(), false);
+
+			$this->db->select('id user_id,nickname,header,v,exp,mobi,pretty_id');
+			$this->db->order_by('id', 'desc');
+			$this->db->limit($this->per_page, $this->offset);
+			$users = $this->db->get($this->Users_model->talbe())->result_array();
+			if($users){
+				foreach($users as $item){
+					$grade = $this->Grade_model->exp_to_grade($item['exp']);
+					$item['lv'] = $grade['grade_name'];
+
+					$ret['list'][] = $item;
+				}
+			}
+
+
+    		/*$order_by = array('id' => 'desc');
 			$ret['count'] = $this->Bind_shop_user_model->count_by($where);
 			if($ret['count']){
 				$this->db->select('user_id');
@@ -383,7 +408,7 @@ class Partner extends API_Controller {
 						}
 					}
 				}
-			}
+			}*/
     	}
 
     	$this->ajaxReturn($ret);
