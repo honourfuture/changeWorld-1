@@ -305,7 +305,16 @@ class Seller extends API_Controller {
 		$where = array('enable' => 1);
 		$where['anchor_uid'] = $seller_uid;
 		if($album){
-			$where['album_id >'] = 0;
+			// $where['album_id >'] = 0;
+
+			$this->load->model('Album_model');
+			$this->db->select('group_concat(id, ",") as s_id');
+			$row = $this->Album_model->get_by(['enable' => 1, 'public' => 1]);
+			if($row && $row['s_id']){
+				$where['album_id'] = explode(',', $row['s_id']);
+			}else{
+				$where['1 >'] = 1;
+			}
 		}else{
 			$where['album_id'] = 0;
 		}
