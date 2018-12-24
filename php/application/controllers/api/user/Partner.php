@@ -366,12 +366,12 @@ class Partner extends API_Controller {
 			}
 
 			$this->load->model('Users_model');
-			$ret['count'] = $this->db->count_all_results($this->Users_model->talbe(), false);
+			$ret['count'] = $this->db->count_all_results($this->Users_model->table(), false);
 
 			$this->db->select('id user_id,nickname,header,v,exp,mobi,pretty_id');
 			$this->db->order_by('id', 'desc');
 			$this->db->limit($this->per_page, $this->offset);
-			$users = $this->db->get($this->Users_model->talbe())->result_array();
+			$users = $this->db->get($this->Users_model->table())->result_array();
 			if($users){
 				foreach($users as $item){
 					$grade = $this->Grade_model->exp_to_grade($item['exp']);
