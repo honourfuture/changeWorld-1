@@ -199,7 +199,6 @@ export default class H5Audio extends BaseComponent {
                     <div className="title">{title}</div>
                     <div className="audio-player-con">
                         <AudioPlayer
-                            autoPlay
                             className="audio-player"
                             ref={`audio_${0}`}
                             src={video_url}
