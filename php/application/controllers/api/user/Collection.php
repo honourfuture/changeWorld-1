@@ -78,6 +78,7 @@ class Collection extends API_Controller {
 					if($t_id){
 						$this->db->group_by('user_id');
 					}else{
+						$this->db->group_by('t_id');
 					}
 
 					$rows = $this->Users_collection_model->order_by('id', 'DESC')->limit($this->per_page, $this->offset)->get_many_by($where);
