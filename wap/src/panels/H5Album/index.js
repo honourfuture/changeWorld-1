@@ -16,7 +16,8 @@ export default class H5Album extends BaseComponent {
         audio: {},
         pageIndex: 10,
         modal_name: "",
-        modal_type: "音频"
+        modal_type: "音频",
+        isPay: true
     };
     componentDidMount() {
         const id = Base.getPageParams("id");
@@ -35,6 +36,9 @@ export default class H5Album extends BaseComponent {
                 if (parseFloat(res.data.price) > 0) {
                     this.store.modal_name = res.data.title;
                     this.store.modal_type = "专辑";
+                    this.store.isPay = true;
+                } else {
+                    this.store.isPay = false;
                 }
                 const { audio } = res.data;
                 this.store.audio = res.data.audio[audio.length - 1] || {};
@@ -103,7 +107,8 @@ export default class H5Album extends BaseComponent {
             pageIndex,
             audio,
             modal_name,
-            modal_type
+            modal_type,
+            isPay
         } = this.store;
         const invite_uid = Base.getPageParams("invite_uid");
         const { cover_image, title } = info;
@@ -177,7 +182,7 @@ export default class H5Album extends BaseComponent {
                         <AudioPlayer
                             className="audio-player"
                             ref={`audio_${0}`}
-                            src={video_url}
+                            src={isPay ? null : video_url}
                             onPlay={action(() => (this.store.play_id = 0))}
                         />
                     </div>

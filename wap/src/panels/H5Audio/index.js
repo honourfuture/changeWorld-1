@@ -15,7 +15,8 @@ export default class H5Audio extends BaseComponent {
         iosUrl: "",
         andoridUrl: "",
         pageIndex: 10,
-        modal_name: ""
+        modal_name: "",
+        isPay: true
     };
     componentDidMount() {
         const id = Base.getPageParams("id");
@@ -31,6 +32,11 @@ export default class H5Audio extends BaseComponent {
             ).url;
             Base.GET({ act: "audio", op: "play", id }, res => {
                 this.store.info = res.data;
+                if (parseFloat(res.data.audio.price) > 0) {
+                    this.store.isPay = true;
+                } else {
+                    this.store.isPay = false;
+                }
                 Base.GET(
                     { act: "album", op: "view", id: res.data.audio.album_id },
                     res => {
@@ -62,8 +68,10 @@ export default class H5Audio extends BaseComponent {
     onPlay(id, price, title) {
         const { play_id } = this.store;
         if (parseFloat(price) > 0) {
+            this.store.isPay = true;
             return (this.store.modal_name = title);
         }
+        this.store.isPay = false;
         const preAudio = this.refs[`audio_${play_id}`];
         if (preAudio) {
             preAudio.audio.pause();
@@ -114,7 +122,8 @@ export default class H5Audio extends BaseComponent {
             play_list,
             pageIndex,
             commentList,
-            modal_name
+            modal_name,
+            isPay
         } = this.store;
         const { audio = {}, user = {}, album = {} } = info;
         const { cover_image, title, video_url } = audio;
@@ -201,7 +210,7 @@ export default class H5Audio extends BaseComponent {
                         <AudioPlayer
                             className="audio-player"
                             ref={`audio_${0}`}
-                            src={video_url}
+                            src={isPay ? null : video_url}
                             onPlay={action(() => (this.store.play_id = 0))}
                         />
                     </div>
