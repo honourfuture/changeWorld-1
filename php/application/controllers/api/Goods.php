@@ -353,7 +353,7 @@ class Goods extends API_Controller {
 		$ret['sale_num'] = ($order_items && $order_items['total']) ? $order_items['total'] : 0;*/
 		$this->load->model('Record_goods_model');
 		$this->db->select('sum(num) as total');
-		$order_items = $this->Record_goods_model->get_by(['goods_id' => $goods_id, 'created_time >' => date("Y-m-d H:i:s", strtotime('-30 days'))]);
+		$order_items = $this->Record_goods_model->get_by(['goods_id' => $goods_id, 'created_at >' => date("Y-m-d H:i:s", strtotime('-30 days'))]);
 		$ret['sale_num'] = ($order_items && $order_items['total']) ? $order_items['total'] : 0;
 
 		$this->ajaxReturn($ret);
