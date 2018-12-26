@@ -197,7 +197,7 @@ class Order extends API_Controller {
 		$where = [];
 		if(isset($ret['status'][$status])){
 			$where['status'] = $status;
-			$where['refund_status'] = 0;
+			// $where['refund_status'] = 0;
 		}elseif($status == -1){
 
 		}elseif($status == -2){
