@@ -82,7 +82,7 @@ class Shop extends API_Controller {
 			$ret['seller'] = [];
 			$this->db->select('count(id) num,status');
 			$this->db->group_by('status');
-			if($seller = $this->Order_model->get_many_by(['seller_uid' => $this->user_id])){
+			if($seller = $this->Order_model->get_many_by(['seller_uid' => $this->user_id, 'refund_status' => 0, 'deleted' => 0])){
 				foreach($seller as $item){
 					$ret['seller'][$item['status']] = $item['num'];
 				}
