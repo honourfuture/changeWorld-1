@@ -348,8 +348,12 @@ class Goods extends API_Controller {
 		$ret['favorite'] = $this->Users_collection_model->check_favorite($this->user_id, $goods_id, 40);
 
 		//月销量
-		$this->db->select('sum(num) as total');
+		/*$this->db->select('sum(num) as total');
 		$order_items = $this->Order_items_model->get_by(['goods_id' => $goods_id, 'created_time >' => strtotime('-30 days')]);
+		$ret['sale_num'] = ($order_items && $order_items['total']) ? $order_items['total'] : 0;*/
+		$this->load->model('Record_goods_model');
+		$this->db->select('sum(num) as total');
+		$order_items = $this->Record_goods_model->get_by(['goods_id' => $goods_id, 'created_time >' => date("Y-m-d H:i:s", strtotime('-30 days'))]);
 		$ret['sale_num'] = ($order_items && $order_items['total']) ? $order_items['total'] : 0;
 
 		$this->ajaxReturn($ret);
