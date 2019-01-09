@@ -16,7 +16,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 	.service .main ul li{padding: 15px !important;}
 	.service .main ul li span{line-height: 22px;height: 22px;font-size: 14px;margin: 5px;overflow: hidden;}
 </style>
-<link rel="stylesheet" href="assets/<?php echo $tpl;?>/css/style.css?v=2019" />
+<link rel="stylesheet" href="assets/<?php echo $tpl;?>/css/style.css?v=201901" />
 </head>
 
 <body>

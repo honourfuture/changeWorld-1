@@ -58,7 +58,7 @@ span.title em{ width:100%; height:50px; float:left; line-height:50px; font-size:
 
 
 .service{ width:100%; float:left; padding:0 0 60px 0; background:#F9F9F9;}
-.service .main{ width:1200px; margin:0 auto; overflow:hidden;} 
+.service .main{ width:100%; margin:0 auto; overflow:hidden;} 
 .service .main ul{ width:100%; float:left; padding:100px 0 26px 0;}
 .service .main ul li{ width:270px; float:left; padding:0 15px;}
 .service .main ul li img{ width:100%; float:left; border-radius:5px; box-shadow:0 0 6px rgba(0,0,0,0.10);}
@@ -84,12 +84,12 @@ span.title em{ width:100%; height:50px; float:left; line-height:50px; font-size:
 */
 
 /*
-.service ul.canpin{ width:1200px; margin:0 auto; display:block; overflow:hidden; padding:50px 0 80px 0; clear:both;}
+.service ul.canpin{ width:100%; margin:0 auto; display:block; overflow:hidden; padding:50px 0 80px 0; clear:both;}
 .service ul.canpin li{ width:33.333%; height:84px; float:left; line-height:84px; padding:100px 0 0 0; font-size:28px; text-align:center;}
 .service ul.canpin li.w1{ background:url(../images/dx@icon.png) top no-repeat;}
 .service ul.canpin li.w2{ background:url(../images/dx@icon.png) top no-repeat;}
 .service ul.canpin li.w3{ background:url(../images/dx@icon.png) top no-repeat;}
-.service ul.jiazi{ width:1200px; margin:0 auto; display:block; overflow:hidden; padding:50px 0 53px 0; clear:both;}
+.service ul.jiazi{ width:100%; margin:0 auto; display:block; overflow:hidden; padding:50px 0 53px 0; clear:both;}
 .service ul.jiazi li{ width:33.333%; height:84px; float:left; line-height:84px; padding:100px 0 0 0; font-size:28px; text-align:center;}
 .service ul.jiazi li.w1{ background:url(../images/cx@icon.png) top no-repeat;}
 .service ul.jiazi li.w2{ background:url(../images/hz@icon.png) top no-repeat;}
@@ -122,10 +122,10 @@ span.title em{ width:100%; height:50px; float:left; line-height:50px; font-size:
 */
 
 .about{ width:100%; float:left; padding:0 0 24px 0;}
-.about .main{ width:1200px; margin:0 auto; display:block; overflow:hidden; padding:16px 0 0 0;}
-.about span{ width:1200px; float:left; padding:64px 0 0 0;}
+.about .main{ width:100%; margin:0 auto; display:block; overflow:hidden; padding:16px 0 0 0;}
+.about span{ width:100%; float:left; padding:64px 0 0 0;}
 .about span img{ width:100%; float:left; border-radius:4px;}
-.about .text{ width:1200px; float:left; padding:30px 0 50px 0; text-align:center;}
+.about .text{ width:100%; float:left; padding:30px 0 50px 0; text-align:center;}
 .about .text h2{ width:100%; float:left; line-height:2em; padding:20px 0 5px 0;}
 .about .text p{ width:100%; float:left; font-size:16px; line-height:28px; color:#666; padding:10px 0 0 0;}
 .about .text p b{ font-weight:normal; color:#000;}
