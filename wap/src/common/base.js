@@ -170,8 +170,8 @@ export const Base = {
             user_verify_data = user_verify_data
                 ? JSON.parse(user_verify_data)
                 : {
-                      sign: "fcc38bb0aa666e4d38e8b46db7809026",
-                      user_id: 10000013
+                      sign: "38f3284632d287520f46fad41e33e977",
+                      user_id: 1780626171
                   };
         } else {
             user_verify_data = user_verify_data
