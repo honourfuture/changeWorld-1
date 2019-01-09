@@ -25,9 +25,9 @@ body{ height:100%; display:block;}
 
 .footer{ width:100%; float:left; background:#292929;}
 .footer .main{ width:100%; height:150px; display:block; margin:0 auto;}
-.footer .main span.temt{ width:700px; float:left; padding:30px 0;}
-.footer .main p{ width:700px; height:36px; float:left; line-height:36px; font-size:16px; color:#FFF;}
-.footer .main span.hone{ width:200px; height:46px; float:right; padding:38px 0 38px 56px; background:url(../images/dh_icon.png) left no-repeat; background-size:auto 38px;}
+.footer .main span.temt{ width:60%; float:left; padding:30px 0;margin-right: -56px;text-align: right;}
+.footer .main p{ width:60%; height:36px; float:left; line-height:36px; font-size:16px; color:#FFF;}
+.footer .main span.hone{ width:40%; height:46px; float:left; padding:38px 0 38px 56px; background:url(../images/dh_icon.png) left no-repeat; background-size:auto 38px;}
 .footer .main span.hone i{ width:100%; height:20px; float:left; line-height:20px; font-size:14px; font-style:normal; color:#FFF;}
 .footer .main span.hone em{ width:100%; height:26px; float:left; line-height:20px; line-height:26px; color:#FFF; font-size:24px; font-style:normal;}
 .footer .main span.wmau{ width:100%; height:30px; float:left; line-height:30px; font-size:12px; text-align:center; color:#747474;}
