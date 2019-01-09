@@ -372,7 +372,7 @@ export default class H5Live extends BaseComponent {
                             )}
                             className="down-con"
                         >
-                            打开猪买单 关注主播
+                            打开 关注主播
                         </div>
                     </Flex>
                     <span className="room-id-con">
@@ -428,7 +428,7 @@ export default class H5Live extends BaseComponent {
                 <div className="bottom-con">
                     <div className="scroll-con" ref="scroll">
                         <div className="tips">
-                            欢迎来到【猪买单平台】，请遵守国家相关法律，祝您愉快
+                            欢迎来到【平台】，请遵守国家相关法律，祝您愉快
                         </div>
                         {list.map((item, index) => {
                             return (

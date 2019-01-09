@@ -1523,7 +1523,7 @@ layui
                         "版本： " +
                             a +
                             '<br>版权所有：<a href="http://http://www.zhumaidan.com" target="_blank">http://www.zhumaidan.com</a>',
-                        { title: "关于 猪买单", shade: !1 }
+                        { title: "关于 ", shade: !1 }
                     );
                 },
                 setSkin: function(i) {

@@ -98,7 +98,7 @@ export default class Share extends BaseComponent {
                             <Flex className="icon-con">
                                 <img src={icon.logo} alt="" />
                                 <div className="tips-con">
-                                    <div className="title">猪买单</div>
+                                    <div className="title"></div>
                                     <div className="tips">
                                         下载APP 立送
                                         {point}

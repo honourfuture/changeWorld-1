@@ -1,6 +1,6 @@
 /*
- * @Author: daihanqiao@126.com 
- * @Date: 2018-01-01 15:41:25 
+ * @Author: daihanqiao@126.com
+ * @Date: 2018-01-01 15:41:25
  * @Last Modified by: daihanqiao@126.com
  * @Last Modified time: 2018-01-01 15:47:14
  * 用户模块布局
@@ -23,9 +23,9 @@ export class UserLayout extends React.PureComponent {
                     <div className="top">
                         <div className="header">
                             <img alt="logo" className="logo" src={logo} />
-                            <span className="title">猪买单</span>
+                            <span className="title" />
                         </div>
-                        <div className="desc">猪买单 打造最好的直播平台</div>
+                        <div className="desc"> 活着就是为了改变世界</div>
                     </div>
                     <Switch>
                         <Redirect exact from="/user" to="/user/login" />

@@ -231,7 +231,7 @@ export class GlobalMenu extends BaseComponent {
                 <div className="log">
                     <Link to="/">
                         <img src={logo} alt="logo" />
-                        <h1>猪买单</h1>
+                        <h1></h1>
                     </Link>
                 </div>
                 <Menu

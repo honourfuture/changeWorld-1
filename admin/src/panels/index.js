@@ -83,18 +83,18 @@ import CollectTemplate from "./CollectTemplate";
 import RobotCommentManager from "./RobotCommentManager";
 import LiveTemplate from "./LiveTemplate";
 import RobotLiveCommentManager from "./RobotLiveCommentManager";
-import RobotCommentTemplate from './RobotCommentTemplate';
-import RobotLiveCommentTemplate from './RobotLiveCommentTemplate';
+import RobotCommentTemplate from "./RobotCommentTemplate";
+import RobotLiveCommentTemplate from "./RobotLiveCommentTemplate";
 export const panelsList = [
     {
-        path:'/robot/RobotLiveCommentTemplate',
-        component:RobotLiveCommentTemplate,
-        title:'直播评论模板',
+        path: "/robot/RobotLiveCommentTemplate",
+        component: RobotLiveCommentTemplate,
+        title: "直播评论模板"
     },
     {
-        path:'/robot/RobotCommentTemplate',
-        component:RobotCommentTemplate,
-        title:'音频评论模板',
+        path: "/robot/RobotCommentTemplate",
+        component: RobotCommentTemplate,
+        title: "音频评论模板"
     },
     {
         path: "/robot/RobotLiveCommentManager",
@@ -482,5 +482,5 @@ export const panelsList = [
 export const getPanelName = path => {
     const item = panelsList.find(item => item.path === path);
     const title = item ? item.title : "";
-    return title ? `${title}` : "猪买单";
+    return title ? `${title}` : "";
 };

@@ -1,10 +1,10 @@
 export default {
     links: [
         {
-            title: "猪买单",
+            title: "",
             href: "#"
             // blankTarget: true
         }
     ],
-    copyright: `${new Date().getFullYear()} 猪买单`
+    copyright: `${new Date().getFullYear()} `
 };

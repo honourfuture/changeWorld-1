@@ -169,7 +169,7 @@ export default class ActivifyShare extends BaseComponent {
                 </NavBar> */}
                 <div className="base-content">
                     <div className="share_box">
-                        <div className="share_box_brank">猪买单</div>
+                        <div className="share_box_brank"></div>
                         <div className="share_box_user">
                             <Flex className="user_box">
                                 <img

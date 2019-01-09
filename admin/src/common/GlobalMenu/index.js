@@ -1,6 +1,6 @@
 /*
- * @Author: daihanqiao@126.com 
- * @Date: 2018-01-01 15:38:48 
+ * @Author: daihanqiao@126.com
+ * @Date: 2018-01-01 15:38:48
  * @Last Modified by: daihanqiao@126.com
  * @Last Modified time: 2018-01-01 15:45:34
  * 通用侧边栏菜单组件
@@ -117,8 +117,7 @@ export class GlobalMenu extends BaseComponent {
     getDefaultCollapsedSubMenus(props) {
         const {
             location: { pathname }
-        } =
-            props || this.props;
+        } = props || this.props;
         const snippets = pathname.split("/").slice(1, -1);
         const currentPathSnippets = snippets.map((item, index) => {
             const arr = snippets.filter((_, i) => i <= index);
@@ -232,7 +231,7 @@ export class GlobalMenu extends BaseComponent {
                 <div className="log">
                     <Link to="/">
                         <img src={logo} alt="logo" />
-                        <h1>猪买单</h1>
+                        <h1 />
                     </Link>
                 </div>
                 <Menu
