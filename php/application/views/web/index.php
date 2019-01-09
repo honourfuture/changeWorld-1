@@ -16,7 +16,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 	.service .main ul li{padding: 15px !important;}
 	.service .main ul li span{line-height: 22px;height: 22px;font-size: 14px;margin: 5px;overflow: hidden;}
 </style>
-<link rel="stylesheet" href="assets/<?php echo $tpl;?>/css/style.css" />
+<link rel="stylesheet" href="assets/<?php echo $tpl;?>/css/style.css?v=2019" />
 </head>
 
 <body>
@@ -120,12 +120,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
 <script src="assets/<?php echo $tpl;?>/js/jquery-1.11.0.min.js"></script>
 <script src="assets/<?php echo $tpl;?>/js/jquery.navScroll.js"></script>
 <script>
-$('.nav').navScroll({
-	mobileDropdown: true,
-    mobileBreakpoint: 0,
-    scrollSpy: true
-});
 $(document).ready(function(){
+    $('.nav').navScroll({
+    	mobileDropdown: true,
+        mobileBreakpoint: 0,
+        scrollSpy: true
+    });
+
 	var navHeight= $(".Head").offset().top;
 	var navFix=$(".Head");
 	$(window).scroll(function(){
