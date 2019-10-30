@@ -21,6 +21,22 @@ class Users_model extends MY_Model
         parent::__construct();
     }
 
+    public function random_robot($where, $select = 'id')
+    {
+        $this->db->select('id');
+        $row = $this->order_by('id', 'asc')->limit(1)->get_by($where);
+        $min = $row['id'];
+
+        $this->db->select('id');
+        $row = $this->order_by('id', 'desc')->limit(1)->get_by($where);
+        $max = $row['id'];
+
+        $id = mt_rand($min, $max);
+        $where['id >'] = $id;
+        $this->db->select($select);
+        return $this->limit(1)->get_by($where);
+    }
+
     public function live_group_tag($user_id)
     {
         return 'live_group_'.$user_id;

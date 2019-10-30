@@ -60,8 +60,9 @@ class Chat extends API_Controller {
     	// 直播分享
     	if(! $this->user_id){
     		$this->load->model('Users_model');
-    		$this->db->select('id,nickname,header');
-    		$user = $this->Users_model->order_by(5000000, 'RANDOM')->limit(1)->get_by(['robot ' => 1]);
+    		// $this->db->select('id,nickname,header');
+    		// $user = $this->Users_model->order_by(5000000, 'RANDOM')->limit(1)->get_by(['robot ' => 1]);
+            $user = $this->Users_model->random_robot(['robot ' => 1], 'id,nickname,header');
     	}else{
     		$user = $this->get_user();
     	}

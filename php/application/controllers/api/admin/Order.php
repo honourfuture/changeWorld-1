@@ -55,10 +55,15 @@ class Order extends API_Controller {
 
 		$where = [];
 		$status = $this->input->get_post('status');
+		$order_sn = $this->input->get_post('order_sn');
 		if(isset($ret['status'][$status])){
 			$where['status'] = $status;
 		}else{
 			$where['1 >'] = 0;
+		}
+
+		if($order_sn){
+			$where['order_sn'] = $order_sn;
 		}
 
 		$order_by = array('id' => 'desc');

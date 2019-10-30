@@ -853,8 +853,9 @@ class Queue extends MY_Controller
                     $this->Queue_model->update($row['id'], ['status' => 0]);
 
                     for($i = 0; $i < $step_num; $i++){
-                        $this->db->select('id');
-                        $user = $this->Users_model->order_by('', 'RANDOM')->limit(1)->get_by(['robot' => 1]);
+                        /*$this->db->select('id');
+                        $user = $this->Users_model->order_by('', 'RANDOM')->limit(1)->get_by(['robot' => 1]);*/
+                        $user = $this->Users_model->random_robot(['robot ' => 1], 'id');
                         $insert = [
                             'audio_id' => $row['params']['id'],
                             'comment' => trim($a_line[$cache+$i], ','),
