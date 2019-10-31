@@ -75,10 +75,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'root',
-	'password' => '54ScnWg5tqyWxjrq',
-	'database' => 'ai_kuaimacode',
+	'hostname' => '39.106.18.66',
+	'username' => 'cworld',
+	'password' => 'MhcY3K3RWFCb6bje',
+	'database' => 'cworld',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
