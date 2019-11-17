@@ -229,6 +229,7 @@ class Users_points extends API_Controller {
 		}else{
 			$update = array('point' => $user['point'] + $data['value']);
 		}
+
 		$data['user_id'] = $params['c_user_id'];
 		$data['remark'] = $params['remark'];
 		$this->Users_points_model->insert($data);

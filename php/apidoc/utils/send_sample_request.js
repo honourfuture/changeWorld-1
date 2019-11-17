@@ -50,7 +50,9 @@ define([
       var paramType = {};
       $root.find(".sample-request-param:checked").each(function(i, element) {
           var group = $(element).data("sample-request-param-group-id");
-          $root.find("[data-sample-request-param-group=\"" + group + "\"]").each(function(i, element) {
+          $root.find("[data-sample-request-param-group=\"" + group + "\"]").not(function(){
+            return $(this).val() == "" && $(this).is("[data-sample-request-param-optional='true']");
+          }).each(function(i, element) {
             var key = $(element).data("sample-request-param-name");
             var value = element.value;
             if ( ! element.optional && element.defaultValue !== '') {
@@ -81,16 +83,20 @@ define([
       $root.find(".sample-request-response-json").html("Loading...");
       refreshScrollSpy();
 
-      _.each( param, function( val, key ) {
-          var t = paramType[ key ].toLowerCase();
-          if ( t === 'object' || t === 'array' ) {
-              try {
-                  param[ key ] = JSON.parse( val );
-              } catch (e) {
+      if (typeof header['Content-Type'] != 'undefined' && header['Content-Type'] == 'application/json') {
+          param = JSON.stringify(param)
+      }
+      else {
+          _.each( param, function( val, key ) {
+              var t = paramType[ key ].toLowerCase();
+              if ( t === 'object' || t === 'array' ) {
+                  try {
+                      param[ key ] = JSON.parse( val );
+                  } catch (e) {
+                  }
               }
-          }
-      });
-
+          });
+      }
       // send AJAX request, catch success or error callback
       var ajaxRequest = {
           url        : url,
@@ -110,9 +116,9 @@ define([
               jsonResponse = JSON.parse(jqXHR.responseText);
               jsonResponse = JSON.stringify(jsonResponse, null, 4);
           } catch (e) {
-              jsonResponse = data;
+              jsonResponse = jqXHR.responseText;
           }
-          $root.find(".sample-request-response-json").html(jsonResponse);
+          $root.find(".sample-request-response-json").text(jsonResponse);
           refreshScrollSpy();
       };
 
@@ -123,18 +129,18 @@ define([
               jsonResponse = JSON.parse(jqXHR.responseText);
               jsonResponse = JSON.stringify(jsonResponse, null, 4);
           } catch (e) {
-              jsonResponse = escape(jqXHR.responseText);
+              jsonResponse = jqXHR.responseText;
           }
 
           if (jsonResponse)
-              message += "<br>" + jsonResponse;
+              message += "\n" + jsonResponse;
 
           // flicker on previous error to make clear that there is a new response
           if($root.find(".sample-request-response").is(":visible"))
               $root.find(".sample-request-response").fadeTo(1, 0.1);
 
           $root.find(".sample-request-response").fadeTo(250, 1);
-          $root.find(".sample-request-response-json").html(message);
+          $root.find(".sample-request-response-json").text(message);
           refreshScrollSpy();
       };
   }
