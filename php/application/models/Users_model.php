@@ -215,6 +215,20 @@ class Users_model extends MY_Model
             }
         }
 
+        //生成用户的邀请码（7位纯数字）
+        $invite_code = mt_rand(1000000, 9999999);
+        $gen_invite_code = true;
+        while($gen_invite_code){
+            $temp_user = $this->Users_model->get_by(['invite_code' => $invite_code]);
+            if(empty($temp_user)){
+                $gen_invite_code = false;
+            }else{
+                $invite_code = mt_rand(1000000, 9999999);
+            }
+        }
+        //保存邀请码
+        $data['invite_code'] = $invite_code;
+
         $max_id = $this->Users_model->get_next_id();
         if(! $max_id || strlen($max_id) < 8){
             $max_id = 10000000;
@@ -224,6 +238,7 @@ class Users_model extends MY_Model
             $max_id += 3;
         }
         $data['id'] = $max_id;
+
 
         $user_id = $this->Users_model->insert($data);
 
