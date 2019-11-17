@@ -31,6 +31,7 @@ class Grade_rule_model extends MY_Model
             'live_view' => '听直播',
             'audio' => '听音频',
             'buyer' => '买东西',
+            'sign_in' => '签到'
     	);
     }
 
@@ -51,6 +52,9 @@ class Grade_rule_model extends MY_Model
                 break;
             case 'buyer'://消费 1元=1经验
                 $exp = 1 * $value;
+                break;
+            case 'sign_in'://消费 1元=1经验
+                $exp = $value;
                 break;
             default:
                 $exp = 0;

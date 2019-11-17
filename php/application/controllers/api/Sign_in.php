@@ -146,6 +146,7 @@ class Sign_in extends API_Controller
             }
 
             $this->pointsCalculation($this->user_id, $value, 'sign_in', '签到增加');
+            $this->gradeCalculation($this->user_id, 'sign_in', rand(1, 4));
             return $this->ajaxReturn([], 0, '签到成功');
         } else {
             return $this->ajaxReturn([], 3, '服务器出错');
