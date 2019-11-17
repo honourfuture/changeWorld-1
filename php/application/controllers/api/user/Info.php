@@ -161,6 +161,9 @@ class Info extends API_Controller {
 	 * @apiSuccess {String} data.collection 收藏数量
 	 * @apiSuccess {String} data.follow 关注数量
 	 * @apiSuccess {String} data.fans 粉丝数量
+     * @apiSuccess {String} data.user.invite_user_id 邀请人id
+     * @apiSuccess {String} data.user.invite_user_header 邀请人昵称
+     * @apiSuccess {String} data.user.invite_user_nickname 邀请人头像
 	 *
 	 * @apiSuccessExample {json} Success-Response:
 	 * {
@@ -199,6 +202,7 @@ class Info extends API_Controller {
 		$ret = array();
 
 		$user = $this->get_user();
+
 		$ret['user'] = array(
 			'id' => $user['id'],
 			'nickname' => $user['nickname'],
@@ -215,6 +219,19 @@ class Info extends API_Controller {
 			'sex' => $user['sex'],
 			'headhunter' => $user['headhunter'],
 		);
+
+        //查询邀请人信息
+        if(!empty($user['pid'])){
+            $this->load->model('Users_model');
+            $invite_user = $this->Users_model->get($user['pid']);
+            $ret['user']['invite_user_id'] = $user['pid'];
+            $ret['user']['invite_user_header'] = $invite_user['header'];
+            $ret['user']['invite_user_nickname'] = $invite_user['nickname'];
+        }else{
+            $ret['user']['invite_user_id'] = '';
+            $ret['user']['invite_user_header'] = '';
+            $ret['user']['invite_user_nickname'] = '';
+        }
 
 		$this->load->model('Grade_model');
 		$grade = $this->Grade_model->exp_to_grade($user['exp']);
@@ -308,7 +325,7 @@ class Info extends API_Controller {
 	 *
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
-	 * @apiParam {String} act 操作动作 [修改密码:password, 支付密码:pay_password, 头像:header, 昵称:nickname, 性别:sex 0保密 1男 2女, 出生日期:birth 2018-01-12, 简介:summary, 地址:address（省市区名称），背景图：bg_image]
+	 * @apiParam {String} act 操作动作 [修改密码:password, 支付密码:pay_password, 头像:header, 昵称:nickname, 性别:sex 0保密 1男 2女, 出生日期:birth 2018-01-12, 简介:summary, 地址:address（省市区名称），背景图：bg_image，邀请人绑定：invite_code]
 	 *
 	 * @apiDescription
 	 * password传递参数: old_password,new_password,confirm_password
@@ -428,6 +445,10 @@ class Info extends API_Controller {
 			case 'bg_image':
 				$bg_image = $this->input->get_post('bg_image');
 				$update = array('bg_image' => $bg_image);
+				break;
+			case 'invite_code'://邀请人绑定
+				$invite_code = $this->input->get_post('invite_code');
+				$update = array('invite_code' => $invite_code);
 				break;
 			default :
 				$this->ajaxReturn([], 1, '未知操作');
