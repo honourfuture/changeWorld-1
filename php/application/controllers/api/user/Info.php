@@ -448,7 +448,15 @@ class Info extends API_Controller {
 				break;
 			case 'invite_code'://邀请人绑定
 				$invite_code = $this->input->get_post('invite_code');
-				$update = array('invite_code' => $invite_code);
+                $user = $this->get_user();
+                if(!empty($user['pid'])){
+                    $this->ajaxReturn([], 1, '已经添加了绑定关系');
+                }
+                $temp_user = $this->Users_model->get_by(['invite_code' => $invite_code]);
+                if(empty($temp_user)){
+                    $this->ajaxReturn([], 1, '邀请人信息不存在');
+                }
+				$update = array('pid' => $temp_user['id']);
 				break;
 			default :
 				$this->ajaxReturn([], 1, '未知操作');
