@@ -300,6 +300,64 @@ class API_Controller extends MY_Controller
         $this->ajaxReturn($ret);
     }
 
+
+    /**
+     * @param $userId
+     * @param $value
+     * @param $rule_name
+     * @param $remark
+     * @param int $isAdd  1 为增加 0为减少
+     * @return array
+     */
+    public function pointsCalculation($userId, $value, $rule_name, $remark, $isAdd = 1)
+    {
+        try{
+            $this->load->model('Users_model');
+            $this->load->model('Users_points_model');
+
+            $user = $this->Users_model->get($userId);
+            if(!$user){
+                return array(
+                    'status' => 400,
+                    'msg' => '会员不存在'
+                );
+            }
+
+            if($isAdd){
+                $update = array('point' => $user['point'] + $value);
+            }else{
+                if($user['point'] < $value){
+                    return array(
+                        'status' => 400,
+                        'msg' => '会员积分不足，请检查！'
+                    );
+                }
+
+                $update = array('point' => $user['point'] - $value);
+            }
+
+
+            $data['user_id'] = $userId;
+            $data['rule_name'] = $rule_name;
+            $data['remark'] = $remark;
+            $data['value'] = $value;
+            $data['is_add'] = $isAdd;
+
+            $this->Users_points_model->insert($data);
+
+            $this->Users_model->update_by(array('id' => $data['user_id']), $update);
+        }catch (Exception $exception){
+            return array(
+                'status' => 400,
+                'msg' => '操作失败，请联系管理员'.$exception->getMessage()
+            );
+        }
+        return array(
+            'status' => 200,
+            'msg' => '操作成功'
+        );
+    }
+
     // 广告
     protected function ad($ad_position_id, $limit = 1)
     {

@@ -81,7 +81,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Activity.php",
+    "filename": "application/controllers/api/admin/Activity.php",
     "groupTitle": "admin"
   },
   {
@@ -201,7 +201,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Activity_class.php",
+    "filename": "application/controllers/api/Activity_class.php",
     "groupTitle": "admin"
   },
   {
@@ -300,7 +300,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Activity.php",
+    "filename": "application/controllers/api/admin/Activity.php",
     "groupTitle": "admin"
   },
   {
@@ -406,7 +406,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Activity.php",
+    "filename": "application/controllers/api/admin/Activity.php",
     "groupTitle": "admin"
   },
   {
@@ -505,7 +505,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Activity.php",
+    "filename": "application/controllers/api/admin/Activity.php",
     "groupTitle": "admin"
   },
   {
@@ -611,7 +611,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Ad.php",
+    "filename": "application/controllers/api/admin/Ad.php",
     "groupTitle": "admin"
   },
   {
@@ -717,7 +717,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Ad_position.php",
+    "filename": "application/controllers/api/admin/Ad_position.php",
     "groupTitle": "admin"
   },
   {
@@ -837,7 +837,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Ad_position.php",
+    "filename": "application/controllers/api/admin/Ad_position.php",
     "groupTitle": "admin"
   },
   {
@@ -992,7 +992,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Ad.php",
+    "filename": "application/controllers/api/admin/Ad.php",
     "groupTitle": "admin"
   },
   {
@@ -1077,7 +1077,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Admin.php",
+    "filename": "application/controllers/api/admin/Admin.php",
     "groupTitle": "admin"
   },
   {
@@ -1162,7 +1162,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Admin.php",
+    "filename": "application/controllers/api/admin/Admin.php",
     "groupTitle": "admin"
   },
   {
@@ -1247,7 +1247,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Admin_log.php",
+    "filename": "application/controllers/api/admin/Admin_log.php",
     "groupTitle": "admin"
   },
   {
@@ -1353,7 +1353,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Admin_role.php",
+    "filename": "application/controllers/api/admin/Admin_role.php",
     "groupTitle": "admin"
   },
   {
@@ -1452,7 +1452,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Admin_role.php",
+    "filename": "application/controllers/api/admin/Admin_role.php",
     "groupTitle": "admin"
   },
   {
@@ -1572,7 +1572,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Admin_role.php",
+    "filename": "application/controllers/api/admin/Admin_role.php",
     "groupTitle": "admin"
   },
   {
@@ -1713,7 +1713,99 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Admin.php",
+    "filename": "application/controllers/api/admin/Admin.php",
+    "groupTitle": "admin"
+  },
+  {
+    "type": "get",
+    "url": "/api/admin/album_audio_comment",
+    "title": "评价管理-专辑列表",
+    "version": "1.0.0",
+    "name": "album_audio_comment",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/admin/album_audio_comment"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "admin_id",
+            "description": "<p>管理员唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account",
+            "description": "<p>登录账号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>-1全部</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {},\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "application/controllers/api/admin/Album_audio_comment.php",
     "groupTitle": "admin"
   },
   {
@@ -1833,7 +1925,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Album_class.php",
+    "filename": "application/controllers/api/Album_class.php",
     "groupTitle": "admin"
   },
   {
@@ -1967,7 +2059,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Album_tag.php",
+    "filename": "application/controllers/api/Album_tag.php",
     "groupTitle": "admin"
   },
   {
@@ -2059,7 +2151,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Anchor.php",
+    "filename": "application/controllers/api/admin/Anchor.php",
     "groupTitle": "admin"
   },
   {
@@ -2179,7 +2271,113 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Anchor_class.php",
+    "filename": "application/controllers/api/Anchor_class.php",
+    "groupTitle": "admin"
+  },
+  {
+    "type": "post",
+    "url": "/api/admin/anchor/onoff",
+    "title": "主播-开关",
+    "version": "1.0.0",
+    "name": "anchor_onoff",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/admin/anchor/onoff"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "suid",
+            "description": "<p>账号唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "suid_type",
+            "description": "<p>账号类型</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>记录唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>字段名称[is_hot]</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "value",
+            "description": "<p>[0, 1]</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": \"\",\n\t    \"status\": 0,\n\t    \"message\": \"\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "application/controllers/api/admin/Anchor.php",
     "groupTitle": "admin"
   },
   {
@@ -2278,7 +2476,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Anchor.php",
+    "filename": "application/controllers/api/admin/Anchor.php",
     "groupTitle": "admin"
   },
   {
@@ -2370,7 +2568,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Anchor.php",
+    "filename": "application/controllers/api/admin/Anchor.php",
     "groupTitle": "admin"
   },
   {
@@ -2455,7 +2653,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/App_map.php",
+    "filename": "application/controllers/api/admin/App_map.php",
     "groupTitle": "admin"
   },
   {
@@ -2575,7 +2773,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/App_map.php",
+    "filename": "application/controllers/api/admin/App_map.php",
     "groupTitle": "admin"
   },
   {
@@ -2681,7 +2879,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/App_version.php",
+    "filename": "application/controllers/api/admin/App_version.php",
     "groupTitle": "admin"
   },
   {
@@ -2829,7 +3027,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/App_version.php",
+    "filename": "application/controllers/api/admin/App_version.php",
     "groupTitle": "admin"
   },
   {
@@ -2949,7 +3147,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Article_class.php",
+    "filename": "application/controllers/api/Article_class.php",
     "groupTitle": "admin"
   },
   {
@@ -3027,7 +3225,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Article.php",
+    "filename": "application/controllers/api/Article.php",
     "groupTitle": "admin"
   },
   {
@@ -3168,7 +3366,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Article.php",
+    "filename": "application/controllers/api/Article.php",
     "groupTitle": "admin"
   },
   {
@@ -3323,7 +3521,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Bank.php",
+    "filename": "application/controllers/api/Bank.php",
     "groupTitle": "admin"
   },
   {
@@ -3408,7 +3606,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Config.php",
+    "filename": "application/controllers/api/admin/Config.php",
     "groupTitle": "admin"
   },
   {
@@ -3493,7 +3691,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Config.php",
+    "filename": "application/controllers/api/admin/Config.php",
     "groupTitle": "admin"
   },
   {
@@ -3578,7 +3776,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Config.php",
+    "filename": "application/controllers/api/admin/Config.php",
     "groupTitle": "admin"
   },
   {
@@ -3719,7 +3917,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Express.php",
+    "filename": "application/controllers/api/Express.php",
     "groupTitle": "admin"
   },
   {
@@ -3818,7 +4016,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Feedback.php",
+    "filename": "application/controllers/api/Feedback.php",
     "groupTitle": "admin"
   },
   {
@@ -3938,7 +4136,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Goods_attr_category.php",
+    "filename": "application/controllers/api/Goods_attr_category.php",
     "groupTitle": "admin"
   },
   {
@@ -4058,7 +4256,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Goods_class.php",
+    "filename": "application/controllers/api/Goods_class.php",
     "groupTitle": "admin"
   },
   {
@@ -4171,7 +4369,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Grade.php",
+    "filename": "application/controllers/api/admin/Grade.php",
     "groupTitle": "admin"
   },
   {
@@ -4256,7 +4454,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Grade_rule.php",
+    "filename": "application/controllers/api/admin/Grade_rule.php",
     "groupTitle": "admin"
   },
   {
@@ -4341,7 +4539,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Grade_rule.php",
+    "filename": "application/controllers/api/admin/Grade_rule.php",
     "groupTitle": "admin"
   },
   {
@@ -4468,7 +4666,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Grade.php",
+    "filename": "application/controllers/api/admin/Grade.php",
     "groupTitle": "admin"
   },
   {
@@ -4560,7 +4758,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Headhunter.php",
+    "filename": "application/controllers/api/admin/Headhunter.php",
     "groupTitle": "admin"
   },
   {
@@ -4659,7 +4857,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Headhunter.php",
+    "filename": "application/controllers/api/admin/Headhunter.php",
     "groupTitle": "admin"
   },
   {
@@ -4751,7 +4949,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Headhunter.php",
+    "filename": "application/controllers/api/admin/Headhunter.php",
     "groupTitle": "admin"
   },
   {
@@ -4850,7 +5048,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Headhunter.php",
+    "filename": "application/controllers/api/admin/Headhunter.php",
     "groupTitle": "admin"
   },
   {
@@ -4970,7 +5168,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Live_class.php",
+    "filename": "application/controllers/api/Live_class.php",
     "groupTitle": "admin"
   },
   {
@@ -5111,7 +5309,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Live_gift.php",
+    "filename": "application/controllers/api/Live_gift.php",
     "groupTitle": "admin"
   },
   {
@@ -5231,7 +5429,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Live_tag.php",
+    "filename": "application/controllers/api/Live_tag.php",
     "groupTitle": "admin"
   },
   {
@@ -5358,7 +5556,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Login.php",
+    "filename": "application/controllers/api/admin/Login.php",
     "groupTitle": "admin"
   },
   {
@@ -5443,7 +5641,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Login_out.php",
+    "filename": "application/controllers/api/admin/Login_out.php",
     "groupTitle": "admin"
   },
   {
@@ -5577,7 +5775,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Mailbox.php",
+    "filename": "application/controllers/api/Mailbox.php",
     "groupTitle": "admin"
   },
   {
@@ -5669,13 +5867,13 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Order.php",
+    "filename": "application/controllers/api/admin/Order.php",
     "groupTitle": "admin"
   },
   {
     "type": "get",
     "url": "/api/admin/order_evaluate",
-    "title": "评价管理-列表",
+    "title": "评价管理-订单商品列表",
     "version": "1.0.0",
     "name": "order_evaluate",
     "group": "admin",
@@ -5761,7 +5959,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Order_evaluate.php",
+    "filename": "application/controllers/api/admin/Order_evaluate.php",
     "groupTitle": "admin"
   },
   {
@@ -5853,7 +6051,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Order_refund.php",
+    "filename": "application/controllers/api/admin/Order_refund.php",
     "groupTitle": "admin"
   },
   {
@@ -5945,7 +6143,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Order.php",
+    "filename": "application/controllers/api/admin/Order.php",
     "groupTitle": "admin"
   },
   {
@@ -6023,7 +6221,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Partner_city.php",
+    "filename": "application/controllers/api/admin/Partner_city.php",
     "groupTitle": "admin"
   },
   {
@@ -6122,7 +6320,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Partner_city.php",
+    "filename": "application/controllers/api/admin/Partner_city.php",
     "groupTitle": "admin"
   },
   {
@@ -6207,7 +6405,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Points_rule.php",
+    "filename": "application/controllers/api/admin/Points_rule.php",
     "groupTitle": "admin"
   },
   {
@@ -6292,7 +6490,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Points_rule.php",
+    "filename": "application/controllers/api/admin/Points_rule.php",
     "groupTitle": "admin"
   },
   {
@@ -6330,6 +6528,13 @@ define({ "api": [
             "optional": false,
             "field": "sign",
             "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>出售状态 -1全部 0未售 1已售</p>"
           }
         ]
       }
@@ -6489,7 +6694,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Pretty.php",
+    "filename": "application/controllers/api/admin/Pretty.php",
     "groupTitle": "admin"
   },
   {
@@ -6623,7 +6828,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Pretty.php",
+    "filename": "application/controllers/api/admin/Pretty.php",
     "groupTitle": "admin"
   },
   {
@@ -6729,7 +6934,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Push.php",
+    "filename": "application/controllers/api/admin/Push.php",
     "groupTitle": "admin"
   },
   {
@@ -6821,7 +7026,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Push.php",
+    "filename": "application/controllers/api/admin/Push.php",
     "groupTitle": "admin"
   },
   {
@@ -6948,7 +7153,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Queue.php",
+    "filename": "application/controllers/api/admin/Queue.php",
     "groupTitle": "admin"
   },
   {
@@ -7040,7 +7245,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Queue.php",
+    "filename": "application/controllers/api/admin/Queue.php",
     "groupTitle": "admin"
   },
   {
@@ -7084,7 +7289,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "task",
-            "description": "<p>任务类型 ['fans', 'audio_play', 'album_collection', 'activity', 'live_join']</p>"
+            "description": "<p>任务类型 ['fans', 'audio_play', 'album_collection', 'activity', 'live_join', 'activity_vote']</p>"
           }
         ]
       }
@@ -7132,7 +7337,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Queue.php",
+    "filename": "application/controllers/api/admin/Queue.php",
     "groupTitle": "admin"
   },
   {
@@ -7224,7 +7429,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Queue.php",
+    "filename": "application/controllers/api/admin/Queue.php",
     "groupTitle": "admin"
   },
   {
@@ -7316,7 +7521,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Queue.php",
+    "filename": "application/controllers/api/admin/Queue.php",
     "groupTitle": "admin"
   },
   {
@@ -7422,7 +7627,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Recharge.php",
+    "filename": "application/controllers/api/admin/Recharge.php",
     "groupTitle": "admin"
   },
   {
@@ -7542,7 +7747,191 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Recharge.php",
+    "filename": "application/controllers/api/admin/Recharge.php",
+    "groupTitle": "admin"
+  },
+  {
+    "type": "post",
+    "url": "/api/admin/robot/comment_import",
+    "title": "机器人-评论导入",
+    "version": "1.0.0",
+    "name": "robot_comment_import",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/admin/robot/comment_import"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "admin_id",
+            "description": "<p>管理员唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account",
+            "description": "<p>登录账号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "filename",
+            "description": "<p>txt文件地址</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "application/controllers/api/admin/Robot.php",
+    "groupTitle": "admin"
+  },
+  {
+    "type": "get",
+    "url": "/api/admin/robot/comment_list",
+    "title": "机器人-评论列表",
+    "version": "1.0.0",
+    "name": "robot_comment_list",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/admin/robot/comment_list"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "admin_id",
+            "description": "<p>管理员唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account",
+            "description": "<p>登录账号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "topic",
+            "description": "<p>评论主题</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "application/controllers/api/admin/Robot.php",
     "groupTitle": "admin"
   },
   {
@@ -7634,7 +8023,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Robot.php",
+    "filename": "application/controllers/api/admin/Robot.php",
     "groupTitle": "admin"
   },
   {
@@ -7719,7 +8108,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Robot.php",
+    "filename": "application/controllers/api/admin/Robot.php",
     "groupTitle": "admin"
   },
   {
@@ -7811,7 +8200,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Robot.php",
+    "filename": "application/controllers/api/admin/Robot.php",
     "groupTitle": "admin"
   },
   {
@@ -7896,7 +8285,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Robot.php",
+    "filename": "application/controllers/api/admin/Robot.php",
     "groupTitle": "admin"
   },
   {
@@ -8002,7 +8391,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Robot.php",
+    "filename": "application/controllers/api/admin/Robot.php",
     "groupTitle": "admin"
   },
   {
@@ -8087,7 +8476,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Robot.php",
+    "filename": "application/controllers/api/admin/Robot.php",
     "groupTitle": "admin"
   },
   {
@@ -8179,7 +8568,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Robot.php",
+    "filename": "application/controllers/api/admin/Robot.php",
     "groupTitle": "admin"
   },
   {
@@ -8285,7 +8674,99 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Room.php",
+    "filename": "application/controllers/api/admin/Room.php",
+    "groupTitle": "admin"
+  },
+  {
+    "type": "get",
+    "url": "/api/admin/room/stop",
+    "title": "直播间-禁播",
+    "version": "1.0.0",
+    "name": "room_stop",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/admin/room/stop"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "admin_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>直播间ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>说明原因</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "application/controllers/api/admin/Room.php",
     "groupTitle": "admin"
   },
   {
@@ -8412,7 +8893,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Search_words.php",
+    "filename": "application/controllers/api/Search_words.php",
     "groupTitle": "admin"
   },
   {
@@ -8532,7 +9013,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Security_question.php",
+    "filename": "application/controllers/api/Security_question.php",
     "groupTitle": "admin"
   },
   {
@@ -8631,7 +9112,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Shop.php",
+    "filename": "application/controllers/api/admin/Shop.php",
     "groupTitle": "admin"
   },
   {
@@ -8723,7 +9204,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Shop.php",
+    "filename": "application/controllers/api/admin/Shop.php",
     "groupTitle": "admin"
   },
   {
@@ -8822,7 +9303,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Shop.php",
+    "filename": "application/controllers/api/admin/Shop.php",
     "groupTitle": "admin"
   },
   {
@@ -8907,7 +9388,107 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/User.php",
+    "filename": "application/controllers/api/admin/User.php",
+    "groupTitle": "admin"
+  },
+  {
+    "type": "post",
+    "url": "/api/admin/user/save",
+    "title": "用户信息-修改",
+    "version": "1.0.0",
+    "name": "user_save",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/admin/user/save"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "admin_id",
+            "description": "<p>管理员唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account",
+            "description": "<p>登录账号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>会员唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "job",
+            "description": "<p>操作动作 [头像:header, 昵称:nickname, 停启用:enable]</p>"
+          }
+        ]
+      }
+    },
+    "description": "<p>header传递参数：header nickname传递参数：nickname enable传递参数：enable 0禁用 1启用</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": \"\",\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "application/controllers/api/admin/User.php",
     "groupTitle": "admin"
   },
   {
@@ -8999,7 +9580,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/User.php",
+    "filename": "application/controllers/api/admin/User.php",
     "groupTitle": "admin"
   },
   {
@@ -9112,7 +9693,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Users_points.php",
+    "filename": "application/controllers/api/Users_points.php",
     "groupTitle": "admin"
   },
   {
@@ -9239,7 +9820,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Vip.php",
+    "filename": "application/controllers/api/admin/Vip.php",
     "groupTitle": "admin"
   },
   {
@@ -9408,7 +9989,233 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Vip.php",
+    "filename": "application/controllers/api/admin/Vip.php",
+    "groupTitle": "admin"
+  },
+  {
+    "type": "get",
+    "url": "/api/admin/website_goods",
+    "title": "网站-列表",
+    "version": "1.0.0",
+    "name": "website_goods",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/admin/website_goods"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "admin_id",
+            "description": "<p>管理员唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account",
+            "description": "<p>登录账号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "application/controllers/api/admin/Website_goods.php",
+    "groupTitle": "admin"
+  },
+  {
+    "type": "post",
+    "url": "/api/admin/website_goods/save",
+    "title": "网站-编辑 OR 新增",
+    "version": "1.0.0",
+    "name": "website_goods_save",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/admin/website_goods/save"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "admin_id",
+            "description": "<p>管理员唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account",
+            "description": "<p>登录账号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>记录唯一ID 0表示新增 其他表示编辑(网站禁止编辑)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "sort",
+            "description": "<p>排序 降序排列</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "enable",
+            "description": "<p>启用 1是 0否</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "deleted",
+            "description": "<p>是否删除 1是 0否（为1时其他字段可不传）</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>标题</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sub_title",
+            "description": "<p>副标题</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "link",
+            "description": "<p>链接地址</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "image",
+            "description": "<p>展示图</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": \"\",\n\t    \"status\": 0,\n\t    \"message\": \"\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "application/controllers/api/admin/Website_goods.php",
     "groupTitle": "admin"
   },
   {
@@ -9514,7 +10321,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Withdraw.php",
+    "filename": "application/controllers/api/admin/Withdraw.php",
     "groupTitle": "admin"
   },
   {
@@ -9613,7 +10420,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Withdraw.php",
+    "filename": "application/controllers/api/admin/Withdraw.php",
     "groupTitle": "admin"
   },
   {
@@ -9726,7 +10533,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Activity.php",
+    "filename": "application/controllers/api/Activity.php",
     "groupTitle": "api"
   },
   {
@@ -9818,7 +10625,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Activity_class.php",
+    "filename": "application/controllers/api/Activity_class.php",
     "groupTitle": "api"
   },
   {
@@ -9931,7 +10738,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Activity.php",
+    "filename": "application/controllers/api/Activity.php",
     "groupTitle": "api"
   },
   {
@@ -10030,7 +10837,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Activity_enter.php",
+    "filename": "application/controllers/api/Activity_enter.php",
     "groupTitle": "api"
   },
   {
@@ -10122,7 +10929,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Activity_enter.php",
+    "filename": "application/controllers/api/Activity_enter.php",
     "groupTitle": "api"
   },
   {
@@ -10207,7 +11014,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Activity.php",
+    "filename": "application/controllers/api/Activity.php",
     "groupTitle": "api"
   },
   {
@@ -10313,7 +11120,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Activity.php",
+    "filename": "application/controllers/api/Activity.php",
     "groupTitle": "api"
   },
   {
@@ -10419,7 +11226,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Activity.php",
+    "filename": "application/controllers/api/Activity.php",
     "groupTitle": "api"
   },
   {
@@ -10518,7 +11325,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Activity.php",
+    "filename": "application/controllers/api/Activity.php",
     "groupTitle": "api"
   },
   {
@@ -10617,7 +11424,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Activity.php",
+    "filename": "application/controllers/api/Activity.php",
     "groupTitle": "api"
   },
   {
@@ -10772,7 +11579,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Address.php",
+    "filename": "application/controllers/api/Address.php",
     "groupTitle": "api"
   },
   {
@@ -10934,7 +11741,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Address.php",
+    "filename": "application/controllers/api/Address.php",
     "groupTitle": "api"
   },
   {
@@ -11026,7 +11833,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Album_class.php",
+    "filename": "application/controllers/api/Album_class.php",
     "groupTitle": "api"
   },
   {
@@ -11104,7 +11911,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Album_tag.php",
+    "filename": "application/controllers/api/Album_tag.php",
     "groupTitle": "api"
   },
   {
@@ -11280,7 +12087,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Album.php",
+    "filename": "application/controllers/api/Album.php",
     "groupTitle": "api"
   },
   {
@@ -11372,7 +12179,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Anchor_class.php",
+    "filename": "application/controllers/api/Anchor_class.php",
     "groupTitle": "api"
   },
   {
@@ -11485,7 +12292,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Article.php",
+    "filename": "application/controllers/api/Article.php",
     "groupTitle": "api"
   },
   {
@@ -11584,7 +12391,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Article_class.php",
+    "filename": "application/controllers/api/Article_class.php",
     "groupTitle": "api"
   },
   {
@@ -11690,7 +12497,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Article.php",
+    "filename": "application/controllers/api/Article.php",
     "groupTitle": "api"
   },
   {
@@ -11796,7 +12603,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Article.php",
+    "filename": "application/controllers/api/Article.php",
     "groupTitle": "api"
   },
   {
@@ -11881,7 +12688,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Audio.php",
+    "filename": "application/controllers/api/Audio.php",
     "groupTitle": "api"
   },
   {
@@ -12008,7 +12815,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Audio.php",
+    "filename": "application/controllers/api/Audio.php",
     "groupTitle": "api"
   },
   {
@@ -12114,7 +12921,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Audio.php",
+    "filename": "application/controllers/api/Audio.php",
     "groupTitle": "api"
   },
   {
@@ -12241,7 +13048,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Bank.php",
+    "filename": "application/controllers/api/Bank.php",
     "groupTitle": "api"
   },
   {
@@ -12326,7 +13133,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Chat.php",
+    "filename": "application/controllers/api/Chat.php",
     "groupTitle": "api"
   },
   {
@@ -12425,7 +13232,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Common.php",
+    "filename": "application/controllers/api/Common.php",
     "groupTitle": "api"
   },
   {
@@ -12503,7 +13310,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Common.php",
+    "filename": "application/controllers/api/Common.php",
     "groupTitle": "api"
   },
   {
@@ -12581,7 +13388,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Common.php",
+    "filename": "application/controllers/api/Common.php",
     "groupTitle": "api"
   },
   {
@@ -12604,7 +13411,7 @@ define({ "api": [
             "type": "Number",
             "optional": false,
             "field": "sms_id",
-            "description": "<p>短信模板 0注册 1找回密码 2绑定</p>"
+            "description": "<p>短信模板 0注册 1找回密码 2绑定 3解绑</p>"
           },
           {
             "group": "Parameter",
@@ -12659,7 +13466,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Common.php",
+    "filename": "application/controllers/api/Common.php",
     "groupTitle": "api"
   },
   {
@@ -12765,7 +13572,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Express.php",
+    "filename": "application/controllers/api/Express.php",
     "groupTitle": "api"
   },
   {
@@ -12850,7 +13657,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Gold.php",
+    "filename": "application/controllers/api/user/Gold.php",
     "groupTitle": "api"
   },
   {
@@ -13103,7 +13910,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Goods.php",
+    "filename": "application/controllers/api/Goods.php",
     "groupTitle": "api"
   },
   {
@@ -13195,7 +14002,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Goods_attr_category.php",
+    "filename": "application/controllers/api/Goods_attr_category.php",
     "groupTitle": "api"
   },
   {
@@ -13287,7 +14094,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Goods_class.php",
+    "filename": "application/controllers/api/Goods_class.php",
     "groupTitle": "api"
   },
   {
@@ -13372,7 +14179,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Goods.php",
+    "filename": "application/controllers/api/Goods.php",
     "groupTitle": "api"
   },
   {
@@ -13464,7 +14271,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Goods.php",
+    "filename": "application/controllers/api/Goods.php",
     "groupTitle": "api"
   },
   {
@@ -13675,7 +14482,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Goods.php",
+    "filename": "application/controllers/api/Goods.php",
     "groupTitle": "api"
   },
   {
@@ -13802,7 +14609,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Goods.php",
+    "filename": "application/controllers/api/Goods.php",
     "groupTitle": "api"
   },
   {
@@ -13929,7 +14736,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Grade.php",
+    "filename": "application/controllers/api/Grade.php",
     "groupTitle": "api"
   },
   {
@@ -14070,7 +14877,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Knowledge.php",
+    "filename": "application/controllers/api/Knowledge.php",
     "groupTitle": "api"
   },
   {
@@ -14218,7 +15025,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Knowledge.php",
+    "filename": "application/controllers/api/Knowledge.php",
     "groupTitle": "api"
   },
   {
@@ -14324,7 +15131,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Knowledge.php",
+    "filename": "application/controllers/api/Knowledge.php",
     "groupTitle": "api"
   },
   {
@@ -14409,7 +15216,99 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Live_album.php",
+    "filename": "application/controllers/api/user/Live_album.php",
+    "groupTitle": "api"
+  },
+  {
+    "type": "get",
+    "url": "/api/user/live_audio/sort",
+    "title": "音频-排序",
+    "version": "1.0.0",
+    "name": "live_audio_sort",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/user/live_audio/sort"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>音频ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "sort",
+            "description": "<p>排序值 降序排列</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "application/controllers/api/user/Live_audio.php",
     "groupTitle": "api"
   },
   {
@@ -14494,7 +15393,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Live_audio.php",
+    "filename": "application/controllers/api/user/Live_audio.php",
     "groupTitle": "api"
   },
   {
@@ -14586,7 +15485,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Live_class.php",
+    "filename": "application/controllers/api/Live_class.php",
     "groupTitle": "api"
   },
   {
@@ -14699,7 +15598,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Live_gift.php",
+    "filename": "application/controllers/api/Live_gift.php",
     "groupTitle": "api"
   },
   {
@@ -14840,7 +15739,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Live_gift.php",
+    "filename": "application/controllers/api/Live_gift.php",
     "groupTitle": "api"
   },
   {
@@ -14932,7 +15831,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Live_tag.php",
+    "filename": "application/controllers/api/Live_tag.php",
     "groupTitle": "api"
   },
   {
@@ -15059,7 +15958,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Mailbox.php",
+    "filename": "application/controllers/api/Mailbox.php",
     "groupTitle": "api"
   },
   {
@@ -15144,7 +16043,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Mailbox.php",
+    "filename": "application/controllers/api/Mailbox.php",
     "groupTitle": "api"
   },
   {
@@ -15257,7 +16156,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Mailbox.php",
+    "filename": "application/controllers/api/Mailbox.php",
     "groupTitle": "api"
   },
   {
@@ -15349,7 +16248,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Normal.php",
+    "filename": "application/controllers/api/Normal.php",
     "groupTitle": "api"
   },
   {
@@ -15448,7 +16347,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Order_payment.php",
+    "filename": "application/controllers/api/user/Order_payment.php",
     "groupTitle": "api"
   },
   {
@@ -15540,7 +16439,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/admin/Push.php",
+    "filename": "application/controllers/api/admin/Push.php",
     "groupTitle": "api"
   },
   {
@@ -15632,7 +16531,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Recharge.php",
+    "filename": "application/controllers/api/user/Recharge.php",
     "groupTitle": "api"
   },
   {
@@ -15731,7 +16630,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Room.php",
+    "filename": "application/controllers/api/Room.php",
     "groupTitle": "api"
   },
   {
@@ -15816,7 +16715,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Room.php",
+    "filename": "application/controllers/api/Room.php",
     "groupTitle": "api"
   },
   {
@@ -15908,7 +16807,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Room.php",
+    "filename": "application/controllers/api/Room.php",
     "groupTitle": "api"
   },
   {
@@ -16000,7 +16899,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Room.php",
+    "filename": "application/controllers/api/Room.php",
     "groupTitle": "api"
   },
   {
@@ -16085,7 +16984,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Rule.php",
+    "filename": "application/controllers/api/Rule.php",
     "groupTitle": "api"
   },
   {
@@ -16184,7 +17083,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Search.php",
+    "filename": "application/controllers/api/Search.php",
     "groupTitle": "api"
   },
   {
@@ -16283,7 +17182,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Search_words.php",
+    "filename": "application/controllers/api/Search_words.php",
     "groupTitle": "api"
   },
   {
@@ -16389,7 +17288,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Security_question.php",
+    "filename": "application/controllers/api/Security_question.php",
     "groupTitle": "api"
   },
   {
@@ -16474,7 +17373,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Security_question.php",
+    "filename": "application/controllers/api/Security_question.php",
     "groupTitle": "api"
   },
   {
@@ -16566,7 +17465,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Seller.php",
+    "filename": "application/controllers/api/Seller.php",
     "groupTitle": "api"
   },
   {
@@ -16665,7 +17564,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Seller.php",
+    "filename": "application/controllers/api/Seller.php",
     "groupTitle": "api"
   },
   {
@@ -16764,7 +17663,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Seller.php",
+    "filename": "application/controllers/api/Seller.php",
     "groupTitle": "api"
   },
   {
@@ -16863,7 +17762,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Seller.php",
+    "filename": "application/controllers/api/Seller.php",
     "groupTitle": "api"
   },
   {
@@ -16962,7 +17861,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Seller.php",
+    "filename": "application/controllers/api/Seller.php",
     "groupTitle": "api"
   },
   {
@@ -17040,7 +17939,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Share.php",
+    "filename": "application/controllers/api/Share.php",
     "groupTitle": "api"
   },
   {
@@ -17139,7 +18038,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Shop.php",
+    "filename": "application/controllers/api/Shop.php",
     "groupTitle": "api"
   },
   {
@@ -17231,7 +18130,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Shop.php",
+    "filename": "application/controllers/api/Shop.php",
     "groupTitle": "api"
   },
   {
@@ -17323,7 +18222,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Shop.php",
+    "filename": "application/controllers/api/Shop.php",
     "groupTitle": "api"
   },
   {
@@ -17429,7 +18328,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Shop.php",
+    "filename": "application/controllers/api/Shop.php",
     "groupTitle": "api"
   },
   {
@@ -17514,7 +18413,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Signature.php",
+    "filename": "application/controllers/api/Signature.php",
     "groupTitle": "api"
   },
   {
@@ -17620,7 +18519,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Support.php",
+    "filename": "application/controllers/api/Support.php",
     "groupTitle": "api"
   },
   {
@@ -17726,7 +18625,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Support.php",
+    "filename": "application/controllers/api/Support.php",
     "groupTitle": "api"
   },
   {
@@ -17825,7 +18724,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Users_grade.php",
+    "filename": "application/controllers/api/Users_grade.php",
     "groupTitle": "api"
   },
   {
@@ -17910,7 +18809,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Users_grade.php",
+    "filename": "application/controllers/api/Users_grade.php",
     "groupTitle": "api"
   },
   {
@@ -18044,7 +18943,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Users_points.php",
+    "filename": "application/controllers/api/Users_points.php",
     "groupTitle": "api"
   },
   {
@@ -18178,7 +19077,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Vip.php",
+    "filename": "application/controllers/api/Vip.php",
     "groupTitle": "api"
   },
   {
@@ -18270,7 +19169,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Vip.php",
+    "filename": "application/controllers/api/Vip.php",
     "groupTitle": "api"
   },
   {
@@ -18425,8 +19324,164 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Vip.php",
+    "filename": "application/controllers/api/Vip.php",
     "groupTitle": "api"
+  },
+  {
+    "type": "post",
+    "url": "/api/sign_in/add",
+    "title": "新增签到",
+    "version": "1.0.0",
+    "name": "sign_add",
+    "group": "sign",
+    "sampleRequest": [
+      {
+        "url": "/api/sign_in/add"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": \"\",\n\t    \"status\": 0,\n\t    \"message\": \"\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "application/controllers/api/Sign_in.php",
+    "groupTitle": "sign"
+  },
+  {
+    "type": "get",
+    "url": "/api/sign_in/signList",
+    "title": "签到列表（默认7天）",
+    "version": "1.0.0",
+    "name": "sign_list",
+    "group": "sign",
+    "sampleRequest": [
+      {
+        "url": "/api/sign_in/signList"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "start_date",
+            "description": "<p>开始时间</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "end_date",
+            "description": "<p>结束时间</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常 设置成功直接登录成功</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": [],\n\t    \"status\": 0,\n\t    \"message\": \"成功\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": [],\n    \"status\": 4,\n    \"message\": \"服务器错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "application/controllers/api/Sign_in.php",
+    "groupTitle": "sign"
   },
   {
     "type": "get",
@@ -18524,7 +19579,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Activity.php",
+    "filename": "application/controllers/api/user/Activity.php",
     "groupTitle": "user"
   },
   {
@@ -18609,7 +19664,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Activity.php",
+    "filename": "application/controllers/api/user/Activity.php",
     "groupTitle": "user"
   },
   {
@@ -18757,7 +19812,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Activity.php",
+    "filename": "application/controllers/api/user/Activity.php",
     "groupTitle": "user"
   },
   {
@@ -18842,7 +19897,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Album_audio_comment.php",
+    "filename": "application/controllers/api/user/Album_audio_comment.php",
     "groupTitle": "user"
   },
   {
@@ -18941,7 +19996,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Album_audio_comment.php",
+    "filename": "application/controllers/api/user/Album_audio_comment.php",
     "groupTitle": "user"
   },
   {
@@ -19026,7 +20081,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Album_audio_comment.php",
+    "filename": "application/controllers/api/user/Album_audio_comment.php",
     "groupTitle": "user"
   },
   {
@@ -19111,7 +20166,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Album_audio_comment.php",
+    "filename": "application/controllers/api/user/Album_audio_comment.php",
     "groupTitle": "user"
   },
   {
@@ -19203,7 +20258,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Album_audio_comment.php",
+    "filename": "application/controllers/api/user/Album_audio_comment.php",
     "groupTitle": "user"
   },
   {
@@ -19295,7 +20350,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Album_tag.php",
+    "filename": "application/controllers/api/Album_tag.php",
     "groupTitle": "user"
   },
   {
@@ -19380,7 +20435,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Album_tag.php",
+    "filename": "application/controllers/api/Album_tag.php",
     "groupTitle": "user"
   },
   {
@@ -19479,7 +20534,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Anchor.php",
+    "filename": "application/controllers/api/user/Anchor.php",
     "groupTitle": "user"
   },
   {
@@ -19676,7 +20731,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Anchor.php",
+    "filename": "application/controllers/api/user/Anchor.php",
     "groupTitle": "user"
   },
   {
@@ -19775,7 +20830,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Anchor.php",
+    "filename": "application/controllers/api/user/Anchor.php",
     "groupTitle": "user"
   },
   {
@@ -19902,7 +20957,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Bag.php",
+    "filename": "application/controllers/api/user/Bag.php",
     "groupTitle": "user"
   },
   {
@@ -20001,7 +21056,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Bag.php",
+    "filename": "application/controllers/api/user/Bag.php",
     "groupTitle": "user"
   },
   {
@@ -20100,7 +21155,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Bag.php",
+    "filename": "application/controllers/api/user/Bag.php",
     "groupTitle": "user"
   },
   {
@@ -20192,7 +21247,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Bag.php",
+    "filename": "application/controllers/api/user/Bag.php",
     "groupTitle": "user"
   },
   {
@@ -20319,7 +21374,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Bag.php",
+    "filename": "application/controllers/api/user/Bag.php",
     "groupTitle": "user"
   },
   {
@@ -20397,7 +21452,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Users_bank.php",
+    "filename": "application/controllers/api/user/Users_bank.php",
     "groupTitle": "user"
   },
   {
@@ -20489,7 +21544,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Bind.php",
+    "filename": "application/controllers/api/user/Bind.php",
     "groupTitle": "user"
   },
   {
@@ -20575,7 +21630,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Bind.php",
+    "filename": "application/controllers/api/user/Bind.php",
     "groupTitle": "user"
   },
   {
@@ -20667,7 +21722,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Bind.php",
+    "filename": "application/controllers/api/user/Bind.php",
     "groupTitle": "user"
   },
   {
@@ -20745,7 +21800,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Cart.php",
+    "filename": "application/controllers/api/user/Cart.php",
     "groupTitle": "user"
   },
   {
@@ -20844,7 +21899,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Cart.php",
+    "filename": "application/controllers/api/user/Cart.php",
     "groupTitle": "user"
   },
   {
@@ -20943,7 +21998,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Cart.php",
+    "filename": "application/controllers/api/user/Cart.php",
     "groupTitle": "user"
   },
   {
@@ -21021,7 +22076,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Cart.php",
+    "filename": "application/controllers/api/user/Cart.php",
     "groupTitle": "user"
   },
   {
@@ -21106,7 +22161,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Cart.php",
+    "filename": "application/controllers/api/user/Cart.php",
     "groupTitle": "user"
   },
   {
@@ -21191,7 +22246,127 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Cart.php",
+    "filename": "application/controllers/api/user/Cart.php",
+    "groupTitle": "user"
+  },
+  {
+    "type": "post",
+    "url": "/api/change_bind",
+    "title": "修改绑定-手机号重新绑定",
+    "version": "1.0.0",
+    "name": "change_bind",
+    "group": "user",
+    "sampleRequest": [
+      {
+        "url": "/api/change_bind"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>验证码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>新手机号码</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常 设置成功直接登录成功</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data.auth",
+            "description": "<p>接口认证信息</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.auth.user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.auth.sign",
+            "description": "<p>接口签名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.updated_at",
+            "description": "<p>最后登录时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.nickname",
+            "description": "<p>用户昵称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.header",
+            "description": "<p>用户头像</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": [],\n\t    \"status\": 0,\n\t    \"message\": \"成功\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": 4,\n    \"message\": \"先获取短信验证码\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "application/controllers/api/Change_bind.php",
     "groupTitle": "user"
   },
   {
@@ -21297,7 +22472,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Collection.php",
+    "filename": "application/controllers/api/user/Collection.php",
     "groupTitle": "user"
   },
   {
@@ -21396,7 +22571,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Collection.php",
+    "filename": "application/controllers/api/user/Collection.php",
     "groupTitle": "user"
   },
   {
@@ -21509,7 +22684,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Consume_record.php",
+    "filename": "application/controllers/api/user/Consume_record.php",
     "groupTitle": "user"
   },
   {
@@ -21601,7 +22776,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Feedback.php",
+    "filename": "application/controllers/api/Feedback.php",
     "groupTitle": "user"
   },
   {
@@ -21735,7 +22910,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Forget.php",
+    "filename": "application/controllers/api/Forget.php",
     "groupTitle": "user"
   },
   {
@@ -21827,7 +23002,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Gold.php",
+    "filename": "application/controllers/api/user/Gold.php",
     "groupTitle": "user"
   },
   {
@@ -21912,7 +23087,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Gold.php",
+    "filename": "application/controllers/api/user/Gold.php",
     "groupTitle": "user"
   },
   {
@@ -21990,7 +23165,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Gold.php",
+    "filename": "application/controllers/api/user/Gold.php",
     "groupTitle": "user"
   },
   {
@@ -22068,7 +23243,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Headhunter.php",
+    "filename": "application/controllers/api/user/Headhunter.php",
     "groupTitle": "user"
   },
   {
@@ -22153,7 +23328,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Headhunter.php",
+    "filename": "application/controllers/api/user/Headhunter.php",
     "groupTitle": "user"
   },
   {
@@ -22308,7 +23483,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Income.php",
+    "filename": "application/controllers/api/user/Income.php",
     "groupTitle": "user"
   },
   {
@@ -22414,7 +23589,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Income.php",
+    "filename": "application/controllers/api/user/Income.php",
     "groupTitle": "user"
   },
   {
@@ -22576,7 +23751,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Info.php",
+    "filename": "application/controllers/api/user/Info.php",
     "groupTitle": "user"
   },
   {
@@ -22661,7 +23836,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Info.php",
+    "filename": "application/controllers/api/user/Info.php",
     "groupTitle": "user"
   },
   {
@@ -22795,7 +23970,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Info.php",
+    "filename": "application/controllers/api/user/Info.php",
     "groupTitle": "user"
   },
   {
@@ -22881,7 +24056,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Info.php",
+    "filename": "application/controllers/api/user/Info.php",
     "groupTitle": "user"
   },
   {
@@ -23008,7 +24183,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Info.php",
+    "filename": "application/controllers/api/user/Info.php",
     "groupTitle": "user"
   },
   {
@@ -23128,7 +24303,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Live.php",
+    "filename": "application/controllers/api/user/Live.php",
     "groupTitle": "user"
   },
   {
@@ -23283,7 +24458,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Live.php",
+    "filename": "application/controllers/api/user/Live.php",
     "groupTitle": "user"
   },
   {
@@ -23424,7 +24599,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Live_album.php",
+    "filename": "application/controllers/api/user/Live_album.php",
     "groupTitle": "user"
   },
   {
@@ -23579,7 +24754,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Live_album.php",
+    "filename": "application/controllers/api/user/Live_album.php",
     "groupTitle": "user"
   },
   {
@@ -23741,7 +24916,169 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Live_audio.php",
+    "filename": "application/controllers/api/user/Live_audio.php",
+    "groupTitle": "user"
+  },
+  {
+    "type": "post",
+    "url": "/api/user/live_audio/add",
+    "title": "我的音频-新增 | 编辑",
+    "version": "1.0.0",
+    "name": "live_audio_add",
+    "group": "user",
+    "sampleRequest": [
+      {
+        "url": "/api/user/live_audio/add"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>记录唯一ID 0表示新增 其他表示编辑</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "album_id",
+            "description": "<p>专辑ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "duration",
+            "description": "<p>视频时长 秒</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>标题</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "price",
+            "description": "<p>门票价格</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "cover_image",
+            "description": "<p>封面图</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "city_partner_rate",
+            "description": "<p>城市分销比例</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "two_level_rate",
+            "description": "<p>二级分销比例</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "deleted",
+            "description": "<p>删除 1删除 不传或0不处理</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "video_url",
+            "description": "<p>文件地址</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "room_id",
+            "description": "<p>直播间号 默认0</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "play_times",
+            "description": "<p>播放次数</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": \"\",\n\t    \"status\": 0,\n\t    \"message\": \"\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "application/controllers/api/user/Live_audio.php",
     "groupTitle": "user"
   },
   {
@@ -23875,7 +25212,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Live_audio.php",
+    "filename": "application/controllers/api/user/Live_audio.php",
     "groupTitle": "user"
   },
   {
@@ -23953,7 +25290,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Live.php",
+    "filename": "application/controllers/api/user/Live.php",
     "groupTitle": "user"
   },
   {
@@ -24031,7 +25368,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Live.php",
+    "filename": "application/controllers/api/user/Live.php",
     "groupTitle": "user"
   },
   {
@@ -24193,7 +25530,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Live.php",
+    "filename": "application/controllers/api/user/Live.php",
     "groupTitle": "user"
   },
   {
@@ -24216,7 +25553,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "account",
-            "description": "<p>登录手机/账号</p>"
+            "description": "<p>手机/靓号</p>"
           },
           {
             "group": "Parameter",
@@ -24224,6 +25561,13 @@ define({ "api": [
             "optional": false,
             "field": "password",
             "description": "<p>登录密码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "anchor",
+            "description": "<p>主播 1是 0否 默认0</p>"
           }
         ]
       }
@@ -24313,7 +25657,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Login.php",
+    "filename": "application/controllers/api/user/Login.php",
     "groupTitle": "user"
   },
   {
@@ -24454,7 +25798,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Login.php",
+    "filename": "application/controllers/api/user/Login.php",
     "groupTitle": "user"
   },
   {
@@ -24532,7 +25876,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Login_out.php",
+    "filename": "application/controllers/api/user/Login_out.php",
     "groupTitle": "user"
   },
   {
@@ -24652,7 +25996,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Login.php",
+    "filename": "application/controllers/api/user/Login.php",
     "groupTitle": "user"
   },
   {
@@ -24765,7 +26109,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Login.php",
+    "filename": "application/controllers/api/user/Login.php",
     "groupTitle": "user"
   },
   {
@@ -24878,7 +26222,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Login.php",
+    "filename": "application/controllers/api/user/Login.php",
     "groupTitle": "user"
   },
   {
@@ -24970,7 +26314,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Order.php",
+    "filename": "application/controllers/api/user/Order.php",
     "groupTitle": "user"
   },
   {
@@ -25062,7 +26406,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Order_action.php",
+    "filename": "application/controllers/api/user/Order_action.php",
     "groupTitle": "user"
   },
   {
@@ -25154,7 +26498,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Order_action.php",
+    "filename": "application/controllers/api/user/Order_action.php",
     "groupTitle": "user"
   },
   {
@@ -25253,7 +26597,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Order.php",
+    "filename": "application/controllers/api/user/Order.php",
     "groupTitle": "user"
   },
   {
@@ -25380,7 +26724,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Order_payment.php",
+    "filename": "application/controllers/api/user/Order_payment.php",
     "groupTitle": "user"
   },
   {
@@ -25472,7 +26816,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Order.php",
+    "filename": "application/controllers/api/user/Order.php",
     "groupTitle": "user"
   },
   {
@@ -25571,7 +26915,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Partner.php",
+    "filename": "application/controllers/api/user/Partner.php",
     "groupTitle": "user"
   },
   {
@@ -25677,7 +27021,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Partner.php",
+    "filename": "application/controllers/api/user/Partner.php",
     "groupTitle": "user"
   },
   {
@@ -25755,7 +27099,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Partner.php",
+    "filename": "application/controllers/api/user/Partner.php",
     "groupTitle": "user"
   },
   {
@@ -25847,7 +27191,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Partner.php",
+    "filename": "application/controllers/api/user/Partner.php",
     "groupTitle": "user"
   },
   {
@@ -25946,7 +27290,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Partner.php",
+    "filename": "application/controllers/api/user/Partner.php",
     "groupTitle": "user"
   },
   {
@@ -26045,7 +27389,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Partner.php",
+    "filename": "application/controllers/api/user/Partner.php",
     "groupTitle": "user"
   },
   {
@@ -26144,7 +27488,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Payment_log.php",
+    "filename": "application/controllers/api/user/Payment_log.php",
     "groupTitle": "user"
   },
   {
@@ -26243,7 +27587,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Payment_log.php",
+    "filename": "application/controllers/api/user/Payment_log.php",
     "groupTitle": "user"
   },
   {
@@ -26335,7 +27679,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Payment_log.php",
+    "filename": "application/controllers/api/user/Payment_log.php",
     "groupTitle": "user"
   },
   {
@@ -26427,7 +27771,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Pretty.php",
+    "filename": "application/controllers/api/user/Pretty.php",
     "groupTitle": "user"
   },
   {
@@ -26512,7 +27856,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Pretty.php",
+    "filename": "application/controllers/api/user/Pretty.php",
     "groupTitle": "user"
   },
   {
@@ -26597,7 +27941,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Recharge.php",
+    "filename": "application/controllers/api/user/Recharge.php",
     "groupTitle": "user"
   },
   {
@@ -26675,7 +28019,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Recharge.php",
+    "filename": "application/controllers/api/user/Recharge.php",
     "groupTitle": "user"
   },
   {
@@ -26753,7 +28097,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Register.php",
+    "filename": "application/controllers/api/user/Register.php",
     "groupTitle": "user"
   },
   {
@@ -26894,7 +28238,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Register.php",
+    "filename": "application/controllers/api/user/Register.php",
     "groupTitle": "user"
   },
   {
@@ -27028,7 +28372,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Resource.php",
+    "filename": "application/controllers/api/user/Resource.php",
     "groupTitle": "user"
   },
   {
@@ -27134,7 +28478,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Resource.php",
+    "filename": "application/controllers/api/user/Resource.php",
     "groupTitle": "user"
   },
   {
@@ -27226,7 +28570,120 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Resource.php",
+    "filename": "application/controllers/api/user/Resource.php",
+    "groupTitle": "user"
+  },
+  {
+    "type": "post",
+    "url": "/api/user/resource/save",
+    "title": "主播资源-编辑",
+    "version": "1.0.0",
+    "name": "resource_save",
+    "group": "user",
+    "sampleRequest": [
+      {
+        "url": "/api/user/resource/save"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>资源ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "type",
+            "description": "<p>资源类型 0:ppt 1:bg_music</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>名称</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "content",
+            "description": "<p>资源内容 ppt(json) bg_music(url)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "other",
+            "description": "<p>补充信息 示例：时长</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n\t   },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "application/controllers/api/user/Resource.php",
     "groupTitle": "user"
   },
   {
@@ -27318,7 +28775,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Room_action.php",
+    "filename": "application/controllers/api/user/Room_action.php",
     "groupTitle": "user"
   },
   {
@@ -27424,7 +28881,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Room_action.php",
+    "filename": "application/controllers/api/user/Room_action.php",
     "groupTitle": "user"
   },
   {
@@ -27530,7 +28987,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Room_action.php",
+    "filename": "application/controllers/api/user/Room_action.php",
     "groupTitle": "user"
   },
   {
@@ -27615,7 +29072,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Room_control.php",
+    "filename": "application/controllers/api/user/Room_control.php",
     "groupTitle": "user"
   },
   {
@@ -27707,7 +29164,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Room_control.php",
+    "filename": "application/controllers/api/user/Room_control.php",
     "groupTitle": "user"
   },
   {
@@ -27799,7 +29256,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Room_control.php",
+    "filename": "application/controllers/api/user/Room_control.php",
     "groupTitle": "user"
   },
   {
@@ -27891,7 +29348,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Room_control.php",
+    "filename": "application/controllers/api/user/Room_control.php",
     "groupTitle": "user"
   },
   {
@@ -27983,7 +29440,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Room_control.php",
+    "filename": "application/controllers/api/user/Room_control.php",
     "groupTitle": "user"
   },
   {
@@ -28089,7 +29546,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Security_question.php",
+    "filename": "application/controllers/api/Security_question.php",
     "groupTitle": "user"
   },
   {
@@ -28174,7 +29631,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Security_question.php",
+    "filename": "application/controllers/api/Security_question.php",
     "groupTitle": "user"
   },
   {
@@ -28252,7 +29709,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Shop.php",
+    "filename": "application/controllers/api/user/Shop.php",
     "groupTitle": "user"
   },
   {
@@ -28330,7 +29787,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Shop.php",
+    "filename": "application/controllers/api/user/Shop.php",
     "groupTitle": "user"
   },
   {
@@ -28408,7 +29865,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Shop.php",
+    "filename": "application/controllers/api/user/Shop.php",
     "groupTitle": "user"
   },
   {
@@ -28493,7 +29950,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/Support.php",
+    "filename": "application/controllers/api/Support.php",
     "groupTitle": "user"
   },
   {
@@ -28613,7 +30070,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Users_bank.php",
+    "filename": "application/controllers/api/user/Users_bank.php",
     "groupTitle": "user"
   },
   {
@@ -28691,7 +30148,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/V.php",
+    "filename": "application/controllers/api/user/V.php",
     "groupTitle": "user"
   },
   {
@@ -28811,7 +30268,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Wallet.php",
+    "filename": "application/controllers/api/user/Wallet.php",
     "groupTitle": "user"
   },
   {
@@ -28903,7 +30360,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/White.php",
+    "filename": "application/controllers/api/user/White.php",
     "groupTitle": "user"
   },
   {
@@ -29002,7 +30459,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/White.php",
+    "filename": "application/controllers/api/user/White.php",
     "groupTitle": "user"
   },
   {
@@ -29108,7 +30565,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/White.php",
+    "filename": "application/controllers/api/user/White.php",
     "groupTitle": "user"
   },
   {
@@ -29193,7 +30650,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Withdraw.php",
+    "filename": "application/controllers/api/user/Withdraw.php",
     "groupTitle": "user"
   },
   {
@@ -29285,7 +30742,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Withdraw.php",
+    "filename": "application/controllers/api/user/Withdraw.php",
     "groupTitle": "user"
   },
   {
@@ -29419,7 +30876,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "E:/www/project/taskusbipowggnphe/php/application/controllers/api/user/Withdraw.php",
+    "filename": "application/controllers/api/user/Withdraw.php",
     "groupTitle": "user"
   }
 ] });

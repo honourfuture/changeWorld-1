@@ -21,8 +21,6 @@ yarn-debug.log*
 yarn-error.log*
 upload/
 .vscode/
-
 *sublime*
-
 /切图
 /效果图

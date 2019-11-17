@@ -8,8 +8,8 @@
 import { Base } from "./base";
 import { observable } from "mobx";
 export default {
-    API_URL: "http://www.zhumaidan.com/api",
-    RES_URL: "http://www.zhumaidan.com",
+    API_URL: "http://cword.cc/api",
+    RES_URL: "http://cword.cc",
     get UPLOAD_URL() {
         return `${this.API_URL}/common/fileUpload`;
     },
