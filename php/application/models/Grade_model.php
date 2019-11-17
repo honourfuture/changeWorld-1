@@ -23,7 +23,7 @@ class Grade_model extends MY_Model
     {
     	$ret = ['before_grade_name' => '', 'grade_name' => '', 'after_grade_name' => '', 'diff' => 0, 'exp' => $exp];
 
-    	$order_by = array('grade_demand' => 'desc', 'id' => 'desc');
+    	$order_by = array('grade_demand' => 'asc');
 		if($one = $this->Grade_model->order_by($order_by)->get_by(['enable' => 1, 'grade_demand <' => $exp])){
 			$ret['before_grade_name'] = $one['grade_name'];
 		}

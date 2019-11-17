@@ -11,6 +11,7 @@ class Grade extends API_Controller {
     {
         parent::__construct();
         $this->load->model('Grade_model');
+        $this->load->model('Grade_level_model');
     }
 
     /**
@@ -41,10 +42,17 @@ class Grade extends API_Controller {
 	 *         "grade": {
 	 *             "before_grade_name": "",
 	 *             "grade_name": "",
-	 *             "after_grade_name": "钻石",
+	 *             "after_grade_name": "1",
 	 *             "diff": 10000,
 	 *             "exp": "0"
 	 *         },
+     *      "level": {
+     *             "before_level_name": "",
+     *             "level_name": "",
+     *             "after_level_name": "至尊王者",
+     *             "diff": 10000,
+     *             "exp": "0"
+     *         },
 	 *         "rule": ""
 	 *     },
 	 *     "status": 0,
@@ -66,14 +74,69 @@ class Grade extends API_Controller {
 
 		$this->load->model('Grade_model');
 		$ret['grade'] = $this->Grade_model->exp_to_grade($user['exp']);
+		$ret['level'] = $this->Grade_level_model->exp_to_level($user['exp']);
 		$ret['rule'] = $this->Grade_model->rule();
 
 		$this->ajaxReturn($ret);
 	}
 
-	// 查看
-	public function view()
-	{
-
-	}
+    /**
+     * @api {get} /api/grade/level 会员等级-列表
+     * @apiVersion 1.0.0
+     * @apiName vip
+     * @apiGroup api
+     *
+     * @apiSampleRequest /api/grade/level
+     *
+     * @apiParam {Number} user_id 用户唯一ID
+     * @apiParam {String} sign 校验签名
+     *
+     * @apiSuccess {Number} status 接口状态 0成功 其他异常
+     * @apiSuccess {String} message 接口信息描述
+     * @apiSuccess {Object[]} data 接口数据集
+     * @apiSuccess {String} data.id 唯一ID
+     * @apiSuccess {String} data.name 等级名称
+     * @apiSuccess {String} data.rule 会员权益说明
+     * @apiSuccess {String} data.brokerage 自购佣金 百分比
+     * @apiSuccess {String} data.icon 图标
+     * @apiSuccess {String} data.grade_demand 会员门槛
+     * @apiSuccess {String} data.direct_brokerage 直属代理佣金
+     * @apiSuccess {String} data.under_gt_brokerage 会员等级大于下属
+     * @apiSuccess {String} data.under_eq_brokerage 会员等级等于下属最高
+     * @apiSuccess {String} data.under_lt_brokerage 会员等级小于下属最高
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * {
+     *     "data": [
+     *         {
+     *             "id": "1",
+     *             "name": "至尊王者",
+     *             "rule": "权益说明",
+     *             "brokerage": "1.00",
+     *             "grade_demand": "122",
+     *             "direct_brokerage": "1",
+     *             "icon": "",
+     *             "under_gt_brokerage": "0.1",
+     *             "under_eq_brokerage": "0.5",
+     *             "under_lt_brokerage": "0.4"
+     *         }
+     *     ],
+     *     "status": 0,
+     *     "message": "成功"
+     * }
+     *
+     * @apiErrorExample {json} Error-Response:
+     * {
+     * 	   "data": "",
+     *     "status": -1,
+     *     "message": "签名校验错误"
+     * }
+     */
+    public function level()
+    {
+        $order_by = array('sort' => 'desc', 'id' => 'desc');
+        $this->db->select('id,name,rule,brokerage,icon,grade_demand,direct_brokerage,under_gt_brokerage,under_eq_brokerage,under_lt_brokerage');
+        $ret = $this->Grade_level_model->order_by($order_by)->get_many_by('enable', 1);
+        $this->ajaxReturn($ret);
+    }
 }
