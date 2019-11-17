@@ -336,7 +336,6 @@ class API_Controller extends MY_Controller
                 $update = array('point' => $user['point'] - $value);
             }
 
-
             $data['user_id'] = $userId;
             $data['rule_name'] = $rule_name;
             $data['remark'] = $remark;
@@ -358,6 +357,47 @@ class API_Controller extends MY_Controller
         );
     }
 
+    /**
+     * @param $userId
+     * @param $value
+     * @param $rule_name
+     * @return array
+     */
+    public function gradeCalculation($userId, $rule_name, $value)
+    {
+        try{
+            $this->load->model('Users_model');
+            $this->load->model('Grade_rule_model');
+
+            $user = $this->Users_model->get($userId);
+
+            if(!$user){
+                return array(
+                    'status' => 400,
+                    'msg' => '会员不存在'
+                );
+            }
+            $update = array('exp' => $user['exp'] + $value);
+
+            $data['user_id'] = $userId;
+            $data['rule_name'] = $rule_name;
+            $data['value'] = $value;
+
+            $this->Grade_rule_model->add($userId, $rule_name, $value);
+
+            $this->Users_model->update_by(array('id' => $data['user_id']), $update);
+        }catch (Exception $exception){
+            return array(
+                'status' => 400,
+                'msg' => '操作失败，请联系管理员'.$exception->getMessage()
+            );
+        }
+
+        return array(
+            'status' => 200,
+            'msg' => '操作成功'
+        );
+    }
     // 广告
     protected function ad($ad_position_id, $limit = 1)
     {
