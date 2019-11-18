@@ -303,7 +303,7 @@ class Info extends API_Controller {
 
 		$ret = elements(
 			array(
-				'header', 'nickname', 'sex', 'birth', 'summary', 'address', 'bg_image'
+				'header', 'nickname', 'sex', 'birth', 'summary', 'address', 'bg_image', 'invite_code'
 			),
 			$this->get_user(),
 			''
