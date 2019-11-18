@@ -119,7 +119,7 @@ class Info extends API_Controller {
 		$a_uid = explode(',', $s_uid);
 		if($a_uid){
 			$this->load->model('Users_model');
-			$this->db->select('id,nickname,header,summary,exp,pretty_id');
+			$this->db->select('id,nickname,header,summary,exp,pretty_id,address,created_at');
 			$rows = $this->Users_model->get_many($a_uid);
 			if($rows){
 				$this->load->model('Grade_model');
@@ -133,6 +133,76 @@ class Info extends API_Controller {
 
 		$this->ajaxReturn($ret);
 	}
+
+
+    /**
+     * @api {get} /api/user/info/invite 用户信息查询-根据邀请码
+     * @apiVersion 1.0.0
+     * @apiName info_invite
+     * @apiGroup user
+     *
+     * @apiSampleRequest /api/user/info/invite
+     *
+     * @apiParam {Number} user_id 用户唯一ID
+     * @apiParam {String} sign 校验签名
+     * @apiParam {String} invite_code 邀请码，实例：1234567
+     *
+     * @apiSuccess {Number} status 接口状态 0成功 其他异常
+     * @apiSuccess {String} message 接口信息描述
+     * @apiSuccess {Object} data 接口数据集
+     * @apiSuccess {String} data.header 用户头像
+     * @apiSuccess {String} data.nickname 用户昵称
+     * @apiSuccess {String} data.sex 性别 1男 2女 0保密
+     * @apiSuccess {String} data.birth 出生日期
+     * @apiSuccess {String} data.summary 简介
+     * @apiSuccess {String} data.age 年龄
+     * @apiSuccess {Object[]} data.bind 已绑定账号 0手机 1微信 2QQ 3微博
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * {
+     *     "data": {
+     *         "header": "",
+     *         "nickname": "aicode",
+     *         "sex": "0",
+     *         "birth": "2018-01-12",
+     *         "summary": "",
+     *         "age": 0,
+     *         "bind": [
+     *             "0"
+     *         ]
+     *     },
+     *     "status": 0,
+     *     "message": "成功"
+     * }
+     *
+     * @apiErrorExample {json} Error-Response:
+     * {
+     * 	   "data": "",
+     *     "status": -1,
+     *     "message": "签名校验错误"
+     * }
+     */
+    public function invite()
+    {
+        $ret = array();
+
+        $a_uid = $this->input->get_post('invite_code');
+        if($a_uid){
+            $this->load->model('Users_model');
+            $this->db->select('id,nickname,header,summary,exp,pretty_id,address,created_at');
+            $item = $this->Users_model->get_by(array('invite_code'=>$a_uid));
+            if($item){
+                $this->load->model('Grade_model');
+                $grade = $this->Grade_model->exp_to_grade($item['exp']);
+                $item['lv'] = $grade['grade_name'];
+                $ret[] = $item;
+            }
+        }
+
+        $this->ajaxReturn($ret);
+    }
+
+
 
     /**
 	 * @api {get} /api/user/info 用户中心
