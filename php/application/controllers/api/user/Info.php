@@ -282,6 +282,9 @@ class Info extends API_Controller {
 	 *         "birth": "2018-01-12",
 	 *         "summary": "",
 	 *         "age": 0,
+     *         "collection": 0,
+     *         "follow": 0,
+     *         "fans": 0,
 	 *         "bind": [
 	 *             "0"
 	 *         ]
@@ -312,6 +315,9 @@ class Info extends API_Controller {
 
 		$this->load->model('Users_bind_model');
 		$ret['bind'] = $this->Users_bind_model->get_user_bind_list($this->user_id);
+        $ret['collection'] = 0;
+        $ret['follow'] = 0;
+        $ret['fans'] = 0;
 		$this->ajaxReturn($ret);
 	}
 
