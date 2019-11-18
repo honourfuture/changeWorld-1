@@ -549,4 +549,79 @@ class Info extends API_Controller {
 		}
 		$this->ajaxReturn($ret, $status, '操作'.$message);
 	}
+
+
+
+    /**
+     * @api {post} /api/user/info/ironfans 我的铁粉-列表
+     * @apiVersion 1.0.0
+     * @apiName partner_ironfans
+     * @apiGroup user
+     *
+     * @apiSampleRequest /api/user/info/ironfans
+     *
+     * @apiParam {Number} user_id 用户唯一ID
+     * @apiParam {String} sign 校验签名
+     *
+     * @apiSuccess {Number} status 接口状态 0成功 其他异常
+     * @apiSuccess {String} message 接口信息描述
+     * @apiSuccess {Object} data 接口数据集
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *	{
+     *	    "data": {
+     *                   "count": 3,
+     *                   "list": [{
+     *                       "user_id": "14949284",
+     *                       "nickname": "你是我每天的梦",
+     *                       "address": "",
+     *                       "header": "/uploads/2018/07/24/61462ff1562314965983604bc72048c4.jpg",
+     *                       "v": "0",
+     *                       "exp": "0",
+     *                       "mobi": "",
+     *                       "pretty_id": "",
+     *                       "pid": "14951233",
+     *                       "lv": "1",
+     *                       "root": "14951233" //可以据此等于pid判断是否显示星星
+     *                       }]
+     *          },
+     *	    "status": 0,
+     *	    "message": "成功"
+     *	}
+     *
+     * @apiErrorExample {json} Error-Response:
+     * {
+     * 	   "data": "",
+     *     "status": -1,
+     *     "message": "签名校验错误"
+     * }
+     */
+    public function ironfans()
+    {
+        $ret = array('count' => 0, 'list' => array());
+        $user = $this->Users_model->get($this->user_id);
+        if($user ){
+            $temps = $this->Users_model->under($user['id']);
+
+            //$this->ajaxReturn($temps, 3, '登录密码错误');
+            $this->db->where_in('id', $temps);
+            $this->load->model('Users_model');
+            $ret['count'] = $this->db->count_all_results($this->Users_model->table(), false);
+
+            $this->db->select('id user_id,nickname,address,header,v,exp,mobi,pretty_id,pid');
+            //$this->db->order_by('id', 'desc');
+            $this->db->limit($this->per_page, $this->offset);
+            $users = $this->db->get()->result_array();
+            if($users){
+                $this->load->model('Grade_model');
+                foreach($users as $item){
+                    $grade = $this->Grade_model->exp_to_grade($item['exp']);
+                    $item['lv'] = $grade['grade_name'];
+                    $item['root'] = $this->user_id;//据此判断是否是一级
+                    $ret['list'][] = $item;
+                }
+            }
+        }
+        $this->ajaxReturn($ret);
+    }
 }

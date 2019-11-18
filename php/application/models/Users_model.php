@@ -37,6 +37,22 @@ class Users_model extends MY_Model
         return $this->limit(1)->get_by($where);
     }
 
+    public function under($uid,$uids=array())
+    {
+        $this->db->select('id,pid');
+        $this->db->where_in('pid',$uid);
+        $rows = $this->get_all();
+        foreach ($rows as $key=>$value){
+            $uids[] = $value['id'];
+            $this->db->select('id,pid');
+            $user = $this->db->where_in('pid',$value['id']);
+            if($user){
+                $uids = $this->under($value['id'],$uids);
+            }
+        }
+        return $uids;
+    }
+
     public function live_group_tag($user_id)
     {
         return 'live_group_'.$user_id;
