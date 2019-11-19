@@ -25,6 +25,7 @@ class Login extends API_Controller {
 	 *
 	 * @apiParam {String} account 手机/靓号
 	 * @apiParam {String} password 登录密码
+	 * @apiParam {String} address 地址
 	 * @apiParam {String} anchor 主播 1是 0否 默认0
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
@@ -63,6 +64,7 @@ class Login extends API_Controller {
 	{
 		$anchor = (int)$this->input->get_post('anchor');
 		$account = $this->input->get_post('account');
+		$address = $this->input->get_post('address');
 		$password = $this->input->get_post('password');
 		if(!$account || !$password){
 			$this->ajaxReturn([], 1, '登录参数非法');
@@ -76,7 +78,7 @@ class Login extends API_Controller {
 				if($anchor && $info['anchor'] != 2){
 					$this->ajaxReturn([], 4, '仅开通主播才能登录');
 				}else{
-					$this->check_status($info);
+					$this->check_status($info, $address);
 				}
 			}else{
 				$this->ajaxReturn([], 3, '登录密码错误');
@@ -398,9 +400,15 @@ class Login extends API_Controller {
 		}
     }
 
-    protected function check_status($info = array())
+    protected function check_status($info = array(), $address='')
     {
     	if($info['enable']){
+    	    //保存地址
+            if(!empty($address)){
+                $this->load->model('Users_model');
+                $update = array('address' => $address);
+                $this->Users_model->update($info['id'], $update);
+            }
 			$this->user_login_success($info);
 		}else{
 			if($info['deleted']){
