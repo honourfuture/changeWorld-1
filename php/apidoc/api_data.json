@@ -14722,7 +14722,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    \"data\": {\n        \"grade\": {\n            \"before_grade_name\": \"\",\n            \"grade_name\": \"\",\n            \"after_grade_name\": \"钻石\",\n            \"diff\": 10000,\n            \"exp\": \"0\"\n        },\n        \"rule\": \"\"\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": {\n        \"grade\": {\n            \"before_grade_name\": \"\",\n            \"grade_name\": \"\",\n            \"after_grade_name\": \"1\",\n            \"diff\": 10000,\n            \"exp\": \"0\"\n        },\n     \"level\": {\n            \"before_level_name\": \"\",\n            \"level_name\": \"\",\n            \"after_level_name\": \"至尊王者\",\n            \"diff\": 10000,\n            \"exp\": \"0\"\n        },\n        \"rule\": \"\"\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
@@ -19078,6 +19078,154 @@
       ]
     },
     "filename": "application/controllers/api/Vip.php",
+    "groupTitle": "api"
+  },
+  {
+    "type": "get",
+    "url": "/api/grade/level",
+    "title": "会员等级-列表",
+    "version": "1.0.0",
+    "name": "vip",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/grade/level"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.id",
+            "description": "<p>唯一ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.name",
+            "description": "<p>等级名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.rule",
+            "description": "<p>会员权益说明</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.brokerage",
+            "description": "<p>自购佣金 百分比</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.icon",
+            "description": "<p>图标</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.grade_demand",
+            "description": "<p>会员门槛</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.direct_brokerage",
+            "description": "<p>直属代理佣金</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.under_gt_brokerage",
+            "description": "<p>会员等级大于下属</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.under_eq_brokerage",
+            "description": "<p>会员等级等于下属最高</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.under_lt_brokerage",
+            "description": "<p>会员等级小于下属最高</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": [\n        {\n            \"id\": \"1\",\n            \"name\": \"至尊王者\",\n            \"rule\": \"权益说明\",\n            \"brokerage\": \"1.00\",\n            \"grade_demand\": \"122\",\n            \"direct_brokerage\": \"1\",\n            \"icon\": \"\",\n            \"under_gt_brokerage\": \"0.1\",\n            \"under_eq_brokerage\": \"0.5\",\n            \"under_lt_brokerage\": \"0.4\"\n        }\n    ],\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "application/controllers/api/Grade.php",
     "groupTitle": "api"
   },
   {
@@ -23701,6 +23849,13 @@
             "group": "Success 200",
             "type": "String",
             "optional": false,
+            "field": "data.user.invite_code",
+            "description": "<p>邀请码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
             "field": "data.user.exp",
             "description": "<p>经验值</p>"
           },
@@ -23731,6 +23886,27 @@
             "optional": false,
             "field": "data.fans",
             "description": "<p>粉丝数量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.user.invite_user_id",
+            "description": "<p>邀请人id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.user.invite_user_header",
+            "description": "<p>邀请人昵称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.user.invite_user_nickname",
+            "description": "<p>邀请人头像</p>"
           }
         ]
       },
@@ -24007,7 +24183,7 @@
             "type": "String",
             "optional": false,
             "field": "act",
-            "description": "<p>操作动作 [修改密码:password, 支付密码:pay_password, 头像:header, 昵称:nickname, 性别:sex 0保密 1男 2女, 出生日期:birth 2018-01-12, 简介:summary, 地址:address（省市区名称），背景图：bg_image]</p>"
+            "description": "<p>操作动作 [修改密码:password, 支付密码:pay_password, 头像:header, 昵称:nickname, 性别:sex 0保密 1男 2女, 出生日期:birth 2018-01-12, 简介:summary, 地址:address（省市区名称），背景图：bg_image，邀请人绑定：invite_code]</p>"
           }
         ]
       }
@@ -24169,7 +24345,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    \"data\": {\n        \"header\": \"\",\n        \"nickname\": \"aicode\",\n        \"sex\": \"0\",\n        \"birth\": \"2018-01-12\",\n        \"summary\": \"\",\n        \"age\": 0,\n        \"bind\": [\n            \"0\"\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": {\n        \"header\": \"\",\n        \"nickname\": \"aicode\",\n        \"sex\": \"0\",\n        \"birth\": \"2018-01-12\",\n        \"summary\": \"\",\n        \"age\": 0,\n        \"collection\": 0,\n        \"follow\": 0,\n        \"fans\": 0,\n        \"bind\": [\n            \"0\"\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]

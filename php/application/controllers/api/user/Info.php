@@ -176,6 +176,7 @@ class Info extends API_Controller {
 	 *             "anchor": "1",
 	 *             "seller": "1",
 	 *             "exp": "0"
+     *             "exp": "0"
 	 *         },
 	 *         "vip": {
 	 *             "name": "",
