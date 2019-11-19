@@ -608,7 +608,7 @@ class Info extends API_Controller {
             $this->load->model('Users_model');
             $ret['count'] = $this->db->count_all_results($this->Users_model->table(), false);
 
-            $this->db->select('id user_id,nickname,address,header,v,exp,mobi,pretty_id,pid');
+            $this->db->select('id user_id,nickname,address,header,v,exp,mobi,pretty_id,pid,create_at');
             //$this->db->order_by('id', 'desc');
             $this->db->limit($this->per_page, $this->offset);
             $users = $this->db->get()->result_array();
