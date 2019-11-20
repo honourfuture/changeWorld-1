@@ -1,13 +1,14 @@
 <?php
-defined('BASEPATH') or exit ('No direct script access allowed');
+    defined('BASEPATH') or exit ('No direct script access allowed');
 
-class Sign_in extends API_Controller
-{
+    class Sign_in extends API_Controller
+    {
 
     public function __construct()
     {
-        parent::__construct();
-        $this->load->model('Sign_in_model');
+    parent::__construct();
+    $this->load->model('Sign_in_model');
+    $this->load->model('Users_model');
     }
 
     /**
@@ -24,14 +25,63 @@ class Sign_in extends API_Controller
      * @apiParam {String} sign 校验签名
      *
      * @apiSuccess {Number} status 接口状态 0成功 其他异常 设置成功直接登录成功
+     * @apiSuccess {Number} data.countSignIn 总签到天数
+     * @apiSuccess {Number} data.countPoint 总积分
+     * @apiSuccess {Number} data.list 近七天签到记录
+     * @apiSuccess {String} data.list.point 获取的积分
+     * @apiSuccess {String} data.list.continue 连续签到天数大于0为签到
      *
      * @apiSuccessExample {json} Success-Response:
-     * {
-     *	    "data": [],
-     *	    "status": 0,
-     *	    "message": "成功"
-     *	}
-     *
+     *{
+     *    "data": {
+     *        "list": [
+     *            {
+     *                "date": "2019-11-13",
+     *                "continue": 0,
+     *                "point": 2
+     *            },
+     *            {
+     *                "date": "2019-11-14",
+     *                "continue": 0,
+     *                "point": 4
+     *            },
+     *            {
+     *                "date": "2019-11-15",
+     *                "continue": 0,
+     *                "point": 2
+     *            },
+     *            {
+     *                "date": "2019-11-16",
+     *                "continue": 0,
+     *                "point": 2
+     *            },
+     *            {
+     *                "date": "2019-11-17",
+     *                "continue": 0,
+     *                "point": 4
+     *            },
+     *            {
+     *                "date": "2019-11-18",
+     *                "continue": 0,
+     *                "point": 3
+     *            },
+     *            {
+     *                "date": "2019-11-19",
+     *                "continue": "1",
+     *                "point": 4
+     *            },
+     *            {
+     *                "date": "2019-11-20",
+     *                "continue": 0,
+     *                "point": 1
+     *            }
+     *        ],
+     *        "countSignIn": 1,
+     *        "countPoint": "10.00"
+     *    },
+     *    "status": 0,
+     *    "message": "成功"
+     *}
      * @apiErrorExample {json} Error-Response:
      * {
      * 	   "data": [],
@@ -60,6 +110,7 @@ class Sign_in extends API_Controller
             $results[$key] = [
                 'date' => $key,
                 'continue' => 0,
+                'point' => rand(1,4),
             ];
         }
 
@@ -69,6 +120,11 @@ class Sign_in extends API_Controller
             'date <= ' => $endDate,
         ];
 
+        $whereCount['user_id'] = $this->user_id;
+        $whereCount['continue >'] = 0;
+        $count = $this->Sign_in_model->count_by($whereCount);
+        $user = $this->Users_model->get($this->user_id);
+
         $data = $this->Sign_in_model->get($where);
         foreach ($data as $datum){
             if(isset($results[$datum['date']])){
@@ -76,7 +132,11 @@ class Sign_in extends API_Controller
             }
         }
         $results = array_values($results);
-        return $this->ajaxReturn($results);
+
+        $dataInfo['list'] = $results;
+        $dataInfo['countSignIn'] = $count;
+        $dataInfo['countPoint'] = $user['point'];
+        return $this->ajaxReturn($dataInfo);
 
     }
     /**

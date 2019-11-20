@@ -239,4 +239,91 @@ class Users_points extends API_Controller {
 
 		$this->ajaxReturn();
 	}
+
+    /**
+     * @api {get} /api/users_points/todayPoint 今日积分
+     * @apiVersion 1.0.0
+     * @apiName users_points_todayPoint
+     * @apiGroup api
+     *
+     * @apiSampleRequest /api/users_points/todayPoint
+     *
+     * @apiParam {Number} user_id 用户唯一ID
+     * @apiParam {String} sign 校验签名
+     *
+     * @apiSuccess {Number} status 接口状态 0成功 其他异常
+     * @apiSuccess {String} message 接口信息描述
+     * @apiSuccess {Object} data 接口数据集
+     * @apiSuccess {Number} data.countPoint 总积分
+     * @apiSuccess {Object} data.today
+     * @apiSuccess {String} data.today.count 积分上线
+     * @apiSuccess {String} data.today.value 已增加积分
+     * @apiSuccess {String} data.today.remark 名称
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *{
+     *    "data": {
+     *        "countPoint": "10.00",
+     *        "today": [
+     *            {
+     *                "count": 100,
+     *                "value": "10",
+     *                "remark": "签到增加"
+     *            }
+     *        ]
+     *    },
+     *    "status": 0,
+     *    "message": "成功"
+     *}
+     *
+     * @apiErrorExample {json} Error-Response:
+     * {
+     * 	   "data": "",
+     *     "status": -1,
+     *     "message": "签名校验错误"
+     * }
+     */
+    public function todayPoint()
+    {
+        $this->load->model('Users_points_model');
+        $this->load->model('Users_model');
+
+        $start = date('Y-m-d 00:00:00', time());
+        $end = date('Y-m-d 23:59:59', time());
+        $where = [
+            'user_id' => $this->user_id,
+            'created_at >= ' => $start,
+            'created_at <= ' => $end,
+        ];
+
+        $user = $this->Users_model->get($this->user_id);
+        $dataInfo['countPoint'] = $user['point'];
+
+        $points = $this->Users_points_model->get_many_by($where);
+
+        $result = [];
+
+        $count = [
+            'sign_in' => 100,
+            'good_works' => 100,
+            'comment' => 100,
+            'thumbs_up' => 100
+        ];
+
+        foreach ($points as $point){
+            if(isset($result[$point['rule_name']])){
+                $result[$point['rule_name']]['value'] += $point['value'];
+            }else{
+                $result[$point['rule_name']] = [
+                    'count' => isset($count[$point['rule_name']]) ? $count[$point['rule_name']] : 0,
+                    'value' => $point['value'],
+                    'remark' => $point['remark']
+                ];
+            }
+        }
+
+        $dataInfo['today'] = array_values($result);
+
+        $this->ajaxReturn($dataInfo);
+    }
 }

@@ -18948,6 +18948,119 @@
   },
   {
     "type": "get",
+    "url": "/api/users_points/todayPoint",
+    "title": "今日积分",
+    "version": "1.0.0",
+    "name": "users_points_todayPoint",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/users_points/todayPoint"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "data.countPoint",
+            "description": "<p>总积分</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data.today",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.today.count",
+            "description": "<p>积分上线</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.today.value",
+            "description": "<p>已增加积分</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.today.remark",
+            "description": "<p>名称</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n   \"data\": {\n       \"countPoint\": \"10.00\",\n       \"today\": [\n           {\n               \"count\": 100,\n               \"value\": \"10\",\n               \"remark\": \"签到增加\"\n           }\n       ]\n   },\n   \"status\": 0,\n   \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "application/controllers/api/Users_points.php",
+    "groupTitle": "api"
+  },
+  {
+    "type": "get",
     "url": "/api/vip",
     "title": "贵族-列表",
     "version": "1.0.0",
@@ -19608,13 +19721,48 @@
             "optional": false,
             "field": "status",
             "description": "<p>接口状态 0成功 其他异常 设置成功直接登录成功</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "data.countSignIn",
+            "description": "<p>总签到天数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "data.countPoint",
+            "description": "<p>总积分</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "data.list",
+            "description": "<p>近七天签到记录</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.list.point",
+            "description": "<p>获取的积分</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.list.continue",
+            "description": "<p>连续签到天数大于0为签到</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n\t    \"data\": [],\n\t    \"status\": 0,\n\t    \"message\": \"成功\"\n\t}",
+          "content": "{\n   \"data\": {\n       \"list\": [\n           {\n               \"date\": \"2019-11-13\",\n               \"continue\": 0,\n               \"point\": 2\n           },\n           {\n               \"date\": \"2019-11-14\",\n               \"continue\": 0,\n               \"point\": 4\n           },\n           {\n               \"date\": \"2019-11-15\",\n               \"continue\": 0,\n               \"point\": 2\n           },\n           {\n               \"date\": \"2019-11-16\",\n               \"continue\": 0,\n               \"point\": 2\n           },\n           {\n               \"date\": \"2019-11-17\",\n               \"continue\": 0,\n               \"point\": 4\n           },\n           {\n               \"date\": \"2019-11-18\",\n               \"continue\": 0,\n               \"point\": 3\n           },\n           {\n               \"date\": \"2019-11-19\",\n               \"continue\": \"1\",\n               \"point\": 4\n           },\n           {\n               \"date\": \"2019-11-20\",\n               \"continue\": 0,\n               \"point\": 1\n           }\n       ],\n       \"countSignIn\": 1,\n       \"countPoint\": \"10.00\"\n   },\n   \"status\": 0,\n   \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]

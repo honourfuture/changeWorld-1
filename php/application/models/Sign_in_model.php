@@ -9,6 +9,7 @@ if (!defined('BASEPATH'))
 class Sign_in_model extends MY_Model {
     private $_name='sign_in';
     private $join_name='sign_in as si';
+    public $_table        = 'sign_in';
 
     public function __construct() {
         parent::__construct();
