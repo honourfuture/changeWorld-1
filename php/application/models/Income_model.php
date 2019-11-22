@@ -532,7 +532,7 @@ class Income_model extends MY_Model
     	];
     }
 
-    public function sum_income_topic_group($user_id = 0, $type = 0)
+    public function sum_income_topic_group($user_id = 0, $type = 0, $where=[])
     {
     	$ret = [
 			'knowledge' => 0,
@@ -543,6 +543,10 @@ class Income_model extends MY_Model
     		$this->db->where('user_id', $user_id);
     	}
         $this->db->where('type', $type);
+    	if($where){
+            $this->db->where($where);
+        }
+
     	$this->db->group_by('topic');
     	if($result = $this->db->get($this->table())->result_array()){
     		foreach($result as $item){

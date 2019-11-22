@@ -199,6 +199,8 @@ class Withdraw extends API_Controller {
 	 *
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
+     * @apiParam {String} startDate 开始时间
+     * @apiParam {String} endDate 结束时间
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -243,11 +245,22 @@ class Withdraw extends API_Controller {
 	public function record()
 	{
 		$ret = array('count' => 0, 'list' => array());
+        $startDate = $this->input->get('startDate');
+        $endDate = $this->input->get('endDate');
 
 		$this->load->model('Withdraw_model');
 		$where = [
 			'user_id' => $this->user_id
 		];
+
+		if($startDate && $endDate){
+
+		    $startDate = date('Y-m-d 00:00:00', strtotime($startDate));
+            $endDate = date('Y-m-d 23:59:59', strtotime($endDate));
+		    $where['created_at >= '] = $startDate;
+            $where['created_at <= '] = $endDate;
+
+        }
 		$order_by = array('id' => 'desc');
 		$ret['count'] = $this->Withdraw_model->count_by($where);
 		if($ret['count']){

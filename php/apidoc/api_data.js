@@ -19733,6 +19733,20 @@ define({ "api": [
             "group": "Success 200",
             "type": "Number",
             "optional": false,
+            "field": "data.signRule",
+            "description": "<p>签到规则</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "data.continuousSign",
+            "description": "<p>连续签到天数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
             "field": "data.countPoint",
             "description": "<p>总积分</p>"
           },
@@ -19762,7 +19776,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n   \"data\": {\n       \"list\": [\n           {\n               \"date\": \"2019-11-13\",\n               \"continue\": 0,\n               \"point\": 2\n           },\n           {\n               \"date\": \"2019-11-14\",\n               \"continue\": 0,\n               \"point\": 4\n           },\n           {\n               \"date\": \"2019-11-15\",\n               \"continue\": 0,\n               \"point\": 2\n           },\n           {\n               \"date\": \"2019-11-16\",\n               \"continue\": 0,\n               \"point\": 2\n           },\n           {\n               \"date\": \"2019-11-17\",\n               \"continue\": 0,\n               \"point\": 4\n           },\n           {\n               \"date\": \"2019-11-18\",\n               \"continue\": 0,\n               \"point\": 3\n           },\n           {\n               \"date\": \"2019-11-19\",\n               \"continue\": \"1\",\n               \"point\": 4\n           },\n           {\n               \"date\": \"2019-11-20\",\n               \"continue\": 0,\n               \"point\": 1\n           }\n       ],\n       \"countSignIn\": 1,\n       \"countPoint\": \"10.00\"\n   },\n   \"status\": 0,\n   \"message\": \"成功\"\n}",
+          "content": "{\n   \"data\": {\n       \"list\": [\n           {\n               \"date\": \"2019-11-13\",\n               \"continue\": 0,\n               \"point\": 2\n           },\n           {\n               \"date\": \"2019-11-14\",\n               \"continue\": 0,\n               \"point\": 4\n           },\n           {\n               \"date\": \"2019-11-15\",\n               \"continue\": 0,\n               \"point\": 2\n           },\n           {\n               \"date\": \"2019-11-16\",\n               \"continue\": 0,\n               \"point\": 2\n           },\n           {\n               \"date\": \"2019-11-17\",\n               \"continue\": 0,\n               \"point\": 4\n           },\n           {\n               \"date\": \"2019-11-18\",\n               \"continue\": 0,\n               \"point\": 3\n           },\n           {\n               \"date\": \"2019-11-19\",\n               \"continue\": \"1\",\n               \"point\": 4\n           },\n           {\n               \"date\": \"2019-11-20\",\n               \"continue\": 0,\n               \"point\": 1\n           }\n       ],\n       \"continuousSign\" : 1,\n       \"countSignIn\": 1,\n       \"countPoint\": \"10.00\"\n   },\n   \"status\": 0,\n   \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
@@ -23660,15 +23674,22 @@ define({ "api": [
             "group": "Parameter",
             "type": "Number",
             "optional": false,
-            "field": "type",
-            "description": "<p>0销售 1加盟商 2城市合伙人</p>"
+            "field": "topic",
+            "description": "<p>主题 0知识 1直播 2商品</p>"
           },
           {
             "group": "Parameter",
-            "type": "Number",
+            "type": "String",
             "optional": false,
-            "field": "topic",
-            "description": "<p>主题 0知识 1直播 2商品</p>"
+            "field": "startDate",
+            "description": "<p>开始时间</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "endDate",
+            "description": "<p>结束时间</p>"
           }
         ]
       }
@@ -30761,6 +30782,13 @@ define({ "api": [
             "group": "Success 200",
             "type": "String",
             "optional": false,
+            "field": "data.withdraw",
+            "description": "<p>可提现金额</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
             "field": "data.point",
             "description": "<p>积分</p>"
           },
@@ -30791,13 +30819,34 @@ define({ "api": [
             "optional": false,
             "field": "data.income.knowledge",
             "description": "<p>知识</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data.todayIncome",
+            "description": "<p>今日收益</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.todayIncome.goods",
+            "description": "<p>商品</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.todayIncome.knowledge",
+            "description": "<p>知识</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    \"data\": {\n        \"balance\": \"9802.00\",\n        \"point\": \"950\",\n        \"income\": {\n            \"knowledge\": \"210.00\",\n            \"goods\": \"2000.00\"\n        },\n        \"gold\": \"9800\"\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": {\n        \"balance\": \"9802.00\",\n        \"point\": \"950\",\n        \"income\": {\n            \"knowledge\": \"210.00\",\n            \"goods\": \"2000.00\"\n        },\n        \"todayIncome\": {\n            \"knowledge\": \"210.00\",\n            \"goods\": \"2000.00\"\n        },\n        \"gold\": \"9800\",\n        \"withdraw\" : \"1000\",\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
@@ -31316,6 +31365,20 @@ define({ "api": [
             "optional": false,
             "field": "sign",
             "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "startDate",
+            "description": "<p>开始时间</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "endDate",
+            "description": "<p>结束时间</p>"
           }
         ]
       }

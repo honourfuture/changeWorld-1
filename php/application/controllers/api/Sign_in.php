@@ -26,6 +26,8 @@
      *
      * @apiSuccess {Number} status 接口状态 0成功 其他异常 设置成功直接登录成功
      * @apiSuccess {Number} data.countSignIn 总签到天数
+     * @apiSuccess {Number} data.signRule 签到规则
+     * @apiSuccess {Number} data.continuousSign 连续签到天数
      * @apiSuccess {Number} data.countPoint 总积分
      * @apiSuccess {Number} data.list 近七天签到记录
      * @apiSuccess {String} data.list.point 获取的积分
@@ -76,6 +78,7 @@
      *                "point": 1
      *            }
      *        ],
+     *        "continuousSign" : 1,
      *        "countSignIn": 1,
      *        "countPoint": "10.00"
      *    },
@@ -94,11 +97,11 @@
         $startDate = $this->input->get('start_date');
         $endDate = $this->input->get('end_date');
         if(!$startDate){
-            $startDate = date('Y-m-d', strtotime('-7 days'));
+            $startDate = date('Y-m-d', strtotime('-1 days'));
         }
 
         if(!$endDate){
-            $endDate = date('Y-m-d', time());
+            $endDate = date('Y-m-d', strtotime('5 days'));
         }
 
         $startTime = strtotime($startDate);
@@ -107,6 +110,7 @@
         $results = [];
         for($time = $startTime; $time <= $endTime; $time+=86400){
             $key = date('Y-m-d', $time);
+
             $results[$key] = [
                 'date' => $key,
                 'continue' => 0,
@@ -124,15 +128,20 @@
         $whereCount['continue >'] = 0;
         $count = $this->Sign_in_model->count_by($whereCount);
         $user = $this->Users_model->get($this->user_id);
+        $dataInfo['continuousSign'] = 0;
 
         $data = $this->Sign_in_model->get($where);
         foreach ($data as $datum){
+            if($datum['date'] == date('Y-m-d')){
+                $dataInfo['continuousSign'] = $datum['continue'];
+            }
             if(isset($results[$datum['date']])){
                 $results[$datum['date']]['continue'] = $datum['continue'];
             }
         }
         $results = array_values($results);
 
+        $dataInfo['signRule'] = '签到规则';
         $dataInfo['list'] = $results;
         $dataInfo['countSignIn'] = $count;
         $dataInfo['countPoint'] = $user['point'];

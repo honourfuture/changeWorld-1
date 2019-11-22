@@ -22,8 +22,9 @@ class Income extends API_Controller {
 	 *
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
-	 * @apiParam {Number} type 0销售 1加盟商 2城市合伙人
 	 * @apiParam {Number} topic 主题 0知识 1直播 2商品
+     * @apiParam {String} startDate 开始时间
+     * @apiParam {String} endDate 结束时间
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -93,7 +94,7 @@ class Income extends API_Controller {
 
 		$a_type = $this->Income_model->type();
 		if(! isset($a_type[$type])){
-			$this->ajaxReturn([], 1, '收益类型错误');
+//			$this->ajaxReturn([], 1, '收益类型错误');
 		}
 
 		$where = array('topic' => $topic, 'type' => $type);
@@ -113,6 +114,15 @@ class Income extends API_Controller {
 			$where['service_amount >'] = 0;
 			$field = 'id,updated_at,sub_topic,name,mobi,service_amount as amount,gold,item,level';
 		}
+
+        $startDate = $this->input->get_post('startDate');
+        $endDate = $this->input->get_post('endDate');
+        if($startDate && $endDate){
+            $startDate = date('Y-m-d 00:00:00', strtotime($startDate));
+            $endDate = date('Y-m-d 23:59:59', strtotime($endDate));
+            $where['created_at >= '] = $startDate;
+            $where['created_at <= '] = $endDate;
+        }
 
 		if($this->user_id){
 			//统计
