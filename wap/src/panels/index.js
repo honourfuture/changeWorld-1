@@ -25,7 +25,7 @@ import UserCenter from "./UserCenter";
 import MyProduct from "./MyProduct";
 import SalesLog from "./SalesLog";
 import ProductIssue from "./ProductIssue";
-import MessageCenter from "./MessageCenter";
+import MessageCenter from "./MessAgeCenter";
 import MessageDetail from "./MessageDetail";
 import EvaluateList from "./EvaluateList";
 import SellOrder from "./SellOrder";

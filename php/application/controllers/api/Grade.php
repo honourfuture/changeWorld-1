@@ -74,6 +74,7 @@ class Grade extends API_Controller {
 
 		$this->load->model('Grade_model');
 		$ret['grade'] = $this->Grade_model->exp_to_grade($user['exp']);
+
 		$ret['level'] = $this->Grade_level_model->exp_to_level($user['exp']);
 		$ret['rule'] = $this->Grade_model->rule();
 
@@ -135,7 +136,7 @@ class Grade extends API_Controller {
     public function level()
     {
         $order_by = array('sort' => 'desc', 'id' => 'desc');
-        $this->db->select('id,name,rule,brokerage,icon,grade_demand,direct_brokerage,under_gt_brokerage,under_eq_brokerage,under_lt_brokerage');
+        $this->db->select('id,name,rule,brokerage,icon,,direct_brokerage,under_gt_brokerage,under_eq_brokerage,under_lt_brokerage');
         $ret = $this->Grade_level_model->order_by($order_by)->get_many_by('enable', 1);
         $this->ajaxReturn($ret);
     }
