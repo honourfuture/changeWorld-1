@@ -4374,6 +4374,119 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/api/admin/grade",
+    "title": "等级经验设置-列表",
+    "version": "1.0.0",
+    "name": "grade",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/admin/grade"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "admin_id",
+            "description": "<p>管理员唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account",
+            "description": "<p>登录账号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.id",
+            "description": "<p>等级经验设置唯一ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.grade_name",
+            "description": "<p>等级名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.grade_demand",
+            "description": "<p>晋级值</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.grade_logo",
+            "description": "<p>等级图片</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": [\n\t        {\n\t            \"id\": \"1\",\n\t            \"grade_name\": \"热门\",\n    \"grade_demand\": \"500\",\n    \"grade_logo\": \"\",\n\t        }\n\t    ],\n\t    \"status\": 0,\n\t    \"message\": \"成功\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "application/controllers/api/admin/Grade_level.php",
+    "groupTitle": "admin"
+  },
+  {
+    "type": "get",
     "url": "/api/admin/grade_rule",
     "title": "等级经验规则-列表",
     "version": "1.0.0",
@@ -4667,6 +4780,133 @@ define({ "api": [
       ]
     },
     "filename": "application/controllers/api/admin/Grade.php",
+    "groupTitle": "admin"
+  },
+  {
+    "type": "post",
+    "url": "/api/admin/grade/save",
+    "title": "等级经验设置-编辑 OR 新增",
+    "version": "1.0.0",
+    "name": "grade_save",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/admin/grade/save"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "admin_id",
+            "description": "<p>管理员唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account",
+            "description": "<p>登录账号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>记录唯一ID 0表示新增 其他表示编辑</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "grade_name",
+            "description": "<p>等级经验设置等级名称</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "grade_demand",
+            "description": "<p>晋级值</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "grade_logo",
+            "description": "<p>等级图</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "enable",
+            "description": "<p>启用 1是 0否</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "deleted",
+            "description": "<p>是否删除 1是 0否（为1时其他字段可不传）</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": \"\",\n\t    \"status\": 0,\n\t    \"message\": \"\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "application/controllers/api/admin/Grade_level.php",
     "groupTitle": "admin"
   },
   {
@@ -19591,7 +19831,7 @@ define({ "api": [
   {
     "type": "post",
     "url": "/api/change_bind/newPhone",
-    "title": "修改绑定1-手机号重新绑定",
+    "title": "修改绑定2-手机号重新绑定",
     "version": "1.0.0",
     "name": "change_bind",
     "group": "changeBin",
@@ -19711,7 +19951,7 @@ define({ "api": [
   {
     "type": "post",
     "url": "/api/change_bind/oldPhone",
-    "title": "修改绑定2-旧手机号验证",
+    "title": "修改绑定1-旧手机号验证",
     "version": "1.0.0",
     "name": "change_bind_old_phone",
     "group": "changeBin",
@@ -19735,7 +19975,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "phone",
-            "description": "<p>新手机号码</p>"
+            "description": "<p>旧手机号码</p>"
           }
         ]
       }
