@@ -26,16 +26,21 @@ class Grade_level_model extends MY_Model
     	$order_by = array('grade_demand' => 'asc');
 		if($one = $this->Grade_level_model->order_by($order_by)->get_by(['enable' => 1, 'grade_demand <' => $exp])){
 			$ret['before_level_name'] = $one['name'];
+			$ret['before_level_rule'] = $one['rule'];
 		}
 
 		if($one = $this->Grade_level_model->order_by($order_by)->get_by(['enable' => 1, 'grade_demand' => $exp])){
 			$ret['level_name'] = $one['name'];
+			$ret['level_rule'] = $one['rule'];
 		}else{
 			$ret['level_name'] = $ret['before_level_name'];
+            $ret['level_rule'] = $ret['before_level_rule'] ;
+
 		}
 
 		if($one = $this->Grade_level_model->order_by($order_by)->get_by(['enable' => 1, 'grade_demand >' => $exp])){
 			$ret['after_level_name'] = $one['name'];
+            $ret['after_level_rule'] = $one['rule'];
 			$ret['diff'] = $one['grade_demand'] - $exp;
 		}
 
