@@ -10,6 +10,7 @@ class Change_bind extends API_Controller {
 	public function __construct()
     {
         parent::__construct();
+        $this->load->model('Users_bind_model');
     }
 
     /**
@@ -22,6 +23,8 @@ class Change_bind extends API_Controller {
      *
      * @apiParam {String} code 验证码
      * @apiParam {String} phone 旧手机号码
+     * @apiParam {Number} user_id 用户唯一ID
+     * @apiParam {String} sign 校验签名
      *
      * @apiSuccess {Number} status 接口状态 0成功 其他异常 设置成功直接登录成功
      * @apiSuccess {String} message 接口信息描述
@@ -73,6 +76,8 @@ class Change_bind extends API_Controller {
      *
      * @apiParam {String} code 验证码
      * @apiParam {String} phone 新手机号码
+     * @apiParam {Number} user_id 用户唯一ID
+     * @apiParam {String} sign 校验签名
      *
      * @apiSuccess {Number} status 接口状态 0成功 其他异常 设置成功直接登录成功
      * @apiSuccess {String} message 接口信息描述
@@ -113,11 +118,21 @@ class Change_bind extends API_Controller {
             $this->ajaxReturn([], 3, '手机号已被注册');
         }
 
+        $user = $this->Users_model->get_by('id', $this->user_id);
+
         $this->load->model('Sms_email_record_model');
         $info = $this->Sms_email_record_model->order_by('id', 'DESC')->get_by('account', $mobi);
+
         if($info){
             if($info['verify'] == $code){
                 if($this->Users_model->update($user['id'], array('mobi' => $mobi))){
+                    $where = [
+                        'user_id' => $user['id'],
+                        'account_type' => 0
+                    ];
+
+                    $user_bind = $this->Users_bind_model->get_by($where);
+                    $this->Users_bind_model->update($user_bind['id'], ['unique_id' => $mobi]);
                     $this->user_login_success($user);
                 }else{
                     $this->ajaxReturn([], 6, '更换绑定失败');
@@ -130,4 +145,53 @@ class Change_bind extends API_Controller {
         }
     }
 
+    /**
+     * @api {post} /api/change_bind/releaseThree 修改绑定-删除第三方绑定
+     * @apiVersion 1.0.0
+     * @apiName change_bind_release_three
+     * @apiGroup changeBin
+     *
+     * @apiSampleRequest /api/change_bind/releaseThree
+     *
+     * @apiParam {Number} user_id 用户唯一ID
+     * @apiParam {String} sign 校验签名
+     *
+     * @apiSuccess {Number} status 接口状态 0成功 其他异常 设置成功直接登录成功
+     * @apiSuccess {String} message 接口信息描述
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * {
+     *	    "data": [],
+     *	    "status": 0,
+     *	    "message": "成功"
+     *	}
+     *
+     * @apiErrorExample {json} Error-Response:
+     * {
+     * 	   "data": "",
+     *     "status": 4,
+     *     "message": "取消绑定失败"
+     * }
+     */
+    public function releaseThree()
+    {
+        $where = [
+            'user_id' => $this->user_id,
+            'account_type != ' => 0
+        ];
+
+        $user_bind = $this->Users_bind_model->get_by($where);
+        if(!$user_bind){
+            $this->ajaxReturn([], 1, '未绑定第三方');
+        }
+
+        $status = $this->Users_bind_model->update($user_bind['id'], ['unique_id' => 0]);
+
+        if($status){
+            $this->ajaxReturn([], 0, '取消绑定成功');
+        }else{
+            $this->ajaxReturn([], 2, '取消绑定失败');
+        }
+
+    }
 }

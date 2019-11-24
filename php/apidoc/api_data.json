@@ -4355,7 +4355,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n\t    \"data\": [\n\t        {\n\t            \"id\": \"1\",\n\t            \"grade_name\": \"热门\",\n\t \t\t\t\t\"grade_demand\": \"500\",\n\t \t\t\t\t\"grade_logo\": \"\",\n\t        }\n\t    ],\n\t    \"status\": 0,\n\t    \"message\": \"成功\"\n\t}",
+          "content": "{\n\t    \"data\": [\n\t        {\n\t            \"id\": \"1\",\n\t            \"grade_name\": \"热门\",\n    \"grade_demand\": \"500\",\n    \"grade_logo\": \"\",\n\t        }\n\t    ],\n\t    \"status\": 0,\n\t    \"message\": \"成功\"\n\t}",
           "type": "json"
         }
       ]
@@ -4369,7 +4369,7 @@
         }
       ]
     },
-    "filename": "application/controllers/api/admin/Grade.php",
+    "filename": "application/controllers/api/admin/Grade_level.php",
     "groupTitle": "admin"
   },
   {
@@ -4468,7 +4468,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n\t    \"data\": [\n\t        {\n\t            \"id\": \"1\",\n\t            \"grade_name\": \"热门\",\n    \"grade_demand\": \"500\",\n    \"grade_logo\": \"\",\n\t        }\n\t    ],\n\t    \"status\": 0,\n\t    \"message\": \"成功\"\n\t}",
+          "content": "{\n\t    \"data\": [\n\t        {\n\t            \"id\": \"1\",\n\t            \"grade_name\": \"热门\",\n\t \t\t\t\t\"grade_demand\": \"500\",\n\t \t\t\t\t\"grade_logo\": \"\",\n\t        }\n\t    ],\n\t    \"status\": 0,\n\t    \"message\": \"成功\"\n\t}",
           "type": "json"
         }
       ]
@@ -4482,7 +4482,7 @@
         }
       ]
     },
-    "filename": "application/controllers/api/admin/Grade_level.php",
+    "filename": "application/controllers/api/admin/Grade.php",
     "groupTitle": "admin"
   },
   {
@@ -19856,6 +19856,20 @@
             "optional": false,
             "field": "phone",
             "description": "<p>新手机号码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
           }
         ]
       }
@@ -19976,6 +19990,20 @@
             "optional": false,
             "field": "phone",
             "description": "<p>旧手机号码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
           }
         ]
       }
@@ -20012,6 +20040,77 @@
         {
           "title": "Error-Response:",
           "content": "{\n\t   \"data\": \"\",\n    \"status\": 4,\n    \"message\": \"先获取短信验证码\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "application/controllers/api/Change_bind.php",
+    "groupTitle": "changeBin"
+  },
+  {
+    "type": "post",
+    "url": "/api/change_bind/releaseThree",
+    "title": "修改绑定-删除第三方绑定",
+    "version": "1.0.0",
+    "name": "change_bind_release_three",
+    "group": "changeBin",
+    "sampleRequest": [
+      {
+        "url": "/api/change_bind/releaseThree"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常 设置成功直接登录成功</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": [],\n\t    \"status\": 0,\n\t    \"message\": \"成功\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": 4,\n    \"message\": \"取消绑定失败\"\n}",
           "type": "json"
         }
       ]
