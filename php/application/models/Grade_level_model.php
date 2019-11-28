@@ -27,20 +27,27 @@ class Grade_level_model extends MY_Model
 		if($one = $this->Grade_level_model->order_by($order_by)->get_by(['enable' => 1, 'grade_demand <' => $exp])){
 			$ret['before_level_name'] = $one['name'];
 			$ret['before_level_rule'] = $one['rule'];
+			$ret['before_level_icon'] = $one['icon'];
+			$ret['before_level_remark'] = $one['remark'];
 		}
 
 		if($one = $this->Grade_level_model->order_by($order_by)->get_by(['enable' => 1, 'grade_demand' => $exp])){
 			$ret['level_name'] = $one['name'];
 			$ret['level_rule'] = $one['rule'];
+			$ret['level_icon'] = $one['icon'];
+			$ret['level_remark'] = $one['remark'];
 		}else{
 			$ret['level_name'] = $ret['before_level_name'];
             $ret['level_rule'] = $ret['before_level_rule'] ;
-
+            $ret['level_icon'] = $ret['before_level_icon'] ;
+            $ret['level_remark'] = $ret['before_level_remark'] ;
 		}
 
 		if($one = $this->Grade_level_model->order_by($order_by)->get_by(['enable' => 1, 'grade_demand >' => $exp])){
 			$ret['after_level_name'] = $one['name'];
             $ret['after_level_rule'] = $one['rule'];
+            $ret['after_level_icon'] = $one['icon'];
+            $ret['after_level_remark'] = $one['remark'];
 			$ret['diff'] = $one['grade_demand'] - $exp;
 		}
 

@@ -34,7 +34,9 @@ class Grade extends API_Controller {
 	 * @apiSuccess {String} data.grade.after_grade_name 下一级等级
 	 * @apiSuccess {String} data.grade.diff 升级差值
 	 * @apiSuccess {String} data.grade.exp 当前经验值
-	 * @apiSuccess {String} data.rule 等级说明
+	 * @apiSuccess {String} data.level.rule 权益说明
+	 * @apiSuccess {String} data.level.icon 图标
+	 * @apiSuccess {String} data.level.remark 等级说明
 	 *
 	 * @apiSuccessExample {json} Success-Response:
 	 * {
@@ -49,6 +51,9 @@ class Grade extends API_Controller {
      *      "level": {
      *             "before_level_name": "",
      *             "level_name": "",
+     *             "level_rule": "",
+     *             "level_icon": "",
+     *             "level_remark": "",
      *             "after_level_name": "至尊王者",
      *             "diff": 10000,
      *             "exp": "0"
@@ -100,6 +105,7 @@ class Grade extends API_Controller {
      * @apiSuccess {String} data.rule 会员权益说明
      * @apiSuccess {String} data.brokerage 自购佣金 百分比
      * @apiSuccess {String} data.icon 图标
+     * @apiSuccess {String} data.remark 等级说明
      * @apiSuccess {String} data.grade_demand 会员门槛
      * @apiSuccess {String} data.direct_brokerage 直属代理佣金
      * @apiSuccess {String} data.under_gt_brokerage 会员等级大于下属
@@ -136,7 +142,7 @@ class Grade extends API_Controller {
     public function level()
     {
         $order_by = array('sort' => 'desc', 'id' => 'desc');
-        $this->db->select('id,name,rule,brokerage,icon,,direct_brokerage,under_gt_brokerage,under_eq_brokerage,under_lt_brokerage');
+        $this->db->select('id,name,rule,brokerage,icon,remark,direct_brokerage,under_gt_brokerage,under_eq_brokerage,under_lt_brokerage');
         $ret = $this->Grade_level_model->order_by($order_by)->get_many_by('enable', 1);
         $this->ajaxReturn($ret);
     }
