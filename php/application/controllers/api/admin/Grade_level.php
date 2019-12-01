@@ -126,13 +126,13 @@ class Grade_level extends API_Controller {
             $this->check_params('edit', $params);
             if($params['deleted'] == 1){
                 $update = array('deleted' => 1, 'enable' => 0);
-                $flag = $this->Grade_model->update($id, $update);
+                $flag = $this->Grade_level_model->update($id, $update);
             }else{
                 unset($params['deleted']);
                 if(isset($params['enable']) && $params['enable']){
                     $params['deleted'] = 0;
                 }
-                $flag = $this->Grade_model->update($id, $params);
+                $flag = $this->Grade_level_model->update($id, $params);
             }
         }else{
             $params = elements(
@@ -143,7 +143,7 @@ class Grade_level extends API_Controller {
                 UPDATE_VALID
             );
             $this->check_params('add', $params);
-            if($flag = $this->Grade_model->insert($params)){
+            if($flag = $this->Grade_level_model->insert($params)){
                 $id = $flag;
             }
         }
