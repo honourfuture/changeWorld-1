@@ -1,8 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 /*
- * @author sz.ljx
- * @email webljx@163.com
+ * @author itmrlu
+ * @email itmrlu@163.com
  * @link www.aicode.org.cn
  */
 class Grade_level extends API_Controller {
@@ -10,16 +10,16 @@ class Grade_level extends API_Controller {
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('Grade_model');
+        $this->load->model('Grade_level_model');
     }
 
     /**
-     * @api {get} /api/admin/grade 等级经验设置-列表
+     * @api {get} /api/admin/grade_level 会员等级设置-列表
      * @apiVersion 1.0.0
      * @apiName grade
      * @apiGroup admin
      *
-     * @apiSampleRequest /api/admin/grade
+     * @apiSampleRequest /api/admin/grade_level
      *
      * @apiParam {Number} admin_id 管理员唯一ID
      * @apiParam {String} account 登录账号
@@ -39,8 +39,8 @@ class Grade_level extends API_Controller {
      *	        {
      *	            "id": "1",
      *	            "grade_name": "热门",
-    "grade_demand": "500",
-    "grade_logo": "",
+     *              "grade_demand": "500",
+     *              "grade_logo": "",
      *	        }
      *	    ],
      *	    "status": 0,
@@ -57,8 +57,8 @@ class Grade_level extends API_Controller {
     public function index()
     {
         $deleted = (int)$this->input->get('deleted');
-        $order_by = array('grade_demand' => 'asc', 'id' => 'desc');
-        $ret = $this->Grade_model->order_by($order_by)->get_many_by('deleted', $deleted);
+        $order_by = array('sort' => 'asc');//, 'id' => 'desc'
+        $ret = $this->Grade_level_model->order_by($order_by)->get_many_by('deleted', $deleted);
         $this->ajaxReturn($ret);
     }
 
@@ -69,20 +69,27 @@ class Grade_level extends API_Controller {
     }
 
     /**
-     * @api {post} /api/admin/grade/save 等级经验设置-编辑 OR 新增
+     * @api {post} /api/admin/grade_level/save 会员等级设置-编辑 OR 新增
      * @apiVersion 1.0.0
      * @apiName grade_save
      * @apiGroup admin
      *
-     * @apiSampleRequest /api/admin/grade/save
+     * @apiSampleRequest /api/admin/grade_level/save
      *
      * @apiParam {Number} admin_id 管理员唯一ID
      * @apiParam {String} account 登录账号
      * @apiParam {String} sign 校验签名
      * @apiParam {Number} id 记录唯一ID 0表示新增 其他表示编辑
-     * @apiParam {String} grade_name 等级经验设置等级名称
+     * @apiParam {String} name 会员等级名称
+     * @apiParam {String} rule 等级权益说明
+     * @apiParam {String} brokerage 自购佣金
+     * @apiParam {String} direct_brokerage 直属代理佣金
+     * @apiParam {String} under_gt_brokerage 会员等级大于下属
+     * @apiParam {String} under_eq_brokerage 会员等级等于下属最高
+     * @apiParam {String} under_lt_brokerage 会员等级小于下属最高
+     * @apiParam {String} remark 等级说明备注
      * @apiParam {Number} grade_demand 晋级值
-     * @apiParam {String} grade_logo 等级图
+     * @apiParam {String} icon 等级图
      * @apiParam {Number} enable 启用 1是 0否
      * @apiParam {Number} deleted 是否删除 1是 0否（为1时其他字段可不传）
      *
@@ -111,7 +118,7 @@ class Grade_level extends API_Controller {
         if($id){
             $params = elements(
                 array(
-                    'grade_name', 'grade_demand', 'grade_logo', 'deleted', 'enable'
+                    'name', 'rule', 'brokerage', 'direct_brokerage', 'under_gt_brokerage','under_eq_brokerage','under_lt_brokerage','remark','grade_demand','icon'
                 ),
                 $this->input->post(),
                 UPDATE_VALID
@@ -130,7 +137,7 @@ class Grade_level extends API_Controller {
         }else{
             $params = elements(
                 array(
-                    'grade_name', 'grade_demand', 'grade_logo'
+                    'name', 'rule', 'brokerage', 'direct_brokerage', 'under_gt_brokerage','under_eq_brokerage','under_lt_brokerage','remark','grade_demand','icon'
                 ),
                 $this->input->post(),
                 UPDATE_VALID
@@ -151,14 +158,16 @@ class Grade_level extends API_Controller {
         $this->ajaxReturn(array('id' => $id), $status, '操作'.$message);
     }
 
+
+
     protected function check_params($act, $params)
     {
         switch($act){
             case 'add':
-                if($params['grade_name'] === '' || $params['grade_name'] == UPDATE_VALID){
+                if($params['name'] === '' || $params['name'] == UPDATE_VALID){
                     $this->ajaxReturn([], 501, '等级名称参数错误');
                 }
-                if($params['grade_demand'] === '' || $params['grade_demand'] == UPDATE_VALID){
+                if($params['rule'] === '' || $params['rule'] == UPDATE_VALID){
                     $this->ajaxReturn([], 501, '等级值参数错误');
                 }
                 break;
