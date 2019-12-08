@@ -27,6 +27,7 @@ class Users_points extends API_Controller {
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
 	 * @apiSuccess {Object} data 接口数据集
+	 * @apiSuccess {Number} data.total 当前积分余额
 	 * @apiSuccess {Number} data.count 总记录数
 	 * @apiSuccess {Object} data.list 列表
 	 * @apiSuccess {String} data.list.id 积分明细ID
@@ -38,6 +39,7 @@ class Users_points extends API_Controller {
 	 * @apiSuccessExample {json} Success-Response:
 	 * {
 	 *     "data": {
+	 *         "total": 50,
 	 *         "count": 5,
 	 *         "list": [
 	 *             {
@@ -100,7 +102,7 @@ class Users_points extends API_Controller {
 	 */
 	public function index()
 	{
-		$ret = array('points' => array('count' => 0, 'list' => array()));
+		$ret = array('points' => array('total'=>0,'count' => 0, 'list' => array()));
 
 		$where = array();
 		$type = $this->input->get_post('type');
@@ -113,6 +115,11 @@ class Users_points extends API_Controller {
 		if($this->user_id){
 			$where['user_id'] = $this->user_id;
 		}
+        //查询当前用户积分总余额
+        $this->load->model('Users_model');
+        $user = $this->Users_model->get($this->user_id);
+        $ret['points']['total'] = $user->point;
+
 		$this->load->model('Users_points_model');
 		$this->search();
 		$ret['points']['count'] = $this->Users_points_model->count_by($where);
