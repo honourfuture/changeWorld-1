@@ -322,9 +322,10 @@ class API_Controller extends MY_Controller
                     'msg' => '会员不存在'
                 );
             }
-
+            $points = 0;
             if($isAdd){
-                $update = array('point' => $user['point'] + $value);
+                $points = $user['point'] + $value;
+                $update = array('point' => $points);
             }else{
                 if($user['point'] < $value){
                     return array(
@@ -332,8 +333,8 @@ class API_Controller extends MY_Controller
                         'msg' => '会员积分不足，请检查！'
                     );
                 }
-
-                $update = array('point' => $user['point'] - $value);
+                $points = $user['point'] - $value;
+                $update = array('point' => $points);
             }
 
             $data['user_id'] = $userId;
@@ -341,6 +342,7 @@ class API_Controller extends MY_Controller
             $data['remark'] = $remark;
             $data['value'] = $value;
             $data['is_add'] = $isAdd;
+            $data['point'] = $points;
 
             $this->Users_points_model->insert($data);
 

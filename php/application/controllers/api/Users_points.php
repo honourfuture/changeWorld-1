@@ -219,19 +219,23 @@ class Users_points extends API_Controller {
 		$this->load->model('Users_points_model');
 		$data = array();
 		$data['value'] = abs($params['points']);
+		$points = 0;
 		if($params['type'] == 2){
 			$data['value'] *= -1;
 			if($data['value'] > $user['point']){
 				$update = array('point' => 0);
 			}else{
 				$update = array('point' => $user['point'] - $data['value']);
+                $points = $user['point'] - $data['value'];
 			}
 		}else{
 			$update = array('point' => $user['point'] + $data['value']);
+            $points = $user['point'] - $data['value'];
 		}
 
 		$data['user_id'] = $params['c_user_id'];
 		$data['remark'] = $params['remark'];
+		$data['point'] = $points;
 		$this->Users_points_model->insert($data);
 
 		$this->Users_model->update_by(array('id' => $data['user_id']), $update);

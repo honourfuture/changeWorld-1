@@ -443,6 +443,7 @@ class Order extends API_Controller {
 			$point_log = [
 				'user_id' => $this->user_id,
 				'value' => $r_point,
+				'point' => $point['user'],
 				'rule_name' => 'goods_exchange',
 				'remark' => '商品下单积分使用抵扣'
 			];

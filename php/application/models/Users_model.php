@@ -263,6 +263,7 @@ class Users_model extends MY_Model
             $log = [
                 'user_id' => $user_id,
                 'value' => $data['point'],
+                'point' => $data['point'],
                 'rule_name' => $rule_name,
                 'remark' => '注册'
             ];

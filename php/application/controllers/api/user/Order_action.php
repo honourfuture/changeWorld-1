@@ -156,6 +156,7 @@ class Order_action extends API_Controller {
                             $data = array();
                             $data['value'] = $point;
                             $data['user_id'] = $user['id'];
+                            $data['point'] = $user['point'] + $data['value'];
                             $data['rule_name'] = 'points_pay';
                             $data['remark'] = '确认收货商家返积分';
                             $this->Users_points_model->insert($data);
