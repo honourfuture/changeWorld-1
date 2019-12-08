@@ -226,6 +226,7 @@ class Info extends API_Controller {
 	 * @apiSuccess {String} data.user.anchor 讲师标识 0:'未申请', 1:'待审核', 2:'已通过', 3:'已拒绝'
 	 * @apiSuccess {String} data.user.seller 卖家 0:'未申请', 1:'待审核', 2:'已通过', 3:'已拒绝'
 	 * @apiSuccess {String} data.user.invite_code 邀请码
+	 * @apiSuccess {String} data.user.invite_url 邀请链接
 	 * @apiSuccess {String} data.user.exp 经验值
 	 * @apiSuccess {String} data.vip 贵族信息 id=0表示无贵族
 	 * @apiSuccess {String} data.collection 收藏数量
@@ -241,6 +242,8 @@ class Info extends API_Controller {
 	 *         "user": {
 	 *             "id": "1",
 	 *             "nickname": "aicode",
+	 *             "invite_code": "122112",
+	 *             "invite_url": "邀请链接",
 	 *             "header": "/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png",
 	 *             "v": "0",
 	 *             "anchor": "1",
@@ -273,7 +276,7 @@ class Info extends API_Controller {
 		$ret = array();
 
 		$user = $this->get_user();
-
+        $invite_url = $config = config_item('invite_url');//邀请链接
 		$ret['user'] = array(
 			'id' => $user['id'],
 			'nickname' => $user['nickname'],
@@ -282,6 +285,7 @@ class Info extends API_Controller {
 			'anchor' => $user['anchor'],
 			'seller' => $user['seller'],
 			'invite_code' => $user['invite_code'],
+			'invite_url' => $invite_url.$user['invite_code'],
 			'exp' => $user['exp'],
 			'mobi' => $user['mobi'],
 			'pretty_id' => $user['pretty_id'],

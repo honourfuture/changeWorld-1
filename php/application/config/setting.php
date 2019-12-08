@@ -114,3 +114,6 @@ $config['push'] = [
     'master_secret' => 'f3f6e0c11711d2f70bb7a33a',
     'log_file' => APPPATH.'logs'.DIRECTORY_SEPARATOR.'jpush.log',
 ];
+
+// 邀请链接
+$config['invite_url'] = "http://cworld.ahkskj.cn/invite?code=";
