@@ -34,6 +34,7 @@ class Users_points extends API_Controller {
 	 * @apiSuccess {String} data.list.updated_at 更新时间
 	 * @apiSuccess {String} data.list.value 变更值
 	 * @apiSuccess {String} data.list.remark 备注描述
+	 * @apiSuccess {String} data.list.point 当前积分余额
 	 * @apiSuccess {String} data.list.rule_name_text 变更类型
 	 *
 	 * @apiSuccessExample {json} Success-Response:
@@ -49,7 +50,8 @@ class Users_points extends API_Controller {
 	 *                 "value": "-20",
 	 *                 "rule_name": "goods_exchange",
 	 *                 "remark": "商品抵扣现金",
-	 *                 "rule_name_text": "消费抵扣"
+	 *                 "point": "140",
+     *                 "rule_name_text": "消费抵扣"
 	 *             },
 	 *             {
 	 *                 "id": "4",
@@ -58,6 +60,7 @@ class Users_points extends API_Controller {
 	 *                 "value": "10",
 	 *                 "rule_name": "points_pay",
 	 *                 "remark": "商品消费立返",
+     *                 "point": "160",
 	 *                 "rule_name_text": "消费立返"
 	 *             },
 	 *             {
@@ -67,6 +70,7 @@ class Users_points extends API_Controller {
 	 *                 "value": "50",
 	 *                 "rule_name": "points_evaluate",
 	 *                 "remark": "商品订单评论",
+     *                 "point": "170",
 	 *                 "rule_name_text": "订单评论"
 	 *             },
 	 *             {
@@ -76,6 +80,7 @@ class Users_points extends API_Controller {
 	 *                 "value": "20",
 	 *                 "rule_name": "points_login",
 	 *                 "remark": "每天首次登录",
+     *                 "point": "120",
 	 *                 "rule_name_text": "会员登陆"
 	 *             },
 	 *             {
@@ -85,6 +90,7 @@ class Users_points extends API_Controller {
 	 *                 "value": "100",
 	 *                 "rule_name": "points_reg",
 	 *                 "remark": "新用户首次注册",
+     *                 "point": "100",
 	 *                 "rule_name_text": "会员注册"
 	 *             }
 	 *         ]
@@ -126,7 +132,7 @@ class Users_points extends API_Controller {
 		if($ret['points']['count']){
 			$order_by = array('id' => 'desc');
 			$this->search();
-			$this->db->select('id,updated_at,user_id,value,rule_name,remark');
+			$this->db->select('id,updated_at,user_id,value,rule_name,remark,point');
 			$ret['points']['list'] = $this->Users_points_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 
 			$a_user = array();
