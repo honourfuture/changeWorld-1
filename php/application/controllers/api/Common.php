@@ -232,7 +232,11 @@ class Common extends API_Controller
         $this->load->model('Sms_email_record_model');
         $data = array('account' => $mobi);
         $this->load->helper('string');
-        $data['verify'] = random_string('numeric', 4);
+        if(config_item('is_dev')){
+            $data['verify'] = '6666';//开发模式验证码 6666
+        }else{
+            $data['verify'] = random_string('numeric', 4);
+        }
         $this->Sms_email_record_model->insert($data);
 
         // 发送

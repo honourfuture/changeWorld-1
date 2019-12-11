@@ -117,3 +117,7 @@ $config['push'] = [
 
 // 邀请链接
 $config['invite_url'] = "http://cworld.ahkskj.cn/invite?code=";
+
+//是否开发模式
+//如果是开发模式，验证码6666
+$config['is_dev'] = true;
