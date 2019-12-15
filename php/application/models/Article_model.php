@@ -31,6 +31,7 @@ class Article_model extends MY_Model
     		// 'copyright' => '版权申明',
             // 'rule_shop' => '平台规则',
             'privacy_policy' => '隐私政策',
+            'novice_guide' => '新手指南',
     	);
     }
 }

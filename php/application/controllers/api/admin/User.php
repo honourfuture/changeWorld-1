@@ -57,10 +57,16 @@ class User extends API_Controller {
 		$ret = array();
 		$id = $this->input->get_post('id');
 		$job = $this->input->get_post('job');
-
 		$update = [];
 		switch($job){
 			case 'edit':
+                $mobi = $this->input->get_post('mobi');
+                $hasMobi = $this->Users_model->get_by(['mobi' => $mobi]);
+                if($hasMobi && $hasMobi['id'] != $id){
+                    $this->ajaxReturn([], 1, '该手机号码已被注册');
+                }
+                $update = array('mobi' => $mobi);
+
 				$header = $this->input->get_post('header');
 				if(!$header){
 					$this->ajaxReturn([], 1, '请上传头像');
@@ -72,6 +78,13 @@ class User extends API_Controller {
 					$this->ajaxReturn([], 1, '请输入昵称');
 				}
 				$update['nickname'] = $nickname;
+
+				$point = $this->input->get_post('point');
+                if($point){
+                    $update['point'] = $point;
+                }
+
+
 				break;
 			case 'enable':
 				$enable = $this->input->get_post('enable');

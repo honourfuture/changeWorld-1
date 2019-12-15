@@ -20,14 +20,28 @@ const wDevice = document.body.offsetWidth;
 
 class EvaluateItem extends BaseComponent {
     render() {
-        const { header, nickname, remark } = this.props;
+        const { header, nickname, remark,photos,lv  } = this.props;
+        const photo = JSON.parse(JSON.parse(photos));
+		let photosItem = (photo || []).map((item,key)=>{
+			return <NetImg className="desImg" src={Base.getImgUrl(item)} key={key}/>
+		});
         return (
-            <div className="evaluate-item base-line">
-                <NetImg src={header} />
-                <div className="info">
-                    <div className="name">{Base.getAnonymity(nickname)}</div>
-                    <div className="des">{remark}</div>
+            <div className="evaluate-item am-flexbox-align-start am-flexbox">
+                <NetImg className="userImg" src={Base.getImgUrl(header)} />
+                <div>
+                    <div className="name">
+                        {Base.getAnonymity(nickname)} 等级：{lv}
+                    </div>
+                    <div className="des">
+                        {remark}
+                    </div>
+                    {
+					    photo.length > 0 ? (<div className="photos">
+                            {photosItem}
+                        </div>) : null
+                    }
                 </div>
+                
             </div>
         );
     }
@@ -167,7 +181,8 @@ export default class GoodsDetail extends BaseComponent {
         seller: {},
         address: [],
         sale_num: 0,
-        goods_explain: ""
+        goods_explain: "",
+        cardTotal: 0
     };
     componentDidMount() {
         const { id } = Base.getPageParams();
@@ -183,7 +198,6 @@ export default class GoodsDetail extends BaseComponent {
                 goods_explain,
                 rate
             } = res.data;
-            console.log(res.data);
             this.store.evaluate = evaluate;
             this.store.goods = goods;
             this.store.goods_attr = goods_attr;
@@ -193,6 +207,10 @@ export default class GoodsDetail extends BaseComponent {
             this.store.sale_num = sale_num || "0";
             this.store.goods_explain = goods_explain;
             this.store.rate = rate;
+            Base.GET({ act: "cart", op: "count", mod: "user" }, res => {
+                const data = res.data;
+                this.store.cardTotal = data.count;
+            });
             Base.GET(
                 { act: "address", op: "index" },
                 res => {
@@ -221,6 +239,8 @@ export default class GoodsDetail extends BaseComponent {
                 true
             );
         });
+
+        
     }
     @action.bound
     collectHandler() {
@@ -332,8 +352,11 @@ export default class GoodsDetail extends BaseComponent {
             freight_fee = "",
             goods_ticket = "",
             use_point_rate = "",
+            rebate_percent = 0,
+            guarantee = "",
             e_invoice = "",
             goods_detail = "",
+            buy_notice = "",
             seller_uid = "",
             goods_attr = "",
             id,
@@ -424,6 +447,7 @@ export default class GoodsDetail extends BaseComponent {
         // }
         const chatData = { ...seller, id: seller_uid };
         const seller_address = seller.address || "";
+        const { cardTotal } = this.store;
         return (
             <div className="GoodsDetail">
                 <NavBar
@@ -438,6 +462,7 @@ export default class GoodsDetail extends BaseComponent {
                             style={{ marginRight: "16px" }}
                             alt=""
                         />,
+                        <span>{cardTotal}</span>,
                         <img
                             onClick={this.onShare}
                             key="1"
@@ -465,6 +490,23 @@ export default class GoodsDetail extends BaseComponent {
                             <div className="price">
                                 ￥{Base.getNumFormat(sale_price)}
                             </div>
+                            <Flex
+                                style={{
+                                    fontSize: 13,
+                                    color: "#999",
+                                    marginTop: 10
+                                }}
+                            >
+                                {parseInt(rebate_percent) && <div>返利{parseInt(rebate_percent / 100 * sale_price)}元</div>}
+                                <Flex style={{ marginRight: 20 }}>
+                                    <div>已售{sale_num}</div>
+                                </Flex>
+                                {seller_address ? (
+                                    <Flex>
+                                        <div>{seller_address}</div>
+                                    </Flex>
+                                ) : null}
+                            </Flex>
                             {parseInt(reward_point)?<div style={{ fontSize: 11, color: "red" }}>
                                 等价积分赠送
                             </div>:null}
@@ -476,24 +518,7 @@ export default class GoodsDetail extends BaseComponent {
                             ) : null}
                             {name}
                         </div>
-                        <Flex
-                            style={{
-                                fontSize: 13,
-                                color: "#999",
-                                marginTop: 10
-                            }}
-                        >
-                            <Flex style={{ marginRight: 20 }}>
-                                <div>月销量：</div>
-                                <div style={{ color: "red" }}>{sale_num}</div>
-                                <div>笔</div>
-                            </Flex>
-                            {seller_address ? (
-                                <Flex>
-                                    <div>{seller_address}</div>
-                                </Flex>
-                            ) : null}
-                        </Flex>
+                       
                     </div>
                     <div className="discounts-con">
                         {goodsTickets}
@@ -509,6 +534,20 @@ export default class GoodsDetail extends BaseComponent {
                                                     parseFloat(use_point_rate)
                                             )}
                                         </em>元
+                                    </div>
+                                </Flex>
+                            </div>
+                        ) : null}
+                    </div>
+
+                    <div className="discounts-con">
+                        {goodsTickets}
+                        {guarantee ? (
+                            <div className="flex-item">
+                                <Flex>
+                                    <div className="title">保障</div>
+                                    <div className="des">
+                                        {guarantee}
                                     </div>
                                 </Flex>
                             </div>
@@ -613,6 +652,7 @@ export default class GoodsDetail extends BaseComponent {
                             </div> */}
                         </div>
                     ) : null}
+                   
                     <WhiteSpace size="lg" />
                     <div className="image-text-con">
                         <div className="title-con">价格说明</div>
@@ -620,6 +660,12 @@ export default class GoodsDetail extends BaseComponent {
                             dangerouslySetInnerHTML={{ __html: goods_explain }}
                         />
                     </div>
+                    {buy_notice && (
+                        <div dangerouslySetInnerHTML={{
+                            __html: buy_notice
+                          }}/>
+                        )
+                    }
                 </div>
                 <Flex className="footer">
                     <Flex.Item>
@@ -695,7 +741,9 @@ export default class GoodsDetail extends BaseComponent {
                                     src={Base.getImgUrl(default_image)}
                                 />
                                 <div className="info">
-                                    <div className="price">￥{sale_price}</div>
+                                    <div className="price">￥{sale_price}
+                                    
+                                    </div>
                                     <div className="tips">请选择型号</div>
                                 </div>
                             </Flex>

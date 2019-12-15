@@ -418,6 +418,7 @@ class Info extends API_Controller {
 	 * summary传递参数：summary
 	 * address传递参数：address
 	 * bg_image传递参数：bg_image
+     *
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述

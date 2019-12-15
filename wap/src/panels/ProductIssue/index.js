@@ -184,21 +184,30 @@ class ProductIssue extends BaseComponent {
                     free_amount = 0,
                     two_level_rate,
                     city_partner_rate,
-                    goods_class_id
+                    rebate_percent,
+                    base_percent,
+                    // goods_class_id
                 } = values;
                 const i_two_level_rate = parseFloat(two_level_rate) || 0;
                 const i_city_partner_rate = parseFloat(city_partner_rate) || 0;
-                if (i_two_level_rate + i_city_partner_rate > 100) {
-                    return Toast.fail(
-                        "分销比例之和不能超过100%",
-                        2,
-                        null,
-                        false
-                    );
+                // if (i_two_level_rate + i_city_partner_rate > 100) {
+                //     return Toast.fail(
+                //         "分销比例之和不能超过100%",
+                //         2,
+                //         null,
+                //         false
+                //     );
+                // }
+                // if (!goods_class_id) {
+                //     return Toast.fail("请选择产品分类", 2, null, false);
+                // }
+                if(rebate_percent > 90){
+                    return Toast.fail("最高让利率上限为90", 2, null, false);
                 }
-                if (!goods_class_id) {
-                    return Toast.fail("请选择产品分类", 2, null, false);
+                if(base_percent > 100){
+                    return Toast.fail("请填写正确的百分比基础让利率", 2, null, false);
                 }
+                
                 if (!send_mode) {
                     return Toast.fail("请选择发货模式", 2, null, false);
                 }
@@ -237,6 +246,7 @@ class ProductIssue extends BaseComponent {
                 if (id) {
                     values.id = id;
                 }
+                console.log(values)
                 Base.POST(
                     {
                         act: "goods",
@@ -245,7 +255,7 @@ class ProductIssue extends BaseComponent {
                         use_point_rate,
                         e_invoice,
                         send_mode: send_mode[0],
-                        goods_class_id: goods_class_id[0],
+                        // goods_class_id: goods_class_id[0],
                         goods_ticket,
                         goods_image: JSON.stringify(goods_imageUrl),
                         goods_detail: JSON.stringify(goods_detailUrl),
@@ -519,7 +529,7 @@ class ProductIssue extends BaseComponent {
                             产品价格
                             <em>*</em>
                         </InputItem>
-                        <Picker
+                        {/* <Picker
                             data={goods_class}
                             cols={1}
                             {...getFieldProps("goods_class_id")}
@@ -528,7 +538,7 @@ class ProductIssue extends BaseComponent {
                                 产品分类
                                 <em>*</em>
                             </Item>
-                        </Picker>
+                        </Picker> */}
                     </List>
                     <WhiteSpace />
                     <List className="productBasic">
@@ -563,7 +573,7 @@ class ProductIssue extends BaseComponent {
                     </List>
                     <WhiteSpace />
                     <List className="productBasic">
-                        <Item
+                        {/* <Item
                             className="discounts-item"
                             extra={
                                 <Flex>
@@ -590,8 +600,8 @@ class ProductIssue extends BaseComponent {
                             }
                         >
                             优惠
-                        </Item>
-                        <Item
+                        </Item> */}
+                        {/* <Item
                             className="use-point-item"
                             extra={
                                 <div>
@@ -607,8 +617,8 @@ class ProductIssue extends BaseComponent {
                         >
                             积分兑换比例
                             {` ${point_rate}:1`}
-                        </Item>
-                        <InputItem
+                        </Item> */}
+                        {/* <InputItem
                             clear
                             type="number"
                             placeholder="0"
@@ -617,7 +627,7 @@ class ProductIssue extends BaseComponent {
                             labelNumber={7}
                         >
                             最高可使用积分
-                        </InputItem>
+                        </InputItem> */}
                         <Item
                             extra={
                                 <Switch
@@ -634,7 +644,7 @@ class ProductIssue extends BaseComponent {
                     </List>
                     <WhiteSpace />
                     <List className="productBasic">
-                        <InputItem
+                        {/* <InputItem
                             className="city-rate-item"
                             {...getFieldProps("city_partner_rate")}
                             clear
@@ -654,6 +664,27 @@ class ProductIssue extends BaseComponent {
                             extra="%"
                         >
                             联盟商
+                        </InputItem> */}
+                        <InputItem
+                            className="city-rate-item"
+                            {...getFieldProps("rebate_percent")}
+                            clear
+                            type="number"
+                            placeholder="0"
+                            moneyKeyboardAlign="right"
+                            extra="%"
+                        >
+                            最高让利率
+                        </InputItem>
+                        <InputItem
+                            {...getFieldProps("base_percent")}
+                            clear
+                            type="number"
+                            placeholder="0"
+                            moneyKeyboardAlign="right"
+                            extra="%"
+                        >
+                            基础让利率
                         </InputItem>
                     </List>
                     <WhiteSpace />

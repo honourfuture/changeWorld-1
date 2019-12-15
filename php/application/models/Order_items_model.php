@@ -43,7 +43,12 @@ class Order_items_model extends MY_Model
 			if($a_user){
 				$this->db->reset_query();
 				$this->load->model('Users_model');
-				$result['user'] = $this->Users_model->get_many_user($a_user);
+                $this->load->model('Grade_model');
+				$result['user'] = $this->Users_model->get_many_user($a_user, 'id,nickname,header,mobi,pretty_id,exp');
+				foreach ($result['user'] as &$user){
+                    $grade = $this->Grade_model->exp_to_grade($user['exp']);
+                    $user['lv'] = $grade['grade_name'];
+                }
 			}
 		}else{
 			$this->db->reset_query();

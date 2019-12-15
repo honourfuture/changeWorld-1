@@ -20,7 +20,7 @@ export class GoodsItem extends BaseComponent {
                         style={{ height: goodsImgHeight }}
                     />
                 </div>
-                <div className="recommend-goodsItem-body">
+                {/* <div className="recommend-goodsItem-body">
                     <div className="recommend-goodsItem-title ellipsis2">
                         {name}
                     </div>
@@ -33,7 +33,7 @@ export class GoodsItem extends BaseComponent {
                             购买
                         </Button>
                     </Flex>
-                </div>
+                </div> */}
             </div>
         );
     }

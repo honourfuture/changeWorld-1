@@ -46,13 +46,13 @@ export default class MemberManager extends BaseComponent {
                 title: "手机号",
                 dataIndex: "mobi",
                 width: 150,
-                render: (text, record) => this.renderText(text, record, "mobi")
+                render: (text, record) => this.renderInput(text, record, "mobi")
             },
             {
                 title: "积分",
                 dataIndex: "point",
                 width: 150,
-                render: (text, record) => this.renderText(text, record, "point")
+                render: (text, record) => this.renderInput(text, record, "point")
             },
             {
                 title: "头像",

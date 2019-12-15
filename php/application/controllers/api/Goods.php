@@ -334,13 +334,15 @@ class Goods extends API_Controller {
 		$this->load->model('Users_model');
 		$this->db->select('nickname,v,header,summary,address,reward_point');
 		$ret['seller'] = $this->Users_model->get($info['seller_uid']);
-
+		if(!$ret['seller']){
+            $ret['seller'] = [];
+        }
 		//在售商品
 		$ret['goods'] = array('total' => 0, 'list' => array());
 		$where = array('enable' => 1, 'seller_uid' => $info['seller_uid']);
 		$ret['goods']['total'] = $this->Goods_model->count_by($where);
 		$order_by = array('updated_at' => 'desc', 'id' => 'desc');
-		$this->db->select('id,name,sale_price,default_image');
+		$this->db->select('id,name,sale_price,default_image,rebate_percent,guarantee,buy_notice');
 		$ret['goods']['list'] = $this->Goods_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 
 		//收藏状态
@@ -379,7 +381,7 @@ class Goods extends API_Controller {
 	 * {
 	 *	    "data": [
 	 *	        {
-	 *	            "id": "1",
+	 *	            "id": "1",evaluate
 	 *	            "name": "热门"
 	 *	        },
 	 *	        {
@@ -465,7 +467,7 @@ class Goods extends API_Controller {
 					'name', 'stock', 'sale_price', 'freight_fee', 'send_mode',
 					'goods_ticket', 'use_point_rate', 'e_invoice', 'city_partner_rate', 'two_level_rate',
 					'goods_image', 'goods_attr', 'goods_detail', 'deleted', 'enable', 'sort', 'goods_class_id',
-					'is_hot'
+					'is_hot','rebate_percent','base_percent'
 				),
 				$this->input->post(),
 				UPDATE_VALID
@@ -496,7 +498,7 @@ class Goods extends API_Controller {
 				array(
 					'name', 'stock', 'sale_price', 'freight_fee', 'send_mode',
 					'goods_ticket', 'use_point_rate', 'e_invoice', 'city_partner_rate', 'two_level_rate',
-					'goods_image', 'goods_attr', 'goods_detail', 'is_hot', 'goods_class_id'
+					'goods_image', 'goods_attr', 'goods_detail', 'is_hot', 'goods_class_id','rebate_percent','base_percent'
 				),
 				$this->input->post(),
 				''
@@ -549,8 +551,14 @@ class Goods extends API_Controller {
 				if($params['goods_detail'] === '' || $params['goods_detail'] == UPDATE_VALID){
 					$this->ajaxReturn([], 501, '输入产品详情');
 				}
+                if($params['rebate_percent'] > 90){
+                    $this->ajaxReturn([], 501, '最高让利率上限为90');
+                }
 				break;
 			case 'edit':
+                if($params['rebate_percent'] > 90){
+                    $this->ajaxReturn([], 501, '最高让利率上限为90');
+                }
 				break;
 		}
 	}

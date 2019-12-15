@@ -8,7 +8,7 @@ import { Hots } from "../../components/Hots";
 import { Vanity } from "../../components/Vanity";
 
 export default class ShopIndex extends BaseComponent {
-    store = { tabs: [], cartCount: 0, reddot: 0, keyword: "" };
+    store = { tabs: [], cartCount: 0, reddot: 0, keyword: "", cardTotal: 0 };
     onSearch(e) {
         Base.sendEvt("com.shopindex.search", e);
     }
@@ -35,6 +35,12 @@ export default class ShopIndex extends BaseComponent {
         //     null,
         //     true
         // );
+        Base.GET({ act: "cart", op: "count", mod: "user" }, res => {
+            const data = res.data;
+            this.store.cardTotal = data.count;
+        },
+        null,
+        true);
         Base.GET(
             { act: "mailbox", op: "reddot" },
             res => {
@@ -46,7 +52,7 @@ export default class ShopIndex extends BaseComponent {
     }
     renderContent = tab => tab.component;
     render() {
-        const { tabs, cartCount, reddot } = this.store;
+        const { tabs, cartCount, reddot, cardTotal } = this.store;
         return (
             <div className="ShopIndex">
                 <NavBar
@@ -67,6 +73,7 @@ export default class ShopIndex extends BaseComponent {
                             onClick={() => Base.push("ShopCart")}
                         >
                             <img src={icon.indexCart} alt="" />
+                            <span>{cardTotal}</span>
                             {parseInt(cartCount) > 0 ? (
                                 <Badge text={cartCount} overflowCount={99}>
                                     <span />

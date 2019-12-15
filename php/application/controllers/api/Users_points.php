@@ -123,8 +123,10 @@ class Users_points extends API_Controller {
 		}
         //查询当前用户积分总余额
         $this->load->model('Users_model');
-        $user = $this->Users_model->get($this->user_id);
-        $ret['points']['total'] = $user->point;
+		if($this->user_id){
+            $user = $this->Users_model->get($this->user_id);
+            $ret['points']['total'] = $user->point;
+        }
 
 		$this->load->model('Users_points_model');
 		$this->search();
@@ -134,7 +136,6 @@ class Users_points extends API_Controller {
 			$this->search();
 			$this->db->select('id,updated_at,user_id,value,rule_name,remark,point');
 			$ret['points']['list'] = $this->Users_points_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
-
 			$a_user = array();
 			if($ret['points']['list']){
 				foreach($ret['points']['list'] as $key=>$item){
@@ -143,7 +144,8 @@ class Users_points extends API_Controller {
 					$item['user_id'] && $a_user[] = $item['user_id'];
 				}
 			}
-			if(!$this->user_id && $a_user){
+
+            if(!$this->user_id && $a_user){
 				$this->load->model('Users_model');
 				$ret['user'] = $this->Users_model->get_many_user($a_user);
 			}
@@ -252,7 +254,6 @@ class Users_points extends API_Controller {
 		$this->Users_points_model->insert($data);
 
 		$this->Users_model->update_by(array('id' => $data['user_id']), $update);
-
 
 		$this->ajaxReturn();
 	}

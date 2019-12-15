@@ -44,8 +44,8 @@ class Cart_model extends MY_Model
 
     	if($a_seller && $a_goods){
     		$this->load->model('Users_model');
-    		$seller = $this->Users_model->get_many_user($a_seller);
 
+            $seller = $this->Users_model->get_many_user($a_seller);
     		$this->load->model('Goods_model');
     		$this->db->select('id,name,sale_price,seller_uid,default_image,goods_ticket,use_point_rate,freight_fee,send_mode,e_invoice,stock');
     		$goods = $this->Goods_model->get_many($a_goods);
@@ -55,7 +55,6 @@ class Cart_model extends MY_Model
                 unset($item['id']);
                 $k_goods[$id] = $item;
             }
-
             foreach($seller_cart_goods as $seller_uid=>$rows){
                 if(isset($seller[$seller_uid])){
                     foreach($rows as $a_cart){
@@ -73,7 +72,6 @@ class Cart_model extends MY_Model
     			}
     		}*/
     	}
-
     	return $seller;
     }
 
