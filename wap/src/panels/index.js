@@ -7,7 +7,7 @@
  */
 
 import ShopIndex from "./ShopIndex";
-import Beautiful from "./ShopIndex/beautiful";
+import Beautiful from "./Beautifuls";
 import PayState from "./PayState";
 import Pay from "./Pay";
 import NewAddress from "./NewAddress";

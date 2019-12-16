@@ -29,6 +29,7 @@ class Panels extends Component {
                         />
                     ))}
                     <Redirect exact from="/" to="/ShopIndex" />
+                    <Redirect exact from="/" to="/Beautiful" />
                 </Switch>
             </DocumentTitle>
         );

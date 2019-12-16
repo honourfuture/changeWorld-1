@@ -53,7 +53,6 @@ export default class ShopIndex extends BaseComponent {
     renderContent = tab => tab.component;
     render() {
         const { tabs, cartCount, reddot, cardTotal } = this.store;
-        console.log('1', this.props.id)
         return (
             <div className="ShopIndex">
                 <NavBar
