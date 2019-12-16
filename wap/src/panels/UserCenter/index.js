@@ -26,7 +26,6 @@ export default class UserCenter extends BaseComponent {
     @action.bound
     requestData() {
         Base.POST({ act: "shop", op: "index", mod: "user" }, res => {
-            console.log(res);
             this.store.data = res.data;
         });
     }
@@ -55,7 +54,6 @@ export default class UserCenter extends BaseComponent {
             anchor,
             pretty_id
         } = this.store.data;
-        console.log(pretty_id);
         const is_seller = parseInt(seller_status, 10) === 2;
         const buyerItems = [];
         const sellerItems = [];

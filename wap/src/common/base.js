@@ -76,7 +76,6 @@ export const Base = {
     },
     //进入App页面
     pushApp(path, params) {
-        console.log(path, params);
         if (window.JKEventHandler) {
             window.JKEventHandler.callNativeFunction(path, params || "");
         } else if (window.Native) {
@@ -133,7 +132,7 @@ export const Base = {
                 processData: !(o_param instanceof FormData), //传文件流
                 timeout: 10000,
                 success: res => {
-                    self.DEBUG && console.log(res);
+                    // self.DEBUG && console.log(res);
                     !b_noToast && Toast.hide();
                     switch (res.status) {
                         case 0:

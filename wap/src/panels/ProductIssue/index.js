@@ -49,7 +49,6 @@ class ImgItem extends BaseComponent {
                 return (this.store.isShowTips = true);
             }
             if (file) {
-                console.log(file);
                 Base.uploadFile(file, res => {
                     file.file_url = res.data.file_url;
                     this.props.fileName.push(file);
@@ -246,7 +245,6 @@ class ProductIssue extends BaseComponent {
                 if (id) {
                     values.id = id;
                 }
-                console.log(values)
                 Base.POST(
                     {
                         act: "goods",

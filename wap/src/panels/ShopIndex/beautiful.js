@@ -92,7 +92,7 @@ export default class ShopIndex extends BaseComponent {
                     <Tabs
                         className="nav-tabs"
                         tabs={tabs}
-                        initialPage={0}
+                        initialPage={1}
                         swipeable={false}
                         prerenderingSiblingsNumber={0}
                     >

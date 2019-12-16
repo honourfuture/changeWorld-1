@@ -7,6 +7,7 @@
  */
 
 import ShopIndex from "./ShopIndex";
+import Beautiful from "./ShopIndex/beautiful";
 import PayState from "./PayState";
 import Pay from "./Pay";
 import NewAddress from "./NewAddress";
@@ -178,6 +179,11 @@ export const panelsList = [
     {
         path: "/ShopIndex",
         component: ShopIndex,
+        title: "商城"
+    },
+    {
+        path: "/Beautiful",
+        component: Beautiful,
         title: "商城"
     },
     {
