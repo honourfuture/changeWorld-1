@@ -48,6 +48,18 @@ class Change_bind extends API_Controller {
         $mobi = $this->input->get_post('phone');
         $code = $this->input->get_post('code');
 
+        $check = '/^(1(([35789][0-9])|(47)))\d{8}$/';
+        if (!preg_match($check, $mobi)) {
+            $this->ajaxReturn([], 1, '手机号错误');
+        }
+
+        $this->load->model('Users_model');
+        $user = $this->Users_model->get_by('mobi', $mobi);
+        
+        if(!$user || $user['id'] != $this->user_id){
+            $this->ajaxReturn([], 3, '手机号不可用');
+        }
+
         if(!$mobi || !$code){
             $this->ajaxReturn([], 1, '手机号验证码参数错误');
         }
