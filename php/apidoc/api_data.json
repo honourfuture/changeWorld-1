@@ -4261,14 +4261,14 @@
   },
   {
     "type": "get",
-    "url": "/api/admin/grade",
-    "title": "等级经验设置-列表",
+    "url": "/api/admin/grade_level",
+    "title": "会员等级设置-列表",
     "version": "1.0.0",
     "name": "grade",
     "group": "admin",
     "sampleRequest": [
       {
-        "url": "/api/admin/grade"
+        "url": "/api/admin/grade_level"
       }
     ],
     "parameter": {
@@ -4355,7 +4355,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n\t    \"data\": [\n\t        {\n\t            \"id\": \"1\",\n\t            \"grade_name\": \"热门\",\n    \"grade_demand\": \"500\",\n    \"grade_logo\": \"\",\n\t        }\n\t    ],\n\t    \"status\": 0,\n\t    \"message\": \"成功\"\n\t}",
+          "content": "{\n\t    \"data\": [\n\t        {\n\t            \"id\": \"1\",\n\t            \"grade_name\": \"热门\",\n             \"grade_demand\": \"500\",\n             \"grade_logo\": \"\",\n\t        }\n\t    ],\n\t    \"status\": 0,\n\t    \"message\": \"成功\"\n\t}",
           "type": "json"
         }
       ]
@@ -4657,14 +4657,14 @@
   },
   {
     "type": "post",
-    "url": "/api/admin/grade/save",
-    "title": "等级经验设置-编辑 OR 新增",
+    "url": "/api/admin/grade_level/save",
+    "title": "会员等级设置-编辑 OR 新增",
     "version": "1.0.0",
     "name": "grade_save",
     "group": "admin",
     "sampleRequest": [
       {
-        "url": "/api/admin/grade/save"
+        "url": "/api/admin/grade_level/save"
       }
     ],
     "parameter": {
@@ -4702,8 +4702,57 @@
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "grade_name",
-            "description": "<p>等级经验设置等级名称</p>"
+            "field": "name",
+            "description": "<p>会员等级名称</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "rule",
+            "description": "<p>等级权益说明</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "brokerage",
+            "description": "<p>自购佣金</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "direct_brokerage",
+            "description": "<p>直属代理佣金</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "under_gt_brokerage",
+            "description": "<p>会员等级大于下属</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "under_eq_brokerage",
+            "description": "<p>会员等级等于下属最高</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "under_lt_brokerage",
+            "description": "<p>会员等级小于下属最高</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "remark",
+            "description": "<p>等级说明备注</p>"
           },
           {
             "group": "Parameter",
@@ -4716,7 +4765,7 @@
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "grade_logo",
+            "field": "icon",
             "description": "<p>等级图</p>"
           },
           {
@@ -4779,7 +4828,7 @@
         }
       ]
     },
-    "filename": "application/controllers/api/admin/Grade.php",
+    "filename": "application/controllers/api/admin/Grade_level.php",
     "groupTitle": "admin"
   },
   {
@@ -4906,7 +4955,7 @@
         }
       ]
     },
-    "filename": "application/controllers/api/admin/Grade_level.php",
+    "filename": "application/controllers/api/admin/Grade.php",
     "groupTitle": "admin"
   },
   {
@@ -12668,7 +12717,7 @@
             "type": "String",
             "optional": false,
             "field": "alias",
-            "description": "<p>别名 {&quot;about_us&quot;:&quot;关于我们&quot;,&quot;join_us&quot;:&quot;加入我们&quot;,&quot;contact_us&quot;:&quot;联系我们&quot;,&quot;protocol&quot;:&quot;用户协议&quot;,&quot;copyright&quot;:&quot;版权申明&quot;}</p>"
+            "description": "<p>别名 {&quot;about_us&quot;:&quot;关于我们&quot;,&quot;join_us&quot;:&quot;加入我们&quot;,&quot;contact_us&quot;:&quot;联系我们&quot;,&quot;protocol&quot;:&quot;用户协议&quot;,&quot;copyright&quot;:&quot;版权申明&quot;,&quot;novice_guide&quot;:&quot;新手指南&quot;}</p>"
           }
         ]
       }
@@ -14405,7 +14454,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n\t    \"data\": [\n\t        {\n\t            \"id\": \"1\",\n\t            \"name\": \"热门\"\n\t        },\n\t        {\n\t            \"id\": \"2\",\n\t            \"name\": \"靓号\"\n\t        }\n\t    ],\n\t    \"status\": 0,\n\t    \"message\": \"成功\"\n\t}",
+          "content": "{\n\t    \"data\": [\n\t        {\n\t            \"id\": \"1\",evaluate\n\t            \"name\": \"热门\"\n\t        },\n\t        {\n\t            \"id\": \"2\",\n\t            \"name\": \"靓号\"\n\t        }\n\t    ],\n\t    \"status\": 0,\n\t    \"message\": \"成功\"\n\t}",
           "type": "json"
         }
       ]
@@ -14954,7 +15003,21 @@
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "data.rule",
+            "field": "data.level.rule",
+            "description": "<p>权益说明</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.level.icon",
+            "description": "<p>图标</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.level.remark",
             "description": "<p>等级说明</p>"
           }
         ]
@@ -14962,7 +15025,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    \"data\": {\n        \"grade\": {\n            \"before_grade_name\": \"\",\n            \"grade_name\": \"\",\n            \"after_grade_name\": \"1\",\n            \"diff\": 10000,\n            \"exp\": \"0\"\n        },\n     \"level\": {\n            \"before_level_name\": \"\",\n            \"level_name\": \"\",\n            \"after_level_name\": \"至尊王者\",\n            \"diff\": 10000,\n            \"exp\": \"0\"\n        },\n        \"rule\": \"\"\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": {\n        \"grade\": {\n            \"before_grade_name\": \"\",\n            \"grade_name\": \"\",\n            \"after_grade_name\": \"1\",\n            \"diff\": 10000,\n            \"exp\": \"0\"\n        },\n     \"level\": {\n            \"before_level_name\": \"\",\n            \"level_name\": \"\",\n            \"level_rule\": \"\",\n            \"level_icon\": \"\",\n            \"level_remark\": \"\",\n            \"after_level_name\": \"至尊王者\",\n            \"diff\": 10000,\n            \"exp\": \"0\"\n        },\n        \"rule\": \"\"\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
@@ -19119,6 +19182,13 @@
             "group": "Success 200",
             "type": "Number",
             "optional": false,
+            "field": "data.total",
+            "description": "<p>当前积分余额</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
             "field": "data.count",
             "description": "<p>总记录数</p>"
           },
@@ -19161,6 +19231,13 @@
             "group": "Success 200",
             "type": "String",
             "optional": false,
+            "field": "data.list.point",
+            "description": "<p>当前积分余额</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
             "field": "data.list.rule_name_text",
             "description": "<p>变更类型</p>"
           }
@@ -19169,7 +19246,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    \"data\": {\n        \"count\": 5,\n        \"list\": [\n            {\n                \"id\": \"5\",\n                \"updated_at\": \"2018-03-14 20:06:18\",\n                \"user_id\": \"1\",\n                \"value\": \"-20\",\n                \"rule_name\": \"goods_exchange\",\n                \"remark\": \"商品抵扣现金\",\n                \"rule_name_text\": \"消费抵扣\"\n            },\n            {\n                \"id\": \"4\",\n                \"updated_at\": \"2018-03-14 19:59:13\",\n                \"user_id\": \"1\",\n                \"value\": \"10\",\n                \"rule_name\": \"points_pay\",\n                \"remark\": \"商品消费立返\",\n                \"rule_name_text\": \"消费立返\"\n            },\n            {\n                \"id\": \"3\",\n                \"updated_at\": \"2018-03-14 19:49:27\",\n                \"user_id\": \"1\",\n                \"value\": \"50\",\n                \"rule_name\": \"points_evaluate\",\n                \"remark\": \"商品订单评论\",\n                \"rule_name_text\": \"订单评论\"\n            },\n            {\n                \"id\": \"2\",\n                \"updated_at\": \"2018-03-14 15:46:05\",\n                \"user_id\": \"1\",\n                \"value\": \"20\",\n                \"rule_name\": \"points_login\",\n                \"remark\": \"每天首次登录\",\n                \"rule_name_text\": \"会员登陆\"\n            },\n            {\n                \"id\": \"1\",\n                \"updated_at\": \"2018-03-14 13:01:09\",\n                \"user_id\": \"1\",\n                \"value\": \"100\",\n                \"rule_name\": \"points_reg\",\n                \"remark\": \"新用户首次注册\",\n                \"rule_name_text\": \"会员注册\"\n            }\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": {\n        \"total\": 50,\n        \"count\": 5,\n        \"list\": [\n            {\n                \"id\": \"5\",\n                \"updated_at\": \"2018-03-14 20:06:18\",\n                \"user_id\": \"1\",\n                \"value\": \"-20\",\n                \"rule_name\": \"goods_exchange\",\n                \"remark\": \"商品抵扣现金\",\n                \"point\": \"140\",\n                \"rule_name_text\": \"消费抵扣\"\n            },\n            {\n                \"id\": \"4\",\n                \"updated_at\": \"2018-03-14 19:59:13\",\n                \"user_id\": \"1\",\n                \"value\": \"10\",\n                \"rule_name\": \"points_pay\",\n                \"remark\": \"商品消费立返\",\n                \"point\": \"160\",\n                \"rule_name_text\": \"消费立返\"\n            },\n            {\n                \"id\": \"3\",\n                \"updated_at\": \"2018-03-14 19:49:27\",\n                \"user_id\": \"1\",\n                \"value\": \"50\",\n                \"rule_name\": \"points_evaluate\",\n                \"remark\": \"商品订单评论\",\n                \"point\": \"170\",\n                \"rule_name_text\": \"订单评论\"\n            },\n            {\n                \"id\": \"2\",\n                \"updated_at\": \"2018-03-14 15:46:05\",\n                \"user_id\": \"1\",\n                \"value\": \"20\",\n                \"rule_name\": \"points_login\",\n                \"remark\": \"每天首次登录\",\n                \"point\": \"120\",\n                \"rule_name_text\": \"会员登陆\"\n            },\n            {\n                \"id\": \"1\",\n                \"updated_at\": \"2018-03-14 13:01:09\",\n                \"user_id\": \"1\",\n                \"value\": \"100\",\n                \"rule_name\": \"points_reg\",\n                \"remark\": \"新用户首次注册\",\n                \"point\": \"100\",\n                \"rule_name_text\": \"会员注册\"\n            }\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
@@ -19528,6 +19605,13 @@
             "group": "Success 200",
             "type": "String",
             "optional": false,
+            "field": "data.remark",
+            "description": "<p>等级说明</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
             "field": "data.grade_demand",
             "description": "<p>会员门槛</p>"
           },
@@ -19827,6 +19911,147 @@
     },
     "filename": "application/controllers/api/Vip.php",
     "groupTitle": "api"
+  },
+  {
+    "type": "post",
+    "url": "/api/change_bind/changByPassword",
+    "title": "修改绑定-根据密码",
+    "version": "1.0.0",
+    "name": "chang_by_password",
+    "group": "changeBin",
+    "sampleRequest": [
+      {
+        "url": "/api/change_bind/changByPassword"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>验证码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>密码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>新手机号码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常 设置成功直接登录成功</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data.auth",
+            "description": "<p>接口认证信息</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.auth.user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.auth.sign",
+            "description": "<p>接口签名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.updated_at",
+            "description": "<p>最后登录时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.nickname",
+            "description": "<p>用户昵称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.header",
+            "description": "<p>用户头像</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": [],\n\t    \"status\": 0,\n\t    \"message\": \"成功\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": 4,\n    \"message\": \"密码错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "application/controllers/api/Change_bind.php",
+    "groupTitle": "changeBin"
   },
   {
     "type": "post",
@@ -24435,6 +24660,13 @@
             "group": "Success 200",
             "type": "String",
             "optional": false,
+            "field": "data.user.invite_url",
+            "description": "<p>邀请链接</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
             "field": "data.user.exp",
             "description": "<p>经验值</p>"
           },
@@ -24492,7 +24724,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    \"data\": {\n        \"user\": {\n            \"id\": \"1\",\n            \"nickname\": \"aicode\",\n            \"header\": \"/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png\",\n            \"v\": \"0\",\n            \"anchor\": \"1\",\n            \"seller\": \"1\",\n            \"exp\": \"0\"\n            \"exp\": \"0\"\n        },\n        \"vip\": {\n            \"name\": \"\",\n            \"icon\": \"\",\n            \"id\": 0\n        },\n        \"collection\": 3,\n        \"follow\": 18,\n        \"fans\": 1\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": {\n        \"user\": {\n            \"id\": \"1\",\n            \"nickname\": \"aicode\",\n            \"invite_code\": \"122112\",\n            \"invite_url\": \"邀请链接\",\n            \"header\": \"/uploads/2018/03/28/5cdb0bb0f079ec4b61e379d8962a6f75.png\",\n            \"v\": \"0\",\n            \"anchor\": \"1\",\n            \"seller\": \"1\",\n            \"exp\": \"0\"\n            \"exp\": \"0\"\n        },\n        \"vip\": {\n            \"name\": \"\",\n            \"icon\": \"\",\n            \"id\": 0\n        },\n        \"collection\": 3,\n        \"follow\": 18,\n        \"fans\": 1\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
