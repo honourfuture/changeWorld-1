@@ -102,9 +102,52 @@ class Order_payment extends API_Controller {
 		$this->ajaxReturn($ret);
 	}
 
+	private function _setBalance($uid, $balance)
+    {
+        $balance = round($balance , 2);
+        $this->db->set('balance', 'balance +'.$balance, false);
+        $this->db->where('id', $uid);
+        $this->db->update($this->Users_model->table());
+    }
 	protected function balance($order_id)
 	{
-		$user = $this->get_user();
+        //自购比例
+        $selfPercent = [
+            '0' => 0,
+            '1' => 1,
+            '2' => 1.6,
+            '3' => 2,
+            '4' => 3,
+            '5' => 4
+        ];
+        //直属比例
+        $underPercent = [
+            '0' => 0,
+            '1' => 0.2,
+            '2' => 0.4,
+            '3' => 0.4,
+            '4' => 0.6,
+            '5' => 0.8
+        ];
+        //下属佣金提成比例(大于)
+        $branch = [
+            '0' => 0,
+            '1' => 0.2,
+            '2' => 0.25,
+            '3' => 0.25,
+            '4' => 0.35,
+            '5' => 0.5
+        ];
+        //下属佣金提成比例(等于)
+        $branchEq = [
+            '0' => 0,
+            '1' => 0.2,
+            '2' => 0.05,
+            '3' => 0.05,
+            '4' => 0.07,
+            '5' => 0.1
+        ];
+        $user = $this->get_user();
 		if($user && $user['balance'] >= $this->amount){
 			if($this->amount > 0){
 				$this->Users_model->update($this->user_id, ['balance' => round($user['balance'] - $this->amount, 2)]);
@@ -142,7 +185,57 @@ class Order_payment extends API_Controller {
                         'topic' => 5,
                         'payment_type' => 'balance'
                     ];
+
+                    if($user['pid']){
+                        $this->load->model('Users_model');
+                        $top = $this->Users_model->parent($user['pid'], [$user]);
+
+                        $this->load->model('Grade_model');
+                        $levelUsers = $this->Grade_model->getLevelByUsers($top);
+                        $levelIds = [];
+                        $insert = [];
+                        foreach ($levelUsers as $k => $levelUser){
+                            $levelIds[] = $levelUser['level'];
+
+                            if($levelUser['id'] == $user['id']){
+                                //自购佣金
+                                $addPrice = isset($selfPercent[$levelUser['level']]) ? $selfPercent[$levelUser['level']] * $this->amount : 0;
+                            }else if($levelUser['id'] == $user['pid']){
+                                //直属
+                                $addPrice = isset($underPercent[$levelUser['level']]) ? $underPercent[$levelUser['level']] * $this->amount: 0;
+                            }else{
+                                $maxLevelId = max($levelIds);
+                                if($maxLevelId > $levelUser['level']){
+                                    continue;
+                                }else if($maxLevelId == $levelUser['level']){
+                                    $addPrice = isset($branchEq[$levelUser['level']]) ? $branchEq[$levelUser['level']] * $this->amount : 0;
+                                }else{
+                                    $addPrice = isset($branch[$levelUser['level']]) ? $branch[$levelUser['level']] * $this->amount : 0;
+                                }
+                            }
+                            $addPrice = round($addPrice, 2);
+                            if($addPrice){
+                                $this->_setBalance($levelUser['id'], $addPrice);
+
+                                $insert[] = [
+                                    'topic' => 2,
+                                    'sub_topic' => 0,
+                                    'user_id' => $levelUser['id'],
+                                    'name' => $levelUser['nickname'],
+                                    'mobi' => $levelUser['mobi'],
+                                    'amount' => $addPrice,
+                                    'type' => 2,
+                                    'item' => json_encode($item),
+                                    'level' => count($levelIds),
+                                    'shop_id' => $item['seller_uid'],
+                                    'from_id' => $user['id']
+                                ];
+                            }
+                        }
+                    }
                 }
+                $this->load->model('Income_model');
+                $this->Income_model->insert_many($insert);
                 $this->Record_goods_model->insert_many($data);
 
                 $this->load->model('Consume_record_model');

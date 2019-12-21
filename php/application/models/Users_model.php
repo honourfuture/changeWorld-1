@@ -53,6 +53,21 @@ class Users_model extends MY_Model
         return $uids;
     }
 
+    public function parent($uid, $top = [])
+    {
+        $user = $this->get($uid);
+
+        if($user){
+            $top[] = $user;
+            if(!$user['pid']){
+                return $top;
+            }else{
+                $top = $this->parent($user['pid'], $top);
+            }
+        }
+        return $top;
+    }
+
     public function live_group_tag($user_id)
     {
         return 'live_group_'.$user_id;
