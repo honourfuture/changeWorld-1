@@ -423,7 +423,9 @@ class Order extends API_Controller {
 					'default_image' => $item['default_image'],
 					'buyer_uid' => $this->user_id,
 					'seller_uid' => $seller_id,
-					'created_time' => $now_time
+					'created_time' => $now_time,
+                    'base_percent' => $item['base_percent'],
+                    'rebate_percent' => $item['rebate_percent']
 				];
 			}
 			$this->db->insert_batch($this->Order_items_model->table(), $order_item);
