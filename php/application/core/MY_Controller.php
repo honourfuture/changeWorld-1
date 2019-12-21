@@ -23,10 +23,18 @@ class MY_Controller extends CI_Controller
     protected $per_page = 20;//每页显示条数
     protected $offset = 0;//偏移量
 
+    protected $pointsRule = null; //积分设置对象
+    protected $gradeRule = null ; //经验积分对象
+
+    public $signOntinuousPonnts = 5 ; //每连续签到累计积分
+    public $signOntinuousGrade = 1 ;  //每连续签到累计经验
+
     function __construct()
     {
         parent::__construct();
-
+        $this->load->model('Points_rule_model');
+        $this->load->model('Grade_rule_model');
+        $this->load->model('Users_grade_model');
         $this->init_my();
     }
 
@@ -311,50 +319,156 @@ class API_Controller extends MY_Controller
     }
 
     /**
+     * 校验获得积分的配置
+     * @param $rule_name
+     * @param bool $check_points_rule
+     * @param bool $check_grade_rule
+     */
+    public function checkCalculation($rule_name,$check_points_rule=true,$check_grade_rule=true){
+
+        if($check_points_rule){
+            $pointsRule = $this->Points_rule_model->getInfoByRuleName($rule_name);
+            if(empty($pointsRule)){
+                return $this->ajaxReturn([], 3, '签到获得积分没有配置');
+            }
+            $this->pointsRule = $pointsRule;
+        }
+        if($check_grade_rule){
+            $gradeRule = $this->Grade_rule_model->getInfoByRuleName($rule_name);
+            if(empty($gradeRule)){
+                return $this->ajaxReturn([], 3, '签到获得经验没有配置');
+            }
+            $this->gradeRule = $gradeRule ;
+        }
+
+    }
+
+    /**
+     * 获得经验与积分的方法
      * @param $userId
+     * @param $rule_name
+     * @param $extend_data
+     * [
+     *   sign_in continue 表示连续签到的次数
+     * ]
+     * @return array
+     */
+    public function AddCalculation($userId,$rule_name,$extend_data){
+        $this->load->model('Users_model');
+        $user = $this->Users_model->get($userId);
+        if(!$user){
+            return array(
+                'status' => 400,
+                'msg' => '会员不存在'
+            );
+        }
+        if(!empty($this->pointsRule)){
+            $value = $this->pointsRule["value"];
+            //查询是否限额
+            $this->load->model('Users_points_model');
+            $dayLimits = $this->pointsRule["days_limit"];
+            $this->Users_points_model->db->select('sum(value) as total_value');
+            $pointsLog = $this->Users_points_model->get_by([
+                'user_id'=>$userId,
+                'rule_name'=>$rule_name,
+                'created_at >'=>date('Y-m-d 00:00:00'),
+                'created_at <='=>date("Y-m-d 23:59:59")
+            ]);
+            $total_value = $pointsLog["total_value"];
+            $check_insert = true;
+            if($total_value >= $dayLimits){
+               $check_insert = false;
+            }
+            if($check_insert == true){
+                switch ($rule_name){
+                    case 'sign_in':
+                        $continue = $extend_data["continue"];
+                        $value = $value + ($continue-1) *  $this->signOntinuousPonnts;
+                        break;
+                    case 'per_dollar'://每元消费
+                        $price= $extend_data["price"];
+                        $value = $value * $price ;
+                        break;
+                    case 'per_income':
+                        $price= $extend_data["price"];
+                        $value = $value * $price ;
+                        break;
+                }
+                //金额逻辑 如果本次可以获取的金额+已经获取的金额 》日限额 获取的金额等于 日限额 - 已经获取的金额
+                if($total_value+$value > $dayLimits){
+                    $value =  $dayLimits - $total_value;
+                }
+                $this->pointsCalculation($userId,$user["point"],$value,$rule_name,$this->pointsRule["show_name"]);
+            }
+        }
+        if(!empty($this->gradeRule)){
+            $this->load->model('Users_grade_model');
+            $dayLimits = $this->gradeRule["days_limit"];
+            $this->Users_grade_model->db->select('sum(value) as total_value');
+            $gradeLog = $this->Users_grade_model->get_by([
+                'user_id'=>$userId,
+                'rule_name'=>$rule_name,
+                'created_at >'=>date('Y-m-d 00:00:00'),
+                'created_at <='=>date("Y-m-d 23:59:59")
+            ]);
+            $total_value = empty($gradeLog["total_value"])?0:$gradeLog["total_value"];
+            $check_insert = true;
+            if($total_value >= $dayLimits){
+                $check_insert = false;
+            }
+            if($check_insert == true){
+                $value = $this->gradeRule["value"];
+                switch ($rule_name){
+                    case 'sign_in':
+                        $continue = $extend_data["continue"];
+                        $value = $value + ($continue-1) *  $this->signOntinuousGrade;
+                        break;
+                    case 'per_dollar'://每元消费
+                        $price= $extend_data["price"];
+                        $value = $value * $price ;
+                        break;
+                    case 'per_income':
+                        $price= $extend_data["price"];
+                        $value = $value * $price ;
+                        break;
+                }
+                if($total_value + $value > $dayLimits){
+                    $value =  $dayLimits - $total_value;
+                }
+                if($value > 0 ){
+                    $this->gradeCalculation($userId,$rule_name,$user["exp"],$value);
+                }
+            }
+        }
+        return array(
+            'status' => 200,
+            'msg' => '操作成功'
+        );
+
+    }
+    /**
+     * 增加经验的流水
+     * @param $userId
+     * @param $old_value
      * @param $value
      * @param $rule_name
      * @param $remark
      * @param int $isAdd  1 为增加 0为减少
      * @return array
      */
-    public function pointsCalculation($userId, $value, $rule_name, $remark, $isAdd = 1)
+    private function pointsCalculation($userId, $old_value,$value, $rule_name, $remark, $isAdd = 1)
     {
         try{
-            $this->load->model('Users_model');
             $this->load->model('Users_points_model');
-
-            $user = $this->Users_model->get($userId);
-            if(!$user){
-                return array(
-                    'status' => 400,
-                    'msg' => '会员不存在'
-                );
-            }
-            $points = 0;
-            if($isAdd){
-                $points = $user['point'] + $value;
-                $update = array('point' => $points);
-            }else{
-                if($user['point'] < $value){
-                    return array(
-                        'status' => 400,
-                        'msg' => '会员积分不足，请检查！'
-                    );
-                }
-                $points = $user['point'] - $value;
-                $update = array('point' => $points);
-            }
-
+            $points = $old_value + $value;
+            $update = array('point' => $points);
             $data['user_id'] = $userId;
             $data['rule_name'] = $rule_name;
             $data['remark'] = $remark;
             $data['value'] = $value;
             $data['is_add'] = $isAdd;
             $data['point'] = $points;
-
             $this->Users_points_model->insert($data);
-
             $this->Users_model->update_by(array('id' => $data['user_id']), $update);
         }catch (Exception $exception){
             return array(
@@ -369,33 +483,22 @@ class API_Controller extends MY_Controller
     }
 
     /**
+     * 增加经验的流水
      * @param $userId
+     * @param $old_value
      * @param $value
      * @param $rule_name
      * @return array
      */
-    public function gradeCalculation($userId, $rule_name, $value)
+    private function gradeCalculation($userId, $rule_name,$old_value, $value)
     {
         try{
-            $this->load->model('Users_model');
             $this->load->model('Grade_rule_model');
-
-            $user = $this->Users_model->get($userId);
-
-            if(!$user){
-                return array(
-                    'status' => 400,
-                    'msg' => '会员不存在'
-                );
-            }
-            $update = array('exp' => $user['exp'] + $value);
-
+            $update = array('exp' => $old_value + $value);
             $data['user_id'] = $userId;
             $data['rule_name'] = $rule_name;
             $data['value'] = $value;
-
-            $this->Grade_rule_model->add($userId, $rule_name, $value);
-
+            $this->Users_grade_model->insert($data);
             $this->Users_model->update_by(array('id' => $data['user_id']), $update);
         }catch (Exception $exception){
             return array(

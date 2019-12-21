@@ -87,4 +87,8 @@ class Grade_rule_model extends MY_Model
         $where = ['enable'=>1,'status'=>0];
         return $this->get_many_by($where);
     }
+
+    public function getInfoByRuleName($rule_name){
+        return $this->get_by(["name"=>$rule_name]);
+    }
 }

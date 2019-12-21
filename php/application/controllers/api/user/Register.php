@@ -94,6 +94,8 @@ class Register extends API_Controller {
 			        }*/
 
 			        if($id = $this->Users_model->reg(['mobi' => $mobi, 'account' => $account, 'password' => $password])){
+                        $this->checkCalculation('register',true,true);
+			            $this->AddCalculation($id,'register',[]);
 			            $this->user_login_success($this->Users_model->get($id));
 			        }else{
 			            $this->ajaxReturn([], LOGIN_STATUS, '保存注册信息失败');
