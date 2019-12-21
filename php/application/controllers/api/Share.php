@@ -61,22 +61,24 @@ class Share extends API_Controller {
 	{
 		$params = elements(
 			array(
-				'mobi', 'invite_uid'
+				'mobi', 'invite_uid','user_id'
 			),
 			$this->input->post(),
 			0
 		);
-		if(! $params['mobi']){
-			$this->ajaxReturn([], 1, '请输入有效手机号');
-		}
+//		if(! $params['mobi']){
+//			$this->ajaxReturn([], 1, '请输入有效手机号');
+//		}
+		/**
 		$this->load->model('Share_record_model');
 		if($record = $this->Share_record_model->get_by(['mobi' => $params['mobi']])){
 			$this->ajaxReturn([], 2, '每个手机限定领取一次');
 		}
-
 		$params['point'] = $this->point;
-
 		$this->Share_record_model->insert($params);
+        */
+        $this->checkCalculation('share',true,true);
+        $this->AddCalculation($params["user_id"],'share',[]);
 
 		$this->ajaxReturn();
 	}

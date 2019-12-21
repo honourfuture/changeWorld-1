@@ -318,8 +318,8 @@ class Users_points extends API_Controller {
         $dataInfo['countPoint'] = $user['point'];
 
         $points = $this->Users_points_model->get_many_by($where);
-        $this->load->model('Grade_rule_model');
-        $pointsRule = $this->Grade_rule_model->get_many_by(['enable'=>1,'deleted'=>0]);
+        $this->load->model('Points_rule_model');
+        $pointsRule = $this->Points_rule_model->get_many_by(['enable'=>1,'deleted'=>0,'show_name !='=>'']);
         $limit_day = [];
         foreach ($pointsRule as $key=>$value){
             $limit_day[$value["name"]] = $value["days_limit"];
@@ -335,6 +335,16 @@ class Users_points extends API_Controller {
                     'count' => isset($limit_day[$point['rule_name']]) ? $limit_day[$point['rule_name']] : 0,
                     'value' => $point['value'],
                     'remark' => $point['remark']
+                ];
+            }
+        }
+        $rule_list = array_keys($result);
+        foreach ($pointsRule as $key=>$value){
+            if(!in_array($value["name"],$rule_list)){
+                $result[] = [
+                    'count'=>$limit_day[$value["name"]],
+                    'value'=>0,
+                    'remark'=>$value["show_name"]
                 ];
             }
         }
