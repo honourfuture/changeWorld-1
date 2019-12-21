@@ -205,17 +205,9 @@
             'user_id' => $this->user_id,
             'continue' => $continue
         ];
-
         if($this->Sign_in_model->create($data)) {
-            if($continue == 1){
-                $value = 10;
-            }else{
-                $value = 10 + $continue * 5;
-                $value = $value > 40 ? 40 : $value;
-            }
-
-            $this->pointsCalculation($this->user_id, $value, 'sign_in', '签到增加');
-            $this->gradeCalculation($this->user_id, 'sign_in', rand(1, 4));
+            $this->checkCalculation('sign_in',true,true);
+            $this->AddCalculation($this->user_id,'sign_in',['continue'=>$continue]);
             return $this->ajaxReturn([], 0, '签到成功');
         } else {
             return $this->ajaxReturn([], 3, '服务器出错');

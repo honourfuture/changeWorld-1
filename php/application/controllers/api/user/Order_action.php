@@ -195,6 +195,8 @@ class Order_action extends API_Controller {
 
                 $this->load->model('Order_evaluate_model');
                 if($this->Order_evaluate_model->insert($data)){
+                    $this->checkCalculation('comment',true,true);
+                    $this->AddCalculation($id,'comment',[]);
                     $this->Order_model->update($this->order['id'], ['status' => 5]);
                     $this->ajaxReturn();
                 }else{
