@@ -315,7 +315,7 @@ class Users_points extends API_Controller {
         ];
 
         $user = $this->Users_model->get($this->user_id);
-        $dataInfo['countPoint'] = $user['point'];
+        $dataInfo['countPoint'] = empty($user['point'])?0:$user['point'];
 
         $points = $this->Users_points_model->get_many_by($where);
         $this->load->model('Points_rule_model');
