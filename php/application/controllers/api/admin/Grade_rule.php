@@ -48,7 +48,8 @@ class Grade_rule extends API_Controller {
 	 */
 	public function index()
 	{
-		$this->ajaxReturn($this->siteGradeRule());
+	    $result = $this->Grade_rule_model->getAll();
+		$this->ajaxReturn($result);
 	}
 
 	// 查看
@@ -89,30 +90,50 @@ class Grade_rule extends API_Controller {
 	 */
 	public function save()
 	{
-		$this->check_operation();
-		$id = (int)$this->input->get_post('id');
-		$params = $this->input->post();
-		$this->check_params('add', $params);
 
-		$a_name = array_keys($params);
-		$this->Grade_rule_model->delete_by('name', $a_name);
-		$data = array();
-		foreach($params as $key=>$val){
-			// list($value, $remark) = explode('###', $val);
-			$data[] = array('name' => $key, 'value' => $val);
-		}
-		if($flag = $this->Grade_rule_model->insert_many($data)){
-			$id = $flag;
-		}
+        $this->check_operation();
+        $id = (int)$this->input->get_post('id');
+        if($id){
+            $params = elements(
+                array(
+                    'value', 'days_limit','show_name', 'deleted','enable'
+                ),
+                $this->input->post(),
+                UPDATE_VALID
+            );
+            $this->check_params('edit', $params);
+            if($params['deleted'] == 1){
+                $update = array('deleted' => 1, 'enable' => 0);
+                $flag = $this->Grade_rule_model->update($id, $update);
+            }else{
+                unset($params['deleted']);
+                if(isset($params['enable']) && $params['enable']){
+                    $params['deleted'] = 0;
+                }
+                $flag = $this->Grade_rule_model->update($id, $params);
+            }
+        }else{
+            $params = elements(
+                array(
+                    'name', 'value', 'days_limit','show_name'
+                ),
+                $this->input->post(),
+                UPDATE_VALID
+            );
+            $this->check_params('add', $params);
+            if($flag = $this->Grade_rule_model->insert($params)){
+                $id = $flag;
+            }
+        }
 
-		if($flag){
-			$status = 0;
-			$message = '成功';
-		}else{
-			$status = 1;
-			$message = '失败';
-		}
-		$this->ajaxReturn([], $status, '操作'.$message);
+        if($flag){
+            $status = 0;
+            $message = '成功';
+        }else{
+            $status = 1;
+            $message = '失败';
+        }
+        $this->ajaxReturn(array('id' => $id), $status, '操作'.$message);
 	}
 
 	protected function check_params($act, $params)

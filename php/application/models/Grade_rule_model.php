@@ -81,4 +81,10 @@ class Grade_rule_model extends MY_Model
             $this->db->update($this->Users_model->table());
         }
     }
+
+
+    public function getAll(){
+        $where = ['enable'=>1,'status'=>0];
+        return $this->get_many_by($where);
+    }
 }
