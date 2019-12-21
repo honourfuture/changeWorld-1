@@ -31,4 +31,10 @@ class Points_rule_model extends MY_Model
             'invite_reg' => '邀请注册',
     	);
     }
+
+    public function getAll(){
+        $where = ['enable'=>1,'status'=>0];
+        $result = $this->get_many_by($where);
+        return $result;
+    }
 }

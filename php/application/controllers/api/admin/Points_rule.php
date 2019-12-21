@@ -48,7 +48,8 @@ class Points_rule extends API_Controller {
 	 */
 	public function index()
 	{
-		$this->ajaxReturn($this->sitePointsRule());
+	    $result = $this->Points_rule_model->getAll();
+		$this->ajaxReturn($result);
 	}
 
 	// 查看
@@ -68,6 +69,7 @@ class Points_rule extends API_Controller {
 	 * @apiParam {Number} admin_id 管理员唯一ID
 	 * @apiParam {String} account 登录账号
 	 * @apiParam {String} sign 校验签名
+     * @apiParam {String} name 后台
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -89,32 +91,50 @@ class Points_rule extends API_Controller {
 	 */
 	public function save()
 	{
-		$this->check_operation();
-		$id = (int)$this->input->get_post('id');
-		$params = $this->input->post();
-		$this->check_params('add', $params);
+        $this->check_operation();
+        $id = (int)$this->input->get_post('id');
+        if($id){
+            $params = elements(
+                array(
+                    'value', 'days_limit','show_name', 'deleted','enable'
+                ),
+                $this->input->post(),
+                UPDATE_VALID
+            );
+            $this->check_params('edit', $params);
+            if($params['deleted'] == 1){
+                $update = array('deleted' => 1, 'enable' => 0);
+                $flag = $this->Points_rule_model->update($id, $update);
+            }else{
+                unset($params['deleted']);
+                if(isset($params['enable']) && $params['enable']){
+                    $params['deleted'] = 0;
+                }
+                $flag = $this->Points_rule_model->update($id, $params);
+            }
+        }else{
+            $params = elements(
+                array(
+                    'name', 'value', 'days_limit','show_name'
+                ),
+                $this->input->post(),
+                UPDATE_VALID
+            );
+            $this->check_params('add', $params);
+            if($flag = $this->Points_rule_model->insert($params)){
+                $id = $flag;
+            }
+        }
 
-		$a_name = array_keys($params);
-		$this->Points_rule_model->delete_by('name', $a_name);
-		$data = array();
-		foreach($params as $key=>$val){
-			// list($value, $remark) = explode('###', $val);
-			$data[] = array('name' => $key, 'value' => $val);
-		}
-		if($flag = $this->Points_rule_model->insert_many($data)){
-			$id = $flag;
-		}
-
-		if($flag){
-			$status = 0;
-			$message = '成功';
-		}else{
-			$status = 1;
-			$message = '失败';
-		}
-		$this->ajaxReturn([], $status, '操作'.$message);
-	}
-
+        if($flag){
+            $status = 0;
+            $message = '成功';
+        }else{
+            $status = 1;
+            $message = '失败';
+        }
+        $this->ajaxReturn(array('id' => $id), $status, '操作'.$message);
+    }
 	protected function check_params($act, $params)
 	{
 		switch($act){
