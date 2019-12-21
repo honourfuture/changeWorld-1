@@ -11,8 +11,8 @@ const TabPane = Tabs.TabPane;
 export default class MemberExpManager extends BaseComponent {
     render() {
         const panes = [
-            // { title: '经验值明细', content: <ExpList />, key: '1' },
-            // { title: '规则设置', content: <ExpRuleSet />, key: '2' },
+            { title: '经验值明细', content: <ExpList />, key: '1' },
+            { title: '规则设置', content: <ExpRuleSet />, key: '2' },
             { title: "等级设置", content: <ExpLvSet />, key: "3" }
         ];
         const tabPan = panes.map(item => {

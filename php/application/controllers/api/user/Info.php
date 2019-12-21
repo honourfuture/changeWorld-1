@@ -312,8 +312,8 @@ class Info extends API_Controller {
 		$grade = $this->Grade_model->exp_to_grade($user['exp']);
 		$ret['lv'] = $grade['grade_name'];
 
-		$this->load->model('Users_vip_model');
-		$ret['vip'] = $this->Users_vip_model->vip_info($user['id']);
+		$this->load->model('Grade_model');
+		$ret['vip'] = $this->Grade_model->exp($user['exp']);
 
 		$this->load->model('Users_collection_model');
 		$where = array('user_id' => $this->user_id, 'topic' => 2);

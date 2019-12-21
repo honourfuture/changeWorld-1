@@ -111,7 +111,7 @@ class Grade extends API_Controller {
 		if($id){
 			$params = elements(
 				array(
-					'grade_name', 'grade_demand', 'grade_logo', 'deleted', 'enable'
+					'grade_name', 'grade_demand', 'grade_logo', 'deleted', 'enable', 'name'
 				),
 				$this->input->post(),
 				UPDATE_VALID
@@ -130,7 +130,7 @@ class Grade extends API_Controller {
 		}else{
 			$params = elements(
 				array(
-					'grade_name', 'grade_demand', 'grade_logo'
+					'grade_name', 'grade_demand', 'grade_logo', 'name'
 				),
 				$this->input->post(),
 				UPDATE_VALID

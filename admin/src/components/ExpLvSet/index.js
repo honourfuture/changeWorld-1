@@ -33,13 +33,19 @@ export class ExpLvSet extends BaseComponent {
                 render: (text, record) =>
                     this.renderInput(text, record, "grade_demand")
             },
-            // {
-            //     title: "等级图",
-            //     dataIndex: "grade_logo",
-            //     width: "10%",
-            //     render: (text, record) =>
-            //         this.renderImg(text, record, "grade_logo")
-            // },
+            {
+                title: "等级名称",
+                dataIndex: "grade_demand",
+                render: (text, record) =>
+                    this.renderInput(text, record, "name")
+            },
+            {
+                title: "等级图",
+                dataIndex: "grade_logo",
+                width: "10%",
+                render: (text, record) =>
+                    this.renderImg(text, record, "grade_logo")
+            },
             {
                 title: "启用",
                 dataIndex: "enable",
@@ -168,7 +174,7 @@ export class ExpLvSet extends BaseComponent {
         }
         if (info.file.status === "done") {
             itemData.loading = false;
-            itemData.image = info.file.response.data.file_url;
+            itemData.grade_logo = info.file.response.data.file_url;
             return (this.store.list = list);
         }
     }
