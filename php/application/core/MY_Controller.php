@@ -300,6 +300,15 @@ class API_Controller extends MY_Controller
         $this->ajaxReturn($ret);
     }
 
+    public function getLevelByUsers($exp)
+    {
+        $this->load->model('Users_points_model');
+    }
+
+    public function getLevelByUser($users)
+    {
+
+    }
 
     /**
      * @param $userId

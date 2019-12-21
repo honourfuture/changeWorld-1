@@ -42,6 +42,21 @@ class Grade_model extends MY_Model
 		return $ret;
     }
 
+    public function exp($exp){
+
+        $ret = [];
+        $order_by = array('grade_demand' => 'asc');
+        if($one = $this->Grade_model->order_by($order_by)->get_by(['enable' => 1, 'grade_demand <' => $exp])){
+            $ret = $one;
+        }
+
+        if($one = $this->Grade_model->order_by($order_by)->get_by(['enable' => 1, 'grade_demand' => $exp])){
+            $ret = $one;
+        }
+        $ret['icon'] = $ret['grade_logo'];
+
+        return $ret;
+    }
     public function rule()
     {
         $this->load->model('Config_model');
