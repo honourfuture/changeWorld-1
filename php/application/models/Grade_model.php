@@ -53,10 +53,11 @@ class Grade_model extends MY_Model
         if($one = $this->Grade_model->order_by($order_by)->get_by(['enable' => 1, 'grade_demand' => $exp])){
             $ret = $one;
         }
-        $ret['icon'] = $ret['grade_logo'];
+        $ret['icon'] = config_item('base_url') . $ret['grade_logo'];
 
         return $ret;
     }
+
     public function rule()
     {
         $this->load->model('Config_model');

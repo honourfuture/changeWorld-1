@@ -4,7 +4,7 @@ import { Tabs } from "antd";
 import "./MemberExpManager.less";
 
 import { ExpList } from "../../components/ExpList";
-import ExpRuleSet from "../../components/ExpRuleSet";
+import {ExpRuleSet } from "../../components/ExpRuleSet";
 import { ExpLvSet } from "../../components/ExpLvSet";
 
 const TabPane = Tabs.TabPane;
