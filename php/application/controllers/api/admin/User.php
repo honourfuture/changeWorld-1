@@ -226,7 +226,7 @@ class User extends API_Controller {
 	}
 
     /**
-     * @api {get} /api/admin/user/get_child 显示用户下级总人数及列表
+     * @api {get} /api/admin/user/get_child 根据手机号与id 显示用户下级总人数及列表
      * @apiVersion 1.0.0
      * @apiName user_view
      * @apiGroup admin
@@ -237,6 +237,7 @@ class User extends API_Controller {
      * @apiParam {String} account 登录账号
      * @apiParam {String} sign 校验签名
      * @apiParam {Number} id 用户唯一ID
+     * @apiParam {Number} mobile 用户的手机号码
      *
      * @apiSuccess {Number} status 接口状态 0成功 其他异常
      * @apiSuccess {String} message 接口信息描述
@@ -258,17 +259,35 @@ class User extends API_Controller {
      */
 	public function get_child(){
         $id = $this->input->get_post('id');
+        //手机号码
+        $mobile = $this->input->get_post('mobile');
+        if(empty($id) && empty($mobile)){
+            $this->ajaxReturn([], 1, 'id或mobile参数缺失');
+        }
+        if(empty($id) && !empty($mobile)){
+            $mobileResult = $this->Users_model->get_by("mobi",$mobile);
+            if(!empty($mobileResult)){
+                $id = intval($mobileResult["id"]);
+            }
+        }
         $temps = $this->Users_model->under($id);
-        $result = $this->Users_model->get_many_user($temps);
-        $total = count($result);
-        $return["count"] = $total ;
-        $return["data"] = array_values($result);
+        $result = [] ;
+        $total= 0 ;
+        if(!empty($temps)){
+            $result = $this->Users_model->get_many_user($temps);
+            $total = count($result);
+        }
+        $return = [];
+        if(!empty($result)){
+            $return["count"] = $total ;
+            $return["data"] = array_values($result);
+        }
         $this->ajaxReturn($return);
     }
 
 
     /**
-     * @api {get} /api/admin/user/super_and_child
+     * @api {get} /api/admin/user/super_and_child 根据手机号与id 获取用户的直接上级与直接下级列表
      * @apiVersion 1.0.0
      * @apiName user_view
      * @apiGroup admin
@@ -279,6 +298,7 @@ class User extends API_Controller {
      * @apiParam {String} account 登录账号
      * @apiParam {String} sign 校验签名
      * @apiParam {Number} id 用户唯一ID
+     * @apiParam {Number} mobile 用户的手机号码
      *
      * @apiSuccess {Number} status 接口状态 0成功 其他异常
      * @apiSuccess {String} message 接口信息描述
@@ -300,16 +320,24 @@ class User extends API_Controller {
      */
     public function super_and_child(){
         $id = $this->input->get_post('id');
+        //手机号码
+        $mobile = $this->input->get_post('mobile');
+        if(empty($id) && empty($mobile)){
+            $this->ajaxReturn([], 1, 'id或mobile参数缺失');
+        }
+        if(empty($id) && !empty($mobile)){
+            $mobileResult = $this->Users_model->get_by("mobi",$mobile);
+            if(!empty($mobileResult)){
+                $id = intval($mobileResult["id"]);
+            }
+        }
         $parents= $this->Users_model->parent($id);
         $child = $this->Users_model->get_many_by([
             "pid"=>$id
         ]);
-        
         $result["parents"] = $parents;
         $result["child"] = $child;
-
         $this->ajaxReturn($result);
-
     }
 
 
