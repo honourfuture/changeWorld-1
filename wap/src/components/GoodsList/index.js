@@ -11,31 +11,60 @@ export class GoodsItem extends BaseComponent {
         Base.push("GoodsDetail", { id });
     }
     render() {
-        const { default_image, name, sale_price } = this.props;
-        return (
-            <div className="recommend-goodsItem" onClick={this.onClick}>
-                <div className="recommend-goodsItem-img">
-                    <img
-                        src={Base.getImgUrl(default_image)}
-                        style={{ height: goodsImgHeight }}
-                    />
-                </div>
-                {/* <div className="recommend-goodsItem-body">
-                    <div className="recommend-goodsItem-title ellipsis2">
-                        {name}
+        const { default_image, name, sale_price, is_hot = 0 } = this.props;
+        if(is_hot){
+            return (
+                <div className="recommend-goodsItem" onClick={this.onClick}>
+                    <div className="recommend-goodsItem-img">
+                        <img
+                            src={Base.getImgUrl(default_image)}
+                            style={{ height: goodsImgHeight }}
+                        />
                     </div>
-                    <Flex
-                        justify="between"
-                        className="recommend-goodsItem-opera"
-                    >
-                        <span className="goodsPrice">￥ {sale_price}</span>
-                        <Button type="warning" inline size="small">
-                            购买
-                        </Button>
-                    </Flex>
-                </div> */}
-            </div>
-        );
+                    {/* <div className="recommend-goodsItem-body">
+                        <div className="recommend-goodsItem-title ellipsis2">
+                            {name}
+                        </div>
+                        <Flex
+                            justify="between"
+                            className="recommend-goodsItem-opera"
+                        >
+                            <span className="goodsPrice">￥ {sale_price}</span>
+                            <Button type="warning" inline size="small">
+                                购买
+                            </Button>
+                        </Flex>
+                    </div> */}
+                </div>
+            );
+        }else{
+            return (
+                <div className="recommend-goodsItem" onClick={this.onClick} style={{width:'50%'}}>
+                    <div className="recommend-goodsItem-img">
+                        <img
+                            src={Base.getImgUrl(default_image)}
+                            style={{ height: goodsImgHeight }}
+                        />
+                    </div>
+                    <div className="recommend-goodsItem-body">
+                        <div className="recommend-goodsItem-title ellipsis2">
+                            {name}
+                        </div>
+                        <Flex
+                            justify="between"
+                            className="recommend-goodsItem-opera"
+                        >
+                            <span className="goodsPrice">￥ {sale_price}</span>
+                            <Button type="warning" inline size="small">
+                                购买
+                            </Button>
+                        </Flex>
+                    </div>
+                </div>
+            )
+
+        }
+        
     }
 }
 

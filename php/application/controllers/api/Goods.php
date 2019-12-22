@@ -467,7 +467,7 @@ class Goods extends API_Controller {
 					'name', 'stock', 'sale_price', 'freight_fee', 'send_mode',
 					'goods_ticket', 'use_point_rate', 'e_invoice', 'city_partner_rate', 'two_level_rate',
 					'goods_image', 'goods_attr', 'goods_detail', 'deleted', 'enable', 'sort', 'goods_class_id',
-					'is_hot','rebate_percent','base_percent'
+					'is_hot','rebate_percent','base_percent', 'guarantee', 'buy_notice'
 				),
 				$this->input->post(),
 				UPDATE_VALID
@@ -498,7 +498,8 @@ class Goods extends API_Controller {
 				array(
 					'name', 'stock', 'sale_price', 'freight_fee', 'send_mode',
 					'goods_ticket', 'use_point_rate', 'e_invoice', 'city_partner_rate', 'two_level_rate',
-					'goods_image', 'goods_attr', 'goods_detail', 'is_hot', 'goods_class_id','rebate_percent','base_percent'
+					'goods_image', 'goods_attr', 'goods_detail', 'is_hot', 'goods_class_id','rebate_percent','base_percent',
+                    'guarantee', 'buy_notice'
 				),
 				$this->input->post(),
 				''

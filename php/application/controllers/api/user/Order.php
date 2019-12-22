@@ -406,8 +406,10 @@ class Order extends API_Controller {
 			];
 
 			$order_id = $this->Order_model->insert($order);
+            $this->load->model('Goods_model');
 			foreach($rows['goods'] as $item){
-				$d_cart_id[] = $item['cart_id'];
+                $good = $this->Goods_model->get($item['goods_id']);
+                $d_cart_id[] = $item['cart_id'];
 				$order_item[] = [
 					'order_id' => $order_id,
 					'order_sn' => $order_sn,
@@ -424,8 +426,8 @@ class Order extends API_Controller {
 					'buyer_uid' => $this->user_id,
 					'seller_uid' => $seller_id,
 					'created_time' => $now_time,
-                    'base_percent' => $item['base_percent'],
-                    'rebate_percent' => $item['rebate_percent']
+                    'base_percent' => $good['base_percent'],
+                    'rebate_percent' => $good['rebate_percent']
 				];
 			}
 			$this->db->insert_batch($this->Order_items_model->table(), $order_item);

@@ -71,7 +71,7 @@ class StoreItem extends BaseComponent {
                             </Flex.Item>
                         </Flex>
                     ) : null}
-                    {parseFloat(rule) > 0 && parseFloat(point) > 0 ? (
+                    {/* {parseFloat(rule) > 0 && parseFloat(point) > 0 ? (
                         <Flex
                             justify="between"
                             align="center"
@@ -89,7 +89,7 @@ class StoreItem extends BaseComponent {
                                 />
                             </Flex.Item>
                         </Flex>
-                    ) : null}
+                    ) : null} */}
                 </div>
                 <div className="order-remark">
                     <TextareaItem

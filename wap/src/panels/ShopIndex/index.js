@@ -17,7 +17,7 @@ export default class ShopIndex extends BaseComponent {
             // const list = res.data.filter(item => parseInt(item.enable));
             const tabs = res.data.map(item => {
                 const { id, name } = item;
-                return { key: id, title: name, component: <Hots id={id} /> };
+                return { key: id, title: name, component: <Hots id={id} is_hot={0}/> };
             });
             tabs.unshift({
                 key: -1,

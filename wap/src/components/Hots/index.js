@@ -67,7 +67,8 @@ export class Hots extends Component {
     // }
     @action.bound
     renderGoodsItem(rowData, sectionID, rowID) {
-        return <GoodsItem {...rowData} />;
+        const { is_hot } = this.props;
+        return <GoodsItem {...rowData} is_hot={is_hot}/>;
     }
     @action.bound
     requestData() {

@@ -22,8 +22,6 @@ import "./ProductIssue.less";
 import { icon } from "../../images";
 
 const Item = List.Item;
-const alert = Modal.alert;
-
 const selectImgW = (document.body.offsetWidth - 30) / 4;
 const getBase64 = (img, callback) => {
     const reader = new FileReader();
@@ -81,6 +79,7 @@ class ImgItem extends BaseComponent {
             "inputMultiple"
         );
     }
+   
     render() {
         const { title, fileName, isRequired } = this.props;
         const limit = isRequired ? 6 : 16;
@@ -156,6 +155,10 @@ class ImgItem extends BaseComponent {
 }
 
 class ProductIssue extends BaseComponent {
+    changeTopPercent(value){
+        console.log(value)
+        return true
+    }
     store = {
         goods_image: [],
         goods_detail: [],
@@ -163,7 +166,8 @@ class ProductIssue extends BaseComponent {
         goods_attr: [],
         goods_class: [],
         point_rate: 0,
-        use_point_rate: 0
+        use_point_rate: 0, 
+        basePercent : 100,
     };
     @action.bound
     onChangeMainImg = files => {
@@ -203,6 +207,12 @@ class ProductIssue extends BaseComponent {
                 if(rebate_percent > 90){
                     return Toast.fail("最高让利率上限为90", 2, null, false);
                 }
+                let max = rebate_percent / 400 * 100;
+                max = Math.floor(max)
+                if(base_percent > max){
+                    return Toast.fail(`最高让利率为${max}%`, 2, null, false);
+                }
+                
                 if(base_percent > 100){
                     return Toast.fail("请填写正确的百分比基础让利率", 2, null, false);
                 }
@@ -341,7 +351,11 @@ class ProductIssue extends BaseComponent {
                         two_level_rate,
                         goods_image,
                         goods_detail,
-                        goods_attr
+                        goods_attr,
+                        rebate_percent,
+                        guarantee,
+                        base_percent,
+                        buy_notice,
                     } = goods_info;
                     const { setFieldsValue } = this.props.form;
                     let init_goods_image = [];
@@ -394,7 +408,11 @@ class ProductIssue extends BaseComponent {
                         free_amount,
                         e_invoice: parseInt(e_invoice),
                         city_partner_rate,
-                        two_level_rate
+                        two_level_rate,
+                        rebate_percent,
+                        base_percent,
+                        guarantee,
+                        buy_notice
                     });
                     this.store.use_point_rate = use_point_rate;
                     this.store.goods_image = init_goods_image;
@@ -411,8 +429,9 @@ class ProductIssue extends BaseComponent {
             goods_attr,
             point_rate,
             use_point_rate,
-            goods_class
+            goods_class,
         } = this.store;
+        
         const { getFieldProps, getFieldError } = this.props.form;
         const goodsAttrItems = goods_attr.map((item, index) => {
             const { id, name, list } = item;
@@ -489,6 +508,7 @@ class ProductIssue extends BaseComponent {
                                 labelNumber={1}
                             />
                         </Flex>
+                        
                         <InputItem
                             error={!!getFieldError("stock")}
                             {...getFieldProps("stock", {
@@ -527,6 +547,44 @@ class ProductIssue extends BaseComponent {
                             产品价格
                             <em>*</em>
                         </InputItem>
+                        <Flex
+                            justify="between"
+                            className="textarea-con base-line"
+                        >
+                            <div style={{ paddingLeft: 15, width: 80 }}>
+                                保障
+                            </div>
+                            <TextareaItem
+                                // style={{ width: 120 }}
+                                maxLength={38}
+                                error={!!getFieldError("guarantee")}
+                                {...getFieldProps("guarantee", {
+                                })}
+                                // clear
+                                placeholder="请输入保障"
+                                autoHeight
+                                labelNumber={1}
+                            />
+                        </Flex>
+                        <Flex
+                            justify="between"
+                            className="textarea-con base-line"
+                        >
+                            <div style={{ paddingLeft: 15, width: 80 }}>
+                                购买须知
+                            </div>
+                            <TextareaItem
+                                // style={{ width: 120 }}
+                                maxLength={38}
+                                error={!!getFieldError("buy_notice")}
+                                {...getFieldProps("buy_notice", {
+                                })}
+                                // clear
+                                placeholder="购买须知"
+                                autoHeight
+                                labelNumber={1}
+                            />
+                        </Flex>
                         {/* <Picker
                             data={goods_class}
                             cols={1}

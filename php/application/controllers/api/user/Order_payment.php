@@ -157,6 +157,7 @@ class Order_payment extends API_Controller {
 			if(!is_array($order_id)){
 				$order_id = [$order_id];
 			}
+
 			$this->Order_model->update_many($order_id, $order_update);
 			//分佣
             $insert = [];
@@ -213,6 +214,7 @@ class Order_payment extends API_Controller {
                                     $addPrice = isset($branch[$levelUser['level']]) ? $branch[$levelUser['level']] * $this->amount : 0;
                                 }
                             }
+                            $addPrice = $item['base_percent'] / 100 * $addPrice;
                             $addPrice = round($addPrice, 2);
                             if($addPrice){
                                 $this->_setBalance($levelUser['id'], $addPrice);
