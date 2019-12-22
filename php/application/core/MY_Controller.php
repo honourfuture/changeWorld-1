@@ -374,7 +374,7 @@ class API_Controller extends MY_Controller
                 'created_at >'=>date('Y-m-d 00:00:00'),
                 'created_at <='=>date("Y-m-d 23:59:59")
             ]);
-            $total_value = $pointsLog["total_value"];
+            $total_value = empty($pointsLog["total_value"])?0:$pointsLog["total_value"];
             $check_insert = true;
             if($total_value >= $dayLimits){
                $check_insert = false;
@@ -401,6 +401,7 @@ class API_Controller extends MY_Controller
                 $this->pointsCalculation($userId,$user["point"],$value,$rule_name,$this->pointsRule["show_name"]);
             }
         }
+
         if(!empty($this->gradeRule)){
             $this->load->model('Users_grade_model');
             $dayLimits = $this->gradeRule["days_limit"];
