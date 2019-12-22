@@ -159,6 +159,7 @@ class Order_payment extends API_Controller {
 			}
 			$this->Order_model->update_many($order_id, $order_update);
 			//分佣
+            $insert = [];
 
             //商品销售记录
             $this->load->model('Order_items_model');
@@ -193,7 +194,6 @@ class Order_payment extends API_Controller {
                         $this->load->model('Grade_model');
                         $levelUsers = $this->Grade_model->getLevelByUsers($top);
                         $levelIds = [];
-                        $insert = [];
                         foreach ($levelUsers as $k => $levelUser){
                             $levelIds[] = $levelUser['level'];
 
@@ -235,7 +235,10 @@ class Order_payment extends API_Controller {
                     }
                 }
                 $this->load->model('Income_model');
-                $this->Income_model->insert_many($insert);
+                if($insert){
+                    $this->Income_model->insert_many($insert);
+                }
+
                 $this->Record_goods_model->insert_many($data);
 
                 $this->load->model('Consume_record_model');

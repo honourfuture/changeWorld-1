@@ -37,10 +37,10 @@ class Grade_level_model extends MY_Model
 			$ret['level_icon'] = $one['icon'];
 			$ret['level_remark'] = $one['remark'];
 		}else{
-			$ret['level_name'] = $ret['before_level_name'];
-            $ret['level_rule'] = $ret['before_level_rule'] ;
-            $ret['level_icon'] = $ret['before_level_icon'] ;
-            $ret['level_remark'] = $ret['before_level_remark'] ;
+			$ret['level_name'] = isset($ret['before_level_name']) ? $ret['before_level_name'] : '';
+            $ret['level_rule'] = isset($ret['before_level_rule']) ? $ret['before_level_rule'] : '';
+            $ret['level_icon'] = isset($ret['before_level_icon']) ? $ret['before_level_icon'] : '';
+            $ret['level_remark'] = isset($ret['before_level_remark']) ? $ret['before_level_remark'] : '';
 		}
 
 		if($one = $this->Grade_level_model->order_by($order_by)->get_by(['enable' => 1, 'grade_demand >' => $exp])){

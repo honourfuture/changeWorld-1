@@ -108,7 +108,7 @@ class Users_points extends API_Controller {
 	 */
 	public function index()
 	{
-		$ret = array('points' => array('total'=>0,'count' => 0, 'list' => array()));
+		$ret = array('points' => array('total'=>0, 'count' => 0, 'list' => array()));
 
 		$where = array();
 		$type = $this->input->get_post('type');
@@ -125,7 +125,7 @@ class Users_points extends API_Controller {
         $this->load->model('Users_model');
 		if($this->user_id){
             $user = $this->Users_model->get($this->user_id);
-            $ret['points']['total'] = $user->point;
+            $ret['points']['total'] = $user['point'];
         }
 
 		$this->load->model('Users_points_model');
