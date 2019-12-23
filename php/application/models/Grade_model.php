@@ -25,17 +25,17 @@ class Grade_model extends MY_Model
 
         $order_by = array('grade_demand' => 'asc');
         if ($one = $this->Grade_model->order_by($order_by)->get_by(['enable' => 1, 'grade_demand <' => $exp])) {
-            $ret['before_grade_name'] = $one['grade_name'];
+            $ret['before_grade_name'] = $one['name'];
         }
 
         if ($one = $this->Grade_model->order_by($order_by)->get_by(['enable' => 1, 'grade_demand' => $exp])) {
-            $ret['grade_name'] = $one['grade_name'];
+            $ret['grade_name'] = $one['name'];
         } else {
             $ret['grade_name'] = $ret['before_grade_name'];
         }
 
         if ($one = $this->Grade_model->order_by($order_by)->get_by(['enable' => 1, 'grade_demand >' => $exp])) {
-            $ret['after_grade_name'] = $one['grade_name'];
+            $ret['after_grade_name'] = $one['name'];
             $ret['diff'] = $one['grade_demand'] - $exp;
         }
 

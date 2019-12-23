@@ -76,7 +76,6 @@ class Grade extends API_Controller {
 		$ret = [];
 
 		$user = $this->get_user();
-
 		$this->load->model('Grade_model');
 		$ret['grade'] = $this->Grade_model->exp_to_grade($user['exp']);
 
