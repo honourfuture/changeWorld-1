@@ -588,7 +588,7 @@ class Info extends API_Controller {
      *                       "pretty_id": "",
      *                       "pid": "14951233",
      *                       "lv": "1",
-     *                       "root": "14951233" //可以据此等于pid判断是否显示星星
+     *                       "is_star": "1" //可以据此判断是否显示星星
      *                       }]
      *          },
      *	    "status": 0,

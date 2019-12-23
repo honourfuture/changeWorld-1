@@ -21,7 +21,29 @@ class Grade_model extends MY_Model
 
     public function exp_to_grade($exp)
     {
-        $ret = ['before' => '', 'grade_name' => '', 'after' => '', 'diff' => 0, 'exp' => $exp];
+        $ret = ['before_grade_name' => '', 'grade_name' => '', 'after_grade_name' => '', 'diff' => 0, 'exp' => $exp];
+
+        $order_by = array('grade_demand' => 'asc');
+        if ($one = $this->Grade_model->order_by($order_by)->get_by(['enable' => 1, 'grade_demand <' => $exp])) {
+            $ret['before_grade_name'] = $one['grade_name'];
+        }
+
+        if ($one = $this->Grade_model->order_by($order_by)->get_by(['enable' => 1, 'grade_demand' => $exp])) {
+            $ret['grade_name'] = $one['grade_name'];
+        } else {
+            $ret['grade_name'] = $ret['before_grade_name'];
+        }
+
+        if ($one = $this->Grade_model->order_by($order_by)->get_by(['enable' => 1, 'grade_demand >' => $exp])) {
+            $ret['after_grade_name'] = $one['grade_name'];
+            $ret['diff'] = $one['grade_demand'] - $exp;
+        }
+
+        return $ret;
+    }
+
+    public function exp_diff($exp){
+        $ret = ['before' => '', 'this' => '', 'after' => '', 'diff' => 0, 'exp' => $exp];
 
         $order_by = array('grade_demand' => 'asc');
         if ($one = $this->Grade_model->order_by($order_by)->get_by(['enable' => 1, 'grade_demand <' => $exp])) {
@@ -33,11 +55,10 @@ class Grade_model extends MY_Model
             $ret['diff'] = $one['grade_demand'] - $exp;
         }
 
-        if ($one = $this->Grade_model->order_by($order_by)->get_by(['enable' => 1, 'grade_demand < ' => $ret['diff'], 'grade_demand >'])) {
-            $ret['grade_name'] = $one['grade_name'];
-        } else {
-            $ret['grade_name'] = $ret['before_grade_name'];
+        if ($one = $this->Grade_model->order_by($order_by)->get_by(['enable' => 1, 'grade_demand < ' => $ret['after']['grade_demand'], 'grade_demand >' =>  $ret['before']['grade_demand']])) {
+            $ret['this'] = $one;
         }
+
         return $ret;
     }
 
