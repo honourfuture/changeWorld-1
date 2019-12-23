@@ -622,7 +622,7 @@ class Info extends API_Controller {
                     foreach($users as $item){
                         $grade = $this->Grade_model->exp_to_grade($item['exp']);
                         $item['lv'] = $grade['grade_name'];
-                        $item['root'] = $this->user_id;//据此判断是否是一级
+                        $item['is_star'] = $item['pid'] == $this->user_id ? 1 : 0;//据此判断是否是一级
                         $item['date'] = date('Y-m-d', strtotime($item['created_at']));
                         $ret['list'][] = $item;
                     }

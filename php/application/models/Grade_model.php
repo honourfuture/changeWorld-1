@@ -21,24 +21,23 @@ class Grade_model extends MY_Model
 
     public function exp_to_grade($exp)
     {
-        $ret = ['before_grade_name' => '', 'grade_name' => '', 'after_grade_name' => '', 'diff' => 0, 'exp' => $exp];
+        $ret = ['before' => '', 'grade_name' => '', 'after' => '', 'diff' => 0, 'exp' => $exp];
 
         $order_by = array('grade_demand' => 'asc');
         if ($one = $this->Grade_model->order_by($order_by)->get_by(['enable' => 1, 'grade_demand <' => $exp])) {
-            $ret['before_grade_name'] = $one['name'];
-        }
-
-        if ($one = $this->Grade_model->order_by($order_by)->get_by(['enable' => 1, 'grade_demand' => $exp])) {
-            $ret['grade_name'] = $one['name'];
-        } else {
-            $ret['grade_name'] = $ret['before_grade_name'];
+            $ret['before'] = $one;
         }
 
         if ($one = $this->Grade_model->order_by($order_by)->get_by(['enable' => 1, 'grade_demand >' => $exp])) {
-            $ret['after_grade_name'] = $one['name'];
+            $ret['after'] = $one;
             $ret['diff'] = $one['grade_demand'] - $exp;
         }
 
+        if ($one = $this->Grade_model->order_by($order_by)->get_by(['enable' => 1, 'grade_demand < ' => $ret['diff'], 'grade_demand >'])) {
+            $ret['grade_name'] = $one['grade_name'];
+        } else {
+            $ret['grade_name'] = $ret['before_grade_name'];
+        }
         return $ret;
     }
 
