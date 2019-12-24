@@ -78,6 +78,7 @@ class Grade extends API_Controller {
 		$user = $this->get_user();
 		$this->load->model('Grade_model');
 		$diff = $this->Grade_model->exp_diff($user['exp']);
+		print_r($diff);die;
         $ret['grade'] = [
             'before_grade_name' => isset($diff['before']['grade_name']) ? $diff['before']['grade_name'] : 0,
             'grade_name' => isset($diff['this']['grade_name']) ? $diff['this']['grade_name'] : 0,
