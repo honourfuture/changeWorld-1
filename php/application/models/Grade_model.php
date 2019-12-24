@@ -55,7 +55,7 @@ class Grade_model extends MY_Model
             $ret['diff'] = $one['grade_demand'] - $exp;
         }
 
-        if ($one = $this->Grade_model->order_by($order_by)->get_by(['enable' => 1, 'grade_demand < ' => $ret['after']['grade_demand'], 'grade_demand >' =>  $ret['before']['grade_demand']])) {
+        if ($one = $this->Grade_model->order_by($order_by)->get_by(['enable' => 1, 'grade_demand < ' => $ret['after']['grade_demand'], 'grade_demand >=' =>  $ret['before']['grade_demand']])) {
             $ret['this'] = $one;
         }
 
