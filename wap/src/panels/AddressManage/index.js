@@ -86,7 +86,7 @@ export default class AddressManage extends BaseComponent{
                     mode="light"
                     icon={<img src={icon.back} alt=''/>}
                     onLeftClick={Base.goBack}
-                    rightContent={<div onClick={()=>Base.push('NewAddress')} className='right-label'>添加</div>}
+                    rightContent={<div onClick={()=>Base.push('NewAddress')} className='right-label'>添加新地址</div>}
                 >地址管理</NavBar>
                 <div className="base-content">
                     <div className="SelectAddress-box">
@@ -94,10 +94,10 @@ export default class AddressManage extends BaseComponent{
                     </div>
                     
                 </div>
-                <WingBlank>
+                {/* <WingBlank>
                     <WhiteSpace />
                     <Button type="warning" className="save-address" onClick={()=>Base.push('NewAddress')}>+ 新增地址</Button>
-                </WingBlank>
+                </WingBlank> */}
 			</div>
 		)
 	}

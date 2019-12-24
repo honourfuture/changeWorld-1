@@ -38,7 +38,7 @@ class ImgItem extends BaseComponent {
     @action.bound
     onChange(e) {
         const { isRequired } = this.props;
-        const limit = isRequired ? 6 : 16;
+        const limit = isRequired;
         const files = e.target.files;
         let index = 0;
         const onUpload = () => {
@@ -61,7 +61,7 @@ class ImgItem extends BaseComponent {
     onAndroidUpload() {
         const { isRequired } = this.props;
         const self = this;
-        const limit = isRequired ? 6 : 16;
+        const limit = isRequired;
         const len = limit - self.props.fileName.length;
         if (len <= 0) {
             return (this.store.isShowTips = true);
@@ -82,10 +82,11 @@ class ImgItem extends BaseComponent {
    
     render() {
         const { title, fileName, isRequired } = this.props;
-        const limit = isRequired ? 6 : 16;
+        const limit = isRequired;
         const { isShowTips } = this.store;
         const limitCls = isShowTips ? "upImgTips red" : "upImgTips";
         const isAndroid = window.Native;
+        let widthLength = isRequired == 1 ? '710*320' : '640*640'
         return (
             <div className="productImg">
                 <div className="mainTit">
@@ -148,7 +149,7 @@ class ImgItem extends BaseComponent {
                     {limit}
                     张图片
                 </div>
-                <div className="upImgTips">注：推荐尺寸为640*640的图片</div>
+                        <div className="upImgTips">注：推荐尺寸为{widthLength}的图片</div>
             </div>
         );
     }
@@ -156,10 +157,10 @@ class ImgItem extends BaseComponent {
 
 class ProductIssue extends BaseComponent {
     changeTopPercent(value){
-        console.log(value)
         return true
     }
     store = {
+        poster_img : [],
         goods_image: [],
         goods_detail: [],
         send_mode: [],
@@ -172,6 +173,9 @@ class ProductIssue extends BaseComponent {
     @action.bound
     onChangeMainImg = files => {
         this.store.goods_image = files;
+    };
+    onChangePosterImg = files => {
+        this.store.poster_img = files;
     };
     @action.bound
     onChangeDetailImg = files => {
@@ -210,7 +214,7 @@ class ProductIssue extends BaseComponent {
                 let max = rebate_percent / 400 * 100;
                 max = Math.floor(max)
                 if(base_percent > max){
-                    return Toast.fail(`最高让利率为${max}%`, 2, null, false);
+                    return Toast.fail(`基础让利率为${max}%`, 2, null, false);
                 }
                 
                 if(base_percent > 100){
@@ -222,13 +226,18 @@ class ProductIssue extends BaseComponent {
                 }
                 const {
                     goods_image,
+                    poster_img,
                     goods_detail,
                     use_point_rate
                 } = this.store;
                 if (goods_image.length === 0) {
                     return Toast.fail("请上传产品主图", 2, null, false);
                 }
+                if (poster_img.length === 0) {
+                    return Toast.fail("请上传海报", 2, null, false);
+                }
                 const goods_imageUrl = goods_image.map(item => item.file_url);
+                const poster_imgUrl = poster_img.map(item => item.file_url);
                 const goods_detailUrl = goods_detail.map(item => item.file_url);
                 const goods_attr = {};
                 for (const key in values) {
@@ -266,6 +275,7 @@ class ProductIssue extends BaseComponent {
                         // goods_class_id: goods_class_id[0],
                         goods_ticket,
                         goods_image: JSON.stringify(goods_imageUrl),
+                        poster_img: JSON.stringify(poster_imgUrl),
                         goods_detail: JSON.stringify(goods_detailUrl),
                         goods_attr: JSON.stringify(goods_attr)
                     },
@@ -424,6 +434,7 @@ class ProductIssue extends BaseComponent {
     render() {
         const {
             goods_image,
+            poster_img,
             goods_detail,
             send_mode,
             goods_attr,
@@ -745,8 +756,16 @@ class ProductIssue extends BaseComponent {
                     </List>
                     <WhiteSpace />
                     <ImgItem
+                        title={"海报"}
+                        isRequired={1}
+                        fileName={poster_img}
+                        callBack={this.onChangePosterImg}
+                    />
+
+                    <WhiteSpace />
+                    <ImgItem
                         title={"产品主图"}
-                        isRequired={true}
+                        isRequired={6}
                         fileName={goods_image}
                         callBack={this.onChangeMainImg}
                     />
@@ -754,6 +773,7 @@ class ProductIssue extends BaseComponent {
                     {goodsAttrItems}
                     <ImgItem
                         title={"产品详情"}
+                        isRequired={16}
                         fileName={goods_detail}
                         callBack={this.onChangeDetailImg}
                     />

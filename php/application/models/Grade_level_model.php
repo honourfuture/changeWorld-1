@@ -45,7 +45,7 @@ class Grade_level_model extends MY_Model
 
 		if($one = $this->Grade_level_model->order_by($order_by)->get_by(['enable' => 1, 'grade_demand >' => $exp])){
 			$ret['after_level_name'] = $one['name'];
-            $ret['after_level_rule'] = $one['rule'];
+            $ret['after_l..evel_rule'] = $one['rule'];
             $ret['after_level_icon'] = $one['icon'];
             $ret['after_level_remark'] = $one['remark'];
 			$ret['diff'] = $one['grade_demand'] - $exp;

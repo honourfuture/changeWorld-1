@@ -85,12 +85,15 @@ class Grade extends API_Controller {
             'diff' => isset($diff['diff']) ? $diff['diff'] : 0,
             'exp' => $user['exp'],
         ];
+        $ret['level'] = $this->Grade_level_model->exp_to_level($user['exp']);
         $ret['level'] = [
             'before_grade_name' => isset($diff['before']['name']) ? $diff['before']['name'] : '',
+            'before_level_rule' => isset($diff['before']['rule']) ? $diff['before']['rule'] : '',
             'level_name' => isset($diff['this']['name']) ? $diff['before']['name'] : '',
             'level_rule' => isset($diff['this']['level_rule']) ? $diff['this']['level_rule'] : '',
             'level_icon' => isset($diff['this']['grade_logo']) ? config_item('base_url') . $diff['this']['grade_logo'] : '',
             'level_remark' => isset($diff['this']['level_remark']) ? $diff['this']['level_remark'] : '',
+            'after_level_rule' => isset($diff['after']['rule']) ? $diff['after']['rule'] : '',
             'after_level_name' => isset($diff['after']['name']) ? $diff['after']['name'] : '',
             'diff' => isset($diff['diff']) ? $diff['diff'] : 0,
             'exp' => $user['exp'],

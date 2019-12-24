@@ -353,6 +353,7 @@ export default class GoodsDetail extends BaseComponent {
             goods_ticket = "",
             use_point_rate = "",
             rebate_percent = 0,
+            base_percent = 0,
             guarantee = "",
             e_invoice = "",
             goods_detail = "",
@@ -497,7 +498,7 @@ export default class GoodsDetail extends BaseComponent {
                                     marginTop: 10
                                 }}
                             >
-                                {parseInt(rebate_percent) && <div>返利{parseInt(rebate_percent / 100 * sale_price)}元</div>}
+                                {parseInt(base_percent) && <div>返利{parseInt(base_percent / 100 * sale_price)}元</div>}
                                 <Flex style={{ marginRight: 20 }}>
                                     <div>已售{sale_num}</div>
                                 </Flex>
@@ -507,9 +508,9 @@ export default class GoodsDetail extends BaseComponent {
                                     </Flex>
                                 ) : null}
                             </Flex>
-                            {parseInt(reward_point)?<div style={{ fontSize: 11, color: "red" }}>
+                            {/* {parseInt(reward_point)?<div style={{ fontSize: 11, color: "red" }}>
                                 等价积分赠送
-                            </div>:null}
+                            </div>:null} */}
                             {/* <div className='old-price'>原价<em>￥489</em></div> */}
                         </Flex>
                         <div className="title ellipsis2">
@@ -522,7 +523,7 @@ export default class GoodsDetail extends BaseComponent {
                     </div>
                     <div className="discounts-con">
                         {goodsTickets}
-                        {parseFloat(use_point_rate) > 0 ? (
+                        {/* {parseFloat(use_point_rate) > 0 ? (
                             <div className="flex-item">
                                 <Flex>
                                     <div className="title">积分</div>
@@ -537,7 +538,7 @@ export default class GoodsDetail extends BaseComponent {
                                     </div>
                                 </Flex>
                             </div>
-                        ) : null}
+                        ) : null} */}
                     </div>
 
                     <div className="discounts-con">
