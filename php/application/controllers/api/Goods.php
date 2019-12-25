@@ -128,7 +128,6 @@ class Goods extends API_Controller {
 		if($this->user_id){
 			$where['seller_uid'] = $this->user_id;
 		}
-
 		$this->search();
 		$ret['goods']['count'] = $this->Goods_model->count_by($where);
 		if($ret['goods']['count']){
@@ -467,12 +466,12 @@ class Goods extends API_Controller {
 					'name', 'stock', 'sale_price', 'freight_fee', 'send_mode',
 					'goods_ticket', 'use_point_rate', 'e_invoice', 'city_partner_rate', 'two_level_rate',
 					'goods_image', 'goods_attr', 'goods_detail', 'deleted', 'enable', 'sort', 'goods_class_id',
-					'is_hot','rebate_percent','base_percent', 'guarantee', 'buy_notice'
+					'is_hot','rebate_percent','base_percent', 'guarantee', 'buy_notice','poster_img'
 				),
 				$this->input->post(),
 				UPDATE_VALID
 			);
-			$this->check_params('edit', $params);
+            $this->check_params('edit', $params);
 			$where = array('seller_uid' => $this->user_id, 'id' => $id);
 			if($this->admin_id){
 				unset($where['seller_uid']);
@@ -499,7 +498,7 @@ class Goods extends API_Controller {
 					'name', 'stock', 'sale_price', 'freight_fee', 'send_mode',
 					'goods_ticket', 'use_point_rate', 'e_invoice', 'city_partner_rate', 'two_level_rate',
 					'goods_image', 'goods_attr', 'goods_detail', 'is_hot', 'goods_class_id','rebate_percent','base_percent',
-                    'guarantee', 'buy_notice'
+                    'guarantee', 'buy_notice','poster_img'
 				),
 				$this->input->post(),
 				''
@@ -531,7 +530,14 @@ class Goods extends API_Controller {
 			$goods_image = json_decode($params['goods_image'], true);
 			$params['default_image'] = $goods_image[0];
 		}
-	}
+        if($params['poster_img'] !== '' || $params['poster_img'] != UPDATE_VALID){
+            $goods_image = json_decode($params['poster_img'], true);
+            $params['poster'] = $goods_image[0];
+        }
+
+
+
+    }
 
 	protected function check_params($act, $params)
 	{

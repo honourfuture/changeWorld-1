@@ -50,12 +50,12 @@ class Shop extends API_Controller {
 	 */
 	public function index()
 	{
-		$ret = array('ad' => array(), 'goods' => array());
+
+        $ret = array('ad' => array(), 'goods' => array());
 		$goods_class_id = (int)$this->input->get_post('goods_class_id');
 		$is_hot = (int)$this->input->get_post('is_hot');
 		if($goods_class_id){
 			$ret['goods'] = $this->_goods($goods_class_id);
-
 			$this->load->model('Ad_position_model');
 			$ad_position_id = $this->Ad_position_model->get_ad_position_id('shop', $goods_class_id);
             $ret['ad'] = $this->ad($ad_position_id, 5);
@@ -142,7 +142,7 @@ class Shop extends API_Controller {
 		}else{
 			$where['goods_class_id'] = $goods_class_id;
 		}
-		$this->db->select('id,default_image,name,sale_price');
+		$this->db->select('id,default_image,name,sale_price,poster');
 		if($this->keyword){
 			$this->db->group_start();
 			$this->db->like('name', $this->keyword);
