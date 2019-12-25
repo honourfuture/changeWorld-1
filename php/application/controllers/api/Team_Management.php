@@ -12,12 +12,12 @@ class Team_Management extends API_Controller
     /**
      * @api {get} /api/team_management/get_child  团队管理-显示用户下级总人数及列表
      * @apiVersion 1.0.0
-     * @apiName user_view
+     * @apiName team_management_child
      * @apiGroup admin
      *
      * @apiSampleRequest /api/team_management/get_child
      *
-     * @apiParam {Number} admin_id 管理员唯一ID
+     * @apiParam {Number} user_id 用户唯一ID
      * @apiParam {String} account 登录账号
      * @apiParam {String} sign 校验签名
      *
@@ -58,12 +58,12 @@ class Team_Management extends API_Controller
     /**
      * @api {get} /api/team_management/super_and_child 团队管理-获取用户的直接上级与直接下级列表
      * @apiVersion 1.0.0
-     * @apiName user_view
+     * @apiName super_and_child
      * @apiGroup admin
      *
      * @apiSampleRequest /api/team_management/super_and_child
      *
-     * @apiParam {Number} admin_id 管理员唯一ID
+     * @apiParam {Number} user_id 用户唯一ID
      * @apiParam {String} account 登录账号
      * @apiParam {String} sign 校验签名
      *
@@ -86,7 +86,6 @@ class Team_Management extends API_Controller
      * }
      */
     public function super_and_child(){
-        $this->user_id = 10000012 ;
         $parents= $this->Users_model->parent($this->user_id);
         $child = $this->Users_model->get_many_by([
             "pid"=>$this->user_id
