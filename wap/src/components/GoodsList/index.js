@@ -11,14 +11,14 @@ export class GoodsItem extends BaseComponent {
         Base.push("GoodsDetail", { id });
     }
     render() {
-        const { default_image, name, sale_price, is_hot = 0 } = this.props;
+        const { default_image, name, sale_price, is_hot = 0, poster } = this.props;
         if(is_hot){
             return (
                 <div className="recommend-goodsItem" onClick={this.onClick}>
                     <div className="recommend-goodsItem-img">
                         <img
-                            src={Base.getImgUrl(default_image)}
-                            style={{ height: goodsImgHeight }}
+                            src={Base.getImgUrl(poster)}
+                            style={{ height: goodsImgHeight,borderRadius:'5px' }}
                         />
                     </div>
                     {/* <div className="recommend-goodsItem-body">

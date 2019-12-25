@@ -354,7 +354,7 @@ export default class GoodsDetail extends BaseComponent {
             use_point_rate = "",
             rebate_percent = 0,
             base_percent = 0,
-            guarantee = "",
+            guarantee = false,
             e_invoice = "",
             goods_detail = "",
             buy_notice = "",
@@ -543,7 +543,7 @@ export default class GoodsDetail extends BaseComponent {
 
                     <div className="discounts-con">
                         {goodsTickets}
-                        {guarantee ? (
+                        {guarantee && guarantee != 'null' ? (
                             <div className="flex-item">
                                 <Flex>
                                     <div className="title">保障</div>
@@ -552,7 +552,7 @@ export default class GoodsDetail extends BaseComponent {
                                     </div>
                                 </Flex>
                             </div>
-                        ) : null}
+                        ) : ''}
                     </div>
                     <div className="distribution-info-con">
                         <div className="flex-item base-line">
@@ -661,7 +661,7 @@ export default class GoodsDetail extends BaseComponent {
                             dangerouslySetInnerHTML={{ __html: goods_explain }}
                         />
                     </div>
-                    {buy_notice && (
+                    {buy_notice && buy_notice != 'null' && (
                         <div dangerouslySetInnerHTML={{
                             __html: buy_notice
                           }}/>
