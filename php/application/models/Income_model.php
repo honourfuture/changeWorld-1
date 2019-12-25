@@ -542,25 +542,31 @@ class Income_model extends MY_Model
     	if($user_id){
     		$this->db->where('user_id', $user_id);
     	}
-        $this->db->where('type', $type);
+    	if($type){
+            $this->db->where('type', $type);
+        }
+
     	if($where){
             $this->db->where($where);
         }
 
     	$this->db->group_by('topic');
+
     	if($result = $this->db->get($this->table())->result_array()){
-    		foreach($result as $item){
-    			switch($item['topic']){
+
+            foreach($result as $item){
+
+                switch($item['topic']){
     				case 0:
     					$ret['knowledge'] = $item['amount'];
     					break;
     				case 2:
     					$ret['goods'] = $item['amount'];
-    					break;
+                        break;
     			}
     		}
-    	}
 
+        }
     	return $ret;
     }
 }

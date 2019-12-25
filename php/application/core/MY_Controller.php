@@ -159,7 +159,6 @@ class MY_Controller extends CI_Controller
                 $this->reset_global_params();
             }
         }
-
         if($sign != $this->get_sign($pri_id, $token, $sign_key)){
             if($required){
                 $this->ajaxReturn([], LOGIN_STATUS, '签名校验错误');

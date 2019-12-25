@@ -85,7 +85,7 @@ class Wallet extends API_Controller {
         $where['created_at <= '] = date('Y-m-d 23:59:59');
 
         $ret['withdraw'] = 0;
-        $ret['todayIncome'] = $this->Income_model->sum_income_topic_group($this->user_id,0,$where);
+        $ret['todayIncome'] = $this->Income_model->sum_income_topic_group($this->user_id, 0, $where);
 
 		$this->ajaxReturn($ret);
 	}
