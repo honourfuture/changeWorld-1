@@ -138,8 +138,9 @@ class Income extends API_Controller {
 			$this->db->select($field);
 			if($list = $this->Income_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where)){
 				foreach($list as $key=>$item){
-					$item['lv_name'] = $item['level'] ? ($item['level'] == 1 ? '一级会员' : '二级会员') : '销售';
-					$item['item'] = json_decode($item['item'], TRUE);
+				    $t = json_decode($item['item'], TRUE);
+					$item['lv_name'] = $t['name'];
+					$item['item'] = $t;
 					$ret['list'][] = $item;
 				}
 			}
