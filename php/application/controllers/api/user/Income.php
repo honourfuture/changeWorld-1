@@ -83,7 +83,6 @@ class Income extends API_Controller {
 	{
 		$ret = array('count' => 0, 'list' => array());
 
-		$type = $this->input->get_post('type');
 		$topic = $this->input->get_post('topic');
 
 		$this->load->model('Income_model');
@@ -92,19 +91,10 @@ class Income extends API_Controller {
 			$this->ajaxReturn([], 1, '收益明细主题类型错误');
 		}
 
-		$a_type = $this->Income_model->type();
-		if(! isset($a_type[$type])){
-//			$this->ajaxReturn([], 1, '收益类型错误');
-		}
 
-		$where = array('topic' => $topic, 'type' => $type);
+		$where = array('topic' => $topic);
 		if($this->user_id){
-			if($type == 0){
-				$where['user_id'] = $this->user_id;
-			}else{
-				$where['shop_id'] = $this->user_id;
-				$where['user_id !='] = $this->user_id;
-			}
+            $where['user_id'] = $this->user_id;
 		}
 
 		if($topic == 2){
@@ -123,7 +113,6 @@ class Income extends API_Controller {
             $where['created_at >= '] = $startDate;
             $where['created_at <= '] = $endDate;
         }
-
 		if($this->user_id){
 			//统计
 			$ret['total'] = ['member' => 0, 'amount' => 0];
