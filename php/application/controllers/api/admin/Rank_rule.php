@@ -126,6 +126,10 @@ class Rank_rule extends API_Controller {
         $this->ajaxReturn(array('id' => $id), $status, '操作'.$message);
 	}
 
+
+
+
+
 	protected function check_params($act, $params)
 	{
 		switch($act){
