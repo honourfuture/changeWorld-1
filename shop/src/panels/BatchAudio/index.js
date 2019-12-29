@@ -47,8 +47,6 @@ class CardItem extends BaseComponent {
                 render: value => this.onAddImage("cover_image", value)
             },
             { key: "price", label: "门票价格" },
-            { key: "city_partner_rate", label: "城市分销比例(%)" },
-            { key: "two_level_rate", label: "加盟商分销比例(%)" }
         ];
     }
     @action.bound

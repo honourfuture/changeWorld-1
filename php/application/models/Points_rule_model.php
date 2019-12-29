@@ -29,6 +29,8 @@ class Points_rule_model extends MY_Model
     		'points_order' => '订单上限',
             'goods_exchange' => '消费抵扣',
             'invite_reg' => '邀请注册',
+            'pretty_buy' => '靓号积分购买',
+            'audio_buy' => '音频积分购买'
     	);
     }
 

@@ -248,7 +248,7 @@ class Live_album extends API_Controller {
 	public function save()
 	{
 		//兼容后台创建专辑
-		$anchor_uid = (int)$this->input->get_post('anchor_uid');
+		$anchor_uid = $this->input->get_post('anchor_uid');
 		$anchor_uid = $anchor_uid ? $anchor_uid : $this->user_id;
 
 		$id = (int)$this->input->get_post('id');

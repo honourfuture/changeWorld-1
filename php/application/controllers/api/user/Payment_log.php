@@ -119,7 +119,8 @@ class Payment_log extends API_Controller {
 	 *         "price": "10000.00",
 	 *         "city_partner_rate": "0.00",
 	 *         "two_level_rate": "0.00",
-	 *         "balance": "9800.10"
+	 *         "balance": "9800.10",
+     *         "point": "10.10",
 	 *     },
 	 *     "status": 0,
 	 *     "message": "成功"
@@ -140,6 +141,7 @@ class Payment_log extends API_Controller {
 
 		$user = $this->get_user();
 		$ret['balance'] = $user['balance'];
+        $ret['point'] = $user['point'];
 
 		$this->ajaxReturn($ret);
 	}
@@ -154,7 +156,7 @@ class Payment_log extends API_Controller {
 	 *
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
-	 * @apiParam {String} payment_type 支付类型 balance：余额 wechat：微信 alipay：支付宝
+	 * @apiParam {String} payment_type 支付类型 balance：余额 wechat：微信 alipay：支付宝 point: 积分
 	 * @apiParam {String} topic 主题 直播：live 音频：audio 专辑：album
 	 * @apiParam {Number} t_id 项目唯一ID
 	 *
@@ -182,7 +184,7 @@ class Payment_log extends API_Controller {
 
         $this->payment_format();
 
-        if($this->row['price'] < 0.01){
+        if($this->row['price'] < 0.01 && $payment_type != 'point'){
         	$payment_type = 'balance';//免费强制用余额
         }
 
@@ -210,6 +212,9 @@ class Payment_log extends API_Controller {
         	case 'alipay':
         		$this->alipay($log['order_sn']);
         		break;
+            case 'point':
+                $this->pointPay($order_id, $log['order_sn']);
+                break;
         	default :
         		$this->ajaxReturn([], 1, '订单支付类型错误');
         		break;
@@ -250,6 +255,46 @@ class Payment_log extends API_Controller {
 		}
 
         $this->row = $row;
+    }
+    protected function pointPay($order_id, $order_sn)
+    {
+        $user = $this->get_user();
+        if($this->topic != 'live'){
+            $this->ajaxReturn([], 2, '不支付积分购买');
+        }
+
+        if($user && $user['point'] >= $this->row['point']){
+            // if($this->row['price'] > 0){
+            $this->Users_model->update(
+                $this->user_id,
+                [
+                    'point' => $user['point'] - $this->row['point'],
+                    'pretty_id' => $this->row['pretty_id']
+                ]
+            );
+            // }
+
+            //更新流水状态
+            $order_update = ['status' => 1];
+            $this->Payment_log_model->update($order_id, $order_update);
+            //更新销售状态
+            $this->Pretty_model->update($this->row['id'], ['status' => 1, 'buyer_id' => $this->user_id]);
+
+            //积分抵扣明细
+            $this->load->model('Users_points_model');
+            $point_log = [
+                'user_id' => $this->user_id,
+                'value' => $this->row['point'],
+                'point' => $user['point'] - $this->row['point'],
+                'rule_name' => 'audio_buy',
+                'remark' => '音频下单积分使用'
+            ];
+            $this->Users_points_model->insert($point_log);
+
+            $this->ajaxReturn();
+        }else{
+            $this->ajaxReturn([], 2, '账户积分不足');
+        }
     }
 
     protected function balance($order_id, $order_sn)

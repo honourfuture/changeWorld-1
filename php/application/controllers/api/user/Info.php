@@ -294,7 +294,6 @@ class Info extends API_Controller {
 			'sex' => $user['sex'],
 			'headhunter' => $user['headhunter'],
 		);
-
         //查询邀请人信息
         if(!empty($user['pid'])){
             $this->load->model('Users_model');

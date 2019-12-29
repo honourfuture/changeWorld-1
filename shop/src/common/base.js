@@ -60,6 +60,7 @@ export const Base = {
         if (!params["act"] || !params["op"]) {
             return console.error("未传入act或op");
         }
+        
         const mod = params["mod"] ? `${params["mod"]}/` : "";
         let requestUrl = `${Global.API_URL}/${mod}${params["act"]}/${
             params["op"]
@@ -100,7 +101,6 @@ export const Base = {
         fetch(requestUrl, fetchData)
             .then(response => response.json())
             .then(res => {
-                self.DEBUG && console.log(res);
                 switch (res.status) {
                     case 0:
                         callBack && action(callBack)(res);

@@ -5,7 +5,7 @@ import "./PayState.less";
 import { icon, pay } from "../../images";
 
 export default class PayState extends BaseComponent {
-    payDic = { alipay: "支付宝支付", wechat: "微信支付", balance: "余额支付" };
+    payDic = { alipay: "支付宝支付", wechat: "微信支付", balance: "余额支付", point: "积分支付" };
     componentDidMount() {}
     render() {
         const {
