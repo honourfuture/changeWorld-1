@@ -51,7 +51,7 @@ class Rank_rule extends API_Controller {
 	public function index()
 	{
 	    $where = [
-	        'status'=>0
+	        'status' => 0
         ];
 	    $result = $this->Rank_rule_model->getAllByWhere($where);
 		$this->ajaxReturn($result);

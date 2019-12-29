@@ -76,17 +76,14 @@ class Grade extends API_Controller {
 		$ret = [];
 
 		$user = $this->get_user();
+        $this->load->model('Users_model');
 		$this->load->model('Grade_model');
-		$diff = $this->Grade_model->exp_diff($user['exp']);
-        $ret['grade'] = [
-            'before_grade_name' => isset($diff['before']['grade_name']) ? $diff['before']['grade_name'] : 0,
-            'grade_name' => isset($diff['this']['grade_name']) ? $diff['this']['grade_name'] : 0,
-            'after_grade_name' => isset($diff['after']['grade_name']) ? $diff['after']['grade_name'] : 0,
-            'diff' => isset($diff['diff']) ? $diff['diff'] : 0,
-            'exp' => $user['exp'],
-        ];
+        $this->load->model('Rank_rule_model');
+        $exp = $user['exp'];
+		$diff = $this->Grade_model->expDiff($exp);
+        $ret['grade'] = $diff;
 
-        $ret['level'] = [
+        $ret['rank'] = [
             'before_level_name' => isset($diff['before']['name']) ? $diff['before']['name'] : '',
             'before_level_rule' => isset($diff['before']['rule']) ? $diff['before']['rule'] : '',
             'level_name' => isset($diff['this']['name']) ? $diff['before']['name'] : '',
@@ -99,7 +96,42 @@ class Grade extends API_Controller {
             'exp' => $user['exp'],
         ];
 
-        $ret['rule'] = $this->Grade_model->rule();
+        $resultRank = [];
+        $user = $this->Users_model->get($this->user_id);
+        $thisRank = $user['rank_rule_id'] ? $user['rank_rule_id'] : 1;
+        $ranks = $this->Rank_rule_model->getAllByWhere(['status' => 0]);
+        $rankIdKey = [];
+        foreach ($ranks as $rank){
+            $rankIdKey[$rank['id']] = $rank;
+        }
+
+        $isShow = 0;
+        if($rankIdKey[$thisRank + 1]['exp'] <= $exp){
+            $isShow = 1;
+            $rankIdKey[$thisRank]['isShow'] = $isShow;
+        }
+
+        $rankIdKey[$thisRank]['isCheck'] = 1;
+        switch ($thisRank){
+            case 1:
+                $resultRank[] = $rankIdKey[$thisRank];
+                $resultRank[] = $rankIdKey[$thisRank + 1];
+                break;
+            case 2:
+                if($isShow){
+                    $resultRank[] = $rankIdKey[$thisRank];
+                    $resultRank[] = $rankIdKey[$thisRank + 1];
+                }else{
+                    $resultRank[] = $rankIdKey[$thisRank];
+                }
+                break;
+            default:
+                $resultRank = [$this->$rankIdKey['3'], $rankIdKey['4'], $rankIdKey['5']];
+        }
+        print_r($resultRank);
+
+
+//        print_r($ranks);
 
 		$this->ajaxReturn($ret);
 	}

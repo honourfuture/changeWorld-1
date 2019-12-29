@@ -18,6 +18,4 @@ class Rank_rule_model extends MY_Model
         return $this->get_many_by($where);
     }
 
-
-
 }

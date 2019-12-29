@@ -51,7 +51,7 @@ class Sign_setting extends API_Controller {
 	public function index()
 	{
 	    $type = $this->input->get_post('type');
-	    $result = $this->Sign_setting_model->getAll($type);
+	    $result = $this->Sign_setting_model->order_by('days', 'desc')->getAll($type);
 		$this->ajaxReturn($result);
 	}
 

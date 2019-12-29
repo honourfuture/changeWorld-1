@@ -11,33 +11,28 @@ import {
     Upload,
     Icon
 } from "antd";
-import "./ExpLvSet.less";
+import "./ContinueSignSet.less";
 import { remove } from "lodash";
 
-export class ExpLvSet extends BaseComponent {
+export class ContinueSignSet extends BaseComponent {
     store = {
         list: []
     };
     constructor(props) {
+        console.log(props)
         super(props);
         this.columns = [
             {
-                title: "会员等级",
-                dataIndex: "grade_name",
+                title: "连续天数",
+                dataIndex: "days",
                 render: (text, record) =>
-                    this.renderInput(text, record, "grade_name")
+                    this.renderInput(text, record, "days")
             },
             {
-                title: "晋级值",
-                dataIndex: "grade_demand",
+                title: "单次值",
+                dataIndex: "value",
                 render: (text, record) =>
-                    this.renderInput(text, record, "grade_demand")
-            },
-            {
-                title: "启用",
-                dataIndex: "enable",
-                render: (text, record) =>
-                    this.renderSwitch(text, record, "enable")
+                    this.renderInput(text, record, "value")
             },
             {
                 title: "操作",
@@ -69,14 +64,14 @@ export class ExpLvSet extends BaseComponent {
                                     >
                                         编辑
                                     </a>&nbsp;&nbsp;
-                                    <Popconfirm
+                                    {/* <Popconfirm
                                         title="确认删除?"
                                         okText="确定"
                                         cancelText="取消"
                                         onConfirm={() => this.onDelete(id)}
                                     >
                                         <a className="ml10 gray">删除</a>
-                                    </Popconfirm>
+                                    </Popconfirm> */}
                                 </span>
                             )}
                         </div>
@@ -180,7 +175,7 @@ export class ExpLvSet extends BaseComponent {
         const itemData = list.find(item => id === item.id);
         itemData.editable = false;
         Base.POST(
-            { act: "grade", op: "save", mod: "admin", ...itemData },
+            { act: "sign_setting", op: "save", mod: "admin", ...itemData },
             res => {
                 itemData.updated_at = Base.getTimeFormat(
                     new Date().getTime() / 1000,
@@ -210,7 +205,7 @@ export class ExpLvSet extends BaseComponent {
     @action.bound
     onDelete(id) {
         Base.POST(
-            { act: "grade", op: "save", mod: "admin", id, deleted: "1" },
+            { act: "sign_setting", op: "save", mod: "admin", id, deleted: "1" },
             () => remove(this.store.list, item => id === item.id),
             this
         );
@@ -223,23 +218,23 @@ export class ExpLvSet extends BaseComponent {
         }
         this.store.list.unshift({
             id: "",
-            grade_name: "",
-            grade_demand: "",
-            grade_logo: "",
+            days: "",
+            value: "",
             editable: true,
-            deleted: "0",
-            enable: "1"
+            type: this.props.type
         });
+        
+        console.log(this.store.list)
+        this.forceUpdate();
     }
     @action.bound
     requestData() {
-        Base.POST(
+        Base.GET(
             {
-                act: "grade",
+                act: "sign_setting",
                 op: "index",
                 mod: "admin",
-                cur_page: this.current || 1,
-                per_page: Global.PAGE_SIZE
+                type: this.props.type
             },
             res => {
                 this.store.list = res.data;
@@ -253,9 +248,7 @@ export class ExpLvSet extends BaseComponent {
     }
     render() {
         let { list } = this.store;
-        const showList = list.filter(item => {
-            return parseInt(item.deleted, 10) === 0;
-        });
+        console.log('123', list)
         return (
             <div className="ExpLvSet">
                 <Button onClick={this.onAdd}>新增+</Button>
@@ -263,7 +256,7 @@ export class ExpLvSet extends BaseComponent {
                     className="mt16"
                     bordered
                     onChange={this.onTableHandler}
-                    dataSource={showList}
+                    dataSource={list}
                     rowKey="id"
                     columns={this.columns}
                     pagination={false}

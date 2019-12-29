@@ -11,10 +11,10 @@ import {
     Upload,
     Icon
 } from "antd";
-import "./ExpLvSet.less";
+import "./RankLvSet.less";
 import { remove } from "lodash";
 
-export class ExpLvSet extends BaseComponent {
+export class RankLvSet extends BaseComponent {
     store = {
         list: []
     };
@@ -23,22 +23,33 @@ export class ExpLvSet extends BaseComponent {
         this.columns = [
             {
                 title: "会员等级",
-                dataIndex: "grade_name",
-                render: (text, record) =>
-                    this.renderInput(text, record, "grade_name")
+                dataIndex: "id",
             },
             {
                 title: "晋级值",
-                dataIndex: "grade_demand",
+                dataIndex: "exp",
                 render: (text, record) =>
-                    this.renderInput(text, record, "grade_demand")
+                    this.renderInput(text, record, "exp")
             },
             {
-                title: "启用",
-                dataIndex: "enable",
+                title: "等级名称",
+                dataIndex: "name",
                 render: (text, record) =>
-                    this.renderSwitch(text, record, "enable")
+                    this.renderInput(text, record, "name")
             },
+            {
+                title: "等级图",
+                dataIndex: "icon",
+                width: "10%",
+                render: (text, record) =>
+                    this.renderImg(text, record, "icon")
+            },
+            // {
+            //     title: "启用",
+            //     dataIndex: "status",
+            //     render: (text, record) =>
+            //         this.renderSwitch(text, record, "status")
+            // },
             {
                 title: "操作",
                 dataIndex: "operation",
@@ -69,14 +80,14 @@ export class ExpLvSet extends BaseComponent {
                                     >
                                         编辑
                                     </a>&nbsp;&nbsp;
-                                    <Popconfirm
+                                    {/* <Popconfirm
                                         title="确认删除?"
                                         okText="确定"
                                         cancelText="取消"
                                         onConfirm={() => this.onDelete(id)}
                                     >
                                         <a className="ml10 gray">删除</a>
-                                    </Popconfirm>
+                                    </Popconfirm> */}
                                 </span>
                             )}
                         </div>
@@ -180,7 +191,7 @@ export class ExpLvSet extends BaseComponent {
         const itemData = list.find(item => id === item.id);
         itemData.editable = false;
         Base.POST(
-            { act: "grade", op: "save", mod: "admin", ...itemData },
+            { act: "rank_rule", op: "save", mod: "admin", ...itemData },
             res => {
                 itemData.updated_at = Base.getTimeFormat(
                     new Date().getTime() / 1000,
@@ -223,19 +234,19 @@ export class ExpLvSet extends BaseComponent {
         }
         this.store.list.unshift({
             id: "",
-            grade_name: "",
-            grade_demand: "",
-            grade_logo: "",
+            name: "",
+            exp: "",
+            icon: "",
             editable: true,
-            deleted: "0",
-            enable: "1"
         });
+
+        this.forceUpdate();
     }
     @action.bound
     requestData() {
         Base.POST(
             {
-                act: "grade",
+                act: "rank_rule",
                 op: "index",
                 mod: "admin",
                 cur_page: this.current || 1,
@@ -253,9 +264,6 @@ export class ExpLvSet extends BaseComponent {
     }
     render() {
         let { list } = this.store;
-        const showList = list.filter(item => {
-            return parseInt(item.deleted, 10) === 0;
-        });
         return (
             <div className="ExpLvSet">
                 <Button onClick={this.onAdd}>新增+</Button>
@@ -263,7 +271,7 @@ export class ExpLvSet extends BaseComponent {
                     className="mt16"
                     bordered
                     onChange={this.onTableHandler}
-                    dataSource={showList}
+                    dataSource={list}
                     rowKey="id"
                     columns={this.columns}
                     pagination={false}

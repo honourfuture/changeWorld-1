@@ -41,7 +41,35 @@ class Grade_model extends MY_Model
 
         return $ret;
     }
+    public function expDiff($exp)
+    {
+        $ret = [];
+        $order_by = array('grade_demand' => 'asc');
+        $grades = $this->Grade_model->order_by($order_by)->get_many_by('deleted', 0);
+        foreach ($grades as $key => $grade){
+            if($grade['grade_demand'] >= $exp){
+                $ret['grade_name'] = $grade['grade_name'];
 
+                if(isset($grades[$key - 1])){
+                    $ret['before_grade_name'] = $grades[$key - 1]['grade_name'];
+                }else{
+                    $ret['before_grade_name'] = $grade['grade_name'];
+                }
+
+                if(isset($grades[$key + 1])){
+                    $ret['after_grade_name'] = $grades[$key + 1]['grade_name'];
+                    $ret['diff'] = $grades[$key + 1]['grade_demand'] - $exp;
+                }else{
+                    $ret['after_grade_name'] = $grade['grade_name'];
+                    $ret['diff'] = 0;
+                }
+                break;
+            }
+        }
+
+        $ret['exp'] = $exp;
+        return $ret;
+    }
     public function exp_diff($exp){
         $ret = ['before' => '', 'this' => '', 'after' => '', 'diff' => 0, 'exp' => $exp];
 
@@ -105,4 +133,5 @@ class Grade_model extends MY_Model
         $rule = 'rule_grade';
     	return isset($config[$rule]) ? $config[$rule] : '';
     }
+
 }
