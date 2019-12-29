@@ -20,6 +20,9 @@ export default class Pay extends BaseComponent {
             },
             {
                 type: "balance"
+            },
+            {
+                type: "point"
             }
         ],
         curIndex: 0,
@@ -59,7 +62,7 @@ export default class Pay extends BaseComponent {
                             Toast.fail("支付失败", 2, null, false);
                         }
                     };
-                    if (type === "balance") {
+                    if (type === "balance" || type== 'point') {
                         callBack(1);
                     } else {
                         // const data =
@@ -157,11 +160,33 @@ export default class Pay extends BaseComponent {
         }
     }
     render() {
+        const { pay_sn, order_sn, id, isPretty } = Base.getPageParams();
         const { payTypeList, curIndex, data } = this.store;
-        const { real_total_amount, balance } = data;
+        const { real_total_amount, balance, point } = data;
         const payTypes = payTypeList.map((item, index) => {
+            if(index == 3 && !isPretty){
+                return ;
+            }
             const { type } = item;
-            if (type === "balance") {
+            if(type === 'point' && isPretty){
+                return (
+                    <Flex
+                        justify="between"
+                        key={type}
+                        onClick={() => this.changeHandler(index)}
+                    >
+                        <Flex.Item>
+                            <span className="pay-gold">积分支付</span>
+                            <span className="account-money">
+                                积分余额：{Base.getNumFormat(point)}
+                            </span>
+                        </Flex.Item>
+                        <Flex.Item>
+                            <Radio checked={curIndex === index} name={type} />
+                        </Flex.Item>
+                    </Flex>
+                );
+            }else  if (type === "balance") {
                 return (
                     <Flex
                         justify="between"

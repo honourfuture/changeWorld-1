@@ -56,7 +56,9 @@ class Pretty extends API_Controller {
 		$ret = $this->row;
 
 		$user = $this->get_user();
+
 		$ret['balance'] = $user['balance'];
+		$ret['point'] = $user['point'];
 
 		$this->ajaxReturn($ret);
 	}
@@ -97,8 +99,7 @@ class Pretty extends API_Controller {
         $payment_type = $this->input->get_post('payment_type');
 
         $this->payment_format();
-
-        if($this->row['price'] < 0.01){
+        if($this->row['price'] < 0.01 && $payment_type != 'point'){
         	$payment_type = 'balance';//免费强制用余额
         }
 
@@ -125,6 +126,9 @@ class Pretty extends API_Controller {
         	case 'alipay':
         		$this->alipay($log['order_sn']);
         		break;
+            case 'point':
+                $this->pointPay($order_id, $log['order_sn']);
+                break;
         	default :
         		$this->ajaxReturn([], 1, '订单支付类型错误');
         		break;
@@ -133,7 +137,7 @@ class Pretty extends API_Controller {
 
     protected function payment_format()
     {
-    	$this->db->select('id,status,enable,pretty_id,price');
+    	$this->db->select('id,status,enable,pretty_id,price,point');
     	$row = $this->Pretty_model->get($this->id);
 
 		if(! $row){
@@ -150,6 +154,43 @@ class Pretty extends API_Controller {
         $this->service = 3;
     }
 
+    protected function pointPay($order_id, $order_sn)
+    {
+        $user = $this->get_user();
+
+        if($user && $user['point'] >= $this->row['point']){
+            // if($this->row['price'] > 0){
+            $this->Users_model->update(
+                $this->user_id,
+                [
+                    'point' => $user['point'] - $this->row['point'],
+                    'pretty_id' => $this->row['pretty_id']
+                ]
+            );
+            // }
+
+            //更新流水状态
+            $order_update = ['status' => 1];
+            $this->Payment_log_model->update($order_id, $order_update);
+            //更新销售状态
+            $this->Pretty_model->update($this->row['id'], ['status' => 1, 'buyer_id' => $this->user_id]);
+            //积分抵扣明细
+
+            $this->load->model('Users_points_model');
+            $point_log = [
+                'user_id' => $this->user_id,
+                'value' => $this->row['point'],
+                'point' => $user['point'] - $this->row['point'],
+                'rule_name' => 'pretty_buy',
+                'remark' => '靓号下单积分使用'
+            ];
+            $this->Users_points_model->insert($point_log);
+
+            $this->ajaxReturn();
+        }else{
+            $this->ajaxReturn([], 2, '账户积分不足');
+        }
+    }
     protected function balance($order_id, $order_sn)
 	{
 		$user = $this->get_user();

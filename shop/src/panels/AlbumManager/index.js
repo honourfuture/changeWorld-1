@@ -210,8 +210,6 @@ export default class AlbumManager extends BaseComponent {
             },
             // { key: "album_tag", label: "专辑标签" },
             { key: "price", label: "门票价格" },
-            { key: "city_partner_rate", label: "城市分销比例(%)" },
-            { key: "two_level_rate", label: "加盟商分销比例(%)" },
             {
                 key: "public",
                 label: "是否公开",

@@ -133,7 +133,7 @@ class Live_audio extends API_Controller {
 		if($ret['count']){
 			$order_by = array('sort' => 'desc', 'id' => 'desc');
 			$this->search();
-			$this->db->select('id,created_at,duration,video_url,album_id,title,price,cover_image,room_id,anchor_uid,city_partner_rate,two_level_rate,play_times');
+			$this->db->select('id,created_at,duration,video_url,album_id,title,price,cover_image,room_id,anchor_uid,city_partner_rate,two_level_rate,play_times,point');
 			$ret['list'] = $this->Room_audio_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 
 			if($ret['list']){
@@ -514,7 +514,7 @@ class Live_audio extends API_Controller {
             array(
                 'duration', 'album_id', 'title', 'price', 'city_partner_rate',
                 'two_level_rate', 'video_url', 'room_id', 'cover_image', 'play_times',
-                'deleted'
+                'deleted', 'point'
             ),
             $post,
             0

@@ -66,6 +66,13 @@ export default class CodeManager extends BaseComponent {
                     this.renderInput(text, record, "price")
             },
             {
+                title: "积分价格",
+                dataIndex: "point",
+                width: "12%",
+                render: (text, record) =>
+                    this.renderInput(text, record, "point")
+            },
+            {
                 title: "启用",
                 dataIndex: "enable",
                 width: "8%",

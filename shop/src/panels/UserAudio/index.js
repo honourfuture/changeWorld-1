@@ -88,6 +88,11 @@ export default class UserAudio extends BaseComponent {
                 render: (text, record) => this.renderText(text, record, "price")
             },
             {
+                title: "积分",
+                dataIndex: "point",
+                render: (text, record) => this.renderText(text, record, "point")
+            },
+            {
                 title: "音频地址",
                 dataIndex: "video_url",
                 width: 150,
@@ -135,6 +140,7 @@ export default class UserAudio extends BaseComponent {
             },
             { key: "title", label: "标题" },
             { key: "duration", label: "播放时长(秒)" },
+            { key: "point", label: "积分" },
             // { key: "play_times", label: "播放次数" },
             {
                 key: "cover_image",
@@ -142,8 +148,6 @@ export default class UserAudio extends BaseComponent {
                 render: value => this.onAddImage("cover_image", value)
             },
             { key: "price", label: "门票价格" },
-            { key: "city_partner_rate", label: "城市分销比例(%)" },
-            { key: "two_level_rate", label: "加盟商分销比例(%)" }
         ];
     }
     @action.bound
@@ -364,6 +368,7 @@ export default class UserAudio extends BaseComponent {
             cover_image: Base.getPageParams("url"),
             title: "",
             price: "0",
+            point: "0",
             city_partner_rate: "0",
             two_level_rate: "0",
             video_url: "",
