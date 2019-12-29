@@ -18,6 +18,13 @@ class Rank_rule_model extends MY_Model
         return $this->get_many_by($where);
     }
 
+    public function getNextRankRule($exp,$current_rank_id){
+        $result = $this->get_by(['id'=>$current_rank_id+1]) ;
+        if($exp > $result['exp']){
+            return $result;
+        }
+        return [];
+    }
 
 
 }
