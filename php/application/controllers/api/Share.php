@@ -38,6 +38,7 @@ class Share extends API_Controller {
 	 *
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
+     * @apiParam {Number} type 分享类型 1 分享音频
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -61,7 +62,7 @@ class Share extends API_Controller {
 	{
 		$params = elements(
 			array(
-				'mobi', 'invite_uid','user_id'
+				'mobi', 'invite_uid','user_id','type'
 			),
 			$this->input->post(),
 			0
@@ -77,9 +78,11 @@ class Share extends API_Controller {
 		$params['point'] = $this->point;
 		$this->Share_record_model->insert($params);
         */
-        $this->checkCalculation('share',true,true);
-        $this->AddCalculation($params["user_id"],'share',[]);
-
+		//只有分享音频的时候给奖励
+		if($params['type'] == 1){
+            $this->checkCalculation('share',true,true);
+            $this->AddCalculation($params["user_id"],'share',[]);
+        }
 		$this->ajaxReturn();
 	}
 }

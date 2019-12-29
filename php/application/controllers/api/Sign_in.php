@@ -193,20 +193,17 @@
             'date' => date('Y-m-d', strtotime("-1 day")),
             'user_id' => $this->user_id
         ];
-
         $lastData = $this->Sign_in_model->findByAttributes($where);
         $continue = 1;
         if($lastData){
             $continue = $lastData['continue'] + 1;
         }
-
         $data = [
             'date' => date('Y-m-d', time()),
             'user_id' => $this->user_id,
             'continue' => $continue
         ];
         if($this->Sign_in_model->create($data)) {
-            $this->checkCalculation('sign_in',true,true);
             $this->AddCalculation($this->user_id,'sign_in',['continue'=>$continue]);
             return $this->ajaxReturn([], 0, '签到成功');
         } else {

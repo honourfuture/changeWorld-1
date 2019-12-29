@@ -1,28 +1,30 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-/*
- * @author sz.ljx
- * @email webljx@163.com
- * @link www.aicode.org.cn
+
+/**
+ * 用户级别 设置表
+ *
+ * Class Sign_setting
  */
-class Points_rule extends API_Controller {
+class Rank_rule extends API_Controller {
 
 	public function __construct()
     {
         parent::__construct();
-        $this->load->model('Points_rule_model');
+        $this->load->model('Rank_rule_model');
     }
 
     /**
-	 * @api {get} /api/admin/points_rule 积分规则-列表
+	 * @api {get} /api/admin/rank_rule 获取用户等级表
 	 * @apiVersion 1.0.0
-	 * @apiName points_rule
+	 * @apiName grade_rule
 	 * @apiGroup admin
 	 *
-	 * @apiSampleRequest /api/admin/points_rule
+	 * @apiSampleRequest /api/admin/rank_rule
 	 *
 	 * @apiParam {Number} admin_id 管理员唯一ID
 	 * @apiParam {String} account 登录账号
+     * @apiParam {Number} type 类型 1 经验 2 积分
 	 * @apiParam {String} sign 校验签名
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
@@ -31,19 +33,10 @@ class Points_rule extends API_Controller {
 	 *
 	 * @apiSuccessExample {json} Success-Response:
 	 * {
-	 *     "data": [{
-     *       "id": "16",
-     *       "created_at": "2019-12-15 04:03:02",
-     *        "updated_at": "2019-12-15 04:03:02",
-     *        "deleted": "0",
-     *        "status": "0",
-     *        "enable": "1",
-     *        "name": "points_pay",
-     *        "value": "1",
-     *        "max_value": "0",
-     *       "days_limit": "0",
-     *       "show_name": ""
-     *        }],
+	 *     "data": {
+	 *			"grade_login": "50",
+	 *			"grade_evaluate": "20"
+	 *	   },
 	 *     "status": 0,
 	 *     "message": "成功"
 	 * }
@@ -57,28 +50,25 @@ class Points_rule extends API_Controller {
 	 */
 	public function index()
 	{
-	    $result = $this->Points_rule_model->getAll();
+	    $where = [
+	        'status'=>0
+        ];
+	    $result = $this->Rank_rule_model->getAllByWhere($where);
 		$this->ajaxReturn($result);
 	}
 
-	// 查看
-	public function view()
-	{
-
-	}
 
 	/**
-	 * @api {post} /api/admin/points_rule/save 积分规则-编辑 OR 新增
+	 * @api {post} /api/admin/rank_rule/save 用户等级-编辑 OR 新增
 	 * @apiVersion 1.0.0
-	 * @apiName points_rule_save
+	 * @apiName grade_rule_save
 	 * @apiGroup admin
 	 *
-	 * @apiSampleRequest /api/admin/points_rule/save
+	 * @apiSampleRequest /api/admin/rank_rule/save
 	 *
 	 * @apiParam {Number} admin_id 管理员唯一ID
 	 * @apiParam {String} account 登录账号
 	 * @apiParam {String} sign 校验签名
-     * @apiParam {String} name 后台
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
@@ -105,32 +95,23 @@ class Points_rule extends API_Controller {
         if($id){
             $params = elements(
                 array(
-                    'value', 'days_limit','show_name', 'deleted','enable'
+                    'name', 'icon','exp','status'
                 ),
                 $this->input->post(),
                 UPDATE_VALID
             );
             $this->check_params('edit', $params);
-            if($params['deleted'] == 1){
-                $update = array('deleted' => 1, 'enable' => 0);
-                $flag = $this->Points_rule_model->update($id, $update);
-            }else{
-                unset($params['deleted']);
-                if(isset($params['enable']) && $params['enable']){
-                    $params['deleted'] = 0;
-                }
-                $flag = $this->Points_rule_model->update($id, $params);
-            }
+            $flag = $this->Rank_rule_model->update($id, $params);
         }else{
             $params = elements(
                 array(
-                    'name', 'value', 'days_limit','show_name'
+                    'name', 'icon','exp'
                 ),
                 $this->input->post(),
                 UPDATE_VALID
             );
             $this->check_params('add', $params);
-            if($flag = $this->Points_rule_model->insert($params)){
+            if($flag = $this->Rank_rule_model->insert($params)){
                 $id = $flag;
             }
         }
@@ -143,7 +124,8 @@ class Points_rule extends API_Controller {
             $message = '失败';
         }
         $this->ajaxReturn(array('id' => $id), $status, '操作'.$message);
-    }
+	}
+
 	protected function check_params($act, $params)
 	{
 		switch($act){

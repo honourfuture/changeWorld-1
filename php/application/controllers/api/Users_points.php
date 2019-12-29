@@ -320,10 +320,25 @@ class Users_points extends API_Controller {
         $points = $this->Users_points_model->get_many_by($where);
         $this->load->model('Points_rule_model');
         $pointsRule = $this->Points_rule_model->get_many_by(['enable'=>1,'deleted'=>0,'show_name !='=>'']);
+
         $limit_day = [];
         foreach ($pointsRule as $key=>$value){
             $limit_day[$value["name"]] = $value["days_limit"];
         }
+        //把用户签到的可以获得的值写入进去
+        $this->load->model('Sign_in_model');
+        $where = [
+            'date' => date('Y-m-d', strtotime("-1 day")),
+            'user_id' => $this->user_id
+        ];
+        $lastData = $this->Sign_in_model->findByAttributes($where);
+        $continue = 1;
+        if($lastData){
+            $continue = $lastData['continue'] + 1;
+        }
+        $this->load->model('Sign_setting_model');
+        $sign_day_limit = $this->Sign_setting_model->getInfoByDays($continue);
+        $limit_day['sign_in'] = $sign_day_limit;
         $result = [];
         $todayPoint = 0 ;
         foreach ($points as $point){
@@ -339,6 +354,11 @@ class Users_points extends API_Controller {
             }
         }
         $rule_list = array_keys($result);
+        //如果签到没有动态加入
+        if(!in_array('sign_in',$rule_list)){
+           array_unshift($pointsRule,['show_name'=>'签到','name'=>'sign_in']) ;
+        }
+        //如果当天一次没有领取的 把 0值 放入
         foreach ($pointsRule as $key=>$value){
             if(!in_array($value["name"],$rule_list)){
                 $result[] = [
@@ -348,6 +368,8 @@ class Users_points extends API_Controller {
                 ];
             }
         }
+
+
         $dataInfo["todayPoint"] = $todayPoint;
         $dataInfo['today'] = array_values($result);
         $this->ajaxReturn($dataInfo);
