@@ -17,10 +17,10 @@ class Users_rank_rule_verify extends API_Controller {
     /**
 	 * @api {get} /api/admin/users_rank_rule_verify 获取用户等级表
 	 * @apiVersion 1.0.0
-	 * @apiName grade_rule
+	 * @apiName users_rank_rule_verify
 	 * @apiGroup admin
 	 *
-	 * @apiSampleRequest /api/admin/rank_rule
+	 * @apiSampleRequest /api/admin/users_rank_rule_verify
 	 *
 	 * @apiParam {Number} admin_id 管理员唯一ID
 	 * @apiParam {String} account 登录账号
@@ -54,7 +54,7 @@ class Users_rank_rule_verify extends API_Controller {
         $status = $this->input->get_post('status',-1);
         $where = array(
         );
-        if($status !== null ){
+        if($status >= 0 ){
             $where['status'] = $status ;
         }
         $user_id = $this->input->get_post('user_id');
@@ -94,6 +94,7 @@ class Users_rank_rule_verify extends API_Controller {
                 foreach ($rankResult as $key=>$value){
                     $ranklist[$value['id']] = $value ;
                 }
+
                 foreach ($ret['list'] as $k=>$v){
                     $ext = [];
                     $ext['account'] = $userList[$v['user_id']]['account'] ;
@@ -113,12 +114,12 @@ class Users_rank_rule_verify extends API_Controller {
 
 
 	/**
-	 * @api {post} /api/admin/rank_rule/save 用户等级-编辑 OR 新增
+	 * @api {post} /api/admin/users_rank_rule_verify/save 审核
 	 * @apiVersion 1.0.0
-	 * @apiName grade_rule_save
+	 * @apiName users_rank_rule_verify_save
 	 * @apiGroup admin
 	 *
-	 * @apiSampleRequest /api/admin/rank_rule/save
+	 * @apiSampleRequest /api/admin/users_rank_rule_verify/save
 	 *
 	 * @apiParam {Number} admin_id 管理员唯一ID
 	 * @apiParam {String} account 登录账号
@@ -177,7 +178,7 @@ class Users_rank_rule_verify extends API_Controller {
                 'status'=>$status
             ]);
         }
-        $this->ajaxReturn(array('id' => $id), $status, '操作成功');
+        $this->ajaxReturn(array('id' => $id), 0, '操作成功');
 	}
 
 }

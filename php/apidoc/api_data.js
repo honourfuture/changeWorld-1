@@ -4571,6 +4571,360 @@ define({ "api": [
     "groupTitle": "admin"
   },
   {
+    "type": "get",
+    "url": "/api/admin/rank_rule",
+    "title": "获取用户等级表",
+    "version": "1.0.0",
+    "name": "grade_rule",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/admin/rank_rule"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "admin_id",
+            "description": "<p>管理员唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account",
+            "description": "<p>登录账号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "type",
+            "description": "<p>类型 1 经验 2 积分</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n\t\t\t\"grade_login\": \"50\",\n\t\t\t\"grade_evaluate\": \"20\"\n\t   },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "application/controllers/api/admin/Rank_rule.php",
+    "groupTitle": "admin"
+  },
+  {
+    "type": "get",
+    "url": "/api/admin/rank_rule",
+    "title": "获取用户等级表",
+    "version": "1.0.0",
+    "name": "grade_rule",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/admin/rank_rule/"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "admin_id",
+            "description": "<p>管理员唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account",
+            "description": "<p>登录账号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "type",
+            "description": "<p>类型 1 经验 2 积分</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n\t\t\t\"grade_login\": \"50\",\n\t\t\t\"grade_evaluate\": \"20\"\n\t   },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "application/controllers/api/user/Rank_rule.php",
+    "groupTitle": "admin"
+  },
+  {
+    "type": "get",
+    "url": "/api/admin/sign_setting",
+    "title": "签到设置列表",
+    "version": "1.0.0",
+    "name": "grade_rule",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/admin/sign_setting"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "admin_id",
+            "description": "<p>管理员唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account",
+            "description": "<p>登录账号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "type",
+            "description": "<p>类型 1 经验 2 积分</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n\t\t\t\"grade_login\": \"50\",\n\t\t\t\"grade_evaluate\": \"20\"\n\t   },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "application/controllers/api/admin/Sign_setting.php",
+    "groupTitle": "admin"
+  },
+  {
+    "type": "post",
+    "url": "/api/users_rank_rule_verify/upgrade",
+    "title": "用户等级-升级",
+    "version": "1.0.0",
+    "name": "grade_rule_save",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/users_rank_rule_verify/upgrade"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": \"\",\n\t    \"status\": ,\n\t    \"message\": \"\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "application/controllers/api/Users_rank_rule_verify.php",
+    "groupTitle": "admin"
+  },
+  {
     "type": "post",
     "url": "/api/admin/grade_rule/save",
     "title": "等级经验规则-编辑 OR 新增",
@@ -4653,6 +5007,303 @@ define({ "api": [
       ]
     },
     "filename": "application/controllers/api/admin/Grade_rule.php",
+    "groupTitle": "admin"
+  },
+  {
+    "type": "post",
+    "url": "/api/admin/rank_rule/save",
+    "title": "用户等级-编辑 OR 新增",
+    "version": "1.0.0",
+    "name": "grade_rule_save",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/admin/rank_rule/save"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "admin_id",
+            "description": "<p>管理员唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account",
+            "description": "<p>登录账号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": \"\",\n\t    \"status\": 0,\n\t    \"message\": \"\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "application/controllers/api/admin/Rank_rule.php",
+    "groupTitle": "admin"
+  },
+  {
+    "type": "post",
+    "url": "/api/admin/sign_setting/save",
+    "title": "等级经验规则-编辑 OR 新增",
+    "version": "1.0.0",
+    "name": "grade_rule_save",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/admin/sign_setting/save"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "admin_id",
+            "description": "<p>管理员唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account",
+            "description": "<p>登录账号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": \"\",\n\t    \"status\": 0,\n\t    \"message\": \"\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "application/controllers/api/admin/Sign_setting.php",
+    "groupTitle": "admin"
+  },
+  {
+    "type": "post",
+    "url": "/api/admin/grade/save",
+    "title": "等级经验设置-编辑 OR 新增",
+    "version": "1.0.0",
+    "name": "grade_save",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/admin/grade/save"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "admin_id",
+            "description": "<p>管理员唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account",
+            "description": "<p>登录账号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>记录唯一ID 0表示新增 其他表示编辑</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "grade_name",
+            "description": "<p>等级经验设置等级名称</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "grade_demand",
+            "description": "<p>晋级值</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "grade_logo",
+            "description": "<p>等级图</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "enable",
+            "description": "<p>启用 1是 0否</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "deleted",
+            "description": "<p>是否删除 1是 0否（为1时其他字段可不传）</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": \"\",\n\t    \"status\": 0,\n\t    \"message\": \"\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "application/controllers/api/admin/Grade.php",
     "groupTitle": "admin"
   },
   {
@@ -4829,133 +5480,6 @@ define({ "api": [
       ]
     },
     "filename": "application/controllers/api/admin/Grade_level.php",
-    "groupTitle": "admin"
-  },
-  {
-    "type": "post",
-    "url": "/api/admin/grade/save",
-    "title": "等级经验设置-编辑 OR 新增",
-    "version": "1.0.0",
-    "name": "grade_save",
-    "group": "admin",
-    "sampleRequest": [
-      {
-        "url": "/api/admin/grade/save"
-      }
-    ],
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "admin_id",
-            "description": "<p>管理员唯一ID</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "account",
-            "description": "<p>登录账号</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "sign",
-            "description": "<p>校验签名</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "id",
-            "description": "<p>记录唯一ID 0表示新增 其他表示编辑</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "grade_name",
-            "description": "<p>等级经验设置等级名称</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "grade_demand",
-            "description": "<p>晋级值</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "grade_logo",
-            "description": "<p>等级图</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "enable",
-            "description": "<p>启用 1是 0否</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "deleted",
-            "description": "<p>是否删除 1是 0否（为1时其他字段可不传）</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "status",
-            "description": "<p>接口状态 0成功 其他异常</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>接口信息描述</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "data",
-            "description": "<p>接口数据集</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "{\n\t    \"data\": \"\",\n\t    \"status\": 0,\n\t    \"message\": \"\"\n\t}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "examples": [
-        {
-          "title": "Error-Response:",
-          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "application/controllers/api/admin/Grade.php",
     "groupTitle": "admin"
   },
   {
@@ -6680,7 +7204,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    \"data\": {\n\t\t\t\"points_reg\": \"会员注册\",\n\t\t\t\"points_login\": \"会员登录\"\n\t   },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": [{\n      \"id\": \"16\",\n      \"created_at\": \"2019-12-15 04:03:02\",\n       \"updated_at\": \"2019-12-15 04:03:02\",\n       \"deleted\": \"0\",\n       \"status\": \"0\",\n       \"enable\": \"1\",\n       \"name\": \"points_pay\",\n       \"value\": \"1\",\n       \"max_value\": \"0\",\n      \"days_limit\": \"0\",\n      \"show_name\": \"\"\n       }],\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
@@ -9959,98 +10483,6 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/api/admin/user/view",
-    "title": "用户管理-详情",
-    "version": "1.0.0",
-    "name": "user_view",
-    "group": "admin",
-    "sampleRequest": [
-      {
-        "url": "/api/admin/user/view"
-      }
-    ],
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "admin_id",
-            "description": "<p>管理员唯一ID</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "account",
-            "description": "<p>登录账号</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "sign",
-            "description": "<p>校验签名</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "id",
-            "description": "<p>用户唯一ID</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "status",
-            "description": "<p>接口状态 0成功 其他异常</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>接口信息描述</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Object",
-            "optional": false,
-            "field": "data",
-            "description": "<p>接口数据集</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "{\n    \"data\": {},\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "examples": [
-        {
-          "title": "Error-Response:",
-          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "application/controllers/api/admin/User.php",
-    "groupTitle": "admin"
-  },
-  {
-    "type": "get",
     "url": "/api/admin/user/super_and_child",
     "title": "根据手机号与id 获取用户的直接上级与直接下级列表",
     "version": "1.0.0",
@@ -10249,6 +10681,98 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/api/admin/user/view",
+    "title": "用户管理-详情",
+    "version": "1.0.0",
+    "name": "user_view",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/admin/user/view"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "admin_id",
+            "description": "<p>管理员唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account",
+            "description": "<p>登录账号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>用户唯一ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {},\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "application/controllers/api/admin/User.php",
+    "groupTitle": "admin"
+  },
+  {
+    "type": "get",
     "url": "/api/users_points/save",
     "title": "积分增减",
     "version": "1.0.0",
@@ -10358,6 +10882,190 @@ define({ "api": [
       ]
     },
     "filename": "application/controllers/api/Users_points.php",
+    "groupTitle": "admin"
+  },
+  {
+    "type": "get",
+    "url": "/api/admin/users_rank_rule_verify",
+    "title": "获取用户等级表",
+    "version": "1.0.0",
+    "name": "users_rank_rule_verify",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/admin/users_rank_rule_verify"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "admin_id",
+            "description": "<p>管理员唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account",
+            "description": "<p>登录账号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "type",
+            "description": "<p>类型 1 经验 2 积分</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": {\n\t\t\t\"grade_login\": \"50\",\n\t\t\t\"grade_evaluate\": \"20\"\n\t   },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "application/controllers/api/admin/Users_rank_rule_verify.php",
+    "groupTitle": "admin"
+  },
+  {
+    "type": "post",
+    "url": "/api/admin/users_rank_rule_verify/save",
+    "title": "审核",
+    "version": "1.0.0",
+    "name": "users_rank_rule_verify_save",
+    "group": "admin",
+    "sampleRequest": [
+      {
+        "url": "/api/admin/users_rank_rule_verify/save"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "admin_id",
+            "description": "<p>管理员唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "account",
+            "description": "<p>登录账号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>1 审核中 2 审核通过 3 审核拒绝</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t    \"data\": \"\",\n\t    \"status\": 0,\n\t    \"message\": \"\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "application/controllers/api/admin/Users_rank_rule_verify.php",
     "groupTitle": "admin"
   },
   {
@@ -15400,7 +16108,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    \"data\": {\n        \"grade\": {\n            \"before_grade_name\": \"\",\n            \"grade_name\": \"\",\n            \"after_grade_name\": \"1\",\n            \"diff\": 10000,\n            \"exp\": \"0\"\n        },\n     \"level\": {\n            \"before_level_name\": \"\",\n            \"level_name\": \"\",\n            \"level_rule\": \"\",\n            \"level_icon\": \"\",\n            \"level_remark\": \"\",\n            \"after_level_name\": \"至尊王者\",\n            \"diff\": 10000,\n            \"exp\": \"0\"\n        },\n        \"rule\": \"\"\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": {\n        \"grade\": {\n            \"before_grade_name\": \"\",\n            \"grade_name\": \"\",\n            \"after_grade_name\": \"1\",\n            \"diff\": 10000,\n            \"exp\": \"0\"\n        },\n     \"rank\": [\n         {\n            \"id\": \"1\",\n            \"name\": \"黄金会员\",\n            \"icon\": \"图标\",\n            \"exp\": \"升级经验\",\n            \"remark\": \"下面的富文本\",\n            \"isShowUp\": \"是否允许显示升级0 未审核 1 审核中 2 审核通过 3 拒绝 有的数组里会没有 \",\n            \"isCheck\": \"是否选中 1选中 有的数组里会没有\",\n         },\n         {\n            \"id\": \"1\",\n            \"name\": \"白金会员\",\n            \"icon\": \"图标\",\n            \"exp\": \"升级经验\",\n            \"remark\": \"下面的富文本\",\n            \"isShowUp\": \"是否允许显示升级0 未审核 1 审核中 2 审核通过 3 拒绝 \",\n            \"isCheck\": \"是否选中 1选中 有的数组里会没有\",\n         },\n        ]\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
@@ -18570,6 +19278,13 @@ define({ "api": [
             "optional": false,
             "field": "sign",
             "description": "<p>校验签名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "type",
+            "description": "<p>分享类型 1 分享音频</p>"
           }
         ]
       }
@@ -19753,140 +20468,6 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/api/vip",
-    "title": "贵族-列表",
-    "version": "1.0.0",
-    "name": "vip",
-    "group": "api",
-    "sampleRequest": [
-      {
-        "url": "/api/vip"
-      }
-    ],
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "user_id",
-            "description": "<p>用户唯一ID</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "sign",
-            "description": "<p>校验签名</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "status",
-            "description": "<p>接口状态 0成功 其他异常</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>接口信息描述</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Object[]",
-            "optional": false,
-            "field": "data",
-            "description": "<p>接口数据集</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "data.id",
-            "description": "<p>贵族唯一ID</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "data.name",
-            "description": "<p>贵族名称</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "data.first_fee",
-            "description": "<p>首开费用</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "data.first_gold",
-            "description": "<p>首开金币</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "data.renew_fee",
-            "description": "<p>续费费用</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "data.renew_gold",
-            "description": "<p>续费金币</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "data.days",
-            "description": "<p>有效期天数</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "data.unit",
-            "description": "<p>有效期单位：日/月/季/年</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "{\n    \"data\": [\n        {\n            \"id\": \"1\",\n            \"name\": \"男爵\",\n            \"first_fee\": \"100.00\",\n            \"first_gold\": \"10000\",\n            \"renew_fee\": \"80.00\",\n            \"renew_gold\": \"12000\",\n            \"icon\": \"\",\n            \"days\": \"30\",\n            \"unit\": \"月\",\n        }\n    ],\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "examples": [
-        {
-          "title": "Error-Response:",
-          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "application/controllers/api/Vip.php",
-    "groupTitle": "api"
-  },
-  {
-    "type": "get",
     "url": "/api/grade/level",
     "title": "会员等级-列表",
     "version": "1.0.0",
@@ -20038,6 +20619,140 @@ define({ "api": [
       ]
     },
     "filename": "application/controllers/api/Grade.php",
+    "groupTitle": "api"
+  },
+  {
+    "type": "get",
+    "url": "/api/vip",
+    "title": "贵族-列表",
+    "version": "1.0.0",
+    "name": "vip",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/vip"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户唯一ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>接口信息描述</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "data",
+            "description": "<p>接口数据集</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.id",
+            "description": "<p>贵族唯一ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.name",
+            "description": "<p>贵族名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.first_fee",
+            "description": "<p>首开费用</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.first_gold",
+            "description": "<p>首开金币</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.renew_fee",
+            "description": "<p>续费费用</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.renew_gold",
+            "description": "<p>续费金币</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.days",
+            "description": "<p>有效期天数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.unit",
+            "description": "<p>有效期单位：日/月/季/年</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"data\": [\n        {\n            \"id\": \"1\",\n            \"name\": \"男爵\",\n            \"first_fee\": \"100.00\",\n            \"first_gold\": \"10000\",\n            \"renew_fee\": \"80.00\",\n            \"renew_gold\": \"12000\",\n            \"icon\": \"\",\n            \"days\": \"30\",\n            \"unit\": \"月\",\n        }\n    ],\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n\t   \"data\": \"\",\n    \"status\": -1,\n    \"message\": \"签名校验错误\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "application/controllers/api/Vip.php",
     "groupTitle": "api"
   },
   {
@@ -29106,7 +29821,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "payment_type",
-            "description": "<p>支付类型 balance：余额 wechat：微信 alipay：支付宝</p>"
+            "description": "<p>支付类型 balance：余额 wechat：微信 alipay：支付宝 point: 积分</p>"
           },
           {
             "group": "Parameter",
@@ -29246,7 +29961,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    \"data\": {\n        \"id\": \"1\",\n        \"cover_image\": \"/uploads/2018/01/31/a2e0b9485cb752ad7534fd8b86ebd233.png\",\n        \"title\": \"你的出生地址\",\n        \"price\": \"10000.00\",\n        \"city_partner_rate\": \"0.00\",\n        \"two_level_rate\": \"0.00\",\n        \"balance\": \"9800.10\"\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": {\n        \"id\": \"1\",\n        \"cover_image\": \"/uploads/2018/01/31/a2e0b9485cb752ad7534fd8b86ebd233.png\",\n        \"title\": \"你的出生地址\",\n        \"price\": \"10000.00\",\n        \"city_partner_rate\": \"0.00\",\n        \"two_level_rate\": \"0.00\",\n        \"balance\": \"9800.10\",\n        \"point\": \"10.10\",\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]

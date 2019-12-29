@@ -45,6 +45,7 @@ import WithdrawalMananger from "./WithdrawalMananger";
 import LecturerNobleManager from "./LecturerNobleManager";
 import Dashboard from "./Dashboard";
 import AnchorList from "./AnchorList";
+import Verify from "./Verify";
 import MemberManager from "./MemberManager";
 import OrderManager from "./OrderManager";
 import RefundMananger from "./RefundMananger";
@@ -290,6 +291,11 @@ export const panelsList = [
         path: "/member/AnchorList",
         component: AnchorList,
         title: "主播管理"
+    },
+    {
+        path: "/member/Verify",
+        component: Verify,
+        title: "升级审核"
     },
     {
         path: "/Dashboard",

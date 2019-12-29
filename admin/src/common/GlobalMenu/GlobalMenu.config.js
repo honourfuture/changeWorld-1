@@ -20,6 +20,10 @@ const menuData = [
                 name: "主播管理",
                 path: "AnchorList"
             },
+            {
+                name: "升级审核",
+                path: "Verify"
+            },
             // {
             //     name: "店铺管理",
             //     path: "ShopCheckList"

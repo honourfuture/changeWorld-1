@@ -48,17 +48,26 @@ class Grade extends API_Controller {
 	 *             "diff": 10000,
 	 *             "exp": "0"
 	 *         },
-     *      "level": {
-     *             "before_level_name": "",
-     *             "level_name": "",
-     *             "level_rule": "",
-     *             "level_icon": "",
-     *             "level_remark": "",
-     *             "after_level_name": "至尊王者",
-     *             "diff": 10000,
-     *             "exp": "0"
-     *         },
-	 *         "rule": ""
+     *      "rank": [
+     *          {
+     *             "id": "1",
+     *             "name": "黄金会员",
+     *             "icon": "图标",
+     *             "exp": "升级经验",
+     *             "remark": "下面的富文本",
+     *             "isShowUp": "是否允许显示升级0 未审核 1 审核中 2 审核通过 3 拒绝 有的数组里会没有 ",
+     *             "isCheck": "是否选中 1选中 有的数组里会没有",
+     *          },
+     *          {
+     *             "id": "1",
+     *             "name": "白金会员",
+     *             "icon": "图标",
+     *             "exp": "升级经验",
+     *             "remark": "下面的富文本",
+     *             "isShowUp": "是否允许显示升级0 未审核 1 审核中 2 审核通过 3 拒绝 ",
+     *             "isCheck": "是否选中 1选中 有的数组里会没有",
+     *          },
+     *         ]
 	 *     },
 	 *     "status": 0,
 	 *     "message": "成功"
@@ -79,22 +88,12 @@ class Grade extends API_Controller {
         $this->load->model('Users_model');
 		$this->load->model('Grade_model');
         $this->load->model('Rank_rule_model');
+        $this->load->model('Users_rank_rule_verify_model');
+
+
         $exp = $user['exp'];
 		$diff = $this->Grade_model->expDiff($exp);
         $ret['grade'] = $diff;
-
-        $ret['rank'] = [
-            'before_level_name' => isset($diff['before']['name']) ? $diff['before']['name'] : '',
-            'before_level_rule' => isset($diff['before']['rule']) ? $diff['before']['rule'] : '',
-            'level_name' => isset($diff['this']['name']) ? $diff['before']['name'] : '',
-            'level_rule' => isset($diff['this']['rule']) ? $diff['this']['rule'] : '',
-            'level_icon' => isset($diff['this']['grade_logo']) ? config_item('base_url') . $diff['this']['grade_logo'] : '',
-            'level_remark' => isset($diff['this']['level_remark']) ? $diff['this']['level_remark'] : '',
-            'after_level_rule' => isset($diff['after']['rule']) ? $diff['after']['rule'] : '',
-            'after_level_name' => isset($diff['after']['name']) ? $diff['after']['name'] : '',
-            'diff' => isset($diff['diff']) ? $diff['diff'] : 0,
-            'exp' => $user['exp'],
-        ];
 
         $resultRank = [];
         $user = $this->Users_model->get($this->user_id);
@@ -102,16 +101,21 @@ class Grade extends API_Controller {
         $ranks = $this->Rank_rule_model->getAllByWhere(['status' => 0]);
         $rankIdKey = [];
         foreach ($ranks as $rank){
+            $rank['icon'] = config_item('base_url') .$rank['icon'];
             $rankIdKey[$rank['id']] = $rank;
         }
-
+        $verify = $this->Users_rank_rule_verify_model->order_by('id', 'desc')->get_by(['from' => $thisRank, 'user_id' => $this->user_id]);
         $isShow = 0;
+
+        if(isset($verify['status'])){
+            $isShow = $verify['status'];
+        }
         if($rankIdKey[$thisRank + 1]['exp'] <= $exp){
-            $isShow = 1;
-            $rankIdKey[$thisRank]['isShow'] = $isShow;
+            $rankIdKey[$thisRank]['isShowUp'] = $isShow;
         }
 
         $rankIdKey[$thisRank]['isCheck'] = 1;
+
         switch ($thisRank){
             case 1:
                 $resultRank[] = $rankIdKey[$thisRank];
@@ -128,11 +132,8 @@ class Grade extends API_Controller {
             default:
                 $resultRank = [$this->$rankIdKey['3'], $rankIdKey['4'], $rankIdKey['5']];
         }
-        print_r($resultRank);
 
-
-//        print_r($ranks);
-
+        $ret['rank'] = $resultRank;
 		$this->ajaxReturn($ret);
 	}
 
