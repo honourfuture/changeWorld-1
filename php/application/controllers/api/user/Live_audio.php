@@ -235,7 +235,8 @@ class Live_audio extends API_Controller {
 	 *         "price": "0.00",
 	 *         "city_partner_rate": "0.00",
 	 *         "two_level_rate": "0.00",
-	 *         "album_title": ""
+	 *         "album_title": "",
+     *         "is_point" : "0 不支持 1支持"
 	 *     },
 	 *     "status": 0,
 	 *     "message": "成功"
@@ -251,10 +252,12 @@ class Live_audio extends API_Controller {
 	public function view()
 	{
 		$id = (int)$this->input->get_post('id');
-		$this->db->select('id,cover_image,title,album_id,price,city_partner_rate,two_level_rate');
+		$this->db->select('id,cover_image,title,album_id,price,is_point');
+
 		$info = $this->Room_audio_model->get($id);
 		if($info){
 			$info['album_title'] = '';
+
 			if($info['album_id']){
 				$this->load->model('Album_model');
 				$album = $this->Album_model->get($info['album_id']);
@@ -280,8 +283,7 @@ class Live_audio extends API_Controller {
 	 * @apiParam {String} title 标题
 	 * @apiParam {Number} album_id 专辑ID
 	 * @apiParam {Number} price 门票价格
-	 * @apiParam {Number} city_partner_rate 城市分销比例
-	 * @apiParam {Number} two_level_rate 二级分销比例
+	 * @apiParam {Number} is_point 是否支持积分抵扣0 不支持 1 支持
 	 * @apiParam {Number} deleted 删除 1删除 不传或0不处理
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
@@ -308,8 +310,7 @@ class Live_audio extends API_Controller {
 		if($id){
 			$params = elements(
 				array(
-					'cover_image', 'title', 'album_id', 'price',
-					'city_partner_rate', 'two_level_rate', 'deleted'
+					'cover_image', 'title', 'album_id', 'price', 'deleted', 'is_point'
 				),
 				$this->input->post(),
 				UPDATE_VALID
@@ -382,8 +383,7 @@ class Live_audio extends API_Controller {
 	 * @apiParam {String} title 标题
 	 * @apiParam {Number} price 门票价格
 	 * @apiParam {String} cover_image 封面图
-	 * @apiParam {Number} city_partner_rate 城市分销比例
-	 * @apiParam {Number} two_level_rate 二级分销比例
+     * @apiParam {Number} is_point 是否支持积分抵扣 0 不支持 1 支持
 	 * @apiParam {Number} deleted 删除 1删除 不传或0不处理
 	 * @apiParam {String} video_url 文件地址
 	 * @apiParam {String} room_id 直播间号 默认0
@@ -512,8 +512,7 @@ class Live_audio extends API_Controller {
 		$this->load->model('Room_audio_model');
         $insert = elements(
             array(
-                'duration', 'album_id', 'title', 'price', 'city_partner_rate',
-                'two_level_rate', 'video_url', 'room_id', 'cover_image', 'play_times',
+                'duration', 'album_id', 'title', 'price', 'is_point','video_url', 'room_id', 'cover_image', 'play_times',
                 'deleted', 'point'
             ),
             $post,

@@ -120,7 +120,9 @@ class Payment_log extends API_Controller {
 	 *         "city_partner_rate": "0.00",
 	 *         "two_level_rate": "0.00",
 	 *         "balance": "9800.10",
-     *         "point": "10.10",
+     *         "is_point": "0否1是 是否可以使用积分",
+     *         "point": "10.10(商品所需积分)",
+     *         "userPoint": "10.10（用户当前积分）",
 	 *     },
 	 *     "status": 0,
 	 *     "message": "成功"
@@ -141,7 +143,7 @@ class Payment_log extends API_Controller {
 
 		$user = $this->get_user();
 		$ret['balance'] = $user['balance'];
-        $ret['point'] = $user['point'];
+        $ret['userPoint'] = $user['point'];
 
 		$this->ajaxReturn($ret);
 	}
@@ -234,14 +236,19 @@ class Payment_log extends API_Controller {
 			case 'audio':
 				$this->service = 1;
 				$this->load->model('Room_audio_model');
-				$this->db->select('id,anchor_uid,cover_image,title,price,city_partner_rate,two_level_rate');
+				$this->db->select('id,anchor_uid,cover_image,title,price,is_point');
 				$row = $this->Room_audio_model->get($this->t_id);
+                if($row['is_point']){
+                    $this->load->model('Config_model');
+                    $percent = $this->Config_model->get_by(['name' => 'point_to_price']);
+                    $row['point'] = round($row['price'] * $percent['value']);
+                }
 				$message = '音频信息不存在';
 				break;
 			case 'album':
 				$this->service = 2;
 				$this->load->model('Album_model');
-				$this->db->select('id,anchor_uid,cover_image,title,price,city_partner_rate,two_level_rate');
+				$this->db->select('id,anchor_uid,cover_image,title,price');
 				$row = $this->Album_model->get($this->t_id);
 				$message = '专辑信息不存在';
 				break;

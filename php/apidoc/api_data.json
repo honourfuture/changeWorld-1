@@ -16765,7 +16765,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    \"data\": {\n        \"id\": \"3\",\n        \"cover_image\": \"\",\n        \"title\": \"\",\n        \"album_id\": \"0\",\n        \"price\": \"0.00\",\n        \"city_partner_rate\": \"0.00\",\n        \"two_level_rate\": \"0.00\",\n        \"album_title\": \"\"\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": {\n        \"id\": \"3\",\n        \"cover_image\": \"\",\n        \"title\": \"\",\n        \"album_id\": \"0\",\n        \"price\": \"0.00\",\n        \"city_partner_rate\": \"0.00\",\n        \"two_level_rate\": \"0.00\",\n        \"album_title\": \"\",\n        \"is_point\" : \"0 不支持 1支持\"\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]
@@ -27205,15 +27205,8 @@
             "group": "Parameter",
             "type": "Number",
             "optional": false,
-            "field": "city_partner_rate",
-            "description": "<p>城市分销比例</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "two_level_rate",
-            "description": "<p>二级分销比例</p>"
+            "field": "is_point",
+            "description": "<p>是否支持积分抵扣 0 不支持 1 支持</p>"
           },
           {
             "group": "Parameter",
@@ -27360,15 +27353,8 @@
             "group": "Parameter",
             "type": "Number",
             "optional": false,
-            "field": "city_partner_rate",
-            "description": "<p>城市分销比例</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "two_level_rate",
-            "description": "<p>二级分销比例</p>"
+            "field": "is_point",
+            "description": "<p>是否支持积分抵扣0 不支持 1 支持</p>"
           },
           {
             "group": "Parameter",
@@ -29961,7 +29947,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n    \"data\": {\n        \"id\": \"1\",\n        \"cover_image\": \"/uploads/2018/01/31/a2e0b9485cb752ad7534fd8b86ebd233.png\",\n        \"title\": \"你的出生地址\",\n        \"price\": \"10000.00\",\n        \"city_partner_rate\": \"0.00\",\n        \"two_level_rate\": \"0.00\",\n        \"balance\": \"9800.10\",\n        \"point\": \"10.10\",\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
+          "content": "{\n    \"data\": {\n        \"id\": \"1\",\n        \"cover_image\": \"/uploads/2018/01/31/a2e0b9485cb752ad7534fd8b86ebd233.png\",\n        \"title\": \"你的出生地址\",\n        \"price\": \"10000.00\",\n        \"city_partner_rate\": \"0.00\",\n        \"two_level_rate\": \"0.00\",\n        \"balance\": \"9800.10\",\n        \"is_point\": \"0否1是 是否可以使用积分\",\n        \"point\": \"10.10(商品所需积分)\",\n        \"userPoint\": \"10.10（用户当前积分）\",\n    },\n    \"status\": 0,\n    \"message\": \"成功\"\n}",
           "type": "json"
         }
       ]

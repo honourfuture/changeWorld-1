@@ -41,16 +41,6 @@ class BasicItem extends BaseComponent {
             label: "第三方流量统计代码",
             render: value => this.renderTextArea(value)
         },
-        {
-            key: "rule_grade",
-            label: "等级说明",
-            render: value => this.renderTextArea(value)
-        },
-        {
-            key: "rule_point",
-            label: "积分规则",
-            render: value => this.renderTextArea(value)
-        },
         { key: "copyright", label: "版权信息" },
         {
             key: "site_status",
@@ -74,6 +64,10 @@ class BasicItem extends BaseComponent {
             key: "withdraw_headhunter",
             label: "提现猎头返利",
             render: value => this.renderText(value)
+        },
+        {
+            key: "point_to_price",
+            label: "现金兑换积分比例",
         },
         { key: "rmb_to_gold", label: "现金兑换金币" },
         { key: "gold_to_rmb", label: "金币兑换现金" }
