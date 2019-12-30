@@ -175,6 +175,7 @@ class Live_album extends API_Controller {
 	 *         "two_level_rate": "0.00",
 	 *         "public": "1",
 	 *         "album_class_name": "知识"
+     *         "is_point": "0否1是 是否可以使用积分",
 	 *     },
 	 *     "status": 0,
 	 *     "message": "成功"
@@ -190,7 +191,7 @@ class Live_album extends API_Controller {
 	public function view()
 	{
 		$id = (int)$this->input->get_post('id');
-		$this->db->select('id,cover_image,title,album_class,album_tag,price,city_partner_rate,two_level_rate,public,summary');
+		$this->db->select('id,cover_image,title,album_class,album_tag,price,public,summary,is_point');
 		$info = $this->Album_model->get($id);
 		if($info){
 			$info['summary'] = $info['summary'] ? json_decode($info['summary'], true) : [];
@@ -221,8 +222,7 @@ class Live_album extends API_Controller {
 	 * @apiParam {String} album_class 专辑类型
 	 * @apiParam {String} album_tag 专辑标签 ,配音,铃声,
 	 * @apiParam {Number} price 门票价格
-	 * @apiParam {Number} city_partner_rate 城市分销比例
-	 * @apiParam {Number} two_level_rate 二级分销比例
+     * @apiParam {Number} is_point 是否支持积分抵扣0 不支持 1 支持
 	 * @apiParam {Number} public 是否公开 0否 1是
 	 * @apiParam {Number} deleted 删除 1删除 不传或0不处理
 	 * @apiParam {String} summary 简介图 json
@@ -256,7 +256,7 @@ class Live_album extends API_Controller {
 			$params = elements(
 				array(
 					'cover_image', 'title', 'album_class', 'album_tag', 'price',
-					'city_partner_rate', 'two_level_rate', 'public', 'deleted', 'summary'
+					'is_point', 'public', 'deleted', 'summary'
 				),
 				$this->input->post(),
 				UPDATE_VALID
@@ -277,7 +277,7 @@ class Live_album extends API_Controller {
 			$params = elements(
 				array(
 					'cover_image', 'title', 'album_class', 'album_tag', 'price',
-					'city_partner_rate', 'two_level_rate', 'public', 'summary'
+					'is_point', 'public', 'summary'
 				),
 				$this->input->post(),
 				UPDATE_VALID

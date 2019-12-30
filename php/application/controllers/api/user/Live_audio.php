@@ -513,7 +513,7 @@ class Live_audio extends API_Controller {
         $insert = elements(
             array(
                 'duration', 'album_id', 'title', 'price', 'is_point','video_url', 'room_id', 'cover_image', 'play_times',
-                'deleted', 'point'
+                'deleted'
             ),
             $post,
             0

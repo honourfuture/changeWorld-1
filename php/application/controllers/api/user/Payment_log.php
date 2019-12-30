@@ -186,7 +186,7 @@ class Payment_log extends API_Controller {
 
         $this->payment_format();
 
-        if($this->row['price'] < 0.01 && $payment_type != 'point'){
+        if($this->row['price'] < 0.01 && ($payment_type != 'point' || $payment_type != 'album')){
         	$payment_type = 'balance';//免费强制用余额
         }
 
@@ -250,6 +250,11 @@ class Payment_log extends API_Controller {
 				$this->load->model('Album_model');
 				$this->db->select('id,anchor_uid,cover_image,title,price');
 				$row = $this->Album_model->get($this->t_id);
+                if($row['is_point']){
+                    $this->load->model('Config_model');
+                    $percent = $this->Config_model->get_by(['name' => 'point_to_price']);
+                    $row['point'] = round($row['price'] * $percent['value']);
+                }
 				$message = '专辑信息不存在';
 				break;
 			default :
