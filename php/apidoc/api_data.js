@@ -13800,7 +13800,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "alias",
-            "description": "<p>别名 {&quot;about_us&quot;:&quot;关于我们&quot;,&quot;join_us&quot;:&quot;加入我们&quot;,&quot;contact_us&quot;:&quot;联系我们&quot;,&quot;protocol&quot;:&quot;用户协议&quot;,&quot;copyright&quot;:&quot;版权申明&quot;,&quot;novice_guide&quot;:&quot;新手指南&quot;}</p>"
+            "description": "<p>别名 {&quot;about_us&quot;:&quot;关于我们&quot;,&quot;join_us&quot;:&quot;加入我们&quot;,&quot;contact_us&quot;:&quot;联系我们&quot;,&quot;protocol&quot;:&quot;用户协议&quot;,&quot;copyright&quot;:&quot;版权申明&quot;,&quot;novice_guide&quot;:&quot;新手指南&quot;,&quot;point_rule&quot;:&quot;积分规则&quot;,&quot;level_rule&quot;:&quot;等级规则&quot;}</p>"
           }
         ]
       }

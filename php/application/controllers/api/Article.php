@@ -202,7 +202,7 @@ class Article extends API_Controller {
 	 * @apiParam {Number} user_id 用户唯一ID
 	 * @apiParam {String} sign 校验签名
 	 * @apiParam {String} alias 别名 
-{"about_us":"关于我们","join_us":"加入我们","contact_us":"联系我们","protocol":"用户协议","copyright":"版权申明","novice_guide":"新手指南"}
+{"about_us":"关于我们","join_us":"加入我们","contact_us":"联系我们","protocol":"用户协议","copyright":"版权申明","novice_guide":"新手指南","point_rule":"积分规则","level_rule":"等级规则"}
 	 *
 	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
 	 * @apiSuccess {String} message 接口信息描述
