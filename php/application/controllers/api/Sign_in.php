@@ -114,9 +114,10 @@
             $results[$key] = [
                 'date' => $key,
                 'continue' => 0,
-                'point' => rand(1,4),
+                'point' => 0,
             ];
         }
+        //根据日期获取相应的日期的可以获得的积分
 
         $where = [
             'user_id' => $this->user_id,
@@ -126,11 +127,12 @@
 
         $whereCount['user_id'] = $this->user_id;
         $whereCount['continue >'] = 0;
+        //总的签到
         $count = $this->Sign_in_model->count_by($whereCount);
         $user = $this->Users_model->get($this->user_id);
         $dataInfo['continuousSign'] = 0;
-
         $data = $this->Sign_in_model->get($where);
+
         foreach ($data as $datum){
             if($datum['date'] == date('Y-m-d')){
                 $dataInfo['continuousSign'] = $datum['continue'];
@@ -139,11 +141,87 @@
                 $results[$datum['date']]['continue'] = $datum['continue'];
             }
         }
-        $results = array_values($results);
+        //没有签到记录 获取第一天开始的设置 如果有就取这一天的 没有就取最大的
+        //对相应的日期算 应该获得的积分
+        $today = date("Y-m-d") ;
+        $last_today = date("Y-m-d ",strtotime("-1 days"));
+        //今天是否签到记录已经连续签到的天数
+        $check_today_sign = $results[$today]['continue'] != 0 ? $results[$today]['continue']:false ;
+        //昨天是否签到 签到的花记录已经连续签到的天数
+        $check_last_day_sign =  $results[$last_today]['continue'] != 0 ? $results[$last_today]['continue']:false ;
+        $this->load->model('Users_points_model');
+        $history_sign = $this->Users_points_model->get([
+            'user_id'=>$this->user_id,
+            'rule_name'=>'sign_in',
+            'created_at >='=>date("Y-m-d 00:00:00",strtotime($startDate)),
+            'created_at <='=>date("Y-m-d 23:59:59",strtotime($endDate))
+        ]);
+        //历史记录 每天获取的积分列表
+        $history_days = [] ;
+        foreach ($history_sign as $k=>$v){
+            $history_days[date("Y-m-d",strtotime($v["created_at"]))] = $v["value"];
+        }
+        $this->load->model('Sign_setting_model') ;
+        $sign_result = $this->Sign_setting_model->getAll(2);
+        //签到配置列表数据
+        $sign_setting = array_column($sign_result,'value','days') ;
+        foreach ($results as $key=>$value){
+            //小于今天时间的 获取历史签到获得的积分
+            if(strtotime($key) < strtotime($today)){
+                if(isset($history_sign[$key])){
+                    $results[$key]['point'] = $history_sign[$key] ;
+                }
+            }
+            //等于今天时间
+            elseif (strtotime($key) == strtotime($today)){
+                //如果今天签到过了
+                if(isset($history_sign[$key])){
+                    $results[$key]['point'] = $history_sign[$key] ;
+                }
+                //今天还未签到
+                else{
+                    //如果昨天签到了 算出今天的签到
+                    if($check_last_day_sign){
+                        //如果存在今天的签到设置
+                        if(isset($sign_setting[$check_last_day_sign+1])){
+                            $results[$key]['point'] = $sign_setting[$check_last_day_sign+1] ;
+                        }
+                        //如果存在 设置了最大值
+                        else{
+                            if(isset($sign_setting['max_limit'])){
+                                $results[$key]['point'] = $sign_setting['max_limit'] ;
+                            }
+                        }
+                    }
+                    //算出今天的数据
+                    else{
+                        //第一天签到可以得到的值
+                        $results[$key]['point'] = $sign_setting['1'] ;
+                    }
+                }
+            }
+            //大于今天时间的 根据设置算出大于今天的 签到获取积分规则数据
+            elseif (strtotime($key) > strtotime($today)){
+                $days = (strtotime($key) - strtotime($today))/86400 + 1 ;
+                if(isset($sign_setting[$days])){
+                    $results[$key]['point'] = $sign_setting[$days] ;
+                }
+                //如果存在 设置了最大值
+                else {
+                    if (isset($sign_setting['max_limit'])) {
+                        $results[$key]['point'] = $sign_setting['max_limit'];
+                    }
+                }
+            }
+        }
+        //处理任意时间获取积分end
 
+        $results = array_values($results);
+        //目前是写死的
         $dataInfo['signRule'] = '签到规则';
         $dataInfo['list'] = $results;
         $dataInfo['countSignIn'] = $count;
+        //用户的总的积分
         $dataInfo['countPoint'] = $user['point'];
         return $this->ajaxReturn($dataInfo);
 
