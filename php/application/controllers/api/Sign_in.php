@@ -158,9 +158,12 @@
         ]);
         //历史记录 每天获取的积分列表
         $history_days = [] ;
-        foreach ($history_sign as $k=>$v){
-            $history_days[date("Y-m-d",strtotime($v["created_at"]))] = $v["value"];
+        if($history_sign){
+            foreach ($history_sign as $k=>$v){
+                $history_days[date("Y-m-d",strtotime($v["created_at"]))] = $v["value"];
+            }
         }
+
         $this->load->model('Sign_setting_model') ;
         $sign_result = $this->Sign_setting_model->getAll(2);
         //签到配置列表数据
