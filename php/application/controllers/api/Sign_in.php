@@ -148,7 +148,7 @@
         //今天是否签到记录已经连续签到的天数
         $check_today_sign = $results[$today]['continue'] != 0 ? $results[$today]['continue']:false ;
         //昨天是否签到 签到的花记录已经连续签到的天数
-        $check_last_day_sign =  $results[$last_today]['continue'] != 0 ? $results[$last_today]['continue']:false ;
+        $check_last_day_sign =  isset($results[$last_today]) && $results[$last_today]['continue'] != 0 ? $results[$last_today]['continue']:false ;
         $this->load->model('Users_points_model');
         $history_sign = $this->Users_points_model->get([
             'user_id'=>$this->user_id,

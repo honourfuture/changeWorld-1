@@ -248,7 +248,7 @@ class Payment_log extends API_Controller {
 			case 'album':
 				$this->service = 2;
 				$this->load->model('Album_model');
-				$this->db->select('id,anchor_uid,cover_image,title,price');
+				$this->db->select('id,anchor_uid,cover_image,title,price,is_point');
 				$row = $this->Album_model->get($this->t_id);
                 if($row['is_point']){
                     $this->load->model('Config_model');
