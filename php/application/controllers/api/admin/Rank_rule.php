@@ -95,7 +95,7 @@ class Rank_rule extends API_Controller {
         if($id){
             $params = elements(
                 array(
-                    'name', 'icon','exp','status'
+                    'name', 'icon','exp','status','remark'
                 ),
                 $this->input->post(),
                 UPDATE_VALID
@@ -105,7 +105,7 @@ class Rank_rule extends API_Controller {
         }else{
             $params = elements(
                 array(
-                    'name', 'icon','exp'
+                    'name', 'icon','exp','remark'
                 ),
                 $this->input->post(),
                 UPDATE_VALID
