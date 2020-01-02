@@ -322,6 +322,9 @@ class Payment_log extends API_Controller {
 				);
 			}
 
+            $this->checkCalculation('per_dollar',true,true);
+            $this->AddCalculation($this->user_id, 'per_dollar', ['price' => $this->row['price']]);
+
 			//更新流水状态
 			$order_update = ['status' => 1];
 			$this->Payment_log_model->update($order_id, $order_update);

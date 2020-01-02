@@ -205,6 +205,9 @@ class Pretty extends API_Controller {
 						'pretty_id' => $this->row['pretty_id']
 					]
 				);
+
+            $this->checkCalculation('per_dollar',true,true);
+            $this->AddCalculation($this->user_id, 'per_dollar', ['price' => $this->row['price']]);
 			// }
 //            $this->AddCalculation($this->user_id, 'per_dollar', ['price' => $this->row['price']]);
 			//更新流水状态
