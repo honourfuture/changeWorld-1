@@ -85,7 +85,7 @@ class Users_grade extends API_Controller {
 	{
 		$this->load->model('Grade_rule_model');
 		$init = $this->Grade_rule_model->init();
-		return isset($init[$name]) ? $init[$name] : '未知';
+		return isset($init[$name]) ? $init[$name] : '';
 	}
 
 	/**
