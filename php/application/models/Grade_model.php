@@ -90,19 +90,13 @@ class Grade_model extends MY_Model
         return $ret;
     }
 
-    public function exp($exp)
+    public function exp($id)
     {
-        $ret = [];
-        $order_by = array('grade_demand' => 'asc');
-        if ($one = $this->Grade_model->order_by($order_by)->get_by(['enable' => 1, 'grade_demand <' => $exp])) {
-            $ret = $one;
-        }
 
-        if ($one = $this->Grade_model->order_by($order_by)->get_by(['enable' => 1, 'grade_demand' => $exp])) {
-            $ret = $one;
-        }
+        $this->load->model('Rank_rule_model');
 
-        $ret['icon'] = config_item('base_url') . $ret['grade_logo'];
+        $ret = $this->Rank_rule_model->get_by(['id' => $id]);
+        $ret['icon'] = config_item('base_url') . $ret['icon'];
 
         return $ret;
     }

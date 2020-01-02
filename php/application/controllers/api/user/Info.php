@@ -312,8 +312,7 @@ class Info extends API_Controller {
 		$ret['lv'] = $grade['grade_name'];
 
 		$this->load->model('Grade_model');
-		$ret['vip'] = $this->Grade_model->exp($user['exp']);
-
+		$ret['vip'] = $this->Grade_model->exp($user['rank_rule_id']);
 		$this->load->model('Users_collection_model');
 		$where = array('user_id' => $this->user_id, 'topic' => 2);
 		$ret['collection'] = $this->Users_collection_model->count_by($where);
