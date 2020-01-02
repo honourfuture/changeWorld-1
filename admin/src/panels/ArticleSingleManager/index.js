@@ -100,6 +100,7 @@ export default class ArticleSingleManager extends BaseComponent{
 	@action.bound
 	onEdit(){
 		const {curData} = this.store;
+		console.log(curData.alias)
 		this.refs.editor.show(curData.content,curData.alias)
 	}
 	@action.bound
