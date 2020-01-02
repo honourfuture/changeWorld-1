@@ -361,6 +361,7 @@ class API_Controller extends MY_Controller
                 'msg' => '会员不存在'
             );
         }
+
         if(!empty($this->pointsRule)){
             $value = $this->pointsRule["value"];
             //查询是否限额
@@ -375,6 +376,7 @@ class API_Controller extends MY_Controller
             ]);
             $total_value = empty($pointsLog["total_value"])?0:$pointsLog["total_value"];
             $check_insert = true;
+
             if($total_value >= $dayLimits){
                $check_insert = false;
             }
