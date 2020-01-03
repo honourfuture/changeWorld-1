@@ -218,8 +218,8 @@
             }
         }
         //处理任意时间获取积分end
-
         $results = array_values($results);
+
         //目前是写死的
         $dataInfo['signRule'] = '签到规则';
         $dataInfo['list'] = $results;

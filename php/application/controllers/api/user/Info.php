@@ -321,6 +321,13 @@ class Info extends API_Controller {
 		$where = array('t_id' => $this->user_id, 'topic' => 1);
 		$ret['fans'] = $this->Users_collection_model->count_by($where);
 
+        $where = [
+            'user_id' => $this->user_id,
+            'date' => date('Y-m-d'),
+        ];
+        $this->load->model('Sign_in_model');
+        $sign = $this->Sign_in_model->get_by($where);
+        $ret['toDaySign'] = isset($sign) ? 1 : 0;
 		$this->ajaxReturn($ret);
 	}
 
