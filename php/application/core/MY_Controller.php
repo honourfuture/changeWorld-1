@@ -361,90 +361,190 @@ class API_Controller extends MY_Controller
                 'msg' => '会员不存在'
             );
         }
-        if(!empty($this->pointsRule)){
-            $value = $this->pointsRule["value"];
-            //查询是否限额
-            $this->load->model('Users_points_model');
-            $dayLimits = $this->pointsRule["days_limit"];
-            $this->Users_points_model->db->select('sum(value) as total_value');
-            $pointsLog = $this->Users_points_model->get_by([
-                'user_id'=>$userId,
-                'rule_name'=>$rule_name,
-                'created_at >'=>date('Y-m-d 00:00:00'),
-                'created_at <='=>date("Y-m-d 23:59:59")
-            ]);
-            $total_value = empty($pointsLog["total_value"])?0:$pointsLog["total_value"];
-            $check_insert = true;
-            if($total_value >= $dayLimits){
-               $check_insert = false;
-            }
-            if($check_insert == true){
-                switch ($rule_name){
-                    case 'sign_in':
-                        $continue = $extend_data["continue"];
-                        $value = $value + ($continue-1) *  $this->signOntinuousPonnts;
-                        break;
-                    case 'per_dollar'://每元消费
-                        $price= $extend_data["price"];
-                        $value = $value * $price ;
-                        break;
-                    case 'per_income':
-                        $price= $extend_data["price"];
-                        $value = $value * $price ;
-                        break;
-                }
-                //金额逻辑 如果本次可以获取的金额+已经获取的金额 》日限额 获取的金额等于 日限额 - 已经获取的金额
-                if($total_value+$value > $dayLimits){
-                    $value =  $dayLimits - $total_value;
-                }
-                $this->pointsCalculation($userId,$user["point"],$value,$rule_name,$this->pointsRule["show_name"]);
-            }
-        }
-
-        if(!empty($this->gradeRule)){
-            $this->load->model('Users_grade_model');
-            $dayLimits = $this->gradeRule["days_limit"];
-            $this->Users_grade_model->db->select('sum(value) as total_value');
-            $gradeLog = $this->Users_grade_model->get_by([
-                'user_id'=>$userId,
-                'rule_name'=>$rule_name,
-                'created_at >'=>date('Y-m-d 00:00:00'),
-                'created_at <='=>date("Y-m-d 23:59:59")
-            ]);
-            $total_value = empty($gradeLog["total_value"])?0:$gradeLog["total_value"];
-            $check_insert = true;
-            if($total_value >= $dayLimits){
-                $check_insert = false;
-            }
-            if($check_insert == true){
-                $value = $this->gradeRule["value"];
-                switch ($rule_name){
-                    case 'sign_in':
-                        $continue = $extend_data["continue"];
-                        $value = $value + ($continue-1) *  $this->signOntinuousGrade;
-                        break;
-                    case 'per_dollar'://每元消费
-                        $price= $extend_data["price"];
-                        $value = $value * $price ;
-                        break;
-                    case 'per_income':
-                        $price= $extend_data["price"];
-                        $value = $value * $price ;
-                        break;
-                }
-                if($total_value + $value > $dayLimits){
-                    $value =  $dayLimits - $total_value;
-                }
-                if($value > 0 ){
-                    $this->gradeCalculation($userId,$rule_name,$user["exp"],$value);
-                }
-            }
-        }
-        return array(
+        $return = array(
             'status' => 200,
             'msg' => '操作成功'
         );
+        $custom_list = ['sign_in'];
+        if(in_array($rule_name,$custom_list)){
+            switch ($rule_name){
+                case 'sign_in':
+                    $this->DoSignInCalculation($userId,$user,$rule_name,$extend_data);
+                    break;
+            }
+            return  $return;
+        }
+        if(!empty($this->pointsRule)){
+            $this->DoPointsCalculation($userId,$user,$rule_name,$extend_data);
+        }
+        if(!empty($this->gradeRule)){
+            $this->DoGradeCalculation($userId,$user,$rule_name,$extend_data);
+        }
+        return  $return;
+    }
 
+    /**
+     * 关于签到的经验与积分获取
+     * @param $userId
+     * @param $user
+     * @param $rule_name
+     * @param $extend_data
+     */
+    public function DoSignInCalculation($userId,$user,$rule_name,$extend_data){
+        $continue = $extend_data["continue"];
+        $this->load->model('Sign_setting_model');
+        $days = [
+            $continue,
+            'max_limit'
+        ];
+        $where = [
+            'days'=>$days
+        ];
+        //记录到数据库的任务名称
+        $extend_data["show_name"] = "签到";
+        $setting_info = $this->Sign_setting_model->getAllByWhere($where);
+        $pointsRule = [];
+        $gradeRule = [];
+        if(!empty($setting_info)){
+            foreach ($setting_info as $key=>$value){
+                if($value["type"] == 2 ){
+                    if( $value["days"] == $continue){
+                        $pointsRule['value'] = $value["value"];
+                    }
+                    if($value["days"] == "max_limit"){
+                        $pointsRule['days_limit'] = $value["value"] ;
+                    }
+                }
+                elseif ($value["type"] == 1){
+                    if( $value["days"] == $continue){
+                        $gradeRule['value'] = $value["value"];
+                    }
+                    if($value["days"] == "max_limit"){
+                        $gradeRule['days_limit'] = $value["value"] ;
+                    }
+                }
+            }
+        }
+
+        if(!empty($pointsRule)){
+            $pointsRule = array_merge($pointsRule,$extend_data);
+            $this->DoPointsCalculation($userId,$user,$rule_name,$pointsRule);
+        }
+        if(!empty($gradeRule)){
+            $gradeRule = array_merge($gradeRule,$extend_data);
+            $this->DoGradeCalculation($userId,$user,$rule_name,$gradeRule);
+        }
+
+    }
+
+    /**
+     * 通用的积分根据根据设置表中的类型 设置并增加相应的积分
+     * @param $userId
+     * @param $user
+     * @param $rule_name
+     * @param $extend_data
+     * @return bool
+     */
+    private function DoPointsCalculation($userId,$user,$rule_name,$extend_data){
+
+        $value = $this->pointsRule["value"];
+        $dayLimits = isset($this->pointsRule["days_limit"])?$this->pointsRule["days_limit"]:0;
+        $show_name = $this->pointsRule["show_name"];
+        if(isset($extend_data["value"]) && !empty($extend_data["value"])){
+            $value = $extend_data["value"] ;
+        }
+        if(isset($extend_data["days_limit"]) && $extend_data["days_limit"]){
+            $dayLimits = $extend_data["days_limit"];
+        }
+        if(isset($extend_data["show_name"]) && $extend_data["show_name"]){
+            $show_name = $extend_data["show_name"] ;
+        }
+        //查询是否限额
+        $this->load->model('Users_points_model');
+        $this->Users_points_model->db->select('sum(value) as total_value');
+        $pointsLog = $this->Users_points_model->get_by([
+            'user_id'=>$userId,
+            'rule_name'=>$rule_name,
+            'created_at >'=>date('Y-m-d 00:00:00'),
+            'created_at <='=>date("Y-m-d 23:59:59")
+        ]);
+        $total_value = empty($pointsLog["total_value"])?0:$pointsLog["total_value"];
+        $check_insert = true;
+        if($dayLimits> 0 && $total_value >= $dayLimits){
+            return false;
+        }
+        if($check_insert == true){
+            switch ($rule_name){
+                case 'per_dollar'://每元消费
+                    $price= $extend_data["price"];
+                    $value = $value * $price ;
+                    break;
+                case 'per_income':
+                    $price= $extend_data["price"];
+                    $value = $value * $price ;
+                    break;
+            }
+            //金额逻辑 如果本次可以获取的金额+已经获取的金额 》日限额 获取的金额等于 日限额 - 已经获取的金额
+            if($dayLimits> 0 && $total_value+$value > $dayLimits){
+                $value =  $dayLimits - $total_value;
+            }
+            $this->pointsCalculation($userId,$user["point"],$value,$rule_name,$show_name);
+        }
+        return true;
+    }
+
+    /**
+     * 通用的经验 经验累计逻辑
+     * @param $userId
+     * @param $user
+     * @param $rule_name
+     * @param $extend_data
+     * @return bool
+     */
+    private function DoGradeCalculation($userId,$user,$rule_name,$extend_data){
+        $this->load->model('Users_grade_model');
+        $dayLimits = isset($this->gradeRule["days_limit"])?$this->gradeRule["days_limit"]:0;
+        $value = $this->gradeRule["value"];
+        if(isset($extend_data["value"]) && !empty($extend_data["value"])){
+            $value = $extend_data["value"] ;
+        }
+        if(isset($extend_data['days_limit']) && $extend_data["days_limit"]){
+            $dayLimits = $extend_data["days_limit"];
+        }
+        if(isset($extend_data['show_name'])&& $extend_data["show_name"]){
+            $show_name = $extend_data["show_name"] ;
+        }
+        $this->Users_grade_model->db->select('sum(value) as total_value');
+        $gradeLog = $this->Users_grade_model->get_by([
+            'user_id'=>$userId,
+            'rule_name'=>$rule_name,
+            'created_at >'=>date('Y-m-d 00:00:00'),
+            'created_at <='=>date("Y-m-d 23:59:59")
+        ]);
+        $total_value = empty($gradeLog["total_value"])?0:$gradeLog["total_value"];
+        $check_insert = true;
+        if($dayLimits> 0 && $total_value >= $dayLimits){
+           return false;
+        }
+        if($check_insert == true){
+            switch ($rule_name){
+                case 'per_dollar'://每元消费
+                    $price= $extend_data["price"];
+                    $value = $value * $price ;
+                    break;
+                case 'per_income':
+                    $price= $extend_data["price"];
+                    $value = $value * $price ;
+                    break;
+            }
+            if($dayLimits > 0 && $total_value + $value > $dayLimits){
+                $value =  $dayLimits - $total_value;
+            }
+            if($value > 0 ){
+                $this->gradeCalculation($userId,$rule_name,$user["exp"],$value);
+            }
+        }
+        return true;
     }
     /**
      * 增加经验的流水
