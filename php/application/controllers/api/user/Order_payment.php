@@ -149,9 +149,13 @@ class Order_payment extends API_Controller {
         ];
         $user = $this->get_user();
 		if($user && $user['balance'] >= $this->amount){
+
 			if($this->amount > 0){
 				$this->Users_model->update($this->user_id, ['balance' => round($user['balance'] - $this->amount, 2)]);
 			}
+
+            $this->checkCalculation('per_dollar',true,true);
+            $this->AddCalculation($this->user_id, 'per_dollar', ['price' => $this->amount]);
 
 			$order_update = ['status' => 2, 'payment_type' => 'balance'];
 			if(!is_array($order_id)){
@@ -219,6 +223,8 @@ class Order_payment extends API_Controller {
                             if($addPrice){
                                 $this->_setBalance($levelUser['id'], $addPrice);
 
+                                $this->checkCalculation('per_income',true,true);
+                                $this->AddCalculation($levelUser['id'], 'per_income', ['price' => $addPrice]);
                                 $insert[] = [
                                     'topic' => 2,
                                     'sub_topic' => 0,

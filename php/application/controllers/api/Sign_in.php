@@ -148,7 +148,7 @@
         //今天是否签到记录已经连续签到的天数
         $check_today_sign = $results[$today]['continue'] != 0 ? $results[$today]['continue']:false ;
         //昨天是否签到 签到的花记录已经连续签到的天数
-        $check_last_day_sign =  $results[$last_today]['continue'] != 0 ? $results[$last_today]['continue']:false ;
+        $check_last_day_sign =  isset($results[$last_today]) && $results[$last_today]['continue'] != 0 ? $results[$last_today]['continue']:false ;
         $this->load->model('Users_points_model');
         $history_sign = $this->Users_points_model->get([
             'user_id'=>$this->user_id,
@@ -158,9 +158,12 @@
         ]);
         //历史记录 每天获取的积分列表
         $history_days = [] ;
-        foreach ($history_sign as $k=>$v){
-            $history_days[date("Y-m-d",strtotime($v["created_at"]))] = $v["value"];
+        if($history_sign){
+            foreach ($history_sign as $k=>$v){
+                $history_days[date("Y-m-d",strtotime($v["created_at"]))] = $v["value"];
+            }
         }
+
         $this->load->model('Sign_setting_model') ;
         $sign_result = $this->Sign_setting_model->getAll(2);
         //签到配置列表数据
@@ -215,8 +218,8 @@
             }
         }
         //处理任意时间获取积分end
-
         $results = array_values($results);
+
         //目前是写死的
         $dataInfo['signRule'] = '签到规则';
         $dataInfo['list'] = $results;

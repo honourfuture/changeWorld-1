@@ -1,6 +1,7 @@
 import React from "react";
 import { action } from "mobx";
 import { BaseComponent, Base, Global } from "../../common";
+import {EditorModal} from '../../components/EditorModal';
 import {
     Table,
     Input,
@@ -44,12 +45,15 @@ export class RankLvSet extends BaseComponent {
                 render: (text, record) =>
                     this.renderImg(text, record, "icon")
             },
-            // {
-            //     title: "启用",
-            //     dataIndex: "status",
-            //     render: (text, record) =>
-            //         this.renderSwitch(text, record, "status")
-            // },
+            {
+                title: "等级说明",
+                dataIndex: "status",
+                render: (text, record) => (
+                    <div>
+                        <Button onClick={() => this.onEdit(record.id, record.remark)} className='edit-btn' type="primary" shape='circle' size='large' icon="edit" />
+                    </div>
+                )
+            },
             {
                 title: "操作",
                 dataIndex: "operation",
@@ -186,6 +190,10 @@ export class RankLvSet extends BaseComponent {
     }
     //保存
     @action.bound
+    onEdit(id, remark){
+		this.refs.editor.show(remark,id)
+    }
+    @action.bound
     onSave(id) {
         const list = this.store.list.slice();
         const itemData = list.find(item => id === item.id);
@@ -243,6 +251,26 @@ export class RankLvSet extends BaseComponent {
         this.forceUpdate();
     }
     @action.bound
+	onCompleteEdit(content,id){
+        const list = this.store.list.slice();
+        const itemData = list.find(item => id === item.id);
+        itemData['remark'] = content;
+        this.store.list = list;
+        Base.POST(
+            { act: "rank_rule", op: "save", mod: "admin", ...itemData },
+            res => {
+                itemData.updated_at = Base.getTimeFormat(
+                    new Date().getTime() / 1000,
+                    2
+                );
+                itemData.id === 0 && (itemData.id = res.data.id);
+                this.store.list = list;
+                this.cacheData = list.map(item => ({ ...item }));
+            },
+            this
+        );
+	}
+    @action.bound
     requestData() {
         Base.POST(
             {
@@ -266,6 +294,7 @@ export class RankLvSet extends BaseComponent {
         let { list } = this.store;
         return (
             <div className="ExpLvSet">
+                <EditorModal ref='editor' onComplete={this.onCompleteEdit}/>
                 <Button onClick={this.onAdd}>新增+</Button>
                 <Table
                     className="mt16"

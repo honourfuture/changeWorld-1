@@ -157,13 +157,15 @@ class Pretty extends API_Controller {
     protected function pointPay($order_id, $order_sn)
     {
         $user = $this->get_user();
-
-        if($user && $user['point'] >= $this->row['point']){
+        $this->load->model('Config_model');
+        $percent = $this->Config_model->get_by(['name' => 'point_to_price']);
+        $userPoint = round($this->row['price'] * $percent['value']);
+        if($user && $user['point'] >= $userPoint){
             // if($this->row['price'] > 0){
             $this->Users_model->update(
                 $this->user_id,
                 [
-                    'point' => $user['point'] - $this->row['point'],
+                    'point' => $user['point'] - $userPoint,
                     'pretty_id' => $this->row['pretty_id']
                 ]
             );
@@ -179,8 +181,8 @@ class Pretty extends API_Controller {
             $this->load->model('Users_points_model');
             $point_log = [
                 'user_id' => $this->user_id,
-                'value' => $this->row['point'],
-                'point' => $user['point'] - $this->row['point'],
+                'value' => $userPoint,
+                'point' => $user['point'] - $userPoint,
                 'rule_name' => 'pretty_buy',
                 'remark' => '靓号下单积分使用'
             ];
@@ -203,8 +205,11 @@ class Pretty extends API_Controller {
 						'pretty_id' => $this->row['pretty_id']
 					]
 				);
-			// }
 
+            $this->checkCalculation('per_dollar',true,true);
+            $this->AddCalculation($this->user_id, 'per_dollar', ['price' => $this->row['price']]);
+			// }
+//            $this->AddCalculation($this->user_id, 'per_dollar', ['price' => $this->row['price']]);
 			//更新流水状态
 			$order_update = ['status' => 1];
 			$this->Payment_log_model->update($order_id, $order_update);

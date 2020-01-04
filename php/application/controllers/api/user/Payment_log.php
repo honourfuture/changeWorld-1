@@ -142,6 +142,9 @@ class Payment_log extends API_Controller {
 		$ret = $this->row;
 
 		$user = $this->get_user();
+        $this->load->model('Config_model');
+        $percent = $this->Config_model->get_by(['name' => 'point_to_price']);
+        $ret['point'] = round($ret['price'] * $percent['value']);
 		$ret['balance'] = $user['balance'];
         $ret['userPoint'] = $user['point'];
 
@@ -248,7 +251,7 @@ class Payment_log extends API_Controller {
 			case 'album':
 				$this->service = 2;
 				$this->load->model('Album_model');
-				$this->db->select('id,anchor_uid,cover_image,title,price');
+				$this->db->select('id,anchor_uid,cover_image,title,price,is_point');
 				$row = $this->Album_model->get($this->t_id);
                 if($row['is_point']){
                     $this->load->model('Config_model');
@@ -321,6 +324,9 @@ class Payment_log extends API_Controller {
 					]
 				);
 			}
+
+            $this->checkCalculation('per_dollar',true,true);
+            $this->AddCalculation($this->user_id, 'per_dollar', ['price' => $this->row['price']]);
 
 			//更新流水状态
 			$order_update = ['status' => 1];

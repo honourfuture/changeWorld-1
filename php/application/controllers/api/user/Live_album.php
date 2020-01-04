@@ -201,6 +201,10 @@ class Live_album extends API_Controller {
 				$album_class = $this->Album_class_model->get($info['album_class']);
 				$info['album_class_name'] = $album_class ? $album_class['name'] : '';
 			}
+            $this->load->model('Config_model');
+            $pointTop = $this->Config_model->get_by(['name' => 'point_tip']);
+            $info['pointtip'] = $pointTop['value'];
+
 		}
 
 		$this->ajaxReturn($info);

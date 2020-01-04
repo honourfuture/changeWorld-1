@@ -164,7 +164,7 @@ class Users_points extends API_Controller {
 	{
 		$this->load->model('Points_rule_model');
 		$init = $this->Points_rule_model->init();
-		return isset($init[$name]) ? $init[$name] : '未知';
+		return isset($init[$name]) ? $init[$name] : '';
 	}
 
 	/**
