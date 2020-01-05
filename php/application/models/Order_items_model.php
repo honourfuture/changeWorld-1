@@ -9,6 +9,7 @@
 class Order_items_model extends MY_Model
 {
     public $_table        = 'order_items';
+    public $_joinTable        = 'order_items as oi';
     public $primary_key   = 'id';
     public $before_create = array('created_at', 'updated_at', 'updated_valid');
     public $before_update = array('updated_at', 'updated_valid');
@@ -55,5 +56,21 @@ class Order_items_model extends MY_Model
 		}
 
 		return $result;
+    }
+
+
+    public function crontabOrder()
+    {
+        $this->db->select("oi.id,o.real_total_amount,oi.base_percent,oi.rebate_percent,oi.buyer_uid,oi.seller_uid");
+        $this->db->from($this->_joinTable);
+        $this->db->join('order as o', 'o.id = oi.order_id');
+        $this->db->where_in('o.status', ['4,5,6']);
+        $this->db->where('oi.is_income', 0);
+        $this->db->where('oi.rebate_percent >', 0);
+        $this->db->order_by('oi.id', 'DESC');
+        $orders = $this->db->get();
+        $orders = $orders->result_array();
+
+        return $orders;
     }
 }

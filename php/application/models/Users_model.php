@@ -37,17 +37,20 @@ class Users_model extends MY_Model
         return $this->limit(1)->get_by($where);
     }
 
-    public function under($uid,$uids=array())
+    public function under($uid, $uids=array())
     {
-        $this->db->select('id,pid');
-        $this->db->where_in('pid',$uid);
+        $this->db->select('id, pid');
+        $this->db->where_in('pid', $uid);
         $rows = $this->get_all();
         foreach ($rows as $key=>$value){
+            if($value['id'] == $value['pid']){
+                continue;
+            }
             $uids[] = $value['id'];
             $this->db->select('id,pid');
-            $user = $this->db->where_in('pid',$value['id']);
+            $user = $this->db->where_in('pid', $value['id']);
             if($user){
-                $uids = $this->under($value['id'],$uids);
+                $uids = $this->under($value['id'], $uids);
             }
         }
         return $uids;

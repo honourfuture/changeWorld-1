@@ -327,7 +327,8 @@ class Info extends API_Controller {
         ];
         $this->load->model('Sign_in_model');
         $sign = $this->Sign_in_model->get_by($where);
-        $ret['toDaySign'] = isset($sign) ? 1 : 0;
+//        $ret['toDaySign'] = isset($sign) ? 1 : 0;
+        $ret['toDaySign'] = isset($sign) ? 0 : 0;
 		$this->ajaxReturn($ret);
 	}
 
@@ -618,15 +619,13 @@ class Info extends API_Controller {
                 $this->load->model('Users_model');
                 $ret['count'] = $this->db->count_all_results($this->Users_model->table(), false);
 
-                $this->db->select('id,nickname,address,header,v,exp,mobi,pretty_id,pid,created_at');
+                $this->db->select('id,nickname,address,header,v,exp,mobi,pretty_id,pid,created_at,rank_rule_id');
                 //$this->db->order_by('id', 'desc');
                 $this->db->limit($this->per_page, $this->offset);
                 $users = $this->db->get()->result_array();
                 if($users){
-                    $this->load->model('Grade_model');
                     foreach($users as $item){
-                        $grade = $this->Grade_model->exp_to_grade($item['exp']);
-                        $item['lv'] = $grade['grade_name'];
+                        $item['lv'] = $item['rank_rule_id'];
                         $item['is_star'] = $item['pid'] == $this->user_id ? 1 : 0;//据此判断是否是一级
                         $item['date'] = date('Y-m-d', strtotime($item['created_at']));
                         $ret['list'][] = $item;

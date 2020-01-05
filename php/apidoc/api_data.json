@@ -14843,6 +14843,63 @@
   },
   {
     "type": "get",
+    "url": "/api/crontab",
+    "title": "计划任务跑订单数据",
+    "version": "1.0.0",
+    "name": "crontab",
+    "group": "api",
+    "sampleRequest": [
+      {
+        "url": "/api/crontab"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "sign",
+            "description": "<p>校验签名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>接口状态 0成功 其他异常</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "application/controllers/api/Crontab.php",
+    "groupTitle": "api"
+  },
+  {
+    "type": "get",
     "url": "/api/express",
     "title": "快递公司-列表",
     "version": "1.0.0",

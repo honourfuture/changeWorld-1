@@ -377,14 +377,27 @@ class API_Controller extends MY_Controller
             $total_value = empty($pointsLog["total_value"])?0:$pointsLog["total_value"];
             $check_insert = true;
 
-            if($total_value >= $dayLimits){
+            if($total_value >= $dayLimits && $rule_name != 'sign_in'){
                $check_insert = false;
             }
             if($check_insert == true){
                 switch ($rule_name){
                     case 'sign_in':
                         $continue = $extend_data["continue"];
-                        $value = $value + ($continue-1) *  $this->signOntinuousPonnts;
+                        $this->load->model('Sign_setting_model') ;
+                        $sign_result = $this->Sign_setting_model->getAll(2);
+                        $signSetting = [];
+                        $max = 0;
+                        foreach ($sign_result as $sign){
+                            if($sign['days'] > $max){
+                                $max = $sign['days'];
+                            }
+                            $signSetting[$sign['days']] = $sign;
+                        }
+                        if($continue > $max){
+                            $continue = $max;
+                        }
+                        $value = isset($signSetting[$continue]) ? $signSetting[$continue]['value'] : $signSetting[1]['value'];
                         break;
                     case 'per_dollar'://每元消费
                         $price= $extend_data["price"];
@@ -396,10 +409,11 @@ class API_Controller extends MY_Controller
                         break;
                 }
                 //金额逻辑 如果本次可以获取的金额+已经获取的金额 》日限额 获取的金额等于 日限额 - 已经获取的金额
-                if($total_value+$value > $dayLimits){
+                if($total_value+$value > $dayLimits && $rule_name != 'sign_in'){
                     $value =  $dayLimits - $total_value;
                 }
-                $this->pointsCalculation($userId,$user["point"],$value,$rule_name,$this->pointsRule["show_name"]);
+
+                $this->pointsCalculation($userId, $user["point"], $value, $rule_name, $this->pointsRule["show_name"]);
             }
         }
 
@@ -413,6 +427,7 @@ class API_Controller extends MY_Controller
                 'created_at >'=>date('Y-m-d 00:00:00'),
                 'created_at <='=>date("Y-m-d 23:59:59")
             ]);
+
             $total_value = empty($gradeLog["total_value"])?0:$gradeLog["total_value"];
             $check_insert = true;
             if($total_value >= $dayLimits){
@@ -423,7 +438,20 @@ class API_Controller extends MY_Controller
                 switch ($rule_name){
                     case 'sign_in':
                         $continue = $extend_data["continue"];
-                        $value = $value + ($continue-1) *  $this->signOntinuousGrade;
+                        $this->load->model('Sign_setting_model') ;
+                        $sign_result = $this->Sign_setting_model->getAll(1);
+                        $signSetting = [];
+                        $max = 0;
+                        foreach ($sign_result as $sign){
+                            if($sign['days'] > $max){
+                                $max = $sign['days'];
+                            }
+                            $signSetting[$sign['days']] = $sign;
+                        }
+                        if($continue > $max){
+                            $continue = $max;
+                        }
+                        $value = isset($signSetting[$continue]) ? $signSetting[$continue]['value'] : $signSetting[1]['value'];
                         break;
                     case 'per_dollar'://每元消费
                         $price= $extend_data["price"];
@@ -438,7 +466,7 @@ class API_Controller extends MY_Controller
                     $value =  $dayLimits - $total_value;
                 }
                 if($value > 0 ){
-                    $this->gradeCalculation($userId,$rule_name,$user["exp"],$value);
+                    $this->gradeCalculation($userId, $rule_name, $user["exp"], $value);
                 }
             }
         }

@@ -7,7 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class Live_tag extends API_Controller {
 
-	public function __construct()
+    public function __construct()
     {
         parent::__construct();
         $this->load->model('Live_tag_model');

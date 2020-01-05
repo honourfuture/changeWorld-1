@@ -4,7 +4,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 $config['unLogin'] = [//控制器=>方法
 	// 'api/admin/login_out' => ['*'],
 	'api/admin/login' => ['*'],
-
+    'api/crontab' => ['*'],
 	'api/user/login' => ['*'],
 	'api/user/register' => ['*'],
 	'api/user/cart' => ['count'],
@@ -29,6 +29,7 @@ $config['unLogin'] = [//控制器=>方法
 	'api/address' => ['index'],
 	'api/article' => ['page_view'],
 	'api/room' => ['in', 'gift'],
+    'api/user/order_payment/crontab' => ['*'],
 	// h5分享
 	'api/audio' => ['play'],
 	'api/album' => ['view'],
