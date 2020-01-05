@@ -327,8 +327,7 @@ class Info extends API_Controller {
         ];
         $this->load->model('Sign_in_model');
         $sign = $this->Sign_in_model->get_by($where);
-//        $ret['toDaySign'] = isset($sign) ? 1 : 0;
-        $ret['toDaySign'] = isset($sign) ? 0 : 0;
+        $ret['toDaySign'] = isset($sign) ? 1 : 0;
 		$this->ajaxReturn($ret);
 	}
 

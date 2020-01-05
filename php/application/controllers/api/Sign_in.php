@@ -124,7 +124,7 @@ class Sign_in extends API_Controller
         $dataInfo['continuousSign'] = 0;
         $data = $this->Sign_in_model->get($where);
         $signInfo = [];
-        $dataInfo['continuousSign'] = max(array_column($data, 'continue'));
+        $dataInfo['continuousSign'] = array_column($data, 'continue') ? max(array_column($data, 'continue')) : 0;
         $this->load->model('Sign_setting_model') ;
         $sign_result = $this->Sign_setting_model->getAll(2);
         $signSetting = [];
