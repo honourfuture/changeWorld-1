@@ -21,7 +21,7 @@ class Points_rule_model extends MY_Model
 
     public function init()
     {
-    	return array(
+    	$list =  array(
     		'points_reg' => '会员注册',
     		'points_login' => '会员登陆',
     		'points_evaluate' => '订单评论',
@@ -32,6 +32,14 @@ class Points_rule_model extends MY_Model
             'pretty_buy' => '靓号积分购买',
             'audio_buy' => '音频积分购买'
     	);
+    	//与配置表中的兼容
+        $points_list = $this->get_many_by([
+            'enable'=>1,
+            'status'=>0,
+            'show_name !='=>''
+        ]) ;
+        $points_rule = array_column($points_list,'show_name','name');
+        return array_merge($points_rule,$list);
     }
 
     public function getAll(){

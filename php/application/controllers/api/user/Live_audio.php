@@ -263,6 +263,9 @@ class Live_audio extends API_Controller {
 				$album = $this->Album_model->get($info['album_id']);
 				$info['album_title'] = $album ? $album['title'] : '';
 			}
+            $this->load->model('Config_model');
+            $pointTop = $this->Config_model->get_by(['name' => 'point_tip']);
+            $info['pointtip'] = $pointTop['value'];
 		}
 
 		$this->ajaxReturn($info);
