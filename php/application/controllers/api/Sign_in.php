@@ -1,14 +1,14 @@
 <?php
-    defined('BASEPATH') or exit ('No direct script access allowed');
+defined('BASEPATH') or exit ('No direct script access allowed');
 
-    class Sign_in extends API_Controller
-    {
+class Sign_in extends API_Controller
+{
 
     public function __construct()
     {
-    parent::__construct();
-    $this->load->model('Sign_in_model');
-    $this->load->model('Users_model');
+        parent::__construct();
+        $this->load->model('Sign_in_model');
+        $this->load->model('Users_model');
     }
 
     /**
@@ -162,8 +162,9 @@
             }
         }
 
+
         $dataInfo['signRule'] = '签到规则';
-        $dataInfo['list'] = $results;
+        $dataInfo['list'] = array_values($results);
         $dataInfo['countSignIn'] = $count;
         //用户的总的积分
         $dataInfo['countPoint'] = $user['point'];
