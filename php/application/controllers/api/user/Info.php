@@ -625,6 +625,7 @@ class Info extends API_Controller {
                 if($users){
                     foreach($users as $item){
                         $item['lv'] = $item['rank_rule_id'];
+                        $item['v'] = $item['rank_rule_id'];
                         $item['is_star'] = $item['pid'] == $this->user_id ? 1 : 0;//据此判断是否是一级
                         $item['date'] = date('Y-m-d', strtotime($item['created_at']));
                         $ret['list'][] = $item;
