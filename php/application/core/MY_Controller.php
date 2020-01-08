@@ -497,6 +497,7 @@ class API_Controller extends MY_Controller
         try{
             $this->load->model('User_model');
             $this->load->model('Users_points_model');
+            $this->load->model('Rank_rule_model');
             $points = $old_value + $value;
             $update = array('point' => $points);
             $data['user_id'] = $userId;
@@ -507,7 +508,7 @@ class API_Controller extends MY_Controller
             $data['point'] = $points;
             $this->Users_points_model->insert($data);
             $this->Users_model->update_by(array('id' => $data['user_id']), $update);
-            $nextRankRule = $this->rank_rule_model->getNextRankRule($points, $user['rank_rule_id']);
+            $nextRankRule = $this->Rank_rule_model->getNextRankRule($points, $user['rank_rule_id']);
             if($nextRankRule){
                 $to = $nextRankRule['id'];
                 if($to != 3){

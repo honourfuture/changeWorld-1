@@ -87,6 +87,7 @@ class Crontab extends API_Controller {
 
             $user = $this->Users_model->get_by('id', $order['buyer_uid']);
             if(!$user['pid']){
+                $this->Order_items_model->update($order['id'], ['is_income' => 3]);
                 echo $user['id'].' <- id没有pid不参与分销';
                 continue;
             }
