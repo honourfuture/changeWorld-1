@@ -419,7 +419,7 @@ class API_Controller extends MY_Controller
                     $value =  $dayLimits - $total_value;
                 }
 
-                $this->pointsCalculation($userId, $user["point"], $value, $rule_name, $this->pointsRule["show_name"],$user);
+                $this->pointsCalculation($userId, $user["point"], $value, $rule_name, $this->pointsRule["show_name"],1,$user);
             }
         }
 
@@ -472,7 +472,7 @@ class API_Controller extends MY_Controller
                     $value =  $dayLimits - $total_value;
                 }
                 if($value > 0 ){
-                    $this->gradeCalculation($userId, $rule_name, $user["exp"], $value);
+                    $this->gradeCalculation($userId, $rule_name, $user["exp"], $value, $user);
                 }
             }
         }
@@ -494,10 +494,15 @@ class API_Controller extends MY_Controller
      */
     private function pointsCalculation($userId, $old_value,$value, $rule_name, $remark, $isAdd = 1,$user)
     {
+
         try{
-            $this->load->model('User_model');
+
+            $this->load->model('Users_model');
+
             $this->load->model('Users_points_model');
+
             $this->load->model('Rank_rule_model');
+
             $points = $old_value + $value;
             $update = array('point' => $points);
             $data['user_id'] = $userId;
@@ -508,19 +513,15 @@ class API_Controller extends MY_Controller
             $data['point'] = $points;
             $this->Users_points_model->insert($data);
             $this->Users_model->update_by(array('id' => $data['user_id']), $update);
-            $nextRankRule = $this->Rank_rule_model->getNextRankRule($points, $user['rank_rule_id']);
-            if($nextRankRule){
-                $to = $nextRankRule['id'];
-                if($to != 3){
-                    $this->User_model->update(['rank_rule_id' => $to]);
-                }
-            }
+
         }catch (Exception $exception){
+
             return array(
                 'status' => 400,
                 'msg' => '操作失败，请联系管理员'.$exception->getMessage()
             );
         }
+
         return array(
             'status' => 200,
             'msg' => '操作成功'
@@ -535,16 +536,27 @@ class API_Controller extends MY_Controller
      * @param $rule_name
      * @return array
      */
-    private function gradeCalculation($userId, $rule_name,$old_value, $value)
+    private function gradeCalculation($userId, $rule_name,$old_value, $value, $user)
     {
         try{
             $this->load->model('Grade_rule_model');
+            $this->load->model('Rank_rule_model');
+            $this->load->model('Users_model');
+
+
             $update = array('exp' => $old_value + $value);
             $data['user_id'] = $userId;
             $data['rule_name'] = $rule_name;
             $data['value'] = $value;
             $this->Users_grade_model->insert($data);
             $this->Users_model->update_by(array('id' => $data['user_id']), $update);
+            $nextRankRule = $this->Rank_rule_model->getNextRankRule($old_value + $value, $user['rank_rule_id']);
+            if($nextRankRule){
+                $to = $nextRankRule['id'];
+                if($to != 3){
+                    $this->Users_model->update($user['id'], ['rank_rule_id' => $to]);
+                }
+            }
         }catch (Exception $exception){
             return array(
                 'status' => 400,

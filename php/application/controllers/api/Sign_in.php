@@ -206,10 +206,7 @@ class Sign_in extends API_Controller
             'date' => date('Y-m-d', time()),
             'user_id' => $this->user_id
         ];
-        $this->checkCalculation('sign_in',true,true);
-        $a = $this->AddCalculation($this->user_id,'sign_in', ['continue'=>1]);
-        print_r($a);
-        die;
+  
         $data = $this->Sign_in_model->findByAttributes($where);
         if($data){
             return $this->ajaxReturn([], 1, '您已经签到过了！');
