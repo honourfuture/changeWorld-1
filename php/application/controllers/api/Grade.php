@@ -130,7 +130,7 @@ class Grade extends API_Controller {
                 }
                 break;
             default:
-                $resultRank = [$this->$rankIdKey['3'], $rankIdKey['4'], $rankIdKey['5']];
+                $resultRank = [$rankIdKey['3'], $rankIdKey['4'], $rankIdKey['5']];
         }
 
         $ret['rank'] = $resultRank;

@@ -82,7 +82,6 @@ class Crontab extends API_Controller {
         ];
 
         $orders = $this->Order_items_model->crontabOrder();
-        print_r($orders);
         $insert = [];
         foreach ($orders as $order){
             //每元消费
