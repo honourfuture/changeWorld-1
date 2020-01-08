@@ -206,7 +206,7 @@ class Sign_in extends API_Controller
             'date' => date('Y-m-d', time()),
             'user_id' => $this->user_id
         ];
-  
+
         $data = $this->Sign_in_model->findByAttributes($where);
         if($data){
             return $this->ajaxReturn([], 1, '您已经签到过了！');

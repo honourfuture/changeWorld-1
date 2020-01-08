@@ -419,7 +419,7 @@ class API_Controller extends MY_Controller
                     $value =  $dayLimits - $total_value;
                 }
 
-                $this->pointsCalculation($userId, $user["point"], $value, $rule_name, $this->pointsRule["show_name"],1,$user);
+                $this->pointsCalculation($userId, $user["point"], $value, $rule_name, $this->pointsRule["show_name"],1);
             }
         }
 
@@ -492,7 +492,7 @@ class API_Controller extends MY_Controller
      * @param int $isAdd  1 为增加 0为减少
      * @return array
      */
-    private function pointsCalculation($userId, $old_value,$value, $rule_name, $remark, $isAdd = 1,$user)
+    private function pointsCalculation($userId, $old_value,$value, $rule_name, $remark, $isAdd = 1)
     {
 
         try{
