@@ -44,7 +44,7 @@ export class ExpRuleSet extends BaseComponent {
                 title: "日限额",
                 dataIndex: "days_limit",
                 render: (text, record) =>
-                    this.renderInput(text, record, "days_limit")
+                (record.name == 'per_income' || record.name == 'per_dollar') ? '无上限' : this.renderInput(text, record, "days_limit")
             },
             {
                 title: "操作",

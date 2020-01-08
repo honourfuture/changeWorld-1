@@ -361,6 +361,12 @@ class API_Controller extends MY_Controller
                 'msg' => '会员不存在'
             );
         }
+        if(!$user['pid']){
+            return array(
+                'status' => 400,
+                'msg' => '该会员没有上级，不增加经验积分'
+            );
+        }
 
         if(!empty($this->pointsRule)){
             $value = $this->pointsRule["value"];
@@ -377,7 +383,7 @@ class API_Controller extends MY_Controller
             $total_value = empty($pointsLog["total_value"])?0:$pointsLog["total_value"];
             $check_insert = true;
 
-            if($total_value >= $dayLimits && $rule_name != 'sign_in'){
+            if($total_value >= $dayLimits && !in_array($rule_name, ['sign_in','per_dollar','per_income'])){
                $check_insert = false;
             }
             if($check_insert == true){
@@ -409,11 +415,11 @@ class API_Controller extends MY_Controller
                         break;
                 }
                 //金额逻辑 如果本次可以获取的金额+已经获取的金额 》日限额 获取的金额等于 日限额 - 已经获取的金额
-                if($total_value+$value > $dayLimits && $rule_name != 'sign_in'){
+                if($total_value+$value > $dayLimits && !in_array($rule_name, ['sign_in','per_dollar','per_income']) ){
                     $value =  $dayLimits - $total_value;
                 }
 
-                $this->pointsCalculation($userId, $user["point"], $value, $rule_name, $this->pointsRule["show_name"]);
+                $this->pointsCalculation($userId, $user["point"], $value, $rule_name, $this->pointsRule["show_name"],$user);
             }
         }
 
@@ -430,7 +436,7 @@ class API_Controller extends MY_Controller
 
             $total_value = empty($gradeLog["total_value"])?0:$gradeLog["total_value"];
             $check_insert = true;
-            if($total_value >= $dayLimits){
+            if($total_value >= $dayLimits && !in_array($rule_name, ['sign_in','per_dollar','per_income'])){
                 $check_insert = false;
             }
             if($check_insert == true){
@@ -462,7 +468,7 @@ class API_Controller extends MY_Controller
                         $value = $value * $price ;
                         break;
                 }
-                if($total_value + $value > $dayLimits){
+                if($total_value + $value > $dayLimits && !in_array($rule_name, ['sign_in','per_dollar','per_income'])){
                     $value =  $dayLimits - $total_value;
                 }
                 if($value > 0 ){
@@ -486,9 +492,10 @@ class API_Controller extends MY_Controller
      * @param int $isAdd  1 为增加 0为减少
      * @return array
      */
-    private function pointsCalculation($userId, $old_value,$value, $rule_name, $remark, $isAdd = 1)
+    private function pointsCalculation($userId, $old_value,$value, $rule_name, $remark, $isAdd = 1,$user)
     {
         try{
+            $this->load->model('User_model');
             $this->load->model('Users_points_model');
             $points = $old_value + $value;
             $update = array('point' => $points);
@@ -500,6 +507,13 @@ class API_Controller extends MY_Controller
             $data['point'] = $points;
             $this->Users_points_model->insert($data);
             $this->Users_model->update_by(array('id' => $data['user_id']), $update);
+            $nextRankRule = $this->rank_rule_model->getNextRankRule($points, $user['rank_rule_id']);
+            if($nextRankRule){
+                $to = $nextRankRule['id'];
+                if($to != 3){
+                    $this->User_model->update(['rank_rule_id' => $to]);
+                }
+            }
         }catch (Exception $exception){
             return array(
                 'status' => 400,

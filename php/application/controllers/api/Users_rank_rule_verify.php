@@ -61,9 +61,9 @@ class Users_rank_rule_verify extends API_Controller {
         $userInfo = $this->get_user();
         $this->load->model('rank_rule_model');
         $from = $userInfo['rank_rule_id'];
-        $nextRankRule = $this->rank_rule_model->getNextRankRule($userInfo['exp'],$from);
+        $nextRankRule = $this->rank_rule_model->getNextRankRule($userInfo['exp'], $from);
         if(empty($nextRankRule)){
-            $this->ajaxReturn([],-1,"不满足升级条件");
+            $this->ajaxReturn([],2,"不满足升级条件");
         }
         $to = $nextRankRule['id'];
         $ret = [

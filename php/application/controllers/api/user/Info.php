@@ -185,18 +185,30 @@ class Info extends API_Controller {
     public function invite()
     {
         $ret = array();
+        $this->load->model('Users_model');
+
 
         $a_uid = $this->input->get_post('invite_code');
         if($a_uid){
-            $this->load->model('Users_model');
-            $this->db->select('id,nickname,header,summary,exp,pretty_id,address,created_at');
+            $user = $this->Users_model->get_by(['id' => $this->user_id]);
+            if($user['invite_code'] == $a_uid){
+                $this->ajaxReturn([], 2, '自己不能绑定自己');
+            }
+
+            $this->db->select('id,nickname,header,summary,exp,pretty_id,address,created_at,pid');
             $item = $this->Users_model->get_by(array('invite_code'=>$a_uid));
+            if(!$item['pid']){
+//                $this->ajaxReturn([], 3, '邀请码用户没有绑定上级，禁止绑定');
+            }
+
             if($item){
                 $this->load->model('Grade_model');
                 $grade = $this->Grade_model->exp_to_grade($item['exp']);
                 $item['lv'] = $grade['grade_name'];
                 $ret[] = $item;
             }
+        }else{
+            $this->ajaxReturn([], 1, '邀请码不能为空');
         }
 
         $this->ajaxReturn($ret);

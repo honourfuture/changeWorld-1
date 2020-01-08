@@ -84,11 +84,12 @@ class Crontab extends API_Controller {
         $orders = $this->Order_items_model->crontabOrder();
         $insert = [];
         foreach ($orders as $order){
-            //每元消费
-            $this->checkCalculation('per_dollar',true,true);
-            $this->AddCalculation($order['buyer_uid'], 'per_dollar', ['price' => $order['real_total_amount']]);
-            $user = $this->Users_model->get_by('id', $order['buyer_uid']);
 
+            $user = $this->Users_model->get_by('id', $order['buyer_uid']);
+            if(!$user['pid']){
+                echo $user['id'].' <- id没有pid不参与分销';
+                continue;
+            }
             if(!$user){
                 $this->Order_items_model->update($order['id'], ['is_income' => 2]);
                 continue;
@@ -101,18 +102,18 @@ class Crontab extends API_Controller {
 
                 if($levelUser['id'] == $user['id']){
                     //自购佣金
-                    $addPrice = isset($selfPercent[$levelUser['rank_rule_id']]) ? $selfPercent[$levelUser['rank_rule_id']] * $order['real_total_amount'] : 0;
+                    $addPrice = isset($selfPercent[$levelUser['rank_rule_id']]) ? $selfPercent[$levelUser['rank_rule_id']] * $order['goods_price'] : 0;
                 }else if($levelUser['id'] == $user['pid']){
                     //直属
-                    $addPrice = isset($underPercent[$levelUser['rank_rule_id']]) ? $underPercent[$levelUser['rank_rule_id']] * $order['real_total_amount']: 0;
+                    $addPrice = isset($underPercent[$levelUser['rank_rule_id']]) ? $underPercent[$levelUser['rank_rule_id']] * $order['goods_price']: 0;
                 }else{
                     $maxLevelId = max($levelIds);
                     if($maxLevelId > $levelUser['rank_rule_id']){
                         continue;
                     }else if($maxLevelId == $levelUser['rank_rule_id']){
-                        $addPrice = isset($branchEq[$levelUser['rank_rule_id']]) ? $branchEq[$levelUser['rank_rule_id']] * $order['real_total_amount'] : 0;
+                        $addPrice = isset($branchEq[$levelUser['rank_rule_id']]) ? $branchEq[$levelUser['rank_rule_id']] * $order['goods_price'] : 0;
                     }else{
-                        $addPrice = isset($branch[$levelUser['rank_rule_id']]) ? $branch[$levelUser['rank_rule_id']] * $order['real_total_amount'] : 0;
+                        $addPrice = isset($branch[$levelUser['rank_rule_id']]) ? $branch[$levelUser['rank_rule_id']] * $order['goods_price'] : 0;
                     }
                 }
                 $addPrice = $order['base_percent'] / 100 * $addPrice;
@@ -141,8 +142,10 @@ class Crontab extends API_Controller {
             if($insert){
                 $this->Income_model->insert_many($insert);
             }
-
             $this->Order_items_model->update($order['id'], ['is_income' => 1]);
+            //每元消费
+            $this->checkCalculation('per_dollar',true,true);
+            $this->AddCalculation($order['buyer_uid'], 'per_dollar', ['price' => $order['goods_price']]);
         }
     }
 

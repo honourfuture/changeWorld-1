@@ -18,6 +18,7 @@ import {
     TextareaItem,
     Icon
 } from "antd-mobile";
+
 import "./ProductIssue.less";
 import { icon } from "../../images";
 
@@ -214,7 +215,7 @@ class ProductIssue extends BaseComponent {
                 let max = rebate_percent / 400 * 100;
                 max = Math.floor(max)
                 if(base_percent > max){
-                    return Toast.fail(`基础让利率为${max}%`, 2, null, false);
+                    return Toast.fail(`基础让利率最高为${max}%`, 2, null, false);
                 }
                 
                 if(base_percent > 100){
@@ -282,25 +283,11 @@ class ProductIssue extends BaseComponent {
                     res => {
                         const { id } = Base.getPageParams();
                         if (id) {
-                            alert("恭喜您", "编辑成功！", [
-                                {
-                                    text: "我的产品",
-                                    onPress: () => Base.push("MyProduct")
-                                }
-                            ]);
+                            alert("恭喜您, 编辑成功！")
+                             Base.push("MyProduct")
                         } else {
-                            alert("恭喜您", "发布成功！", [
-                                {
-                                    text: "继续发布",
-                                    onPress: () => {
-                                        window.location.reload();
-                                    }
-                                },
-                                {
-                                    text: "我的产品",
-                                    onPress: () => Base.push("MyProduct")
-                                }
-                            ]);
+                            alert("恭喜您, 发布成功！")
+                            Base.push("MyProduct")
                         }
                     }
                 );
@@ -431,6 +418,32 @@ class ProductIssue extends BaseComponent {
             }
         });
     }
+    changeRebatePercent = (value) => {
+        if(value > 90){
+            Toast.offline('最高让利率最大为90', 1);
+            value = 90
+        }
+        let max = value / 400 * 100;
+        max = Math.floor(max)
+        this.props.form.setFieldsValue({ rebate_percent: value, base_percent : max});
+    }
+
+    changeBasePercent = (value) => {
+        let  t = this.props.form.getFieldProps('rebate_percent');
+        if(t.value == undefined){
+            Toast.offline('请先填写最高让利率', 1);
+            value = 0
+        }else{
+            let max = t.value / 400 * 100;
+            if(value > max){
+                Toast.offline('基础让利率超出', 1);
+                value = Math.floor(max)
+            }
+        }
+
+        this.props.form.setFieldsValue({ base_percent : value});
+    }
+    
     render() {
         const {
             goods_image,
@@ -740,6 +753,7 @@ class ProductIssue extends BaseComponent {
                             placeholder="0"
                             moneyKeyboardAlign="right"
                             extra="%"
+                            onChange={this.changeRebatePercent}
                         >
                             最高让利率
                         </InputItem>
@@ -750,6 +764,8 @@ class ProductIssue extends BaseComponent {
                             placeholder="0"
                             moneyKeyboardAlign="right"
                             extra="%"
+                            onChange={this.changeBasePercent}
+                            
                         >
                             基础让利率
                         </InputItem>

@@ -65,6 +65,12 @@ export default class Verify extends BaseComponent {
                     this.renderText(text, record, "account")
             },
             {
+                title: "申请时间",
+                dataIndex: "account",
+                render: (text, record) =>
+                    record.created_at
+            },
+            {
                 title: "审核状态",
                 dataIndex: "status",
                 render: (text, record) => {

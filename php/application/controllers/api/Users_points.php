@@ -319,9 +319,10 @@ class Users_points extends API_Controller {
 
         $points = $this->Users_points_model->get_many_by($where);
         $this->load->model('Points_rule_model');
-        $pointsRule = $this->Points_rule_model->get_many_by(['enable'=>1,'deleted'=>0,'show_name !='=>'']);
+        $pointsRule = $this->Points_rule_model->get_many_by(['enable'=>1,'deleted'=>0,'is_show'=>1]);
         $limit_day = [];
         foreach ($pointsRule as $key=>$value){
+
             $limit_day[$value["name"]] = $value["days_limit"];
         }
         //把用户签到的可以获得的值写入进去
@@ -341,6 +342,7 @@ class Users_points extends API_Controller {
         $result = [];
         $todayPoint = 0 ;
         foreach ($points as $point){
+
             $todayPoint +=$point["value"];
             if(isset($result[$point['rule_name']])){
                 $result[$point['rule_name']]['value'] += $point['value'];
@@ -367,7 +369,13 @@ class Users_points extends API_Controller {
                 ];
             }
         }
-
+        foreach ($result as $k => $item) {
+            $result[$k]['value'] = (int) $result[$k]['value'];
+            if($item['remark'] == '新会员激活' && $item['value'] == 0){
+                unset($result[$k]);
+                break;
+            }
+        }
 
         $dataInfo["todayPoint"] = $todayPoint;
         $dataInfo['today'] = array_values($result);
