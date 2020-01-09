@@ -361,12 +361,12 @@ class API_Controller extends MY_Controller
                 'msg' => '会员不存在'
             );
         }
-        if(!$user['pid']){
-            return array(
-                'status' => 400,
-                'msg' => '该会员没有上级，不增加经验积分'
-            );
-        }
+//        if(!$user['pid']){
+//            return array(
+//                'status' => 400,
+//                'msg' => '该会员没有上级，不增加经验积分'
+//            );
+//        }
 
         if(!empty($this->pointsRule)){
             $value = $this->pointsRule["value"];
