@@ -197,8 +197,9 @@ class Info extends API_Controller {
 
             $this->db->select('id,nickname,header,summary,exp,pretty_id,address,created_at,pid');
             $item = $this->Users_model->get_by(array('invite_code'=>$a_uid));
-            if(!$item['pid']){
-//                $this->ajaxReturn([], 3, '邀请码用户没有绑定上级，禁止绑定');
+            
+            if(!$item['pid'] && $item['invite_code'] != 999999){
+                $this->ajaxReturn([], 3, '绑定用户没有绑定上级，禁止绑定');
             }
 
             if($item){
