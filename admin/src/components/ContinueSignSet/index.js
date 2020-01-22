@@ -19,7 +19,6 @@ export class ContinueSignSet extends BaseComponent {
         list: []
     };
     constructor(props) {
-        console.log(props)
         super(props);
         this.columns = [
             {
@@ -251,7 +250,7 @@ export class ContinueSignSet extends BaseComponent {
         console.log('123', list)
         return (
             <div className="ExpLvSet">
-                <Button onClick={this.onAdd}>新增+</Button>
+                {/* <Button onClick={this.onAdd}>新增+</Button> */}
                 <Table
                     className="mt16"
                     bordered

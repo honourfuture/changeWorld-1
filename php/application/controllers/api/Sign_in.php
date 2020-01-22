@@ -129,9 +129,11 @@ class Sign_in extends API_Controller
         $sign_result = $this->Sign_setting_model->getAll(2);
         $signSetting = [];
         $max = 0;
+        $maxPoint = 0;
         foreach ($sign_result as $sign){
             if($sign['days'] > $max){
                 $max = $sign['days'];
+                $maxPoint = $sign['value'];
             }
             $signSetting[$sign['days']] = $sign;
         }
@@ -161,8 +163,7 @@ class Sign_in extends API_Controller
                 ];
             }
         }
-
-
+        $dataInfo['continueMaxPoint'] = $maxPoint;
         $dataInfo['signRule'] = '签到规则';
         $dataInfo['list'] = array_values($results);
         $dataInfo['countSignIn'] = $count;
