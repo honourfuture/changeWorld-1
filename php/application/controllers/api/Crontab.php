@@ -97,9 +97,9 @@ class Crontab extends API_Controller {
             }
             $this->load->model('Users_model');
             $levelUsers = $this->Users_model->parent($user['pid'], [$user]);
+
             $levelIds = [];
             foreach ($levelUsers as $k => $levelUser){
-                $levelIds[] = $levelUser['rank_rule_id'];
 
                 if($levelUser['id'] == $user['id']){
                     //自购佣金
@@ -138,6 +138,8 @@ class Crontab extends API_Controller {
                         'from_id' => $user['id']
                     ];
                 }
+                $levelIds[] = $levelUser['rank_rule_id'];
+
             }
 
             if($insert){
