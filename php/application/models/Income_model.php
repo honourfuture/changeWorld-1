@@ -13,12 +13,38 @@ class Income_model extends MY_Model
     public $before_create = array('created_at', 'updated_at', 'updated_valid');
     public $before_update = array('updated_at', 'updated_valid');
     public $protected_attributes = array('id');
+    
+    const INCOME_TYPE_4_KNOWLEDGE = 0;//知识
+    const INCOME_TYPE_4_LIVE = 1;//直播 
+    const INCOME_TYPE_4_GOOD = 2;//商品
 
     public function __construct()
     {
         parent::__construct();
     }
 
+    /**
+     * 积分明细
+     * @param unknown $fields
+     * @param unknown $where
+     * @param unknown $order
+     * @param unknown $per_page
+     * @param unknown $offset
+     */
+    public function getIncomes($fields, $where, $order, $per_page, $offset)
+    {
+    	$arrFields = explode(',', trim($fields));
+    	array_push($arrFields, 'users.nickname');
+    	$fields = implode('income.', $arrFields);
+    	$order = implode('income.', explode(',', trim($order)) );
+    	$arrWhere = [];
+    	$query = $this->db->select($fields)->get($this->table())->join('users', 'income.from_id = users.id');
+    	foreach($where as $field => $value){
+    		$query = $query->where("income.{$field}", $value);
+    	}
+    	return $query->result_array();
+    }
+    
     public function city($user_id, $address)
     {
         $uid = 0;
@@ -376,6 +402,7 @@ class Income_model extends MY_Model
         foreach($order as $seller){
             $sum = 0;
             $order_item = $this->Order_items_model->get_many_by(['order_id' => $seller['id']]);
+            $orderFreightFee = $this->Order_items_model->getFreightFee($seller['id']);
             foreach($order_item as $val){
                 $goods_row = $this->Goods_model->get($val['goods_id']);
                 if($goods_row){
@@ -397,7 +424,7 @@ class Income_model extends MY_Model
                 ];
 
 
-                $rate = $seller['total_amount'] > 0 ? ($seller['real_total_amount'] * $val['total_price']) / $seller['total_amount'] : 0;
+                $rate = $seller['total_amount'] > 0 ? (($seller['real_total_amount']-$orderFreightFee['freight_fee']) * $val['total_price']) / $seller['total_amount'] : 0;
                 //分销
                 $price_2 = $price_3 = 0;
                 if($invite_uid){

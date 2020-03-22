@@ -211,7 +211,7 @@ class Users_model extends MY_Model
             case 'account':
                 $data['mobi'] = $params['mobi'];
                 $data['account'] = $params['account'];
-                $data['nickname'] = $params['account'];
+                $data['nickname'] = '罗马会员' . date('d') . substr($params['mobi'], -4);
                 $data['password'] = $this->Users_model->get_password($params['password']);
                 break;
             case 'qq'://QQ

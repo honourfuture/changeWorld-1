@@ -136,7 +136,9 @@ class Income extends API_Controller {
 		if($ret['count']){
 			$order_by = array('id' => 'desc');
 			$this->db->select($field);
-			if($list = $this->Income_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where)){
+			//$list = $this->Income_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
+			$list = $this->Income_model->getIncomes($field, $where, $order_by, $this->per_page, $this->offset);
+			if($list){
 				foreach($list as $key=>$item){
 				    $t = json_decode($item['item'], TRUE);
 					$item['lv_name'] = '';

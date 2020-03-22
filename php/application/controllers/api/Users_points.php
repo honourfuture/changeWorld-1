@@ -125,7 +125,7 @@ class Users_points extends API_Controller {
         $this->load->model('Users_model');
 		if($this->user_id){
             $user = $this->Users_model->get($this->user_id);
-            $ret['points']['total'] = $user['point'];
+            $ret['points']['total'] = round($user['point'], 0);
         }
 
 		$this->load->model('Users_points_model');
@@ -315,16 +315,17 @@ class Users_points extends API_Controller {
         ];
 
         $user = $this->Users_model->get($this->user_id);
-        $dataInfo['countPoint'] = empty($user['point'])?0:$user['point'];
+        $dataInfo['countPoint'] = empty($user['point']) ? 0: round($user['point'], 0);
 
         $points = $this->Users_points_model->get_many_by($where);
         $this->load->model('Points_rule_model');
         $pointsRule = $this->Points_rule_model->get_many_by(['enable'=>1,'deleted'=>0,'is_show'=>1]);
         $limit_day = [];
         foreach ($pointsRule as $key=>$value){
-
             $limit_day[$value["name"]] = $value["days_limit"];
         }
+        //消费/收益不设置上限
+        unset($limit_day['per_income'], $limit_day['per_dollar'], $limit_day['goods_exchange'], $limit_day['points_pay']);
         //把用户签到的可以获得的值写入进去
         $this->load->model('Sign_in_model');
         $where = [
@@ -343,13 +344,13 @@ class Users_points extends API_Controller {
         $todayPoint = 0 ;
         foreach ($points as $point){
 
-            $todayPoint +=$point["value"];
+            $todayPoint += $point["value"];
             if(isset($result[$point['rule_name']])){
                 $result[$point['rule_name']]['value'] += $point['value'];
             }else{
                 $result[$point['rule_name']] = [
-                    'count' => isset($limit_day[$point['rule_name']]) ? $limit_day[$point['rule_name']] : 0,
-                    'value' => $point['value'],
+                    'count' => isset($limit_day[$point['rule_name']]) ? $ limit_day[$point['rule_name']] : 0,
+                    'value' => round($point['value'], 0),
                     'remark' => $point['remark'] ? $point['remark'] : '签到'
                 ];
             }

@@ -19,6 +19,16 @@ class Order_items_model extends MY_Model
     {
         parent::__construct();
     }
+    
+    /**
+     * 订单运费
+     * @param int $order_id 订单号
+     */
+    public function getFreightFee($order_id)
+    {
+    	$field = "sum(freight_fee) as freight_fee";
+    	return $this->db->select($field)->get($this->table())->where('order_id', $order_id)->row_array();
+    }
 
     // 商品评论
     public function getGoodsEvaluate($goods_id, $limit, $offset = 0)

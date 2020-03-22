@@ -18,27 +18,27 @@ class Crontab extends API_Controller {
     }
 
     /**
-	 * @api {get} /api/crontab 计划任务跑订单数据
-	 * @apiVersion 1.0.0
-	 * @apiName crontab
-	 * @apiGroup api
-	 *
-	 * @apiSampleRequest /api/crontab
-	 *
-	 * @apiParam {String} sign 校验签名
-	 *
-	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
-	 *
-	 * @apiSuccessExample {json} Success-Response:
-	 * {
-	 *	}
-	 *
-	 * @apiErrorExample {json} Error-Response:
-	 * {
-	 * }
-	 */
-	public function index()
-	{
+     * @api {get} /api/crontab 计划任务跑订单数据
+     * @apiVersion 1.0.0
+     * @apiName crontab
+     * @apiGroup api
+     *
+     * @apiSampleRequest /api/crontab
+     *
+     * @apiParam {String} sign 校验签名
+     *
+     * @apiSuccess {Number} status 接口状态 0成功 其他异常
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * {
+     *    }
+     *
+     * @apiErrorExample {json} Error-Response:
+     * {
+     * }
+     */
+    public function index()
+    {
         $sign = $this->input->get('sign');
         if($sign != 'crontab_key') {
             echo 'sign error !';die;
@@ -83,6 +83,7 @@ class Crontab extends API_Controller {
 
         $orders = $this->Order_items_model->crontabOrder();
         $insert = [];
+        $arrUsers = [];
         foreach ($orders as $order){
 
             $user = $this->Users_model->get_by('id', $order['buyer_uid']);
@@ -99,8 +100,9 @@ class Crontab extends API_Controller {
             $levelUsers = $this->Users_model->parent($user['pid'], [$user]);
 
             $levelIds = [];
+            $arrPriceList = [];
             foreach ($levelUsers as $k => $levelUser){
-
+                $arrUsers[$levelUser['id']] = $levelUser;
                 if($levelUser['id'] == $user['id']){
                     //自购佣金
                     $addPrice = isset($selfPercent[$levelUser['rank_rule_id']]) ? $selfPercent[$levelUser['rank_rule_id']] * $order['goods_price'] : 0;
@@ -120,17 +122,29 @@ class Crontab extends API_Controller {
                 $addPrice = $order['base_percent'] / 100 * $addPrice;
                 $addPrice = round($addPrice, 2);
                 if($addPrice){
-                    $this->_setBalance($levelUser['id'], $addPrice);
+                    $arrPriceList[$levelUser['id']] = $addPrice;
+                }
+                $levelIds[] = $levelUser['rank_rule_id'];
 
+            }
+            $sumPrice = array_sum($arrPriceList);
+            $maxPrice = $order['rebate_percent'] / 100 * $order['goods_price'];
+            if($sumPrice > $maxPrice){
+                $this->_rePrice($arrPriceList, $maxPrice, $sumPrice);
+            }
+            Db::startTrans();
+            try{
+                foreach ($arrPriceList as $userId=>$price){
+                    $this->_setBalance($arrUsers[$userId]['id'], $price);
                     $this->checkCalculation('per_income',true,true);
-                    $this->AddCalculation($levelUser['id'], 'per_income', ['price' => $addPrice]);
+                    $this->AddCalculation($levelUser['id'], 'per_income', ['price' => $price]);
                     $insert[] = [
                         'topic' => 2,
                         'sub_topic' => 0,
-                        'user_id' => $levelUser['id'],
-                        'name' => $levelUser['nickname'],
-                        'mobi' => $levelUser['mobi'],
-                        'amount' => $addPrice,
+                        'user_id' => $arrUsers[$userId]['id'],
+                        'name' => $arrUsers[$userId]['nickname'],
+                        'mobi' => $arrUsers[$userId]['mobi'],
+                        'amount' => $price,
                         'type' => 2,
                         'item' => json_encode($order),
                         'level' => count($levelIds),
@@ -138,18 +152,31 @@ class Crontab extends API_Controller {
                         'from_id' => $user['id']
                     ];
                 }
-                $levelIds[] = $levelUser['rank_rule_id'];
+                if($insert){
+                    $this->Income_model->insert_many($insert);
+                }
+                $this->Order_items_model->update($order['id'], ['is_income' => 1]);
+                //每元消费
+                $this->checkCalculation('per_dollar',true,true);
+                $this->AddCalculation($order['buyer_uid'], 'per_dollar', ['price' => $order['goods_price']]);
+                Db::commit();
+            }catch (\Exception $e){
+                Db::rollback();
 
             }
 
-            if($insert){
-                $this->Income_model->insert_many($insert);
-            }
-            $this->Order_items_model->update($order['id'], ['is_income' => 1]);
-            //每元消费
-            $this->checkCalculation('per_dollar',true,true);
-            $this->AddCalculation($order['buyer_uid'], 'per_dollar', ['price' => $order['goods_price']]);
         }
+    }
+
+    /**
+     * 超过最大分配佣金,按比例重新分析
+     */
+    private function _rePrice($arrPriceList, $maxPrice, $sumPrice)
+    {
+        foreach ($arrPriceList as $userId => $price){
+            $arrPriceList[$userId] = $price / $sumPrice * $maxPrice;
+        }
+        return $arrPriceList;
     }
 
     private function _setBalance($uid, $balance)
