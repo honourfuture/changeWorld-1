@@ -334,6 +334,7 @@ class Info extends API_Controller {
 		$where = array('t_id' => $this->user_id, 'topic' => 1);
 		$ret['fans'] = $this->Users_collection_model->count_by($where);
 
+        //今天是否签到
         $where = [
             'user_id' => $this->user_id,
             'date' => date('Y-m-d'),
