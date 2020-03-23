@@ -223,6 +223,8 @@ class Sign_in extends API_Controller
         if($lastData){
             $continue = $lastData['continue'] + 1;
         }
+        //满7天重新开始
+        $continue = $continue > 7 ? 1 : $continue;
         $data = [
             'date' => date('Y-m-d', time()),
             'user_id' => $this->user_id,
