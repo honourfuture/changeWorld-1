@@ -132,7 +132,7 @@ class Crontab extends API_Controller {
             if($sumPrice > $maxPrice){
                 $this->_rePrice($arrPriceList, $maxPrice, $sumPrice);
             }
-            Db::startTrans();
+            $this->db->trans_start();
             try{
                 foreach ($arrPriceList as $userId=>$price){
                     $this->_setBalance($arrUsers[$userId]['id'], $price);
@@ -159,9 +159,12 @@ class Crontab extends API_Controller {
                 //每元消费
                 $this->checkCalculation('per_dollar',true,true);
                 $this->AddCalculation($order['buyer_uid'], 'per_dollar', ['price' => $order['goods_price']]);
-                Db::commit();
+                $this->db->trans_complete();
+                if ($this->db->trans_status() === FALSE){
+                	throw new Exception("事务提交失败" . var_export($order, true));
+                }
             }catch (\Exception $e){
-                Db::rollback();
+                log($e->getMessage());
             }
 
         }

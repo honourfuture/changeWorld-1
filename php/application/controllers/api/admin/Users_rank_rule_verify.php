@@ -163,22 +163,39 @@ class Users_rank_rule_verify extends API_Controller {
             'status'=>-1
         ];
         if(empty($info)){
-            $this->ajaxReturn($ret,-1,"内容不存在");
+            $this->ajaxReturn($ret, -1, "内容不存在");
         }
         $user_id = $info['user_id'];
-        if($status == 2){
-            $this->load->model('Users_model');
-            $this->Users_model->update($user_id,['rank_rule_id'=>$info['to']]);
-            $this->Users_rank_rule_verify_model->update($info['id'],[
-                'status'=>2
-            ]);
+        $this->db->trans_start();
+        try{
+	        if($status == 2){
+	            $this->load->model('Users_model');
+	            $this->Users_model->update($user_id,['rank_rule_id'=>$info['to']]);
+	            $this->Users_rank_rule_verify_model->update($info['id'],[
+	                'status'=>2
+	            ]);
+	        }
+	        else{
+	            $this->Users_rank_rule_verify_model->update($info['id'],[
+	                'status'=>$status
+	            ]);
+	        }
+	        $this->db->trans_complete();
+	        if ($this->db->trans_status() === FALSE){
+	        	throw new Exception("事务提交失败" . var_export($order, true));
+	        }
+	        else{
+	        	$message = '操作成功';
+	        	$code = 0;
+	        	//通知(极光)@todo
+	        	//通知(sms)     	
+	        }
         }
-        else{
-            $this->Users_rank_rule_verify_model->update($info['id'],[
-                'status'=>$status
-            ]);
+        catch (\Exception $e){
+        	$code = -1;
+        	$message = $e->getMessage();
         }
-        $this->ajaxReturn(array('id' => $id), 0, '操作成功');
+        $this->ajaxReturn(array('id' => $id), $code, $message);
 	}
 
 }
