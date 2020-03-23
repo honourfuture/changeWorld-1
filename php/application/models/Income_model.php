@@ -42,7 +42,10 @@ class Income_model extends MY_Model
     	foreach($where as $field => $value){
     		$query = $query->where("income.{$field}", $value);
     	}
-    	return $query->limit($per_page, $offset)->result_array();
+    	$query = $query->limit($per_page, $offset);
+    	//修正原有数据错误
+        $query->order_by('from_id, item');
+    	return $query->result_array();
     }
     
     public function city($user_id, $address)
