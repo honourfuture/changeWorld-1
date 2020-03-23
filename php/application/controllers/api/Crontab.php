@@ -162,7 +162,6 @@ class Crontab extends API_Controller {
                 Db::commit();
             }catch (\Exception $e){
                 Db::rollback();
-
             }
 
         }

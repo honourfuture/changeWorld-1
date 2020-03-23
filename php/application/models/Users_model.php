@@ -56,6 +56,12 @@ class Users_model extends MY_Model
         return $uids;
     }
 
+    /**
+     * 取得所有上级用户
+     * @param unknown $uid
+     * @param unknown $top
+     * @return Ambigous <string, mixed>
+     */
     public function parent($uid, $top = [])
     {
         $user = $this->get($uid);
@@ -299,5 +305,78 @@ class Users_model extends MY_Model
         }
 
         return $user_id;
+    }
+    
+    /**
+     * 取得直属上/下级用户
+     */
+    private function _getNearByUser($user_id, $fields = '*')
+    {
+        if( empty($userIds) ){
+            return [];
+        }
+        $whereUserId = implode(',', $userIds);
+        $cursor = $this->db->where('id', $user_id)->or_where('pid', $user_id)->select($fields)->get($this->table())->result_array();
+        $arrUserNearby = [];
+        foreach($cursor as $k=>$v){
+            $arrUserNearby[$v['id']] = $v;
+        }
+        return $arrUserNearby;
+    }
+    
+    /**
+     * 取得所有下级用户
+     * @param int $user_id 
+     */
+    public function getSons($user_id, $sons=[])
+    {
+        $user = $this->db->where('pid', $user_id)->get($this->table())->row_array();
+        if( empty($user) ){
+            return $sons;
+        }
+        $sons[$user['id']] = $user;
+        return $this->getSons($user['id'], $sons);
+    }
+    
+    /**
+     * 取得用户分销关系
+     * @param int $user_id
+     */
+    public function getUserRelationship($id='', $mobile='')
+    {
+        $data = ['count'=>0, 'list'=>[]];
+        $fields = "created_at, mobi, account, header, nickname, v, anchor, seller, pid, sex, birth, pretty_id, is_hot";
+        $query = $this->db->select($fields)->get($this->table())->where('robot', 0)->order_by(['created_at' => 'desc']);
+        if( $id ){
+            $query = $query->where('id', $id);
+        }
+        if( $mobile ){
+            $query->where('mobi', $mobile);
+        }
+        $queryCount = $query;
+        $data['count'] = $queryCount->count_all();
+        
+        $cursor = $query->result_array();
+        $arrUsers = [];
+        foreach ($cursor as $k=>$user){
+            //当前用户的直属上/下级用户
+            $user['parent'] = [];
+            $user['son'] = [];
+            $arrRelation = $this->_getNearByUser($user['id'], $fields);
+            if( isset($arrRelation[$v['pid']]) ){
+                $user['parent'] = $arrRelation[$v['pid']];
+                unset($arrRelation[$v['pid']]);
+            }
+            if( !empty($arrRelation) ){
+                $user['son'] = current($arrRelation);
+            }
+            //下级总人数
+            $arrSons = $this->getSons($user['id']);
+            $user['sons_count'] = count($arrSons);
+            $user['sons_list'] = $arrSons;
+            $arrUsers[$user['id']] = $user;
+        }
+        $data['list'] = $arrUsers;
+        return $data;        
     }
 }

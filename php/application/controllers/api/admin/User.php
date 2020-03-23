@@ -162,6 +162,56 @@ class User extends API_Controller {
 
 		$this->ajaxReturn($ret);
 	}
+	
+	
+	/**
+	 * @api {post} /api/admin/team 用户管理-我的团队
+	 * @apiVersion 1.0.0
+	 * @apiName team
+	 * @apiGroup admin
+	 *
+	 * @apiSampleRequest /api/admin/team
+	 *
+	 * @apiParam {Number} user_id 用户唯一ID
+	 * @apiParam {String} mobile 手机号
+	 * @apiParam {String} sign 校验签名
+	 *
+	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
+	 * @apiSuccess {String} message 接口信息描述
+	 * @apiSuccess {Object} data 接口数据集
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {
+	 *     "data": {'count'=>0, 'list'=>{}},
+	 *     "status": 0,
+	 *     "message": "成功"
+	 * }
+	 *
+	 * @apiErrorExample {json} Error-Response:
+	 * {
+	 * 	   "data": "",
+	 *     "status": -1,
+	 *     "message": "签名校验错误"
+	 * }
+	 */
+	public function team()
+	{
+		$ret = ['data' => '', 'status'=>-100, 'message'=>'未知错误'];
+		
+		$user_id = $this->input->get_post('user_id');
+		$mobile = $this->input->get_post('mobile');
+		try{
+			$ret['data'] = $this->User_model->getUserRelationship($user_id, $mobile);
+			$ret['status'] = 0;
+			$ret['message'] = 'success';
+		}
+		catch (\Exception $e){
+			$ret['data'] = '';
+			$ret['status'] = $e->getCode();
+			$ret['message'] = $e->getMessage();
+		}		
+		$this->ajaxReturn($ret);
+	}
 
 	protected function search()
 	{
