@@ -124,29 +124,31 @@ class Search extends API_Controller {
         $this->load->model('Users_model');
 
         $ret['count'] = $this->Users_model->count_by($where);
-        if($ret['count']){
-            $order_by = array('sort' => 'desc', 'updated_at' => 'desc');
-            $this->db->select('id,nickname,v,exp,header,summary,pretty_id');
-
-            $this->db->group_start();
-            $this->db->like('nickname', $this->keyword);
-            $this->db->or_where('id', $this->keyword);
-            $this->db->or_where('pretty_id', $this->keyword);
-            $this->db->group_end();
-
-            $list = $this->Users_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
-
-            if($list){
-                $this->load->model('Grade_model');
-                foreach($list as $item){
-                    $grade = $this->Grade_model->exp_to_grade($item['exp']);
-                    $item['lv'] = $grade['grade_name'];
-
-                    $ret['list'][] = $item;
-                }
-            }
+        if( empty($ret['count']) ){
+        	return $ret;
         }
-
+        $order_by = array('sort' => 'desc', 'updated_at' => 'desc');
+        $this->db->select('id,nickname,v,exp,header,summary,pretty_id');
+        
+        $this->db->group_start();
+        $this->db->like('nickname', $this->keyword);
+        $this->db->or_where('id', $this->keyword);
+        $this->db->or_where('pretty_id', $this->keyword);
+        $this->db->group_end();
+        
+        $list = $this->Users_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
+        
+        if( empty($list) ){
+        	$ret['count'] = 0;
+        	$ret['list'] = [];
+        	return $ret;
+        }
+        $this->load->model('Grade_model');
+        foreach($list as $item){
+        	$grade = $this->Grade_model->exp_to_grade($item['exp']);
+        	$item['lv'] = $grade['grade_name'];        
+        	$ret['list'][] = $item;
+        }
         return $ret;
     }
 
@@ -159,14 +161,15 @@ class Search extends API_Controller {
 		$this->load->model('Album_model');
 
 		$ret['count'] = $this->Album_model->count_by($where);
-		if($ret['count']){
-			$order_by = array('sort' => 'desc', 'updated_at' => 'desc');
-			$this->db->select('id,cover_image,title,price');
-			$this->db->like('title', $this->keyword);
-			$ret['list'] = $this->Album_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
-
-			$this->Album_model->audio($ret);
+		if( empty($ret['count']) ){
+			return $ret;
 		}
+		$order_by = array('sort' => 'desc', 'updated_at' => 'desc');
+		$this->db->select('id,cover_image,title,price');
+		$this->db->like('title', $this->keyword);
+		$ret['list'] = $this->Album_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
+
+		$this->Album_model->audio($ret);
 
 		return $ret;
 	}
@@ -185,37 +188,42 @@ class Search extends API_Controller {
 		
 		$this->load->model('Users_model');
 
-		$ret['count'] = $this->Users_model->count_all($where);
-		if($ret['count']){
-			$order_by = array('sort' => 'desc', 'updated_at' => 'desc');
-			$this->db->select('id,nickname,v,exp,header,summary,pretty_id');
-
-			$this->db->group_start();
-			$this->db->like('nickname', $this->keyword);
-			$this->db->or_where('pretty_id', $this->keyword);
-			$this->db->group_end();
-
-			$ret['list'] = $this->Users_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_all($where);
-
-			if($ret['list']){
-	            $a_id = array();
-	            foreach($ret['list'] as $item){
-	                $a_id[] = $item['id'];
-	            }
-	            if($a_id){
-	            	$this->load->model('Users_collection_model');
-	                $fans = $this->Users_collection_model->get_many_count_fans($a_id);
-	                $this->load->model('Room_audio_model');
-	                $audio = $this->Room_audio_model->get_many_count_music($a_id);
-	                foreach($ret['list'] as $key=>$item){
-	                    $ret['list'][$key]['fans'] = isset($fans[$item['id']]) ? $fans[$item['id']] : 0;
-	                    $ret['list'][$key]['music'] = isset($audio[$item['id']]) ? $audio[$item['id']] : 0;
-	                    $ret['list'][$key]['hasFans'] = $this->Users_collection_model->check_fans($this->user_id, $item['id']);
-	                }
-	            }
-	        }
+		$ret['count'] = $this->Users_model->count_by($where);
+		if( empty($ret['count']) ){
+			return $ret;
 		}
+		
+		$order_by = array('sort' => 'desc', 'updated_at' => 'desc');
+		$this->db->select('id,nickname,v,exp,header,summary,pretty_id');
 
+		$this->db->group_start();
+		$this->db->like('nickname', $this->keyword);
+		$this->db->or_where('pretty_id', $this->keyword);
+		$this->db->group_end();
+
+		$ret['list'] = $this->Users_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_all($where);
+
+		if( empty($ret['list']) ){
+			$ret['count'] = 0;
+			$ret['list'] = [];
+			return $ret;
+		}
+		
+		$a_id = array();
+		foreach($ret['list'] as $item){
+			$a_id[] = $item['id'];
+		}
+		if($a_id){
+			$this->load->model('Users_collection_model');
+			$fans = $this->Users_collection_model->get_many_count_fans($a_id);
+			$this->load->model('Room_audio_model');
+			$audio = $this->Room_audio_model->get_many_count_music($a_id);
+			foreach($ret['list'] as $key=>$item){
+				$ret['list'][$key]['fans'] = isset($fans[$item['id']]) ? $fans[$item['id']] : 0;
+				$ret['list'][$key]['music'] = isset($audio[$item['id']]) ? $audio[$item['id']] : 0;
+				$ret['list'][$key]['hasFans'] = $this->Users_collection_model->check_fans($this->user_id, $item['id']);
+			}
+		}
 		return $ret;
     }
 
@@ -294,12 +302,14 @@ class Search extends API_Controller {
 		$this->load->model('Room_audio_model');
 
 		$ret['count'] = $this->Room_audio_model->count_by($where);
-		if($ret['count']){
-			$order_by = array('updated_at' => 'desc', 'id' => 'desc');
-			$this->db->select('id,cover_image,title,price,updated_at,duration,play_times,album_id,anchor_uid');
-			$this->db->like('title', $this->keyword);
-			$ret['list'] = $this->Room_audio_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
+		if( empty($ret['count']) ){
+			return $ret;
 		}
+		
+		$order_by = array('updated_at' => 'desc', 'id' => 'desc');
+		$this->db->select('id,cover_image,title,price,updated_at,duration,play_times,album_id,anchor_uid');
+		$this->db->like('title', $this->keyword);
+		$ret['list'] = $this->Room_audio_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 
 		return $ret;
     }

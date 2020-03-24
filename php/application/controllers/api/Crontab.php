@@ -87,7 +87,7 @@ class Crontab extends API_Controller {
         $crontabFile = "/tmp/CRONTAB_ORDER.lock";
         $isProcessing = file_exists($crontabFile);
         if( $isProcessing ){
-	        //已经在处理中
+            //已经在处理中
             exit('Crontab is processing...');
         }
         $orders = $this->Order_items_model->crontabOrder();
@@ -117,32 +117,33 @@ class Crontab extends API_Controller {
             $arrPriceList = [];
             foreach ($levelUsers as $k => $levelUser){
                 $arrUsers[$levelUser['id']] = $levelUser;
+                $addPrice = 0;
                 if($levelUser['id'] == $user['id']){
                     //自购佣金
-                    $addPrice = isset($selfPercent[$levelUser['rank_rule_id']]) ? $selfPercent[$levelUser['rank_rule_id']] * $order['goods_price'] : 0;
+                    $addPrice = isset($selfPercent[$levelUser['rank_rule_id']]) ? $selfPercent[$levelUser['rank_rule_id']] * $order['goods_price'] * $order['base_percent'] / 100 : 0;
                 }else if($levelUser['id'] == $user['pid']){
-                    //直属
-                    $addPrice = isset($underPercent[$levelUser['rank_rule_id']]) ? $underPercent[$levelUser['rank_rule_id']] * $order['goods_price']: 0;
+                    if( $levelUser['rank_rule_id'] >= $user['rank_rule_id'] ){
+                        //直属
+                        $addPrice = isset($underPercent[$levelUser['rank_rule_id']]) ? $underPercent[$levelUser['rank_rule_id']] * $order['goods_price'] * $order['base_percent'] / 100: 0;
+                    }
                 }else{
                     $maxLevelId = max($levelIds);
                     if($maxLevelId > $levelUser['rank_rule_id']){
                         continue;
                     }else if($maxLevelId == $levelUser['rank_rule_id']){
-                        $addPrice = isset($branchEq[$levelUser['rank_rule_id']]) ? $branchEq[$levelUser['rank_rule_id']] * $order['goods_price'] : 0;
+                        $addPrice = isset($branchEq[$levelUser['rank_rule_id']]) ? $branchEq[$levelUser['rank_rule_id']] * $order['goods_price'] * $order['base_percent'] / 100 : 0;
                     }else{
-                        $addPrice = isset($branch[$levelUser['rank_rule_id']]) ? $branch[$levelUser['rank_rule_id']] * $order['goods_price'] : 0;
+                        $addPrice = isset($branch[$levelUser['rank_rule_id']]) ? $branch[$levelUser['rank_rule_id']] * $order['goods_price'] * $order['base_percent'] / 100 : 0;
                     }
                 }
-                $addPrice = $order['base_percent'] / 100 * $addPrice;
                 $addPrice = round($addPrice, 2);
-                if($addPrice){
+                if($addPrice>0){
                     $arrPriceList[$levelUser['id']] = $addPrice;
                 }
                 $levelIds[] = $levelUser['rank_rule_id'];
-
             }
             $sumPrice = array_sum($arrPriceList);
-            $maxPrice = $order['rebate_percent'] / 100 * $order['goods_price'];
+            $maxPrice = $order['rebate_percent'] / 100 * $order['goods_price'] * 0.99;//扣除1%的服务费为可分佣金额
             if($sumPrice > $maxPrice){
                 $this->_rePrice($arrPriceList, $maxPrice, $sumPrice);
             }

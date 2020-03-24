@@ -66,15 +66,11 @@ class Users_model extends MY_Model
     {
         $user = $this->get($uid);
 
-        if($user){
-            $top[] = $user;
-            if(!$user['pid']){
-                return $top;
-            }else{
-                $top = $this->parent($user['pid'], $top);
-            }
+        if( empty($user) || empty($user['pid']) ){
+            return $top;
         }
-        return $top;
+        $top[] = $user;
+        return $this->parent($user['pid'], $top);
     }
 
     public function live_group_tag($user_id)
