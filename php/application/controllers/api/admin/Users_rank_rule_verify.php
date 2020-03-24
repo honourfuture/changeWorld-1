@@ -160,7 +160,7 @@ class Users_rank_rule_verify extends API_Controller {
             'id'=>$id
         ]);
         $ret = [
-            'status'=>-1
+            'status'=> -1
         ];
         if(empty($info)){
             $this->ajaxReturn($ret, -1, "内容不存在");
