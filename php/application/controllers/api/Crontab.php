@@ -37,11 +37,14 @@ class Crontab extends API_Controller {
      * {
      * }
      */
-    public function index()
+    public function index($sign = '')
     {
-        $sign = $this->input->get('sign');
-        if($sign != 'crontab_key') {
-            echo 'sign error !';die;
+    	if( empty($sign) ){
+		    $sign = $this->input->get('sign');
+	    }
+
+        if( $sign != 'f1e9dd14ee55178fa5a3ddfe0b743d4f') {
+            die('sign error !');
         }
 
         //自购比例
