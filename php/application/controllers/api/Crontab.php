@@ -185,6 +185,7 @@ class Crontab extends API_Controller {
 
         //执行完成，删除LOCK文件
         unlink($crontabFile);
+        exit('Crontab finished.');
     }
 
     /**
