@@ -84,12 +84,15 @@ class Crontab extends API_Controller {
             '5' => 0.1
         ];
 
-        $orders = $this->Order_items_model->crontabOrder();
         $crontabFile = "/tmp/CRONTAB_ORDER.lock";
         $isProcessing = file_exists($crontabFile);
         if( $isProcessing ){
-            //已经在处理中
-            return false;
+	        //已经在处理中
+            exit('Crontab is processing...');
+        }
+        $orders = $this->Order_items_model->crontabOrder();
+        if( empty($orders) ){
+            exit('Orders is empty, exit crontab.');
         }
         $fp = fopen($crontabFile, 'w');
         fclose($fp);
