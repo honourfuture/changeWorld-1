@@ -82,6 +82,14 @@ class Crontab extends API_Controller {
         ];
 
         $orders = $this->Order_items_model->crontabOrder();
+        $crontabFile = "/tmp/CRONTAB_ORDER.lock";
+        $isProcessing = file_exists($crontabFile);
+        if( $isProcessing ){
+            //已经在处理中
+            return false;
+        }
+        $fp = fopen($crontabFile, 'w');
+        fclose($fp);
         $insert = [];
         $arrUsers = [];
         foreach ($orders as $order){
@@ -161,13 +169,16 @@ class Crontab extends API_Controller {
                 $this->AddCalculation($order['buyer_uid'], 'per_dollar', ['price' => $order['goods_price']]);
                 $this->db->trans_complete();
                 if ($this->db->trans_status() === FALSE){
-                	throw new Exception("事务提交失败" . var_export($order, true));
+                    throw new Exception("事务提交失败" . var_export($order, true));
                 }
             }catch (\Exception $e){
                 log($e->getMessage());
             }
 
         }
+
+        //执行完成，删除LOCK文件
+        unlink($crontabFile);
     }
 
     /**

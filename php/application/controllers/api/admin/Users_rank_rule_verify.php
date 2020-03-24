@@ -8,48 +8,48 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class Users_rank_rule_verify extends API_Controller {
 
-	public function __construct()
+    public function __construct()
     {
         parent::__construct();
         $this->load->model('Users_rank_rule_verify_model');
     }
 
     /**
-	 * @api {get} /api/admin/users_rank_rule_verify 获取用户等级表
-	 * @apiVersion 1.0.0
-	 * @apiName users_rank_rule_verify
-	 * @apiGroup admin
-	 *
-	 * @apiSampleRequest /api/admin/users_rank_rule_verify
-	 *
-	 * @apiParam {Number} admin_id 管理员唯一ID
-	 * @apiParam {String} account 登录账号
+     * @api {get} /api/admin/users_rank_rule_verify 获取用户等级表
+     * @apiVersion 1.0.0
+     * @apiName users_rank_rule_verify
+     * @apiGroup admin
+     *
+     * @apiSampleRequest /api/admin/users_rank_rule_verify
+     *
+     * @apiParam {Number} admin_id 管理员唯一ID
+     * @apiParam {String} account 登录账号
      * @apiParam {Number} type 类型 1 经验 2 积分
-	 * @apiParam {String} sign 校验签名
-	 *
-	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
-	 * @apiSuccess {String} message 接口信息描述
-	 * @apiSuccess {Object} data 接口数据集
-	 *
-	 * @apiSuccessExample {json} Success-Response:
-	 * {
-	 *     "data": {
-	 *			"grade_login": "50",
-	 *			"grade_evaluate": "20"
-	 *	   },
-	 *     "status": 0,
-	 *     "message": "成功"
-	 * }
-	 *
-	 * @apiErrorExample {json} Error-Response:
-	 * {
-	 * 	   "data": "",
-	 *     "status": -1,
-	 *     "message": "签名校验错误"
-	 * }
-	 */
-	public function index()
-	{
+     * @apiParam {String} sign 校验签名
+     *
+     * @apiSuccess {Number} status 接口状态 0成功 其他异常
+     * @apiSuccess {String} message 接口信息描述
+     * @apiSuccess {Object} data 接口数据集
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * {
+     *     "data": {
+     *            "grade_login": "50",
+     *            "grade_evaluate": "20"
+     *       },
+     *     "status": 0,
+     *     "message": "成功"
+     * }
+     *
+     * @apiErrorExample {json} Error-Response:
+     * {
+     *        "data": "",
+     *     "status": -1,
+     *     "message": "签名校验错误"
+     * }
+     */
+    public function index()
+    {
         $ret =  array('count' => 0, 'list' => array());
         $status = $this->input->get_post('status',-1);
         $where = array(
@@ -110,42 +110,42 @@ class Users_rank_rule_verify extends API_Controller {
         }
 
         $this->ajaxReturn($ret);
-	}
+    }
 
 
-	/**
-	 * @api {post} /api/admin/users_rank_rule_verify/save 审核
-	 * @apiVersion 1.0.0
-	 * @apiName users_rank_rule_verify_save
-	 * @apiGroup admin
-	 *
-	 * @apiSampleRequest /api/admin/users_rank_rule_verify/save
-	 *
-	 * @apiParam {Number} admin_id 管理员唯一ID
-	 * @apiParam {String} account 登录账号
-	 * @apiParam {String} sign 校验签名
+    /**
+     * @api {post} /api/admin/users_rank_rule_verify/save 审核
+     * @apiVersion 1.0.0
+     * @apiName users_rank_rule_verify_save
+     * @apiGroup admin
+     *
+     * @apiSampleRequest /api/admin/users_rank_rule_verify/save
+     *
+     * @apiParam {Number} admin_id 管理员唯一ID
+     * @apiParam {String} account 登录账号
+     * @apiParam {String} sign 校验签名
      * @apiParam {Number} status 1 审核中 2 审核通过 3 审核拒绝
-	 *
-	 * @apiSuccess {Number} status 接口状态 0成功 其他异常
-	 * @apiSuccess {String} message 接口信息描述
-	 * @apiSuccess {String} data 接口数据集
-	 *
-	 * @apiSuccessExample {json} Success-Response:
-	 * {
-	 *	    "data": "",
-	 *	    "status": 0,
-	 *	    "message": ""
-	 *	}
-	 *
-	 * @apiErrorExample {json} Error-Response:
-	 * {
-	 * 	   "data": "",
-	 *     "status": -1,
-	 *     "message": "签名校验错误"
-	 * }
-	 */
-	public function save()
-	{
+     *
+     * @apiSuccess {Number} status 接口状态 0成功 其他异常
+     * @apiSuccess {String} message 接口信息描述
+     * @apiSuccess {String} data 接口数据集
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * {
+     *        "data": "",
+     *        "status": 0,
+     *        "message": ""
+     *    }
+     *
+     * @apiErrorExample {json} Error-Response:
+     * {
+     *        "data": "",
+     *     "status": -1,
+     *     "message": "签名校验错误"
+     * }
+     */
+    public function save()
+    {
         $id = (int)$this->input->get_post('id');
         $params = elements(
             array(
@@ -166,36 +166,39 @@ class Users_rank_rule_verify extends API_Controller {
             $this->ajaxReturn($ret, -1, "内容不存在");
         }
         $user_id = $info['user_id'];
+        $this->load->model('Users_model');
+        $userInfo = $this->db->select('*')->get($this->Users_model->table())->row_array();
         $this->db->trans_start();
         try{
-	        if($status == 2){
-	            $this->load->model('Users_model');
-	            $this->Users_model->update($user_id,['rank_rule_id'=>$info['to']]);
-	            $this->Users_rank_rule_verify_model->update($info['id'],[
-	                'status'=>2
-	            ]);
-	        }
-	        else{
-	            $this->Users_rank_rule_verify_model->update($info['id'],[
-	                'status'=>$status
-	            ]);
-	        }
-	        $this->db->trans_complete();
-	        if ($this->db->trans_status() === FALSE){
-	        	throw new Exception("事务提交失败" . var_export($order, true));
-	        }
-	        else{
-	        	$message = '操作成功';
-	        	$code = 0;
-	        	//通知(极光)@todo
-	        	//通知(sms)     	
-	        }
+            if($status == 2){
+                $this->Users_model->update($user_id,['rank_rule_id'=>$info['to']]);
+                $this->Users_rank_rule_verify_model->update($info['id'],[
+                    'status'=>2
+                ]);
+            }
+            else{
+                $this->Users_rank_rule_verify_model->update($info['id'],[
+                    'status'=>$status
+                ]);
+            }
+            $this->db->trans_complete();
+            if ($this->db->trans_status() === FALSE){
+                throw new Exception("事务提交失败" . var_export($info, true));
+            }
+            else{
+                $message = '操作成功';
+                $code = 0;
+                //通知(极光)
+                $this->load->model('Push_model');
+                $this->Push_model->send($userInfo, '恭喜您升级成功！');
+                //通知(sms)
+            }
         }
         catch (\Exception $e){
-        	$code = -1;
-        	$message = $e->getMessage();
+            $code = -1;
+            $message = $e->getMessage();
         }
         $this->ajaxReturn(array('id' => $id), $code, $message);
-	}
+    }
 
 }
