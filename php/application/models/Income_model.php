@@ -41,7 +41,7 @@ class Income_model extends MY_Model
         array_push($whereFields, 'users.nickname');
         $fields = implode(',', $arrFields);
         $order = implode('income.', explode(',', $order) );
-        $query = $this->db->select($fields)->get($this->table())->join('users', 'income.from_id = users.id');
+        $query = $this->db->select($fields)->from($this->table())->join('users', 'income.from_id = users.id');
         foreach($where as $field => $value){
             $query = $query->where("income.{$field}", $value);
         }
