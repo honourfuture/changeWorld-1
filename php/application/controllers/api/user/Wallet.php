@@ -87,7 +87,7 @@ class Wallet extends API_Controller {
         $where['created_at >= '] = $user['created_at'];
         $where['created_at <= '] = date('Y-m-d 23:59:59', strtotime("-1 friday"));
         $valInclomeSum = $this->Income_model->sum_income_topic_group($this->user_id, Income_model::INCOME_TYPE_4_GOOD, $where);//累计可提现金额
-        $valWithrawed = $this->withdraw_model->getWithdrawed($this->user_id, $where);//已提现金额
+        $valWithrawed = $this->Withdraw_model->getWithdrawed($this->user_id, $where);//已提现金额
         $inclomeAvailable = $valInclomeSum - $valWithrawed;
         $ret['withdraw'] = number_format($inclomeAvailable, 2);
         

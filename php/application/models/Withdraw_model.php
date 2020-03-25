@@ -47,7 +47,7 @@ class Withdraw_model extends MY_Model
     	if( !empty($where) ){
     		$query = $query->where($where);
     	}
-		$query = $query->get($this->table())->result_array();
+	    $result = $query->get($this->table())->row_array();
     	return $result['amount'];
     }
 }
