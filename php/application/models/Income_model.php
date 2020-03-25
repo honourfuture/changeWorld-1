@@ -39,15 +39,17 @@ class Income_model extends MY_Model
             $whereFields[] = 'income.' . $field;
         }
         array_push($whereFields, 'users.nickname');
-        $fields = implode(',', $arrFields);
-        $order = implode('income.', explode(',', $order) );
-        $query = $this->db->select($fields)->from($this->table())->join('users', 'income.from_id = users.id');
-        foreach($where as $field => $value){
-            $query = $query->where("income.{$field}", $value);
+        $fields = implode(',', $whereFields);
+
+        $arrOrders = explode(',', $order);
+        $orderFields = [];
+        foreach ($arrOrders as $orderField){
+            $orderFields[] = "income." . $orderField;
         }
-        $query = $query->limit($per_page, $offset)->order_by($order);
-        //修正原有数据错误
-        $query->order_by('from_id, item');
+        $orders = implode(',', $orderFields);
+
+        $sql = "SELECT {$fields} FROM {$this->table()} LEFT JOIN users ON income.from_id = users.id GROUP BY income.from_id, income.item ORDER BY {$orders} ";
+        $query=$this->db->query($sql);
         return $query->result_array();
     }
     
