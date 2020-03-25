@@ -58,7 +58,7 @@ class Grade_model extends MY_Model
     {
         $ret = [];
         $order_by = array('grade_demand' => 'asc');
-        $grades = $this->Grade_model->where('deleted', 0)->where('status', 0)->where('enable', 1)->order_by($order_by)->get_many_by('deleted', 0);
+        $grades = $this->db->where('deleted', 0)->where('status', 0)->where('enable', 1)->select('*')->get($this->table())->order_by($order_by)->result_array();
         $arrGrades = [];
         foreach ($grades as $key => $grade) {
             $arrGrades["level_{$grade['grade_name']}"] = $grade;
