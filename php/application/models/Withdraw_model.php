@@ -36,7 +36,7 @@ class Withdraw_model extends MY_Model
      * @param number $user_id 用户ID
      * @param array $where 附加条件
      */
-    public function getWithdrawed($user_id=0, $where)
+    public function getWithdrawed($user_id=0, $where=[])
     {
         if( empty($user_id) ){
             return 0;
