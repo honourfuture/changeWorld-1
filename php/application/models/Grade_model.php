@@ -41,24 +41,44 @@ class Grade_model extends MY_Model
 
         return $ret;
     }
+
+    /**
+     * 取得当前经验值所在的等级相关信息
+     * @param $exp
+     * @return array
+     * [
+     *  exp => 当前经验,
+     *  grade_name => 当前等级,
+     *  before_grade_name => 上一等级名
+     *  after_grade_name => 下一等级名
+     *  diff => 升级经验差
+     * ]
+     */
     public function expDiff($exp)
     {
         $ret = [];
         $order_by = array('grade_demand' => 'asc');
-        $grades = $this->Grade_model->order_by($order_by)->get_many_by('deleted', 0);
-        foreach ($grades as $key => $grade){
+        $grades = $this->Grade_model->where('deleted', 0)->where('status', 0)->where('enable', 1)->order_by($order_by)->get_many_by('deleted', 0);
+        $arrGrades = [];
+        foreach ($grades as $key => $grade) {
+            $arrGrades["level_{$grade['grade_name']}"] = $grade;
+        }
+        foreach ($arrGrades as $key => $grade){
+            list($keyword, $level) = explode('_', $key);
+            $level_pre = $level - 1;
+            $level_next = $level + 1;
             if($grade['grade_demand'] >= $exp){
                 $ret['grade_name'] = $grade['grade_name'];
 
-                if(isset($grades[$key - 1])){
-                    $ret['before_grade_name'] = $grades[$key - 1]['grade_name'];
+                if(isset($arrGrades["level_{$level_pre}"])){
+                    $ret['before_grade_name'] = $arrGrades["level_{$level_pre}"]['grade_name'];
                 }else{
                     $ret['before_grade_name'] = $grade['grade_name'];
                 }
 
-                if(isset($grades[$key + 1])){
-                    $ret['after_grade_name'] = $grades[$key + 1]['grade_name'];
-                    $ret['diff'] = $grades[$key + 1]['grade_demand'] - $exp;
+                if(isset($arrGrades["level_{$level_next}"])){
+                    $ret['after_grade_name'] = $arrGrades["level_{$level_next}"]['grade_name'];
+                    $ret['diff'] = $arrGrades["level_{$level_next}"]['grade_demand'] - $exp;
                 }else{
                     $ret['after_grade_name'] = $grade['grade_name'];
                     $ret['diff'] = 0;
@@ -125,7 +145,7 @@ class Grade_model extends MY_Model
         $this->load->model('Config_model');
         $config = $this->Config_model->siteConfig();
         $rule = 'rule_grade';
-    	return isset($config[$rule]) ? $config[$rule] : '';
+        return isset($config[$rule]) ? $config[$rule] : '';
     }
 
 }
