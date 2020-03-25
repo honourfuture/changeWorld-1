@@ -24,6 +24,17 @@ class Income_model extends MY_Model
     }
 
     /**
+     * 计算总收益
+     */
+    public function getIncomeSum($user_id, $created_at, $type=0, $where=[])
+    {
+        $where['created_at >= '] = $created_at;
+        $where['created_at <= '] = date('Y-m-d 23:59:59', strtotime("-1 sunday"));
+        $arrIncomes = $this->sum_income_topic_group($user_id, $type, $where);
+        return array_sum( array_values( $arrIncomes ) );
+    }
+
+    /**
      * 积分明细
      * @param unknown $fields
      * @param unknown $where
