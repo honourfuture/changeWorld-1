@@ -62,6 +62,7 @@ class Grade_model extends MY_Model
         foreach ($grades as $key => $grade) {
             $arrGrades["level_{$grade['grade_name']}"] = $grade;
         }
+        ksort($arrGrades);
         foreach ($arrGrades as $key => $grade){
             list($keyword, $level) = explode('_', $key);
             $level_pre = $level - 1;
