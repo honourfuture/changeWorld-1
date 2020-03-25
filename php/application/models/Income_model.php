@@ -33,19 +33,22 @@ class Income_model extends MY_Model
      */
     public function getIncomes($fields, $where, $order, $per_page, $offset)
     {
-    	$arrFields = explode(',', trim($fields));
-    	array_push($arrFields, 'users.nickname');
-    	$fields = implode('income.', $arrFields);
-    	$order = implode('income.', explode(',', trim($order)) );
-    	$arrWhere = [];
-    	$query = $this->db->select($fields)->get($this->table())->join('users', 'income.from_id = users.id');
-    	foreach($where as $field => $value){
-    		$query = $query->where("income.{$field}", $value);
-    	}
-    	$query = $query->limit($per_page, $offset);
-    	//修正原有数据错误
+        $arrFields = explode(',', trim($fields));
+        $whereFields = [];
+        foreach ($arrFields as $field){
+            $whereFields[] = 'income.' . $field;
+        }
+        array_push($whereFields, 'users.nickname');
+        $fields = implode(',', $arrFields);
+        $order = implode('income.', explode(',', $order) );
+        $query = $this->db->select($fields)->get($this->table())->join('users', 'income.from_id = users.id');
+        foreach($where as $field => $value){
+            $query = $query->where("income.{$field}", $value);
+        }
+        $query = $query->limit($per_page, $offset)->order_by($order);
+        //修正原有数据错误
         $query->order_by('from_id, item');
-    	return $query->result_array();
+        return $query->result_array();
     }
     
     public function city($user_id, $address)
@@ -548,55 +551,55 @@ class Income_model extends MY_Model
 
     public function topic()
     {
-    	return [
-    		'知识',
-    		'直播',
-    		'商品'
-    	];
+        return [
+            '知识',
+            '直播',
+            '商品'
+        ];
     }
 
     public function sub_topic()
     {
-    	return [
-    		[1 => '专辑', 2 => '音频']
-    	];
+        return [
+            [1 => '专辑', 2 => '音频']
+        ];
     }
 
     public function sum_income_topic_group($user_id = 0, $type = 0, $where=[])
     {
-    	$ret = [
-			'knowledge' => 0,
+        $ret = [
+            'knowledge' => 0,
             'goods' => 0,
-    	];
-    	$this->db->select('topic,sum(amount) amount');
-    	if($user_id){
-    		$this->db->where('user_id', $user_id);
-    	}
-    	if($type){
+        ];
+        $this->db->select('topic,sum(amount) amount');
+        if($user_id){
+            $this->db->where('user_id', $user_id);
+        }
+        if($type){
             $this->db->where('type', $type);
         }
 
-    	if($where){
+        if($where){
             $this->db->where($where);
         }
 
-    	$this->db->group_by('topic');
+        $this->db->group_by('topic');
 
-    	if($result = $this->db->get($this->table())->result_array()){
+        if($result = $this->db->get($this->table())->result_array()){
 
             foreach($result as $item){
 
                 switch($item['topic']){
-    				case 0:
-    					$ret['knowledge'] = $item['amount'];
-    					break;
-    				case 2:
-    					$ret['goods'] = $item['amount'];
+                    case 0:
+                        $ret['knowledge'] = $item['amount'];
                         break;
-    			}
-    		}
+                    case 2:
+                        $ret['goods'] = $item['amount'];
+                        break;
+                }
+            }
 
         }
-    	return $ret;
+        return $ret;
     }
 }
