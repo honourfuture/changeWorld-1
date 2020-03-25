@@ -24,11 +24,11 @@ class Withdraw_model extends MY_Model
 
     public function status()
     {
-    	return [
-    		'待处理',
-    		'已汇款',
-    		'异常'
-    	];
+        return [
+            '待处理',
+            '已汇款',
+            '异常'
+        ];
     }
     
     /**
@@ -38,16 +38,16 @@ class Withdraw_model extends MY_Model
      */
     public function getWithdrawed($user_id=0, $where)
     {
-    	if( empty($user_id) ){
-    		return 0;
-    	}
-    	$query = $this->db->select('sum(amount) amount')
-		    	->where('user_id', $user_id)
-		    	->where_in('status', [self::WITHDRAW_STATUS_WAITING, self::WITHDRAW_STATUS_SUCCESS]);
-    	if( !empty($where) ){
-    		$query = $query->where($where);
-    	}
-	    $result = $query->get($this->table())->row_array();
-    	return $result['amount'];
+        if( empty($user_id) ){
+            return 0;
+        }
+        $query = $this->db->select('sum(amount) amount')
+                ->where('user_id', $user_id)
+                ->where_in('status', [self::WITHDRAW_STATUS_WAITING, self::WITHDRAW_STATUS_SUCCESS]);
+        if( !empty($where) ){
+            $query = $query->where($where);
+        }
+        $result = $query->get($this->table())->row_array();
+        return empty($result['amount']) ? 0 : $result['amount'];
     }
 }
