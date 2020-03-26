@@ -28,6 +28,7 @@ class Income_model extends MY_Model
      */
     public function getIncomeSum($user_id, $created_at, $type=0, $where=[])
     {
+    	$created_at = empty($created_at) ? date('Y-m-d H:i:s', 0) : $created_at;
         $where['created_at >= '] = $created_at;
         //$where['created_at <= '] = date('Y-m-d 23:59:59', strtotime("-1 sunday"));
         $where['created_at <= '] = date('Y-m-d H:i:s');//测试时取到目前为止的所有收益
