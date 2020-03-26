@@ -472,20 +472,20 @@ class Income_model extends MY_Model
                 $addPrice = 0;
                 if($levelUser['id'] == $user['id']){
                     //自购佣金
-                    $addPrice = isset($selfPercent[$levelUser['rank_rule_id']]) ? $selfPercent[$levelUser['rank_rule_id']] * $item['goods_price'] * $item['base_percent'] / 100 : 0;
+                    $addPrice = isset($selfPercent[$levelUser['rank_rule_id']]) ? $selfPercent[$levelUser['rank_rule_id']] * $item['goods_price'] * $item['num'] * $item['base_percent'] / 100 : 0;
                 }else if($levelUser['id'] == $user['pid']){
                     if( $levelUser['rank_rule_id'] >= $user['rank_rule_id'] ){
                         //直属
-                        $addPrice = isset($underPercent[$levelUser['rank_rule_id']]) ? $underPercent[$levelUser['rank_rule_id']] * $item['goods_price'] * $item['base_percent'] / 100: 0;
+                        $addPrice = isset($underPercent[$levelUser['rank_rule_id']]) ? $underPercent[$levelUser['rank_rule_id']] * $item['goods_price'] * $item['num'] * $item['base_percent'] / 100: 0;
                     }
                 }else{
                     $maxLevelId = max($levelIds);
                     if($maxLevelId > $levelUser['rank_rule_id']){
                         continue;
                     }else if($maxLevelId == $levelUser['rank_rule_id']){
-                        $addPrice = isset($branchEq[$levelUser['rank_rule_id']]) ? $branchEq[$levelUser['rank_rule_id']] * $item['goods_price'] * $item['base_percent'] / 100 : 0;
+                        $addPrice = isset($branchEq[$levelUser['rank_rule_id']]) ? $branchEq[$levelUser['rank_rule_id']] * $item['goods_price'] * $item['num'] * $item['base_percent'] / 100 : 0;
                     }else{
-                        $addPrice = isset($branch[$levelUser['rank_rule_id']]) ? $branch[$levelUser['rank_rule_id']] * $item['goods_price'] * $item['base_percent'] / 100 : 0;
+                        $addPrice = isset($branch[$levelUser['rank_rule_id']]) ? $branch[$levelUser['rank_rule_id']] * $item['goods_price'] * $item['num'] * $item['base_percent'] / 100 : 0;
                     }
                 }
                 $addPrice = round($addPrice, 2);
