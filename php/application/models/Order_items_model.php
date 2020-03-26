@@ -68,6 +68,26 @@ class Order_items_model extends MY_Model
 		return $result;
     }
 
+    /**
+     * 取得订单商品明细 
+     * @param unknown $order_id
+     * @return unknown
+     */
+    public function getOrderItems($order_id)
+    {
+    	$this->db->select("oi.id,o.real_total_amount,oi.base_percent,oi.rebate_percent,oi.buyer_uid,oi.seller_uid,oi.name,oi.goods_price");
+    	$this->db->from($this->_joinTable);
+    	$this->db->join('order as o', 'o.id = oi.order_id');
+    	$this->db->where_in('o.status', [4,5,6]);
+    	$this->db->where('oi.is_income', 0);
+    	$this->db->where('oi.rebate_percent >', 0);
+    	$this->db->where('o.id', $order_id);
+    	$this->db->order_by('oi.id', 'DESC');
+    	$orders = $this->db->get();
+    	$orders = $orders->result_array();
+    	$this->db->last_query();
+    	return $orders;
+    }
 
     public function crontabOrder()
     {

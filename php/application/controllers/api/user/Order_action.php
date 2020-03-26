@@ -125,7 +125,26 @@ class Order_action extends API_Controller {
                 if($this->order['status'] != 3){
                     $this->ajaxReturn([], 4, '订单操作状态不支持');
                 }
-
+                $this->db->trans_start();
+                try{
+                    $this->Order_model->update($this->order['id'], ['status' => 4]);
+                    $this->load->model('Income_model');
+                    $this->Income_model->income($this->order);
+                    $this->checkCalculation('per_income', true, true);
+                    //消费积分收益
+                    $this->AddCalculation($this->order['buyer_uid'], 'per_income', ['price' => $this->order['real_total_amount']]);
+                    $this->db->trans_complete();
+                    if ($this->db->trans_status() === FALSE){
+                        throw new Exception("事务提交失败" . var_export($order, true));
+                    }
+                    else{
+                        $this->ajaxReturn();
+                    }
+                }catch (\Exception $e){
+                    log($e->getMessage());
+                    $this->ajaxReturn([], 5, '取消订单操作失败');
+                }
+                /**
                 if($this->Order_model->update($this->order['id'], ['status' => 4])){
                     //收益明细
                     $this->load->model('Users_model');
@@ -140,11 +159,11 @@ class Order_action extends API_Controller {
                     $this->load->model('Income_model');
                     $order_data = ['id' => [$this->order['id']], 'real_total_amount' => $this->order['real_total_amount']];
                     $this->Income_model->goods($user, $order_data, $user['pid']);
-
                     $this->ajaxReturn();
                 }else{
                     $this->ajaxReturn([], 5, '取消订单操作失败');
                 }
+                */
                 break;
             case 'evaluate'://评价
                 if($this->order['status'] != 4){

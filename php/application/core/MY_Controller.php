@@ -352,7 +352,7 @@ class API_Controller extends MY_Controller
      * ]
      * @return array
      */
-    public function AddCalculation($userId,$rule_name,$extend_data){
+    public function AddCalculation($userId, $rule_name, $extend_data){
         $this->load->model('Users_model');
         $user = $this->Users_model->get($userId);
         if(!$user){

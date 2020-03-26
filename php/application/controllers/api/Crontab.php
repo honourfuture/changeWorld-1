@@ -145,8 +145,9 @@ class Crontab extends API_Controller {
             $sumPrice = array_sum($arrPriceList);
             $maxPrice = $order['rebate_percent'] / 100 * $order['goods_price'] * 0.99;//扣除1%的服务费为可分佣金额
             if($sumPrice > $maxPrice){
-                $this->_rePrice($arrPriceList, $maxPrice, $sumPrice);
+                $arrPriceList = $this->_rePrice($arrPriceList, $maxPrice, $sumPrice);
             }
+            $sumPrice = array_sum($arrPriceList);
             $this->db->trans_start();
             try{
                 foreach ($arrPriceList as $userId=>$price){

@@ -379,7 +379,173 @@ class Income_model extends MY_Model
         }
     }
 
+
+    /**
+     * 超过最大分配佣金,按比例重新分析
+     */
+    private function _rePrice($arrPriceList, $maxPrice, $sumPrice)
+    {
+        foreach ($arrPriceList as $userId => $price){
+            $arrPriceList[$userId] = $price / $sumPrice * $maxPrice;
+        }
+        return $arrPriceList;
+    }
+    
+    private function _setBalance($uid, $balance)
+    {
+        $balance = round($balance , 2);
+        $this->db->set('balance', 'balance +'.$balance, false);
+        $this->db->where('id', $uid);
+        $this->db->update($this->Users_model->table());
+    }
+    
+    public function income($orderInfo)
+    {
+        //自购比例
+        $selfPercent = [
+            '0' => 0,
+            '1' => 1,
+            '2' => 1.6,
+            '3' => 2,
+            '4' => 3,
+            '5' => 4
+        ];
+        //直属比例
+        $underPercent = [
+            '0' => 0,
+            '1' => 0.2,
+            '2' => 0.4,
+            '3' => 0.4,
+            '4' => 0.6,
+            '5' => 0.8
+        ];
+        //下属佣金提成比例(大于)
+        $branch = [
+            '0' => 0,
+            '1' => 0.2,
+            '2' => 0.25,
+            '3' => 0.25,
+            '4' => 0.35,
+            '5' => 0.5
+        ];
+        //下属佣金提成比例(等于)
+        $branchEq = [
+            '0' => 0,
+            '1' => 0.2,
+            '2' => 0.05,
+            '3' => 0.05,
+            '4' => 0.07,
+            '5' => 0.1
+        ];
+        
+        $insert = [];
+        $arrUsers = [];
+        $order_id = $orderInfo['id'];
+        //当前用户
+        $buyer_uid = $orderInfo['buyer_uid'];
+        $userBuyer = $this->Users_model->get_by('id', $buyer_uid);
+        //分销用户树
+        $levelUsers = $this->Users_model->parent($user['pid'], [$userBuyer]);
+        //卖家用户
+        $seller_uid = $orderInfo['seller_uid'];
+        $userSeller = $this->Users_model->get_by('id', $seller_uid);
+        
+        $this->load->model('Users_model');
+        $this->load->model('Order_items_model');
+        $orderItems = $this->Order_items_model->getOrderItems($order_id);
+        $orderTotalAmount = $orderInfo['real_total_amount'];
+        foreach ($orderItems as $item){
+            $user = $this->Users_model->get_by('id', $item['buyer_uid']);
+            if( !$user ){//商家及买家都不获得收益
+                $this->Order_items_model->update($item['id'], ['is_income' => 2]);
+                return false;
+            }
+            if( !$user['pid'] ){//没有pid不参与分销
+                $this->Order_items_model->update($item['id'], ['is_income' => 3]);
+                continue;
+            }
+        
+            $levelIds = [];
+            $arrPriceList = [];
+            foreach ($levelUsers as $k => $levelUser){
+                $arrUsers[$levelUser['id']] = $levelUser;
+                $addPrice = 0;
+                if($levelUser['id'] == $user['id']){
+                    //自购佣金
+                    $addPrice = isset($selfPercent[$levelUser['rank_rule_id']]) ? $selfPercent[$levelUser['rank_rule_id']] * $item['goods_price'] * $item['base_percent'] / 100 : 0;
+                }else if($levelUser['id'] == $user['pid']){
+                    if( $levelUser['rank_rule_id'] >= $user['rank_rule_id'] ){
+                        //直属
+                        $addPrice = isset($underPercent[$levelUser['rank_rule_id']]) ? $underPercent[$levelUser['rank_rule_id']] * $item['goods_price'] * $item['base_percent'] / 100: 0;
+                    }
+                }else{
+                    $maxLevelId = max($levelIds);
+                    if($maxLevelId > $levelUser['rank_rule_id']){
+                        continue;
+                    }else if($maxLevelId == $levelUser['rank_rule_id']){
+                        $addPrice = isset($branchEq[$levelUser['rank_rule_id']]) ? $branchEq[$levelUser['rank_rule_id']] * $item['goods_price'] * $item['base_percent'] / 100 : 0;
+                    }else{
+                        $addPrice = isset($branch[$levelUser['rank_rule_id']]) ? $branch[$levelUser['rank_rule_id']] * $item['goods_price'] * $item['base_percent'] / 100 : 0;
+                    }
+                }
+                $addPrice = round($addPrice, 2);
+                if($addPrice>0){
+                    $arrPriceList[$levelUser['id']] = $addPrice;
+                }
+                $levelIds[] = $levelUser['rank_rule_id'];
+            }
+            $sumPrice = array_sum($arrPriceList);
+            $maxPrice = $item['rebate_percent'] / 100 * $item['goods_price'] * 0.99;//扣除1%的服务费为可分佣金额
+            if($sumPrice > $maxPrice){
+                $arrPriceList = $this->_rePrice($arrPriceList, $maxPrice, $sumPrice);
+            }
+            $sumPrice = array_sum($arrPriceList);
+            $orderTotalAmount -= $sumPrice;
+            foreach ($arrPriceList as $userId=>$price){
+                $this->_setBalance($arrUsers[$userId]['id'], $price);
+                $this->checkCalculation('per_income',true,true);
+                $this->AddCalculation($levelUser['id'], 'per_income', ['price' => $price]);
+                $insert[] = [
+                    'topic' => 2,
+                    'sub_topic' => 0,
+                    'user_id' => $arrUsers[$userId]['id'],
+                    'name' => $arrUsers[$userId]['nickname'],
+                    'mobi' => $arrUsers[$userId]['mobi'],
+                    'amount' => $price,
+                    'type' => 2,
+                    'item' => json_encode($item),
+                    'level' => count($levelIds),
+                    'shop_id' => $item['seller_uid'],
+                    'from_id' => $user['id']
+                ];
+            }
+            if($insert){
+                $this->Income_model->insert_many($insert);
+            }
+            $this->Order_items_model->update($item['id'], ['is_income' => 1]);
+        }
+        //商家收入
+        unset($insert);
+        $insert[] = [
+            'topic' => 2,
+            'sub_topic' => 0,
+            'user_id' => $seller_uid,
+            'name' => $userSeller['nickname'],
+            'mobi' => $userSeller['mobi'],
+            'amount' => $orderTotalAmount,
+            'type' => 0,
+            'item' => json_encode($goods[$seller['seller_uid']]),
+            'shop_id' => $seller_uid,
+            'from_id' => $buyer_uid
+        ];
+        $this->Income_model->insert_many($insert);
+        
+    }
+    
     //商品销售收益
+    /**
+     * 业务废弃不再使用
+     */
     public function goods($user, $order, $invite_uid, $topic = 2, $sub_topic = 0)
     {
         if(!is_array($order['id'])){
