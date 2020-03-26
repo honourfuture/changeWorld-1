@@ -507,8 +507,6 @@ class Income_model extends MY_Model
             $orderTotalAmount -= $sumPrice;
             foreach ($arrPriceList as $userId=>$price){
                 $this->_setBalance($arrUsers[$userId]['id'], $price);
-                $this->checkCalculation('per_income',true,true);
-                $this->AddCalculation($levelUser['id'], 'per_income', ['price' => $price]);
                 $insert[] = [
                     'topic' => 2,
                     'sub_topic' => 0,
