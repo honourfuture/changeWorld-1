@@ -20,7 +20,7 @@ class Income_model extends MY_Model
 
     public function __construct()
     {
-        parent::__construct();
+        parent::__construct();        
     }
 
     /**
@@ -437,6 +437,9 @@ class Income_model extends MY_Model
             '4' => 0.07,
             '5' => 0.1
         ];
+
+        $this->load->model('Users_model');
+        $this->load->model('Order_items_model');
         
         $insert = [];
         $arrUsers = [];
@@ -445,16 +448,17 @@ class Income_model extends MY_Model
         $buyer_uid = $orderInfo['buyer_uid'];
         $userBuyer = $this->Users_model->get_by('id', $buyer_uid);
         //分销用户树
-        $levelUsers = $this->Users_model->parent($user['pid'], [$userBuyer]);
+        $levelUsers = $this->Users_model->parent($userBuyer['pid'], [$userBuyer]);
         //卖家用户
         $seller_uid = $orderInfo['seller_uid'];
         $userSeller = $this->Users_model->get_by('id', $seller_uid);
         
-        $this->load->model('Users_model');
-        $this->load->model('Order_items_model');
         $orderItems = $this->Order_items_model->getOrderItems($order_id);
         $orderTotalAmount = $orderInfo['real_total_amount'];
         foreach ($orderItems as $item){
+            if( $item['base_percent']<=0 ){
+                continue;
+            }
             $user = $this->Users_model->get_by('id', $item['buyer_uid']);
             if( !$user ){//商家及买家都不获得收益
                 $this->Order_items_model->update($item['id'], ['is_income' => 2]);
@@ -520,26 +524,29 @@ class Income_model extends MY_Model
                 ];
             }
             if($insert){
-                $this->Income_model->insert_many($insert);
+                $this->insert_many($insert);
             }
             $this->Order_items_model->update($item['id'], ['is_income' => 1]);
         }
         //商家收入
-        unset($insert);
+        $this->setSellerIncome($userSeller, $userBuyer, $orderTotalAmount, $orderInfo);        
+    }
+    
+    public function setSellerIncome($sellerInfo, $buyerInfo, $amount, $orderInfo)
+    {
         $insert[] = [
             'topic' => 2,
             'sub_topic' => 0,
-            'user_id' => $seller_uid,
-            'name' => $userSeller['nickname'],
-            'mobi' => $userSeller['mobi'],
-            'amount' => $orderTotalAmount,
+            'user_id' => $sellerInfo['id'],
+            'name' => $sellerInfo['nickname'],
+            'mobi' => $sellerInfo['mobi'],
+            'amount' => $amount,
             'type' => 0,
-            'item' => json_encode($goods[$seller['seller_uid']]),
-            'shop_id' => $seller_uid,
-            'from_id' => $buyer_uid
+            'item' => json_encode($orderInfo, JSON_UNESCAPED_UNICODE),
+            'shop_id' => $sellerInfo['id'],
+            'from_id' => $buyerInfo['id']
         ];
-        $this->Income_model->insert_many($insert);
-        
+        $this->insert_many($insert);
     }
     
     //商品销售收益
