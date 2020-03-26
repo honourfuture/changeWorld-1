@@ -39,6 +39,7 @@ class Crontab extends API_Controller {
      */
     public function index($sign = '')
     {
+    	exit('done');
         if( empty($sign) ){
             $sign = $this->input->get('sign');
         }
