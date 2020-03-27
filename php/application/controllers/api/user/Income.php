@@ -145,7 +145,7 @@ class Income extends API_Controller {
                     $item['lv_name'] = '';
                     if( is_array($arrItems) && !empty($arrItems)){
                         $key_first = current(array_keys($arrItems));
-                        if( is_numeric($key_first) ){
+                        if( !is_numeric($key_first) ){
                             $arrItems = [$arrItems];
                         }
                         $item['item'] = $arrItems;
