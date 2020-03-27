@@ -63,8 +63,11 @@ $config['rongcloud'] = array(
 
 // 微信
 $config['wechat'] = array(
-    'app_id' => 'wx32eccca0c7b0b2d0',
-    'secret' => 'bdacd064ac8e8eb1e0379e304e00af1b',
+    //'app_id' => 'wx32eccca0c7b0b2d0',
+    //'secret' => 'bdacd064ac8e8eb1e0379e304e00af1b',
+    //'token' => 'f2161f9f30a72a6c0bcaa71a7a74b2e9',
+    'app_id' => 'wx8409706b86b829aa',
+    'secret' => '707ece43684f5329e6ba1cbaf1fafa08',
     'token' => 'f2161f9f30a72a6c0bcaa71a7a74b2e9',
     'aes_key' => '',
     'response_type' => 'array',

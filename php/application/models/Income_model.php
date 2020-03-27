@@ -526,7 +526,7 @@ class Income_model extends MY_Model
                 $arrPriceList = $this->_rePrice($arrPriceList, $maxPrice, $sumPrice);
             }
             $sumPrice = array_sum($arrPriceList);
-            $orderTotalAmount -= $sumPrice;
+            $orderTotalAmount -= ($sumPrice + $platformPrice);
             foreach ($arrPriceList as $userId=>$price){
                 $this->_setBalance($arrUsers[$userId]['id'], $price);
                 $insert[] = [
