@@ -399,10 +399,11 @@ class Income_model extends MY_Model
         return $arrPriceList;
     }
     
-    private function _setBalance($uid, $balance)
+    private function _setBalance($uid, $balance, $increase=1)
     {
         $balance = round($balance , 2);
-        $this->db->set('balance', 'balance +'.$balance, false);
+        $operate = $increase == 1 ? '+' : '-';
+        $this->db->set('balance', "balance {$operate} {$balance}", false);
         $this->db->where('id', $uid);
         $this->db->update($this->Users_model->table());
     }
@@ -447,6 +448,7 @@ class Income_model extends MY_Model
         ];
 
         $this->load->model('Users_model');
+        $this->load->model('Order_model');
         $this->load->model('Order_items_model');
         $this->load->model('Config_model');
         
@@ -526,6 +528,8 @@ class Income_model extends MY_Model
             }
             $sumPrice = array_sum($arrPriceList);
             $orderTotalAmount -= ($sumPrice + $platformPrice);
+            $configPriceToPoint = $this->Config_model->get_by(['name' => 'income_price_to_point']);
+        	$configPriceToExp = $this->Config_model->get_by(['name' => 'income_price_to_point']);
             foreach ($arrPriceList as $userId=>$price){
                 $this->_setBalance($arrUsers[$userId]['id'], $price);
                 $insert[] = [
@@ -539,7 +543,10 @@ class Income_model extends MY_Model
                     'item' => json_encode([$item], JSON_UNESCAPED_UNICODE),
                     'level' => count($levelIds),
                     'shop_id' => $item['seller_uid'],
-                    'from_id' => $user['id']
+                    'from_id' => $user['id'],
+                    'order_id' => $orderInfo['id'],
+                    'point' => floor($price * (empty($configPriceToPoint) ? 50 : $configPriceToPoint['value'])),
+                    'exp' => floor($price * (empty($configPriceToExp) ? 5 : $configPriceToExp['value'])),
                 ];
             }
             if($insert){
@@ -548,10 +555,16 @@ class Income_model extends MY_Model
             $this->Order_items_model->update($item['id'], ['is_income' => 1]);
         }
         //商家收入
-        $this->setSellerIncome($userSeller, $userBuyer, $orderTotalAmount, $orderItems);
+        $this->setSellerIncome($orderInfo, $userSeller, $userBuyer, $orderTotalAmount, $orderItems);
+        $configPriceToPoint = $this->Config_model->get_by(['name' => 'consume_price_to_point']);
+        $point = floor($orderInfo['real_total_amount'] * (empty($configPriceToPoint) ? 100 : $configPriceToPoint['value']));
+        $configPriceToExp = $this->Config_model->get_by(['name' => 'consume_price_to_point']);
+        $exp = floor($orderInfo['real_total_amount'] * (empty($configPriceToExp) ? 10 : $configPriceToExp['value']));
+        $sql = "UPDATE {$this->Order_model->table()} SET commission={$platformPrice}, point={$point}, exp={$exp} WHERE id={$orderInfo['id']}";
+        $this->db->query($sql);
     }
     
-    public function setSellerIncome($sellerInfo, $buyerInfo, $amount, $orderItems)
+    public function setSellerIncome($orderInfo, $sellerInfo, $buyerInfo, $amount, $orderItems)
     {
         $insert[] = [
             'topic' => 2,
@@ -563,7 +576,8 @@ class Income_model extends MY_Model
             'type' => 0,
             'item' => json_encode($orderItems, JSON_UNESCAPED_UNICODE),
             'shop_id' => $sellerInfo['id'],
-            'from_id' => $buyerInfo['id']
+            'from_id' => $buyerInfo['id'],
+            'order_id' => $orderInfo['id'],
         ];
         $this->insert_many($insert);
     }
