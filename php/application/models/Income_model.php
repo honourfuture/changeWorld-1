@@ -28,7 +28,7 @@ class Income_model extends MY_Model
      */
     public function getIncomeSum($user_id, $created_at, $type=0, $where=[])
     {
-    	$created_at = empty($created_at) ? date('Y-m-d H:i:s', 0) : $created_at;
+        $created_at = empty($created_at) ? date('Y-m-d H:i:s', 0) : $created_at;
         $where['created_at >= '] = $created_at;
         //$where['created_at <= '] = date('Y-m-d 23:59:59', strtotime("-1 sunday"));
         $where['created_at <= '] = date('Y-m-d H:i:s', time() - 300);//测试时取到五分钟前的所有收益
@@ -47,12 +47,18 @@ class Income_model extends MY_Model
     public function getIncomes($fields, $where, $order, $per_page, $offset)
     {
         $arrFields = explode(',', trim($fields));
-        $whereFields = [];
+        $queryFields = [];
         foreach ($arrFields as $field){
-            $whereFields[] = 'income.' . $field;
+            $queryFields[] = 'income.' . $field;
         }
-        array_push($whereFields, 'users.nickname');
-        $fields = implode(',', $whereFields);
+        array_push($queryFields, 'users.nickname');
+        $fields = implode(',', $queryFields);
+
+        $arrWhere = [];
+        foreach ($where as $field => $value){
+            $arrWhere[] = 'income.' . $field . $value;
+        }
+        $where = implode('AND ', $arrWhere);
 
         $arrOrders = explode(',', $order);
         $orderFields = [];
@@ -61,7 +67,7 @@ class Income_model extends MY_Model
         }
         $orders = implode(',', $orderFields);
 
-        $sql = "SELECT {$fields} FROM {$this->table()} LEFT JOIN users ON income.from_id = users.id GROUP BY income.from_id, income.item ORDER BY {$orders} ";
+        $sql = "SELECT {$fields} FROM {$this->table()} LEFT JOIN users ON income.from_id = users.id WHERE {$where} GROUP BY income.from_id, income.item ORDER BY {$orders} LIMIT {$offset}, {$per_page} ";
         $query=$this->db->query($sql);
         return $query->result_array();
     }
