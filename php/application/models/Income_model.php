@@ -560,12 +560,14 @@ class Income_model extends MY_Model
         $point = floor($orderInfo['real_total_amount'] * (empty($configPriceToPoint) ? 100 : $configPriceToPoint['value']));
         $configPriceToExp = $this->Config_model->get_by(['name' => 'consume_price_to_point']);
         $exp = floor($orderInfo['real_total_amount'] * (empty($configPriceToExp) ? 10 : $configPriceToExp['value']));
-        $sql = "UPDATE {$this->Order_model->table()} SET commission={$platformPrice}, point={$point}, exp={$exp} WHERE id={$orderInfo['id']}";
+        $sql = "UPDATE `{$this->Order_model->table()}` SET commission={$platformPrice}, point={$point}, exp={$exp} WHERE id={$orderInfo['id']}";
         $this->db->query($sql);
     }
     
     public function setSellerIncome($orderInfo, $sellerInfo, $buyerInfo, $amount, $orderItems)
     {
+    	$configPriceToPoint = $this->Config_model->get_by(['name' => 'income_price_to_point']);
+    	$configPriceToExp = $this->Config_model->get_by(['name' => 'income_price_to_point']);
         $insert[] = [
             'topic' => 2,
             'sub_topic' => 0,
@@ -578,6 +580,8 @@ class Income_model extends MY_Model
             'shop_id' => $sellerInfo['id'],
             'from_id' => $buyerInfo['id'],
             'order_id' => $orderInfo['id'],
+            'point' => floor($amount * (empty($configPriceToPoint) ? 50 : $configPriceToPoint['value'])),
+            'exp' => floor($amount * (empty($configPriceToExp) ? 5 : $configPriceToExp['value'])),
         ];
         $this->insert_many($insert);
     }
