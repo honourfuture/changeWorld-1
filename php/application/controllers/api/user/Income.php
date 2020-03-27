@@ -141,9 +141,19 @@ class Income extends API_Controller {
             $list = $this->Income_model->getIncomes($field, $where, $order_by, $this->per_page, $this->offset);
             if($list){
                 foreach($list as $key=>$item){
-                    $t = json_decode($item['item'], TRUE);
+                    $arrItems = json_decode($item['item'], TRUE);
                     $item['lv_name'] = '';
-                    $item['item'] = $t;
+                    if( is_array($arrItems) && !empty($arrItems)){
+                        $key_first = current(array_keys($arrItems));
+                        if( is_numeric($key_first) ){
+                            $arrItems = [$arrItems];
+                        }
+                        $item['item'] = $arrItems;
+                    }
+                    else{
+                        $item['item'] = [];
+                    }
+
                     $ret['list'][] = $item;
                 }
             }
