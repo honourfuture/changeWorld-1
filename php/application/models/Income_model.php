@@ -31,7 +31,7 @@ class Income_model extends MY_Model
     	$created_at = empty($created_at) ? date('Y-m-d H:i:s', 0) : $created_at;
         $where['created_at >= '] = $created_at;
         //$where['created_at <= '] = date('Y-m-d 23:59:59', strtotime("-1 sunday"));
-        $where['created_at <= '] = date('Y-m-d H:i:s');//测试时取到目前为止的所有收益
+        $where['created_at <= '] = date('Y-m-d H:i:s', time() - 300);//测试时取到五分钟前的所有收益
         $arrIncomes = $this->sum_income_topic_group($user_id, $type, $where);
         return array_sum( array_values( $arrIncomes ) );
     }
