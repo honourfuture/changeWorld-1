@@ -448,6 +448,7 @@ class Income_model extends MY_Model
 
         $this->load->model('Users_model');
         $this->load->model('Order_items_model');
+        $this->load->model('Config_model');
         
         $insert = [];
         $arrUsers = [];
@@ -460,6 +461,19 @@ class Income_model extends MY_Model
         //卖家用户
         $seller_uid = $orderInfo['seller_uid'];
         $userSeller = $this->Users_model->get_by('id', $seller_uid);
+        
+        //平台提成
+        $configCommissioin = $this->Config_model->get_by(['name' => 'distribution_commission']);
+        $platformPrice = round($orderInfo['real_total_amount'] * $configCommissioin['value'] / 100, 2);
+        if($platformPrice > 0){
+            if($this->Config_model->get_by(['name' => 'commission'])){
+                $this->db->set('value', 'value + '.$platformPrice, false);
+                $this->db->where('name', 'commission');
+                $this->db->update($this->Config_model->table());
+            }else{
+                $this->Config_model->insert(['name' => 'commission', 'value' => $price_1, 'remark' => '平台提成']);
+            }
+        }
         
         $orderItems = $this->Order_items_model->getOrderItems($order_id);
         $orderTotalAmount = $orderInfo['real_total_amount'];
@@ -507,7 +521,7 @@ class Income_model extends MY_Model
                 $levelIds[] = $levelUser['rank_rule_id'];
             }
             $sumPrice = array_sum($arrPriceList);
-            $maxPrice = $item['rebate_percent'] / 100 * $item['goods_price'] * 0.99;//扣除1%的服务费为可分佣金额
+            $maxPrice = $item['rebate_percent'] / 100 * $item['goods_price'] - $platformPrice;//扣除服务费后可分佣金额
             if($sumPrice > $maxPrice){
                 $arrPriceList = $this->_rePrice($arrPriceList, $maxPrice, $sumPrice);
             }
