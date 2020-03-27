@@ -467,9 +467,8 @@ class Income_model extends MY_Model
         $platformPrice = round($orderInfo['real_total_amount'] * $configCommissioin['value'] / 100, 2);
         if($platformPrice > 0){
             if($this->Config_model->get_by(['name' => 'commission'])){
-                $this->db->set('value', 'value + '.$platformPrice, false);
-                $this->db->where('name', 'commission');
-                $this->db->update($this->Config_model->table());
+                $sql = "UPDATE {$this->Config_model->table()} SET `value` = `value` + {$platformPrice} WHERE `name`='commission';";
+                $this->db->query($sql);
             }else{
                 $this->Config_model->insert(['name' => 'commission', 'value' => $price_1, 'remark' => '平台提成']);
             }
