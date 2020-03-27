@@ -67,7 +67,7 @@ class Income_model extends MY_Model
         }
         $orders = implode(',', $orderFields);
 
-        $sql = "SELECT {$fields} FROM {$this->table()} LEFT JOIN users ON income.from_id = users.id WHERE {$where} GROUP BY income.from_id, income.item ORDER BY {$orders} LIMIT {$offset}, {$per_page} ";
+        $sql = "SELECT {$fields} FROM {$this->table()} LEFT JOIN users ON income.from_id = users.id WHERE {$where} ORDER BY {$orders} LIMIT {$offset}, {$per_page} ";
         $query=$this->db->query($sql);
         return $query->result_array();
     }
