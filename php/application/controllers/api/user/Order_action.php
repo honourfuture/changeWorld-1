@@ -135,7 +135,7 @@ class Order_action extends API_Controller {
                     $this->AddCalculation($this->order['buyer_uid'], 'per_income', ['price' => $this->order['real_total_amount']]);
                     $this->db->trans_complete();
                     if ($this->db->trans_status() === FALSE){
-                        throw new Exception("事务提交失败" . var_export($order, true));
+                        throw new Exception("事务提交失败" . var_export($this->order, true));
                     }
                     else{
                         $this->ajaxReturn();

@@ -517,7 +517,7 @@ class Income_model extends MY_Model
                     'mobi' => $arrUsers[$userId]['mobi'],
                     'amount' => $price,
                     'type' => 2,
-                    'item' => json_encode($item),
+                    'item' => json_encode($item, JSON_UNESCAPED_UNICODE),
                     'level' => count($levelIds),
                     'shop_id' => $item['seller_uid'],
                     'from_id' => $user['id']
