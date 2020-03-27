@@ -58,7 +58,7 @@ class Income_model extends MY_Model
         foreach ($where as $field => $value){
             $arrWhere[] = (strstr($field, ' ') === false ? "income.{$field} = {$value}" : "income.{$field} {$value}");
         }
-        $where = implode('AND ', $arrWhere);
+        $where = implode(' AND ', $arrWhere);
 
         $arrOrders = explode(',', $order);
         $orderFields = [];
