@@ -99,10 +99,10 @@ class Income extends API_Controller {
 
         if($topic == 2){
             $where['amount >'] = 0;
-            $field = 'id,updated_at,sub_topic,name,mobi,amount,gold,item,level';
+            $field = 'id,updated_at,sub_topic,name,mobi,amount,gold,item,level,user_id,shop_id,from_id';
         }else{
             $where['service_amount >'] = 0;
-            $field = 'id,updated_at,sub_topic,name,mobi,service_amount as amount,gold,item,level';
+            $field = 'id,updated_at,sub_topic,name,mobi,service_amount as amount,gold,item,level,user_id,shop_id,from_id';
         }
 
         $startDate = $this->input->get_post('startDate');
