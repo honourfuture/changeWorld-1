@@ -49,9 +49,9 @@ class Income_model extends MY_Model
         $arrFields = explode(',', trim($fields));
         $queryFields = [];
         foreach ($arrFields as $field){
-            $queryFields[] = 'income.' . $field;
+            $queryFields[] = (strstr($field, '.') === false ? 'income.' . $field : $field);
         }
-        array_push($queryFields, 'users.nickname');
+        array_push($queryFields, 'users.nickname, users.mobi as mobile');
         $fields = implode(',', $queryFields);
 
         $arrWhere = [];
@@ -67,7 +67,7 @@ class Income_model extends MY_Model
         }
         $orders = implode(',', $orderFields);
 
-        $sql = "SELECT {$fields} FROM {$this->table()} LEFT JOIN users ON income.user_id = users.id WHERE {$where} ORDER BY {$orders} LIMIT {$offset}, {$per_page} ";
+        $sql = "SELECT {$fields} FROM {$this->table()} LEFT JOIN users ON income.from_id = users.id WHERE {$where} ORDER BY {$orders} LIMIT {$offset}, {$per_page} ";
         $query=$this->db->query($sql);
         return $query->result_array();
     }
