@@ -66,7 +66,7 @@ class Users_model extends MY_Model
     {
         $user = $this->get($uid);
 
-        if( empty($user) || empty($user['pid']) ){
+        if( empty($user) ){
             return $top;
         }
         $top[] = $user;
