@@ -81,8 +81,10 @@ $config['wechat'] = array(
         'notify_url' => '',
     ],
     'open_platform' => [
-    	'app_id' => 'wx32eccca0c7b0b2d0',
-		'secret' => 'bdacd064ac8e8eb1e0379e304e00af1b',
+    	//'app_id' => 'wx32eccca0c7b0b2d0',
+		//'secret' => 'bdacd064ac8e8eb1e0379e304e00af1b',
+	    'app_id' => 'wx8409706b86b829aa',
+	    'secret' => '707ece43684f5329e6ba1cbaf1fafa08',
     ]
 );
 
