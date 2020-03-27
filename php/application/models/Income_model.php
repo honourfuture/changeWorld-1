@@ -529,10 +529,10 @@ class Income_model extends MY_Model
             $this->Order_items_model->update($item['id'], ['is_income' => 1]);
         }
         //商家收入
-        $this->setSellerIncome($userSeller, $userBuyer, $orderTotalAmount, $orderInfo);        
+        $this->setSellerIncome($userSeller, $userBuyer, $orderTotalAmount, $orderItems);
     }
     
-    public function setSellerIncome($sellerInfo, $buyerInfo, $amount, $orderInfo)
+    public function setSellerIncome($sellerInfo, $buyerInfo, $amount, $orderItems)
     {
         $insert[] = [
             'topic' => 2,
@@ -542,7 +542,7 @@ class Income_model extends MY_Model
             'mobi' => $sellerInfo['mobi'],
             'amount' => $amount,
             'type' => 0,
-            'item' => json_encode($orderInfo, JSON_UNESCAPED_UNICODE),
+            'item' => json_encode($orderItems, JSON_UNESCAPED_UNICODE),
             'shop_id' => $sellerInfo['id'],
             'from_id' => $buyerInfo['id']
         ];
