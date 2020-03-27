@@ -56,7 +56,7 @@ class Income_model extends MY_Model
 
         $arrWhere = [];
         foreach ($where as $field => $value){
-            $arrWhere[] = (strstr($field, ' ') === false ? "income.{$field} = {$value}" : "income.{$field} {$value}");
+            $arrWhere[] = (strstr($field, ' ') === false ? "income.{$field} = '{$value}''" : "income.{$field} '{$value}''");
         }
         $where = implode(' AND ', $arrWhere);
 
