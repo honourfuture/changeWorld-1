@@ -276,7 +276,7 @@ class Order_model extends MY_Model
                 $this->Users_grade_model->log($userId, 'per_income', $exp, $arrOrder['created_at'], ($user['exp'] + $exp));
             }
             //用户会员等级
-            $this->Users_grade_model->upgradeRank($userId, ($user['exp'] + $exp), ($user['point'] + $point));            
+            $this->Users_grade_model->upgradeRank($user, ($user['exp'] + $exp), ($user['point'] + $point));            
         }
         $this->db->trans_complete();
         if ($this->db->trans_status() === FALSE){
