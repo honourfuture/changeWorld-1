@@ -28,16 +28,11 @@ class Users_grade_model extends MY_Model
      */
     public function getUserExpSum($user_id, $start, $end){
         
-        $curosr = $this->db->query(
-                "SELECT SUM(`value`) AS total, is_add FROM users_grade
-                WHERE user_id={$user_id} AND created_at BETWEEN '{$start}' AND '{$end}' AND `deleted` = 0 AND `enable` = 1
-                GROUP BY is_add"
-        )->result_array();
-        $arrExpTotal = ['inc'=>0, 'dec'=>0];
-        foreach ($curosr as $row){
-            $key = ($row['is_add'] == 1 ? 'inc' : 'dec');
-            $arrExpTotal[$key] = $row['total'];
-        }
+        $record = $this->db->query(
+                "SELECT SUM(`value`) AS total FROM users_grade
+                WHERE user_id={$user_id} AND created_at BETWEEN '{$start}' AND '{$end}' AND `deleted` = 0 AND `enable` = 1"
+        )->row_array();
+        $arrExpTotal = ['inc'=>$record['total'], 'dec'=>0];
         $sum = $arrExpTotal['inc'] - $arrExpTotal['dec'];
         return $sum;
     }
