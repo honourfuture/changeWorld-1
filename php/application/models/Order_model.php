@@ -202,7 +202,7 @@ class Order_model extends MY_Model
         $arrRankList = $this->_getRankList();        
         
         //收益积分限制信息
-        $arrPointRule = $this->db->query("SELECT * FROM `point_rule` WHERE `name`='per_income'")->row_array();
+        $arrPointRule = $this->db->query("SELECT * FROM `points_rule` WHERE `name`='per_income'")->row_array();
         //收益经验限制信息
         $arrGradeRule = $this->db->query("SELECT * FROM `grade_rule` WHERE `name`='per_income'")->row_array();
         
@@ -215,7 +215,7 @@ class Order_model extends MY_Model
         $arrReturnedGoodIds = array_keys($arrReturnedGoods);
         
         //取得订单的商品信息
-        $arrOrderItems = $this->db->query("SELECT * FROM order_items WHERE order_id={$order_id}")->result_array();
+        $arrIncomeItems = $this->db->query("SELECT * FROM income WHERE order_id={$order_id}")->result_array();
 
         $arrPoint = [];
         $arrExp = [];
@@ -227,7 +227,7 @@ class Order_model extends MY_Model
         ];
         $arrExpPoint[$arrOrder['buyer_uid']]['point'][] = $arrOrder['point'];
         $arrExpPoint[$arrOrder['buyer_uid']]['exp'][] = $arrOrder['exp'];
-        foreach ($arrOrderItems as $item){
+        foreach ($arrIncomeItems as $item){
             if( in_array($item['goods_id'], $arrReturnedGoodIds) ){
                 continue;
             }
