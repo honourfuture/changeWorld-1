@@ -408,7 +408,7 @@ class Income_model extends MY_Model
         $this->db->update($this->Users_model->table());
     }
     
-    public function income($orderInfo)
+    private function _initIncomeRate()
     {
         //自购比例
         $selfPercent = [
@@ -446,6 +446,28 @@ class Income_model extends MY_Model
             '4' => 0.07,
             '5' => 0.1
         ];
+        return [
+            'selfPercent' => $selfPercent,
+            '$underPercent' => $underPercent,
+            'branch' => $branch,
+            'branchEq' => $branchEq,
+        ];
+    }
+    
+    /**
+     * 佣金计算
+     */
+    public function income($orderInfo)
+    {
+        $arrIncomeRates = $this->_initIncomeRate();
+        //自购比例
+        $selfPercent = $arrIncomeRates['selfPercent'];
+        //直属比例
+        $underPercent = $arrIncomeRates['underPercent'];
+        //下属佣金提成比例(大于)
+        $branch = $arrIncomeRates['branch'];
+        //下属佣金提成比例(等于)
+        $branchEq = $arrIncomeRates['branchEq'];
 
         $this->load->model('Users_model');
         $this->load->model('Order_model');
@@ -463,10 +485,15 @@ class Income_model extends MY_Model
         //卖家用户
         $seller_uid = $orderInfo['seller_uid'];
         $userSeller = $this->Users_model->get_by('id', $seller_uid);
-        
+        //快递费合计
+        $query = $this->db->query("SELECT SUM(freight_fee) AS freight_fee FROM order_items WHERE order_sn='{$orderInfo['order_sn']}'");
+        $row = $query->row_array();
+        $freight_fee = $row['freight_fee'];
+        //订单实付金额(不含快递费)
+        $orderTotalAmount = $orderInfo['real_total_amount']-$freight_fee;
         //平台提成
         $configCommissioin = $this->Config_model->get_by(['name' => 'distribution_commission']);
-        $platformPrice = round($orderInfo['real_total_amount'] * $configCommissioin['value'] / 100, 2);
+        $platformPrice = round($orderTotalAmount * $configCommissioin['value'] / 100, 2);
         if($platformPrice > 0){
             if($this->Config_model->get_by(['name' => 'commission'])){
                 $sql = "UPDATE {$this->Config_model->table()} SET `value` = `value` + {$platformPrice} WHERE `name`='commission';";
@@ -477,7 +504,6 @@ class Income_model extends MY_Model
         }
         
         $orderItems = $this->Order_items_model->getOrderItems($order_id);
-        $orderTotalAmount = $orderInfo['real_total_amount'];
         foreach ($orderItems as $item){
             if( $item['base_percent']<=0 ){
                 continue;
@@ -529,7 +555,7 @@ class Income_model extends MY_Model
             $sumPrice = array_sum($arrPriceList);
             $orderTotalAmount -= ($sumPrice + $platformPrice);
             $configPriceToPoint = $this->Config_model->get_by(['name' => 'income_price_to_point']);
-        	$configPriceToExp = $this->Config_model->get_by(['name' => 'income_price_to_point']);
+            $configPriceToExp = $this->Config_model->get_by(['name' => 'income_price_to_point']);
             foreach ($arrPriceList as $userId=>$price){
                 $this->_setBalance($arrUsers[$userId]['id'], $price);
                 $insert[] = [
@@ -556,6 +582,7 @@ class Income_model extends MY_Model
         }
         //商家收入
         $this->setSellerIncome($orderInfo, $userSeller, $userBuyer, $orderTotalAmount, $orderItems);
+        //卖家消费获得积分及经验
         $configPriceToPoint = $this->Config_model->get_by(['name' => 'consume_price_to_point']);
         $point = floor($orderInfo['real_total_amount'] * (empty($configPriceToPoint) ? 100 : $configPriceToPoint['value']));
         $configPriceToExp = $this->Config_model->get_by(['name' => 'consume_price_to_point']);
@@ -564,10 +591,13 @@ class Income_model extends MY_Model
         $this->db->query($sql);
     }
     
+    /**
+     * 商家收入
+     */
     public function setSellerIncome($orderInfo, $sellerInfo, $buyerInfo, $amount, $orderItems)
     {
-    	$configPriceToPoint = $this->Config_model->get_by(['name' => 'income_price_to_point']);
-    	$configPriceToExp = $this->Config_model->get_by(['name' => 'income_price_to_point']);
+        $configPriceToPoint = $this->Config_model->get_by(['name' => 'income_price_to_point']);
+        $configPriceToExp = $this->Config_model->get_by(['name' => 'income_price_to_point']);
         $insert[] = [
             'topic' => 2,
             'sub_topic' => 0,

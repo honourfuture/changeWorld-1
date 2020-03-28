@@ -19,6 +19,18 @@ class Grade_model extends MY_Model
         parent::__construct();
     }
 
+    /**
+     * 取得经验值对应的等级信息
+     * @param int $exp
+     */
+    public function getExpRank($exp)
+    {
+        $sql = "SELECT * FROM `grade` where `enable`=1 AND grade_demand <= {$exp} order by grade_demand DESC LIMIT 1;";
+        $record = $this->db->query($sql)->row_array();
+        return $record;
+    }
+    
+    
     public function exp_to_grade($exp)
     {
         $ret = ['before_grade_name' => '', 'grade_name' => '', 'after_grade_name' => '', 'diff' => 0, 'exp' => $exp];
