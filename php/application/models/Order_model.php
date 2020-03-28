@@ -228,9 +228,6 @@ class Order_model extends MY_Model
         $arrExpPoint[$arrOrder['buyer_uid']]['point'][] = $arrOrder['point'];
         $arrExpPoint[$arrOrder['buyer_uid']]['exp'][] = $arrOrder['exp'];
         foreach ($arrIncomeItems as $item){
-            if( in_array($item['goods_id'], $arrReturnedGoodIds) ){
-                continue;
-            }
             if( isset($arrExpPoint[$item['user_id']]) ){
                 $userExpPoint = $arrExpPoint[$item['user_id']];
             }
