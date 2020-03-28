@@ -127,7 +127,7 @@ class Order_action extends API_Controller {
                 }
                 $this->db->trans_start();
                 try{
-                	//更新订单状态
+                    //更新订单状态
                     $this->Order_model->update($this->order['id'], ['status' => 4]);
                     //处理消费产生的佣金及积分、经验
                     $this->load->model('Income_model');
@@ -137,17 +137,16 @@ class Order_action extends API_Controller {
                         throw new Exception("事务提交失败" . var_export($this->order, true));
                     }
                     else{
-	                    //处理消费获得的积分、经验
-	                    $this->load->model('_model');
-	                    $this->Order_model->dealIncomeExpPoint($this->user_id, $this->order['id']);
+                        //处理消费获得的积分、经验
+                        $this->Order_model->dealIncomeExpPoint($this->order['buyer_uid'], $this->order['id']);
                     
                         $this->ajaxReturn();
                     }
                 }catch (\Exception $e){
-                	$file = $e->getFile();
-                	$msg = $e->getMessage();
-                	$line = $e->getLine();
-                	$message = "{$file} / {$msg} / {$line}";
+                    $file = $e->getFile();
+                    $msg = $e->getMessage();
+                    $line = $e->getLine();
+                    $message = "{$file} / {$msg} / {$line}";
                     $this->ajaxReturn([], 5, '取消订单操作失败' . $message);
                 }
                 /**

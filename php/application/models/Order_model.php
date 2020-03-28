@@ -166,7 +166,7 @@ class Order_model extends MY_Model
     private function _checkIncomeExpPoint($user_id, $order_id)
     {
         $data = ['flag'=>false, 'order'=>[], 'user'=>[]];
-        if( empty($order_id) || empty($this->user_id) ){
+        if( empty($order_id) || empty($user_id) ){
             return $data;
         }
         //订单信息
