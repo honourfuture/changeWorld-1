@@ -80,7 +80,7 @@ class Users_grade_model extends MY_Model
             }
         }
         //更新用户等级、经验、积分
-        $sql = "UPDATE `users` SET point=point+{$point}, exp=exp+{$exp}, rand_rule_id={$arrGrade['rank_rule_id']}, updated_at='{$nowDatetime}' WHERE id={$user['id']}";
+        $sql = "UPDATE `users` SET point=point+{$point}, exp=exp+{$exp}, rank_rule_id={$arrGrade['rank_rule_id']}, updated_at='{$nowDatetime}' WHERE id={$user['id']}";
         $this->db->query($sql);        
     }
 }
