@@ -448,7 +448,7 @@ class Income_model extends MY_Model
         ];
         return [
             'selfPercent' => $selfPercent,
-            '$underPercent' => $underPercent,
+            'underPercent' => $underPercent,
             'branch' => $branch,
             'branchEq' => $branchEq,
         ];
