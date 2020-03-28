@@ -40,17 +40,15 @@ class Users_grade_model extends MY_Model
     /**
      * 经验日志入库
      */
-    public function log($user_id, $rule_name, $exp, $datetime, $curExp, $is_add=1)
+    public function log($user_id, $rule_name, $exp, $datetime, $curExp)
     {
         //写入积分日志
         $data = array(
                 'user_id'=>$user_id,
                 'rule_name'=>$rule_name,
                 'value' => $exp,
-                'is_add' => $is_add,
                 'created_at' => $datetime,
                 'updated_at' => $datetime,
-                'point' => $curExp,
         );
         $this->db->insert('users_grade', $data);
     }
