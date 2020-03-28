@@ -144,8 +144,7 @@ class Order_action extends API_Controller {
                         $this->ajaxReturn();
                     }
                 }catch (\Exception $e){
-                    log($e->getMessage());
-                    $this->ajaxReturn([], 5, '取消订单操作失败');
+                    $this->ajaxReturn([], 5, '取消订单操作失败' . $e->getMessage());
                 }
                 /**
                 if($this->Order_model->update($this->order['id'], ['status' => 4])){
