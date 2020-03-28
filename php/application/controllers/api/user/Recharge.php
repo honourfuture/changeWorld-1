@@ -134,7 +134,7 @@ class Recharge extends API_Controller {
     protected function alipay($params)
     {
     	$order = [
-    		'subject' => '猪买单充值中心-会员充值',
+    		'subject' => '罗马市场充值中心-会员充值',
             'out_trade_no' => $this->Users_recharge_model->make_order_sn($this->user_id),
             'total_amount' => TEST_PAYMENT ? TEST_PAYMENT * 0.01 : $params['amount'],
     	];
@@ -158,7 +158,7 @@ class Recharge extends API_Controller {
     protected function wechat($params)
     {
     	$order = new Order([
-            'body' => '猪买单充值中心-会员充值',
+            'body' => '罗马市场充值中心-会员充值',
             'out_trade_no' => $this->Users_recharge_model->make_order_sn($this->user_id),
             'total_fee' => TEST_PAYMENT ? TEST_PAYMENT : $params['amount'] * 100,
             'notify_url' => site_url('/api/notify/wechat_recharge'),

@@ -251,7 +251,7 @@ class Order_payment extends API_Controller {
     protected function alipay($trade_type, $trade_sn)
     {
     	$order = [
-    		'subject' => '猪买单订单支付-商品订单消费',
+    		'subject' => '罗马市场订单支付-商品订单消费',
             'out_trade_no' => $trade_sn,
             'total_amount' => TEST_PAYMENT ? TEST_PAYMENT * 0.01 : $this->amount,
             'passback_params' => $trade_type
@@ -268,7 +268,7 @@ class Order_payment extends API_Controller {
     protected function wechat($trade_type, $trade_sn)
     {
     	$order = new Order([
-            'body' => '猪买单订单支付-商品订单消费',
+            'body' => '罗马市场订单支付-商品订单消费',
             'out_trade_no' => $trade_sn,
             'total_fee' => TEST_PAYMENT ? TEST_PAYMENT : $this->amount * 100,
             'notify_url' => site_url('/api/notify/wechat_order_payment'),

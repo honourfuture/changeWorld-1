@@ -216,7 +216,7 @@ class Support extends API_Controller {
     protected function alipay($params)
     {
     	$order = [
-    		'subject' => '猪买单-赞助商转账付款',
+    		'subject' => '罗马市场-赞助商转账付款',
             'out_trade_no' => $this->Users_support_model->make_order_sn($this->user_id),
             'total_amount' => TEST_PAYMENT ? TEST_PAYMENT * 0.01 : $params['pay_money'],
     	];
@@ -243,7 +243,7 @@ class Support extends API_Controller {
     protected function wechat($params)
     {
     	$order = new Order([
-            'body' => '猪买单-赞助商转账付款',
+            'body' => '罗马市场-赞助商转账付款',
             'out_trade_no' => $this->Users_support_model->make_order_sn($this->user_id),
             'total_fee' => TEST_PAYMENT ? TEST_PAYMENT : $params['pay_money'] * 100,
             'notify_url' => site_url('/api/notify/wechat_support'),

@@ -77,8 +77,10 @@ $config['wechat'] = array(
         'file' => APPPATH.'logs'.DIRECTORY_SEPARATOR.'easywechat.log'
     ],
     'payment' => [
-        'merchant_id' => '1501096091',
-        'key' => 'bdacd064ac8e8eb1e0379e304e00af1b',
+        //'merchant_id' => '1501096091',
+        //'key' => 'bdacd064ac8e8eb1e0379e304e00af1b',
+	    'merchant_id' => '1582302151',
+	    'key' => '2ab4d07fba40e2df139eb59e2990a8c4',
         'cert_path' => '',
         'key_path' => '',
         'notify_url' => '',

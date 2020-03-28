@@ -98,7 +98,7 @@ class Sms
             'userid' => '153',
             'timestamp' => date("YmdHis"),
             'mobile' => $mobile,
-            'content' => $content,//'【猪买单平台】您的验证码是：1024。请不要把验证码泄露给其他人，若非本人操作请忽略。',
+            'content' => $content,//'【罗马市场】您的验证码是：1024。请不要把验证码泄露给其他人，若非本人操作请忽略。',
             'sendTime' => '',
             'action' => 'send',
             'extno' => ''

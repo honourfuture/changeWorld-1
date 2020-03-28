@@ -381,7 +381,7 @@ class Payment_log extends API_Controller {
 	protected function wechat($order_sn)
     {
     	$order = new Order([
-            'body' => '猪买单-购买服务',
+            'body' => '罗马市场-购买服务',
             'out_trade_no' => $order_sn,
             'total_fee' => TEST_PAYMENT ? TEST_PAYMENT : $this->row['price'] * 100,
             'notify_url' => site_url('/api/notify/wechat_service_payment'),
@@ -401,7 +401,7 @@ class Payment_log extends API_Controller {
     protected function alipay($order_sn)
     {
     	$order = [
-    		'subject' => '猪买单-购买服务',
+    		'subject' => '罗马市场-购买服务',
             'out_trade_no' => $order_sn,
             'total_amount' => TEST_PAYMENT ? TEST_PAYMENT * 0.01 : $this->row['price']
     	];

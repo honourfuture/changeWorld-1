@@ -310,7 +310,7 @@ class Vip extends API_Controller {
 	protected function wechat($order_sn)
     {
     	$order = new Order([
-            'body' => '猪买单-购买贵族',
+            'body' => '罗马市场-购买贵族',
             'out_trade_no' => $order_sn,
             'total_fee' => TEST_PAYMENT ? TEST_PAYMENT : $this->amount * 100,
             'notify_url' => site_url('/api/notify/wechat_vip_payment'),
@@ -330,7 +330,7 @@ class Vip extends API_Controller {
     protected function alipay($order_sn)
     {
     	$order = [
-    		'subject' => '猪买单-购买贵族',
+    		'subject' => '罗马市场-购买贵族',
             'out_trade_no' => $order_sn,
             'total_amount' => TEST_PAYMENT ? TEST_PAYMENT * 0.01 : $this->amount
     	];
