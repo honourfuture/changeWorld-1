@@ -472,7 +472,7 @@ class Income_model extends MY_Model
                 $sql = "UPDATE {$this->Config_model->table()} SET `value` = `value` + {$platformPrice} WHERE `name`='commission';";
                 $this->db->query($sql);
             }else{
-                $this->Config_model->insert(['name' => 'commission', 'value' => $price_1, 'remark' => '平台提成']);
+                $this->Config_model->insert(['name' => 'commission', 'value' => $platformPrice, 'remark' => '平台提成']);
             }
         }
         
