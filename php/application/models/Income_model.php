@@ -582,7 +582,7 @@ class Income_model extends MY_Model
         }
         //商家收入
         $this->setSellerIncome($orderInfo, $userSeller, $userBuyer, $orderTotalAmount, $orderItems);
-        //卖家消费获得积分及经验
+        //买家消费产生的积分及经验
         $configPriceToPoint = $this->Config_model->get_by(['name' => 'consume_price_to_point']);
         $point = floor($orderInfo['real_total_amount'] * (empty($configPriceToPoint) ? 100 : $configPriceToPoint['value']));
         $configPriceToExp = $this->Config_model->get_by(['name' => 'consume_price_to_point']);
