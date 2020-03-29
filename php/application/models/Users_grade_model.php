@@ -65,7 +65,7 @@ class Users_grade_model extends MY_Model
             if( $user['rank_rule_id'] != 2 ){
                 //通知(极光)
                 $this->load->model('Push_model');
-                $this->Push_model->send($userInfo, $user['nickname'] . '恭喜您升级成功！');
+                $this->Push_model->send($user, $user['nickname'] . '恭喜您升级成功！');
             }
             else{
                 //铂金会员->钻石会员=>需要审核
