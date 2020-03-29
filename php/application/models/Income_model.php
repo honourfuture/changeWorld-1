@@ -555,7 +555,7 @@ class Income_model extends MY_Model
             $sumPrice = array_sum($arrPriceList);
             $orderTotalAmount -= ($sumPrice + $platformPrice);
             $configPriceToPoint = $this->Config_model->get_by(['name' => 'income_price_to_point']);
-            $configPriceToExp = $this->Config_model->get_by(['name' => 'income_price_to_point']);
+            $configPriceToExp = $this->Config_model->get_by(['name' => 'income_price_to_exp']);
             foreach ($arrPriceList as $userId=>$price){
                 $this->_setBalance($arrUsers[$userId]['id'], $price);
                 $insert[] = [
@@ -597,7 +597,7 @@ class Income_model extends MY_Model
     public function setSellerIncome($orderInfo, $sellerInfo, $buyerInfo, $amount, $orderItems)
     {
         $configPriceToPoint = $this->Config_model->get_by(['name' => 'income_price_to_point']);
-        $configPriceToExp = $this->Config_model->get_by(['name' => 'income_price_to_point']);
+        $configPriceToExp = $this->Config_model->get_by(['name' => 'income_price_to_exp']);
         $insert[] = [
             'topic' => 2,
             'sub_topic' => 0,
