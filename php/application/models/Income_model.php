@@ -502,6 +502,9 @@ class Income_model extends MY_Model
                 $this->Config_model->insert(['name' => 'commission', 'value' => $platformPrice, 'remark' => '平台提成']);
             }
         }
+        //每收益的积分/经验
+        $ruleIncomeToPoint = $this->db->query("SELECT * FROM `points_rule` WHERE `name`='per_income'")->row_array();
+        $ruleIncomeToExp = $this->db->query("SELECT * FROM `grade_rule` WHERE `name`='per_income'")->row_array();
         
         $orderItems = $this->Order_items_model->getOrderItems($order_id);
         foreach ($orderItems as $item){
@@ -554,8 +557,6 @@ class Income_model extends MY_Model
             }
             $sumPrice = array_sum($arrPriceList);
             $orderTotalAmount -= ($sumPrice + $platformPrice);
-            $configPriceToPoint = $this->Config_model->get_by(['name' => 'income_price_to_point']);
-            $configPriceToExp = $this->Config_model->get_by(['name' => 'income_price_to_exp']);
             foreach ($arrPriceList as $userId=>$price){
                 $this->_setBalance($arrUsers[$userId]['id'], $price);
                 $insert[] = [
@@ -571,8 +572,8 @@ class Income_model extends MY_Model
                     'shop_id' => $item['seller_uid'],
                     'from_id' => $user['id'],
                     'order_id' => $orderInfo['id'],
-                    'point' => floor($price * (empty($configPriceToPoint) ? 50 : $configPriceToPoint['value'])),
-                    'exp' => floor($price * (empty($configPriceToExp) ? 5 : $configPriceToExp['value'])),
+                    'point' => floor($price * (empty($ruleIncomeToPoint) ? 50 : $ruleIncomeToPoint['value'])),
+                    'exp' => floor($price * (empty($ruleIncomeToExp) ? 5 : $ruleIncomeToExp['value'])),
                 ];
             }
             if($insert){
@@ -580,24 +581,29 @@ class Income_model extends MY_Model
             }
             $this->Order_items_model->update($item['id'], ['is_income' => 1]);
         }
+        $ruleDollarToPoint = $this->db->query("SELECT * FROM `points_rule` WHERE `name`='per_dollar'")->row_array();
+        $ruleDollarToExp = $this->db->query("SELECT * FROM `grade_rule` WHERE `name`='per_dollar'")->row_array();
         //商家收入
-        $this->setSellerIncome($orderInfo, $userSeller, $userBuyer, $orderTotalAmount, $orderItems);
+        $this->setSellerIncome($orderInfo, $userSeller, $userBuyer, $orderTotalAmount, $orderItems, $ruleIncomeToPoint, $ruleIncomeToExp);
         //买家消费产生的积分及经验
-        $configPriceToPoint = $this->Config_model->get_by(['name' => 'consume_price_to_point']);
-        $point = floor($orderInfo['real_total_amount'] * (empty($configPriceToPoint) ? 100 : $configPriceToPoint['value']));
-        $configPriceToExp = $this->Config_model->get_by(['name' => 'consume_price_to_point']);
-        $exp = floor($orderInfo['real_total_amount'] * (empty($configPriceToExp) ? 10 : $configPriceToExp['value']));
+        $point = floor($orderInfo['real_total_amount'] * (empty($ruleDollarToPoint) ? 100 : $ruleDollarToPoint['value']));
+        $exp = floor($orderInfo['real_total_amount'] * (empty($ruleDollarToExp) ? 10 : $ruleDollarToExp['value']));
         $sql = "UPDATE `{$this->Order_model->table()}` SET commission={$platformPrice}, point={$point}, exp={$exp} WHERE id={$orderInfo['id']}";
         $this->db->query($sql);
+        if( isset($arrPriceList[$seller_uid]) ){
+            $arrPriceList[$seller_uid] += $orderTotalAmount;
+        }
+        else{
+            $arrPriceList[$seller_uid] = $orderTotalAmount;
+        }
+        return $arrPriceList;
     }
     
     /**
      * 商家收入
      */
-    public function setSellerIncome($orderInfo, $sellerInfo, $buyerInfo, $amount, $orderItems)
+    public function setSellerIncome($orderInfo, $sellerInfo, $buyerInfo, $amount, $orderItems, $ruleIncomeToPoint, $ruleIncomeToExp)
     {
-        $configPriceToPoint = $this->Config_model->get_by(['name' => 'income_price_to_point']);
-        $configPriceToExp = $this->Config_model->get_by(['name' => 'income_price_to_exp']);
         $insert[] = [
             'topic' => 2,
             'sub_topic' => 0,
@@ -610,8 +616,8 @@ class Income_model extends MY_Model
             'shop_id' => $sellerInfo['id'],
             'from_id' => $buyerInfo['id'],
             'order_id' => $orderInfo['id'],
-            'point' => floor($amount * (empty($configPriceToPoint) ? 50 : $configPriceToPoint['value'])),
-            'exp' => floor($amount * (empty($configPriceToExp) ? 5 : $configPriceToExp['value'])),
+            'point' => floor($amount * (empty($ruleIncomeToPoint) ? 50 : $ruleIncomeToPoint['value'])),
+            'exp' => floor($amount * (empty($ruleIncomeToExp) ? 5 : $ruleIncomeToExp['value'])),
         ];
         $this->insert_many($insert);
     }

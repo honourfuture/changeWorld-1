@@ -131,15 +131,19 @@ class Order_action extends API_Controller {
                     $this->Order_model->update($this->order['id'], ['status' => 4]);
                     //处理消费产生的佣金及积分、经验
                     $this->load->model('Income_model');
-                    $this->Income_model->income($this->order);
+                    $arrPriceList = $this->Income_model->income($this->order);
                     $this->db->trans_complete();
                     if ($this->db->trans_status() === FALSE){
                         throw new Exception("事务提交失败" . var_export($this->order, true));
                     }
                     else{
                         //处理消费获得的积分、经验
-                        $this->Order_model->dealIncomeExpPoint($this->order['buyer_uid'], $this->order['id']);
-                    
+                        //$this->Order_model->dealIncomeExpPoint($this->order['buyer_uid'], $this->order['id']);
+                        //商品评论 增加积分
+                        $this->checkCalculation('per_income', true, true);
+                        foreach ($arrPriceList as $userId => $price){
+                            $this->AddCalculation($userId, 'per_income', ['price'=>$price]);
+                        }
                         $this->ajaxReturn();
                     }
                 }catch (\Exception $e){

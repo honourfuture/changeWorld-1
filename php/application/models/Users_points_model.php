@@ -57,7 +57,7 @@ class Users_points_model extends MY_Model
                 'created_at' => $datetime,
                 'updated_at' => $datetime,
                 'point' => $curPoint,
-        		'remark' => '每元收益',
+                'remark' => '每元收益',
         );
         $this->db->insert('users_points', $data);
     }
