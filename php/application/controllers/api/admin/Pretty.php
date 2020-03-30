@@ -186,6 +186,8 @@ class Pretty extends API_Controller {
 				$this->ajaxReturn([], 1, '已售卖靓号禁止编辑');
 			}
 			$this->check_params('edit', $params);
+			$this->load->model('Config_model');
+			$config = $this->db->select('*')->where('name', 'point_to_price')->get($this->Config_model->table())->row_array();
 			$this->setPrettyInfo($params);
 			if($params['deleted'] == 1){
 				$update = array('deleted' => 1, 'enable' => 0);
@@ -214,6 +216,7 @@ class Pretty extends API_Controller {
 				$id = $flag;
 			}
 		}
+		$point = floor($params['price'] * $config['value']);
 
 		if($flag){
 			$status = 0;
@@ -222,7 +225,7 @@ class Pretty extends API_Controller {
 			$status = 1;
 			$message = '失败';
 		}
-		$this->ajaxReturn(array('id' => $id), $status, '操作'.$message);
+		$this->ajaxReturn(array('id' => $id, 'point'=>$point), $status, '操作'.$message);
 	}
 
 	protected function setPrettyInfo(&$params = array())
