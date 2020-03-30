@@ -218,7 +218,7 @@ class User extends API_Controller {
                 //当前用户的直属上/下级用户
                 $user['parent'] = '-';
                 $user['son'] = '-';
-                $arrRelation = $this->Users_model->getNearByUser($user['id']);
+                $arrRelation = $this->Users_model->getNearByUser($user['id'], $user['pid']);
                 if( isset($arrRelation[$user['pid']]) ){
                     $user['parent'] = $arrRelation[$user['pid']]['nickname'];
                     unset($arrRelation[$user['pid']]);
