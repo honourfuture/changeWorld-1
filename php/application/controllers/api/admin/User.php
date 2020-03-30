@@ -201,7 +201,7 @@ class User extends API_Controller {
 		$user_id = $this->input->get_post('user_id');
 		$mobile = $this->input->get_post('mobile');
 		try{
-			$ret['data'] = $this->User_model->getUserRelationship($user_id, $mobile);
+			$ret['data'] = $this->Users_model->getUserRelationship($user_id, $mobile, $this->per_page, $this->offset);
 			$ret['status'] = 0;
 			$ret['message'] = 'success';
 		}

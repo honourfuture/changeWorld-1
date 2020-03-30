@@ -182,4 +182,47 @@ class Order extends API_Controller {
 				break;
 		}
 	}
+	
+	/**
+	 * 分销数据统计
+	 */
+	public function distribution()
+	{
+		$ret = ['data' => [], 'status' => -1, 'message'=>'fail'];
+		
+		$where = [];
+		$order_sn = $this->input->get_post('order_sn');
+		$user_id = $this->input->get_post('user_id');
+		if($order_sn){
+			$where['order_sn'] = $order_sn;
+		}
+		if($user_id){
+			$where['user_id'] = $user_id;
+		}
+		$where['`status`>='] = 4;//4-待评论、5-已经完成、6-已结束
+		
+		$order_by = array('id' => 'desc');
+		$count = $this->Order_model->count_by($where);
+		if( empty($ret['count']) ){
+			$this->ajaxReturn($ret);
+		}
+		
+		$this->db->select('id,created_at,updated_at,status,order_sn,seller_uid,total_amount,real_total_amount,buyer_uid');
+		$ret['list'] = $this->Order_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
+	
+		$a_uid = [];
+		foreach($ret['list'] as $item){
+			$a_uid[] = $item['seller_uid'];
+			$a_uid[] = $item['buyer_uid'];
+		}
+		$k_user = [];
+		$this->load->model('Users_model');
+		$this->db->select('id,mobi,header,nickname,v,exp,sex,balance,point,gold');
+		$users = $this->Users_model->get_many($a_uid);
+		foreach($users as $item){
+			$ret['user'][$item['id']] = $item;
+		}
+		
+		$this->ajaxReturn($ret);
+	}
 }

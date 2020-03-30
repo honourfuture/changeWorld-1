@@ -338,11 +338,11 @@ class Users_model extends MY_Model
      * 取得用户分销关系
      * @param int $user_id
      */
-    public function getUserRelationship($id='', $mobile='')
+    public function getUserRelationship($id='', $mobile='', $per_page, $offset)
     {
         $data = ['count'=>0, 'list'=>[]];
         $fields = "created_at, mobi, account, header, nickname, v, anchor, seller, pid, sex, birth, pretty_id, is_hot";
-        $query = $this->db->select($fields)->get($this->table())->where('robot', 0)->order_by(['created_at' => 'desc']);
+        $query = $this->db->select($fields)->get($this->table())->where('robot', 0)->limit($per_page, $offset)->order_by(['created_at' => 'desc']);
         if( $id ){
             $query = $query->where('id', $id);
         }
