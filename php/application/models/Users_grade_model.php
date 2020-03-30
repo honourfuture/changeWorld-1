@@ -66,6 +66,8 @@ class Users_grade_model extends MY_Model
                 //通知(极光)
                 $this->load->model('Push_model');
                 $this->Push_model->send($user, $user['nickname'] . '恭喜您升级成功！');
+                //更新用户等级、经验、积分
+                $sql = "UPDATE `users` SET point=point+{$point}, exp=exp+{$exp}, rank_rule_id={$arrGrade['rank_rule_id']}, updated_at='{$nowDatetime}' WHERE id={$user['id']}";
             }
             else{
                 //铂金会员->钻石会员=>需要审核
@@ -77,10 +79,14 @@ class Users_grade_model extends MY_Model
                     'created_at' => $nowDatetime
                 ];
                 $this->db->insert('users_rank_rule_verify', $arrVerify);
+                //更新用户等级、经验、积分
+                $sql = "UPDATE `users` SET point=point+{$point}, exp=exp+{$exp}, updated_at='{$nowDatetime}' WHERE id={$user['id']}";
             }
         }
-        //更新用户等级、经验、积分
-        $sql = "UPDATE `users` SET point=point+{$point}, exp=exp+{$exp}, rank_rule_id={$arrGrade['rank_rule_id']}, updated_at='{$nowDatetime}' WHERE id={$user['id']}";
+        else{
+            //更新用户等级、经验、积分
+            $sql = "UPDATE `users` SET point=point+{$point}, exp=exp+{$exp}, updated_at='{$nowDatetime}' WHERE id={$user['id']}";
+        }
         $this->db->query($sql);        
     }
 }
