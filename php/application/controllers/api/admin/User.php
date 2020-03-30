@@ -211,7 +211,7 @@ class User extends API_Controller {
             if( empty($ret['count']) ){
                 $this->ajaxReturn($ret);
             }
-            $this->db->select('id,created_at,updated_at,mobi,account,header,nickname,v,anchor,seller,exp,reg_ip,balance,point,gold,headhunter,reward_point,enable');
+            $this->db->select('id, pid, created_at,updated_at,mobi,account,header,nickname,v,anchor,seller,exp,reg_ip,balance,point,gold,headhunter,reward_point,enable');
             $this->search();
             $list = $this->Users_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
             foreach($list as $k=>$user){
