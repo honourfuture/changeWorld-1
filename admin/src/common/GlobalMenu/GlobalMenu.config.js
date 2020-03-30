@@ -238,7 +238,7 @@ const menuData = [
 
     {
         name: "数据统计",
-        icon: "pie-chart",
+        icon: "line-chart",
         path: "analysis",
         children: [
             // {
@@ -247,11 +247,11 @@ const menuData = [
             // },
             {
                 name: "分销数据统计",
-                path: "AnalysisDistribution"
+                path: "Distribution"
             },
             {
-                name: "用户数据统计",
-                path: "AnalysisUsers"
+                name: "团队数据统计",
+                path: "TeamUsers"
             }
         ]
     },
