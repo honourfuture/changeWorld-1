@@ -201,7 +201,29 @@ class User extends API_Controller {
 		$user_id = $this->input->get_post('user_id');
 		$mobile = $this->input->get_post('mobile');
 		try{
-			$ret['data'] = $this->Users_model->getUserRelationship($user_id, $mobile, $this->per_page, $this->offset);
+			$order_by = array('id' => 'desc');
+			$this->search();
+			$ret['count'] = $this->Users_model->count_by($where);
+			if( empty($ret['count']) ){
+				$this->ajaxReturn($ret);
+			}
+			$this->db->select('id,created_at,updated_at,mobi,account,header,nickname,v,anchor,seller,exp,reg_ip,balance,point,gold,headhunter,reward_point,enable');
+			$this->search();
+			$list = $this->Users_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
+			foreach($list as $k=>$user){
+				//当前用户的直属上/下级用户
+				$user['parent'] = [];
+				$user['son'] = [];
+				$arrRelation = $this->Users_model->getNearByUser($user['id']);
+				if( isset($arrRelation[$user['pid']]) ){
+					$user['parent'] = $arrRelation[$user['pid']];
+					unset($arrRelation[$user['pid']]);
+				}
+				if( !empty($arrRelation) ){
+					$user['son'] = current($arrRelation);
+				}
+				$ret['data'][] = $user;
+			}
 			$ret['status'] = 0;
 			$ret['message'] = 'success';
 		}

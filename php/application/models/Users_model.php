@@ -306,12 +306,12 @@ class Users_model extends MY_Model
     /**
      * 取得直属上/下级用户
      */
-    private function _getNearByUser($user_id, $fields = '*')
+    public function getNearByUser($user_id)
     {
-        if( empty($userIds) ){
+    	$fields = 'created_at, mobi, account, header, nickname, v, anchor, seller, pid, sex, birth, pretty_id, is_hot';
+        if( empty($user_id) ){
             return [];
         }
-        $whereUserId = implode(',', $userIds);
         $cursor = $this->db->where('id', $user_id)->or_where('pid', $user_id)->select($fields)->get($this->table())->result_array();
         $arrUserNearby = [];
         foreach($cursor as $k=>$v){
@@ -334,45 +334,4 @@ class Users_model extends MY_Model
         return $this->getSons($user['id'], $sons);
     }
     
-    /**
-     * 取得用户分销关系
-     * @param int $user_id
-     */
-    public function getUserRelationship($id='', $mobile='', $per_page, $offset)
-    {
-        $data = ['count'=>0, 'list'=>[]];
-        $fields = "created_at, mobi, account, header, nickname, v, anchor, seller, pid, sex, birth, pretty_id, is_hot";
-        $query = $this->db->select($fields)->get($this->table())->where('robot', 0)->limit($offset, $per_page)->order_by(['id' => 'desc']);
-        if( $id ){
-            $query = $query->where('id', $id);
-        }
-        if( $mobile ){
-            $query->where('mobi', $mobile);
-        }
-        $queryCount = $query;
-        $data['count'] = $queryCount->count_all();
-        
-        $cursor = $query->result_array();
-        $arrUsers = [];
-        foreach ($cursor as $k=>$user){
-            //当前用户的直属上/下级用户
-            $user['parent'] = [];
-            $user['son'] = [];
-            $arrRelation = $this->_getNearByUser($user['id'], $fields);
-            if( isset($arrRelation[$v['pid']]) ){
-                $user['parent'] = $arrRelation[$v['pid']];
-                unset($arrRelation[$v['pid']]);
-            }
-            if( !empty($arrRelation) ){
-                $user['son'] = current($arrRelation);
-            }
-            //下级总人数
-            $arrSons = $this->getSons($user['id']);
-            $user['sons_count'] = count($arrSons);
-            $user['sons_list'] = $arrSons;
-            $arrUsers[$user['id']] = $user;
-        }
-        $data['list'] = $arrUsers;
-        return $data;        
-    }
 }
