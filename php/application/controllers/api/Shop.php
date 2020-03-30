@@ -299,6 +299,14 @@ class Shop extends API_Controller {
 			$this->db->group_end();
 		}
 		$this->db->select('id,pretty_id,price,point');
-		return $this->Pretty_model->order_by($order_by)->get_many_by($where);//->limit($this->per_page, $this->offset)
+		$cursor = $this->Pretty_model->order_by($order_by)->get_many_by($where);//->limit($this->per_page, $this->offset)
+		$arrList = [];
+		$this->load->model('Config_model');
+		$config = $this->db->select('*')->where('name', 'point_to_price')->get($this->Config_model->table())->row_array();
+		foreach($cursor as $k=>$v){
+			$v['point'] = $v['point'] * $config['value'];
+			$arrList[] = $v;
+		}
+		return $arrList;
 	}
 }
