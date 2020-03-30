@@ -202,8 +202,8 @@ class Users_rank_rule_verify extends API_Controller {
                 $message = '操作成功';
                 $code = 0;
                 //通知(极光)
-                $this->load->model('Push_model');
-                $this->Push_model->send($userInfo, '恭喜您升级成功！');
+                //$this->load->model('Push_model');
+                //$this->Push_model->send($userInfo, '恭喜您升级成功！');
             }
         }
         catch (\Exception $e){
