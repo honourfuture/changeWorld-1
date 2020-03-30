@@ -342,7 +342,7 @@ class Users_model extends MY_Model
     {
         $data = ['count'=>0, 'list'=>[]];
         $fields = "created_at, mobi, account, header, nickname, v, anchor, seller, pid, sex, birth, pretty_id, is_hot";
-        $query = $this->db->select($fields)->get($this->table())->where('robot', 0)->limit($per_page, $offset)->order_by(['created_at' => 'desc']);
+        $query = $this->db->select($fields)->get($this->table())->where('robot', 0)->limit($offset, $per_page)->order_by(['id' => 'desc']);
         if( $id ){
             $query = $query->where('id', $id);
         }
