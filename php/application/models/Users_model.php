@@ -308,7 +308,7 @@ class Users_model extends MY_Model
      */
     public function getNearByUser($user_id)
     {
-        $fields = 'created_at, mobi, account, header, nickname, v, anchor, seller, pid, sex, birth, pretty_id, is_hot';
+        $fields = 'id, created_at, mobi, account, header, nickname, v, anchor, seller, pid, sex, birth, pretty_id, is_hot';
         if( empty($user_id) ){
             return [];
         }
