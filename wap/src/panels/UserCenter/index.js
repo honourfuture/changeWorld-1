@@ -10,8 +10,8 @@ const orderSatus = [
     { title: "待发货", key: 2, img: userCenter.dfhIco },
     { title: "待收货", key: 3, img: userCenter.dshIco },
     { title: "待评价", key: 4, img: userCenter.dpjIco },
-    { title: "已完成", key: 5, img: userCenter.ywcIco },
-    { title: "退货", key: -2, img: userCenter.thIco }
+    { title: "已完成", key: 5, img: userCenter.ywcIco }
+    //{ title: "退货", key: -2, img: userCenter.thIco }
 ];
 export default class UserCenter extends BaseComponent {
     store = { data: {}, user_id: "" };

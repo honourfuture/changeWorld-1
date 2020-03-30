@@ -463,7 +463,7 @@ export default class GoodsDetail extends BaseComponent {
                             style={{ marginRight: "16px" }}
                             alt=""
                         />,
-                        <span>{cardTotal}</span>,
+                        <span className="cart-num">{cardTotal}</span>,
                         <img
                             onClick={this.onShare}
                             key="1"

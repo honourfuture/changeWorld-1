@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { action } from "mobx";
 import { BaseComponent, Base ,Global} from "../../common";
 import { List, NavBar, Flex, ListView, PullToRefresh } from "antd-mobile";
-import "./MessageCenter.less";
+import "./MessAgeCenter.less";
 import { icon } from "../../images";
 
 const Item = List.Item;

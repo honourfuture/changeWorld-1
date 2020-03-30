@@ -235,6 +235,26 @@ const menuData = [
             }
         ]
     },
+
+    {
+        name: "数据统计",
+        icon: "pie-chart",
+        path: "analysis",
+        children: [
+            // {
+            //     name: "充值优惠",
+            //     path: "RechargeManager"
+            // },
+            {
+                name: "分销数据统计",
+                path: "AnalysisDistribution"
+            },
+            {
+                name: "用户数据统计",
+                path: "AnalysisUsers"
+            }
+        ]
+    },
     // {
     //     name: '促销',
     //     icon: 'tag-o',

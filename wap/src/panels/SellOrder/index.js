@@ -366,8 +366,8 @@ export default class SellOrder extends BaseComponent {
             "待发货",
             "待收货",
             "待评价",
-            "已完成",
-            "退货/退款"
+            "已完成"
+            //"退货/退款"
         ];
         const tabs = tabNames.map(item => {
             return { title: item };

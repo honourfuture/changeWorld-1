@@ -165,13 +165,15 @@ class OrderBtnItem extends BaseComponent {
                 );
                 break;
             case 2: //代发货
+            	/**
+                {
+                    label:'退款/退货',
+                    onPress:() => {Base.push("AfterMarket", { id: id })}
+                },
+            	 */
                 btns = (
                     <OrderBtn
                         btns={[
-                            {
-                                label:'退款/退货',
-                                onPress:() => {Base.push("AfterMarket", { id: id })}
-                            },
                             {
                                 label:'联系商家',
                                 // onPress:() => {Base.pushApp("openChatView", seller_uid)}
@@ -182,6 +184,12 @@ class OrderBtnItem extends BaseComponent {
                 );
                 break;
             case 3: //待收货
+            	/**
+	            {
+	                label:'退款/退货',
+	                onPress:() => {Base.push("AfterMarket", { id: id })}
+	            },
+	            */
                 btns = (
                     <OrderBtn
                         btns={[
@@ -194,10 +202,6 @@ class OrderBtnItem extends BaseComponent {
                                 onPress:() => {this.goods_confirm(id)}
                             },
                             {
-                                label:'退款/退货',
-                                onPress:() => {Base.push("AfterMarket", { id: id })}
-                            },
-                            {
                                 label:'联系商家',
                                 onPress:() => {Base.pushApp("openChatView", JSON.stringify(user))}
                             }
@@ -206,16 +210,18 @@ class OrderBtnItem extends BaseComponent {
                 );
                 break;
             case 4: //待评价
+            	/**
+	            {
+	                label:'退款/退货',
+	                onPress:() => {Base.push("AfterMarket", { id: id })}
+	            },
+	            */
                 btns = (
                     <OrderBtn
                         btns={[
                             {
                                 label:'评价订单',
                                 onPress:() => {Base.push("EvaluateOrder", { id: id })}
-                            },
-                            {
-                                label:'退款/退货',
-                                onPress:() => {Base.push("AfterMarket", { id: id })}
                             },
                             {
                                 label:'联系商家',
@@ -226,16 +232,18 @@ class OrderBtnItem extends BaseComponent {
                 );
                 break;
             case 5: //完成
+            	/**
+            	 ,{
+                    label:'退款/退货',
+                    onPress:() => {Base.push("AfterMarket", { id: id })}
+                }
+            	 */
                 btns = (
                     <OrderBtn
                         btns={[
                             {
                                 label:'申请发票',
                                 onPress:() => {Base.push("ApplyInvoice", { id: id })}
-                            },
-                            {
-                                label:'退款/退货',
-                                onPress:() => {Base.push("AfterMarket", { id: id })}
                             }
                         ]}
                     />
