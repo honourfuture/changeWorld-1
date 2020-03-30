@@ -304,7 +304,7 @@ class Shop extends API_Controller {
 		$this->load->model('Config_model');
 		$config = $this->db->select('*')->where('name', 'point_to_price')->get($this->Config_model->table())->row_array();
 		foreach($cursor as $k=>$v){
-			$v['point'] = $v['point'] * $config['value'];
+			$v['point'] = floor($v['price'] * $config['value']);
 			$arrList[] = $v;
 		}
 		return $arrList;
