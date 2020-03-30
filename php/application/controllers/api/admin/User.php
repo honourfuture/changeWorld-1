@@ -216,16 +216,19 @@ class User extends API_Controller {
             $list = $this->Users_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
             foreach($list as $k=>$user){
                 //当前用户的直属上/下级用户
-                $user['parent'] = [];
-                $user['son'] = [];
+                $user['parent'] = '-';
+                $user['son'] = '-';
                 $arrRelation = $this->Users_model->getNearByUser($user['id']);
                 if( isset($arrRelation[$user['pid']]) ){
-                    $user['parent'] = $arrRelation[$user['pid']];
+                    $user['parent'] = $arrRelation[$user['pid']]['nickname'];
                     unset($arrRelation[$user['pid']]);
                 }
                 if( !empty($arrRelation) ){
-                    $user['son'] = current($arrRelation);
+                    $son = current($arrRelation);
+                    $user['son'] = $son['nickname'];
                 }
+                $user['sons'] = $this->Users_model->getSons($user['id']);
+                $user['sons_count'] = count($user['sons']);
                 $ret['list'][] = $user;
             }
             $ret['status'] = 0;
