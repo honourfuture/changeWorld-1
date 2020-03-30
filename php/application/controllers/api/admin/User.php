@@ -196,7 +196,7 @@ class User extends API_Controller {
      */
     public function team()
     {
-        $ret = ['data' => '', 'status'=>-100, 'message'=>'未知错误'];
+        $ret = ['data' => [], 'status'=>-100, 'message'=>'未知错误'];
         
         $user_id = $this->input->get_post('user_id');
         $mobile = $this->input->get_post('mobile');
