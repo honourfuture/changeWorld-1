@@ -91,14 +91,14 @@ class VanityItem extends BaseComponent {
                     {numLast}
                 </div>
                 <div className="listItem-price">
-                    一口价：<em>￥{price}</em>
+	              <div className="listItem-price-item"><em><img src={icon.coin} alt=''/> {point}</em></div>
+	              <div className="listItem-price-item"><em>￥{price}</em></div>
                 </div>
             </div>
         );
     }
 }
-//<div className="listItem-price-item"><em><img src={icon.coin} alt=''/>{point}</em></div>
-//<div className="listItem-price-item"><em>￥{price}</em></div>
+
 
 export class Vanity extends BaseComponent {
     store = {

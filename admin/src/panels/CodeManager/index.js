@@ -70,7 +70,7 @@ export default class CodeManager extends BaseComponent {
                 dataIndex: "point",
                 width: "12%",
                 render: (text, record) =>
-                    this.renderInput(text, record, "point")
+            		this.renderText(text, record, "point")
             },
             {
                 title: "启用",
@@ -339,6 +339,7 @@ export default class CodeManager extends BaseComponent {
                 );
                 itemData.id === 0 && (itemData.id = res.data.id);
                 itemData.price = Base.getNumFormat(itemData.price);
+                itemData.point = res.data.point;
                 this.store.list = list;
                 this.cacheData = list.map(item => ({ ...item }));
             },
