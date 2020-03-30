@@ -167,7 +167,7 @@ class Users_rank_rule_verify extends API_Controller {
         }
         $user_id = $info['user_id'];
         $this->load->model('Users_model');
-        $userInfo = $this->db->select('*')->get($this->Users_model->table())->row_array();
+        $userInfo = $this->db->select('*')->where('id', $user_id)->get($this->Users_model->table())->row_array();
         if( empty($userInfo) ){
             $this->ajaxReturn($ret, -1, "用户不存在");
         }
@@ -202,8 +202,8 @@ class Users_rank_rule_verify extends API_Controller {
                 $message = '操作成功';
                 $code = 0;
                 //通知(极光)
-                //$this->load->model('Push_model');
-                //$this->Push_model->send($userInfo, '恭喜您升级成功！');
+                $this->load->model('Push_model');
+                $this->Push_model->send($userInfo, '恭喜您升级成功！');
             }
         }
         catch (\Exception $e){
