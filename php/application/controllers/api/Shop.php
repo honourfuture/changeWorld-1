@@ -298,7 +298,7 @@ class Shop extends API_Controller {
 			$this->db->like('pretty_id', $this->keyword);
 			$this->db->group_end();
 		}
-		$this->db->select('id,pretty_id,price');
+		$this->db->select('id,pretty_id,price,point');
 		return $this->Pretty_model->order_by($order_by)->get_many_by($where);//->limit($this->per_page, $this->offset)
 	}
 }

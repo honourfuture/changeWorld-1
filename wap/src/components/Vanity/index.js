@@ -2,6 +2,7 @@ import React from "react";
 import { action } from "mobx";
 import { BaseComponent, NetImg, Base } from "../../common";
 import { Flex, Tabs, Carousel } from "antd-mobile";
+import {icon} from '../../images';
 import "./Vanity.less";
 
 const Utils = {
@@ -78,7 +79,7 @@ class VanityItem extends BaseComponent {
         Base.push("Pay", { pretty_id, id, isPretty: 1 });
     }
     render() {
-        const { pretty_id, price } = this.props;
+        const { pretty_id, price, point } = this.props;
         const numRed = pretty_id.toString().slice(0, 4);
         const numLast = pretty_id
             .toString()
@@ -90,7 +91,8 @@ class VanityItem extends BaseComponent {
                     {numLast}
                 </div>
                 <div className="listItem-price">
-                    一口价：<em>￥{price}</em>
+                    <div className="listItem-price-item"><em><img src={icon.coin} alt=''/>{point}</em></div>
+                    <div className="listItem-price-item"><em>￥{price}</em></div>
                 </div>
             </div>
         );

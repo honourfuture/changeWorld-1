@@ -16,7 +16,8 @@ export const icon = {
     ios: require("./icon/ios.png"),
     android: require("./icon/android.png"),
     chat: require("./icon/chat.png"),
-    addImg: require("./icon/addImg.png")
+    addImg: require("./icon/addImg.png"),
+    coin: require("./icon/coin.png")
 };
 
 export const addr = {
