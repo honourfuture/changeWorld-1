@@ -306,13 +306,13 @@ class Users_model extends MY_Model
     /**
      * 取得直属上/下级用户
      */
-    public function getNearByUser($user_id)
+    public function getNearByUser($user_id, $parent_id)
     {
         $fields = 'id, created_at, mobi, account, header, nickname, v, anchor, seller, pid, sex, birth, pretty_id, is_hot';
         if( empty($user_id) ){
             return [];
         }
-        $cursor = $this->db->where('id', $user_id)->or_where('pid', $user_id)->select($fields)->get($this->table())->result_array();
+        $cursor = $this->db->where('id', $parent_id)->or_where('pid', $user_id)->select($fields)->get($this->table())->result_array();
         $arrUserNearby = [];
         foreach($cursor as $k=>$v){
             $arrUserNearby[$v['id']] = $v;
