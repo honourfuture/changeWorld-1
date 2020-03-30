@@ -196,7 +196,7 @@ class Users_rank_rule_verify extends API_Controller {
             }
             $this->db->trans_complete();
             if ($this->db->trans_status() === FALSE){
-                throw new Exception("事务提交失败" . var_export($info, true));
+                throw new \Exception("事务提交失败" . var_export($info, true));
             }
             else{
                 $message = '操作成功';
