@@ -168,8 +168,12 @@ class Users_rank_rule_verify extends API_Controller {
         $user_id = $info['user_id'];
         $this->load->model('Users_model');
         $userInfo = $this->db->select('*')->get($this->Users_model->table())->row_array();
+        if( empty($userInfo) ){
+            $this->ajaxReturn($ret, -1, "用户不存在");
+        }
         $this->db->trans_start();
         try{
+            /**
             if($status == 2){
                 $this->Users_model->update($user_id,['rank_rule_id'=>$info['to']]);
                 $this->Users_rank_rule_verify_model->update($info['id'],[
@@ -180,6 +184,15 @@ class Users_rank_rule_verify extends API_Controller {
                 $this->Users_rank_rule_verify_model->update($info['id'],[
                     'status'=>$status
                 ]);
+            }
+            */
+            $datetime = date('Y-m-d H:i:s');
+            if($status == 2) {
+                $this->db->query("UPDATE users SET rank_rule_id={$info['to']},updated_at='{$datetime}' WHERE id={$user_id}");
+                $this->db->query("UPDATE users_rank_rule_verify SET status=2,updated_at='{$datetime}' WHERE id={$info['id']}");
+            }
+            else{
+                $this->db->query("UPDATE users_rank_rule_verify SET status={$status}, updated_at='{$datetime}' WHERE id={$info['id']}");
             }
             $this->db->trans_complete();
             if ($this->db->trans_status() === FALSE){
