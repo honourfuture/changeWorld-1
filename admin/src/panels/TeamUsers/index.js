@@ -205,14 +205,6 @@ export default class TeamUsers extends BaseComponent {
                         总数：
                         {total}
                     </span>
-                    {ids.length > 0 ? (
-                        <Button
-                            style={{ float: "right" }}
-                            onClick={this.onChat}
-                        >
-                            发起聊天
-                        </Button>
-                    ) : null}
                 </div>
                 <Table
                     rowSelection={ids.length > 0 ? this.rowSelection : null}

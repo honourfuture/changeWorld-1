@@ -117,8 +117,10 @@ $config['kuaidi100'] = [
 
 // 极光推送
 $config['push'] = [
-    'app_key' => 'a66dd3d42daeddb7ac31383a',
-    'master_secret' => 'f3f6e0c11711d2f70bb7a33a',
+    //'app_key' => 'a66dd3d42daeddb7ac31383a',
+    //'master_secret' => 'f3f6e0c11711d2f70bb7a33a',
+    'app_key' => '0588e14bcd180dbe69b3f34f',
+    'master_secret' => 'cfff10a24857a56e5fee0799',
     'log_file' => APPPATH.'logs'.DIRECTORY_SEPARATOR.'jpush.log',
 ];
 
