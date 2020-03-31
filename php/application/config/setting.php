@@ -129,4 +129,4 @@ $config['invite_url'] = "http://cworld.ahkskj.cn/invite?code=";
 //如果是开发模式，验证码6666
 $config['is_dev'] = true;
 //域名
-$config['base_url'] = "http://cworld.ahkskj.cn";
+$config['base_url'] = "http://ldshui.vbcn424.cn/";
