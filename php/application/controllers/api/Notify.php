@@ -485,6 +485,7 @@ class Notify extends API_Controller
         }
 
         $update = [];
+
         if($successful){
             $update['status'] = 2;
 

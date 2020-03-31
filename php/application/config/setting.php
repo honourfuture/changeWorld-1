@@ -122,11 +122,12 @@ $config['push'] = [
     'log_file' => APPPATH.'logs'.DIRECTORY_SEPARATOR.'jpush.log',
 ];
 
-// 邀请链接
-$config['invite_url'] = "http://cworld.ahkskj.cn/invite?code=";
 
 //是否开发模式
 //如果是开发模式，验证码6666
 $config['is_dev'] = true;
 //域名
 $config['base_url'] = "http://ldshui.vbcn424.cn/";
+
+// 邀请链接
+$config['invite_url'] = $config['base_url'] . "invite?code=";
