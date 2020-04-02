@@ -168,7 +168,7 @@ class Sign_in extends API_Controller
         $dataInfo['list'] = array_values($results);
         $dataInfo['countSignIn'] = $count;
         //用户的总的积分
-        $dataInfo['countPoint'] = $user['point'];
+        $dataInfo['countPoint'] = round($user['point'], 0);
         return $this->ajaxReturn($dataInfo);
 
     }

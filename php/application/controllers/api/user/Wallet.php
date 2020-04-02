@@ -87,6 +87,7 @@ class Wallet extends API_Controller {
         $valIncomeSum = $this->Income_model->getIncomeSum($user['id'], $user['created_at']);//累计收益
         $valWithrawed = $this->Withdraw_model->getWithdrawed($this->user_id);//已提现金额
         $inclomeAvailable = $valIncomeSum - $valWithrawed;
+        $inclomeAvailable = ($inclomeAvailable>=0 ? $inclomeAvailable : 0);
         $ret['withdraw'] = round($inclomeAvailable, 2);
         
         //今日

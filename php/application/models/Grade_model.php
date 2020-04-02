@@ -66,40 +66,35 @@ class Grade_model extends MY_Model
      *  diff => 升级经验差
      * ]
      */
-    public function expDiff($exp)
+    public function getExpDiff($exp)
     {
         $ret = [];
         $grades = $this->db->where('deleted', 0)->where('status', 0)->where('enable', 1)->select('*')->get($this->table())->result_array();
         $arrGrades = [];
+        $arrLevels = [];
         foreach ($grades as $key => $grade) {
             $arrGrades["level_{$grade['grade_name']}"] = $grade;
+            $arrLevels[] = $grade['grade_name'];
         }
+        $levelMax = array_max($arrLevels);
         ksort($arrGrades);
+        $userLevel = 0;
         foreach ($arrGrades as $key => $grade){
             list($keyword, $level) = explode('_', $key);
-            $level_pre = $level - 1;
-            $level_next = $level + 1;
-            if($grade['grade_demand'] >= $exp){
-                $ret['grade_name'] = $grade['grade_name'];
-
-                if(isset($arrGrades["level_{$level_pre}"])){
-                    $ret['before_grade_name'] = $arrGrades["level_{$level_pre}"]['grade_name'];
-                }else{
-                    $ret['before_grade_name'] = $grade['grade_name'];
-                }
-
-                if(isset($arrGrades["level_{$level_next}"])){
-                    $ret['after_grade_name'] = $arrGrades["level_{$level_next}"]['grade_name'];
-                    $ret['diff'] = $arrGrades["level_{$level_next}"]['grade_demand'] - $exp;
-                }else{
-                    $ret['after_grade_name'] = $grade['grade_name'];
-                    $ret['diff'] = 0;
-                }
+            if( $exp < $grade['grade_demand'] ){
+                $userLevel = $level;
                 break;
             }
         }
-
+        $level_pre = $userLevel - 1;
+        $level_pre = $level_pre < 0 ? 0 : $level_pre;
+        $level_next = $userLevel + 1;
+        $level_next = $level_next > $levelMax ? $levelMax : $level_next;
         $ret['exp'] = $exp;
+        $ret['grade_name'] = $arrGrades["level_{$userLevel}"]['grade_name'];
+        $ret['before_grade_name'] = $arrGrades["level_{$level_pre}"]['grade_name'];
+        $ret['after_grade_name'] = $arrGrades["level_{$level_next}"]['grade_name'];
+
         return $ret;
     }
     public function exp_diff($exp){

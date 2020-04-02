@@ -92,8 +92,8 @@ class Grade extends API_Controller {
 
 
         $exp = $user['exp'];
-		$diff = $this->Grade_model->expDiff($exp);
-        $ret['grade'] = $diff;
+		$arrGrade = $this->Grade_model->getExpDiff($exp);
+        $ret['grade'] = $arrGrade;
 
         $resultRank = [];
         $user = $this->Users_model->get($this->user_id);
