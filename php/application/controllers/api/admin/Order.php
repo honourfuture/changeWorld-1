@@ -69,7 +69,7 @@ class Order extends API_Controller {
         $order_by = array('id' => 'desc');
         $ret['count'] = $this->Order_model->count_by($where);
         if($ret['count']){
-            $this->db->select('id,created_at,updated_at,status,order_sn,seller_uid,total_amount,real_total_amount,buyer_uid, commission, commission_users, point, exp, seller_income, seller_exp, seller_point');
+            $this->db->select('id,created_at,updated_at,status,order_sn,seller_uid,total_amount,real_total_amount,buyer_uid, commission, commission_users, point, exp, seller_income, seller_exp, seller_point, freight_fee');
             $ret['list'] = $this->Order_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 
             $a_uid = [];

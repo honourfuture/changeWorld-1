@@ -589,7 +589,7 @@ class Income_model extends MY_Model
         $point = floor($orderInfo['real_total_amount'] * (empty($ruleDollarToPoint) ? 100 : $ruleDollarToPoint['value']));
         $exp = floor($orderInfo['real_total_amount'] * (empty($ruleDollarToExp) ? 10 : $ruleDollarToExp['value']));
 	    $commissionUsers = array_sum($arrPriceList);
-        $sql = "UPDATE `{$this->Order_model->table()}` SET commission={$platformPrice}, commission_users={$commissionUsers}, point={$point}, exp={$exp} WHERE id={$orderInfo['id']}";
+        $sql = "UPDATE `{$this->Order_model->table()}` SET commission={$platformPrice}, commission_users={$commissionUsers}, freight_fee = {$freight_fee}, point={$point}, exp={$exp} WHERE id={$orderInfo['id']}";
         $this->db->query($sql);
         if( isset($arrPriceList[$seller_uid]) ){
             $arrPriceList[$seller_uid] += $orderTotalAmount;
