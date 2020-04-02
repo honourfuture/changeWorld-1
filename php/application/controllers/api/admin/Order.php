@@ -15,6 +15,58 @@ class Order extends API_Controller {
         $this->load->model('Order_model');
     }
 
+    private function _getOrders($type=1)
+    {
+        $ret = ['list' => [], 'user' => []];
+        $arrStatus = $this->Order_model->status();
+        $where = [];
+        switch($type){
+            case 1://订单列表
+                $where['1>'] = 0;
+                break;
+            case 2://分销统计
+                $where['`status`>'] = 3;
+                unset($arrStatus[0], $arrStatus[1], $arrStatus[2], $arrStatus[3]);
+                break;
+            default:
+                
+        }
+        $ret['status'] = $arrStatus;
+        $ret['refund_status'] = $this->Order_model->refund_status();
+        
+        $status = $this->input->get_post('status');
+        $order_sn = $this->input->get_post('order_sn');
+        if(isset($ret['status'][$status])){
+            $where['status'] = $status;
+        }
+        
+        if($order_sn){
+            $where['order_sn'] = $order_sn;
+        }
+        
+        $order_by = array('id' => 'desc');
+        $ret['count'] = $this->Order_model->count_by($where);
+        if($ret['count']){
+            $this->db->select('id,created_at,updated_at,status,order_sn,seller_uid,total_amount,real_total_amount,buyer_uid, commission, commission_users, point, exp, seller_income, seller_exp, seller_point, freight_fee');
+            $ret['list'] = $this->Order_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
+        
+            $a_uid = [];
+            foreach($ret['list'] as $item){
+                $a_uid[] = $item['seller_uid'];
+                $a_uid[] = $item['buyer_uid'];
+            }
+            $k_user = [];
+            $this->load->model('Users_model');
+            $this->db->select('id,mobi,header,nickname,v,exp,sex,balance,point,gold');
+            $users = $this->Users_model->get_many($a_uid);
+            foreach($users as $item){
+                $ret['user'][$item['id']] = $item;
+            }
+        }
+        
+        $this->ajaxReturn($ret);
+    }
+    
     /**
      * @api {get} /api/admin/order 订单管理-列表
      * @apiVersion 1.0.0
@@ -48,45 +100,11 @@ class Order extends API_Controller {
      */
     public function index()
     {
-        $ret = ['list' => [], 'user' => []];
-
-        $ret['status'] = $this->Order_model->status();
-        $ret['refund_status'] = $this->Order_model->refund_status();
-
-        $where = [];
-        $status = $this->input->get_post('status');
-        $order_sn = $this->input->get_post('order_sn');
-        if(isset($ret['status'][$status])){
-            $where['status'] = $status;
-        }else{
-            $where['1 >'] = 0;
+        $type = $this->input->get_post('type');
+        if(empty($type)){
+            $type = 1;
         }
-
-        if($order_sn){
-            $where['order_sn'] = $order_sn;
-        }
-
-        $order_by = array('id' => 'desc');
-        $ret['count'] = $this->Order_model->count_by($where);
-        if($ret['count']){
-            $this->db->select('id,created_at,updated_at,status,order_sn,seller_uid,total_amount,real_total_amount,buyer_uid, commission, commission_users, point, exp, seller_income, seller_exp, seller_point, freight_fee');
-            $ret['list'] = $this->Order_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
-
-            $a_uid = [];
-            foreach($ret['list'] as $item){
-                $a_uid[] = $item['seller_uid'];
-                $a_uid[] = $item['buyer_uid'];
-            }
-            $k_user = [];
-            $this->load->model('Users_model');
-            $this->db->select('id,mobi,header,nickname,v,exp,sex,balance,point,gold');
-            $users = $this->Users_model->get_many($a_uid);
-            foreach($users as $item){
-                $ret['user'][$item['id']] = $item;
-            }
-        }
-
-        $this->ajaxReturn($ret);
+        return $this->_getOrders($type);
     }
 
     /**
