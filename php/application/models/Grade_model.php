@@ -81,7 +81,9 @@ class Grade_model extends MY_Model
         $userLevel = 0;
         foreach ($arrGrades as $key => $grade){
             list($keyword, $level) = explode('_', $key);
-            if( $exp < $grade['grade_demand'] ){
+            $level_pre = $level - 1;
+            $level_pre = $level_pre < 0 ? 0 : $level_pre;
+            if( $exp > $arrGrades["level_{$level_pre}"]['grade_demand'] && $exp <= $arrGrades["level_{$level}"] ){
                 $userLevel = $level;
                 break;
             }
@@ -89,8 +91,9 @@ class Grade_model extends MY_Model
         $level_pre = $userLevel - 1;
         $level_pre = $level_pre < 0 ? 0 : $level_pre;
         $level_next = $userLevel + 1;
-        $level_next = $level_next > $levelMax ? $levelMax : $level_next;
+        $level_next = $level_next > $levelMax ? 0 : $level_next;
         $ret['exp'] = $exp;
+        $ret['diff'] = $arrGrades["level_{$level_next}"]['grade_demand'] - $exp;
         $ret['grade_name'] = $arrGrades["level_{$userLevel}"]['grade_name'];
         $ret['before_grade_name'] = $arrGrades["level_{$level_pre}"]['grade_name'];
         $ret['after_grade_name'] = $arrGrades["level_{$level_next}"]['grade_name'];
