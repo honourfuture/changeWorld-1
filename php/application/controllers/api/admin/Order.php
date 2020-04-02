@@ -25,7 +25,7 @@ class Order extends API_Controller {
                 $where['1>'] = 0;
                 break;
             case 2://分销统计
-                $where['`status`>'] = 3;
+                //$where['`status`>'] = 3;
                 //unset($arrStatus[0], $arrStatus[1], $arrStatus[2], $arrStatus[3]);
                 break;
             default:
