@@ -177,6 +177,7 @@ export default class Distribution extends BaseComponent {
                 op: "index",
                 mod: "admin",
                 status: this.store.status,
+                type: 2,
                 order_sn: this.searchStr || "",
                 cur_page: this.current || 1,
                 per_page: Global.PAGE_SIZE

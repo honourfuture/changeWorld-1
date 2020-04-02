@@ -769,6 +769,7 @@ export default class GoodsDetail extends BaseComponent {
                                 className="stepper"
                                 min={1}
                                 max={99}
+                                step={1} 
                                 value={selectNum}
                             />
                         </Flex>
