@@ -87,6 +87,8 @@ import RobotLiveCommentManager from "./RobotLiveCommentManager";
 import RobotCommentTemplate from "./RobotCommentTemplate";
 import RobotLiveCommentTemplate from "./RobotLiveCommentTemplate";
 import TeamUsers from "./TeamUsers";
+import Distribution from "./Distribution";
+
 export const panelsList = [
     {
         path: "/robot/RobotLiveCommentTemplate",
@@ -477,6 +479,11 @@ export const panelsList = [
         path: "/analysis/TeamUsers",
         component: TeamUsers,
         title: "用户团队"
+    },
+    {
+        path: "/analysis/Distribution",
+        component: Distribution,
+        title: "分销统计"
     },
     {
         path: "/exception/403",

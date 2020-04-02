@@ -1,7 +1,7 @@
 import React from "react";
 import { action } from "mobx";
 import { BaseComponent, Base } from "../../common";
-import { Modal, Form, Button, Spin } from "antd";
+import { Modal, Form, Button, Spin, Table} from "antd";
 import "./OrderDetail.less";
 
 const formItemLayout = {
@@ -110,6 +110,36 @@ export class OrderDetail extends BaseComponent {
             render: this.renderAttr
         }
     ];
+    commissionProps = [
+        {
+            key: "user_id",
+            label: "用户ID"
+        },
+        {
+            key: "nickname",
+            label: "用户昵称"
+        },
+        {
+            key: "mobi",
+            label: "手机号"
+        },
+        {
+            key: "user_id",
+            label: "用户ID"
+        },
+        {
+            key: "amount",
+            label: "佣金/收入"
+        },
+        {
+            key: "point",
+            label: "订单积分"
+        },
+        {
+            key: "exp",
+            label: "订单经验"
+        },
+    ];
     @action.bound
     renderAttr(value) {
         if (!value) {
@@ -143,9 +173,9 @@ export class OrderDetail extends BaseComponent {
         return list;
     }
     @action.bound
-    requetData(id) {
+    requetData(id, details) {
         Base.GET(
-            { act: "order", op: "view", mod: "admin", id },
+            { act: "order", op: "view", mod: "admin", id, details: details },
             res => {
                 this.store.data = res.data;
                 this.store.visible = true;
@@ -154,15 +184,16 @@ export class OrderDetail extends BaseComponent {
         );
     }
     @action.bound
-    show(id) {
+    show(id, details) {
         this.id = id;
+        details = typeof(details) == 'undefined' ? 0 : details;
         if (!this.goods_attr_category) {
             Base.GET({ act: "goods_attr_category", op: "index" }, res => {
                 this.goods_attr_category = res.data;
-                this.requetData(id);
+                this.requetData(id, details);
             });
         } else {
-            this.requetData(id);
+            this.requetData(id, details);
         }
     }
     @action.bound
@@ -173,8 +204,9 @@ export class OrderDetail extends BaseComponent {
         const { visible, data } = this.store;
         let items = null;
         let goodsItems = [];
+        let commissionUsers = [];
         if (data.hasOwnProperty("order")) {
-            const { order, goods } = data;
+            const { order, goods, commission } = data;
             items = this.orderProps.map((item, index) => {
                 const { key, label, render } = item;
                 const value = !render ? order[key] : render(order[key]);
@@ -209,12 +241,44 @@ export class OrderDetail extends BaseComponent {
                     </div>
                 );
             });
+            console.log(commission);
+            commissionUsers = (commission) => {
+                console.log(commission);
+                const columns = [
+                    {
+                        title: 'nickname',
+                        dataIndex: '昵称',
+                    },
+                    {
+                        title: 'mobi',
+                        dataIndex: '手机号',
+                    },
+                    {
+                        title: 'amount',
+                        dataIndex: '所得收益',
+                    },
+                    {
+                        title: 'point',
+                        dataIndex: '所得积分',
+                    },
+                    {
+                        title: 'exp',
+                        dataIndex: '所得经验',
+                    },
+                ];
+                const dataSource = commission;
+                return (
+                    <div className="goods-con">
+                        <Table dataSource={dataSource} columns={columns} />;
+                    </div>
+                );
+            };
         }
         return (
             <Spin ref="spin" wrapperClassName="OrderDetail" spinning={false}>
                 <Modal
                     className="OrderDetailModal"
-                    title="商品详情"
+                    title="订单详情"
                     visible={visible}
                     closable={false}
                     onCancel={this.hideModal}
@@ -236,6 +300,10 @@ export class OrderDetail extends BaseComponent {
                         <div>
                             <div className="con-title goods">商品信息</div>
                             {goodsItems}
+                        </div>
+                        <div>
+                            <div className="con-title goods">收益信息</div>
+                            {commissionUsers}
                         </div>
                     </Form>
                 </Modal>

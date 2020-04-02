@@ -16,6 +16,7 @@ import {
     Icon
 } from "antd";
 import { remove } from "lodash";
+import { UsersList } from "../../components/UsersList";
 import { EditorModal } from "../../components/EditorModal";
 import "./TeamUsers.less";
 const Search = Input.Search;
@@ -103,17 +104,14 @@ export default class TeamUsers extends BaseComponent {
                 width: 150,
                 // fixed: "right",
                 render: (text, record) => {
-                    const { headhunter, editable, id } = record;
                     return (
-                        <div className="editable-row-operations">
-	                        <span>
-		                        <a
-		                        	onClick={() => this.onDetail(record.sons)}
-		                        >
-		                            查看成员
-		                        </a>
-		                    </span>
-                        </div>
+                        <a
+                            onClick={() =>
+                                this.onRead(text, record)
+                            }
+                        >
+                            查看成员
+                        </a>
                     );
                 }
             }
@@ -138,15 +136,10 @@ export default class TeamUsers extends BaseComponent {
         this.searchStr = value;
         this.requestData();
     }
+    //查看
     @action.bound
-    onDetail(sons) {
-        console.log(sons);
-    	this.store.users = sons.length > 0 ? true : null;
-        console.log(this.store);
-    }
-    @action.bound
-    closeDetail() {
-    	this.store.users = null;
+    onRead(text, record) {
+        this.refs.detail.show(record.sons);
     }
     @action.bound
     onTableHandler({ current, pageSize }) {
@@ -221,23 +214,11 @@ export default class TeamUsers extends BaseComponent {
                         defaultPageSize: Global.PAGE_SIZE
                     }}
                 />
-                <Modal
-                    className="users-modal"
-                    title="成员详情"
-                    visible={!!users}
-                    closable={false}
-                    onCancel={() => this.closeDetail()}
-                    footer={[
-                        <Button
-                            key="submit"
-                            type="primary"
-                            onClick={() => this.closeDetail()}
-                        >
-                            确认
-                        </Button>
-                    ]}
-                >
-                </Modal>
+                <UsersList
+                    ref="detail"
+                    item={list}
+                    destroyOnClose
+                />
             </Spin>
         );
     }
