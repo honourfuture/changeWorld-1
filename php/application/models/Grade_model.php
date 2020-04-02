@@ -76,7 +76,7 @@ class Grade_model extends MY_Model
             $arrGrades["level_{$grade['grade_name']}"] = $grade;
             $arrLevels[] = $grade['grade_name'];
         }
-        $levelMax = array_max($arrLevels);
+        $levelMax = max($arrLevels);
         ksort($arrGrades);
         $userLevel = 0;
         foreach ($arrGrades as $key => $grade){
