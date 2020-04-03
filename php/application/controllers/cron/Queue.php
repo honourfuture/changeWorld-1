@@ -50,7 +50,7 @@ class Queue extends MY_Controller
 
             $max_robot = 3000000;
             if($max_header_id > $max_robot || $max_nickname_id > $max_robot){
-                break;
+                return false;
             }
 
             // $this->db->select('nickname');
