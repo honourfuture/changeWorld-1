@@ -551,7 +551,7 @@ class Income_model extends MY_Model
                 $levelIds[] = $levelUser['rank_rule_id'];
             }
             $sumPrice = array_sum($arrPriceList);
-            $maxPrice = $item['rebate_percent'] / 100 * $item['goods_price'] - $platformPrice;//扣除服务费后可分佣金额
+            $maxPrice = $item['rebate_percent'] / 100 * $item['goods_price'] * $item['num'] - $platformPrice;//扣除服务费后可分佣金额
             if($sumPrice > $maxPrice){
                 $arrPriceList = $this->_rePrice($arrPriceList, $maxPrice, $sumPrice);
             }

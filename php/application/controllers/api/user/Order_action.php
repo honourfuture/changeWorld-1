@@ -167,6 +167,10 @@ class Order_action extends API_Controller {
                         //处理消费获得的积分、经验
                         //$this->Order_model->dealIncomeExpPoint($this->order['buyer_uid'], $this->order['id']);
                         //商品评论 增加积分
+                        //消费EXP增长
+                        $this->checkCalculation('per_dollar', true, true);
+                        $this->AddCalculation($this->order['buyer_uid'], 'per_dollar', ['price'=>$this->order['real_total_amount']]);
+                        //收益EXP增长
                         $this->checkCalculation('per_income', true, true);
                         foreach ($arrPriceList as $userId => $price){
                             $this->AddCalculation($userId, 'per_income', ['price'=>$price]);
