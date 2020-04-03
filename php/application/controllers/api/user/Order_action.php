@@ -21,6 +21,21 @@ class Order_action extends API_Controller {
     }
 
     /**
+     * 订单库存退货
+     */
+    private function _backStocks()
+    {
+        $this->load->model('Order_items_model');
+        $this->load->model('Goods_model');
+        $sql = "SELECT * FROM {$this->Order_items_model->table()} WHERE `order_id`={$this->order['id']}";
+        $arrOrderItems = $this->db->query($sql)->row_array();
+        foreach ($arrOrderItems as $item){
+            $sql = "UPDATE {$this->Goods_model->table()} SET `stock` = `stock` + {$item['num']} WHERE `seller_uid` = {$item['seller_uid']} AND `id` = {$item['goods_id']}";
+            $this->db->query($sql);
+        }
+    }
+
+    /**
      * @api {post} /api/user/order_action/buyer 订单操作-买家
      * @apiVersion 1.0.0
      * @apiName order_action_buyer
@@ -58,25 +73,37 @@ class Order_action extends API_Controller {
             $this->ajaxReturn([], 2, '订单操作非法');
         }
 
+        $this->load->model('Order_items_model');
+        $this->load->model('Goods_model');
         switch($this->action){
             case 'cancel'://取消
                 if($this->order['status'] != 0){
                     $this->ajaxReturn([], 4, '订单操作状态不支持');
                 }
-                if($this->Order_model->update($this->order['id'], ['status' => 1, 'enable' => 0])){
-                    $this->ajaxReturn();
-                }else{
+                $this->db->trans_start();
+                $this->Order_model->update($this->order['id'], ['status' => 1, 'enable' => 0]);
+                $this->_backStocks();
+                $this->db->trans_complete();
+                if ($this->db->trans_status() === FALSE){
                     $this->ajaxReturn([], 5, '取消订单操作失败');
+                }
+                else{
+                    $this->ajaxReturn();
                 }
                 break;
             case 'del'://取消=》删除
                 if($this->order['status'] != 1){
                     $this->ajaxReturn([], 4, '订单操作状态不支持');
                 }
-                if($this->Order_model->update($this->order['id'], ['deleted' => 1, 'enable' => 0])){
-                    $this->ajaxReturn();
-                }else{
+                $this->db->trans_start();
+                $this->Order_model->update($this->order['id'], ['deleted' => 1, 'enable' => 0]);
+                $this->_backStocks();
+                $this->db->trans_complete();
+                if ($this->db->trans_status() === FALSE){
                     $this->ajaxReturn([], 5, '删除订单操作失败');
+                }
+                else{
+                    $this->ajaxReturn();
                 }
                 break;
             case 'pay'://付款
@@ -402,10 +429,15 @@ class Order_action extends API_Controller {
                 if($this->order['refund_status'] != 1){
                     $this->ajaxReturn([], 4, '订单操作状态不支持');
                 }
-                if($this->Order_model->update($this->order['id'], ['refund_status' => 2, 'status' => 6])){
-                    $this->ajaxReturn();
-                }else{
+                $this->db->trans_start();
+                $this->Order_model->update($this->order['id'], ['refund_status' => 2, 'status' => 6]);
+                $this->_backStocks();
+                $this->db->trans_complete();
+                if ($this->db->trans_status() === FALSE){
                     $this->ajaxReturn([], 5, '取消订单操作失败');
+                }
+                else{
+                    $this->ajaxReturn();
                 }
                 break;
             default :
