@@ -348,9 +348,28 @@ class Order extends API_Controller {
             $this->ajaxReturn([], 5, '请选择商品再下单');
         }
 
+	    $this->load->model('Goods_model');
+	    $this->load->model('Order_items_model');
+	    /**
+	     * 校验商品库存
+	     */
+	    foreach($goods as $seller_id=>$rows){
+		    $arrGoodIds = [];
+		    foreach($rows['goods'] as $item){
+		    	$arrGoodIds[] = $item['goods_id'];
+		    }
+		    if( empty($arrGoodIds) ){
+		    	continue;
+		    }
+		    $sql = "SELECT COUNT(1) AS cnt FROM `{$this->Goods_model->table()}` WHERE `id` IN(" . implode(',', $arrGoodIds) . ") AND `seller_uid`={$seller_id} AND `stock`<=0";
+		    $record = $this->db->query($sql)->result_array();
+		    if( !empty($record) ){
+			    $this->ajaxReturn([], 8, '商品库存信息错误');
+		    }
+	    }
+
         //订单表
         $pay_sn = $this->Order_model->make_pay_sn();
-        $this->load->model('Order_items_model');
         $r_total = $r_ticket = $r_point = $r_point_amount = 0;
         $d_cart_id = [];//待删除购物车ID
         $flag_point = false;//积分变动标识
@@ -406,7 +425,6 @@ class Order extends API_Controller {
             ];
 
             $order_id = $this->Order_model->insert($order);
-            $this->load->model('Goods_model');
             foreach($rows['goods'] as $item){
                 $good = $this->Goods_model->get($item['goods_id']);
                 $d_cart_id[] = $item['cart_id'];
@@ -429,6 +447,9 @@ class Order extends API_Controller {
                     'base_percent' => $good['base_percent'],
                     'rebate_percent' => $good['rebate_percent']
                 ];
+                //扣减库存
+	            $sql = "UPDATE `{$this->Goods_model->table()}` SET `stock`=`stock`- {$item['num']} WHERE id = {$item['goods_id']} AND seller_uid={$seller_id}";
+	            $this->db->query($sql);
             }
             $this->db->insert_batch($this->Order_items_model->table(), $order_item);
 
