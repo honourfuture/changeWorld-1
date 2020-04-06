@@ -42,7 +42,6 @@ export class UsersList extends BaseComponent{
     @action.bound
     show(id) {
     	this.requetData(id);
-    	console.log(this.store.visible);
     }
 	@action.bound
 	hideModal(){
