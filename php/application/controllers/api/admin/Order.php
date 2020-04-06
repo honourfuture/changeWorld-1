@@ -46,7 +46,7 @@ class Order extends API_Controller {
         if( $dateZoom ){
             list($dateStart, $dateEnd) = explode('/', $dateZoom);
             $where['created_at>='] = $dateStart . ' 00:00:00';
-            $where['created_at>='] = $dateStart . ' 23:59:59';
+            $where['created_at<='] = $dateStart . ' 23:59:59';
         }
         
         $order_by = array('id' => 'desc');
