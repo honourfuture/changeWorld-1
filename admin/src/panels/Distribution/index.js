@@ -1,11 +1,14 @@
 import React from "react";
 import { action } from "mobx";
 import { BaseComponent, Base, Global } from "../../common";
-import { Table, Input, Spin, Select, Form } from "antd";
+import { Table, Input, Spin, Select, Form, DatePicker, LocaleProvider } from "antd";
 import { OrderDetail } from "../../components/OrderDetail";
+import zh_CN from 'antd/lib/locale-provider/zh_CN';
+import 'moment/locale/zh-cn';
 import "./Distribution.less";
 const Search = Input.Search;
 const Option = Select.Option;
+const { RangePicker } = DatePicker;
 
 export default class Distribution extends BaseComponent {
     store = {
@@ -153,12 +156,21 @@ export default class Distribution extends BaseComponent {
     }
     //搜索
     searchStr = "";
+    dateZoom = "";
     @action.bound
     onSearch(value) {
         this.current = 1;
         this.searchStr = value;
         this.requestData();
     }
+    @action.bound
+    onOk(value) {
+    	this.dateZoom = value;
+	}
+    @action.bound
+    onChange(value, dateString) {
+    	this.dateZoom = dateString.join('/');
+	}
     @action.bound
     onDetail(id, details) {
         this.refs.orderDetail.show(id, details);
@@ -179,6 +191,7 @@ export default class Distribution extends BaseComponent {
                 status: this.store.status,
                 type: 2,
                 order_sn: this.searchStr || "",
+                date_zoom: this.dateZoom || "",
                 cur_page: this.current || 1,
                 per_page: Global.PAGE_SIZE
             },
@@ -221,8 +234,9 @@ export default class Distribution extends BaseComponent {
         return (
             <Spin ref="spin" wrapperClassName="OrderManager" spinning={false}>
                 <div className="pb10">
+                	<LocaleProvider locale={zh_CN}><RangePicker onChange={this.onChange} onOk={this.onOk}/></LocaleProvider>
                     <Search
-                        placeholder="搜索订单号"
+                        placeholder="订单号"
                         enterButton
                         onSearch={this.onSearch}
                         style={{ width: 160, marginRight: 10 }}

@@ -1,7 +1,7 @@
 import React from 'react';
 import {action} from 'mobx';
 import {BaseComponent,Base} from '../../common';
-import { Modal,Form,Button} from 'antd';
+import { Modal,Form,Button,Table} from 'antd';
 import './UsersList.less';
 
 const formItemLayout = {
@@ -17,46 +17,42 @@ const formItemLayout = {
 
 const FormItem = Form.Item;
 export class UsersList extends BaseComponent{
-	store={visible:false}
-	showProps=[
-		{key:'id',label:'id'},
-		{key:'nickname',label:'昵称'},
-		{key:'mobi',label:'手机号'},
-		{key:'point',label:'积分'},
-		{key:'balance',label:'余额'},
-		{key:'exp',label:'经验值'},
-		{key:'gold',label:'金币'},
-		{key:'created_at',label:'注册时间'},
+	store={visible:false, dataSource:{}}
+	columns=[
+		{dataIndex:'id',title:'id'},
+		{dataIndex:'nickname',title:'昵称'},
+		{dataIndex:'mobi',title:'手机号'},
+		{dataIndex:'point',title:'积分'},
+		{dataIndex:'balance',title:'余额'},
+		{dataIndex:'exp',title:'经验值'},
+		{dataIndex:'gold',title:'金币'},
+		{dataIndex:'created_at',title:'注册时间'},
 	]
 	@action.bound
-	show(sons){
-		this.store.users = sons;
-		//无分类数据，则请求
-		if(!sons.length){
-			this.store.visible = false;
-		}else{
-			this.store.visible = true;
-		}
-	}
+    requetData(id) {
+        Base.GET(
+            { act: 'user', op: 'getSons', mod: 'admin', user_id:id },
+            res => {
+                this.store.dataSource = res.data;
+                this.store.visible = true;
+            },
+            this
+        );
+    }
+    @action.bound
+    show(id) {
+    	this.requetData(id);
+    	console.log(this.store.visible);
+    }
 	@action.bound
 	hideModal(){
 		this.store.visible = false;
 	}
     render(){
-		const {visible} = this.store.visible;
-    	const {item} = this.props;
-		const readItem = item.find((item)=>this.id === item.id) || {};
-		const items = this.showProps.map((item,index)=>{
-			const {key,label,render} = item;
-			const value = !render?readItem[key]:render(readItem[key]);
-			return (
-				<FormItem key={index} {...formItemLayout} label={label}>
-					{value}
-				</FormItem>
-			)
-		})
+		const {visible, dataSource} = this.store;
         return (
             <Modal
+            	width='1000px'
             	className="GoodsItems"
 	          	title="成员列表"
 	          	visible={visible}
@@ -68,7 +64,7 @@ export class UsersList extends BaseComponent{
 		        ]}
 	        >
 				<Form>
-					{items}
+					<Table dataSource={dataSource} columns={this.columns} />;
 				</Form>
 	        </Modal>
         )

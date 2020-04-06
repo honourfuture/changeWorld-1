@@ -107,7 +107,7 @@ export default class TeamUsers extends BaseComponent {
                     return (
                         <a
                             onClick={() =>
-                                this.onRead(text, record)
+                                this.onRead(record)
                             }
                         >
                             查看成员
@@ -138,8 +138,8 @@ export default class TeamUsers extends BaseComponent {
     }
     //查看
     @action.bound
-    onRead(text, record) {
-        this.refs.detail.show(record.sons);
+    onRead(record) {
+        this.refs.detail.show(record.id);
     }
     @action.bound
     onTableHandler({ current, pageSize }) {
