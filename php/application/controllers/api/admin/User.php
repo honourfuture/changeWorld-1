@@ -163,6 +163,15 @@ class User extends API_Controller {
         $this->ajaxReturn($ret);
     }
     
+    /**
+     * 取得所有子成员
+     * @param unknown $user_id
+     */
+    public function getSons($user_id)
+    {
+        $sons = array_values($this->Users_model->getSons($user['id']));
+        $this->ajaxReturn($sons);
+    }
     
     /**
      * @api {post} /api/admin/team 用户管理-我的团队
