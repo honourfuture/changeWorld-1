@@ -170,7 +170,6 @@ class User extends API_Controller {
     public function getSons()
     {
         $user_id = $this->input->get_post('user_id');
-        $this->model->load('Users_model');
         $sons = array_values($this->Users_model->getSons($user_id));
         $this->ajaxReturn($sons);
     }
