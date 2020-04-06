@@ -279,7 +279,7 @@ export default class GoodsDetail extends BaseComponent {
     }
     @action.bound
     stepperHandler(value) {
-        this.store.selectNum = value;
+    	this.store.selectNum = value;
     }
     @action.bound
     onAddShopCart(goods_id, goods_attr, num) {

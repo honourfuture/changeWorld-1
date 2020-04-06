@@ -73,7 +73,7 @@ export default class ShopIndex extends BaseComponent {
                             onClick={() => Base.push("ShopCart")}
                         >
                             <img src={icon.indexCart} alt="" />
-                            <span>{cardTotal}</span>
+                            {parseInt(cardTotal) > 0 ? <span>{cardTotal}</span> : ''}
                             {parseInt(cartCount) > 0 ? (
                                 <Badge text={cartCount} overflowCount={99}>
                                     <span />
