@@ -463,7 +463,7 @@ export default class GoodsDetail extends BaseComponent {
                             style={{ marginRight: "16px" }}
                             alt=""
                         />,
-                        {parseInt(cardTotal) > 0 ? <span className="cart-num">{cardTotal}</span> : ''},
+                        parseInt(cardTotal) > 0 ? <span className="cart-num">{cardTotal}</span> : '',
                         <img
                             onClick={this.onShare}
                             key="1"
