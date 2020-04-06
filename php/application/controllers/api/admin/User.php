@@ -167,10 +167,11 @@ class User extends API_Controller {
      * 取得所有子成员
      * @param unknown $user_id
      */
-    public function getSons($user_id)
+    public function getSons()
     {
+        $user_id = $this->input->get_post('user_id');
         $this->model->load('Users_model');
-        $sons = array_values($this->Users_model->getSons($user['id']));
+        $sons = array_values($this->Users_model->getSons($user_id));
         $this->ajaxReturn($sons);
     }
     
