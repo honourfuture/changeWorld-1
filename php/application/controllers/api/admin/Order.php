@@ -36,12 +36,17 @@ class Order extends API_Controller {
         
         $status = $this->input->get_post('status');
         $order_sn = $this->input->get_post('order_sn');
+        $dateZoom = $this->input->get_post('date_zoom');
         if(isset($ret['status'][$status])){
             $where['status'] = $status;
-        }
-        
+        }        
         if($order_sn){
             $where['order_sn'] = $order_sn;
+        }
+        if( $dateZoom ){
+            list($dateStart, $dateEnd) = explode('/', $dateZoom);
+            $where['created_at>='] = $dateStart . ' 00:00:00';
+            $where['created_at>='] = $dateStart . ' 23:59:59';
         }
         
         $order_by = array('id' => 'desc');
