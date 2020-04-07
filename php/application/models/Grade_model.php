@@ -78,14 +78,19 @@ class Grade_model extends MY_Model
         }
         $levelMax = max($arrLevels);
         ksort($arrGrades);
+        sort($arrLevels);
         $userLevel = 0;
-        foreach ($arrGrades as $key => $grade){
-            list($keyword, $level) = explode('_', $key);
-            $level_pre = $level - 1;
-            $level_pre = $level_pre < 0 ? 0 : $level_pre;
-            if( $exp > $arrGrades["level_{$level_pre}"]['grade_demand'] && $exp <= $arrGrades["level_{$level}"]['grade_demand'] ){
-                $userLevel = $level - 1;
-                break;
+        if( $exp >= $arrGrades["level_{$levelMax}"]['grade_demand'] ){
+            $userLevel = $levelMax;
+        }
+        else{
+            foreach ($arrLevels as $key => $level){
+                $level_pre = $level - 1;
+                $level_pre = $level_pre < 0 ? 0 : $level_pre;
+                if( $exp > $arrGrades["level_{$level_pre}"]['grade_demand'] && $exp <= $arrGrades["level_{$level}"]['grade_demand'] ){
+                    $userLevel = $level - 1;
+                    break;
+                }
             }
         }
         $level_pre = $userLevel - 1;
@@ -95,6 +100,7 @@ class Grade_model extends MY_Model
         $ret['exp'] = $exp;
         $ret['level'] = $userLevel;
         $ret['diff'] = $arrGrades["level_{$level_next}"]['grade_demand'] - $exp;
+        $ret['diff'] = $ret['diff'] < 0 ? 0 : $ret['diff'];
         $ret['grade_name'] = $arrGrades["level_{$userLevel}"]['grade_name'];
         $ret['before_grade_name'] = $arrGrades["level_{$level_pre}"]['grade_name'];
         $ret['after_grade_name'] = $arrGrades["level_{$level_next}"]['grade_name'];
