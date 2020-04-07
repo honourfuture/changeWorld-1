@@ -363,7 +363,7 @@ class Order extends API_Controller {
 		    }
 		    $sql = "SELECT COUNT(1) AS cnt FROM `{$this->Goods_model->table()}` WHERE `id` IN(" . implode(',', $arrGoodIds) . ") AND `seller_uid`={$seller_id} AND `stock`<=0";
 		    $record = $this->db->query($sql)->result_array();
-		    if( !empty($record) ){
+		    if( empty($record) ){
 			    $this->ajaxReturn([], 8, '商品库存信息错误');
 		    }
 	    }
