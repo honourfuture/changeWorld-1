@@ -28,7 +28,7 @@ class Order_action extends API_Controller {
         $this->load->model('Order_items_model');
         $this->load->model('Goods_model');
         $sql = "SELECT * FROM {$this->Order_items_model->table()} WHERE `order_id`={$this->order['id']}";
-        $arrOrderItems = $this->db->query($sql)->row_array();
+        $arrOrderItems = $this->db->query($sql)->result_array();
         foreach ($arrOrderItems as $item){
             $sql = "UPDATE {$this->Goods_model->table()} SET `stock` = `stock` + {$item['num']} WHERE `seller_uid` = {$item['seller_uid']} AND `id` = {$item['goods_id']}";
             $this->db->query($sql);
