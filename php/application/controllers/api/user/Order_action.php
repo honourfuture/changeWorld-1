@@ -182,7 +182,7 @@ class Order_action extends API_Controller {
                     $msg = $e->getMessage();
                     $line = $e->getLine();
                     $message = "{$file} / {$msg} / {$line}";
-                    $this->ajaxReturn([], 5, '取消订单操作失败' . $message);
+                    $this->ajaxReturn([], 5, '确认收货操作失败' . $message);
                 }
                 /**
                 if($this->Order_model->update($this->order['id'], ['status' => 4])){
