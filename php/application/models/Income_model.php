@@ -526,12 +526,10 @@ class Income_model extends MY_Model
             foreach ($levelUsers as $k => $levelUser){
                 $arrUsers[$levelUser['id']] = $levelUser;
                 $addPrice = 0;
-                if($levelUser['id'] == $user['id']){
-                    //自购佣金
+                if($levelUser['id'] == $user['id']){//自购佣金
                     $addPrice = isset($selfPercent[$levelUser['rank_rule_id']]) ? $selfPercent[$levelUser['rank_rule_id']] * $item['goods_price'] * $item['num'] * $item['base_percent'] / 100 : 0;
-                }else if($levelUser['id'] == $user['pid']){
+                }else if($levelUser['id'] == $user['pid']){//直属
                     if( $levelUser['rank_rule_id'] >= $user['rank_rule_id'] ){
-                        //直属
                         $addPrice = isset($underPercent[$levelUser['rank_rule_id']]) ? $underPercent[$levelUser['rank_rule_id']] * $item['goods_price'] * $item['num'] * $item['base_percent'] / 100: 0;
                     }
                 }else{

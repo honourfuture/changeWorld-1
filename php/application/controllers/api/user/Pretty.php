@@ -176,17 +176,6 @@ class Pretty extends API_Controller {
             $this->Payment_log_model->update($order_id, $order_update);
             //更新销售状态
             $this->Pretty_model->update($this->row['id'], ['status' => 1, 'buyer_id' => $this->user_id]);
-            //积分抵扣明细
-
-            $this->load->model('Users_points_model');
-            $point_log = [
-                'user_id' => $this->user_id,
-                'value' => $userPoint,
-                'point' => $user['point'] - $userPoint,
-                'rule_name' => 'pretty_buy',
-                'remark' => '靓号下单积分使用'
-            ];
-            $this->Users_points_model->insert($point_log);
 
             $this->ajaxReturn();
         }else{
