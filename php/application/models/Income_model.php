@@ -505,7 +505,8 @@ class Income_model extends MY_Model
         //每收益的积分/经验
         $ruleIncomeToPoint = $this->db->query("SELECT * FROM `points_rule` WHERE `name`='per_income'")->row_array();
         $ruleIncomeToExp = $this->db->query("SELECT * FROM `grade_rule` WHERE `name`='per_income'")->row_array();
-        
+        //用户累计分佣
+        $commissionUsers = 0;
         $orderItems = $this->Order_items_model->getOrderItems($order_id);
         foreach ($orderItems as $item){
             if( $item['base_percent']<=0 ){
@@ -578,6 +579,7 @@ class Income_model extends MY_Model
                 $this->insert_many($insert);
             }
             $this->Order_items_model->update($item['id'], ['is_income' => 1]);
+            $commissionUsers += (array_sum($arrPriceList));
         }
         $ruleDollarToPoint = $this->db->query("SELECT * FROM `points_rule` WHERE `name`='per_dollar'")->row_array();
         $ruleDollarToExp = $this->db->query("SELECT * FROM `grade_rule` WHERE `name`='per_dollar'")->row_array();
@@ -586,20 +588,20 @@ class Income_model extends MY_Model
         //买家消费产生的积分及经验
         $point = floor($orderInfo['real_total_amount'] * (empty($ruleDollarToPoint) ? 100 : $ruleDollarToPoint['value']));
         $exp = floor($orderInfo['real_total_amount'] * (empty($ruleDollarToExp) ? 10 : $ruleDollarToExp['value']));
-	    $commissionUsers = array_sum($arrPriceList);
+
         $sql = "UPDATE `{$this->Order_model->table()}` SET commission={$platformPrice}, commission_users={$commissionUsers}, freight_fee = {$freight_fee}, point={$point}, exp={$exp} WHERE id={$orderInfo['id']}";
         $this->db->query($sql);
-	    /**
-	     * 商家卖商品，不计经验及积分
-	     */
-	    /**
+        /**
+         * 商家卖商品，不计经验及积分
+         */
+        /**
         if( isset($arrPriceList[$seller_uid]) ){
             $arrPriceList[$seller_uid] += $orderTotalAmount;
         }
         else{
             $arrPriceList[$seller_uid] = $orderTotalAmount;
         }
-	    */
+        */
         return $arrPriceList;
     }
     
