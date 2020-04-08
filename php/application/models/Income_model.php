@@ -589,12 +589,17 @@ class Income_model extends MY_Model
 	    $commissionUsers = array_sum($arrPriceList);
         $sql = "UPDATE `{$this->Order_model->table()}` SET commission={$platformPrice}, commission_users={$commissionUsers}, freight_fee = {$freight_fee}, point={$point}, exp={$exp} WHERE id={$orderInfo['id']}";
         $this->db->query($sql);
+	    /**
+	     * 商家卖商品，不计经验及积分
+	     */
+	    /**
         if( isset($arrPriceList[$seller_uid]) ){
             $arrPriceList[$seller_uid] += $orderTotalAmount;
         }
         else{
             $arrPriceList[$seller_uid] = $orderTotalAmount;
         }
+	    */
         return $arrPriceList;
     }
     
