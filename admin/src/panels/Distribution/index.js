@@ -76,20 +76,6 @@ export default class Distribution extends BaseComponent {
                     this.renderText(text, record, "seller_income")
             },
             {
-                title: "商家所得积分",
-                dataIndex: "seller_point",
-                width: 110,
-                render: (text, record) =>
-                    this.renderText(text, record, "seller_point")
-            },
-            {
-                title: "商家所得经验",
-                dataIndex: "seller_exp",
-                width: 110,
-                render: (text, record) =>
-                    this.renderText(text, record, "seller_exp")
-            },
-            {
                 title: "手续费",
                 dataIndex: "commission",
                 width: 100,
