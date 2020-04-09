@@ -553,7 +553,7 @@ class API_Controller extends MY_Controller
             $nextRankRule = $this->Rank_rule_model->getNextRankRule($old_value + $value, $user['rank_rule_id']);
             if($nextRankRule){
                 $to = $nextRankRule['id'];
-                if($to != 3){
+                if(($to <= 2) || ($user['rank_rule_id']>=3)){
                     $this->Users_model->update($user['id'], ['rank_rule_id' => $to]);
                 }
             }
