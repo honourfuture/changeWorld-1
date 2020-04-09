@@ -583,7 +583,7 @@ class Income_model extends MY_Model
         }
         $ruleDollarToPoint = $this->db->query("SELECT * FROM `points_rule` WHERE `name`='per_dollar'")->row_array();
         $ruleDollarToExp = $this->db->query("SELECT * FROM `grade_rule` WHERE `name`='per_dollar'")->row_array();
-        //商家收入
+        //商家收入(商家卖商品，不计经验及积分)
         $arrSeller = $this->setSellerIncome($orderInfo, $userSeller, $userBuyer, $orderTotalAmount, $orderItems, $ruleIncomeToPoint, $ruleIncomeToExp);
         //买家消费产生的积分及经验
         $point = floor($orderInfo['real_total_amount'] * (empty($ruleDollarToPoint) ? 100 : $ruleDollarToPoint['value']));
@@ -622,8 +622,8 @@ class Income_model extends MY_Model
             'shop_id' => $sellerInfo['id'],
             'from_id' => $buyerInfo['id'],
             'order_id' => $orderInfo['id'],
-            'point' => floor($amount * (empty($ruleIncomeToPoint) ? 50 : $ruleIncomeToPoint['value'])),
-            'exp' => floor($amount * (empty($ruleIncomeToExp) ? 5 : $ruleIncomeToExp['value'])),
+            'point' => 0,//floor($amount * (empty($ruleIncomeToPoint) ? 50 : $ruleIncomeToPoint['value'])),
+            'exp' => 0,//floor($amount * (empty($ruleIncomeToExp) ? 5 : $ruleIncomeToExp['value'])),
         ];
         $this->insert($item);
         return ['amount'=>$amount, 'exp'=>$item['exp'], 'point'=>$item['point']];
