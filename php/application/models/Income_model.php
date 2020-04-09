@@ -584,12 +584,12 @@ class Income_model extends MY_Model
         $ruleDollarToPoint = $this->db->query("SELECT * FROM `points_rule` WHERE `name`='per_dollar'")->row_array();
         $ruleDollarToExp = $this->db->query("SELECT * FROM `grade_rule` WHERE `name`='per_dollar'")->row_array();
         //商家收入
-        $this->setSellerIncome($orderInfo, $userSeller, $userBuyer, $orderTotalAmount, $orderItems, $ruleIncomeToPoint, $ruleIncomeToExp);
+        $arrSeller = $this->setSellerIncome($orderInfo, $userSeller, $userBuyer, $orderTotalAmount, $orderItems, $ruleIncomeToPoint, $ruleIncomeToExp);
         //买家消费产生的积分及经验
         $point = floor($orderInfo['real_total_amount'] * (empty($ruleDollarToPoint) ? 100 : $ruleDollarToPoint['value']));
         $exp = floor($orderInfo['real_total_amount'] * (empty($ruleDollarToExp) ? 10 : $ruleDollarToExp['value']));
 
-        $sql = "UPDATE `{$this->Order_model->table()}` SET commission={$platformPrice}, commission_users={$commissionUsers}, freight_fee = {$freight_fee}, point={$point}, exp={$exp} WHERE id={$orderInfo['id']}";
+        $sql = "UPDATE `{$this->Order_model->table()}` SET commission={$platformPrice}, commission_users={$commissionUsers}, seller_income={$arrSeller['amount']}, seller_exp={$arrSeller['exp']}, seller_point={$arrSeller['point']}, freight_fee = {$freight_fee}, point={$point}, exp={$exp} WHERE id={$orderInfo['id']}";
         $this->db->query($sql);
         /**
          * 商家卖商品，不计经验及积分
@@ -610,7 +610,7 @@ class Income_model extends MY_Model
      */
     public function setSellerIncome($orderInfo, $sellerInfo, $buyerInfo, $amount, $orderItems, $ruleIncomeToPoint, $ruleIncomeToExp)
     {
-        $insert[] = [
+        $item = [
             'topic' => 2,
             'sub_topic' => 0,
             'user_id' => $sellerInfo['id'],
@@ -625,7 +625,8 @@ class Income_model extends MY_Model
             'point' => floor($amount * (empty($ruleIncomeToPoint) ? 50 : $ruleIncomeToPoint['value'])),
             'exp' => floor($amount * (empty($ruleIncomeToExp) ? 5 : $ruleIncomeToExp['value'])),
         ];
-        $this->insert_many($insert);
+        $this->insert($item);
+        return ['amount'=>$amount, 'exp'=>$item['exp'], 'point'=>$item['point']];
     }
     
     //商品销售收益
