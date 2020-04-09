@@ -389,7 +389,7 @@ class Income_model extends MY_Model
 
 
     /**
-     * 超过最大分配佣金,按比例重新分析
+     * 超过最大分配佣金,除自购者外其他人按比例重新分析
      */
     private function _rePrice($arrPriceList, $maxPrice, $sumPrice)
     {
@@ -551,8 +551,13 @@ class Income_model extends MY_Model
             }
             $sumPrice = array_sum($arrPriceList);
             $maxPrice = $item['rebate_percent'] / 100 * $item['goods_price'] * $item['num'] - $platformPrice;//扣除服务费后可分佣金额
-            if($sumPrice > $maxPrice){
-                $arrPriceList = $this->_rePrice($arrPriceList, $maxPrice, $sumPrice);
+            if($sumPrice > $maxPrice){//超过可分佣最大值，除自购者外，其他人重新分析
+                $buyerPrice = $arrPriceList[$user['id']];
+                unset($arrPriceList[$user['id']]);
+                $_maxPrice = $maxPrice - $buyerPrice;
+                $_sumPrice = array_sum($arrPriceList);
+                $arrPriceList = $this->_rePrice($arrPriceList, $_maxPrice, $_sumPrice);
+                $arrPriceList[$user['id']] = $buyerPrice;
             }
             $sumPrice = array_sum($arrPriceList);
             $orderTotalAmount -= ($sumPrice + $platformPrice);
