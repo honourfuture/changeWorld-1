@@ -262,7 +262,6 @@ class Info extends API_Controller {
 	 *             "anchor": "1",
 	 *             "seller": "1",
 	 *             "exp": "0"
-     *             "exp": "0"
 	 *         },
 	 *         "vip": {
 	 *             "name": "",
@@ -321,7 +320,7 @@ class Info extends API_Controller {
         }
 
 		$this->load->model('Grade_model');
-		$grade = $this->Grade_model->exp_to_grade($user['exp']);
+		$grade = $this->Grade_model->getExpRank($user['exp']);
 		$ret['lv'] = $grade['grade_name'];
 
 		$this->load->model('Grade_model');
@@ -633,7 +632,7 @@ class Info extends API_Controller {
                 $ret['count'] = $this->db->count_all_results($this->Users_model->table(), false);
 
                 $this->db->select('id,nickname,address,header,v,exp,mobi,pretty_id,pid,created_at,rank_rule_id');
-                //$this->db->order_by('id', 'desc');
+                $this->db->order_by('id', 'desc');
                 $this->db->limit($this->per_page, $this->offset);
                 $users = $this->db->get()->result_array();
                 if($users){
