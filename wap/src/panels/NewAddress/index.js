@@ -131,7 +131,7 @@ class NewAddress extends BaseComponent {
                                 rules: [
                                     {
                                         required: true,
-                                        pattern: /^1(3|4|5|7|8)\d( )?\d{4}( )?\d{4}$/
+                                        pattern: /^1(3|4|5|7|8|9)\d( )?\d{4}( )?\d{4}$/
                                     }
                                 ],
                                 initialValue: mobi
