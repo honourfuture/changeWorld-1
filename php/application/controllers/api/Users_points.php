@@ -113,9 +113,9 @@ class Users_points extends API_Controller {
         $where = array();
         $type = $this->input->get_post('type');
         if($type == 'income'){
-            $where['value >'] = 0;
+            $where['is_add'] = 1;
         }elseif($type == 'used'){
-            $where['value <'] = 0;
+            $where['is_add'] = 0;
         }
 
         if($this->user_id){
