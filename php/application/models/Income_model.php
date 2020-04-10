@@ -494,6 +494,8 @@ class Income_model extends MY_Model
         //平台提成
         $configCommissioin = $this->Config_model->get_by(['name' => 'distribution_commission']);
         $platformPrice = round($orderTotalAmount * $configCommissioin['value'] / 100, 2);
+        //商家实际收入
+        $sellerIncome = $orderTotalAmount - $platformPrice;
         if($platformPrice > 0){
             if($this->Config_model->get_by(['name' => 'commission'])){
                 $sql = "UPDATE {$this->Config_model->table()} SET `value` = `value` + {$platformPrice} WHERE `name`='commission';";
@@ -550,7 +552,9 @@ class Income_model extends MY_Model
                 $levelIds[] = $levelUser['rank_rule_id'];
             }
             $sumPrice = array_sum($arrPriceList);
-            $maxPrice = $item['rebate_percent'] / 100 * $item['goods_price'] * $item['num'] - $platformPrice;//扣除服务费后可分佣金额
+            //当前商品所支付的平台佣金
+            $_platformPrice = $platformPrice * ($item['goods_price'] * $item['num'] / ($orderInfo['real_total_amount']-$freight_fee));
+            $maxPrice = $item['rebate_percent'] / 100 * $item['goods_price'] * $item['num'] - $_platformPrice;//扣除服务费后可分佣金额
             if($sumPrice > $maxPrice){//超过可分佣最大值，除自购者外，其他人重新分析
                 $buyerPrice = $arrPriceList[$user['id']];
                 unset($arrPriceList[$user['id']]);
@@ -560,7 +564,7 @@ class Income_model extends MY_Model
                 $arrPriceList[$user['id']] = $buyerPrice;
             }
             $sumPrice = array_sum($arrPriceList);
-            $orderTotalAmount -= ($sumPrice + $platformPrice);
+            $orderTotalAmount -= $sumPrice;
             foreach ($arrPriceList as $userId=>$price){
                 $this->_setBalance($arrUsers[$userId]['id'], $price);
                 $insert[] = [
