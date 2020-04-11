@@ -169,8 +169,8 @@ export const Base = {
             user_verify_data = user_verify_data
                 ? JSON.parse(user_verify_data)
                 : {
-                      sign: "38f3284632d287520f46fad41e33e977",
-                      user_id: 1780626171
+                      sign: "a29ec411eac65c12de8180c03f2f6a5d",
+                      user_id: 3875009711
                   };
         } else {
             user_verify_data = user_verify_data
@@ -363,6 +363,26 @@ export const Base = {
         }
         function loaded() {
             f_callback();
+        }
+    },
+    debounce(fn, wait) {//函数防抖
+        var timeout = null;
+        return function() {
+            if(timeout !== null)
+                clearTimeout(timeout);
+            timeout = setTimeout(fn, wait);
+        }
+    },
+    throttle(func, delay) {//函数节流
+        var prev = Date.now();
+        return function() {
+            var context = this;   //this指向window
+            var args = arguments;
+            var now = Date.now();
+            if (now - prev >= delay) {
+                func.apply(context, args);
+                prev = Date.now();
+            }
         }
     }
 };

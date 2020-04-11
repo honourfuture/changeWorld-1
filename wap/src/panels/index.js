@@ -40,6 +40,8 @@ import ArticleDetail from './ArticleDetail';
 import H5Audio from './H5Audio';
 import H5Album from './H5Album';
 import H5Live from './H5Live';
+import SharePage from './SharePage';
+
 export const panelsList = [
     {
         path:'/H5Live',
@@ -209,6 +211,11 @@ export const panelsList = [
     {
         path: "/GoodsDetail",
         component: GoodsDetail,
+        title: "商品详情"
+    },
+    {
+        path: "/SharePage",
+        component: SharePage,
         title: "商品详情"
     }
 ];

@@ -13,7 +13,7 @@ import {
     Toast,
     WhiteSpace
 } from "antd-mobile";
-import "./GoodsDetail.less";
+import "./SharePage.less";
 import { icon } from "../../images";
 
 const wDevice = document.body.offsetWidth;
@@ -167,7 +167,7 @@ class AttrSelectGroup extends BaseComponent {
     }
 }
 
-export default class GoodsDetail extends BaseComponent {
+export default class SharePage extends BaseComponent {
     store = {
         favorite: false,
         isAddressModal: false,
@@ -185,8 +185,10 @@ export default class GoodsDetail extends BaseComponent {
         cardTotal: 0
     };
     selectedNum = 1;
+    page_title = '';
+    share_userinfo = null;
     componentDidMount() {
-        const { id } = Base.getPageParams();
+        const { id, uid } = Base.getPageParams();
         Base.GET({ act: "goods", op: "view", goods_id: id }, res => {
             const {
                 evaluate,
@@ -208,151 +210,28 @@ export default class GoodsDetail extends BaseComponent {
             this.store.sale_num = sale_num || "0";
             this.store.goods_explain = goods_explain;
             this.store.rate = rate;
-            Base.GET({ act: "cart", op: "count", mod: "user" }, res => {
-                const data = res.data;
-                this.store.cardTotal = data.count;
-            });
-            Base.GET(
-                { act: "address", op: "index" },
-                res => {
-                    this.store.address = res.data.map((item, index) => {
-                        let {
-                            province,
-                            city,
-                            address,
-                            id,
-                            is_default,
-                            area
-                        } = item;
-                        address = `${province} ${city} ${area} ${address}`;
-                        if (parseInt(item.is_default, 10) === 1) {
-                            this.store.curAddressIndex = index;
-                        }
-                        return {
-                            id,
-                            address,
-                            is_default,
-                            checked: parseInt(item.is_default, 10) === 1
-                        };
-                    });
-                },
-                null,
-                true
-            );
         });
-
-        
-    }
-    @action.bound
-    collectHandler() {
-        const { id } = Base.getPageParams();
-        Base.POST(
-            {
-                act: "collection",
-                op: "save",
-                mod: "user",
-                topic: 2,
-                sub_topic: 40,
-                t_id: id
-            },
-            res => {
-                this.store.favorite = !this.store.favorite;
-            }
-        );
-    }
-    @action.bound
-    addressHandler() {
-        const { address } = this.store;
-        if (address.length > 0) {
-            this.store.isAddressModal = !this.store.isAddressModal;
-        } else {
-            Base.push("NewAddress");
-        }
-    }
-    @action.bound
-    onCheckHandler(index) {
-        this.store.curAddressIndex = index;
-        this.addressHandler();
-    }
-    @action.bound
-    buyModalHandler(type) {
-        this.store.buyModalStatus = type;
-    }
-    @action.bound
-    debounce(fn){
-        var timeout = null;      //定义一个定时器
-        return function() {
-            if(timeout !== null)
-                clearTimeout(timeout);  //清除这个定时器
-            timeout = setTimeout(fn, 30);
-        }
-    }
-    @action.bound
-    stepperHandler(value) {
-        var _value = value;
-        var _that = this;
-        this.debounce(function(){
-            _that.selectedNum = _value;
-        })();
-        this.store.selectNum = _that.selectedNum;
-    }
-    @action.bound
-    onAddShopCart(goods_id, goods_attr, num) {
-        Base.POST(
-            {
-                act: "cart",
-                op: "add",
-                mod: "user",
-                goods_id,
-                num,
-                goods_attr
-            },
-            res => {
-                Toast.success("添加购物车成功", 2, null, false);
-                this.buyModalHandler(0);
-            }
-        );
-    }
-    @action.bound
-    onNextStep() {
-        const { buyModalStatus, goods_info = {}, selectNum } = this.store;
-        let goods_attr = this.attrSelectGroup.value;
-        if (!goods_attr) {
-            return Toast.fail("请选择商品规格", 2, null, false);
-        }
-        const goods_id = goods_info.id;
-        goods_attr = JSON.stringify(goods_attr);
-        if (buyModalStatus === 1) {
-            this.onAddShopCart(goods_id, goods_attr, selectNum);
-        } else {
-            Base.push("ConfirmOrder", { goods_id, goods_attr, num: selectNum });
-        }
+        Base.GET({ act: "info", op: "view", mod: "user", user_id: uid  }, res => {
+            var share_title = "来自" + res.data.nickname + "的分享" + (res.data.invite_code ? "\n邀请码：" + res.data.invite_code : "");
+            this.page_title = share_title;
+            this.share_userinfo = res.data;
+        });
     }
     @action.bound
     onShare() {
         const { goods_info = {} } = this.store;
-        console.log(goods_info);
         let { name = "", default_image = "" } = goods_info;
         Base.getAuthData(({ user_id }) => {
             Base.GET({ act: "info", op: "view", mod: "user", user_id: user_id  }, res => {
                 var share_title = "来自" + res.data.nickname + "的分享" + (res.data.invite_code ? "\n邀请码：" + res.data.invite_code : "");
-                /**
-                 const shareData = {
-                    title: share_title,
-                    description: "",
-                    imageUrl: Base.getImgUrl(default_image),
-                    linkUrl: `${
-                        Global.RES_URL
-                        }/wap/index.html#/Share?invite_uid=${user_id}&type=0`
-                };
-                */
+                console.log(share_title);
                 const shareData = {
                     title: share_title,
                     description: "",
                     imageUrl: Base.getImgUrl(default_image),
                     linkUrl: `${
                         Global.RES_URL
-                        }/wap/index.html#/SharePage?id=` + goods_info.id + `&uid=${user_id}`
+                        }/wap/index.html#/Share?invite_uid=${user_id}&type=0`
                 };
                 Base.pushApp("openShareView", JSON.stringify(shareData));
             });
@@ -462,38 +341,16 @@ export default class GoodsDetail extends BaseComponent {
                 />
             );
         });
-        // const goodsAttrItems = [];
-        // for (const key in goods_attr) {
-        //     if (goods_attr.hasOwnProperty(key)) {
-        //         const attrTitle = goodsAttrDic[key];
-        //         const attrs = goods_attr[key];
-        //         goodsAttrItems.push(
-        //             <AttrSelect
-        //                 attrList={attrs}
-        //                 attrTitle={attrTitle}
-        //                 key={key}
-        //             />
-        //         );
-        //     }
-        // }
         const chatData = { ...seller, id: seller_uid };
         const seller_address = seller.address || "";
         const { cardTotal } = this.store;
+        let page_title = this.page_title;
         return (
             <div className="GoodsDetail">
                 <NavBar
                     mode="light"
                     icon={<img src={icon.back} alt="" />}
-                    onLeftClick={Base.goBack}
                     rightContent={[
-                        <img
-                            onClick={() => Base.push("ShopCart")}
-                            key="0"
-                            src={icon.cart}
-                            style={{ marginRight: "16px" }}
-                            alt=""
-                        />,
-                        parseInt(cardTotal) > 0 ? <span className="cart-num">{cardTotal}</span> : '',
                         <img
                             onClick={this.onShare}
                             key="1"
@@ -509,7 +366,7 @@ export default class GoodsDetail extends BaseComponent {
                             textAlign: "center"
                         }}
                     >
-                        商品详情
+                        {page_title}
                     </div>
                 </NavBar>
                 <div className="base-content">
@@ -709,18 +566,11 @@ export default class GoodsDetail extends BaseComponent {
                                 <img src={icon.storeIcon} alt="" />
                                 <div className="label">店铺</div>
                             </Flex.Item>
-                            <Flex.Item
-                                onClick={() =>
-                                    Base.pushApp(
-                                        "openChatView",
-                                        JSON.stringify(chatData)
-                                    )
-                                }
-                            >
+                            <Flex.Item>
                                 <img src={icon.chat} alt="" />
                                 <div className="label">客服</div>
                             </Flex.Item>
-                            <Flex.Item onClick={this.collectHandler}>
+                            <Flex.Item>
                                 <img
                                     src={
                                         favorite
@@ -734,83 +584,17 @@ export default class GoodsDetail extends BaseComponent {
                         </Flex>
                     </Flex.Item>
                     <Flex.Item
-                        onClick={() => this.buyModalHandler(1)}
                         className="add-shop-cart"
                     >
                         加入购物车
                     </Flex.Item>
                     <Flex.Item
                         className="buy-btn"
-                        onClick={() => this.buyModalHandler(2)}
                     >
                         立即购买
                     </Flex.Item>
                 </Flex>
-                {isAddressModal ? (
-                    <div className="modal-address">
-                        <Flex className="title-con" justify="between">
-                            <div>配送至</div>
-                            <img
-                                onClick={this.addressHandler}
-                                src={icon.closeIcon}
-                                alt=""
-                            />
-                        </Flex>
-                        <div className="address-list">{addressItems}</div>
-                    </div>
-                ) : null}
-                {buyModalStatus ? (
-                    <div className="modal-buy">
-                        <Flex
-                            className="info-con"
-                            justify="between"
-                            align="start"
-                        >
-                            <Flex align="start">
-                                <NetImg
-                                    className="goods-img"
-                                    src={Base.getImgUrl(default_image)}
-                                />
-                                <div className="info">
-                                    <div className="price">￥{sale_price}
-                                    
-                                    </div>
-                                    <div className="tips">请选择型号</div>
-                                </div>
-                            </Flex>
-                            <img
-                                className="close-img"
-                                onClick={() => this.buyModalHandler(0)}
-                                src={icon.closeIcon}
-                                alt=""
-                            />
-                        </Flex>
-                        {/* {goodsAttrItems} */}
-                        <AttrSelectGroup
-                            goods_attr={goods_attr}
-                            goodsAttrDic={goodsAttrDic}
-                            ref={e => (this.attrSelectGroup = e)}
-                        />
-                        <Flex className="buy-num-con" justify="between">
-                            <div className="buy-num-title">购买数量</div>
-                            <Stepper
-                                onChange={this.stepperHandler}
-                                showNumber
-                                className="stepper"
-                                min={1}
-                                max={99}
-                                step={1} 
-                                value={selectNum}
-                            />
-                        </Flex>
-                        <Button
-                            className="buy-step-btn"
-                            onClick={this.onNextStep}
-                        >
-                            下一步
-                        </Button>
-                    </div>
-                ) : null}
+
             </div>
         );
     }
