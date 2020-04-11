@@ -9,23 +9,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 use QCloud\Live\Query;
 class Search extends API_Controller {
 
-	public function __construct()
+    public function __construct()
     {
         parent::__construct();
 
         $keyword = $this->input->get_post('keyword');
-    	$from = $this->input->get_post('from');
-    	$tab = $this->input->get_post('tab');
-    	if($keyword === '' || is_null($keyword)){
-    		$this->ajaxReturn([], 1, '请输入关键词搜索');
-    	}
-    	if(! in_array($from, array('shop', 'knowledge', 'chat'))){
-    		$this->ajaxReturn([], 2, '搜索模块暂不支持');
-    	}
+        $from = $this->input->get_post('from');
+        $tab = $this->input->get_post('tab');
+        if($keyword === '' || is_null($keyword)){
+            $this->ajaxReturn([], 1, '请输入关键词搜索');
+        }
+        if(! in_array($from, array('shop', 'knowledge', 'chat'))){
+            $this->ajaxReturn([], 2, '搜索模块暂不支持');
+        }
 
-    	$this->keyword = $keyword;
-    	$this->from = $from;
-    	$this->tab = $tab;
+        $this->keyword = $keyword;
+        $this->from = $from;
+        $this->tab = $tab;
     }
 
     /**
@@ -47,33 +47,33 @@ class Search extends API_Controller {
      * @apiSuccess {Object} data 接口数据集
      *
      * @apiSuccessExample {json} Success-Response:
-	 * {
-	 *     "data": {
-	 *         "count": 1,
-	 *         "list": [
-	 *             {
-	 *                 "room_id": "52",
-	 *                 "title": "你的出生地址",
-	 *                 "cover_image": "/uploads/2018/01/31/a2e0b9485cb752ad7534fd8b86ebd233.png",
-	 *                 "play_url": {
-	 *                     "rtmp": "rtmp://6077.liveplay.myqcloud.com/live/6077_zhumaidan-1-52",
-	 *                     "flv": "http://6077.liveplay.myqcloud.com/live/6077_zhumaidan-1-52.flv",
-	 *                     "m3u8": "http://6077.liveplay.myqcloud.com/live/6077_zhumaidan-1-52.m3u8"
-	 *                 },
-	 *                 "live_tag_id": "0",
-	 *                 "anchor_uid": "1",
-	 *                 "views": "0",
-	 *                 "price": "10000.00",
-	 *                 "tag_name": "",
-	 *                 "live_status": 1,
-	 *                 "nickname": "aicode",
-	 *                 "v": "0"
-	 *             }
-	 *         ]
-	 *     },
-	 *     "status": 0,
-	 *     "message": "成功"
-	 * }
+     * {
+     *     "data": {
+     *         "count": 1,
+     *         "list": [
+     *             {
+     *                 "room_id": "52",
+     *                 "title": "你的出生地址",
+     *                 "cover_image": "/uploads/2018/01/31/a2e0b9485cb752ad7534fd8b86ebd233.png",
+     *                 "play_url": {
+     *                     "rtmp": "rtmp://6077.liveplay.myqcloud.com/live/6077_zhumaidan-1-52",
+     *                     "flv": "http://6077.liveplay.myqcloud.com/live/6077_zhumaidan-1-52.flv",
+     *                     "m3u8": "http://6077.liveplay.myqcloud.com/live/6077_zhumaidan-1-52.m3u8"
+     *                 },
+     *                 "live_tag_id": "0",
+     *                 "anchor_uid": "1",
+     *                 "views": "0",
+     *                 "price": "10000.00",
+     *                 "tag_name": "",
+     *                 "live_status": 1,
+     *                 "nickname": "aicode",
+     *                 "v": "0"
+     *             }
+     *         ]
+     *     },
+     *     "status": 0,
+     *     "message": "成功"
+     * }
      *
      * @apiErrorExample {json} Error-Response:
      * {
@@ -84,29 +84,29 @@ class Search extends API_Controller {
      */
     public function index()
     {
-    	$ret = array('count' => 0, 'list' => array());
-    	if($this->from == 'shop'){
+        $ret = array('count' => 0, 'list' => array());
+        if($this->from == 'shop'){
 
-    	}elseif($this->from == 'knowledge'){
-    		switch($this->tab){
-    			case 'album':
-    				$ret = $this->_album();
-    				break;
-    			case 'anchor':
-    				$ret = $this->_anchor();
-    				break;
-    			case 'live':
-    				$ret = $this->_live();
-    				break;
-    			case 'audio':
-    				$ret = $this->_audio();
-    				break;
-    		}
-    	}elseif($this->from == 'chat'){
+        }elseif($this->from == 'knowledge'){
+            switch($this->tab){
+                case 'album':
+                    $ret = $this->_album();
+                    break;
+                case 'anchor':
+                    $ret = $this->_anchor();
+                    break;
+                case 'live':
+                    $ret = $this->_live();
+                    break;
+                case 'audio':
+                    $ret = $this->_audio();
+                    break;
+            }
+        }elseif($this->from == 'chat'){
             $ret = $this->_user();
         }
 
-    	$this->ajaxReturn($ret);
+        $this->ajaxReturn($ret);
     }
 
     //会员
@@ -125,7 +125,7 @@ class Search extends API_Controller {
 
         $ret['count'] = $this->Users_model->count_by($where);
         if( empty($ret['count']) ){
-        	return $ret;
+            return $ret;
         }
         $order_by = array('sort' => 'desc', 'updated_at' => 'desc');
         $this->db->select('id,nickname,v,exp,header,summary,pretty_id');
@@ -139,99 +139,101 @@ class Search extends API_Controller {
         $list = $this->Users_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
         
         if( empty($list) ){
-        	$ret['count'] = 0;
-        	$ret['list'] = [];
-        	return $ret;
+            $ret['count'] = 0;
+            $ret['list'] = [];
+            return $ret;
         }
         $this->load->model('Grade_model');
         foreach($list as $item){
-        	$grade = $this->Grade_model->exp_to_grade($item['exp']);
-        	$item['lv'] = $grade['grade_name'];        
-        	$ret['list'][] = $item;
+            $grade = $this->Grade_model->exp_to_grade($item['exp']);
+            $item['lv'] = $grade['grade_name'];        
+            $ret['list'][] = $item;
         }
         return $ret;
     }
 
     //专辑
     protected function _album()
-	{
-		$ret = array('count' => 0, 'list' => array());
-		$where = array('enable' => 1, 'public' => 1);
-		$this->db->like('title', $this->keyword);
-		$this->load->model('Album_model');
+    {
+        $ret = array('count' => 0, 'list' => array());
+        $where = array('enable' => 1, 'public' => 1);
+        $this->db->like('title', $this->keyword);
+        $this->load->model('Album_model');
 
-		$ret['count'] = $this->Album_model->count_by($where);
-		if( empty($ret['count']) ){
-			return $ret;
-		}
-		$order_by = array('sort' => 'desc', 'updated_at' => 'desc');
-		$this->db->select('id,cover_image,title,price');
-		$this->db->like('title', $this->keyword);
-		$ret['list'] = $this->Album_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
+        $ret['count'] = $this->Album_model->count_by($where);
+        if( empty($ret['count']) ){
+            return $ret;
+        }
+        $order_by = array('sort' => 'desc', 'updated_at' => 'desc');
+        $this->db->select('id,cover_image,title,price');
+        $this->db->like('title', $this->keyword);
+        $ret['list'] = $this->Album_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 
-		$this->Album_model->audio($ret);
+        $this->Album_model->audio($ret);
 
-		return $ret;
-	}
+        return $ret;
+    }
 
     //主播
     protected function _anchor()
     {
-    	$ret = array('count' => 0, 'list' => array());
-		$where = [];array('enable' => 1);
-		// $where['anchor'] = 2;
-		
-		$this->db->group_start();
-		$this->db->like('nickname', $this->keyword);
-		$this->db->or_where('pretty_id', $this->keyword);
-		$this->db->group_end();
-		
-		$this->load->model('Users_model');
+        $ret = array('count' => 0, 'list' => array());
+        $where = [];array('enable' => 1);
+        // $where['anchor'] = 2;
+        
+        $this->db->group_start();
+        $this->db->like('nickname', $this->keyword);
+        $this->db->or_where('pretty_id', $this->keyword);
+        $this->db->group_end();
+        
+        $this->load->model('Users_model');
 
-		$ret['count'] = $this->Users_model->count_by($where);
-		if( empty($ret['count']) ){
-			return $ret;
-		}
-		
-		$order_by = array('sort' => 'desc', 'updated_at' => 'desc');
-		$this->db->select('id,nickname,v,exp,header,summary,pretty_id');
+        $ret['count'] = $this->Users_model->count_by($where);
+        if( empty($ret['count']) ){
+            return $ret;
+        }
+        
+        $order_by = array('sort' => 'desc', 'updated_at' => 'desc');
+        $this->db->select('id,nickname,v,exp,header,summary,pretty_id');
 
-		$this->db->group_start();
-		$this->db->like('nickname', $this->keyword);
-		$this->db->or_where('pretty_id', $this->keyword);
-		$this->db->group_end();
+        $this->db->group_start();
+        $this->db->like('nickname', $this->keyword);
+        $this->db->or_where('pretty_id', $this->keyword);
+        $this->db->group_end();
 
-		$ret['list'] = $this->Users_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_all($where);
+        $ret['list'] = $this->Users_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_all($where);
 
-		if( empty($ret['list']) ){
-			$ret['count'] = 0;
-			$ret['list'] = [];
-			return $ret;
-		}
-		
-		$a_id = array();
-		foreach($ret['list'] as $item){
-			$a_id[] = $item['id'];
-		}
-		if($a_id){
-			$this->load->model('Users_collection_model');
-			$fans = $this->Users_collection_model->get_many_count_fans($a_id);
-			$this->load->model('Room_audio_model');
-			$audio = $this->Room_audio_model->get_many_count_music($a_id);
-			foreach($ret['list'] as $key=>$item){
-				$ret['list'][$key]['fans'] = isset($fans[$item['id']]) ? $fans[$item['id']] : 0;
-				$ret['list'][$key]['music'] = isset($audio[$item['id']]) ? $audio[$item['id']] : 0;
-				$ret['list'][$key]['hasFans'] = $this->Users_collection_model->check_fans($this->user_id, $item['id']);
-			}
-		}
-		return $ret;
+        if( empty($ret['list']) ){
+            $ret['count'] = 0;
+            $ret['list'] = [];
+            return $ret;
+        }
+        
+        $a_id = array();
+        foreach($ret['list'] as $item){
+            $a_id[] = $item['id'];
+        }
+        if($a_id){
+            $this->load->model('Users_collection_model');
+            $fans = $this->Users_collection_model->get_many_count_fans($a_id);
+            $this->load->model('Room_audio_model');
+            $audio = $this->Room_audio_model->get_many_count_music($a_id);
+            $this->load->model('Grade_model');
+            foreach($ret['list'] as $key=>$item){
+                $ret['list'][$key]['lv'] = $this->Grade_model->getExpRank($item['exp']);
+                $ret['list'][$key]['fans'] = isset($fans[$item['id']]) ? $fans[$item['id']] : 0;
+                $ret['list'][$key]['music'] = isset($audio[$item['id']]) ? $audio[$item['id']] : 0;
+                $ret['list'][$key]['hasFans'] = $this->Users_collection_model->check_fans($this->user_id, $item['id']);
+            }
+        }
+        return $ret;
     }
 
     //直播
     protected function _live()
     {
-    	$ret = array('count' => 0, 'list' => array());
-    	$this->load->model('Room_model');
+        $ret = array('count' => 0, 'list' => array());
+        $this->load->model('Room_model');
 
         $online = array();
         $QLive = new Query();
@@ -255,13 +257,13 @@ class Search extends API_Controller {
                 $this->db->select('id');
                 $this->db->where_in('id', $a_user_id);
 
-				$this->db->group_start();
-				$this->db->like('nickname', $this->keyword);
-				$this->db->or_where('pretty_id', $this->keyword);
-				$this->db->group_end();
+                $this->db->group_start();
+                $this->db->like('nickname', $this->keyword);
+                $this->db->or_where('pretty_id', $this->keyword);
+                $this->db->group_end();
 
-				$this->load->model('Users_model');
-				$a_user = $this->Users_model->get_all();
+                $this->load->model('Users_model');
+                $a_user = $this->Users_model->get_all();
                 $a_anchor_uid = [];
 
                 $order_by = array('sort' => 'desc', 'id' => 'desc');
@@ -269,14 +271,14 @@ class Search extends API_Controller {
                 $this->db->where_in('id', $a_room_id);
 
                 $this->db->group_start();
-				$this->db->like('title', $this->keyword);
+                $this->db->like('title', $this->keyword);
                 if($a_user){
                     foreach($a_user as $item){
                         $a_anchor_uid[] = $item['id'];
                     }
-				    $this->db->or_where_in('anchor_uid', $a_anchor_uid);
+                    $this->db->or_where_in('anchor_uid', $a_anchor_uid);
                 }
-				$this->db->group_end();
+                $this->db->group_end();
 
                 if(is_numeric($this->keyword)){
                     $this->db->or_group_start();
@@ -295,22 +297,22 @@ class Search extends API_Controller {
     //音频
     protected function _audio()
     {
-    	$ret = array('count' => 0, 'list' => array());
-		$where = array('enable' => 1);
-		$where['album_id >'] = 0;
-		$this->db->like('title', $this->keyword);
-		$this->load->model('Room_audio_model');
+        $ret = array('count' => 0, 'list' => array());
+        $where = array('enable' => 1);
+        $where['album_id >'] = 0;
+        $this->db->like('title', $this->keyword);
+        $this->load->model('Room_audio_model');
 
-		$ret['count'] = $this->Room_audio_model->count_by($where);
-		if( empty($ret['count']) ){
-			return $ret;
-		}
-		
-		$order_by = array('updated_at' => 'desc', 'id' => 'desc');
-		$this->db->select('id,cover_image,title,price,updated_at,duration,play_times,album_id,anchor_uid');
-		$this->db->like('title', $this->keyword);
-		$ret['list'] = $this->Room_audio_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
+        $ret['count'] = $this->Room_audio_model->count_by($where);
+        if( empty($ret['count']) ){
+            return $ret;
+        }
+        
+        $order_by = array('updated_at' => 'desc', 'id' => 'desc');
+        $this->db->select('id,cover_image,title,price,updated_at,duration,play_times,album_id,anchor_uid');
+        $this->db->like('title', $this->keyword);
+        $ret['list'] = $this->Room_audio_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
 
-		return $ret;
+        return $ret;
     }
 }
