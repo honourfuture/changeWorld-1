@@ -88,7 +88,7 @@ class Wallet extends API_Controller {
         $valWithrawed = $this->Withdraw_model->getWithdrawed($this->user_id);//已提现金额
         $inclomeAvailable = $valIncomeSum - $valWithrawed;
         $inclomeAvailable = ($inclomeAvailable>=0 ? $inclomeAvailable : 0);
-        $ret['withdraw'] = numberFormat($inclomeAvailable, 2);
+        $ret['withdraw'] = numformat($inclomeAvailable, 2);
         
         //今日
         $where['created_at >= '] = date('Y-m-d 00:00:00');
