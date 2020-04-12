@@ -314,7 +314,7 @@ class Payment_log extends API_Controller {
         $order_update = ['status' => 1];
         $this->Payment_log_model->update($order_id, $order_update);
         //更新销售状态
-        $this->Pretty_model->update($this->row['id'], ['status' => 1, 'buyer_id' => $this->user_id]);
+        //$this->Pretty_model->update($this->row['id'], ['status' => 1, 'buyer_id' => $this->user_id]);
 
         //积分抵扣明细
         $this->load->model('Users_points_model');
