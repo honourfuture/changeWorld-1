@@ -246,7 +246,6 @@ class Audio extends API_Controller {
      */
     public function finish()
     {
-        $this->check_operation();
         $params = elements(
             array(
                 'user_id', 'seconds'
