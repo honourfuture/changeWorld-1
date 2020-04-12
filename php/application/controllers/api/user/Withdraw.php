@@ -95,7 +95,7 @@ class Withdraw extends API_Controller {
             $ret['bank'] = (object)$ret['bank'];
         }
 
-        $ret['withdraw_tips'] = '到账时间以银行为准';
+        $ret['withdraw_tips'] = '到账时间为3-7个工作日，具体以系统通知为准';
 
         $this->ajaxReturn($ret);
     }
