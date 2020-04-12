@@ -172,7 +172,7 @@ class Audio extends API_Controller {
     private function _upExpPoints($user, $date)
     {
         $sql = "SELECT SUM(seconds) AS seconds FROM `audio_play_seconds` WHERE user_id={$user['id']} AND `date`={$date}";
-        $record = $this->db->query($sql)->getRowArray();
+        $record = $this->db->query($sql)->row_array();
         if( $record['seconds'] < 800 ){
             return false;
         }
@@ -271,7 +271,7 @@ class Audio extends API_Controller {
         $this->Audio_play_seconds_model->insert($insert);
 
         $sql = "SELECT COUNT(1) AS cnt FROM `audio_play_seconds` WHERE user_id={$params['user_id']} AND is_up_exp_points = 1 AND `date`={$date}";
-        $record = $this->db->query($sql)->getRowArray();
+        $record = $this->db->query($sql)->row_array();
         if( !empty($record) ){
             //判断用户累计时长是否超过15分钟
             $this->_upExpPoints($user);
