@@ -100,7 +100,7 @@ class Rank_rule extends API_Controller {
                 $this->input->post(),
                 UPDATE_VALID
             );
-            if( !empty($params[['grade_logo']]) ) {
+            if( !empty($params['grade_logo']) ) {
                 $params['icon'] = $params['grade_logo'];
             }
             unset($params['grade_logo']);
