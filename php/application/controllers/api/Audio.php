@@ -246,13 +246,10 @@ class Audio extends API_Controller {
      */
     public function finish()
     {
-        $params = elements(
-            array(
-                'user_id', 'seconds'
-            ),
-            $this->input->post(),
-            UPDATE_VALID
-        );
+        $params = [
+        	'user_id' => $this->input->get_post('user_id'),
+	        'seconds' => $this->input->get_post('seconds'),
+        ];
 
         $this->load->model('Users_model');
         $user = $this->Users_model->get($params['user_id']);
