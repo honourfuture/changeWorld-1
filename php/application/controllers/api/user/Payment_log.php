@@ -274,8 +274,15 @@ class Payment_log extends API_Controller {
     protected function pointPay($order_id, $order_sn)
     {
         $user = $this->get_user();
-        if($this->topic != 'live'){
+        if( !in_array($this->topic, [ 'live', 'album'] ) ){//直播与专集支持积分
             $this->ajaxReturn([], 2, '不支持积分购买');
+        }
+        //专集有可能没有配置允许积分
+        $this->load->model('Album_model');
+        $this->db->select('id,anchor_uid,cover_image,title,price,is_point');
+        $row = $this->Album_model->get($this->t_id);
+        if( $this->topic == 'album' && $row['is_point'] == 0 ){
+            $this->ajaxReturn([], 2, '该专集不支持积分购买');
         }
 
         if($user && $user['point'] >= $this->row['point']){
