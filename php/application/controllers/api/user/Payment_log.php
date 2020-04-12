@@ -275,7 +275,7 @@ class Payment_log extends API_Controller {
     {
         $user = $this->get_user();
         if($this->topic != 'live'){
-            $this->ajaxReturn([], 2, '不支付积分购买');
+            $this->ajaxReturn([], 2, '不支持积分购买');
         }
 
         if($user && $user['point'] >= $this->row['point']){
