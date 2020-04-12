@@ -70,12 +70,7 @@ export default class MessageCenter extends BaseComponent {
                 cur_page: this.cur_page || 1,
                 per_page: Global.PAGE_SIZE
             },
-            res => {
-        
-            	var arrgy = res.data.list;
-            	for(var i=0;i<arrgy.length;i++){
-            		arrgy[i].updated_at= this.time(arrgy[i].updated_at)
-            	}
+            res => {         
                 const { list } = res.data;
                 this.store.list =
                     this.cur_page === 1
@@ -92,11 +87,6 @@ export default class MessageCenter extends BaseComponent {
         );
     }
     
-	/*时间转换*/
-    time(date) {
-		var nowdate = new Date(date).toLocaleDateString().replace(/\//g, '-')
-		return nowdate
-	}
     @action.bound
     onRefresh() {
         this.store.refreshing = true;

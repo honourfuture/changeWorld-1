@@ -32,7 +32,7 @@ class EvaluateItem extends BaseComponent {
         return (
         	
             <div className="evaluate-item am-flexbox-align-start am-flexbox">
-                <NetImg className="userImg" src={Base.getImgUrl(header)} />
+                <NetImg className="userImg" src={Base.getImgUrl()} />
                 <div>
                     <div className="name">
                         {Base.getAnonymity(nickname)} 等级：{lv}
@@ -251,6 +251,14 @@ export default class SharePage extends BaseComponent {
 
         });
     }
+    
+    /*点击立即打开app*/
+    handleClick(){
+        const { id, uid } = Base.getPageParams();
+    	window.location.href = `${
+            Global.RES_URL
+            }/wap/index.html#/Share?invite_uid=${uid}&type=0`
+    }
     render() {
         const {
             favorite,
@@ -362,7 +370,7 @@ export default class SharePage extends BaseComponent {
             <div className="GoodsDetail">
                 <NavBar
                     mode="light"
-                    icon={<img src={icon.back} alt="" />}
+                    
                     rightContent={[
                         <img
                             onClick={this.onShare}
@@ -398,7 +406,7 @@ export default class SharePage extends BaseComponent {
                             <p>享受更多权益</p>
                           </div>
                        </div>
-                       <div className="mymodel-list right">立即打开</div>                      
+                       <div className="mymodel-list right"  onClick={this.handleClick}>立即打开</div>                      
                     </div>
                     
                    
