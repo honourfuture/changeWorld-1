@@ -101,7 +101,7 @@ export class RankLvSet extends BaseComponent {
         ];
     }
     renderImg(text, record, column) {
-        const { editable, grade_logo, loading } = record;
+        const { editable, icon, loading } = record;
         return (
             <div>
                 {editable ? (
@@ -113,10 +113,10 @@ export class RankLvSet extends BaseComponent {
                         action={Global.UPLOAD_URL}
                         onChange={e => this.onUploadChange(e, record.id)}
                     >
-                        {grade_logo ? (
+                        {icon ? (
                             <img
                                 className="img-uploader"
-                                src={grade_logo}
+                                src={`${Global.RES_URL}${icon}`}
                                 alt=""
                             />
                         ) : (
@@ -129,7 +129,7 @@ export class RankLvSet extends BaseComponent {
                 ) : (
                     <img
                         className="img-uploader"
-                        src={`${Global.RES_URL}${grade_logo}`}
+                        src={`${Global.RES_URL}${icon}`}
                         alt=""
                         width="48"
                     />
