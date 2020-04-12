@@ -274,7 +274,7 @@ class Audio extends API_Controller {
         $record = $this->db->query($sql)->row_array();
         if( !empty($record) ){
             //判断用户累计时长是否超过15分钟
-            $this->_upExpPoints($user);
+            $this->_upExpPoints($user, $date);
         }
         $this->ajaxReturn();
     }
