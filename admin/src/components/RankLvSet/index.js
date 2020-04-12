@@ -131,6 +131,7 @@ export class RankLvSet extends BaseComponent {
                         className="img-uploader"
                         src={`${Global.RES_URL}${grade_logo}`}
                         alt=""
+                        width="48"
                     />
                 )}
             </div>
