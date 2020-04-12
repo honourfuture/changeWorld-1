@@ -23,9 +23,14 @@ class EvaluateItem extends BaseComponent {
         const { header, nickname, remark,photos,lv  } = this.props;
         const photo = JSON.parse(JSON.parse(photos));
 		let photosItem = (photo || []).map((item,key)=>{
-			return <NetImg className="desImg" src={Base.getImgUrl(item)} key={key}/>
+			return(
+				<div >	   
+				   <NetImg className="desImg" src={Base.getImgUrl(item)} key={key}/>
+				</div>
+			)
 		});
         return (
+        	
             <div className="evaluate-item am-flexbox-align-start am-flexbox">
                 <NetImg className="userImg" src={Base.getImgUrl(header)} />
                 <div>
@@ -42,10 +47,16 @@ class EvaluateItem extends BaseComponent {
                     }
                 </div>
                 
+                
             </div>
+            
+            
         );
+        
+        
     }
 }
+
 
 class GoodsItem extends BaseComponent {
     @action.bound
@@ -217,6 +228,8 @@ export default class SharePage extends BaseComponent {
             this.share_userinfo = res.data;
         });
     }
+    
+
     @action.bound
     onShare() {
         const { goods_info = {} } = this.store;
@@ -252,7 +265,7 @@ export default class SharePage extends BaseComponent {
             address = [],
             sale_num,
             goods_explain,
-            rate
+            rate,
         } = this.store;
         let {
             goods_image = "",
@@ -371,8 +384,25 @@ export default class SharePage extends BaseComponent {
                 </NavBar>
                 <div className="base-content">
                     <Carousel autoplay={true} infinite>
-                        {goodsImgs}
+                        {goodsImgs}                         
                     </Carousel>
+                     
+                    <div className="mymodel"> 
+                       <div className="mymodel-list left">
+                          <div className="mymodel-list-colse">X</div>
+                          <div className="mymodel-list-logo">
+                            <img src="https://dss0.baidu.com/6LZXsjikBxIFlNKl8IuM_a/tb/cms/ngmis/file_1584672553807.jpg"/>
+                          </div>
+                          <div className="mymodel-list-content">
+                            <p>打开改变世界App</p>
+                            <p>享受更多权益</p>
+                          </div>
+                       </div>
+                       <div className="mymodel-list right">立即打开</div>                      
+                    </div>
+                    
+                   
+                    
                     <div className="info-con">
                         <Flex justify="between">
                             <div className="price">

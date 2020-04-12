@@ -271,6 +271,8 @@ class Payment_log extends API_Controller {
 
         $this->row = $row;
     }
+
+
     protected function pointPay($order_id, $order_sn)
     {
         $user = $this->get_user();
@@ -285,38 +287,47 @@ class Payment_log extends API_Controller {
             $this->ajaxReturn([], 2, '该专集不支持积分购买');
         }
 
-        if($user && $user['point'] >= $this->row['point']){
-            // if($this->row['price'] > 0){
-            $this->Users_model->update(
-                $this->user_id,
-                [
-                    'point' => $user['point'] - $this->row['point'],
-                    'pretty_id' => $this->row['pretty_id']
-                ]
-            );
-            // }
-
-            //更新流水状态
-            $order_update = ['status' => 1];
-            $this->Payment_log_model->update($order_id, $order_update);
-            //更新销售状态
-            $this->Pretty_model->update($this->row['id'], ['status' => 1, 'buyer_id' => $this->user_id]);
-
-            //积分抵扣明细
-            $this->load->model('Users_points_model');
-            $point_log = [
-                'user_id' => $this->user_id,
-                'value' => $this->row['point'],
-                'point' => $user['point'] - $this->row['point'],
-                'rule_name' => 'audio_buy',
-                'remark' => '音频下单积分使用'
-            ];
-            $this->Users_points_model->insert($point_log);
-
-            $this->ajaxReturn();
-        }else{
+        if($user && $user['point'] < $this->row['point']) {
             $this->ajaxReturn([], 2, '账户积分不足');
         }
+
+        if( $this->row['price'] > 0 ){
+            $arrData = ['point' => ($user['point'] - $this->row['point'])];
+            //$arrData['pretty_id'] = $this->row['pretty_id'];
+            switch ($this->topic){
+                case 'live':
+                    break;
+                case 'album':
+                    break;
+                case 'audio':
+                    break;
+                default:
+
+            }
+            $this->Users_model->update(
+                $this->user_id,
+                $arrData
+            );
+        }
+
+        //更新流水状态
+        $order_update = ['status' => 1];
+        $this->Payment_log_model->update($order_id, $order_update);
+        //更新销售状态
+        $this->Pretty_model->update($this->row['id'], ['status' => 1, 'buyer_id' => $this->user_id]);
+
+        //积分抵扣明细
+        $this->load->model('Users_points_model');
+        $point_log = [
+            'user_id' => $this->user_id,
+            'value' => $this->row['point'],
+            'point' => $user['point'] - $this->row['point'],
+            'rule_name' => 'audio_buy',
+            'remark' => '音频下单积分使用'
+        ];
+        $this->Users_points_model->insert($point_log);
+
+        $this->ajaxReturn();
     }
 
     protected function balance($order_id, $order_sn)

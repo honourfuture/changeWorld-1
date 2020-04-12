@@ -16,11 +16,14 @@ class MessageItem extends BaseComponent {
     }
     render(){
         const {id,title,summary,updated_at} = this.props;
+        console.log(updated_at,'ahhahahah')
+        
+        
         return (
             <Item
                 className="base-line msgList"
                 multipleLine
-                onClick={() => this.onRead(id)}
+                onClick={() => this.onRead(id)}     
             >
                 <Flex justify="between" align="center">
                     <span className='title'>{title}</span>
@@ -37,6 +40,7 @@ class MessageItem extends BaseComponent {
 
 export default class MessageCenter extends BaseComponent {
     constructor(props){
+    	console.log(props,'propsprops')
         super(props);
         this.dataSource = new ListView.DataSource({
             rowHasChanged: (row1, row2) => row1 !== row2
@@ -67,6 +71,11 @@ export default class MessageCenter extends BaseComponent {
                 per_page: Global.PAGE_SIZE
             },
             res => {
+        
+            	var arrgy = res.data.list;
+            	for(var i=0;i<arrgy.length;i++){
+            		arrgy[i].updated_at= this.time(arrgy[i].updated_at)
+            	}
                 const { list } = res.data;
                 this.store.list =
                     this.cur_page === 1
@@ -82,6 +91,12 @@ export default class MessageCenter extends BaseComponent {
             b_noToast
         );
     }
+    
+	/*时间转换*/
+    time(date) {
+		var nowdate = new Date(date).toLocaleDateString().replace(/\//g, '-')
+		return nowdate
+	}
     @action.bound
     onRefresh() {
         this.store.refreshing = true;
