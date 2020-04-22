@@ -134,12 +134,13 @@ class Users_points extends API_Controller {
         if($ret['points']['count']){
             $order_by = array('id' => 'desc');
             $this->search();
-            $this->db->select('id,updated_at,user_id,value,rule_name,remark,point');
+            $this->db->select('id,updated_at,user_id,value,rule_name,remark,point,is_add');
             $ret['points']['list'] = $this->Users_points_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
             $a_user = array();
             if($ret['points']['list']){
                 foreach($ret['points']['list'] as $key=>$item){
                     $ret['points']['list'][$key]['value'] = round($item['value'], 0);
+                    $ret['points']['list'][$key]['value'] = ($item['is_add'] ? 1 : -1) * $ret['points']['list'][$key]['value'];
                     $ret['points']['list'][$key]['rule_name_text'] = $this->formatPointsName($item['rule_name']);
                     $item['user_id'] && $a_user[] = $item['user_id'];
                 }
