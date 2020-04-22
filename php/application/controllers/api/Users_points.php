@@ -323,6 +323,7 @@ class Users_points extends API_Controller {
         $points = $this->Users_points_model->get_many_by($where);
         $this->load->model('Points_rule_model');
         $pointsRule = $this->Points_rule_model->get_many_by(['enable'=>1,'deleted'=>0,'is_show'=>1]);
+        unset($pointsRule['pretty_buy'], $pointsRule['audio_buy']);
         $limit_day = [];
         foreach ($pointsRule as $key=>$value){
             $limit_day[$value["name"]] = $value["days_limit"];
