@@ -175,6 +175,17 @@ export default class MemberManager extends BaseComponent {
                                     >
                                         编辑
                                     </a>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <Popconfirm
+                                        title="当前操作将重置用户密码，是否继续?"
+                                        okText="重置"
+                                        cancelText="取消"
+                                        onConfirm={() => this.onResetPw(id)}
+                                    >
+                                    <a>
+                                        重置密码
+                                    </a>
+                                    </Popconfirm>
                                 </span>
                             )}
                         </div>
@@ -190,6 +201,22 @@ export default class MemberManager extends BaseComponent {
                 name: record.name
             })
         };
+    }
+    //重置密码
+    @action.bound
+    onResetPw(id){
+        Base.GET(
+            { act: "user", op: "resetPassword", mod: "admin", 'id': id },
+            res => {
+                if( res.status == 0 ){
+                    message.success('用户密码重置成功！');
+                }
+                else{
+                    message.error('用户密码重置失败！');
+                }
+            },
+            this
+        );
     }
     //编辑
     @action.bound
