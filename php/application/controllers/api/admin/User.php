@@ -53,7 +53,7 @@ class User extends API_Controller {
 		if( empty($password) ){
 			$password = '123456';
 		}
-		$update = ['password'=>md5($password)];
+		$update = ['password'=>$this->Users_model->get_password($password)];
 		$flag = $this->Users_model->update($id, $update);
 		if($flag){
 			$status = 0;
