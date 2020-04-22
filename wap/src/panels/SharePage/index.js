@@ -399,10 +399,10 @@ export default class SharePage extends BaseComponent {
                        <div className="mymodel-list left">
                           <div className="mymodel-list-colse">X</div>
                           <div className="mymodel-list-logo">
-                            <img src="https://dss0.baidu.com/6LZXsjikBxIFlNKl8IuM_a/tb/cms/ngmis/file_1584672553807.jpg"/>
+                            <img src={icon.logo}/>
                           </div>
                           <div className="mymodel-list-content">
-                            <p>打开改变世界App</p>
+                            <p>打开罗马市场App</p>
                             <p>享受更多权益</p>
                           </div>
                        </div>
