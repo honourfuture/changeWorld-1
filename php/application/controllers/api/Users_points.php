@@ -313,7 +313,8 @@ class Users_points extends API_Controller {
             'user_id' => $this->user_id,
             'created_at >= ' => $start,
             'created_at <= ' => $end,
-	        'rule_name NOT IN'  => '("pretty_buy", "audio_buy")'
+	        'rule_name !='  => 'pretty_buy',
+	        'rule_name !=' => 'audio_buy'
         ];
 
         $user = $this->Users_model->get($this->user_id);
