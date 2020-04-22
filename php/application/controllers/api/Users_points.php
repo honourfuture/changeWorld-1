@@ -140,7 +140,7 @@ class Users_points extends API_Controller {
             if($ret['points']['list']){
                 foreach($ret['points']['list'] as $key=>$item){
                     $ret['points']['list'][$key]['value'] = round($item['value'], 0);
-                    $ret['points']['list'][$key]['value'] = ($item['is_add'] ? 1 : -1) * $ret['points']['list'][$key]['value'];
+                    $ret['points']['list'][$key]['value'] = ($item['is_add'] ? '+' : '-') . $ret['points']['list'][$key]['value'];
                     $ret['points']['list'][$key]['rule_name_text'] = $this->formatPointsName($item['rule_name']);
                     $item['user_id'] && $a_user[] = $item['user_id'];
                 }
