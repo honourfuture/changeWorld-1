@@ -490,7 +490,7 @@ class Income_model extends MY_Model
         $row = $query->row_array();
         $freight_fee = $row['freight_fee'];
         //订单实付金额(不含快递费)
-        $orderTotalAmount = $orderInfo['real_total_amount']-$freight_fee;
+        $orderTotalAmount = $orderInfo['real_total_amount'] - $freight_fee;
         //平台提成
         $configCommissioin = $this->Config_model->get_by(['name' => 'distribution_commission']);
         $platformPrice = round($orderTotalAmount * $configCommissioin['value'] / 100, 2);
@@ -564,7 +564,7 @@ class Income_model extends MY_Model
                 $arrPriceList[$user['id']] = $buyerPrice;
             }
             $sumPrice = array_sum($arrPriceList);
-            $orderTotalAmount -= $sumPrice;
+	        $sellerIncome -= $sumPrice;
             foreach ($arrPriceList as $userId=>$price){
                 $this->_setBalance($arrUsers[$userId]['id'], $price);
                 $insert[] = [
@@ -593,7 +593,7 @@ class Income_model extends MY_Model
         $ruleDollarToPoint = $this->db->query("SELECT * FROM `points_rule` WHERE `name`='per_dollar'")->row_array();
         $ruleDollarToExp = $this->db->query("SELECT * FROM `grade_rule` WHERE `name`='per_dollar'")->row_array();
         //商家收入(商家卖商品，不计经验及积分)
-        $arrSeller = $this->setSellerIncome($orderInfo, $userSeller, $userBuyer, $orderTotalAmount, $orderItems, $ruleIncomeToPoint, $ruleIncomeToExp);
+        $arrSeller = $this->setSellerIncome($orderInfo, $userSeller, $userBuyer, $sellerIncome, $orderItems, $ruleIncomeToPoint, $ruleIncomeToExp);
         //买家消费产生的积分及经验
         $point = floor($orderInfo['real_total_amount'] * (empty($ruleDollarToPoint) ? 100 : $ruleDollarToPoint['value']));
         $exp = floor($orderInfo['real_total_amount'] * (empty($ruleDollarToExp) ? 10 : $ruleDollarToExp['value']));
