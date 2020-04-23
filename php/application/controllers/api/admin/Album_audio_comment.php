@@ -53,11 +53,16 @@ class Album_audio_comment extends API_Controller {
 		$ret['status'] = $this->Album_audio_comment_model->status();
 
 		$where = [];
+		$keyword = $this->input->get_post('keyword');
 		$status = $this->input->get_post('status');
 		if(isset($ret['status'][$status])){
 			$where['status'] = $status;
 		}else{
 			$where['1 >'] = 0;
+		}
+		
+		if( !empty($keyword) ){
+			$where[] = " comment like '%{$keyword}%'";
 		}
 
 		$order_by = array('id' => 'desc');

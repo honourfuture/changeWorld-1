@@ -171,7 +171,7 @@ export default class LiveEvaluateManager extends BaseComponent {
                 act: "album_audio_comment",
                 op: "index",
                 mod: "admin",
-                // order_sn: this.searchStr || "",
+                keyword: this.searchStr || "",
                 cur_page: this.current || 1,
                 per_page: Global.PAGE_SIZE
             },
@@ -199,14 +199,14 @@ export default class LiveEvaluateManager extends BaseComponent {
                 wrapperClassName="LiveEvaluateManager"
                 spinning={false}
             >
-                {/* <div className="pb10">
+                {<div className="pb10">
                     <Search
-                        placeholder="搜索订单号"
+                        placeholder="搜索评价内容"
                         enterButton
                         onSearch={this.onSearch}
                         style={{ width: 160, marginRight: 10 }}
                     />
-                </div> */}
+                </div>}
                 <Table
                     className="mt16"
                     onChange={this.onTableHandler}

@@ -495,7 +495,7 @@ class Income_model extends MY_Model
         $configCommissioin = $this->Config_model->get_by(['name' => 'distribution_commission']);
         $platformPrice = round($orderTotalAmount * $configCommissioin['value'] / 100, 2);
         //商家实际收入
-        $sellerIncome = $orderTotalAmount - $platformPrice;
+        $sellerIncome = $orderInfo['real_total_amount'] - $platformPrice;
         if($platformPrice > 0){
             if($this->Config_model->get_by(['name' => 'commission'])){
                 $sql = "UPDATE {$this->Config_model->table()} SET `value` = `value` + {$platformPrice} WHERE `name`='commission';";
