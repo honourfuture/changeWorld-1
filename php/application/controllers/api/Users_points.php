@@ -313,9 +313,8 @@ class Users_points extends API_Controller {
             'user_id' => $this->user_id,
             'created_at >= ' => $start,
             'created_at <= ' => $end,
-	        'rule_name !='  => 'pretty_buy',
-	        'rule_name !=' => 'audio_buy'
         ];
+        $where[] = 'rule_name not in("pretty_buy", "audio_buy")';
 
         $user = $this->Users_model->get($this->user_id);
         $dataInfo['countPoint'] = empty($user['point']) ? 0: round($user['point'], 0);
