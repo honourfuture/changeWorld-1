@@ -175,6 +175,21 @@ class Order_action extends API_Controller {
                         foreach ($arrPriceList as $userId => $price){
                             $this->AddCalculation($userId, 'per_income', ['price'=>$price]);
                         }
+                        
+                        $this->load->model('Users_model');
+                        $seller = $this->Users_model->get($this->order['seller_uid']);
+                        $cid = $seller['device_uuid'];
+                        $buyer = $this->Users_model->get($this->order['buyer_uid']);
+                        if(!empty($seller)){
+                            $setting = config_item('push');
+                            $client = new Client($setting['app_key'], $setting['master_secret'], $setting['log_file']);
+                        
+                            $result = $client->push()
+                                ->setPlatform('all')
+                                ->addRegistrationId($cid)
+                                ->setNotificationAlert($buyer['nickname'].'的订单已经确认收货')
+                                ->send();
+                        }
                         $this->ajaxReturn();
                     }
                 }catch (\Exception $e){
@@ -421,6 +436,21 @@ class Order_action extends API_Controller {
                 $this->load->model('Order_express_model');
                 if($this->Order_express_model->insert($data)){
                     $this->Order_model->update($this->order['id'], ['status' => 3]);
+                    
+                    //消息推送
+                    $this->load->model('Users_model');
+                    $user_to = $this->Users_model->get($this->order['buyer_uid']);
+                    $cid = $user_to['device_uuid'];
+                    if(!empty($cid)){
+                            $setting = config_item('push');
+                            $client = new Client($setting['app_key'], $setting['master_secret'], $setting['log_file']);
+                    
+                            $result = $client->push()
+                                ->setPlatform('all')
+                                ->addRegistrationId($cid)
+                                ->setNotificationAlert($user_to['nickname'].'您购买的商品已经发货了，请注意查收')
+                                ->send();
+                    }
                     $this->ajaxReturn();
                 }else{
                     $this->ajaxReturn([], 5, '取消订单操作失败');

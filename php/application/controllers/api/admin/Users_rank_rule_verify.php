@@ -199,6 +199,20 @@ class Users_rank_rule_verify extends API_Controller {
                 throw new \Exception("事务提交失败" . var_export($info, true));
             }
             else{
+                
+                $this->load->model('Users_model');
+                $cid = $userInfo['device_uuid'];
+                if(!empty($userInfo)){
+                    $setting = config_item('push');
+                    $client = new Client($setting['app_key'], $setting['master_secret'], $setting['log_file']);
+                
+                    $result = $client->push()
+                                ->setPlatform('all')
+                                ->addRegistrationId($cid)
+                                ->setNotificationAlert($userInfo['nickname'].'，您的升级审核已经通过。')
+                                ->send();
+                }
+                
                 $message = '操作成功';
                 $code = 0;
                 //通知(极光)

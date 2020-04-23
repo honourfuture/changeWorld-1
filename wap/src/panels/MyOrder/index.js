@@ -7,7 +7,8 @@ import {
     SearchBar,
     Tabs,
     ListView,
-    PullToRefresh
+    PullToRefresh,
+    Toast
 } from "antd-mobile";
 import { icon, blankImg } from "../../images";
 import { remove } from "lodash";
@@ -64,6 +65,7 @@ class OrderItem extends BaseComponent {
                 action: "goods_confirm"
             },
             res => {
+            	Toast.success('确认收货成功', 1);
                 changeList && changeList(id);
             }
         );

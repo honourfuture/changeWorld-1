@@ -1,7 +1,7 @@
 import React from "react";
 import { action } from "mobx";
 import { BaseComponent, Base } from "../../common";
-import { Flex, Button, NavBar, WhiteSpace } from "antd-mobile";
+import { Flex, Button, NavBar, WhiteSpace, Toast } from "antd-mobile";
 import "./OrderDetail.less";
 import { test, icon, addr } from "../../images";
 
@@ -119,6 +119,7 @@ class OrderBtnItem extends BaseComponent {
                 action: "goods_confirm"
             },
             res => {
+            	Toast.success('确认收货成功', 1);
                 callBack && callBack(id);
             }
         );

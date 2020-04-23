@@ -133,7 +133,8 @@ class OrderItem extends BaseComponent {
                                 label: "发货",
                                 onPress: () => {
                                     // this.onWriteExInfo(id);
-                                    Base.push("WriteExInfo", { id: id })
+                                    Base.push("WriteExInfo", { id: id });
+                                    //Toast.success('发货成功', 1);
                                 }
                             },
                             {
