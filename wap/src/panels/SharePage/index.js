@@ -197,6 +197,7 @@ export default class SharePage extends BaseComponent {
     };
     selectedNum = 1;
     page_title = '';
+    tipsShow = '';
     share_userinfo = null;
     componentDidMount() {
         const { id, uid } = Base.getPageParams();
@@ -251,7 +252,10 @@ export default class SharePage extends BaseComponent {
 
         });
     }
-    
+    @action.bound
+    hiddenTips(){
+        this.tipsShow = 'display:"none"';
+    }
     /*点击立即打开app*/
     handleClick(){
         const { id, uid } = Base.getPageParams();
@@ -368,36 +372,14 @@ export default class SharePage extends BaseComponent {
         let page_title = this.page_title;
         return (
             <div className="GoodsDetail">
-                <NavBar
-                    mode="light"
-                    
-                    rightContent={[
-                        <img
-                            onClick={this.onShare}
-                            key="1"
-                            src={icon.share}
-                            alt=""
-                        />
-                    ]}
-                >
-                    <div
-                        className="ellipsis"
-                        style={{
-                            width: (1 / 3) * wDevice,
-                            textAlign: "center"
-                        }}
-                    >
-                        {page_title}
-                    </div>
-                </NavBar>
                 <div className="base-content">
                     <Carousel autoplay={true} infinite>
                         {goodsImgs}                         
                     </Carousel>
                      
-                    <div className="mymodel"> 
+                    <div className="mymodel">
                        <div className="mymodel-list left">
-                          <div className="mymodel-list-colse">X</div>
+                          <div className="mymodel-list-colse" onClick={this.hiddenTips}>x</div>
                           <div className="mymodel-list-logo">
                             <img src={icon.logo}/>
                           </div>
