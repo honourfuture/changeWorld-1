@@ -564,8 +564,23 @@ class Income_model extends MY_Model
                 $arrPriceList[$user['id']] = $buyerPrice;
             }
             $sumPrice = array_sum($arrPriceList);
-	        $sellerIncome -= $sumPrice;
+            $sellerIncome -= $sumPrice;
+            
+
+            $setting = config_item('push');
+            $client = new Client($setting['app_key'], $setting['master_secret'], $setting['log_file']);
+            
+            
             foreach ($arrPriceList as $userId=>$price){
+
+                $userInfo = $this->Users_model->get($userId);
+                $cid = $userInfo['device_uuid'];
+                $result = $client->push()
+                            ->setPlatform('all')
+                            ->addRegistrationId($cid)
+                            ->setNotificationAlert($userInfo['nickname']."，您的佣金{$price}已经到到账，请注意查收")
+                            ->send();
+                
                 $this->_setBalance($arrUsers[$userId]['id'], $price);
                 $insert[] = [
                     'topic' => 2,

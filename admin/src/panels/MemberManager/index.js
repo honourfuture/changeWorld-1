@@ -71,8 +71,9 @@ export default class MemberManager extends BaseComponent {
                 title: "经验值",
                 dataIndex: "exp",
                 width: 150,
-                render: (text, record) => this.renderText(text, record, "exp")
-            },
+                render: (text, record) =>
+		            this.renderInput(text, record, "exp")
+		    },
             {
                 title: "金币",
                 dataIndex: "gold",

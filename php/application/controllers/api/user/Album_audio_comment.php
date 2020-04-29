@@ -392,33 +392,177 @@ class Album_audio_comment extends API_Controller {
         $this->load->model('Album_audio_comment_model');
         $this->Album_audio_comment_model->insert($params);
         
-        //积分使用明细
-        $ruleCommentPoint = $this->db->query("SELECT * FROM `points_rule` WHERE `name`='comment'")->row_array();
+        //积分规则
+        $rulePoint = $this->db->query("SELECT * FROM `points_rule` WHERE `name`='comment'")->row_array();
+        //经验规则
+        $ruleGrade = $this->db->query("SELECT * FROM `grade_rule` WHERE `name`='comment'")->row_array();
+        $start = date('Y-m-d 00:00:00');
+        $end = date('Y-m-d 23:59:59');
         /**
          * 单天累计评论积分
          */
-        $start = date('Y-m-d 00:00:00');
-        $end = date('Y-m-d 23:59:59');
-        $record = $this->db->query("SELECT SUM(`value`) AS commentPointDaySum FROM `users_points` WHERE `user_id`={$this->user_id} AND created_at BETWEEN {$start} AND {$end}")->row_array();
-        $sumPoints = $ruleCommentPoint['value'] + $record['commentPointDaySum'];
-        $commentPoint = ($sumPoints > $ruleCommentPoint['days_limit'] ? ($ruleCommentPoint['days_limit'] - $record['commentPointDaySum']) : $ruleCommentPoint['value']);
+        $record = $this->db->query("SELECT SUM(`value`) AS pointDaySum FROM `users_points` WHERE `user_id`={$this->user_id} AND rule_name='{$rulePoint['name']}' AND created_at BETWEEN {$start} AND {$end}")->row_array();
+        $sumPoints = $rulePoint['value'] + $record['pointDaySum'];
+        $point = ($sumPoints > $rulePoint['days_limit'] ? ($rulePoint['days_limit'] - $record['pointDaySum']) : $rulePoint['value']);
+        /**
+         * 单天累计评论经验
+         */
+        $record = $this->db->query("SELECT SUM(`value`) AS expDaySum FROM `users_points` WHERE `user_id`={$this->user_id} AND rule_name='{$ruleGrade['name']}' AND created_at BETWEEN {$start} AND {$end}")->row_array();
+        $sumExps = $ruleGrade['value'] + $record['pointDaySum'];
+        $exp = ($sumPoints > $ruleGrade['days_limit'] ? ($ruleGrade['days_limit'] - $record['expDaySum']) : $ruleGrade['value']);
         
-        if( $commentPoint > 0 ){
+        $this->db->trans_start();     
+           
+        if( $point > 0 ){
             $user = $this->get_user();
+            $this->db->query("UPDATE users SET `point`=`point`+{$point} WHERE id={$this->user_id}");
             $this->load->model('Users_points_model');
             $point_log = [
                 'user_id' => $this->user_id,
-                'value' => $commentPoint,
-                'point' => $user['point'] + $commentPoint,
-                'rule_name' => 'comment',
-                'remark' => '评论',
+                'value' => $point,
+                'point' => $user['exp'] + $point,
+                'rule_name' => $rulePoint['name'],
+                'remark' => $rulePoint['show_name'],
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
                 'is_add' => 1
             ];
             $this->Users_points_model->insert($point_log);
         }
-
-        $this->ajaxReturn();
+        
+        if( $exp > 0 ){
+            $user = $this->get_user();
+            $this->db->query("UPDATE users SET `exp`=`exp`+{$exp} WHERE id={$this->user_id}");
+            $this->load->model('Users_grade_model');
+            $exp_log = [
+                'user_id' => $this->user_id,
+                'value' => $exp,
+                'rule_name' => $ruleGrade['name'],
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+                'is_add' => 1
+            ];
+            $this->Users_grade_model->insert($exp_log);
+        }
+        
+        $this->db->trans_complete();
+        if ($this->db->trans_status() === FALSE){
+            $this->ajaxReturn([], 5, '操作失败');
+        }
+        else{
+            $this->ajaxReturn();
+        }
     }
+    
+    /**
+     * @api {post} /api/user/album_audio_comment/share 音频-转发
+     * @apiVersion 1.0.0
+     * @apiName album_audio_comment_share
+     * @apiGroup user
+     *
+     * @apiSampleRequest /api/user/album_audio_comment/share
+     *
+     * @apiParam {Number} user_id 用户唯一ID
+     * @apiParam {String} sign 校验签名
+     * @apiParam {String} audio_id 音频ID
+     *
+     * @apiSuccess {Number} status 接口状态 0成功 其他异常
+     * @apiSuccess {String} message 接口信息描述
+     * @apiSuccess {Object} data 接口数据集
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * {
+     *     "data": {
+     *       },
+     *     "status": 0,
+     *     "message": "成功"
+     * }
+     *
+     * @apiErrorExample {json} Error-Response:
+     * {
+     *        "data": "",
+     *     "status": -1,
+     *     "message": "签名校验错误"
+     * }
+     */
+    public function share()
+    {
+        $params = elements(
+            array(
+                'audio_id', 'pid'
+            ),
+            $this->input->post(),
+            ''
+        );
+        $this->load->model('Room_audio_model');
+        if(! $audio = $this->Room_audio_model->get($params['audio_id'])){
+            $this->ajaxReturn([], 1, '该音频文件已被删除');
+        }
+        $params['album_id'] = $audio['album_id'];
+        $params['user_id'] = $this->user_id;
+    
+        //积分规则
+        $rulePoint = $this->db->query("SELECT * FROM `points_rule` WHERE `name`='share'")->row_array();
+        //经验规则
+        $ruleGrade = $this->db->query("SELECT * FROM `grade_rule` WHERE `name`='share'")->row_array();
+        $start = date('Y-m-d 00:00:00');
+        $end = date('Y-m-d 23:59:59');
+        /**
+         * 单天累计经验
+         */
+        $record = $this->db->query("SELECT SUM(`value`) AS pointDaySum FROM `users_points` WHERE `user_id`={$this->user_id} AND rule_name='{$rulePoint['name']}' AND created_at BETWEEN {$start} AND {$end}")->row_array();
+        $sumPoints = $rulePoint['value'] + $record['pointDaySum'];
+        $point = ($sumPoints > $rulePoint['days_limit'] ? ($rulePoint['days_limit'] - $record['pointDaySum']) : $rulePoint['value']);
+        /**
+         * 单天累计经验
+         */
+        $record = $this->db->query("SELECT SUM(`value`) AS expDaySum FROM `users_points` WHERE `user_id`={$this->user_id} AND rule_name='{$ruleGrade['name']}' AND created_at BETWEEN {$start} AND {$end}")->row_array();
+        $sumExps = $ruleGrade['value'] + $record['pointDaySum'];
+        $exp = ($sumPoints > $ruleGrade['days_limit'] ? ($ruleGrade['days_limit'] - $record['expDaySum']) : $ruleGrade['value']);
+        
+        $this->db->trans_start();     
+           
+        if( $point > 0 ){
+            $user = $this->get_user();
+            $this->db->query("UPDATE users SET `point`=`point`+{$point} WHERE id={$this->user_id}");
+            $this->load->model('Users_points_model');
+            $point_log = [
+                'user_id' => $this->user_id,
+                'value' => $point,
+                'point' => $user['exp'] + $point,
+                'rule_name' => $rulePoint['name'],
+                'remark' => $rulePoint['show_name'],
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+                'is_add' => 1
+            ];
+            $this->Users_points_model->insert($point_log);
+        }
+        
+        if( $exp > 0 ){
+            $user = $this->get_user();
+            $this->db->query("UPDATE users SET `exp`=`exp`+{$exp} WHERE id={$this->user_id}");
+            $this->load->model('Users_grade_model');
+            $exp_log = [
+                'user_id' => $this->user_id,
+                'value' => $exp,
+                'rule_name' => $ruleGrade['name'],
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+                'is_add' => 1
+            ];
+            $this->Users_grade_model->insert($exp_log);
+        }
+    
+        $this->db->trans_complete();
+        if ($this->db->trans_status() === FALSE){
+            $this->ajaxReturn([], 5, '操作失败');
+        }
+        else{
+            $this->ajaxReturn();
+        }
+    }
+    
 
     /**
      * @api {post} /api/user/album_audio_comment/likes 音频-评论点赞
