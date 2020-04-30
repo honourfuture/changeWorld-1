@@ -401,13 +401,13 @@ class Album_audio_comment extends API_Controller {
         /**
          * 单天累计评论积分
          */
-        $record = $this->db->query("SELECT SUM(`value`) AS pointDaySum FROM `users_points` WHERE `user_id`={$this->user_id} AND rule_name='{$rulePoint['name']}' AND created_at BETWEEN {$start} AND {$end}")->row_array();
+        $record = $this->db->query("SELECT SUM(`value`) AS pointDaySum FROM `users_points` WHERE `user_id`={$this->user_id} AND rule_name='{$rulePoint['name']}' AND created_at BETWEEN '{$start}' AND '{$end}'")->row_array();
         $sumPoints = $rulePoint['value'] + $record['pointDaySum'];
         $point = ($sumPoints > $rulePoint['days_limit'] ? ($rulePoint['days_limit'] - $record['pointDaySum']) : $rulePoint['value']);
         /**
          * 单天累计评论经验
          */
-        $record = $this->db->query("SELECT SUM(`value`) AS expDaySum FROM `users_points` WHERE `user_id`={$this->user_id} AND rule_name='{$ruleGrade['name']}' AND created_at BETWEEN {$start} AND {$end}")->row_array();
+        $record = $this->db->query("SELECT SUM(`value`) AS expDaySum FROM `users_points` WHERE `user_id`={$this->user_id} AND rule_name='{$ruleGrade['name']}' AND created_at BETWEEN '{$start}' AND '{$end}'")->row_array();
         $sumExps = $ruleGrade['value'] + $record['pointDaySum'];
         $exp = ($sumPoints > $ruleGrade['days_limit'] ? ($ruleGrade['days_limit'] - $record['expDaySum']) : $ruleGrade['value']);
         
@@ -491,7 +491,7 @@ class Album_audio_comment extends API_Controller {
             array(
                 'audio_id', 'pid'
             ),
-            $this->input->get_post(),
+            $this->input->post(),
             ''
         );
         $this->load->model('Room_audio_model');
@@ -510,13 +510,13 @@ class Album_audio_comment extends API_Controller {
         /**
          * 单天累计经验
          */
-        $record = $this->db->query("SELECT SUM(`value`) AS pointDaySum FROM `users_points` WHERE `user_id`={$this->user_id} AND rule_name='{$rulePoint['name']}' AND created_at BETWEEN {$start} AND {$end}")->row_array();
+        $record = $this->db->query("SELECT SUM(`value`) AS pointDaySum FROM `users_points` WHERE `user_id`={$this->user_id} AND rule_name='{$rulePoint['name']}' AND created_at BETWEEN '{$start}' AND '{$end}'")->row_array();
         $sumPoints = $rulePoint['value'] + $record['pointDaySum'];
         $point = ($sumPoints > $rulePoint['days_limit'] ? ($rulePoint['days_limit'] - $record['pointDaySum']) : $rulePoint['value']);
         /**
          * 单天累计经验
          */
-        $record = $this->db->query("SELECT SUM(`value`) AS expDaySum FROM `users_points` WHERE `user_id`={$this->user_id} AND rule_name='{$ruleGrade['name']}' AND created_at BETWEEN {$start} AND {$end}")->row_array();
+        $record = $this->db->query("SELECT SUM(`value`) AS expDaySum FROM `users_points` WHERE `user_id`={$this->user_id} AND rule_name='{$ruleGrade['name']}' AND created_at BETWEEN '{$start}' AND '{$end}'")->row_array();
         $sumExps = $ruleGrade['value'] + $record['pointDaySum'];
         $exp = ($sumPoints > $ruleGrade['days_limit'] ? ($ruleGrade['days_limit'] - $record['expDaySum']) : $ruleGrade['value']);
         
