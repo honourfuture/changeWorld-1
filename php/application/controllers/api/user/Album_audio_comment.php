@@ -415,7 +415,7 @@ class Album_audio_comment extends API_Controller {
         if( empty($record) ){
 	        $record = ['expDaySum'=>0];
         }
-        $sumExps = $ruleGrade['value'] + $record['pointDaySum'];
+        $sumExps = $ruleGrade['value'] + $record['expDaySum'];
         $exp = ($sumExps > $ruleGrade['days_limit'] ? ($ruleGrade['days_limit'] - $record['expDaySum']) : $ruleGrade['value']);
         
         $this->db->trans_start();     
@@ -530,7 +530,7 @@ class Album_audio_comment extends API_Controller {
         if( empty($record) ){
             $record = ['expDaySum'=>0];
         }
-        $sumExps = $ruleGrade['value'] + $record['pointDaySum'];
+        $sumExps = $ruleGrade['value'] + $record['expDaySum'];
         $exp = ($sumExps > $ruleGrade['days_limit'] ? ($ruleGrade['days_limit'] - $record['expDaySum']) : $ruleGrade['value']);
         
         $this->db->trans_start();     
