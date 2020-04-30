@@ -6,6 +6,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  * Class Sign_setting
  */
+use JPush\Client;
+
 class Users_rank_rule_verify extends API_Controller {
 
     public function __construct()
