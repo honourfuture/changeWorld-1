@@ -439,8 +439,7 @@ class Album_audio_comment extends API_Controller {
                 'value' => $exp,
                 'rule_name' => $ruleGrade['name'],
                 'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
-                'is_add' => 1
+                'updated_at' => date('Y-m-d H:i:s')
             ];
             $this->Users_grade_model->insert($exp_log);
         }
@@ -548,8 +547,7 @@ class Album_audio_comment extends API_Controller {
                 'value' => $exp,
                 'rule_name' => $ruleGrade['name'],
                 'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
-                'is_add' => 1
+                'updated_at' => date('Y-m-d H:i:s')
             ];
             $this->Users_grade_model->insert($exp_log);
         }
