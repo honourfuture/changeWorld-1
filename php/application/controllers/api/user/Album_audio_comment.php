@@ -491,7 +491,7 @@ class Album_audio_comment extends API_Controller {
             array(
                 'audio_id', 'pid'
             ),
-            $this->input->post(),
+            $this->input->get_post(),
             ''
         );
         $this->load->model('Room_audio_model');
