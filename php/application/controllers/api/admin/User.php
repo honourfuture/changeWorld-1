@@ -118,10 +118,10 @@ class User extends API_Controller {
                 $update = array('mobi' => $mobi);
 
                 $header = $this->input->get_post('header');
-                if(!$header){
-                    $this->ajaxReturn([], 1, '请上传头像');
+                if($header){
+                    //$this->ajaxReturn([], 1, '请上传头像');
+                    $update['header'] = $header;
                 }
-                $update['header'] = $header;
 
                 $nickname = $this->input->get_post('nickname');
                 if(!$nickname){
