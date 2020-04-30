@@ -111,7 +111,7 @@ class Grade extends API_Controller {
             $isShow = $verify['status'];
         }
         if( isset($rankIdKey[$thisRank + 1]) && $rankIdKey[$thisRank + 1]['exp'] <= $exp){
-            $rankIdKey[$thisRank]['isShowUp'] = $isShow;
+            $rankIdKey[$thisRank]['isShowUp'] = 1;
         }
 
         $rankIdKey[$thisRank]['isCheck'] = 1;
