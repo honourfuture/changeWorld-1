@@ -66,8 +66,16 @@ class Users_rank_rule_verify extends API_Controller {
         if(empty($nextRankRule)){
             $this->ajaxReturn([],2,"不满足升级条件");
         }
+        $setting = config_item('push');
+        $client = new Client($setting['app_key'], $setting['master_secret'], $setting['log_file']);
+        $cid = $userInfo['device_uuid'];
         $to = $nextRankRule['id'];
         if(($to <= 2) || ($from>=3)){//非跨界
+            $result = $client->push()
+                ->setPlatform('all')
+                ->addRegistrationId($cid)
+                ->setNotificationAlert('升级成功')
+                ->send();
             $this->Users_model->update($userInfo['id'], ['rank_rule_id' => $to]);
             $this->ajaxReturn([], 0, '升级成功');
         }
@@ -81,6 +89,11 @@ class Users_rank_rule_verify extends API_Controller {
             'updated_at'=>date("Y-m-d H:i:s")
         ];
         $id = $this->Users_rank_rule_verify_model->insert($ret);
+        $result = $client->push()
+            ->setPlatform('all')
+            ->addRegistrationId($cid)
+            ->setNotificationAlert('升级成功')
+            ->send();
         $this->ajaxReturn(array('id' => $id), 0, '操作成功');
     }
     
