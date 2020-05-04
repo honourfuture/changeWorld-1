@@ -382,6 +382,7 @@ class Album_audio_comment extends API_Controller {
         if(empty($params['comment'])){
             $this->ajaxReturn([], 1, '评论内容不能为空');
         }
+        $params['audio_id'] = $this->input->get_post('audio_id');
         $this->load->model('Room_audio_model');
         if(! $audio = $this->Room_audio_model->get($params['audio_id'])){
             $this->ajaxReturn([], 1, '该音频文件已被删除');
@@ -401,15 +402,21 @@ class Album_audio_comment extends API_Controller {
         /**
          * 单天累计评论积分
          */
-        $record = $this->db->query("SELECT SUM(`value`) AS pointDaySum FROM `users_points` WHERE `user_id`={$this->user_id} AND rule_name='{$rulePoint['name']}' AND created_at BETWEEN {$start} AND {$end}")->row_array();
+        $record = $this->db->query("SELECT SUM(`value`) AS pointDaySum FROM `users_points` WHERE `user_id`={$this->user_id} AND rule_name='{$rulePoint['name']}' AND created_at BETWEEN '{$start}' AND '{$end}'")->row_array();
+        if( empty($record) ){
+            $record = ['pointDaySum'=>0];
+        }
         $sumPoints = $rulePoint['value'] + $record['pointDaySum'];
         $point = ($sumPoints > $rulePoint['days_limit'] ? ($rulePoint['days_limit'] - $record['pointDaySum']) : $rulePoint['value']);
         /**
          * 单天累计评论经验
          */
-        $record = $this->db->query("SELECT SUM(`value`) AS expDaySum FROM `users_points` WHERE `user_id`={$this->user_id} AND rule_name='{$ruleGrade['name']}' AND created_at BETWEEN {$start} AND {$end}")->row_array();
-        $sumExps = $ruleGrade['value'] + $record['pointDaySum'];
-        $exp = ($sumPoints > $ruleGrade['days_limit'] ? ($ruleGrade['days_limit'] - $record['expDaySum']) : $ruleGrade['value']);
+        $record = $this->db->query("SELECT SUM(`value`) AS expDaySum FROM `users_points` WHERE `user_id`={$this->user_id} AND rule_name='{$ruleGrade['name']}' AND created_at BETWEEN '{$start}' AND '{$end}'")->row_array();
+        if( empty($record) ){
+            $record = ['expDaySum'=>0];
+        }
+        $sumExps = $ruleGrade['value'] + $record['expDaySum'];
+        $exp = ($sumExps > $ruleGrade['days_limit'] ? ($ruleGrade['days_limit'] - $record['expDaySum']) : $ruleGrade['value']);
         
         $this->db->trans_start();     
            
@@ -439,8 +446,7 @@ class Album_audio_comment extends API_Controller {
                 'value' => $exp,
                 'rule_name' => $ruleGrade['name'],
                 'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
-                'is_add' => 1
+                'updated_at' => date('Y-m-d H:i:s')
             ];
             $this->Users_grade_model->insert($exp_log);
         }
@@ -494,6 +500,7 @@ class Album_audio_comment extends API_Controller {
             $this->input->post(),
             ''
         );
+        $params['audio_id'] = $this->input->get_post('audio_id');
         $this->load->model('Room_audio_model');
         if(! $audio = $this->Room_audio_model->get($params['audio_id'])){
             $this->ajaxReturn([], 1, '该音频文件已被删除');
@@ -510,15 +517,21 @@ class Album_audio_comment extends API_Controller {
         /**
          * 单天累计经验
          */
-        $record = $this->db->query("SELECT SUM(`value`) AS pointDaySum FROM `users_points` WHERE `user_id`={$this->user_id} AND rule_name='{$rulePoint['name']}' AND created_at BETWEEN {$start} AND {$end}")->row_array();
+        $record = $this->db->query("SELECT SUM(`value`) AS pointDaySum FROM `users_points` WHERE `user_id`={$this->user_id} AND rule_name='{$rulePoint['name']}' AND created_at BETWEEN '{$start}' AND '{$end}'")->row_array();
+        if( empty($record) ){
+            $record = ['pointDaySum'=>0];
+        }
         $sumPoints = $rulePoint['value'] + $record['pointDaySum'];
         $point = ($sumPoints > $rulePoint['days_limit'] ? ($rulePoint['days_limit'] - $record['pointDaySum']) : $rulePoint['value']);
         /**
          * 单天累计经验
          */
-        $record = $this->db->query("SELECT SUM(`value`) AS expDaySum FROM `users_points` WHERE `user_id`={$this->user_id} AND rule_name='{$ruleGrade['name']}' AND created_at BETWEEN {$start} AND {$end}")->row_array();
-        $sumExps = $ruleGrade['value'] + $record['pointDaySum'];
-        $exp = ($sumPoints > $ruleGrade['days_limit'] ? ($ruleGrade['days_limit'] - $record['expDaySum']) : $ruleGrade['value']);
+        $record = $this->db->query("SELECT SUM(`value`) AS expDaySum FROM `users_points` WHERE `user_id`={$this->user_id} AND rule_name='{$ruleGrade['name']}' AND created_at BETWEEN '{$start}' AND '{$end}'")->row_array();
+        if( empty($record) ){
+            $record = ['expDaySum'=>0];
+        }
+        $sumExps = $ruleGrade['value'] + $record['expDaySum'];
+        $exp = ($sumExps > $ruleGrade['days_limit'] ? ($ruleGrade['days_limit'] - $record['expDaySum']) : $ruleGrade['value']);
         
         $this->db->trans_start();     
            
@@ -548,8 +561,7 @@ class Album_audio_comment extends API_Controller {
                 'value' => $exp,
                 'rule_name' => $ruleGrade['name'],
                 'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
-                'is_add' => 1
+                'updated_at' => date('Y-m-d H:i:s')
             ];
             $this->Users_grade_model->insert($exp_log);
         }

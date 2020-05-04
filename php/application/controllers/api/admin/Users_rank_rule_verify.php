@@ -6,6 +6,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  * Class Sign_setting
  */
+use JPush\Client;
+
 class Users_rank_rule_verify extends API_Controller {
 
     public function __construct()
@@ -194,24 +196,32 @@ class Users_rank_rule_verify extends API_Controller {
             else{
                 $this->db->query("UPDATE users_rank_rule_verify SET status={$status}, updated_at='{$datetime}' WHERE id={$info['id']}");
             }
+
             $this->db->trans_complete();
             if ($this->db->trans_status() === FALSE){
                 throw new \Exception("事务提交失败" . var_export($info, true));
             }
             else{
-                
-                $this->load->model('Users_model');
                 $cid = $userInfo['device_uuid'];
-                if(!empty($userInfo)){
-                    $setting = config_item('push');
-                    $client = new Client($setting['app_key'], $setting['master_secret'], $setting['log_file']);
-                
-                    $result = $client->push()
-                                ->setPlatform('all')
-                                ->addRegistrationId($cid)
-                                ->setNotificationAlert($userInfo['nickname'].'，您的升级审核已经通过。')
-                                ->send();
+                $setting = config_item('push');
+                $client = new Client($setting['app_key'], $setting['master_secret'], $setting['log_file']);
+                switch($status) {
+                    case 2://通过
+                        $result = $client->push()
+                            ->setPlatform('all')
+                            ->addRegistrationId($cid)
+                            ->setNotificationAlert('【升级提醒】您的升级审核已通过，尽情享受更多权益吧！')
+                            ->send();
+                        break;
+                    case 3://拒绝
+                        $result = $client->push()
+                            ->setPlatform('all')
+                            ->addRegistrationId($cid)
+                            ->setNotificationAlert('【审核提醒】因您不符合相关升级要求，您的升级审核已被拒绝，您可重新提交申请，如有疑问请联系客服确认！')
+                            ->send();
+                        break;
                 }
+
                 
                 $message = '操作成功';
                 $code = 0;
