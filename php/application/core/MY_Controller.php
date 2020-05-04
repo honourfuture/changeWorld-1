@@ -536,7 +536,7 @@ class API_Controller extends MY_Controller
      * @param $rule_name
      * @return array
      */
-    private function gradeCalculation($userId, $rule_name,$old_value, $value, $user)
+    protected function gradeCalculation($userId, $rule_name,$old_value, $value, $user)
     {
         try{
             $this->load->model('Grade_rule_model');

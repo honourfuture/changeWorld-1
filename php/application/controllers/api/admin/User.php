@@ -138,6 +138,24 @@ class User extends API_Controller {
                 $exp = $this->input->get_post('exp');
                 if($exp){
                     $update['exp'] = $exp;
+                    $this->load->model('Users_model');
+                    $user = $this->Users_model->get($id);
+                    $this->load->model('Grade_rule_model');
+                    $this->load->model('Rank_rule_model');
+                    
+                    
+                    $data['user_id'] = $id;
+                    $data['rule_name'] = 'admin';
+                    $data['value'] = ($exp - $user['exp']);
+                    $this->Users_grade_model->insert($data);
+                    $nextRankRule = $this->Rank_rule_model->getNextRankRule($exp, $user['rank_rule_id']);
+                    if($nextRankRule){
+                        $to = $nextRankRule['id'];
+                        if(($to <= 2) || ($user['rank_rule_id']>=3)){
+                            $update['rank_rule_id'] = $to;
+                        }
+                    }
+                    
                 }
 
 
