@@ -8,8 +8,14 @@
 import { Base } from "./base";
 import { observable, action } from "mobx";
 export default {
-    API_URL: "http://lvdeshui.xttejzc.cn/api",
-    RES_URL: "http://llvdeshui.xttejzc.cn",
+    /**
+     //Test
+     API_URL: "http://lvdeshui.xttejzc.cn/api",
+     RES_URL: "http://lvdeshui.xttejzc.cn/",
+     */
+    //Prod
+    API_URL: "https://www.luomashichang.cn/api",
+    RES_URL: "https://www.luomashichang.cn/",
     get UPLOAD_URL() {
         return `${this.API_URL}/common/fileUpload`;
     },

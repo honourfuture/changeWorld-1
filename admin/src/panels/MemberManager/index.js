@@ -269,7 +269,7 @@ export default class MemberManager extends BaseComponent {
                         {header ? (
                             <img
                                 className="img-uploader"
-                                style={{ width: "120px" }}
+                                style={{ width: "32px" }}
                                 src={Base.getImgUrl(header)}
                                 alt=""
                             />
@@ -283,7 +283,7 @@ export default class MemberManager extends BaseComponent {
                 ) : (
                     <img
                         className="img-uploader"
-                        style={{ width: "120px" }}
+                        style={{ width: "32px" }}
                         src={Base.getImgUrl(header)}
                         alt=""
                     />
