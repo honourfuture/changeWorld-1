@@ -8,6 +8,7 @@ PHP=/usr/local/php/bin/php
 
 #确定执行环境
 CI_ENV="production"
+PROJECT="LuoMaShiChang"
 if [[ $1 != "" ]]
 then
     CI_ENV=$1;
@@ -24,7 +25,7 @@ DIR="$( cd -P "$( dirname "$SOURCE"  )" && pwd  )"
 #/确定脚本目录
 
 #init lock dir
-LOCKDIR="/tmp/${CI_ENV}/"
+LOCKDIR="/tmp/${PROJECT}/${CI_ENV}/"
 if [ ! -d "$LOCKDIR" ]; then
     mkdir -p "$LOCKDIR"
 fi

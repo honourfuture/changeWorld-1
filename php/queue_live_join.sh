@@ -8,6 +8,7 @@ PHP=/usr/local/php/bin/php
 
 #确定执行环境
 CI_ENV="production"
+PROJECT="LuoMaShiChang"
 if [[ $1 != "" ]]
 then
     CI_ENV=$1;
