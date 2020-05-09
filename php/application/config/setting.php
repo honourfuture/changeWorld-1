@@ -142,7 +142,7 @@ $config['push'] = [
 //如果是开发模式，验证码6666
 $config['is_dev'] = true;
 //域名
-$config['base_url'] = "http://lvdeshui.xttejzc.cn/";
+$config['base_url'] = "https://www.luomashichang.cn/";
 
 // 邀请链接
 $config['invite_url'] = $config['base_url'] . "invite?code=";
