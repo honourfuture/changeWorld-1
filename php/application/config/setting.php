@@ -7,6 +7,10 @@ define('LOGIN_STATUS', -1);//转登录页面状态
 define('UPDATE_VALID', -404);//更新字段过滤值
 define('ACCESS_REQUEST', 500);//非法操作
 
+#分销原始帐号手机
+define('SUPER_USER_MOBILE', '18664589318');
+
+#测试支付配置
 define('TEST_PAYMENT', 0);
 
 // QQ互联
