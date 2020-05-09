@@ -198,7 +198,7 @@ class Info extends API_Controller {
             $this->db->select('id,nickname,header,summary,exp,pretty_id,address,created_at,pid,invite_code');
             $item = $this->Users_model->get_by(array('invite_code'=>$a_uid));
 
-            if(!$item['pid'] && $a_uid != 999999){
+            if(!$item['pid'] && $a_uid['mobi'] != SUPER_USER_MOBILE){
                 $this->ajaxReturn([], 3, '该用户未绑定上级，无法绑定');
             }
 
