@@ -84,10 +84,8 @@ class Wallet extends API_Controller {
         $ret['income'] = $this->Income_model->sum_income_topic_group($this->user_id);
 
         //计算可提现余额
-        $valIncomeSum = $this->Income_model->getIncomeSum($user['id'], $user['created_at']);//累计收益
-        $valWithrawed = $this->Withdraw_model->getWithdrawed($this->user_id);//已提现金额
-        $inclomeAvailable = $valIncomeSum - $valWithrawed;
-        $inclomeAvailable = ($inclomeAvailable>=0 ? $inclomeAvailable : 0);
+    	$this->load->model('Income_model');
+        $inclomeAvailable = $this->Income_model->getWithrawAvailable($this->user_id);
         $ret['withdraw'] = numformat($inclomeAvailable, 2);
         
         //今日

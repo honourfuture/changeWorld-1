@@ -151,7 +151,9 @@ class Withdraw extends API_Controller {
             $this->ajaxReturn([], 1, '请输入提现金额');
         }
         $user = $this->get_user();
-        if($amount > $user['balance']){
+    	$this->load->model('Income_model');
+        $inclomeAvailable = $this->Income_model->getWithrawAvailable($this->user_id);
+        if($amount > $inclomeAvailable){
             $this->ajaxReturn([], 2, '提现金额超过余额');
         }
 
@@ -173,9 +175,6 @@ class Withdraw extends API_Controller {
 
         // 事务
         $this->db->trans_start();
-        // 扣除余额
-        $this->Users_model->update($this->user_id, ['balance' => round($user['balance'] - $amount, 2)]);
-
         // 新增记录
         $data = [
             'user_id' => $this->user_id,

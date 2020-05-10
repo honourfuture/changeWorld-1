@@ -25,6 +25,22 @@ class Income_model extends MY_Model
     }
 
     /**
+     * 计算可提现余额
+     */
+    public function getWithrawAvailable($userId)
+    {
+
+    	$this->load->model('Withdraw_model');
+    	$this->load->model('Users_model');
+    	$user = $this->Users_model->get($userId);
+    	$valIncomeSum = $this->getIncomeSum($user['id'], $user['created_at']);//累计收益
+    	$valWithrawed = $this->Withdraw_model->getWithdrawed($userId);//已提现金额
+    	$inclomeAvailable = $valIncomeSum - $valWithrawed;
+    	$inclomeAvailable = ($inclomeAvailable>=0 ? $inclomeAvailable : 0);
+    	return $inclomeAvailable;
+    }
+    
+    /**
      * 计算总收益
      */
     public function getIncomeSum($user_id, $created_at, $type=0, $where=[])
