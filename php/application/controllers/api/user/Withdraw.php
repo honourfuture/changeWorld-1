@@ -257,7 +257,8 @@ class Withdraw extends API_Controller {
 
         $this->load->model('Withdraw_model');
         $where = [
-            'user_id' => $this->user_id
+            'user_id' => $this->user_id,
+            'bank_id >' => 0
         ];
 
         if($startDate && $endDate){
