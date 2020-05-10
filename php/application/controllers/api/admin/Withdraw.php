@@ -75,10 +75,10 @@ class Withdraw extends API_Controller {
 
 		$order_by = array('id' => 'desc');
 		$this->search();
-		$ret['count'] = $this->Withdraw_model->where("bank_id>0")->count_all();
+		$ret['count'] = $this->Withdraw_model->count_all();
 		if($ret['count']){
 			$this->search();
-			if($list = $this->Withdraw_model->where("bank_id>0")->order_by($order_by)->limit($this->per_page, $this->offset)->get_all()){
+			if($list = $this->Withdraw_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_all()){
 				$ret['list'] = $list;
 				$a_uid = [];
 				foreach($list as $item){
@@ -106,6 +106,7 @@ class Withdraw extends API_Controller {
 		if($status > -1){
 			$this->db->where('status', $status);
 		}
+		$this->db->where('bank_id>0');
 	}
 
 	/**
