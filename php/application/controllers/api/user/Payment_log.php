@@ -372,7 +372,7 @@ class Payment_log extends API_Controller {
                     'bank_id' => 0,
                     'bank_name' => 'order_pay',
                     'mobi' => 'order_pay',
-                    'amount' => 'order_pay'
+                    'amount' => $payWithIncomeWithdrawAvailable
                 ];
                 $this->load->model('Withdraw_model');
                 $this->Withdraw_model->insert($data);
