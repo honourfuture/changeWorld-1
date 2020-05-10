@@ -114,75 +114,149 @@ class Order_payment extends API_Controller {
     protected function balance($order_id)
     {
         $user = $this->get_user();
-        if($user && $user['balance'] >= $this->amount){
-
-            if($this->amount > 0){
-                $this->Users_model->update($this->user_id, ['balance' => round($user['balance'] - $this->amount, 2)]);
-            }
-
-            $order_update = ['status' => 2, 'payment_type' => 'balance'];
-            if(!is_array($order_id)){
-                $order_id = [$order_id];
-            }
-
-            $this->Order_model->update_many($order_id, $order_update);
-            //分佣
-            $insert = [];
-
-            //商品销售记录
-            $this->load->model('Order_items_model');
-            if($goods = $this->Order_items_model->get_many_by(['order_id' => $order_id])){
-                $this->load->model('Record_goods_model');
-                $data = [];
-                $consume_record = [];
-                foreach($goods as $item){
-                    $data[] = [
-                        'goods_id' => $item['goods_id'],
-                        'seller_uid' => $item['seller_uid'],
-                        'num' => $item['num'],
-                        'order_id' => $item['order_id']
-                    ];
-
-                    //消费记录
-                    $consume_record[] = [
-                        'type' => 0,
-                        'user_id' => $this->user_id,
-                        'item_title' => $item['name'],
-                        'item_id' => $item['goods_id'],
-                        'item_amount' => $item['total_price'],
-                        'order_sn' => $item['order_sn'],
-                        'topic' => 5,
-                        'payment_type' => 'balance'
-                    ];
-                }
-
-                $this->Record_goods_model->insert_many($data);
-
-                $this->load->model('Consume_record_model');
-                $this->Consume_record_model->insert_many($consume_record);
-            }
-
-            //消息推送
-            $order = $this->Order_model->get_many($order_id);
-            foreach($order as $item){
-                if($user_to = $this->Users_model->get($item['seller_uid'])){
-                    $cid = $user_to['device_uuid'];
-                    if(!empty($cid)){
-                        $setting = config_item('push');
-                        $client = new Client($setting['app_key'], $setting['master_secret'], $setting['log_file']);
-
-                        $result = $client->push()
-                                         ->setPlatform('all')
-                                         ->addRegistrationId($cid)
-                                         ->setNotificationAlert($user['nickname'].'在您店铺购买了商品，请尽快发货')
-                                         ->send();
-                    }
-                }
-            }
-
-            $this->ajaxReturn();
-        }else{
+        $this->load->model('Income_model');
+        $inclomeAvailable = $this->Income_model->getWithrawAvailable($this->user_id);
+        if($user || ($inclomeAvailable + $user['balance']) < $this->amount){
             $this->ajaxReturn([], 2, '账户余额不足');
+        }
+        
+        @file_put_contents('/tmp/payment.log', "start\n", FILE_APPEND | LOCK_EX);
+        // 事务
+        $this->db->trans_start();
+        
+        
+        if($this->amount > 0){
+            $this->load->model('Users_model');
+            $user = $this->Users_model->get($userId);
+            $payWithIncomeWithdrawAvailable = 0;
+            $payWithBalance = 0;
+            if( $inclomeAvailable >= $this->amount ){//优先使用可提现余额支付
+                $payWithIncomeWithdrawAvailable = $this->amount;
+                $payWithBalance = 0;
+            }
+            else{//混合支付（余额+可提现余额）
+                $payWithBalance = $this->amount - $inclomeAvailable;
+                $payWithIncomeWithdrawAvailable = $inclomeAvailable;
+            }
+            @file_put_contents('/tmp/payment.log', "payWithIncomeWithdrawAvailable-{$payWithIncomeWithdrawAvailable}\n", FILE_APPEND | LOCK_EX);
+            @file_put_contents('/tmp/payment.log', "payWithBalance-{$payWithBalance}\n", FILE_APPEND | LOCK_EX);
+            if( $payWithBalance ) {
+                $this->Users_model->update($this->user_id, [
+                        'balance' => round($user['balance'] - $payWithBalance, 2)
+                    ]
+                );
+            }
+            if( $payWithIncomeWithdrawAvailable ){
+                // 新增记录
+                $data = [
+                    'user_id' => $this->user_id,
+                    'user_name' => 'order_pay',
+                    'user_card' => 'order_pay',
+                    'bank_id' => 0,
+                    'bank_name' => 'order_pay',
+                    'mobi' => 'order_pay',
+                    'amount' => $payWithIncomeWithdrawAvailable
+                ];
+                $this->load->model('Withdraw_model');
+                $this->Withdraw_model->insert($data);
+            }
+        
+        }
+        @file_put_contents('/tmp/payment.log', "InsertedOrUpdated\n", FILE_APPEND | LOCK_EX);
+        $this->checkCalculation('per_dollar',true,true);
+        $this->AddCalculation($this->user_id, 'per_dollar', ['price' => $this->amount]);
+        
+        //更新流水状态
+        $order_update = ['status' => 1];
+        $this->Payment_log_model->update($order_id, $order_update);
+        //余额明细
+        
+        //消费记录
+        $consume_record = [
+            'type' => 0,
+            'user_id' => $this->user_id,
+            'item_title' => $this->row['title'],
+            'item_id' => $this->row['id'],
+            'item_amount' => $this->amount,
+            'order_sn' => $order_sn,
+            'topic' => $this->service + 2,
+            'payment_type' => 'balance'
+        ];
+        $this->load->model('Consume_record_model');
+        $this->Consume_record_model->insert($consume_record);
+        @file_put_contents('/tmp/payment.log', "consume_record\n", FILE_APPEND | LOCK_EX);
+        //收益明细
+        $user['to_user_id'] = $this->row['anchor_uid'];
+        $this->load->model('Bind_shop_user_model');
+        if($bind = $this->Bind_shop_user_model->get_by(['shop_id' => $this->row['anchor_uid'], 'user_id' => $this->user_id])){
+            $user['pid'] = $bind['invite_uid'];
+        }else{
+            $user['pid'] = 0;
+        }
+        $this->load->model('Income_model');
+        $order_data = $this->row;
+        $order_data['service']  = $this->service;
+        $this->Income_model->service($user, $order_data, $user['pid']);
+        
+        //商品销售记录
+        $this->load->model('Order_items_model');
+        if($goods = $this->Order_items_model->get_many_by(['order_id' => $order_id])){
+            $this->load->model('Record_goods_model');
+            $data = [];
+            $consume_record = [];
+            foreach($goods as $item){
+                $data[] = [
+                    'goods_id' => $item['goods_id'],
+                    'seller_uid' => $item['seller_uid'],
+                    'num' => $item['num'],
+                    'order_id' => $item['order_id']
+                ];
+        
+                //消费记录
+                $consume_record[] = [
+                    'type' => 0,
+                    'user_id' => $this->user_id,
+                    'item_title' => $item['name'],
+                    'item_id' => $item['goods_id'],
+                    'item_amount' => $item['total_price'],
+                    'order_sn' => $item['order_sn'],
+                    'topic' => 5,
+                    'payment_type' => 'balance'
+                ];
+            }
+        
+            $this->Record_goods_model->insert_many($data);
+        
+            $this->load->model('Consume_record_model');
+            $this->Consume_record_model->insert_many($consume_record);
+        }
+        
+        //消息推送
+        $order = $this->Order_model->get_many($order_id);
+        foreach($order as $item){
+            if($user_to = $this->Users_model->get($item['seller_uid'])){
+                $cid = $user_to['device_uuid'];
+                if(!empty($cid)){
+                    $setting = config_item('push');
+                    $client = new Client($setting['app_key'], $setting['master_secret'], $setting['log_file']);
+        
+                    $result = $client->push()
+                    ->setPlatform('all')
+                    ->addRegistrationId($cid)
+                    ->setNotificationAlert($user['nickname'].'在您店铺购买了商品，请尽快发货')
+                    ->send();
+                }
+            }
+        }
+        
+        $this->db->trans_complete();
+        if($this->db->trans_status() === FALSE){
+            @file_put_contents('/tmp/payment.log', "Error\n", FILE_APPEND | LOCK_EX);
+            $this->ajaxReturn([], 5, '网络服务异常');
+        }
+        else{
+            @file_put_contents('/tmp/payment.log', "Success\n", FILE_APPEND | LOCK_EX);
+            $this->ajaxReturn([]);
         }
     }
 
