@@ -120,6 +120,9 @@ class Income_model extends MY_Model
         return $uid;
     }
 
+    /**
+     * 作废
+     */
     public function service($user, $order, $invite_uid, $topic = 0, $sub_topic = 0)
     {
         $item = [];

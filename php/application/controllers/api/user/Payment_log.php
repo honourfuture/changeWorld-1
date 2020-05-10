@@ -420,18 +420,7 @@ class Payment_log extends API_Controller {
         $this->load->model('Consume_record_model');
         $this->Consume_record_model->insert($consume_record);
         @file_put_contents('/tmp/payment.log', "consume_record\n", FILE_APPEND | LOCK_EX);
-        //收益明细
-        $user['to_user_id'] = $this->row['anchor_uid'];
-        $this->load->model('Bind_shop_user_model');
-        if($bind = $this->Bind_shop_user_model->get_by(['shop_id' => $this->row['anchor_uid'], 'user_id' => $this->user_id])){
-            $user['pid'] = $bind['invite_uid'];
-        }else{
-            $user['pid'] = 0;
-        }
-        $this->load->model('Income_model');
-        $order_data = $this->row;
-        $order_data['service']  = $this->service;
-        $this->Income_model->service($user, $order_data, $user['pid']);
+        
         
         $this->db->trans_complete();
         if($this->db->trans_status() === FALSE){
