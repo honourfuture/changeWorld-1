@@ -194,7 +194,7 @@ class ProductIssue extends BaseComponent {
                     city_partner_rate,
                     rebate_percent,
                     base_percent,
-                    // goods_class_id
+                    goods_class_id
                 } = values;
                 const i_two_level_rate = parseFloat(two_level_rate) || 0;
                 const i_city_partner_rate = parseFloat(city_partner_rate) || 0;
@@ -206,9 +206,9 @@ class ProductIssue extends BaseComponent {
                 //         false
                 //     );
                 // }
-                // if (!goods_class_id) {
-                //     return Toast.fail("请选择产品分类", 2, null, false);
-                // }
+                if (!goods_class_id) {
+                     return Toast.fail("请选择产品分类", 2, null, false);
+                }
                 if(rebate_percent > 90){
                     return Toast.fail("最高让利率上限为90", 2, null, false);
                 }
@@ -273,7 +273,7 @@ class ProductIssue extends BaseComponent {
                         use_point_rate,
                         e_invoice,
                         send_mode: send_mode[0],
-                        // goods_class_id: goods_class_id[0],
+                        goods_class_id: goods_class_id[0],
                         goods_ticket,
                         goods_image: JSON.stringify(goods_imageUrl),
                         poster_img: JSON.stringify(poster_imgUrl),
@@ -571,6 +571,7 @@ class ProductIssue extends BaseComponent {
                             产品价格
                             <em>*</em>
                         </InputItem>
+                        {/**
                         <Flex
                             justify="between"
                             className="textarea-con base-line"
@@ -609,7 +610,8 @@ class ProductIssue extends BaseComponent {
                                 labelNumber={1}
                             />
                         </Flex>
-                        {/* <Picker
+                        */}
+                        <Picker
                             data={goods_class}
                             cols={1}
                             {...getFieldProps("goods_class_id")}
@@ -618,7 +620,7 @@ class ProductIssue extends BaseComponent {
                                 产品分类
                                 <em>*</em>
                             </Item>
-                        </Picker> */}
+                        </Picker>
                     </List>
                     <WhiteSpace />
                     <List className="productBasic">
