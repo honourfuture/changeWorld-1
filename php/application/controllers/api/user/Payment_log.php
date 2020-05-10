@@ -429,7 +429,7 @@ class Payment_log extends API_Controller {
         }
         else{
         	@file_put_contents('/tmp/payment.log', "Success\n", FILE_APPEND | LOCK_EX);
-            $this->ajaxReturn([]);
+            $this->ajaxReturn();
         }
     }
 
