@@ -5,6 +5,7 @@
  * @author webljx@163.com
  * @link www.aicode.org.cn
  */
+use JPush\Client;
 
 class Income_model extends MY_Model
 {
