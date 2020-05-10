@@ -333,66 +333,104 @@ class Payment_log extends API_Controller {
     protected function balance($order_id, $order_sn)
     {
         $user = $this->get_user();
-        if($user && $user['balance'] >= $this->row['price']){
-            if($this->row['price'] > 0){
-                $this->Users_model->update(
-                    $this->user_id,
-                    [
-                        'balance' => round($user['balance'] - $this->row['price'], 2)
+        $this->load->model('Income_model');
+        $inclomeAvailable = $this->Income_model->getWithrawAvailable($this->user_id);
+        if($user || ($inclomeAvailable + $user['balance']) < $this->row['price']){
+            $this->ajaxReturn([], 2, '账户余额不足');
+        }
+        
+        // 事务
+        $this->db->trans_start();
+        
+        if($this->row['price'] > 0){
+            $this->load->model('Users_model');
+            $user = $this->Users_model->get($userId);
+            $payWithIncomeWithdrawAvailable = 0;
+            $payWithBalance = 0;
+            if( $inclomeAvailable >= $this->row['price'] ){//优先使用可提现余额支付
+                $payWithIncomeWithdrawAvailable = $this->row['price'];
+                $payWithBalance = 0;
+            }
+            else{//混合支付（余额+可提现余额）
+                $payWithBalance = $this->row['price'] - $inclomeAvailable;
+                $payWithIncomeWithdrawAvailable = $inclomeAvailable;
+            }
+            if( $payWithBalance ) {
+                $this->Users_model->update($this->user_id, [
+                        'balance' => round($user['balance'] - $payWithBalance, 2)
                     ]
                 );
             }
-
-            $this->checkCalculation('per_dollar',true,true);
-            $this->AddCalculation($this->user_id, 'per_dollar', ['price' => $this->row['price']]);
-
-            //更新流水状态
-            $order_update = ['status' => 1];
-            $this->Payment_log_model->update($order_id, $order_update);
-            //收藏
-            if(in_array($this->topic, ['audio', 'album'])){
-                $sub_topic = ($this->topic == 'audio') ? 20 : 21;
-                $this->load->model('Users_collection_model');
+            if( $payWithIncomeWithdrawAvailable ){
+                // 新增记录
                 $data = [
                     'user_id' => $this->user_id,
-                    't_id' => $this->row['id'],
-                    'topic' => 2,
-                    'sub_topic' => $sub_topic
+                    'user_name' => 'order_pay',
+                    'user_card' => 'order_pay',
+                    'bank_id' => 0,
+                    'bank_name' => 'order_pay',
+                    'mobi' => 'order_pay',
+                    'amount' => 'order_pay'
                 ];
-                $this->Users_collection_model->insert($data);
+                $this->load->model('Withdraw_model');
+                $this->Withdraw_model->insert($data);
             }
-            //余额明细
-
-            //消费记录
-            $consume_record = [
-                'type' => 0,
+            
+        }
+        
+        $this->checkCalculation('per_dollar',true,true);
+        $this->AddCalculation($this->user_id, 'per_dollar', ['price' => $this->row['price']]);
+        
+        //更新流水状态
+        $order_update = ['status' => 1];
+        $this->Payment_log_model->update($order_id, $order_update);
+        //收藏
+        if(in_array($this->topic, ['audio', 'album'])){
+            $sub_topic = ($this->topic == 'audio') ? 20 : 21;
+            $this->load->model('Users_collection_model');
+            $data = [
                 'user_id' => $this->user_id,
-                'item_title' => $this->row['title'],
-                'item_id' => $this->row['id'],
-                'item_amount' => $this->row['price'],
-                'order_sn' => $order_sn,
-                'topic' => $this->service + 2,
-                'payment_type' => 'balance'
+                't_id' => $this->row['id'],
+                'topic' => 2,
+                'sub_topic' => $sub_topic
             ];
-            $this->load->model('Consume_record_model');
-            $this->Consume_record_model->insert($consume_record);
-
-            //收益明细
-            $user['to_user_id'] = $this->row['anchor_uid'];
-            $this->load->model('Bind_shop_user_model');
-            if($bind = $this->Bind_shop_user_model->get_by(['shop_id' => $this->row['anchor_uid'], 'user_id' => $this->user_id])){
-                $user['pid'] = $bind['invite_uid'];
-            }else{
-                $user['pid'] = 0;
-            }
-            $this->load->model('Income_model');
-            $order_data = $this->row;
-            $order_data['service']  = $this->service;
-            $this->Income_model->service($user, $order_data, $user['pid']);
-
-            $this->ajaxReturn();
+            $this->Users_collection_model->insert($data);
+        }
+        //余额明细
+        
+        //消费记录
+        $consume_record = [
+            'type' => 0,
+            'user_id' => $this->user_id,
+            'item_title' => $this->row['title'],
+            'item_id' => $this->row['id'],
+            'item_amount' => $this->row['price'],
+            'order_sn' => $order_sn,
+            'topic' => $this->service + 2,
+            'payment_type' => 'balance'
+        ];
+        $this->load->model('Consume_record_model');
+        $this->Consume_record_model->insert($consume_record);
+        
+        //收益明细
+        $user['to_user_id'] = $this->row['anchor_uid'];
+        $this->load->model('Bind_shop_user_model');
+        if($bind = $this->Bind_shop_user_model->get_by(['shop_id' => $this->row['anchor_uid'], 'user_id' => $this->user_id])){
+            $user['pid'] = $bind['invite_uid'];
         }else{
-            $this->ajaxReturn([], 2, '账户余额不足');
+            $user['pid'] = 0;
+        }
+        $this->load->model('Income_model');
+        $order_data = $this->row;
+        $order_data['service']  = $this->service;
+        $this->Income_model->service($user, $order_data, $user['pid']);
+        
+        $this->db->trans_complete();
+        if($this->db->trans_status() === FALSE){
+            $this->ajaxReturn([], 5, '网络服务异常');
+        }
+        else{
+            $this->ajaxReturn([]);
         }
     }
 
