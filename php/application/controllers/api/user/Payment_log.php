@@ -340,7 +340,7 @@ class Payment_log extends API_Controller {
         if($user || ($inclomeAvailable + $user['balance']) < $this->row['price']){
             $this->ajaxReturn([], 2, '账户余额不足');
         }
-        
+        @file_put_contents('/tmp/payment.log', "start\n", FILE_APPEND | LOCK_EX);
         // 事务
         $this->db->trans_start();
         
@@ -357,6 +357,8 @@ class Payment_log extends API_Controller {
                 $payWithBalance = $this->row['price'] - $inclomeAvailable;
                 $payWithIncomeWithdrawAvailable = $inclomeAvailable;
             }
+            @file_put_contents('/tmp/payment.log', "payWithIncomeWithdrawAvailable-{$payWithIncomeWithdrawAvailable}\n", FILE_APPEND | LOCK_EX);
+            @file_put_contents('/tmp/payment.log', "payWithBalance-{$payWithBalance}\n", FILE_APPEND | LOCK_EX);
             if( $payWithBalance ) {
                 $this->Users_model->update($this->user_id, [
                         'balance' => round($user['balance'] - $payWithBalance, 2)
@@ -379,7 +381,7 @@ class Payment_log extends API_Controller {
             }
             
         }
-        
+        @file_put_contents('/tmp/payment.log', "InsertedOrUpdated\n", FILE_APPEND | LOCK_EX);
         $this->checkCalculation('per_dollar',true,true);
         $this->AddCalculation($this->user_id, 'per_dollar', ['price' => $this->row['price']]);
         
@@ -413,7 +415,7 @@ class Payment_log extends API_Controller {
         ];
         $this->load->model('Consume_record_model');
         $this->Consume_record_model->insert($consume_record);
-        
+        @file_put_contents('/tmp/payment.log', "consume_record\n", FILE_APPEND | LOCK_EX);
         //收益明细
         $user['to_user_id'] = $this->row['anchor_uid'];
         $this->load->model('Bind_shop_user_model');
@@ -429,9 +431,11 @@ class Payment_log extends API_Controller {
         
         $this->db->trans_complete();
         if($this->db->trans_status() === FALSE){
+        	@file_put_contents('/tmp/payment.log', "Error\n", FILE_APPEND | LOCK_EX);
             $this->ajaxReturn([], 5, '网络服务异常');
         }
         else{
+        	@file_put_contents('/tmp/payment.log', "Success\n", FILE_APPEND | LOCK_EX);
             $this->ajaxReturn([]);
         }
     }
