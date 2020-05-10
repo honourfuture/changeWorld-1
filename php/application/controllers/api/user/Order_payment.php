@@ -118,6 +118,7 @@ class Order_payment extends API_Controller {
     {
         $user = $this->get_user();
         $this->load->model('Income_model');
+        $this->load->model('Users_model');
         $inclomeAvailable = $this->Income_model->getWithrawAvailable($this->user_id);
         if( empty($user) || ($inclomeAvailable + $user['balance']) < $this->amount){
             $this->ajaxReturn([], 2, '账户余额不足');
@@ -128,7 +129,6 @@ class Order_payment extends API_Controller {
         
         
         if($this->amount > 0){
-            $this->load->model('Users_model');
             $user = $this->Users_model->get($userId);
             $payWithIncomeWithdrawAvailable = 0;
             $payWithBalance = 0;
@@ -216,7 +216,9 @@ class Order_payment extends API_Controller {
                 }
             }
         }
-        
+        //更新订单状态
+        $update = ['status'=>2, 'updated_at'=>date('Y-m-d H:i:s')];
+        $this->Order_model->update($order_id, $update);
         $this->db->trans_complete();
         if($this->db->trans_status() === FALSE){
             @file_put_contents('/tmp/payment.log', "Error\n", FILE_APPEND | LOCK_EX);

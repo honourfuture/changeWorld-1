@@ -421,7 +421,9 @@ class Payment_log extends API_Controller {
         $this->Consume_record_model->insert($consume_record);
         @file_put_contents('/tmp/payment.log', "consume_record\n", FILE_APPEND | LOCK_EX);
         
-        
+        //更新订单状态
+        $update = ['status'=>2, 'updated_at'=>date('Y-m-d H:i:s')];
+        $this->Order_model->update($order_id, $update);
         $this->db->trans_complete();
         if($this->db->trans_status() === FALSE){
         	@file_put_contents('/tmp/payment.log', "Error\n", FILE_APPEND | LOCK_EX);
