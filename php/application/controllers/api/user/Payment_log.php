@@ -11,10 +11,10 @@ use EasyWeChat\Payment\Order;
 use Yansongda\Pay\Pay;
 class Payment_log extends API_Controller {
 
-	public $row;
-	public $topic;
-	public $t_id;
-	
+    public $row;
+    public $topic;
+    public $t_id;
+    
     public function __construct()
     {
         parent::__construct();
@@ -426,11 +426,11 @@ class Payment_log extends API_Controller {
         $this->Order_model->update($order_id, $update);
         $this->db->trans_complete();
         if($this->db->trans_status() === FALSE){
-        	@file_put_contents('/tmp/payment.log', "Error\n", FILE_APPEND | LOCK_EX);
+            @file_put_contents('/tmp/payment.log', "Error\n", FILE_APPEND | LOCK_EX);
             $this->ajaxReturn([], 5, '网络服务异常');
         }
         else{
-        	@file_put_contents('/tmp/payment.log', "Success\n", FILE_APPEND | LOCK_EX);
+            @file_put_contents('/tmp/payment.log', "Success\n", FILE_APPEND | LOCK_EX);
             $this->ajaxReturn();
         }
     }

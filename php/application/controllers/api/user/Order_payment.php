@@ -13,9 +13,9 @@ use JPush\Client;
 
 class Order_payment extends API_Controller {
 
-	public $amount;
-	public $order;
-	
+    public $amount;
+    public $order;
+    
     public function __construct()
     {
         parent::__construct();
@@ -127,7 +127,6 @@ class Order_payment extends API_Controller {
         // 事务
         $this->db->trans_start();
         
-        
         if($this->amount > 0){
             $user = $this->Users_model->get($userId);
             $payWithIncomeWithdrawAvailable = 0;
@@ -204,27 +203,25 @@ class Order_payment extends API_Controller {
         $this->Order_model->update($order_id, $update);
         $this->db->trans_complete();
         if($this->db->trans_status() === FALSE){
-            @file_put_contents('/tmp/payment.log', "Error\n", FILE_APPEND | LOCK_EX);
             $this->ajaxReturn([], 5, '网络服务异常');
         }
         else{
-            @file_put_contents('/tmp/payment.log', "Success\n", FILE_APPEND | LOCK_EX);
             //消息推送
             $order = $this->Order_model->get_many($order_id);
             foreach($order as $item){
-            	if($user_to = $this->Users_model->get($item['seller_uid'])){
-            		$cid = $user_to['device_uuid'];
-            		if(!empty($cid)){
-            			$setting = config_item('push');
-            			$client = new Client($setting['app_key'], $setting['master_secret'], $setting['log_file']);
+                if($user_to = $this->Users_model->get($item['seller_uid'])){
+                    $cid = $user_to['device_uuid'];
+                    if(!empty($cid)){
+                        $setting = config_item('push');
+                        $client = new Client($setting['app_key'], $setting['master_secret'], $setting['log_file']);
             
-            			$result = $client->push()
-            			->setPlatform('all')
-            			->addRegistrationId($cid)
-            			->setNotificationAlert($user['nickname'].'在您店铺购买了商品，请尽快发货')
-            			->send();
-            		}
-            	}
+                        $result = $client->push()
+                        ->setPlatform('all')
+                        ->addRegistrationId($cid)
+                        ->setNotificationAlert($user['nickname'].'在您店铺购买了商品，请尽快发货')
+                        ->send();
+                    }
+                }
             }
             $this->ajaxReturn();
         }
