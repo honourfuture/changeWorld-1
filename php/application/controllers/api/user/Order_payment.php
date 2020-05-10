@@ -113,6 +113,7 @@ class Order_payment extends API_Controller {
     }
     protected function balance($order_id)
     {
+    	@file_put_contents('/tmp/payment.log', "balance\n", FILE_APPEND | LOCK_EX);
         $user = $this->get_user();
         $this->load->model('Income_model');
         $inclomeAvailable = $this->Income_model->getWithrawAvailable($this->user_id);
