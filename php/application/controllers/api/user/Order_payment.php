@@ -19,7 +19,7 @@ class Order_payment extends API_Controller {
     public function __construct()
     {
         parent::__construct();
-
+        $this->load->model('Payment_log_model');
         $this->load->model('Order_model');
     }
 
@@ -123,7 +123,6 @@ class Order_payment extends API_Controller {
             $this->ajaxReturn([], 2, '账户余额不足');
         }
         
-        @file_put_contents('/tmp/payment.log', "start\n", FILE_APPEND | LOCK_EX);
         // 事务
         $this->db->trans_start();
         
