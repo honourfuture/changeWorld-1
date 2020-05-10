@@ -97,7 +97,9 @@ class Order_payment extends API_Controller {
         $ret = $this->payment_format($trade_type, $trade_sn);
 
         $user = $this->get_user();
-        $ret['balance'] = $user['balance'];
+        $this->load->model('Income_model');
+        $inclomeAvailable = $this->Income_model->getWithrawAvailable($this->user_id);
+        $ret['balance'] = round($user['balance'] + $inclomeAvailable, 2);
 
         $this->ajaxReturn($ret);
     }
