@@ -13,6 +13,9 @@ use JPush\Client;
 
 class Order_payment extends API_Controller {
 
+	public $amount;
+	public $order;
+	
     public function __construct()
     {
         parent::__construct();
@@ -138,8 +141,7 @@ class Order_payment extends API_Controller {
                 $payWithBalance = $this->amount - $inclomeAvailable;
                 $payWithIncomeWithdrawAvailable = $inclomeAvailable;
             }
-            @file_put_contents('/tmp/payment.log', "payWithIncomeWithdrawAvailable-{$payWithIncomeWithdrawAvailable}\n", FILE_APPEND | LOCK_EX);
-            @file_put_contents('/tmp/payment.log', "payWithBalance-{$payWithBalance}\n", FILE_APPEND | LOCK_EX);
+            
             if( $payWithBalance ) {
                 $this->Users_model->update($this->user_id, [
                         'balance' => round($user['balance'] - $payWithBalance, 2)
@@ -162,28 +164,13 @@ class Order_payment extends API_Controller {
             }
         
         }
-        @file_put_contents('/tmp/payment.log', "InsertedOrUpdated\n", FILE_APPEND | LOCK_EX);
-        $this->checkCalculation('per_dollar',true,true);
+        $this->checkCalculation('per_dollar',true, true);
         $this->AddCalculation($this->user_id, 'per_dollar', ['price' => $this->amount]);
         
         //更新流水状态
         $order_update = ['status' => 1];
         $this->Payment_log_model->update($order_id, $order_update);
-        //余额明细
         
-        //消费记录
-        $consume_record = [
-            'type' => 0,
-            'user_id' => $this->user_id,
-            'item_title' => $this->row['title'],
-            'item_id' => $this->row['id'],
-            'item_amount' => $this->amount,
-            'order_sn' => $order_sn,
-            'topic' => $this->service + 2,
-            'payment_type' => 'balance'
-        ];
-        $this->load->model('Consume_record_model');
-        $this->Consume_record_model->insert($consume_record);
         @file_put_contents('/tmp/payment.log', "consume_record\n", FILE_APPEND | LOCK_EX);
         //收益明细
         $user['to_user_id'] = $this->row['anchor_uid'];
@@ -194,7 +181,7 @@ class Order_payment extends API_Controller {
             $user['pid'] = 0;
         }
         $this->load->model('Income_model');
-        $order_data = $this->row;
+        $order_data = $this->order;
         $order_data['service']  = $this->service;
         $this->Income_model->service($user, $order_data, $user['pid']);
         
@@ -303,6 +290,7 @@ class Order_payment extends API_Controller {
         );
 
         $order = $this->payment_format($params['trade_type'], $params['trade_sn']);
+        $this->order = $order;
         if($order['real_total_amount'] < 0.01){
             $params['payment_type'] = 'balance';//免费强制用余额
         }

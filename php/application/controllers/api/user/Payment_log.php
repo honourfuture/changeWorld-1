@@ -11,6 +11,10 @@ use EasyWeChat\Payment\Order;
 use Yansongda\Pay\Pay;
 class Payment_log extends API_Controller {
 
+	public $row;
+	public $topic;
+	public $t_id;
+	
     public function __construct()
     {
         parent::__construct();
