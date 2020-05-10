@@ -199,23 +199,6 @@ class Order_payment extends API_Controller {
             $this->Consume_record_model->insert_many($consume_record);
         }
         
-        //消息推送
-        $order = $this->Order_model->get_many($order_id);
-        foreach($order as $item){
-            if($user_to = $this->Users_model->get($item['seller_uid'])){
-                $cid = $user_to['device_uuid'];
-                if(!empty($cid)){
-                    $setting = config_item('push');
-                    $client = new Client($setting['app_key'], $setting['master_secret'], $setting['log_file']);
-        
-                    $result = $client->push()
-                    ->setPlatform('all')
-                    ->addRegistrationId($cid)
-                    ->setNotificationAlert($user['nickname'].'在您店铺购买了商品，请尽快发货')
-                    ->send();
-                }
-            }
-        }
         //更新订单状态
         $update = ['status'=>2, 'updated_at'=>date('Y-m-d H:i:s')];
         $this->Order_model->update($order_id, $update);
@@ -226,6 +209,23 @@ class Order_payment extends API_Controller {
         }
         else{
             @file_put_contents('/tmp/payment.log', "Success\n", FILE_APPEND | LOCK_EX);
+            //消息推送
+            $order = $this->Order_model->get_many($order_id);
+            foreach($order as $item){
+            	if($user_to = $this->Users_model->get($item['seller_uid'])){
+            		$cid = $user_to['device_uuid'];
+            		if(!empty($cid)){
+            			$setting = config_item('push');
+            			$client = new Client($setting['app_key'], $setting['master_secret'], $setting['log_file']);
+            
+            			$result = $client->push()
+            			->setPlatform('all')
+            			->addRegistrationId($cid)
+            			->setNotificationAlert($user['nickname'].'在您店铺购买了商品，请尽快发货')
+            			->send();
+            		}
+            	}
+            }
             $this->ajaxReturn();
         }
     }
