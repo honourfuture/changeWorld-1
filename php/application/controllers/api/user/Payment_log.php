@@ -145,7 +145,9 @@ class Payment_log extends API_Controller {
         $this->load->model('Config_model');
         $percent = $this->Config_model->get_by(['name' => 'point_to_price']);
         $ret['point'] = round($ret['price'] * $percent['value']);
-        $ret['balance'] = $user['balance'];
+        $this->load->model('Income_model');
+        $inclomeAvailable = $this->Income_model->getWithrawAvailable($this->user_id);
+        $ret['balance'] = round($user['balance'] + $inclomeAvailable, 2);
         $ret['userPoint'] = $user['point'];
 
         $this->ajaxReturn($ret);
