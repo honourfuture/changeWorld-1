@@ -201,7 +201,7 @@ class Info extends API_Controller {
                 $this->ajaxReturn([], 2, '自己不能绑定自己');
             }
 
-            if( $item['pid'] || ( !$item['pid'] && $item['mobi'] != SUPER_USER_MOBILE ) ){
+            if( $item['pid'] || ( !$item['pid'] && $item['mobi'] == SUPER_USER_MOBILE ) ){
                 ;
             }
             else{
