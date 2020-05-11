@@ -107,8 +107,9 @@ class Grade extends API_Controller {
         $verify = $this->Users_rank_rule_verify_model->order_by('id', 'desc')->get_by(['from' => $thisRank, 'user_id' => $this->user_id]);
         $isShow = 0;
 
+        //0 未审核 1 审核中 2 审核通过 3 拒绝
         if(isset($verify['status'])){
-            $isShow = $verify['status'];
+            $isShow = ($verify['status'] == 3 ? 1 : 0);
         }
         if( isset($rankIdKey[$thisRank + 1]) && $rankIdKey[$thisRank + 1]['exp'] <= $exp){
             $rankIdKey[$thisRank]['isShowUp'] = $isShow; 
