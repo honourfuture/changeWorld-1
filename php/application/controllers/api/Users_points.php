@@ -323,9 +323,11 @@ class Users_points extends API_Controller {
         $this->load->model('Points_rule_model');
         $pointsRule = $this->Points_rule_model->get_many_by(['enable'=>1,'deleted'=>0,'is_show'=>1]);
         unset($pointsRule['pretty_buy'], $pointsRule['audio_buy']);
+        $arrRules = [];
         $limit_day = [];
         foreach ($pointsRule as $key=>$value){
             $limit_day[$value["name"]] = $value["days_limit"];
+            $arrRules[$value['name']] = $value['show_name'];
         }
         //消费/收益不设置上限
         unset($limit_day['per_income'], $limit_day['per_dollar'], $limit_day['goods_exchange'], $limit_day['points_pay']);
@@ -354,7 +356,7 @@ class Users_points extends API_Controller {
                 $result[$point['rule_name']] = [
                     'count' => isset($limit_day[$point['rule_name']]) ? $limit_day[$point['rule_name']] : 0,
                     'value' => round($point['value'], 0),
-                    'remark' => $point['remark'] ? $point['remark'] : '签到'
+                    'remark' => isset($arrRules[$point['rule_name']]) ? $arrRules[$point['rule_name']] : '签到'
                 ];
             }
         }
@@ -369,7 +371,7 @@ class Users_points extends API_Controller {
                 $result[] = [
                     'count'=>$limit_day[$value["name"]],
                     'value'=>0,
-                    'remark'=> $value["show_name"] ? $value["show_name"] : '签到'
+                    'remark'=> isset($arrRules[$point['rule_name']]) ? $arrRules[$point['rule_name']] : '签到'
                 ];
             }
         }
