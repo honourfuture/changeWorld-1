@@ -113,6 +113,8 @@ export default class Pay extends BaseComponent {
                         }
                     };
                     if (type === "balance") {
+                        var msg = JSON.stringify(res);
+                        Toast.show(msg, 6, false);
                         callBack(1);
                     } else {
                         const data = JSON.stringify({
