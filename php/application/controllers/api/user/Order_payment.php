@@ -126,9 +126,7 @@ class Order_payment extends API_Controller {
         
         // 事务
         $this->db->trans_start();
-        
         if($this->amount > 0){
-            $user = $this->Users_model->get($userId);
             $payWithIncomeWithdrawAvailable = 0;
             $payWithBalance = 0;
             if( $inclomeAvailable >= $this->amount ){//优先使用可提现余额支付

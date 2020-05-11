@@ -347,10 +347,8 @@ class Payment_log extends API_Controller {
         @file_put_contents('/tmp/payment.log', "start\n", FILE_APPEND | LOCK_EX);
         // 事务
         $this->db->trans_start();
-        
         if($this->row['price'] > 0){
             $this->load->model('Users_model');
-            $user = $this->Users_model->get($userId);
             $payWithIncomeWithdrawAvailable = 0;
             $payWithBalance = 0;
             if( $inclomeAvailable >= $this->row['price'] ){//优先使用可提现余额支付
