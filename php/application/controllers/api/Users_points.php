@@ -323,12 +323,17 @@ class Users_points extends API_Controller {
         $this->load->model('Points_rule_model');
         $pointsRule = $this->Points_rule_model->get_many_by(['enable'=>1,'deleted'=>0,'is_show'=>1]);
         unset($pointsRule['pretty_buy'], $pointsRule['audio_buy']);
-        $arrRules = [];
         $limit_day = [];
         foreach ($pointsRule as $key=>$value){
             $limit_day[$value["name"]] = $value["days_limit"];
-            $arrRules[$value['name']] = $value['show_name'];
         }
+
+        $arrRules = [];
+        $cursorRules = $this->Points_rule_model->get_many_by(['enable'=>1,'deleted'=>0]);
+        foreach ($cursorRules as $item){
+            $arrRules[$item['name']] = $item['show_name'];
+        }
+
         //消费/收益不设置上限
         unset($limit_day['per_income'], $limit_day['per_dollar'], $limit_day['goods_exchange'], $limit_day['points_pay']);
         //把用户签到的可以获得的值写入进去
@@ -348,7 +353,6 @@ class Users_points extends API_Controller {
         $result = [];
         $todayPoint = 0 ;
         foreach ($points as $point){
-
             $todayPoint += $point["value"];
             if(isset($result[$point['rule_name']])){
                 $result[$point['rule_name']]['value'] += $point['value'];
