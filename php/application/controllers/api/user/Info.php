@@ -190,18 +190,21 @@ class Info extends API_Controller {
 
         $a_uid = $this->input->get_post('invite_code');
         if($a_uid){
-            $user = $this->Users_model->get_by(['id' => $this->user_id]);
+            $this->db->select('id,nickname,header,summary,exp,pretty_id,address,created_at,pid,mobi,invite_code');
+            $item = $this->Users_model->get_by(array('invite_code'=>$a_uid));//邀请用户
+            $user = $this->Users_model->get_by(['id' => $this->user_id]);//当前用户
+            if( $user['id'] == $item['id'] && $user['mobi'] == SUPER_USER_MOBILE ){
+                $this->ajaxReturn([], 3, '该用户原始用户，不允许绑定上级');
+            }
+
             if($user['invite_code'] == $a_uid){
                 $this->ajaxReturn([], 2, '自己不能绑定自己');
             }
 
-            $this->db->select('id,nickname,header,summary,exp,pretty_id,address,created_at,pid,mobi,invite_code');
-            $item = $this->Users_model->get_by(array('invite_code'=>$a_uid));
-
-            if( $item['mobi'] == SUPER_USER_MOBILE ){
-                $this->ajaxReturn([], 3, '该用户原始用户，不允许绑定上级');
+            if( $item['pid'] || ( !$item['pid'] && $item['mobi'] != SUPER_USER_MOBILE ) ){
+                ;
             }
-            if(!$item['pid'] && $item['mobi'] != SUPER_USER_MOBILE){
+            else{
                 $this->ajaxReturn([], 3, '该用户未绑定上级，无法绑定');
             }
 
