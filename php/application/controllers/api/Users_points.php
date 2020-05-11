@@ -356,7 +356,7 @@ class Users_points extends API_Controller {
                 $result[$point['rule_name']] = [
                     'count' => isset($limit_day[$point['rule_name']]) ? $limit_day[$point['rule_name']] : 0,
                     'value' => round($point['value'], 0),
-                    'remark' => isset($arrRules[$point['rule_name']]) ? $arrRules[$point['rule_name']] : '签到'
+                    'remark' => $point['remark'] ? $point['remark'] : '签到'
                 ];
             }
         }
@@ -371,7 +371,7 @@ class Users_points extends API_Controller {
                 $result[] = [
                     'count'=>$limit_day[$value["name"]],
                     'value'=>0,
-                    'remark'=> isset($arrRules[$value['name']]) ? isset($arrRules[$value['name']]) : '签到'
+                    'remark'=> i $value["show_name"] ? $value["show_name"] : '签到'
                 ];
             }
         }
