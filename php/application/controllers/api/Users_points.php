@@ -371,7 +371,7 @@ class Users_points extends API_Controller {
                 $result[] = [
                     'count'=>$limit_day[$value["name"]],
                     'value'=>0,
-                    'remark'=> i $value["show_name"] ? $value["show_name"] : '签到'
+                    'remark'=> $value["show_name"] ? $value["show_name"] : '签到'
                 ];
             }
         }
