@@ -328,11 +328,7 @@ class Users_points extends API_Controller {
             $limit_day[$value["name"]] = $value["days_limit"];
         }
 
-        $arrRules = [];
-        $cursorRules = $this->Points_rule_model->get_many_by(['enable'=>1,'deleted'=>0]);
-        foreach ($cursorRules as $item){
-            $arrRules[$item['name']] = $item['show_name'];
-        }
+        $arrRules = $this->Points_rule_model->init();
 
         //消费/收益不设置上限
         unset($limit_day['per_income'], $limit_day['per_dollar'], $limit_day['goods_exchange'], $limit_day['points_pay']);
