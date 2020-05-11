@@ -371,7 +371,7 @@ class Users_points extends API_Controller {
                 $result[] = [
                     'count'=>$limit_day[$value["name"]],
                     'value'=>0,
-                    'remark'=> isset($arrRules[$point['rule_name']]) ? $arrRules[$point['rule_name']] : '签到'
+                    'remark'=> isset($arrRules[$value['name']]) ? isset($arrRules[$value['name']]) : '签到'
                 ];
             }
         }
