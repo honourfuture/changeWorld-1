@@ -206,8 +206,6 @@ export default class ConfirmOrder extends BaseComponent {
         Base.POST(
             { act: "order", op: "add", mod: "user", ...requestParam },
             res => {
-                var msg = JSON.stringify(res);
-                Toast.show(msg, 6, false);
                 Global.curSelectAddressId = "";
                 const { pay_sn } = res.data;
                 Base.push("Pay", { pay_sn });
