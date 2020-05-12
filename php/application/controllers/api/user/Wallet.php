@@ -74,7 +74,13 @@ class Wallet extends API_Controller {
         ];
 
         $user = $this->get_user();
-        $ret['balance'] = $user['balance'];
+
+        //计算可提现余额
+        $this->load->model('Income_model');
+        $inclomeAvailable = $this->Income_model->getWithrawAvailable($this->user_id);
+        $ret['withdraw'] = numformat($inclomeAvailable, 2);
+
+        $ret['balance'] = round($user['balance'] + $inclomeAvailable, 2);
         $ret['point'] = round($user['point'], 0);
         $ret['gold'] = $user['gold'];
 
@@ -83,10 +89,6 @@ class Wallet extends API_Controller {
         
         $ret['income'] = $this->Income_model->sum_income_topic_group($this->user_id);
 
-        //计算可提现余额
-    	$this->load->model('Income_model');
-        $inclomeAvailable = $this->Income_model->getWithrawAvailable($this->user_id);
-        $ret['withdraw'] = numformat($inclomeAvailable, 2);
         
         //今日
         $where['created_at >= '] = date('Y-m-d 00:00:00');
