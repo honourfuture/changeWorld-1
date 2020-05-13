@@ -453,6 +453,7 @@ class Notify extends API_Controller
 
     protected function order($notify, $successful)
     {
+        log_message('error', '[wechat_order_payment] Log' . var_export(func_get_args(), true));
         is_array($notify) && $notify = (object)$notify;
         if(! isset($notify->out_trade_no)){
             log_message('error', '[wechat_order_payment] ERROR (OutTradeNo Empty)' . var_export($notify, true));
