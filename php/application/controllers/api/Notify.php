@@ -454,7 +454,7 @@ class Notify extends API_Controller
 
     protected function order($notify, $successful)
     {
-        log_message('error', '[order_payment] Log' . var_export(func_get_args(), true));
+        log_message('error', '[order_payment] Order-Log' . var_export(func_get_args(), true));
         is_array($notify) && $notify = (object)$notify;
         if(! isset($notify->out_trade_no)){
             log_message('error', '[order_payment] ERROR (OutTradeNo Empty)' . var_export($notify, true));
@@ -469,7 +469,7 @@ class Notify extends API_Controller
         }
 
         if(! in_array($attach, ['pay_sn', 'order_sn'])){
-            log_message('error', '[order_payment] ERROR' . var_export($notify, true));
+            log_message('error', '[order_payment] ERROR-AttachError' . var_export($notify, true));
             return false;
         }
         $this->load->model('Order_model');
@@ -489,7 +489,7 @@ class Notify extends API_Controller
         }
 
         if( empty($successful) ){
-            log_message('error', '[order_payment] ERROR' . var_export($notify, true));
+            log_message('error', '[order_payment] ERROR-PayStatusRespFalse' . var_export($notify, true));
             return false;
         }
 
@@ -559,9 +559,15 @@ class Notify extends API_Controller
         $this->payment_type = 'alipay';
         $this->setting = config_item('yansongda');
         $app = new Pay($this->setting);
-        $notify = $app->driver('alipay')->gateway('app')->verify($_REQUEST);
-        log_message('error', '[alipay_order_payment] RESULT'. var_export($_REQUEST, true));
-        log_message('error', '[alipay_order_payment] RESULT'. var_export($notify, true));
+        try {
+            $notify = $app->driver('alipay')->gateway('app')->verify($_REQUEST);
+            log_message('error', '[alipay_order_payment] RESULT-REQUEST' . var_export($_REQUEST, true));
+            log_message('error', '[alipay_order_payment] RESULT-NOTIFY' . var_export($notify, true));
+        }
+        catch (\Exception $e){
+            log_message('error', '[alipay_order_payment] RESULT-Exception' . var_export($e, true));
+            $notify = false;
+        }
         if($notify){
             $this->order($notify, true);
         }else{
