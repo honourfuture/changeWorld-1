@@ -454,7 +454,7 @@ class Notify extends API_Controller
 
     protected function order($notify, $successful)
     {
-        log_message('error', '[order_payment] Order-Log' . var_export(func_get_args(), true));
+        log_message('error', '[order_payment] Order-Log ' . var_export(func_get_args(), true));
         is_array($notify) && $notify = (object)$notify;
         if(! isset($notify->out_trade_no)){
             log_message('error', '[order_payment] ERROR (OutTradeNo Empty) ' . var_export($notify, true));
@@ -526,28 +526,34 @@ class Notify extends API_Controller
             $this->load->model('Consume_record_model');
             $this->Consume_record_model->insert_many($consume_record);
         }
+
+        foreach ($a_order_id as $order_id){
+            $this->Order_model->update($order_id, $update);
+        }
         //消息推送
         $this->load->model('Users_model');
         $user = $this->Users_model->get($order[0]['buyer_uid']);
-        foreach($order as $item){
+        foreach ($order as $item) {
             $user_to = $this->Users_model->get($item['seller_uid']);
-            if( empty($user_to) ) {
+            if (empty($user_to)) {
                 continue;
             }
             $cid = $user_to['device_uuid'];
-            if( empty($cid) ) {
+            if (empty($cid)) {
                 continue;
             }
             $setting = config_item('push');
             $client = new Client($setting['app_key'], $setting['master_secret'], $setting['log_file']);
-            $result = $client->push()
-                             ->setPlatform('all')
-                             ->addRegistrationId($cid)
-                             ->setNotificationAlert($user['nickname'].'在您店铺购买了商品，请尽快发货')
-                             ->send();
-        }
-        foreach ($a_order_id as $order_id){
-            $this->Order_model->update($order_id, $update);
+            try {
+                $result = $client->push()
+                    ->setPlatform('all')
+                    ->addRegistrationId($cid)
+                    ->setNotificationAlert($user['nickname'] . '在您店铺购买了商品，请尽快发货')
+                    ->send();
+            }
+            catch (\Exception $e){
+                log_message('error', '[order_payment] ERROR-JPushError ' . var_export($user_to, true));
+            }
         }
 
         return true;
