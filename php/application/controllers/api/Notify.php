@@ -455,6 +455,7 @@ class Notify extends API_Controller
     {
         is_array($notify) && $notify = (object)$notify;
         if(! isset($notify->out_trade_no)){
+            log_message('error', '[wechat_order_payment] ERROR (OutTradeNo Empty)' . var_export($notify, true));
             return false;
         }
 
@@ -466,7 +467,7 @@ class Notify extends API_Controller
         }
 
         if(! in_array($attach, ['pay_sn', 'order_sn'])){
-            log_message('error', '[wechat_order_payment] '.$notify);
+            log_message('error', '[wechat_order_payment] ERROR' . var_export($notify, true));
             return false;
         }
         $this->load->model('Order_model');
@@ -476,6 +477,7 @@ class Notify extends API_Controller
             $where = ['order_sn' => $notify->out_trade_no];
         }
         if(! $order = $this->Order_model->get_many_by($where)){
+            log_message('error', '[wechat_order_payment] ERROR (Empty Order Info)');
             return false;
         }
 
@@ -484,65 +486,67 @@ class Notify extends API_Controller
             $a_order_id[] = $item['id'];
         }
 
-        $update = [];
-
-        if($successful){
-            $update['status'] = 2;
-
-            //商品销售记录
-            $this->load->model('Order_items_model');
-            if($goods = $this->Order_items_model->get_many_by(['order_id' => $a_order_id])){
-                $this->load->model('Record_goods_model');
-                $data = [];
-                $consume_record = [];
-                foreach($goods as $item){
-                    $data[] = [
-                        'goods_id' => $item['goods_id'],
-                        'seller_uid' => $item['seller_uid'],
-                        'num' => $item['num'],
-                        'order_id' => $item['order_id']
-                    ];
-
-                    //消费记录
-                    $consume_record[] = [
-                        'type' => 0,
-                        'user_id' => $order[0]['buyer_uid'],
-                        'item_title' => $item['name'],
-                        'item_id' => $item['goods_id'],
-                        'item_amount' => $item['total_price'],
-                        'order_sn' => $item['order_sn'],
-                        'topic' => 5,
-                        'payment_type' => $this->payment_type
-                    ];
-                }
-                $this->Record_goods_model->insert_many($data);
-
-                $this->load->model('Consume_record_model');
-                $this->Consume_record_model->insert_many($consume_record);
-            }
-            //分佣
-            //消息推送
-            $this->load->model('Users_model');
-            $user = $this->Users_model->get($order[0]['buyer_uid']);
-            foreach($order as $item){
-                if($user_to = $this->Users_model->get($item['seller_uid'])){
-                    $cid = $user_to['device_uuid'];
-                    if(!empty($cid)){
-                        $setting = config_item('push');
-                        $client = new Client($setting['app_key'], $setting['master_secret'], $setting['log_file']);
-
-                        $result = $client->push()
-                                         ->setPlatform('all')
-                                         ->addRegistrationId($cid)
-                                         ->setNotificationAlert($user['nickname'].'在您店铺购买了商品，请尽快发货')
-                                         ->send();
-                    }
-                }
-            }
-        }else{
-            log_message('error', '[wechat_order_payment] '.$notify);
+        if( empty($successful) ){
+            log_message('error', '[wechat_order_payment] ERROR' . var_export($notify, true));
+            return false;
         }
-        $update && $this->Order_model->update_many($a_order_id, $update);
+
+        $update['status'] = 2;
+        log_message('error', '[wechat_order_payment] SUCCESS'. var_export($notify, true));
+        //商品销售记录
+        $this->load->model('Order_items_model');
+        if($goods = $this->Order_items_model->get_many_by(['order_id' => $a_order_id])){
+            $this->load->model('Record_goods_model');
+            $data = [];
+            $consume_record = [];
+            foreach($goods as $item){
+                $data[] = [
+                    'goods_id' => $item['goods_id'],
+                    'seller_uid' => $item['seller_uid'],
+                    'num' => $item['num'],
+                    'order_id' => $item['order_id']
+                ];
+
+                //消费记录
+                $consume_record[] = [
+                    'type' => 0,
+                    'user_id' => $order[0]['buyer_uid'],
+                    'item_title' => $item['name'],
+                    'item_id' => $item['goods_id'],
+                    'item_amount' => $item['total_price'],
+                    'order_sn' => $item['order_sn'],
+                    'topic' => 5,
+                    'payment_type' => $this->payment_type
+                ];
+            }
+            $this->Record_goods_model->insert_many($data);
+
+            $this->load->model('Consume_record_model');
+            $this->Consume_record_model->insert_many($consume_record);
+        }
+        //消息推送
+        $this->load->model('Users_model');
+        $user = $this->Users_model->get($order[0]['buyer_uid']);
+        foreach($order as $item){
+            $user_to = $this->Users_model->get($item['seller_uid']);
+            if( empty($user_to) ) {
+                continue;
+            }
+            $cid = $user_to['device_uuid'];
+            if( empty($cid) ) {
+                continue;
+            }
+            $setting = config_item('push');
+            $client = new Client($setting['app_key'], $setting['master_secret'], $setting['log_file']);
+            $result = $client->push()
+                             ->setPlatform('all')
+                             ->addRegistrationId($cid)
+                             ->setNotificationAlert($user['nickname'].'在您店铺购买了商品，请尽快发货')
+                             ->send();
+        }
+        foreach ($a_order_id as $order_id){
+            $this->Order_model->update($order_id, $update);
+        }
 
         return true;
     }
