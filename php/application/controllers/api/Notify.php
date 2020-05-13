@@ -445,7 +445,7 @@ class Notify extends API_Controller
         $this->setting = config_item('wechat');
         $app = new Application($this->setting);
         $response = $app->payment->handleNotify(function($notify, $successful){
-            log_message('error', '[wechat_order_payment] RESULT'. var_export($notify, true));
+            log_message('error', '[wechat_order_payment] RESULT '. var_export($notify, true));
             return $this->order($notify, $successful);
         });
 
@@ -457,7 +457,7 @@ class Notify extends API_Controller
         log_message('error', '[order_payment] Order-Log' . var_export(func_get_args(), true));
         is_array($notify) && $notify = (object)$notify;
         if(! isset($notify->out_trade_no)){
-            log_message('error', '[order_payment] ERROR (OutTradeNo Empty)' . var_export($notify, true));
+            log_message('error', '[order_payment] ERROR (OutTradeNo Empty) ' . var_export($notify, true));
             return false;
         }
 
@@ -469,7 +469,7 @@ class Notify extends API_Controller
         }
 
         if(! in_array($attach, ['pay_sn', 'order_sn'])){
-            log_message('error', '[order_payment] ERROR-AttachError' . var_export($notify, true));
+            log_message('error', '[order_payment] ERROR-AttachError ' . var_export($notify, true));
             return false;
         }
         $this->load->model('Order_model');
@@ -489,12 +489,12 @@ class Notify extends API_Controller
         }
 
         if( empty($successful) ){
-            log_message('error', '[order_payment] ERROR-PayStatusRespFalse' . var_export($notify, true));
+            log_message('error', '[order_payment] ERROR-PayStatusRespFalse ' . var_export($notify, true));
             return false;
         }
 
         $update['status'] = 2;
-        log_message('error', '[order_payment] SUCCESS'. var_export($notify, true));
+        log_message('error', '[order_payment] SUCCESS '. var_export($notify, true));
         //商品销售记录
         $this->load->model('Order_items_model');
         if($goods = $this->Order_items_model->get_many_by(['order_id' => $a_order_id])){
@@ -561,11 +561,11 @@ class Notify extends API_Controller
         $app = new Pay($this->setting);
         try {
             $notify = $app->driver('alipay')->gateway('app')->verify($_REQUEST);
-            log_message('error', '[alipay_order_payment] RESULT-REQUEST' . var_export($_REQUEST, true));
-            log_message('error', '[alipay_order_payment] RESULT-NOTIFY' . var_export($notify, true));
+            log_message('error', '[alipay_order_payment] RESULT-REQUEST ' . var_export($_REQUEST, true));
+            log_message('error', '[alipay_order_payment] RESULT-NOTIFY ' . var_export($notify, true));
         }
         catch (\Exception $e){
-            log_message('error', '[alipay_order_payment] RESULT-Exception' . var_export($e, true));
+            log_message('error', '[alipay_order_payment] RESULT-Exception ' . var_export($e, true));
             $notify = false;
         }
         if($notify){
