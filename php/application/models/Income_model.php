@@ -574,6 +574,7 @@ class Income_model extends MY_Model
             $sumPrice = array_sum($arrPriceList);
             //当前商品所支付的平台佣金
             $_platformPrice = $platformPrice * ($item['goods_price'] * $item['num'] / ($orderInfo['real_total_amount']-$freight_fee));
+            $this->setPlatformIncome($orderInfo, $item, $_platformPrice);
             $maxPrice = $item['rebate_percent'] / 100 * $item['goods_price'] * $item['num'] - $_platformPrice;//扣除服务费后可分佣金额
             if($sumPrice > $maxPrice){//超过可分佣最大值，除自购者外，其他人重新分析
                 $buyerPrice = $arrPriceList[$user['id']];
@@ -648,7 +649,26 @@ class Income_model extends MY_Model
         */
         return $arrPriceList;
     }
-    
+
+    /**
+     * 记录平台收入
+     * @param $orderInfo
+     * @param $orderItemInfo
+     * @param $platformIncome
+     */
+    public function setPlatformIncome($orderInfo, $orderItemInfo, $platformIncome)
+    {
+        $item = [
+            'amount' => $platformIncome,
+            'from_id' => $orderInfo['buyer_uid'],
+            'order_id' => $orderInfo['id'],
+            'item_id' => $orderItemInfo['id'],
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
+        ];
+        $this->db->insert_batch('income_platform', [$item]);
+    }
+
     /**
      * 商家收入
      */
