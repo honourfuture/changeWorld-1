@@ -22,28 +22,28 @@ class EvaluateItem extends BaseComponent {
     render() {
         const { header, nickname, remark,photos,lv  } = this.props;
         const photo = JSON.parse(JSON.parse(photos));
-		let photosItem = (photo || []).map((item,key)=>{
-			return <NetImg className="desImg" src={Base.getImgUrl(item)} key={key}/>
-		});
+        let photosItem = (photo || []).map((item,key)=>{
+            return <NetImg className="desImg" src={Base.getImgUrl(item)} key={key}/>
+        });
         return (
             <div className="evaluate-item am-flexbox-align-start am-flexbox">
-                <NetImg className="userImg" src={Base.getImgUrl(header)} />
-                <div>
-                    <div className="name">
-                        {Base.getAnonymity(nickname)} 等级：{lv}
-                    </div>
-                    <div className="des">
-                        {remark}
-                    </div>
-                    {
-					    photo.length > 0 ? (<div className="photos">
-                            {photosItem}
-                        </div>) : null
-                    }
-                </div>
-                
+            <NetImg className="userImg" src={Base.getImgUrl(header)} />
+        <div>
+        <div className="name">
+            {Base.getAnonymity(nickname)} 等级：{lv}
+    </div>
+        <div className="des">
+            {remark}
             </div>
-        );
+        {
+            photo.length > 0 ? (<div className="photos">
+                {photosItem}
+                </div>) : null
+        }
+    </div>
+
+        </div>
+    );
     }
 }
 
@@ -58,11 +58,11 @@ class GoodsItem extends BaseComponent {
         const { default_image, name, sale_price } = this.props;
         return (
             <div className="goods-item" onClick={this.onClick}>
-                <NetImg src={Base.getImgUrl(default_image)} />
-                <div className="title ellipsis2">{name}</div>
-                <div className="price">￥{sale_price}</div>
-            </div>
-        );
+            <NetImg src={Base.getImgUrl(default_image)} />
+        <div className="title ellipsis2">{name}</div>
+            <div className="price">￥{sale_price}</div>
+        </div>
+    );
     }
 }
 
@@ -76,13 +76,13 @@ class AddressItem extends BaseComponent {
         const { is_default, address, checked } = this.props;
         return (
             <Flex className="address-item" onClick={this.checkHandler}>
-                <img src={icon.addressIcon} alt="" />
-                <Flex.Item className="ellipsis">{`${
-                    parseInt(is_default, 10) ? "[默认]" : ""
-                }${address}`}</Flex.Item>
-                <Checkbox checked={checked} />
-            </Flex>
-        );
+            <img src={icon.addressIcon} alt="" />
+            <Flex.Item className="ellipsis">{`${
+            parseInt(is_default, 10) ? "[默认]" : ""
+            }${address}`}</Flex.Item>
+        <Checkbox checked={checked} />
+        </Flex>
+    );
     }
 }
 
@@ -104,28 +104,28 @@ class AttrSelect extends BaseComponent {
             const disable = false;
             return (
                 <Flex
-                    key={index}
-                    className="select-item-con"
-                    onClick={() => this.selectItemHandler(index)}
-                >
-                    <div
-                        className={`select-item ${disable ? "disable" : ""} ${
-                            curIndex === index ? "selected" : ""
-                        }`}
-                    >
-                        {item}
-                    </div>
-                </Flex>
-            );
+            key={index}
+            className="select-item-con"
+            onClick={() => this.selectItemHandler(index)}
+        >
+        <div
+            className={`select-item ${disable ? "disable" : ""} ${
+                curIndex === index ? "selected" : ""
+                }`}
+        >
+            {item}
+        </div>
+            </Flex>
+        );
         });
         return (
             <div className="select-con">
-                <div className="title">{attrTitle}</div>
-                <Flex className="select-group base-line" wrap="wrap">
-                    {attrItems}
-                </Flex>
+            <div className="title">{attrTitle}</div>
+            <Flex className="select-group base-line" wrap="wrap">
+            {attrItems}
+            </Flex>
             </div>
-        );
+    );
     }
 }
 
@@ -154,13 +154,13 @@ class AttrSelectGroup extends BaseComponent {
                 const attrTitle = goodsAttrDic[key];
                 const attrs = goods_attr[key];
                 goodsAttrItems.push(
-                    <AttrSelect
-                        attrList={attrs}
-                        attrTitle={attrTitle}
-                        key={key}
-                        ref={e => (this.refDic[key] = e)}
-                    />
-                );
+                <AttrSelect
+                attrList={attrs}
+                attrTitle={attrTitle}
+                key={key}
+                ref={e => (this.refDic[key] = e)}
+                />
+            );
             }
         }
         return <div>{goodsAttrItems}</div>;
@@ -241,7 +241,7 @@ export default class GoodsDetail extends BaseComponent {
             );
         });
 
-        
+
     }
     @action.bound
     collectHandler() {
@@ -345,7 +345,7 @@ export default class GoodsDetail extends BaseComponent {
                         Global.RES_URL
                         }/wap/index.html#/Share?invite_uid=${user_id}&type=0`
                 };
-                */
+                 */
                 const shareData = {
                     title: share_title,
                     description: "",
@@ -410,15 +410,15 @@ export default class GoodsDetail extends BaseComponent {
         const goodsImgs = goods_image.map((val, index) => {
             return (
                 <NetImg
-                    key={index}
-                    src={Base.getImgUrl(val)}
-                    style={{
-                        width: wDevice,
-                        height: wDevice,
-                        verticalAlign: "top"
-                    }}
-                />
-            );
+            key={index}
+            src={Base.getImgUrl(val)}
+            style={{
+                width: wDevice,
+                    height: wDevice,
+                    verticalAlign: "top"
+            }}
+            />
+        );
         });
         freight_fee = parseFloat(freight_fee);
         goods_ticket = goods_ticket ? JSON.parse(goods_ticket) : [];
@@ -427,14 +427,14 @@ export default class GoodsDetail extends BaseComponent {
             if (parseFloat(full_amount) > 0) {
                 return (
                     <div className="flex-item base-line" key={index}>
-                        <Flex>
-                            <div className="title">优惠券</div>
-                            <div className="des">
-                                满<em>{full_amount}</em>减<em>{free_amount}</em>
-                            </div>
-                        </Flex>
-                    </div>
-                );
+                    <Flex>
+                    <div className="title">优惠券</div>
+                    <div className="des">
+                    满<em>{full_amount}</em>减<em>{free_amount}</em>
+                </div>
+                </Flex>
+                </div>
+            );
             }
             return null;
         });
@@ -454,13 +454,13 @@ export default class GoodsDetail extends BaseComponent {
         const addressItems = address.map((item, index) => {
             return (
                 <AddressItem
-                    key={index}
-                    {...item}
-                    index={index}
-                    checked={curAddressIndex === index}
-                    onCheckHandler={this.onCheckHandler}
-                />
-            );
+            key={index}
+            {...item}
+            index={index}
+            checked={curAddressIndex === index}
+            onCheckHandler={this.onCheckHandler}
+            />
+        );
         });
         // const goodsAttrItems = [];
         // for (const key in goods_attr) {
@@ -481,79 +481,83 @@ export default class GoodsDetail extends BaseComponent {
         const { cardTotal } = this.store;
         return (
             <div className="GoodsDetail">
-                <NavBar
-                    mode="light"
-                    icon={<img src={icon.back} alt="" />}
-                    onLeftClick={Base.goBack}
-                    rightContent={[
-                        <img
-                            onClick={() => Base.push("ShopCart")}
-                            key="0"
-                            src={icon.cart}
-                            style={{ marginRight: "16px" }}
-                            alt=""
-                        />,
-                        parseInt(cardTotal) > 0 ? <span className="cart-num">{cardTotal}</span> : '',
-                        <img
-                            onClick={this.onShare}
-                            key="1"
-                            src={icon.share}
-                            alt=""
-                        />
-                    ]}
-                >
-                    <div
-                        className="ellipsis"
-                        style={{
-                            width: (1 / 3) * wDevice,
-                            textAlign: "center"
-                        }}
-                    >
-                        商品详情
-                    </div>
-                </NavBar>
-                <div className="base-content">
-                    <Carousel autoplay={true} infinite>
-                        {goodsImgs}
-                    </Carousel>
-                    <div className="info-con">
-                        <Flex justify="between">
-                            <div className="price">
-                                ￥{Base.getNumFormat(sale_price)}
-                            </div>
-                            <Flex
-                                style={{
-                                    fontSize: 13,
-                                    color: "#999",
-                                    marginTop: 10
-                                }}
-                            >
-                                {parseInt(base_percent) && <div>返利{parseInt(base_percent / 100 * sale_price)}元</div>}
-                                <Flex style={{ marginRight: 20 }}>
-                                    <div>已售{sale_num}</div>
-                                </Flex>
-                                {seller_address ? (
-                                    <Flex>
-                                        <div>{seller_address}</div>
-                                    </Flex>
-                                ) : null}
-                            </Flex>
-                            {/* {parseInt(reward_point)?<div style={{ fontSize: 11, color: "red" }}>
+            <NavBar
+        mode="light"
+        icon={<img src={icon.back} alt="" />}
+        onLeftClick={Base.goBack}
+        rightContent={[
+            <img
+        onClick={() => Base.push("ShopCart")}
+        key="0"
+        src={icon.cart}
+        style={{ marginRight: "16px" }}
+        alt=""
+            />,
+            parseInt(cardTotal) > 0 ? <span className="cart-num">{cardTotal}</span> : '',
+            <img
+        onClick={this.onShare}
+        key="1"
+        src={icon.share}
+        alt=""
+            />
+    ]}
+    >
+    <div
+        className="ellipsis"
+        style={{
+            width: (1 / 3) * wDevice,
+                textAlign: "center"
+        }}
+    >
+        商品详情
+        </div>
+        </NavBar>
+        <div className="base-content">
+            <Carousel autoplay={true} infinite>
+        {goodsImgs}
+        </Carousel>
+        <div className="info-con">
+            <Flex justify="between">
+            <div className="price">
+            ￥{Base.getNumFormat(sale_price)}
+    </div>
+        <Flex
+        style={{
+            fontSize: 13,
+                color: "#999",
+                marginTop: 10,
+                background:'#ED3379',
+                color:'#fff',
+                padding:'8px 10px',
+                borderRadius:70,
+        }}
+    >
+        {parseInt(base_percent) && <div>返利{parseInt(base_percent / 100 * sale_price)}元</div>}
+        <Flex style={{ marginRight: 0 }}>
+        <div>已售{sale_num}</div>
+        </Flex>
+            {seller_address ? (
+                <Flex>
+                <div>{seller_address}</div>
+                </Flex>
+            ) : null}
+        </Flex>
+            {/* {parseInt(reward_point)?<div style={{ fontSize: 11, color: "red" }}>
                                 等价积分赠送
                             </div>:null} */}
-                            {/* <div className='old-price'>原价<em>￥489</em></div> */}
-                        </Flex>
-                        <div className="title ellipsis2">
-                            {freight_fee === 0 ? (
-                                <Badge className="badge" text="包邮" />
-                            ) : null}
-                            {name}
-                        </div>
-                       
-                    </div>
-                    <div className="discounts-con">
-                        {goodsTickets}
-                        {/* {parseFloat(use_point_rate) > 0 ? (
+            {/* <div className='old-price'>原价<em>￥489</em></div> */}
+        </Flex>
+        <div className="title ellipsis2">
+        {freight_fee === 0 ? (
+            <Badge className="badge" text="包邮" />
+        ) : null}
+            {name}
+        </div>
+
+        </div>
+        <div className="discounts-con">
+            {goodsTickets}
+            {/* {parseFloat(use_point_rate) > 0 ? (
                             <div className="flex-item">
                                 <Flex>
                                     <div className="title">积分</div>
@@ -569,249 +573,249 @@ export default class GoodsDetail extends BaseComponent {
                                 </Flex>
                             </div>
                         ) : null} */}
-                    </div>
+        </div>
 
-                    <div className="discounts-con">
-                        {goodsTickets}
-                        {guarantee && guarantee != 'null' ? (
-                            <div className="flex-item">
-                                <Flex>
-                                    <div className="title">保障</div>
-                                    <div className="des">
-                                        {guarantee}
-                                    </div>
-                                </Flex>
-                            </div>
-                        ) : ''}
-                    </div>
-                    <div className="distribution-info-con">
-                        <div className="flex-item base-line">
-                            <Flex
-                                justify="between"
-                                onClick={this.addressHandler}
-                            >
-                                <Flex>
-                                    <div className="title">配送</div>
-                                    {address.length > 0 ? (
-                                        <Flex.Item className="des ellipsis">
-                                            至{" "}
-                                            {address[curAddressIndex].address}
-                                        </Flex.Item>
-                                    ) : (
-                                        <Flex.Item className="des ellipsis">
-                                            新建配送地址
-                                        </Flex.Item>
-                                    )}
-                                </Flex>
-                                <Icon type="right" color="#c9c9c9" />
-                            </Flex>
-                        </div>
-                        <div className="flex-item base-line">
-                            <Flex>
-                                <div className="title">运费</div>
-                                <div className="des">
-                                    {Base.getNumFormat(freight_fee)}
-                                </div>
-                            </Flex>
-                        </div>
-                        <div className="flex-item">
-                            <Flex>
-                                <div className="title">发票</div>
-                                <div className="des">
-                                    {parseInt(e_invoice, 10) ? "" : "不"}可开电子发票
-                                </div>
-                            </Flex>
-                        </div>
-                    </div>
-                    {evaluateItems.length > 0 ? (
-                        <div
-                            className="evaluate-con"
-                            onClick={() => Base.push("EvaluateList", { id })}
-                        >
-                            <Flex justify="between" className="title-con">
-                                <div className="title">
-                                    商品评价({evaluate.total || ""})
-                                </div>
-                                <Icon type="right" color="#c9c9c9" />
-                            </Flex>
-                            {evaluateItems}
-                        </div>
-                    ) : null}
-                    <div className="lecturer-store-con">
-                        <Flex justify="between" className="lecturer-info">
-                            <Flex>
-                                <div className="seller-header">
-                                    <NetImg
-                                        className="header"
-                                        src={Base.getImgUrl(header)}
-                                    />
-                                    {parseInt(v, 10) ? (
-                                        <img
-                                            className="vip"
-                                            src={icon.vipIcon}
-                                            alt=""
-                                        />
-                                    ) : null}
-                                </div>
-                                <div>
-                                    <div className="name">{nickname}</div>
-                                    <div className="goods-num">
-                                        在售商品：<em>{total}</em>个
-                                    </div>
-                                </div>
-                            </Flex>
-                            <Flex
-                                onClick={() =>
-                                    Base.pushApp("openShopView", seller_uid)
-                                }
-                            >
-                                <div className="right-des">TA的店铺</div>
-                                <Icon type="right" color="#c9c9c9" />
-                            </Flex>
-                        </Flex>
-                        {summary ? (
-                            <div className="store-des">{summary}</div>
-                        ) : null}
-                        <Flex className="goods-con">{goodsItems}</Flex>
-                    </div>
-                    {goodsDetailImgs.length > 0 ? (
-                        <div className="image-text-con">
-                            <div className="title-con">图文详情</div>
-                            {goodsDetailImgs}
-                            {/* <div className="bottom-tips">
+        <div className="discounts-con">
+            {goodsTickets}
+            {guarantee && guarantee != 'null' ? (
+                <div className="flex-item">
+                <Flex>
+                <div className="title">保障</div>
+                <div className="des">
+                {guarantee}
+                </div>
+                </Flex>
+                </div>
+            ) : ''}
+        </div>
+        <div className="distribution-info-con">
+            <div className="flex-item base-line">
+            <Flex
+            justify="between"
+            onClick={this.addressHandler}
+                >
+                <Flex>
+                <div className="title">配送</div>
+            {address.length > 0 ? (
+                <Flex.Item className="des ellipsis">
+                至{" "}
+                {address[curAddressIndex].address}
+            </Flex.Item>
+            ) : (
+            <Flex.Item className="des ellipsis">
+                新建配送地址
+                </Flex.Item>
+            )}
+        </Flex>
+        <Icon type="right" color="#c9c9c9" />
+            </Flex>
+            </div>
+            <div className="flex-item base-line">
+            <Flex>
+            <div className="title">运费</div>
+            <div className="des">
+            {Base.getNumFormat(freight_fee)}
+            </div>
+            </Flex>
+            </div>
+            <div className="flex-item">
+            <Flex>
+            <div className="title">发票</div>
+            <div className="des">
+            {parseInt(e_invoice, 10) ? "" : "不"}可开电子发票
+        </div>
+        </Flex>
+        </div>
+        </div>
+            {evaluateItems.length > 0 ? (
+                <div
+                className="evaluate-con"
+                onClick={() => Base.push("EvaluateList", { id })}
+            >
+            <Flex justify="between" className="title-con">
+                <div className="title">
+                商品评价({evaluate.total || ""})
+                </div>
+                <Icon type="right" color="#c9c9c9" />
+                </Flex>
+                {evaluateItems}
+            </div>
+            ) : null}
+        <div className="lecturer-store-con">
+            <Flex justify="between" className="lecturer-info">
+            <Flex>
+            <div className="seller-header">
+            <NetImg
+            className="header"
+            src={Base.getImgUrl(header)}
+            />
+            {parseInt(v, 10) ? (
+                <img
+                className="vip"
+                src={icon.vipIcon}
+                alt=""
+                    />
+            ) : null}
+        </div>
+        <div>
+        <div className="name">{nickname}</div>
+            <div className="goods-num">
+            在售商品：<em>{total}</em>个
+        </div>
+        </div>
+        </Flex>
+        <Flex
+            onClick={() =>
+            Base.pushApp("openShopView", seller_uid)
+        }
+        >
+        <div className="right-des">TA的店铺</div>
+            <Icon type="right" color="#c9c9c9" />
+            </Flex>
+            </Flex>
+            {summary ? (
+                <div className="store-des">{summary}</div>
+            ) : null}
+        <Flex className="goods-con">{goodsItems}</Flex>
+            </div>
+            {goodsDetailImgs.length > 0 ? (
+                <div className="image-text-con">
+                <div className="title-con">图文详情</div>
+                {goodsDetailImgs}
+                {/* <div className="bottom-tips">
                                 别再拉了~=￣ω￣=~没有了
                             </div> */}
-                        </div>
-                    ) : null}
-                   
-                    <WhiteSpace size="lg" />
-                    <div className="image-text-con">
-                        <div className="title-con">价格说明</div>
-                        <div
-                            dangerouslySetInnerHTML={{ __html: goods_explain }}
-                        />
-                    </div>
-                    {buy_notice && buy_notice != 'null' && (
-                        <div dangerouslySetInnerHTML={{
-                            __html: buy_notice
-                          }}/>
-                        )
-                    }
-                </div>
-                <Flex className="footer">
-                    <Flex.Item>
-                        <Flex>
-                            <Flex.Item
-                                onClick={() =>
-                                    Base.pushApp("openShopView", seller_uid)
-                                }
-                            >
-                                <img src={icon.storeIcon} alt="" />
-                                <div className="label">店铺</div>
-                            </Flex.Item>
-                            <Flex.Item
-                                onClick={() =>
-                                    Base.pushApp(
-                                        "openChatView",
-                                        JSON.stringify(chatData)
-                                    )
-                                }
-                            >
-                                <img src={icon.chat} alt="" />
-                                <div className="label">客服</div>
-                            </Flex.Item>
-                            <Flex.Item onClick={this.collectHandler}>
-                                <img
-                                    src={
-                                        favorite
-                                            ? icon.collectIcon1
-                                            : icon.collectIcon0
-                                    }
-                                    alt=""
-                                />
-                                <div className="label">收藏</div>
-                            </Flex.Item>
-                        </Flex>
-                    </Flex.Item>
-                    <Flex.Item
-                        onClick={() => this.buyModalHandler(1)}
-                        className="add-shop-cart"
-                    >
-                        加入购物车
-                    </Flex.Item>
-                    <Flex.Item
-                        className="buy-btn"
-                        onClick={() => this.buyModalHandler(2)}
-                    >
-                        立即购买
-                    </Flex.Item>
-                </Flex>
-                {isAddressModal ? (
-                    <div className="modal-address">
-                        <Flex className="title-con" justify="between">
-                            <div>配送至</div>
-                            <img
-                                onClick={this.addressHandler}
-                                src={icon.closeIcon}
-                                alt=""
-                            />
-                        </Flex>
-                        <div className="address-list">{addressItems}</div>
-                    </div>
-                ) : null}
-                {buyModalStatus ? (
-                    <div className="modal-buy">
-                        <Flex
-                            className="info-con"
-                            justify="between"
-                            align="start"
-                        >
-                            <Flex align="start">
-                                <NetImg
-                                    className="goods-img"
-                                    src={Base.getImgUrl(default_image)}
-                                />
-                                <div className="info">
-                                    <div className="price">￥{sale_price}
-                                    
-                                    </div>
-                                    <div className="tips">请选择型号</div>
-                                </div>
-                            </Flex>
-                            <img
-                                className="close-img"
-                                onClick={() => this.buyModalHandler(0)}
-                                src={icon.closeIcon}
-                                alt=""
-                            />
-                        </Flex>
-                        {/* {goodsAttrItems} */}
-                        <AttrSelectGroup
-                            goods_attr={goods_attr}
-                            goodsAttrDic={goodsAttrDic}
-                            ref={e => (this.attrSelectGroup = e)}
-                        />
-                        <Flex className="buy-num-con" justify="between">
-                            <div className="buy-num-title">购买数量</div>
-                            <Stepper
-                                onChange={this.stepperHandler}
-                                showNumber
-                                className="stepper"
-                                min={1}
-                                max={99}
-                                step={1} 
-                                value={selectNum}
-                            />
-                        </Flex>
-                        <Button
-                            className="buy-step-btn"
-                            onClick={this.onNextStep}
-                        >
-                            下一步
-                        </Button>
-                    </div>
-                ) : null}
             </div>
+            ) : null}
+
+        <WhiteSpace size="lg" />
+            <div className="image-text-con">
+            <div className="title-con">价格说明</div>
+            <div
+            dangerouslySetInnerHTML={{ __html: goods_explain }}
+            />
+            </div>
+            {buy_notice && buy_notice != 'null' && (
+            <div dangerouslySetInnerHTML={{
+                __html: buy_notice
+            }}/>
+            )
+            }
+        </div>
+        <Flex className="footer">
+            <Flex.Item>
+            <Flex>
+            <Flex.Item
+            onClick={() =>
+            Base.pushApp("openShopView", seller_uid)
+        }
+        >
+        <img src={icon.storeIcon} alt="" />
+            <div className="label">店铺</div>
+            </Flex.Item>
+            <Flex.Item
+            onClick={() =>
+            Base.pushApp(
+                "openChatView",
+                JSON.stringify(chatData)
+            )
+        }
+        >
+        <img src={icon.chat} alt="" />
+            <div className="label">客服</div>
+            </Flex.Item>
+            <Flex.Item onClick={this.collectHandler}>
+            <img
+            src={
+                favorite
+                        ? icon.collectIcon1
+                    : icon.collectIcon0
+            }
+            alt=""
+                />
+                <div className="label">收藏</div>
+            </Flex.Item>
+            </Flex>
+            </Flex.Item>
+            <Flex.Item
+            onClick={() => this.buyModalHandler(1)}
+            className="add-shop-cart"
+                >
+                加入购物车
+                </Flex.Item>
+                <Flex.Item
+            className="buy-btn"
+            onClick={() => this.buyModalHandler(2)}
+        >
+            立即购买
+            </Flex.Item>
+            </Flex>
+            {isAddressModal ? (
+                <div className="modal-address">
+                <Flex className="title-con" justify="between">
+                <div>配送至</div>
+                <img
+                onClick={this.addressHandler}
+                src={icon.closeIcon}
+                alt=""
+                    />
+                    </Flex>
+                    <div className="address-list">{addressItems}</div>
+                </div>
+            ) : null}
+            {buyModalStatus ? (
+                <div className="modal-buy">
+                <Flex
+                className="info-con"
+                justify="between"
+                align="start"
+                    >
+                    <Flex align="start">
+                <NetImg
+                className="goods-img"
+                src={Base.getImgUrl(default_image)}
+                />
+                <div className="info">
+                <div className="price">￥{sale_price}
+
+            </div>
+            <div className="tips">请选择型号</div>
+                </div>
+                </Flex>
+                <img
+                className="close-img"
+                onClick={() => this.buyModalHandler(0)}
+                src={icon.closeIcon}
+                alt=""
+                    />
+                    </Flex>
+                {/* {goodsAttrItems} */}
+            <AttrSelectGroup
+                goods_attr={goods_attr}
+                goodsAttrDic={goodsAttrDic}
+                ref={e => (this.attrSelectGroup = e)}
+                />
+                <Flex className="buy-num-con" justify="between">
+                <div className="buy-num-title">购买数量</div>
+                <Stepper
+                onChange={this.stepperHandler}
+                showNumber
+                className="stepper"
+                min={1}
+                max={99}
+                step={1}
+                value={selectNum}
+                />
+                </Flex>
+                <Button
+                className="buy-step-btn"
+                onClick={this.onNextStep}
+                    >
+                    下一步
+                    </Button>
+                    </div>
+            ) : null}
+        </div>
         );
     }
 }

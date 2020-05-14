@@ -1,7 +1,7 @@
 import React from "react";
 import { action } from "mobx";
 import { BaseComponent, Base, Global } from "../../common";
-import { Table, Input, Spin, Select, Form, DatePicker, LocaleProvider } from "antd";
+import { Table, Input, Spin, Select, Form, DatePicker, LocaleProvider, Button } from "antd";
 import { OrderDetail } from "../../components/OrderDetail";
 import zh_CN from 'antd/lib/locale-provider/zh_CN';
 import 'moment/locale/zh-cn';
@@ -103,7 +103,6 @@ export default class Distribution extends BaseComponent {
                 render: (text, record) =>
                     this.renderText(text, record, "commission_users")
             },
-            /**
             {
                 title: "下单时间",
                 dataIndex: "created_at",
@@ -111,6 +110,14 @@ export default class Distribution extends BaseComponent {
                 render: (text, record) =>
                     this.renderText(text, record, "created_at")
             },
+            {
+                title: "完成时间",
+                dataIndex: "updated_at",
+                width: 200,
+                render: (text, record) =>
+                    record.status == 0 ? '' : this.renderText(text, record, "updated_at")
+            },
+            /**
             {
                 title: "订单状态",
                 dataIndex: "status",
@@ -141,13 +148,27 @@ export default class Distribution extends BaseComponent {
         return <div>{text}</div>;
     }
     //搜索
-    searchStr = "";
-    dateZoom = "";
+    searchStr = "";//搜索订单号
+    searchUserName = "";//搜索用户名
+    searchProductName = "";//搜索商品名
+    dateZoom = "";//搜索时间段
     @action.bound
-    onSearch(value) {
-        this.current = 1;
-        this.searchStr = value;
-        this.requestData();
+    handleKeyUp(key, event){
+        let value = '';
+        if(event && event.target && event.target.value){
+            value = event.target.value;
+        }
+        switch(key){
+            case 'order_sn':
+                this.searchStr = value;
+                break;
+            case 'user_name':
+                this.searchUserName = value;
+                break;
+            case 'product_name':
+                this.searchProductName = value;
+                break;
+        }
     }
     @action.bound
     onOk(value) {
@@ -177,6 +198,8 @@ export default class Distribution extends BaseComponent {
                 status: this.store.status,
                 type: 2,
                 order_sn: this.searchStr || "",
+                user_name: this.searchUserName ||　"",
+                product_name: this.searchProductName || "",
                 date_zoom: this.dateZoom || "",
                 cur_page: this.current || 1,
                 per_page: Global.PAGE_SIZE
@@ -221,12 +244,9 @@ export default class Distribution extends BaseComponent {
             <Spin ref="spin" wrapperClassName="OrderManager" spinning={false}>
                 <div className="pb10">
                 	<LocaleProvider locale={zh_CN}><RangePicker onChange={this.onChange} onOk={this.onOk}/></LocaleProvider>
-                    <Search
-                        placeholder="订单号"
-                        enterButton
-                        onSearch={this.onSearch}
-                        style={{ width: 160, marginRight: 10 }}
-                    />
+                    <Input type="text" placeholder="订单号" onChange ={event => this.handleKeyUp('order_sn', event)} style={{ width: 160 }}/>
+                    <Input type="text" placeholder="用户名" onChange ={event => this.handleKeyUp('user_name', event)} style={{ width: 160 }}/>
+                    <Input type="text" placeholder="商品名称" onChange ={event => this.handleKeyUp('product_name', event)} style={{ width: 160 }}/>
                     {statusCon.length > 0 ? (
                         <Select
                             onChange={this.onStatusSelect}
@@ -235,6 +255,9 @@ export default class Distribution extends BaseComponent {
                             {statusCon}
                         </Select>
                     ) : null}
+                    <Button type="primary" onClick={() =>
+                        this.requestData()
+                    }>查询</Button>
                 </div>
                 <Table
                     className="mt16"

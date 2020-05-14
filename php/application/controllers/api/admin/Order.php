@@ -19,13 +19,12 @@ class Order extends API_Controller {
     {
         $ret = ['list' => [], 'user' => []];
         $arrStatus = $this->Order_model->status();
-        $where = [];
+        $arrWhere = ["1=1"];
         switch($type){
             case 1://订单列表
-                $where['1>'] = 0;
                 break;
             case 2://分销统计
-                //$where['`status`>'] = 3;
+                $arrWhere[] = "o.`status`>3";
                 //unset($arrStatus[0], $arrStatus[1], $arrStatus[2], $arrStatus[3]);
                 break;
             default:
@@ -33,27 +32,49 @@ class Order extends API_Controller {
         }
         $ret['status'] = $arrStatus;
         $ret['refund_status'] = $this->Order_model->refund_status();
-        
+        $cur_page = $this->input->get_post('cur_page');
+        $per_page = $this->input->get_post('per_page');
         $status = $this->input->get_post('status');
         $order_sn = $this->input->get_post('order_sn');
+        $user_name = $this->input->get_post('user_name');
+        $product_name = $this->input->get_post('product_name');
         $dateZoom = $this->input->get_post('date_zoom');
         if(isset($ret['status'][$status])){
-            $where['status'] = $status;
+            $arrWhere[] = "o.`status`={$status}";
         }        
         if($order_sn){
-            $where['order_sn'] = $order_sn;
+            $arrWhere[] = "o.order_sn='{$order_sn}'";
+        }
+        if($user_name){
+            $arrWhere[] = "u.nickname like '%{$user_name}'";
+        }
+        if($product_name){
+            $sql = "SELECT oi.order_id FROM order_items oi LEFT JOIN `order` o ON oi.order_id = o.id WHERE oi.`name` LIKE '%{$product_name}%'";
+            $cursor = $this->db->query($sql)->result_array();
+            $arrOrderIds = [];
+            foreach ($cursor as $item){
+                $arrOrderIds[] = $item['order_id'];
+            }
+            if( empty($arrOrderIds) ){
+                $arrWhere[] = " false ";
+            }
+            else{
+                $arrWhere[] = " o.id IN(" . implode(',', $arrOrderIds) . ")";
+            }
         }
         if( $dateZoom ){
             list($dateStart, $dateEnd) = explode('/', $dateZoom);
-            $where['created_at>='] = $dateStart . ' 00:00:00';
-            $where['created_at<='] = $dateStart . ' 23:59:59';
+            $arrWhere[] = "o.created_at BETWEEN '" . $dateStart . ' 00:00:00' . "' AND '" . $dateStart . ' 23:59:59' . "'";
         }
-        
-        $order_by = array('id' => 'desc');
-        $ret['count'] = $this->Order_model->count_by($where);
+        $sql = "SELECT COUNT(1) AS cnt FROM `order` o LEFT JOIN `users` u ON o.buyer_uid=u.id WHERE " . implode(' AND ', $arrWhere);
+        $record = $this->db->query($sql)->row_array();
+        $ret['count'] = $record['cnt'];
         if($ret['count']){
-            $this->db->select('id,created_at,updated_at,status,order_sn,seller_uid,total_amount,real_total_amount,buyer_uid, commission, commission_users, point, exp, seller_income, seller_exp, seller_point, freight_fee');
-            $ret['list'] = $this->Order_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
+            $fields = 'o.id, o.created_at, o.updated_at, o.status, o.order_sn, o.seller_uid, o.total_amount, o.real_total_amount,
+            o.buyer_uid, o.commission, o.commission_users, o.point, o.exp, o.seller_income, o.seller_exp, o.seller_point, o.freight_fee';
+            $start = ($cur_page - 1) * $per_page;
+            $sql = "SELECT {$fields} FROM `order` o LEFT JOIN `users` u ON o.buyer_uid=u.id WHERE " . implode(' AND ', $arrWhere) . " ORDER BY o.id DESC LIMIT {$start}, {$per_page}";
+            $ret['list'] = $this->db->query($sql)->result_array();
         
             $a_uid = [];
             foreach($ret['list'] as $item){

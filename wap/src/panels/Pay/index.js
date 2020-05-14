@@ -113,8 +113,6 @@ export default class Pay extends BaseComponent {
                         }
                     };
                     if (type === "balance") {
-                        var msg = JSON.stringify(res);
-                        Toast.show(msg, 6, false);
                         callBack(1);
                     } else {
                         const data = JSON.stringify({
@@ -162,101 +160,104 @@ export default class Pay extends BaseComponent {
         }
     }
     render() {
+        console.log(Base.getPageParams())
         const { pay_sn, order_sn, id, isPretty } = Base.getPageParams();
         const { payTypeList, curIndex, data } = this.store;
         const { real_total_amount, balance, point } = data;
         const payTypes = payTypeList.map((item, index) => {
-            if(index == 3 && !isPretty){
-                return ;
-            }
+//          if(index == 3 && !isPretty){
+//              return ;
+//          }
             const { type } = item;
+            console.log(type,'9996')
             if(type === 'point' && isPretty){
                 return (
                     <Flex
-                        justify="between"
-                        key={type}
-                        onClick={() => this.changeHandler(index)}
-                    >
-                        <Flex.Item>
-                            <span className="pay-gold">积分支付</span>
-                            <span className="account-money">
-                                积分余额：{Base.getNumFormat(point)}
-                            </span>
-                        </Flex.Item>
-                        <Flex.Item>
-                            <Radio checked={curIndex === index} name={type} />
-                        </Flex.Item>
-                    </Flex>
-                );
+                justify="between"
+                key={type}
+                onClick={() => this.changeHandler(index)}
+            >
+            <Flex.Item>
+                <span className="pay-gold">积分支付</span>
+                    <span className="account-money">
+                    积分余额：{Base.getNumFormat(point)}
+            </span>
+                </Flex.Item>
+                <Flex.Item>
+                <Radio checked={curIndex === index} name={type} />
+                </Flex.Item>
+                </Flex>
+            );
             }else  if (type === "balance") {
                 return (
                     <Flex
-                        justify="between"
-                        key={type}
-                        onClick={() => this.changeHandler(index)}
-                    >
-                        <Flex.Item>
-                            <span className="pay-gold">余额支付</span>
-                            <span className="account-money">
-                                账户余额：￥{Base.getNumFormat(balance)}
-                            </span>
-                        </Flex.Item>
-                        <Flex.Item>
-                            <Radio checked={curIndex === index} name={type} />
-                        </Flex.Item>
-                    </Flex>
-                );
+                justify="between"
+                key={type}
+                onClick={() => this.changeHandler(index)}
+            >
+            <Flex.Item>
+                <span className="pay-gold">余额支付</span>
+                    <span className="account-money">
+                    账户余额：￥{Base.getNumFormat(balance)}
+            </span>
+                </Flex.Item>
+                <Flex.Item>
+                <Radio checked={curIndex === index} name={type} />
+                </Flex.Item>
+                </Flex>
+
+            );
             } else {
                 return (
                     <Flex
-                        justify="between"
-                        key={type}
-                        onClick={() => this.changeHandler(index)}
-                    >
-                        <Flex.Item>
-                            <img src={payIconDic[type]} alt="" />
-                        </Flex.Item>
-                        <Flex.Item>
-                            <Radio checked={curIndex === index} name={type} />
-                        </Flex.Item>
-                    </Flex>
-                );
+                justify="between"
+                key={type}
+                onClick={() => this.changeHandler(index)}
+            >
+            <Flex.Item>
+                <img src={payIconDic[type]} alt="" />
+                    </Flex.Item>
+                    <Flex.Item>
+                    <Radio checked={curIndex === index} name={type} />
+                </Flex.Item>
+                </Flex>
+            );
             }
         });
         return (
             <div className="Pay">
-                <NavBar
-                    className="base-line"
-                    mode="light"
-                    icon={<img src={icon.back} alt="" />}
-                    onLeftClick={Base.goBack}
-                >
-                    支付
-                </NavBar>
-                <div className="base-content">
-                    <div className="Pay-box">
-                        <div className="Pay-box-mode">
-                            <h4 className="pay-h4">支付方式</h4>
-                            <div className="pay-check">
-                                {payTypes}
-                                <span className="payMoney">
-                                    <em>支付金额：</em>
-                                    ￥{Base.getNumFormat(real_total_amount)}
-                                </span>
-                            </div>
-                        </div>
-                        <Flex
-                            justify="center"
-                            align="center"
-                            className="Pay-box-opear"
-                        >
-                            <Button onClick={this.payHandler} type="warning">
-                                下一步
-                            </Button>
-                        </Flex>
-                    </div>
-                </div>
+            <NavBar
+        className="base-line"
+        mode="light"
+        icon={<img src={icon.back} alt="" />}
+        onLeftClick={Base.goBack}
+            >
+            支付
+            </NavBar>
+            <div className="base-content">
+            <div className="Pay-box">
+            <div className="Pay-box-mode">
+            <h4 className="pay-h4">支付方式</h4>
+            <div className="pay-check">
+            {payTypes}
+            <span className="payMoney">
+        <em>{+curIndex !== 3 ? '支付金额：' : '积分支付:'}</em>
+        ￥{curIndex !==3? Base.getNumFormat(real_total_amount):'131456'}
+    </span>
+        </div>
+        </div>
+        <Flex
+        justify="center"
+        align="center"
+        className="Pay-box-opear"
+            >
+            <Button onClick={this.payHandler} type="warning">
+            下一步
+            </Button>
+            </Flex>
             </div>
-        );
+            </div>
+            </div>
+    );
     }
 }
