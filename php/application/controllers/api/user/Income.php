@@ -90,7 +90,16 @@ class Income extends API_Controller {
         if(! isset($a_topic[$topic])){
             $this->ajaxReturn([], 1, '收益明细主题类型错误');
         }
-        $ret = $this->Income_model->getIncomeList($topic, $this->user_id, $startDate, $endDate);
+        $cur_page = $this->input->get_post('cur_page');
+        if( empty($cur_page) ){
+            $cur_page = 1;
+        }
+        $per_page = $this->input->get_post('per_page');
+        if( empty($per_page) ){
+            $per_page = 10;
+        }
+        $start = ($cur_page - 1) * $per_page;
+        $ret = $this->Income_model->getIncomeList($topic, $this->user_id, $start, $per_page, $startDate, $endDate);
         $this->ajaxReturn($ret);
     }
 

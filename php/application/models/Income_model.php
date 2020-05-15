@@ -968,7 +968,7 @@ class Income_model extends MY_Model
      * @param $topic
      * @param $userId
      */
-    public function getIncomeList($topic, $userId, $startDate=false, $endDate=false)
+    public function getIncomeList($topic, $userId, $offset=1, $pagesize=10, $startDate=false, $endDate=false)
     {
         $ret = ['total'=>['amount'=>0], 'count'=>0, 'list'=>[]];
         if( empty($userId) ){
@@ -1013,7 +1013,7 @@ class Income_model extends MY_Model
         //$this->db->select($field);
         //$list = $this->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
         $order_by = "id DESC";
-        $list = $this->getIncomes($field, $where, $order_by, $this->per_page, $this->offset);
+        $list = $this->getIncomes($field, $where, $order_by, $offset, $pagesize);
         foreach($list as $key=>$item){
             $arrItems = json_decode($item['item'], TRUE);
             $item['lv_name'] = '';
