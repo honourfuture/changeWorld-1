@@ -169,8 +169,8 @@ class Order extends API_Controller {
         $objPHPExcel->setActiveSheetIndex(0);
         $arrHeaderTitle = [
             ['title'=>'订单编号', 'field'=>'order_sn'],
-            ['title'=>'买家姓名', 'field'=>'buyer_name'],
-            ['title'=>'卖家姓名', 'field'=>'seller_name'],
+            ['title'=>'买家姓名', 'field'=>'buyer_uid'],
+            ['title'=>'卖家姓名', 'field'=>'seller_uid'],
             ['title'=>'支付金额', 'field'=>'real_total_amount'],
             ['title'=>'总金额', 'field'=>'total_amount'],
             ['title'=>'运费', 'field'=>'freight_fee'],
@@ -191,7 +191,15 @@ class Order extends API_Controller {
         foreach ($arrOrders['list'] as $key => $item) {
             foreach ($arrHeaderTitle as $k=>$v) {
                 $cell = chr(ord('A') + $k) . ($key + 2);
-                $value = $item[$v['field']];
+                $value = "";
+                switch($v['field']){
+                    case 'buyer_uid':
+                    case 'seller_uid':
+                        $value = $arrOrders['user'][$item[$v['field']]]['nickname'];
+                        break;
+                    default:
+                        $value = $item[$v['field']];
+                }
                 $objPHPExcel->getActiveSheet()->setCellValue($cell, $value, \PHPExcel_Cell_DataType::TYPE_STRING);//将其设置为文本格式
             }
         }
