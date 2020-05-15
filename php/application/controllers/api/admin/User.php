@@ -319,6 +319,7 @@ class User extends API_Controller {
                     $son = current($arrRelation);
                     $user['son'] = $son['nickname'];
                 }
+                $user['point'] = floor($user['point']);
                 $user['sons'] = array_values($this->Users_model->getSons($user['id']));
                 $user['sons_count'] = count($user['sons']);
                 $ret['list'][] = $user;
