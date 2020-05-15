@@ -632,40 +632,41 @@ class Info extends API_Controller {
     {
         $ret = array('count' => 0, 'list' => array());
         $user = $this->Users_model->get($this->user_id);
-        if($user){
-            $temps = $this->Users_model->under($user['id']);
-            if($temps){
-                $this->db->where_in('id', $temps);
-                $this->load->model('Users_model');
-                $ret['count'] = $this->db->count_all_results($this->Users_model->table(), false);
-                $cur_page = $this->input->get_post('cur_page');
-                if( empty($cur_page) ){
-                    $cur_page = 1;
-                }
-                $per_page = $this->input->get_post('per_page');
-                if( empty($per_page) ){
-                    $per_page = 10;
-                }
-                $start = ($cur_page - 1) * $per_page;
-                $fields = "id, nickname, address, header, v, exp, mobi, pretty_id, pid, created_at, rank_rule_id, bound_at, IF(pid={$this->user_id}, 1, 0) AS is_star";
-                $sql = "SELECT {$fields} FROM `users` WHERE id IN(" . implode(',', $temps) . ") ORDER BY is_star DESC, bound_at DESC LIMIT {$start},{$per_page}";
-                $users = $this->db->query($sql)->result_array();
-                if($users){
-                    $arrFans = [];
-                    foreach($users as $item){
-                        $item['lv'] = $item['rank_rule_id'];
-                        $item['v'] = $item['rank_rule_id'];
-                        $item['date'] = date('Y-m-d', strtotime($item['bound_at']));
-                        $arrFans[] = $item;
-                        //is_star:据此判断是否是一级
-                    }
-                    $ret['list'] = $arrFans;
-                }
-            }else{
-                $ret['list'] = [];
-                $ret['count'] = 0;
-            }
+        if( empty($user) ) {
+            $this->ajaxReturn($ret);
+        }
+        $temps = $this->Users_model->under($user['id']);
+        if( empty($temps) ) {
+            $ret['list'] = [];
+            $ret['count'] = 0;
+            $this->ajaxReturn($ret);
+        }
 
+        $this->db->where_in('id', $temps);
+        $this->load->model('Users_model');
+        $ret['count'] = $this->db->count_all_results($this->Users_model->table(), false);
+        $cur_page = $this->input->get_post('cur_page');
+        if( empty($cur_page) ){
+            $cur_page = 1;
+        }
+        $per_page = $this->input->get_post('per_page');
+        if( empty($per_page) ){
+            $per_page = 10;
+        }
+        $start = ($cur_page - 1) * $per_page;
+        $fields = "id, nickname, address, header, v, exp, mobi, pretty_id, pid, created_at, rank_rule_id, bound_at, IF(pid={$this->user_id}, 1, 0) AS is_star";
+        $sql = "SELECT {$fields} FROM `users` WHERE id IN(" . implode(',', $temps) . ") ORDER BY is_star DESC, bound_at DESC LIMIT {$start},{$per_page}";
+        $users = $this->db->query($sql)->result_array();
+        if($users){
+            $arrFans = [];
+            foreach($users as $item){
+                $item['lv'] = $item['rank_rule_id'];
+                $item['v'] = $item['rank_rule_id'];
+                $item['date'] = date('Y-m-d', strtotime($item['bound_at']));
+                $arrFans[] = $item;
+                //is_star:据此判断是否是一级
+            }
+            $ret['list'] = $arrFans;
         }
         $this->ajaxReturn($ret);
     }
