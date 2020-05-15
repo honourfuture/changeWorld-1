@@ -47,10 +47,37 @@ class Income_model extends MY_Model
     {
         $created_at = empty($created_at) ? date('Y-m-d H:i:s', 0) : $created_at;
         $where['created_at >= '] = $created_at;
-        //$where['created_at <= '] = date('Y-m-d 23:59:59', strtotime("-1 sunday"));
-        $where['created_at <= '] = date('Y-m-d H:i:s', time() - 300);//测试时取到五分钟前的所有收益
+        if( IS_PROD ){
+            $where['created_at <= '] = date('Y-m-d 23:59:59', strtotime("-1 sunday"));
+        }
+        else{
+            $where['created_at <= '] = date('Y-m-d H:i:s', time() - 300);//测试时取到五分钟前的所有收益
+        }
+
         $arrIncomes = $this->sum_income_topic_group($user_id, $type, $where);
         return array_sum( array_values( $arrIncomes ) );
+    }
+
+    /**
+     * 取得用户累计收益
+     * @param $arrUserIds
+     */
+    public function getUserTotalIncome($arrUserIds)
+    {
+        $arrUserIncome = [];
+        if( empty($arrUserIds) ){
+            return $arrUserIncome;
+        }
+        $sql = "SELECT SUM(amount) AS amount, user_id FROM income WHERE user_id IN(". implode(',', $arrUserIds) .") GROUP BY user_id";
+        $cursor = $this->db->query($sql)->result_array();
+        foreach ($cursor as $k=>$v){
+            $arrUserIncome[$v['user_id']] = $v['amount'];
+        }
+        $arrAddon = array_diff($arrUserIds, array_keys($arrUserIncome));
+        foreach ($arrAddon as $k=>$v){
+            $arrUserIncome[$v] = 0.00;
+        }
+        return $arrUserIncome;
     }
 
     /**
@@ -516,14 +543,6 @@ class Income_model extends MY_Model
         $platformPrice = round($orderTotalAmount * $configCommissioin['value'] / 100, 2);
         //商家实际收入
         $sellerIncome = $orderInfo['real_total_amount'] - $platformPrice;
-        if($platformPrice > 0){
-            if($this->Config_model->get_by(['name' => 'commission'])){
-                $sql = "UPDATE {$this->Config_model->table()} SET `value` = `value` + {$platformPrice} WHERE `name`='commission';";
-                $this->db->query($sql);
-            }else{
-                $this->Config_model->insert(['name' => 'commission', 'value' => $platformPrice, 'remark' => '平台提成']);
-            }
-        }
         //每收益的积分/经验
         $ruleIncomeToPoint = $this->db->query("SELECT * FROM `points_rule` WHERE `name`='per_income'")->row_array();
         $ruleIncomeToExp = $this->db->query("SELECT * FROM `grade_rule` WHERE `name`='per_income'")->row_array();
@@ -574,6 +593,7 @@ class Income_model extends MY_Model
             $sumPrice = array_sum($arrPriceList);
             //当前商品所支付的平台佣金
             $_platformPrice = $platformPrice * ($item['goods_price'] * $item['num'] / ($orderInfo['real_total_amount']-$freight_fee));
+            //平台收入
             $this->setPlatformIncome($orderInfo, $item, $_platformPrice);
             $maxPrice = $item['rebate_percent'] / 100 * $item['goods_price'] * $item['num'] - $_platformPrice;//扣除服务费后可分佣金额
             if($sumPrice > $maxPrice){//超过可分佣最大值，除自购者外，其他人重新分析
@@ -658,6 +678,16 @@ class Income_model extends MY_Model
      */
     public function setPlatformIncome($orderInfo, $orderItemInfo, $platformIncome)
     {
+        if( empty($platformIncome) ){
+            return false;
+        }
+        $this->load->model('Config_model');
+        if($this->Config_model->get_by(['name' => 'commission'])){
+            $sql = "UPDATE {$this->Config_model->table()} SET `value` = `value` + {$platformIncome} WHERE `name`='commission';";
+            $this->db->query($sql);
+        }else{
+            $this->Config_model->insert(['name' => 'commission', 'value' => $platformIncome, 'remark' => '平台提成']);
+        }
         $item = [
             'amount' => $platformIncome,
             'from_id' => $orderInfo['buyer_uid'],
@@ -931,5 +961,15 @@ class Income_model extends MY_Model
 
         }
         return $ret;
+    }
+
+    /**
+     * 收益明细
+     * @param $topic
+     * @param $userId
+     */
+    public function getIncomeList($topic, $userId)
+    {
+
     }
 }

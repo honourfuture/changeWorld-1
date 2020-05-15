@@ -189,6 +189,17 @@ export default class Distribution extends BaseComponent {
     }
     current = 1;
     @action.bound
+    exportExcel(){
+        let url = Global.API_URL;
+        let Aparam = [];
+        Aparam[0] = 'status=' + this.store.status;
+        Aparam[1] = 'order_sn=' + (this.searchStr || "");
+        Aparam[2] = 'user_name=' + (this.searchUserName || "");
+        Aparam[3] = 'product_name=' + (this.searchProductName || "");
+        Aparam[4] = 'date_zoom=' + (this.dateZoom || "");
+        window.open(url + "/admin/order/export?" + Aparam.join("&"));
+    }
+    @action.bound
     requestData() {
         Base.GET(
             {
@@ -258,6 +269,9 @@ export default class Distribution extends BaseComponent {
                     <Button type="primary" onClick={() =>
                         this.requestData()
                     }>查询</Button>
+                    <Button type="primary" onClick={() =>
+                        this.exportExcel()
+                    }>导出</Button>
                 </div>
                 <Table
                     className="mt16"

@@ -9,18 +9,21 @@ import {
     Button,
     Spin,
     message,
-    Select
+    Select, LocaleProvider, DatePicker
 } from "antd";
 import { remove } from "lodash";
 import { EditorModal } from "../../components/EditorModal";
 import "./WithdrawalMananger.less";
+import zh_CN from "antd/lib/locale-provider/zh_CN";
 const Search = Input.Search;
 const Option = Select.Option;
+const { RangePicker } = DatePicker;
 
 export default class WithdrawalMananger extends BaseComponent {
     store = {
         list: [],
-        status: -1
+        status: -1,
+        withdrawChecked: 0.00
     };
     constructor(props) {
         super(props);
@@ -126,11 +129,11 @@ export default class WithdrawalMananger extends BaseComponent {
     }
     //搜索
     searchStr = "";
+    dateZoom = "";//搜索时间段
     @action.bound
     onSearch(value) {
         this.current = 1;
         this.searchStr = value;
-        this.requestData();
     }
     //设置内容
     @action.bound
@@ -157,10 +160,13 @@ export default class WithdrawalMananger extends BaseComponent {
         );
     }
     @action.bound
+    onChange(value, dateString) {
+        this.dateZoom = dateString.join('/');
+    }
+    @action.bound
     onStatusSelect(e) {
         this.current = 1;
         this.store.status = e;
-        this.requestData();
     }
     @action.bound
     onTableHandler({ current, pageSize }) {
@@ -176,16 +182,18 @@ export default class WithdrawalMananger extends BaseComponent {
                 op: "record",
                 mod: "admin",
                 keyword: this.searchStr || "",
+                date_zoom: this.dateZoom || "",
                 status: this.store.status,
                 cur_page: this.current || 1,
                 per_page: Global.PAGE_SIZE
             },
             res => {
-                const { list, count, user, status } = res.data;
+                const { list, count, user, status, withdrawChecked } = res.data;
                 this.status = status;
                 this.user = user;
                 this.store.list = list;
                 this.store.total = count;
+                this.store.withdrawChecked = withdrawChecked;
             },
             this
         );
@@ -194,7 +202,7 @@ export default class WithdrawalMananger extends BaseComponent {
         this.requestData();
     }
     render() {
-        let { list, total } = this.store;
+        let { list, total, withdrawChecked } = this.store;
         const showList = list.filter(item => {
             return parseInt(item.deleted, 10) === 0;
         });
@@ -222,20 +230,23 @@ export default class WithdrawalMananger extends BaseComponent {
                 spinning={false}
             >
                 <div className="pb10">
-                    <Search
-                        placeholder="搜索提现人/手机号"
-                        enterButton
-                        onSearch={this.onSearch}
-                        style={{ width: 200, marginRight: 10 }}
-                    />
+                    <LocaleProvider locale={zh_CN}><RangePicker onChange={this.onChange} onOk={this.onOk}/></LocaleProvider>
+                    <Input type="text" placeholder="搜索提现人/手机号" onChange ={event => this.onSearch} style={{ width: 160 }}/>
                     {statusCon.length > 0 ? (
                         <Select
-                            onChange={this.onStatusSelect}
-                            defaultValue={-1}
-                        >
-                            {statusCon}
-                        </Select>
+                        onChange={this.onStatusSelect}
+                        defaultValue={-1}
+                    >
+                        {statusCon}
+                    </Select>
                     ) : null}
+                    <Button type="primary" onClick={() =>
+                        this.requestData()
+                    }>查询</Button>
+                </div>
+
+                <div style={{width:200}}>
+                    合计已付汇款：{withdrawChecked}
                 </div>
                 <Table
                     size="small"

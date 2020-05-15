@@ -21,19 +21,26 @@ class Users_bind_model extends MY_Model
 
     public function account_type()
     {
-    	return [
-    		'手机',
-    		'微信',
-    		'QQ',
-    		'微博'
-    	];
+        return [
+            '手机',//0
+            '微信',//1
+            'QQ',//2
+            '微博'//3
+        ];
     }
 
     public function get_user_bind_list($user_id)
     {
-    	$this->db->select('GROUP_CONCAT(account_type) s_account_type');
-    	$this->db->group_by('user_id');
-    	$result = $this->get_by('user_id', $user_id);
-    	return $result ? explode(',', $result['s_account_type']) : [];
+        $arrTypes = [];
+        $this->db->select('account_type,unique_id,other');
+        $records = $this->get_many_by('user_id', $user_id);
+        foreach($records as $item){
+            if( empty($item['unique_id']) ){
+                continue;
+            }
+            $arrTypes[] = $item['account_type'];
+        }
+        $arrTypes = array_unique($arrTypes);
+        return $arrTypes;
     }
 }

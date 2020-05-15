@@ -287,7 +287,6 @@ class User extends API_Controller {
             $where = [];
             // $where['1 >'] = 0;
             $where['robot'] = 0;
-
             if( !empty($keyword) ){
                 $this->db->group_start();
                 $this->db->like('id', $keyword);
@@ -305,7 +304,9 @@ class User extends API_Controller {
             $this->db->select('id, pid, created_at,updated_at,mobi,account,header,nickname,v,anchor,seller,exp,reg_ip,balance,point,gold,headhunter,reward_point,enable');
             $this->search();
             $list = $this->Users_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
+            $arrUserIds = [];
             foreach($list as $k=>$user){
+                $arrUserIds[] = $user['id'];
                 //当前用户的直属上/下级用户
                 $user['parent'] = '-';
                 $user['son'] = '-';
@@ -322,11 +323,14 @@ class User extends API_Controller {
                 $user['sons_count'] = count($user['sons']);
                 $ret['list'][] = $user;
             }
+            $this->load->model('Income_model');
+            $ret['incomes'] = $this->Income_model->getUserTotalIncome($arrUserIds);
             $ret['status'] = 0;
             $ret['message'] = 'success';
         }
         catch (\Exception $e){
-            $ret['list'] = '';
+            $ret['list'] = [];
+            $ret['incomes'] = [];
             $ret['status'] = $e->getCode();
             $ret['message'] = $e->getMessage();
         }        

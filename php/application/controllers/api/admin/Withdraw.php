@@ -88,7 +88,7 @@ class Withdraw extends API_Controller {
 				$ret['user'] = $this->Users_model->get_many_user($a_uid);
 			}
 		}
-
+        $ret['withdrawChecked'] = 123456;
 		$this->ajaxReturn($ret);
 	}
 

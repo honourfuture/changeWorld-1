@@ -15,7 +15,7 @@ class Order extends API_Controller {
         $this->load->model('Order_model');
     }
 
-    private function _getOrders($type=1)
+    private function _getOrders($type=1, $export=false)
     {
         $ret = ['list' => [], 'user' => []];
         $arrStatus = $this->Order_model->status();
@@ -33,7 +33,13 @@ class Order extends API_Controller {
         $ret['status'] = $arrStatus;
         $ret['refund_status'] = $this->Order_model->refund_status();
         $cur_page = $this->input->get_post('cur_page');
+        if( empty($cur_page) ){
+            $cur_page = 1;
+        }
         $per_page = $this->input->get_post('per_page');
+        if( empty($per_page) ){
+            $per_page = 10;
+        }
         $status = $this->input->get_post('status');
         $order_sn = $this->input->get_post('order_sn');
         $user_name = $this->input->get_post('user_name');
@@ -73,7 +79,10 @@ class Order extends API_Controller {
             $fields = 'o.id, o.created_at, o.updated_at, o.status, o.order_sn, o.seller_uid, o.total_amount, o.real_total_amount,
             o.buyer_uid, o.commission, o.commission_users, o.point, o.exp, o.seller_income, o.seller_exp, o.seller_point, o.freight_fee';
             $start = ($cur_page - 1) * $per_page;
-            $sql = "SELECT {$fields} FROM `order` o LEFT JOIN `users` u ON o.buyer_uid=u.id WHERE " . implode(' AND ', $arrWhere) . " ORDER BY o.id DESC LIMIT {$start}, {$per_page}";
+            $sql = "SELECT {$fields} FROM `order` o LEFT JOIN `users` u ON o.buyer_uid=u.id WHERE " . implode(' AND ', $arrWhere) . " ORDER BY o.id DESC";
+            if( !$export ){
+                $sql .= " LIMIT {$start}, {$per_page}";
+            }
             $ret['list'] = $this->db->query($sql)->result_array();
         
             $a_uid = [];
@@ -89,7 +98,9 @@ class Order extends API_Controller {
                 $ret['user'][$item['id']] = $item;
             }
         }
-        
+        if( $export ){
+            return $ret;
+        }
         $this->ajaxReturn($ret);
     }
     
@@ -131,6 +142,72 @@ class Order extends API_Controller {
             $type = 1;
         }
         $this->_getOrders($type);
+    }
+
+    /**
+     * 订单数据导出
+     */
+    public function export()
+    {
+        $type = $this->input->get_post('type');
+        if(empty($type)){
+            $type = 1;
+        }
+        $arrOrders = $this->_getOrders($type, true);
+        $this->load->library('PHPExcel');
+        $this->load->library('PHPExcel/IOFactory');
+        $objPHPExcel = new PHPExcel();
+        // 以下内容是excel文件的信息描述信息
+        $objPHPExcel->getProperties()->setTitle('数据导出-' . date('YmdHi'));
+        $objPHPExcel->getProperties()->setDescription("none");
+        $objPHPExcel->getProperties()->setCreator(''); //设置创建者
+        $objPHPExcel->getProperties()->setLastModifiedBy(''); //设置修改者
+        $objPHPExcel->getProperties()->setSubject(''); //设置主题
+        $objPHPExcel->getProperties()->setDescription(''); //设置描述
+        $objPHPExcel->getProperties()->setKeywords('');//设置关键词
+        $objPHPExcel->getProperties()->setCategory('');//设置类型
+        $objPHPExcel->setActiveSheetIndex(0);
+        $arrHeaderTitle = [
+            ['title'=>'订单编号', 'field'=>'order_sn'],
+            ['title'=>'买家姓名', 'field'=>'buyer_uid'],
+            ['title'=>'卖家姓名', 'field'=>'seller_uid'],
+            ['title'=>'支付金额', 'field'=>'real_total_amount'],
+            ['title'=>'总金额', 'field'=>'total_amount'],
+            ['title'=>'运费', 'field'=>'freight_fee'],
+            ['title'=>'商家收益', 'field'=>'seller_income'],
+            ['title'=>'手续费', 'field'=>'commission'],
+            ['title'=>'买家所得积分', 'field'=>'point'],
+            ['title'=>'买家所得经验', 'field'=>'exp'],
+            ['title'=>'用户返佣合计', 'field'=>'commission_users'],
+            ['title'=>'下单时间', 'field'=>'created_at'],
+            ['title'=>'完成时间', 'field'=>'updated_at']
+        ];
+        //处理表头
+        foreach ($arrHeaderTitle as $k=>$item){
+            $cell = chr(ord('A') + $k) . "1";
+            $objPHPExcel->getActiveSheet()->setCellValue($cell, $item['title']);
+        }
+        //处理表数据（第n(n>=2, n∈N*)行数据）
+        foreach ($arrOrders['list'] as $key => $item) {
+            foreach ($arrHeaderTitle as $k=>$v) {
+                $cell = chr(ord('A') + $k) . ($key + 2);
+                $value = "";
+                switch($v['field']){
+                    case 'buyer_uid':
+                    case 'seller_uid':
+                        $value = $arrOrders['user'][$item[$v['field']]]['nickname'];
+                        break;
+                    default:
+                        $value = $item[$v['field']];
+                }
+                $objPHPExcel->getActiveSheet()->setCellValue($cell, $value, \PHPExcel_Cell_DataType::TYPE_STRING);//将其设置为文本格式
+            }
+        }
+        $objWriter = IOFactory::createWriter($objPHPExcel, 'Excel5');
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="Products_'.date('dMy').'.xls"');
+        header('Cache-Control: max-age=0');
+        $objWriter->save('php://output');
     }
 
     /**

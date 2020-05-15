@@ -33,7 +33,7 @@ export default class TeamUsers extends BaseComponent {
         super(props);
         this.columns = [
             {
-                title: "id",
+                title: "用户ID",
                 dataIndex: "id",
                 width: 150,
                 render: (text, record) => this.renderText(text, record, "id")
@@ -93,6 +93,15 @@ export default class TeamUsers extends BaseComponent {
                 render: (text, record) => this.renderText(text, record, "sons_count")
             },
             {
+                title: "累计收益",
+                width: 100,
+                render: (text, record) =>
+                    this.renderText(
+                        this.store.incomes[record.id],
+                        record
+                    )
+            },
+            {
                 title: "注册时间",
                 dataIndex: "created_at",
                 width: 180,
@@ -105,13 +114,10 @@ export default class TeamUsers extends BaseComponent {
                 // fixed: "right",
                 render: (text, record) => {
                     return (
-                        <a
-                            onClick={() =>
-                                this.onRead(record)
-                            }
-                        >
-                            查看成员
-                        </a>
+                        <span>
+                        <a onClick={() => this.onRead(record) }>查看成员</a>&nbsp;
+                        <a onClick={() => this.onIncome(record) }>收益明细</a>
+                        </span>
                     );
                 }
             }
@@ -135,6 +141,11 @@ export default class TeamUsers extends BaseComponent {
         this.current = 1;
         this.searchStr = value;
         this.requestData();
+    }
+    //明细
+    @action.bound
+    onIncome(record){
+
     }
     //查看
     @action.bound
@@ -160,9 +171,10 @@ export default class TeamUsers extends BaseComponent {
                 per_page: Global.PAGE_SIZE
             },
             res => {
-                const { list, count, anchor_status, seller_status } = res.data;
+                const { list, incomes, count, anchor_status, seller_status } = res.data;
                 this.store.list = list;
                 this.store.total = count;
+                this.store.incomes = incomes;
                 this.cacheData = list.map(item => ({ ...item }));
                 this.anchor_status = anchor_status;
                 this.seller_status = seller_status;
@@ -189,7 +201,7 @@ export default class TeamUsers extends BaseComponent {
             <Spin ref="spin" wrapperClassName="TeamUsers" spinning={false}>
                 <div className="pb10">
                     <Search
-                        placeholder="搜索昵称/手机号"
+                        placeholder="搜索用户ID/昵称/手机号"
                         enterButton
                         onSearch={this.onSearch}
                         style={{ width: 200, marginLeft: 10 }}
