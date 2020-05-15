@@ -282,14 +282,21 @@ class User extends API_Controller {
     {
         $ret = ['list' => [], 'status'=>-100, 'message'=>'未知错误'];
         
-        $user_id = $this->input->get_post('user_id');
-        $mobile = $this->input->get_post('mobile');
+        $keyword = $this->input->get_post('keyword');
         try{
             $where = [];
             // $where['1 >'] = 0;
             $where['robot'] = 0;
-    
+
+            if( !empty($keyword) ){
+                $this->db->group_start();
+                $this->db->like('id', $keyword);
+                $this->db->or_like('nickname', $keyword);
+                $this->db->or_like('mobi', $keyword);
+                $this->db->group_end();
+            }
             $order_by = array('id' => 'desc');
+
             $this->search();
             $ret['count'] = $this->Users_model->count_by($where);
             if( empty($ret['count']) ){
