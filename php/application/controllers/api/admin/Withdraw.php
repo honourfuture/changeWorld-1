@@ -69,26 +69,53 @@ class Withdraw extends API_Controller {
 	 */
 	public function record()
 	{
-		$ret = array('count' => 0, 'list' => array());
+		$ret = array('count' => 0, 'list' => array(), 'withdrawChecked'=>0);
 
 		$ret['status'] = $this->Withdraw_model->status();
 
-		$order_by = array('id' => 'desc');
-		$this->search();
-		$ret['count'] = $this->Withdraw_model->count_all();
-		if($ret['count']){
-			$this->search();
-			if($list = $this->Withdraw_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_all()){
-				$ret['list'] = $list;
-				$a_uid = [];
-				foreach($list as $item){
-					$a_uid[] = $item['user_id'];
-				}
-				$this->load->model('Users_model');
-				$ret['user'] = $this->Users_model->get_many_user($a_uid);
-			}
-		}
-        $ret['withdrawChecked'] = 123456;
+		$arrWhere = ["bank_id>0"];
+        $dateZoom = $this->input->get_post('date_zoom');
+        if( $dateZoom ){
+            list($dateStart, $dateEnd) = explode('/', $dateZoom);
+            $arrWhere[] = "updated_at BETWEEN '" . $dateStart . ' 00:00:00' . "' AND '" . $dateStart . ' 23:59:59' . "'";
+        }
+        $keyword = $this->input->get_post('keyword');
+        if( !empty($keyword) ){
+            $arrWhere[] = "(user_name LIKE '%{$keyword}%' OR mobi LIKE '%{$keyword}%')";
+        }
+        $status = $this->input->get_post('status');
+        if($status > -1){
+            $arrWhere[] = "`status`={$status}";
+        }
+
+        $sql = "SELECT COUNT(1) AS cnt FROM withdraw WHERE " . implode(' AND ', $arrWhere);
+        $record = $this->db->query($sql)->row_array();
+		$ret['count'] = $record['cnt'];
+		if( empty($ret['count']) ){
+            $this->ajaxReturn($ret);
+        }
+
+        $cur_page = $this->input->get_post('cur_page');
+        if( empty($cur_page) ){
+            $cur_page = 1;
+        }
+        $per_page = $this->input->get_post('per_page');
+        if( empty($per_page) ){
+            $per_page = 10;
+        }
+        $start = ($cur_page - 1) * $per_page;
+        $sql = "SELECT * FROM withdraw WHERE " . implode(' AND ', $arrWhere) . " ORDER BY id DESC LIMIT {$start}, {$per_page}";
+        $records = $this->db->query($sql)->result_array();
+        $ret['list'] = $records;
+        $a_uid = [];
+        foreach($records as $item){
+            $a_uid[] = $item['user_id'];
+        }
+        $this->load->model('Users_model');
+        $ret['user'] = $this->Users_model->get_many_user($a_uid);
+        $sql = "SELECT SUM(amount) AS withdrawChecked FROM withdraw WHERE " . implode(' AND ', $arrWhere);
+        $record = $this->db->query($sql)->row_array();
+        $ret['withdrawChecked'] = round($record['withdrawChecked'], 2);
 		$this->ajaxReturn($ret);
 	}
 
