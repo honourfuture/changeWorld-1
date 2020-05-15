@@ -288,6 +288,12 @@ class User extends API_Controller {
             $where = [];
             // $where['1 >'] = 0;
             $where['robot'] = 0;
+            if( $user_id ){
+                //$where['user_id'] = $user_id;
+            }
+            if( $mobile ){
+                //$where['mobi'] = $mobile;
+            }
     
             $order_by = array('id' => 'desc');
             $this->search();
