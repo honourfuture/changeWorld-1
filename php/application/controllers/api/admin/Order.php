@@ -80,7 +80,7 @@ class Order extends API_Controller {
             o.buyer_uid, o.commission, o.commission_users, o.point, o.exp, o.seller_income, o.seller_exp, o.seller_point, o.freight_fee';
             $start = ($cur_page - 1) * $per_page;
             $sql = "SELECT {$fields} FROM `order` o LEFT JOIN `users` u ON o.buyer_uid=u.id WHERE " . implode(' AND ', $arrWhere) . " ORDER BY o.id DESC";
-            if( $export ){
+            if( !$export ){
                 $sql .= " LIMIT {$start}, {$per_page}";
             }
             $ret['list'] = $this->db->query($sql)->result_array();
@@ -157,7 +157,7 @@ class Order extends API_Controller {
         $this->load->library('PHPExcel');
         $this->load->library('PHPExcel/IOFactory');
         $objPHPExcel = new PHPExcel();
-        $objPHPExcel->getProperties()->setTitle(date('导出-YmdHi'))->setDescription("none");
+        $objPHPExcel->getProperties()->setTitle('数据导出-' . date('YmdHi'))->setDescription("none");
         // 以下内容是excel文件的信息描述信息
         $objPHPExcel->getProperties()->setCreator(''); //设置创建者
         $objPHPExcel->getProperties()->setLastModifiedBy(''); //设置修改者
