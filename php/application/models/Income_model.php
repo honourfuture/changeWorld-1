@@ -1013,7 +1013,7 @@ class Income_model extends MY_Model
         //$this->db->select($field);
         //$list = $this->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
         $order_by = "id DESC";
-        $list = $this->getIncomes($field, $where, $order_by, $offset, $pagesize);
+        $list = $this->getIncomes($field, $where, $order_by, $pagesize, $offset);
         foreach($list as $key=>$item){
             $arrItems = json_decode($item['item'], TRUE);
             $item['lv_name'] = '';

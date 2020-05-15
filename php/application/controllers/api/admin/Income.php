@@ -87,7 +87,7 @@ class Income extends API_Controller {
         $endDate = $this->input->get_post('endDate');
         $this->load->model('Income_model');
         $a_topic = $this->Income_model->topic();
-        if(! isset($a_topic[$topic])){
+        if( !isset($a_topic[$topic]) ){
             $this->ajaxReturn([], 1, '收益明细主题类型错误');
         }
         $cur_page = $this->input->get_post('cur_page');
