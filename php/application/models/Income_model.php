@@ -516,14 +516,6 @@ class Income_model extends MY_Model
         $platformPrice = round($orderTotalAmount * $configCommissioin['value'] / 100, 2);
         //商家实际收入
         $sellerIncome = $orderInfo['real_total_amount'] - $platformPrice;
-        if($platformPrice > 0){
-            if($this->Config_model->get_by(['name' => 'commission'])){
-                $sql = "UPDATE {$this->Config_model->table()} SET `value` = `value` + {$platformPrice} WHERE `name`='commission';";
-                $this->db->query($sql);
-            }else{
-                $this->Config_model->insert(['name' => 'commission', 'value' => $platformPrice, 'remark' => '平台提成']);
-            }
-        }
         //每收益的积分/经验
         $ruleIncomeToPoint = $this->db->query("SELECT * FROM `points_rule` WHERE `name`='per_income'")->row_array();
         $ruleIncomeToExp = $this->db->query("SELECT * FROM `grade_rule` WHERE `name`='per_income'")->row_array();
@@ -574,6 +566,7 @@ class Income_model extends MY_Model
             $sumPrice = array_sum($arrPriceList);
             //当前商品所支付的平台佣金
             $_platformPrice = $platformPrice * ($item['goods_price'] * $item['num'] / ($orderInfo['real_total_amount']-$freight_fee));
+            //平台收入
             $this->setPlatformIncome($orderInfo, $item, $_platformPrice);
             $maxPrice = $item['rebate_percent'] / 100 * $item['goods_price'] * $item['num'] - $_platformPrice;//扣除服务费后可分佣金额
             if($sumPrice > $maxPrice){//超过可分佣最大值，除自购者外，其他人重新分析
@@ -658,6 +651,16 @@ class Income_model extends MY_Model
      */
     public function setPlatformIncome($orderInfo, $orderItemInfo, $platformIncome)
     {
+        if( empty($platformIncome) ){
+            return false;
+        }
+        $this->load->model('Config_model');
+        if($this->Config_model->get_by(['name' => 'commission'])){
+            $sql = "UPDATE {$this->Config_model->table()} SET `value` = `value` + {$platformIncome} WHERE `name`='commission';";
+            $this->db->query($sql);
+        }else{
+            $this->Config_model->insert(['name' => 'commission', 'value' => $platformIncome, 'remark' => '平台提成']);
+        }
         $item = [
             'amount' => $platformIncome,
             'from_id' => $orderInfo['buyer_uid'],
