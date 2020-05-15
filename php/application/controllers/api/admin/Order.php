@@ -153,11 +153,53 @@ class Order extends API_Controller {
         if(empty($type)){
             $type = 1;
         }
-        $arrOrders = $this->_getOrders($type);
+        $arrOrders = $this->_getOrders($type, true);
         $this->load->library('PHPExcel');
         $this->load->library('PHPExcel/IOFactory');
         $objPHPExcel = new PHPExcel();
-        var_dump($objPHPExcel);
+        $objPHPExcel->getProperties()->setTitle(date('导出-YmdHi'))->setDescription("none");
+        // 以下内容是excel文件的信息描述信息
+        $objPHPExcel->getProperties()->setCreator(''); //设置创建者
+        $objPHPExcel->getProperties()->setLastModifiedBy(''); //设置修改者
+        $objPHPExcel->getProperties()->setTitle(''); //设置标题
+        $objPHPExcel->getProperties()->setSubject(''); //设置主题
+        $objPHPExcel->getProperties()->setDescription(''); //设置描述
+        $objPHPExcel->getProperties()->setKeywords('');//设置关键词
+        $objPHPExcel->getProperties()->setCategory('');//设置类型
+        $objPHPExcel->setActiveSheetIndex(0);
+        $arrHeaderTitle = [
+            ['title'=>'订单编号', 'field'=>'order_sn'],
+            ['title'=>'买家姓名', 'field'=>'buyer_name'],
+            ['title'=>'卖家姓名', 'field'=>'seller_name'],
+            ['title'=>'支付金额', 'field'=>'real_total_amount'],
+            ['title'=>'总金额', 'field'=>'total_amount'],
+            ['title'=>'运费', 'field'=>'freight_fee'],
+            ['title'=>'商家收益', 'field'=>'seller_income'],
+            ['title'=>'手续费', 'field'=>'commission'],
+            ['title'=>'买家所得积分', 'field'=>'point'],
+            ['title'=>'买家所得经验', 'field'=>'exp'],
+            ['title'=>'用户返佣合计', 'field'=>'commission_users'],
+            ['title'=>'下单时间', 'field'=>'created_at'],
+            ['title'=>'完成时间', 'field'=>'updated_at']
+        ];
+        //处理表头
+        foreach ($arrHeaderTitle as $k=>$item){
+            $cell = chr(ord('A') + $k) . "1";
+            $objPHPExcel->getActiveSheet()->setCellValue($cell, $item['title']);
+        }
+        //处理表数据（第n(n>=2, n∈N*)行数据）
+        foreach ($arrOrders['list'] as $key => $item) {
+            foreach ($arrHeaderTitle as $k=>$v) {
+                $cell = chr(ord('A') + $k) . ($key + 2);
+                $value = $item[$v['field']];
+                $objPHPExcel->getActiveSheet()->setCellValue($cell, $value, \PHPExcel_Cell_DataType::TYPE_STRING);//将其设置为文本格式
+            }
+        }
+        $objWriter = IOFactory::createWriter($objPHPExcel, 'Excel5');
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="Products_'.date('dMy').'.xls"');
+        header('Cache-Control: max-age=0');
+        $objWriter->save('php://output');
     }
 
     /**
