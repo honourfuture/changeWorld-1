@@ -134,6 +134,22 @@ class Order extends API_Controller {
     }
 
     /**
+     * 订单数据导出
+     */
+    public function export()
+    {
+        $type = $this->input->get_post('type');
+        if(empty($type)){
+            $type = 1;
+        }
+        $arrOrders = $this->_getOrders($type);
+        $this->load->library('PHPExcel');
+        $this->load->library('PHPExcel/IOFactory');
+        $objPHPExcel = new PHPExcel();
+        var_dump($objPHPExcel);
+    }
+
+    /**
      * @api {get} /api/admin/order/view 订单管理-详情
      * @apiVersion 1.0.0
      * @apiName order_view
