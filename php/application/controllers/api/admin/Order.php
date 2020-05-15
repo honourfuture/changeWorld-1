@@ -157,11 +157,11 @@ class Order extends API_Controller {
         $this->load->library('PHPExcel');
         $this->load->library('PHPExcel/IOFactory');
         $objPHPExcel = new PHPExcel();
-        $objPHPExcel->getProperties()->setTitle('数据导出-' . date('YmdHi'))->setDescription("none");
         // 以下内容是excel文件的信息描述信息
+        $objPHPExcel->getProperties()->setTitle('数据导出-' . date('YmdHi'));
+        $objPHPExcel->getProperties()->setDescription("none");
         $objPHPExcel->getProperties()->setCreator(''); //设置创建者
         $objPHPExcel->getProperties()->setLastModifiedBy(''); //设置修改者
-        $objPHPExcel->getProperties()->setTitle(''); //设置标题
         $objPHPExcel->getProperties()->setSubject(''); //设置主题
         $objPHPExcel->getProperties()->setDescription(''); //设置描述
         $objPHPExcel->getProperties()->setKeywords('');//设置关键词
