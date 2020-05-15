@@ -114,7 +114,7 @@ class Withdraw extends API_Controller {
         $this->load->model('Users_model');
         $ret['user'] = $this->Users_model->get_many_user($a_uid);
         unset($arrWhere['status']);
-        $arrWhere['status'] = "`status`=1 "
+        $arrWhere['status'] = "`status`=1 ";
         $sql = "SELECT SUM(amount) AS withdrawChecked FROM withdraw WHERE " . implode(' AND ', array_values($arrWhere));
         $record = $this->db->query($sql)->row_array();
         $ret['withdrawChecked'] = round($record['withdrawChecked'], 2);
