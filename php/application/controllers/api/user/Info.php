@@ -190,7 +190,7 @@ class Info extends API_Controller {
 
         $a_uid = $this->input->get_post('invite_code');
         if($a_uid){
-            $this->db->select('id,nickname,header,summary,exp,pretty_id,address,created_at,pid,mobi,invite_code');
+            $this->db->select('id, nickname, header, summary, exp, pretty_id, address, created_at, pid, mobi, invite_code, rank_rule_id AS lv');
             $item = $this->Users_model->get_by(array('invite_code'=>$a_uid));//邀请用户
             $user = $this->Users_model->get_by(['id' => $this->user_id]);//当前用户
             if( $user['id'] == $item['id'] && $user['mobi'] == SUPER_USER_MOBILE ){
@@ -207,13 +207,15 @@ class Info extends API_Controller {
             else{
                 $this->ajaxReturn([], 3, '该用户未绑定上级，无法绑定');
             }
-
+            $ret[] = $item;
+            /**
             if($item){
                 $this->load->model('Grade_model');
                 $grade = $this->Grade_model->exp_to_grade($item['exp']);
                 $item['lv'] = $grade['grade_name'];
                 $ret[] = $item;
             }
+            */
         }else{
             $this->ajaxReturn([], 1, '邀请码不能为空');
         }
@@ -562,7 +564,7 @@ class Info extends API_Controller {
                 if(empty($temp_user)){
                     $this->ajaxReturn([], 1, '邀请人信息不存在');
                 }
-                $update = array('pid' => $temp_user['id']);
+                $update = array('pid' => $temp_user['id'], 'bound_at'=>date('Y-m-d H:i:s'));
                 break;
             default :
                 $this->ajaxReturn([], 1, '未知操作');
@@ -636,19 +638,28 @@ class Info extends API_Controller {
                 $this->db->where_in('id', $temps);
                 $this->load->model('Users_model');
                 $ret['count'] = $this->db->count_all_results($this->Users_model->table(), false);
-
-                $this->db->select('id,nickname,address,header,v,exp,mobi,pretty_id,pid,created_at,rank_rule_id');
-                $this->db->order_by('id', 'desc');
-                $this->db->limit($this->per_page, $this->offset);
-                $users = $this->db->get()->result_array();
+                $cur_page = $this->input->get_post('cur_page');
+                if( empty($cur_page) ){
+                    $cur_page = 1;
+                }
+                $per_page = $this->input->get_post('per_page');
+                if( empty($per_page) ){
+                    $per_page = 10;
+                }
+                $start = ($cur_page - 1) * $per_page;
+                $fields = "id, nickname, address, header, v, exp, mobi, pretty_id, pid, created_at, rank_rule_id, bound_at, IF(pid={$this->user_id}, 1, 0) AS is_star";
+                $sql = "SELECT {$fields} FROM `users` WHERE id IN(" . implode(',', $temps) . ") ORDER BY is_star DESC, bound_at DESC LIMIT {$start},{$per_page}";
+                $users = $this->db->query($sql)->result_array();
                 if($users){
+                    $arrFans = [];
                     foreach($users as $item){
                         $item['lv'] = $item['rank_rule_id'];
                         $item['v'] = $item['rank_rule_id'];
-                        $item['is_star'] = $item['pid'] == $this->user_id ? 1 : 0;//据此判断是否是一级
-                        $item['date'] = date('Y-m-d', strtotime($item['created_at']));
-                        $ret['list'][] = $item;
+                        $item['date'] = date('Y-m-d', strtotime($item['bound_at']));
+                        $arrFans[] = $item;
+                        //is_star:据此判断是否是一级
                     }
+                    $ret['list'] = $arrFans;
                 }
             }else{
                 $ret['list'] = [];
