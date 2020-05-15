@@ -82,83 +82,15 @@ class Income extends API_Controller {
     public function index()
     {
         $ret = array('count' => 0, 'list' => array());
-
         $topic = $this->input->get_post('topic');
-
+        $startDate = $this->input->get_post('startDate');
+        $endDate = $this->input->get_post('endDate');
         $this->load->model('Income_model');
         $a_topic = $this->Income_model->topic();
         if(! isset($a_topic[$topic])){
             $this->ajaxReturn([], 1, '收益明细主题类型错误');
         }
-
-
-        $where = array('topic' => $topic);
-        if($this->user_id){
-            $where['user_id'] = $this->user_id;
-        }
-
-        if($topic == 2){
-            $where['amount >'] = 0;
-            $field = 'id,updated_at,sub_topic,name,mobi,amount,gold,item,level,user_id,shop_id,from_id';
-        }else{
-            $where['service_amount >'] = 0;
-            $field = 'id,updated_at,sub_topic,name,mobi,service_amount as amount,gold,item,level,user_id,shop_id,from_id';
-        }
-
-        $startDate = $this->input->get_post('startDate');
-        $endDate = $this->input->get_post('endDate');
-        if($startDate && $endDate){
-            $startDate = date('Y-m-d 00:00:00', strtotime($startDate));
-            $endDate = date('Y-m-d 23:59:59', strtotime($endDate));
-            $where['created_at >= '] = $startDate;
-            $where['created_at <= '] = $endDate;
-        }
-        if($this->user_id){
-            //统计
-            $ret['total'] = ['member' => 0, 'amount' => 0];
-
-            $this->db->group_by('user_id');
-            $where_count = $where;
-            $ret['total']['member'] = $this->Income_model->count_by($where_count);
-
-            if($topic == 2){
-                $this->db->select('sum(amount) amount');
-                $result = $this->Income_model->get_by($where_count);
-                $ret['total']['amount'] = $result['amount'] ? $result['amount'] : 0;
-            }else{
-                $this->db->select('sum(service_amount) service_amount');
-                $result = $this->Income_model->get_by($where_count);
-                $ret['total']['amount'] = $result['service_amount'] ? $result['service_amount'] : 0;
-            }
-        }
-
-        $ret['count'] = $this->Income_model->count_by($where);
-        if($ret['count']){
-            //$order_by = array('id' => 'desc');
-            //$this->db->select($field);
-            //$list = $this->Income_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
-            $order_by = "id DESC";
-            $list = $this->Income_model->getIncomes($field, $where, $order_by, $this->per_page, $this->offset);
-            if($list){
-                foreach($list as $key=>$item){
-                    $arrItems = json_decode($item['item'], TRUE);
-                    $item['lv_name'] = '';
-                    if( is_array($arrItems) && !empty($arrItems)){
-                        $key_first = current(array_keys($arrItems));
-                        if( !is_numeric($key_first) ){
-                            $arrItems = [$arrItems];
-                        }
-                        $item['item'] = $arrItems;
-                    }
-                    else{
-                        $item['item'] = [];
-                    }
-
-                    $ret['list'][] = $item;
-                }
-            }
-        }
-
+        $ret = $this->Income_model->getIncomeList($topic, $this->user_id, $startDate, $endDate);
         $this->ajaxReturn($ret);
     }
 
