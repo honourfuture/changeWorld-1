@@ -73,22 +73,22 @@ class Withdraw extends API_Controller {
 
 		$ret['status'] = $this->Withdraw_model->status();
 
-		$arrWhere = ["bank_id>0"];
+		$arrWhere = ['bank_id'=>"bank_id>0"];
         $dateZoom = $this->input->get_post('date_zoom');
         if( $dateZoom ){
             list($dateStart, $dateEnd) = explode('/', $dateZoom);
-            $arrWhere[] = "updated_at BETWEEN '" . $dateStart . ' 00:00:00' . "' AND '" . $dateStart . ' 23:59:59' . "'";
+            $arrWhere['updated_at'] = "updated_at BETWEEN '" . $dateStart . ' 00:00:00' . "' AND '" . $dateStart . ' 23:59:59' . "'";
         }
         $keyword = $this->input->get_post('keyword');
         if( !empty($keyword) ){
-            $arrWhere[] = "(user_name LIKE '%{$keyword}%' OR mobi LIKE '%{$keyword}%')";
+            $arrWhere['keyword'] = "(user_name LIKE '%{$keyword}%' OR mobi LIKE '%{$keyword}%')";
         }
         $status = $this->input->get_post('status');
         if($status > -1){
-            $arrWhere[] = "`status`={$status}";
+            $arrWhere['status'] = "`status`={$status}";
         }
 
-        $sql = "SELECT COUNT(1) AS cnt FROM withdraw WHERE " . implode(' AND ', $arrWhere);
+        $sql = "SELECT COUNT(1) AS cnt FROM withdraw WHERE " . implode(' AND ', array_values($arrWhere));
         $record = $this->db->query($sql)->row_array();
 		$ret['count'] = $record['cnt'];
 		if( empty($ret['count']) ){
@@ -104,7 +104,7 @@ class Withdraw extends API_Controller {
             $per_page = 10;
         }
         $start = ($cur_page - 1) * $per_page;
-        $sql = "SELECT * FROM withdraw WHERE " . implode(' AND ', $arrWhere) . " ORDER BY id DESC LIMIT {$start}, {$per_page}";
+        $sql = "SELECT * FROM withdraw WHERE " . implode(' AND ', array_values($arrWhere)) . " ORDER BY id DESC LIMIT {$start}, {$per_page}";
         $records = $this->db->query($sql)->result_array();
         $ret['list'] = $records;
         $a_uid = [];
@@ -113,7 +113,9 @@ class Withdraw extends API_Controller {
         }
         $this->load->model('Users_model');
         $ret['user'] = $this->Users_model->get_many_user($a_uid);
-        $sql = "SELECT SUM(amount) AS withdrawChecked FROM withdraw WHERE " . implode(' AND ', $arrWhere);
+        unset($arrWhere['status']);
+        $arrWhere['status'] = "`status`=1 "
+        $sql = "SELECT SUM(amount) AS withdrawChecked FROM withdraw WHERE " . implode(' AND ', array_values($arrWhere));
         $record = $this->db->query($sql)->row_array();
         $ret['withdrawChecked'] = round($record['withdrawChecked'], 2);
 		$this->ajaxReturn($ret);
