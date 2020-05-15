@@ -323,7 +323,8 @@ class User extends API_Controller {
             $ret['message'] = 'success';
         }
         catch (\Exception $e){
-            $ret['list'] = '';
+            $ret['list'] = [];
+            $ret['incomes'] = [];
             $ret['status'] = $e->getCode();
             $ret['message'] = $e->getMessage();
         }        

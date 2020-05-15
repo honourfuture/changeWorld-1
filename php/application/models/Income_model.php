@@ -73,6 +73,10 @@ class Income_model extends MY_Model
         foreach ($cursor as $k=>$v){
             $arrUserIncome[$v['user_id']] = $v['amount'];
         }
+        $arrAddon = array_diff($arrUserIds, array_keys($arrUserIncome));
+        foreach ($arrAddon as $k=>$v){
+            $arrUserIncome[$v] = 0.00;
+        }
         return $arrUserIncome;
     }
 
