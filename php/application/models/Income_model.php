@@ -47,8 +47,13 @@ class Income_model extends MY_Model
     {
         $created_at = empty($created_at) ? date('Y-m-d H:i:s', 0) : $created_at;
         $where['created_at >= '] = $created_at;
-        //$where['created_at <= '] = date('Y-m-d 23:59:59', strtotime("-1 sunday"));
-        $where['created_at <= '] = date('Y-m-d H:i:s', time() - 300);//测试时取到五分钟前的所有收益
+        if( IS_PROD ){
+            $where['created_at <= '] = date('Y-m-d 23:59:59', strtotime("-1 sunday"));
+        }
+        else{
+            $where['created_at <= '] = date('Y-m-d H:i:s', time() - 300);//测试时取到五分钟前的所有收益
+        }
+
         $arrIncomes = $this->sum_income_topic_group($user_id, $type, $where);
         return array_sum( array_values( $arrIncomes ) );
     }
@@ -63,7 +68,7 @@ class Income_model extends MY_Model
         if( empty($arrUserIds) ){
             return $arrUserIncome;
         }
-        $sql = "SELECT SUM(amount), user_id AS amount FROM income WHERE user_id IN(". implode(',', $arrUserIds) .") GROUP BY user_id";
+        $sql = "SELECT SUM(amount) AS amount, user_id FROM income WHERE user_id IN(". implode(',', $arrUserIds) .") GROUP BY user_id";
         $cursor = $this->db->query($sql)->result_array();
         foreach ($cursor as $k=>$v){
             $arrUserIncome[$v['user_id']] = $v['amount'];
