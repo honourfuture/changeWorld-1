@@ -15,9 +15,8 @@ import {
     Form,
     Icon
 } from "antd";
-import { remove } from "lodash";
 import { UsersList } from "../../components/UsersList";
-import { EditorModal } from "../../components/EditorModal";
+import { IncomeList } from "../../components/IncomeList";
 import "./TeamUsers.less";
 const Search = Input.Search;
 const Option = Select.Option;
@@ -35,43 +34,43 @@ export default class TeamUsers extends BaseComponent {
             {
                 title: "用户ID",
                 dataIndex: "id",
-                width: 150,
+                width: 120,
                 render: (text, record) => this.renderText(text, record, "id")
             },
             {
                 title: "昵称",
                 dataIndex: "nickname",
-                width: 150,
+                width: 120,
                 render: (text, record) => this.renderText(text, record, "nickname")
             },
             {
                 title: "手机号",
                 dataIndex: "mobi",
-                width: 150,
+                width: 100,
                 render: (text, record) => this.renderText(text, record, "mobi")
             },
             {
                 title: "积分",
                 dataIndex: "point",
-                width: 100,
+                width: 90,
                 render: (text, record) => this.renderText(text, record, "point")
             },
             {
                 title: "余额",
                 dataIndex: "balance",
-                width: 100,
+                width: 90,
                 render: (text, record) => this.renderText(text, record, "balance")
             },
             {
                 title: "经验值",
                 dataIndex: "exp",
-                width: 100,
+                width: 90,
                 render: (text, record) => this.renderText(text, record, "exp")
             },
             {
                 title: "金币",
                 dataIndex: "gold",
-                width: 100,
+                width: 90,
                 render: (text, record) => this.renderText(text, record, "gold")
             },
             {
@@ -94,7 +93,7 @@ export default class TeamUsers extends BaseComponent {
             },
             {
                 title: "累计收益",
-                width: 100,
+                width: 80,
                 render: (text, record) =>
                     this.renderText(
                         this.store.incomes[record.id],
@@ -104,7 +103,7 @@ export default class TeamUsers extends BaseComponent {
             {
                 title: "注册时间",
                 dataIndex: "created_at",
-                width: 180,
+                width: 120,
                 render: (text, record) => this.renderText(text, record, "created_at")
             },
             {
@@ -116,7 +115,8 @@ export default class TeamUsers extends BaseComponent {
                     return (
                         <span>
                         <a onClick={() => this.onRead(record) }>查看成员</a>&nbsp;
-                        <a onClick={() => this.onIncome(record) }>收益明细</a>
+                        <a onClick={() => this.onIncome(record, 2) }>商品收益</a>&nbsp;
+                        <a onClick={() => this.onIncome(record, 0) }>知识收益</a>
                         </span>
                     );
                 }
@@ -144,8 +144,8 @@ export default class TeamUsers extends BaseComponent {
     }
     //明细
     @action.bound
-    onIncome(record){
-
+    onIncome(record, topic){
+        this.refs.incomeList.show(record.id, topic);
     }
     //查看
     @action.bound
@@ -230,6 +230,11 @@ export default class TeamUsers extends BaseComponent {
                     ref="detail"
                     item={list}
                     destroyOnClose
+                />
+                <IncomeList
+                ref="incomeList"
+                item={list}
+                destroyOnClose
                 />
             </Spin>
         );
