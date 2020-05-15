@@ -15,7 +15,7 @@ class Order extends API_Controller {
         $this->load->model('Order_model');
     }
 
-    private function _getOrders($type=1)
+    private function _getOrders($type=1, $export=false)
     {
         $ret = ['list' => [], 'user' => []];
         $arrStatus = $this->Order_model->status();
@@ -33,7 +33,13 @@ class Order extends API_Controller {
         $ret['status'] = $arrStatus;
         $ret['refund_status'] = $this->Order_model->refund_status();
         $cur_page = $this->input->get_post('cur_page');
+        if( empty($cur_page) ){
+            $cur_page = 1;
+        }
         $per_page = $this->input->get_post('per_page');
+        if( empty($per_page) ){
+            $per_page = 10;
+        }
         $status = $this->input->get_post('status');
         $order_sn = $this->input->get_post('order_sn');
         $user_name = $this->input->get_post('user_name');
@@ -73,7 +79,10 @@ class Order extends API_Controller {
             $fields = 'o.id, o.created_at, o.updated_at, o.status, o.order_sn, o.seller_uid, o.total_amount, o.real_total_amount,
             o.buyer_uid, o.commission, o.commission_users, o.point, o.exp, o.seller_income, o.seller_exp, o.seller_point, o.freight_fee';
             $start = ($cur_page - 1) * $per_page;
-            $sql = "SELECT {$fields} FROM `order` o LEFT JOIN `users` u ON o.buyer_uid=u.id WHERE " . implode(' AND ', $arrWhere) . " ORDER BY o.id DESC LIMIT {$start}, {$per_page}";
+            $sql = "SELECT {$fields} FROM `order` o LEFT JOIN `users` u ON o.buyer_uid=u.id WHERE " . implode(' AND ', $arrWhere) . " ORDER BY o.id DESC";
+            if( $export ){
+                $sql .= " LIMIT {$start}, {$per_page}";
+            }
             $ret['list'] = $this->db->query($sql)->result_array();
         
             $a_uid = [];
@@ -89,7 +98,9 @@ class Order extends API_Controller {
                 $ret['user'][$item['id']] = $item;
             }
         }
-        
+        if( $export ){
+            return $ret;
+        }
         $this->ajaxReturn($ret);
     }
     
