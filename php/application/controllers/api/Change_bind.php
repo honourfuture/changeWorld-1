@@ -283,7 +283,8 @@ class Change_bind extends API_Controller {
         if(!$user_bind){
             $this->ajaxReturn([], 1, '未绑定第三方');
         }
-        $status = $this->Users_bind_model->update($user_bind['id'], ['unique_id' => 0, 'updated_at'=>date('Y-m-d H:i:s'), 'other'=>'']);
+        $sql = "UPDATE users_bind SET unique_id=0, updated_at='" . date('Y-m-d H:i:s') . "', other='' WHERE id={$user_bind['id']}";
+        $status = $this->db->query($sql);
         if($status){
             $this->ajaxReturn([], 0, '取消绑定成功');
         }else{
