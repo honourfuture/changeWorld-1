@@ -54,6 +54,24 @@ class Income_model extends MY_Model
     }
 
     /**
+     * 取得用户累计收益
+     * @param $arrUserIds
+     */
+    public function getUserTotalIncome($arrUserIds)
+    {
+        $arrUserIncome = [];
+        if( empty($arrUserIds) ){
+            return $arrUserIncome;
+        }
+        $sql = "SELECT SUM(amount), user_id AS amount FROM income WHERE user_id IN(". implode(',', $arrUserIds) .") GROUP BY user_id";
+        $cursor = $this->db->query($sql)->result_array();
+        foreach ($cursor as $k=>$v){
+            $arrUserIncome[$v['user_id']] = $v['amount'];
+        }
+        return $arrUserIncome;
+    }
+
+    /**
      * 积分明细
      * @param unknown $fields
      * @param unknown $where
