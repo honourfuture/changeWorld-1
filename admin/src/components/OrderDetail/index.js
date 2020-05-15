@@ -105,6 +105,20 @@ export class OrderDetail extends BaseComponent {
             )
         },
         {
+            key: 'base_percent',
+            label: '基础让利率：',
+            render: value => (
+                <div>{parseInt(value, 10) > 0 ? `${value}%` : '0%'}</div>
+            )
+        },
+        {
+            key: 'rebate_percent',
+            label: '最高让利率：',
+            render: value => (
+                <div>{parseInt(value, 10) > 0 ? `${value}%` : '0%'}</div>
+            )
+        },
+        {
             key: 'goods_attr',
             label: '商品规格',
             render: this.renderAttr
