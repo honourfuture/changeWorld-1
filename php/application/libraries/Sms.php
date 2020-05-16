@@ -9,7 +9,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Sms
 {
-    public $server_name = '【改变世界平台】';
+    public $server_name = '【罗马市场】';
     private $a_tpl_sms   = array(// 0注册 1找回密码 2绑定 3解绑
         '您的验证码是：#code#。请不要把验证码泄露给其他人，若非本人操作请忽略。',
         '您的验证码是：#code#。请不要把验证码泄露给其他人，若非本人操作请忽略。',
