@@ -203,26 +203,29 @@ class Order_payment extends API_Controller {
         if($this->db->trans_status() === FALSE){
             $this->ajaxReturn([], 5, '网络服务异常');
         }
-        else{
+        try {
             //消息推送
             $order = $this->Order_model->get_many($order_id);
-            foreach($order as $item){
-                if($user_to = $this->Users_model->get($item['seller_uid'])){
+            foreach ($order as $item) {
+                if ($user_to = $this->Users_model->get($item['seller_uid'])) {
                     $cid = $user_to['device_uuid'];
-                    if(!empty($cid)){
+                    if (!empty($cid)) {
                         $setting = config_item('push');
                         $client = new Client($setting['app_key'], $setting['master_secret'], $setting['log_file']);
-            
+
                         $result = $client->push()
-                        ->setPlatform('all')
-                        ->addRegistrationId($cid)
-                        ->setNotificationAlert($user['nickname'].'在您店铺购买了商品，请尽快发货')
-                        ->send();
+                            ->setPlatform('all')
+                            ->addRegistrationId($cid)
+                            ->setNotificationAlert($user['nickname'] . '在您店铺购买了商品，请尽快发货')
+                            ->send();
                     }
                 }
             }
-            $this->ajaxReturn();
         }
+        catch (\Exception $e){
+            @file_put_contents('/tmp/payment.log', "JpushError\n" . var_export($e, true), FILE_APPEND | LOCK_EX);
+        }
+        $this->ajaxReturn();
     }
 
     /**
