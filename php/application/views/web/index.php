@@ -7,7 +7,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>改变世界</title>
+<title>罗马市场</title>
 <style type="text/css">
 	.join .main ul li{border: none !important;padding: 0px !important;margin-bottom: 37px !important;background: none !important;}
 	.join .main ul li span{font-size: 24px;}
