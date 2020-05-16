@@ -44,7 +44,7 @@ class Platform extends API_Controller {
         $record = $this->db->query($sql)->row_array();
         $ret['count'] = $record['cnt'];
         if($ret['count']){
-            $fields = 'o.created_at, o.status, o.order_sn, o.seller_uid, o.total_amount, o.real_total_amount,
+            $fields = 'o.id AS order_id, o.created_at, o.status, o.order_sn, o.seller_uid, o.total_amount, o.real_total_amount,
             o.buyer_uid, o.commission, o.commission_users, o.point, o.exp, o.seller_income, o.seller_exp, o.seller_point, o.freight_fee,
             SUM(ip.amount) AS amount, ip.created_at AS updated_at';
             $start = ($cur_page - 1) * $per_page;
