@@ -116,6 +116,7 @@ class Order_payment extends API_Controller {
     }
     protected function balance($order_id)
     {
+        $order_id = is_array($order_id) ? $order_id : [$order_id];
         $user = $this->get_user();
         $this->load->model('Income_model');
         $this->load->model('Users_model');
