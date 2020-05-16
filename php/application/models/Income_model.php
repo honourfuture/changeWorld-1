@@ -682,6 +682,7 @@ class Income_model extends MY_Model
             return false;
         }
         $this->load->model('Config_model');
+        $this->load->model('Income_platform_model');
         if($this->Config_model->get_by(['name' => 'commission'])){
             $sql = "UPDATE {$this->Config_model->table()} SET `value` = `value` + {$platformIncome} WHERE `name`='commission';";
             $this->db->query($sql);
@@ -696,7 +697,7 @@ class Income_model extends MY_Model
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ];
-        $this->db->insert_batch('income_platform', [$item]);
+        $this->Income_platform_model->insert($item);
     }
 
     /**
