@@ -1,16 +1,19 @@
 import React from "react";
 import { action } from "mobx";
 import { BaseComponent, Base, Global } from "../../common";
-import { Table, Input, Spin, Select, Form } from "antd";
+import {Table, Input, Spin, Select, Form, LocaleProvider, Button, DatePicker} from "antd";
 import { OrderDetail } from "../../components/OrderDetail";
 import "./OrderManager.less";
+import zh_CN from "antd/lib/locale-provider/zh_CN";
 const Search = Input.Search;
 const Option = Select.Option;
+const { RangePicker } = DatePicker;
 
 export default class PlatformIncome extends BaseComponent {
     store = {
         list: [],
-        status: -1
+        status: -1,
+        income_total: 0
     };
     constructor(props) {
         super(props);
@@ -52,39 +55,28 @@ export default class PlatformIncome extends BaseComponent {
                     this.renderText(text, record, "real_total_amount")
             },
             {
-                title: "总金额",
-                dataIndex: "total_amount",
+                title: "平台收益",
+                dataIndex: "amount",
                 width: "10%",
                 render: (text, record) =>
-                    this.renderText(text, record, "total_amount")
+                    this.renderText(text, record, "amount")
             },
             {
-                title: "订单状态",
-                dataIndex: "status",
-                width: "10%",
-                render: (text, record) =>
-                    this.renderText(
-                        this.status[record.status],
-                        record,
-                        "status"
-                    )
-            },
-            {
-                title: "下单时间",
-                dataIndex: "created_at",
+                title: "时间",
+                dataIndex: "updated_at",
                 width: "15%",
                 render: (text, record) =>
-                    this.renderText(text, record, "created_at")
+                    this.renderText(text, record, "updated_at")
             },
             {
                 title: "操作",
                 dataIndex: "operation",
                 width: "10%",
                 render: (text, record) => {
-                    const { id, status } = record;
+                    const { order_id, status } = record;
                     return (
                         <div className="editable-row-operations">
-                            <a onClick={() => this.onDetail(record.id)}>详情</a>
+                            <a onClick={() => this.onDetail(order_id)}>详情</a>
                         </div>
                     );
                 }
@@ -96,15 +88,19 @@ export default class PlatformIncome extends BaseComponent {
     }
     //搜索
     searchStr = "";
+    dateZoom = "";
     @action.bound
     onSearch(value) {
         this.current = 1;
         this.searchStr = value;
-        this.requestData();
+    }
+    @action.bound
+    onChange(value, dateString) {
+        this.dateZoom = dateString.join('/');
     }
     @action.bound
     onDetail(id) {
-        this.refs.orderDetail.show(id);
+        this.refs.orderDetail.show(id, 1);
     }
     @action.bound
     onTableHandler({ current, pageSize }) {
@@ -116,18 +112,19 @@ export default class PlatformIncome extends BaseComponent {
     requestData() {
         Base.GET(
             {
-                act: "order",
-                op: "index",
+                act: "platform",
+                op: "income",
                 mod: "admin",
                 status: this.store.status,
-                order_sn: this.searchStr || "",
                 cur_page: this.current || 1,
+                date_zoom: this.dateZoom || "",
                 per_page: Global.PAGE_SIZE
             },
             res => {
-                const { list, count, status, user } = res.data;
+                const { list, count, total, status, user } = res.data;
                 this.store.list = list;
                 this.store.total = count;
+                this.store.income_total = total;
                 this.status = status;
                 this.user = user;
                 this.cacheData = list.map(item => ({ ...item }));
@@ -163,20 +160,11 @@ export default class PlatformIncome extends BaseComponent {
         return (
             <Spin ref="spin" wrapperClassName="OrderManager" spinning={false}>
                 <div className="pb10">
-                    <Search
-                        placeholder="搜索订单号"
-                        enterButton
-                        onSearch={this.onSearch}
-                        style={{ width: 200, marginRight: 10 }}
-                    />
-                    {statusCon.length > 0 ? (
-                        <Select
-                            onChange={this.onStatusSelect}
-                            defaultValue={-1}
-                        >
-                            {statusCon}
-                        </Select>
-                    ) : null}
+                    <LocaleProvider locale={zh_CN}><RangePicker onChange={this.onChange} onOk={this.onOk}/></LocaleProvider>
+                    <Button type="primary" style={{ marginLeft:5 }} onClick={() =>
+                        this.requestData()
+                    }>查询</Button>
+                <span style={{ marginLeft:5 }}>平台总收益：￥{this.store.income_total}</span>
                 </div>
                 <Table
                     className="mt16"

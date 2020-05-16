@@ -111,7 +111,7 @@ export default class PlatformTrade extends BaseComponent {
 	}
     @action.bound
     onDetail(id) {
-        this.refs.orderDetail.show(id);
+        this.refs.orderDetail.show(id, 1);
     }
     @action.bound
     onTableHandler({ current, pageSize }) {
