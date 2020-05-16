@@ -329,7 +329,8 @@ class Payment_log extends API_Controller {
             'value' => $this->row['point'],
             'point' => $user['point'] - $this->row['point'],
             'rule_name' => 'audio_buy',
-            'remark' => '音频下单积分使用'
+            'remark' => '音频下单积分使用',
+            'is_add' => 0
         ];
         $this->Users_points_model->insert($point_log);
 
