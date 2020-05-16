@@ -79,7 +79,7 @@ class Order extends API_Controller {
             $arrWhere[] = "o.created_at BETWEEN '" . $dateStart . ' 00:00:00' . "' AND '" . $dateStart . ' 23:59:59' . "'";
         }
         if( $type == 3 ){//平台流水,计算总和
-            $sql = "SELECT SUM(o.real_total_amount) AS total FROM `order` WHERE " . implode(' AND ', $arrWhere);
+            $sql = "SELECT SUM(o.real_total_amount) AS total FROM `order` o WHERE " . implode(' AND ', $arrWhere);
             $arrTotal = $this->db->query($sql)->row_array();
             $ret['total'] = $arrTotal['total'];
         }
