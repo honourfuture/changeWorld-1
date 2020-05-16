@@ -78,6 +78,11 @@ class Order extends API_Controller {
             list($dateStart, $dateEnd) = explode('/', $dateZoom);
             $arrWhere[] = "o.created_at BETWEEN '" . $dateStart . ' 00:00:00' . "' AND '" . $dateStart . ' 23:59:59' . "'";
         }
+        if( $type == 3 ){//平台流水,计算总和
+            $sql = "SELECT SUM(o.real_total_amount) AS total FROM `order` WHERE " . implode(' AND ', $arrWhere);
+            $arrTotal = $this->db->query($sql)->row_array();
+            $ret['total'] = $arrTotal['total'];
+        }
         $sql = "SELECT COUNT(1) AS cnt FROM `order` o LEFT JOIN `users` u ON o.buyer_uid=u.id WHERE " . implode(' AND ', $arrWhere);
         $record = $this->db->query($sql)->row_array();
         $ret['count'] = $record['cnt'];
