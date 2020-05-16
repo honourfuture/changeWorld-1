@@ -29,6 +29,7 @@ export default class RobotHeaderManager extends BaseComponent {
         return (
             <div>
                 <img
+                    style={{width: "32px"}}
                     className="img-uploader"
                     src={Base.getImgUrl(header)}
                     alt=""

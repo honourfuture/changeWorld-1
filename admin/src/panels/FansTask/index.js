@@ -205,7 +205,7 @@ export default class FansTask extends BaseComponent {
         return <div>{text}</div>;
     }
     renderImg(text, record, column) {
-        return <img className="header" src={Base.getImgUrl(text)} alt="" />;
+        return <img className="header" src={Base.getImgUrl(text)} alt="" style={{width: "32px"}}/>;
     }
     renderSwitch(text, record, column) {
         return (

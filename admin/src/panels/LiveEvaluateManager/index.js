@@ -204,7 +204,7 @@ export default class LiveEvaluateManager extends BaseComponent {
                         placeholder="搜索评价内容"
                         enterButton
                         onSearch={this.onSearch}
-                        style={{ width: 160, marginRight: 10 }}
+                        style={{ width: 200, marginRight: 10 }}
                     />
                 </div>}
                 <Table

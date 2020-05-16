@@ -129,6 +129,7 @@ export default class RobotManager extends BaseComponent {
                     >
                         {header ? (
                             <img
+                                style={{width: "32px"}}
                                 className="img-uploader"
                                 style={{ width: "120px" }}
                                 src={Base.getImgUrl(header)}
@@ -144,7 +145,7 @@ export default class RobotManager extends BaseComponent {
                 ) : (
                     <img
                         className="img-uploader"
-                        style={{ width: "120px" }}
+                        style={{ width: "32px" }}
                         src={Base.getImgUrl(header)}
                         alt=""
                     />

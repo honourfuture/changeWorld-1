@@ -15,6 +15,10 @@ class Order extends API_Controller {
         $this->load->model('Order_model');
     }
 
+    /**
+     * @param int $type 
+     * 
+     */
     private function _getOrders($type=1, $export=false)
     {
         $ret = ['list' => [], 'user' => []];
@@ -27,6 +31,8 @@ class Order extends API_Controller {
                 $arrWhere[] = "o.`status`>3";
                 //unset($arrStatus[0], $arrStatus[1], $arrStatus[2], $arrStatus[3]);
                 break;
+            case 3://平台流水
+                $arrWhere[] = "o.`status`>3";
             default:
                 
         }

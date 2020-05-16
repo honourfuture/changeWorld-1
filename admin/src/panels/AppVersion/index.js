@@ -360,7 +360,7 @@ export default class AppVersion extends BaseComponent {
                         placeholder="搜索版本号"
                         enterButton
                         onSearch={this.onSearch}
-                        style={{ width: 160, marginLeft: 10 }}
+                        style={{ width: 200, marginLeft: 10 }}
                     />
                 </div>
                 <Table

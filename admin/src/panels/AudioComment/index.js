@@ -234,7 +234,7 @@ export default class AudioComment extends BaseComponent {
     renderImg(text, record, column) {
         return (
             <img
-                style={{ width: 100, height: 100 }}
+                style={{ width: "64px", height: "64px" }}
                 src={Base.getImgUrl(text)}
                 alt=""
             />

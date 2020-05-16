@@ -119,6 +119,7 @@ export default class PlatformTrade extends BaseComponent {
                 act: "order",
                 op: "index",
                 mod: "admin",
+                type: 3,
                 status: this.store.status,
                 order_sn: this.searchStr || "",
                 cur_page: this.current || 1,
@@ -148,18 +149,6 @@ export default class PlatformTrade extends BaseComponent {
         let { list, total } = this.store;
         const showList = list.slice();
         const { status = [] } = this;
-        const statusCon = status.map((item, index) => {
-            return (
-                <Option value={index} key={index}>
-                    {item}
-                </Option>
-            );
-        });
-        statusCon.unshift(
-            <Option value={-1} key={-1}>
-                全部
-            </Option>
-        );
         return (
             <Spin ref="spin" wrapperClassName="OrderManager" spinning={false}>
                 <div className="pb10">
@@ -167,16 +156,8 @@ export default class PlatformTrade extends BaseComponent {
                         placeholder="搜索订单号"
                         enterButton
                         onSearch={this.onSearch}
-                        style={{ width: 160, marginRight: 10 }}
+                        style={{ width: 200, marginRight: 10 }}
                     />
-                    {statusCon.length > 0 ? (
-                        <Select
-                            onChange={this.onStatusSelect}
-                            defaultValue={-1}
-                        >
-                            {statusCon}
-                        </Select>
-                    ) : null}
                 </div>
                 <Table
                     className="mt16"

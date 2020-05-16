@@ -96,7 +96,7 @@ export default class SystemLog extends BaseComponent {
                         placeholder="搜索操作账号"
                         enterButton
                         onSearch={this.onSearch}
-                        style={{ width: 160, marginLeft: 10 }}
+                        style={{ width: 200, marginLeft: 10 }}
                     />
                 </div> */}
                 <Table

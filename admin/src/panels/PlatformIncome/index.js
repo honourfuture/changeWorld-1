@@ -167,7 +167,7 @@ export default class PlatformIncome extends BaseComponent {
                         placeholder="搜索订单号"
                         enterButton
                         onSearch={this.onSearch}
-                        style={{ width: 160, marginRight: 10 }}
+                        style={{ width: 200, marginRight: 10 }}
                     />
                     {statusCon.length > 0 ? (
                         <Select
