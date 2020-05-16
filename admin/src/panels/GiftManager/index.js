@@ -20,7 +20,7 @@ const Option = Select.Option;
 
 export default class GiftManager extends BaseComponent {
     store = {
-        list: [],
+        list: [], 
         positionList: [
             {
                 name: "金币",
@@ -146,6 +146,7 @@ export default class GiftManager extends BaseComponent {
                     >
                         {text ? (
                             <img
+                                style={{ width: "32px" }}
                                 className="img-uploader"
                                 src={Base.getImgUrl(text)}
                                 alt=""
@@ -159,6 +160,7 @@ export default class GiftManager extends BaseComponent {
                     </Upload>
                 ) : (
                     <img
+                        style={{ width: "32px" }}
                         className="img-uploader"
                         src={Base.getImgUrl(text)}
                         alt=""
@@ -352,7 +354,7 @@ export default class GiftManager extends BaseComponent {
                         placeholder="搜索标题"
                         enterButton
                         onSearch={this.onSearch}
-                        style={{ width: 130, marginLeft: 10 }}
+                        style={{ width: 200, marginLeft: 10 }}
                     />
                 </div>
                 <Table

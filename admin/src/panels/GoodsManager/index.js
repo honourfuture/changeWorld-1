@@ -332,7 +332,7 @@ export default class GoodsManager extends BaseComponent {
                         placeholder="搜索标题"
                         enterButton
                         onSearch={this.onSearch}
-                        style={{ width: 130, marginLeft: 10 }}
+                        style={{ width: 200, marginLeft: 10 }}
                     />
                     {goodsClass.length > 0 ? (
                         <Select

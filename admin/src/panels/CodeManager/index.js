@@ -453,7 +453,7 @@ export default class CodeManager extends BaseComponent {
                         placeholder="搜索靓号"
                         enterButton
                         onSearch={this.onSearch}
-                        style={{ width: 130, marginLeft: 10 }}
+                        style={{ width: 200, marginLeft: 10 }}
                     />
                     {statusCon.length > 0 ? (
                         <Select

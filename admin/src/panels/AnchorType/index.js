@@ -146,7 +146,7 @@ export default class AnchorType extends BaseComponent{
 				<Search
 					placeholder="搜索标题"
 					onChange={this.onSearch}
-					style={{ width: 130,marginLeft:10 }}
+					style={{ width: 200,marginLeft:10 }}
 				/>
 				<Table className="mt16" bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={{hideOnSinglePage:true}}/>
 			</div>

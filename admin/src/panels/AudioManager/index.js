@@ -54,7 +54,6 @@ export default class AudioManager extends BaseComponent {
             {
                 title: "标题",
                 dataIndex: "title",
-                width: 150,
                 render: (text, record) => this.renderText(text, record, "title")
             },
             {
@@ -76,9 +75,8 @@ export default class AudioManager extends BaseComponent {
             {
                 title: "音频地址",
                 dataIndex: "video_url",
-                width: 150,
                 render: (text, record) =>
-                    this.renderText(text, record, "video_url")
+                    this.renderAudio(text, record, "video_url")
             },
             {
                 title: "播放量",
@@ -129,9 +127,12 @@ export default class AudioManager extends BaseComponent {
     renderImg(text, record, column) {
         return (
             <div className="header-con">
-                <img className="header" src={Base.getImgUrl(text)} alt="" />
+                <img className="header" src={Base.getImgUrl(text)} alt="" style={{ width: "32px" }}/>
             </div>
         );
+    }
+    renderAudio(text, record, column) {
+        return <div>{text}</div>;
     }
     renderText(text, record, column) {
         return <div>{text}</div>;

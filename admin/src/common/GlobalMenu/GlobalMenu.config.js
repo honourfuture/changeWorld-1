@@ -252,6 +252,14 @@ const menuData = [
             {
                 name: "团队数据统计",
                 path: "TeamUsers"
+            },
+            {
+                name: "平台交易流水",
+                path: "PlatformTrade"
+            },            
+            {
+                name: "平台收益统计",
+                path: "PlatformIncome"
             }
         ]
     },

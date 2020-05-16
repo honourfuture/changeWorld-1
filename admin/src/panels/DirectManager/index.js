@@ -185,7 +185,7 @@ export default class DirectManager extends BaseComponent {
         return (
             <div>
                 {text ? (
-                    <img src={Base.getImgUrl(text)} className="photo" alt="" />
+                    <img src={Base.getImgUrl(text)} className="photo" alt="" style={{ width: "32px" }}/>
                 ) : null}
             </div>
         );
@@ -387,6 +387,7 @@ export default class DirectManager extends BaseComponent {
                     &nbsp;&nbsp; 状态筛选：
                     {statusCon.length > 0 ? (
                         <Select
+                            style={{ width: 100, marginLeft: 10 }}
                             onChange={this.onStatusSelect}
                             defaultValue={-1}
                         >

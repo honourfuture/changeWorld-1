@@ -313,7 +313,7 @@ export default class BankManager extends BaseComponent {
                     <Search
                         placeholder="搜索标题"
                         onChange={this.onSearch}
-                        style={{ width: 130, marginLeft: 10 }}
+                        style={{ width: 200, marginLeft: 10 }}
                     />
                 </div>
                 <Table

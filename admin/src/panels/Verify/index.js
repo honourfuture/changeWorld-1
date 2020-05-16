@@ -396,6 +396,7 @@ export default class Verify extends BaseComponent {
                 <div className="pb10">
                     {statusCon.length > 0 ? (
                         <Select
+                            style={{ width: 120 }}
                             onChange={this.onStatusSelect}
                             defaultValue={-1}
                         >

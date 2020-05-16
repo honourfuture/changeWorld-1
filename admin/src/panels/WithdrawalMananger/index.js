@@ -230,12 +230,13 @@ export default class WithdrawalMananger extends BaseComponent {
                 spinning={false}
             >
                 <div className="pb10">
-                    <LocaleProvider locale={zh_CN}><RangePicker onChange={this.onChange} onOk={this.onOk}/></LocaleProvider>
-                    <Input type="text" placeholder="搜索提现人/手机号" onChange ={event => this.onSearch} style={{ width: 160 }}/>
+                    <LocaleProvider locale={zh_CN}><RangePicker onChange={this.onChange} onOk={this.onOk} style={{ marginRight: 10 }}/></LocaleProvider>
+                    <Input type="text" placeholder="搜索提现人/手机号" onChange ={event => this.onSearch} style={{ width: 160, marginRight: 10 }}/>
                     {statusCon.length > 0 ? (
                         <Select
                         onChange={this.onStatusSelect}
                         defaultValue={-1}
+                        style={{ width: 100, marginRight: 10 }}
                     >
                         {statusCon}
                     </Select>

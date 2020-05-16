@@ -31,13 +31,11 @@ export default class MemberManager extends BaseComponent {
             {
                 title: "id",
                 dataIndex: "id",
-                width: 150,
                 render: (text, record) => this.renderText(text, record, "id")
             },
             {
                 title: "昵称",
                 dataIndex: "nickname",
-                width: 150,
                 // fixed: "left",
                 render: (text, record) =>
                     this.renderInput(text, record, "nickname")
@@ -45,45 +43,38 @@ export default class MemberManager extends BaseComponent {
             {
                 title: "手机号",
                 dataIndex: "mobi",
-                width: 150,
                 render: (text, record) => this.renderInput(text, record, "mobi")
             },
             {
                 title: "积分",
                 dataIndex: "point",
-                width: 150,
                 render: (text, record) => this.renderInput(text, record, "point")
             },
             {
                 title: "头像",
                 dataIndex: "header",
-                width: 150,
                 render: (text, record) => this.renderImg(text, record, "header")
             },
             {
                 title: "余额",
                 dataIndex: "balance",
-                width: 150,
                 render: (text, record) =>
                     this.renderText(text, record, "balance")
             },
             {
                 title: "经验值",
                 dataIndex: "exp",
-                width: 150,
                 render: (text, record) =>
 		            this.renderInput(text, record, "exp")
 		    },
             {
                 title: "金币",
                 dataIndex: "gold",
-                width: 150,
                 render: (text, record) => this.renderText(text, record, "gold")
             },
             {
                 title: "主播",
                 dataIndex: "anchor",
-                width: 150,
                 render: (text, record) =>
                     this.renderText(
                         this.anchor_status[record.anchor],
@@ -105,14 +96,12 @@ export default class MemberManager extends BaseComponent {
             {
                 title: "注册时间",
                 dataIndex: "created_at",
-                width: 180,
                 render: (text, record) =>
                     this.renderText(text, record, "created_at")
             },
             {
                 title: "是否猎头",
                 dataIndex: "headhunter",
-                width: 120,
                 // fixed: "right",
                 render: (text, record) =>
                     this.renderSwitch(text, record, "headhunter")
@@ -120,7 +109,6 @@ export default class MemberManager extends BaseComponent {
             {
                 title: "冻结",
                 dataIndex: "enable",
-                width: 120,
                 // fixed: "right",
                 render: (text, record) =>
                     this.renderSwitch(text, record, "enable")
@@ -128,7 +116,6 @@ export default class MemberManager extends BaseComponent {
             {
                 title: "操作",
                 dataIndex: "operation",
-                width: 150,
                 // fixed: "right",
                 render: (text, record) => {
                     const { headhunter, editable, id } = record;

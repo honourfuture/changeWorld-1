@@ -214,7 +214,7 @@ export default class LiveTag extends BaseComponent{
                     <Search
                         placeholder="搜索分类名称"
                         onChange={this.onSearch}
-                        style={{ width: 130, marginLeft: 10 }}
+                        style={{ width: 200, marginLeft: 10 }}
                     />
                 </div>
                 <Table

@@ -315,7 +315,7 @@ export default class ActivityList extends BaseComponent {
                         placeholder="搜索标题"
                         enterButton
                         onSearch={this.onSearch}
-                        style={{ width: 130 }}
+                        style={{ width: 200 }}
                     />
                 </div>
                 <Table

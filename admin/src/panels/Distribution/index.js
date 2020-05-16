@@ -255,21 +255,22 @@ export default class Distribution extends BaseComponent {
             <Spin ref="spin" wrapperClassName="OrderManager" spinning={false}>
                 <div className="pb10">
                 	<LocaleProvider locale={zh_CN}><RangePicker onChange={this.onChange} onOk={this.onOk}/></LocaleProvider>
-                    <Input type="text" placeholder="订单号" onChange ={event => this.handleKeyUp('order_sn', event)} style={{ width: 160 }}/>
-                    <Input type="text" placeholder="用户名" onChange ={event => this.handleKeyUp('user_name', event)} style={{ width: 160 }}/>
-                    <Input type="text" placeholder="商品名称" onChange ={event => this.handleKeyUp('product_name', event)} style={{ width: 160 }}/>
+                    <Input type="text" placeholder="订单号" onChange ={event => this.handleKeyUp('order_sn', event)} style={{ width: 160, marginLeft:5 }}/>
+                    <Input type="text" placeholder="用户名" onChange ={event => this.handleKeyUp('user_name', event)} style={{ width: 120, marginLeft:5 }}/>
+                    <Input type="text" placeholder="商品名称" onChange ={event => this.handleKeyUp('product_name', event)} style={{ width: 160, marginLeft:5 }}/>
                     {statusCon.length > 0 ? (
                         <Select
+                            style={{ width: 100, marginLeft:5 }}
                             onChange={this.onStatusSelect}
                             defaultValue={-1}
                         >
                             {statusCon}
                         </Select>
                     ) : null}
-                    <Button type="primary" onClick={() =>
+                    <Button type="primary" style={{ marginLeft:5 }} onClick={() =>
                         this.requestData()
                     }>查询</Button>
-                    <Button type="primary" onClick={() =>
+                    <Button type="primary" style={{ marginLeft:5 }} onClick={() =>
                         this.exportExcel()
                     }>导出</Button>
                 </div>

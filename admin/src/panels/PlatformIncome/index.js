@@ -7,7 +7,7 @@ import "./OrderManager.less";
 const Search = Input.Search;
 const Option = Select.Option;
 
-export default class OrderManager extends BaseComponent {
+export default class PlatformIncome extends BaseComponent {
     store = {
         list: [],
         status: -1
@@ -18,12 +18,14 @@ export default class OrderManager extends BaseComponent {
             {
                 title: "订单编号",
                 dataIndex: "order_sn",
+                width: "15%",
                 render: (text, record) =>
                     this.renderText(text, record, "order_sn")
             },
             {
                 title: "买家姓名",
                 dataIndex: "buyer_uid",
+                width: "10%",
                 render: (text, record) =>
                     this.renderText(
                         this.user[record.buyer_uid].nickname,
@@ -34,6 +36,7 @@ export default class OrderManager extends BaseComponent {
             {
                 title: "卖家姓名",
                 dataIndex: "seller_uid",
+                width: "10%",
                 render: (text, record) =>
                     this.renderText(
                         this.user[record.seller_uid].nickname,
@@ -44,18 +47,21 @@ export default class OrderManager extends BaseComponent {
             {
                 title: "支付金额",
                 dataIndex: "real_total_amount",
+                width: "10%",
                 render: (text, record) =>
                     this.renderText(text, record, "real_total_amount")
             },
             {
                 title: "总金额",
                 dataIndex: "total_amount",
+                width: "10%",
                 render: (text, record) =>
                     this.renderText(text, record, "total_amount")
             },
             {
                 title: "订单状态",
                 dataIndex: "status",
+                width: "10%",
                 render: (text, record) =>
                     this.renderText(
                         this.status[record.status],
@@ -66,12 +72,14 @@ export default class OrderManager extends BaseComponent {
             {
                 title: "下单时间",
                 dataIndex: "created_at",
+                width: "15%",
                 render: (text, record) =>
                     this.renderText(text, record, "created_at")
             },
             {
                 title: "操作",
                 dataIndex: "operation",
+                width: "10%",
                 render: (text, record) => {
                     const { id, status } = record;
                     return (
@@ -159,13 +167,12 @@ export default class OrderManager extends BaseComponent {
                         placeholder="搜索订单号"
                         enterButton
                         onSearch={this.onSearch}
-                        style={{ width: 200, marginRight: 10 }}
+                        style={{ width: 160, marginRight: 10 }}
                     />
                     {statusCon.length > 0 ? (
                         <Select
-                            style={{ width: 120 }}
                             onChange={this.onStatusSelect}
-                            defaultValue={-1} 
+                            defaultValue={-1}
                         >
                             {statusCon}
                         </Select>

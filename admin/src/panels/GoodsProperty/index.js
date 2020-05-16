@@ -157,9 +157,10 @@ export default class GoodsProperty extends BaseComponent{
 				<div className='pb10'>
 					<Button onClick={this.onAdd}>新增+</Button>
 					<Search
+						style={{ width: 200 }}
 						placeholder="搜索标题"
 						onChange={this.onSearch}
-						style={{ width: 130,marginLeft:10 }}
+						style={{ width: 200,marginLeft:10 }}
 					/>
 				</div>
 				<Table className='mt16' bordered dataSource={showList} rowKey='id' columns={this.columns} pagination={{hideOnSinglePage:true}}/>

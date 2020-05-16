@@ -316,7 +316,7 @@ export default class WebsiteGoods extends BaseComponent {
                         placeholder="搜索标题"
                         enterButton
                         onSearch={this.onSearch}
-                        style={{ width: 130, marginLeft: 10 }}
+                        style={{ width: 200, marginLeft: 10 }}
                     />
                 </div>
                 <Table

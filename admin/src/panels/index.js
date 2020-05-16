@@ -88,6 +88,8 @@ import RobotCommentTemplate from "./RobotCommentTemplate";
 import RobotLiveCommentTemplate from "./RobotLiveCommentTemplate";
 import TeamUsers from "./TeamUsers";
 import Distribution from "./Distribution";
+import PlatformTrade from "./PlatformTrade";
+import PlatformIncome from "./PlatformIncome";
 
 export const panelsList = [
     {
@@ -484,6 +486,16 @@ export const panelsList = [
         path: "/analysis/Distribution",
         component: Distribution,
         title: "分销统计"
+    },
+    {
+        path: "/analysis/PlatformTrade",
+        component: PlatformTrade,
+        title: "平台交易流水"
+    },
+    {
+        path: "/analysis/PlatformIncome",
+        component: PlatformIncome,
+        title: "平台收益统计"
     },
     {
         path: "/exception/403",

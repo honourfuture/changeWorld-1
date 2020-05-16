@@ -330,7 +330,7 @@ export default class AlbumManager extends BaseComponent {
     renderImg(text, record, column) {
         return (
             <div className="header-con">
-                <img className="header" src={Base.getImgUrl(text)} alt="" />
+                <img className="header" src={Base.getImgUrl(text)} alt="" style={{ width: "32px" }}/>
             </div>
         );
     }
