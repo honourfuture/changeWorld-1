@@ -198,7 +198,7 @@ class Order_payment extends API_Controller {
         
         //更新订单状态
         $update = ['status'=>2, 'updated_at'=>date('Y-m-d H:i:s')];
-        $this->Order_model->update($order_id, $update);
+        $this->Order_model->update(current($order_id), $update);
         $this->db->trans_complete();
         if($this->db->trans_status() === FALSE){
             $this->ajaxReturn([], 5, '网络服务异常');
