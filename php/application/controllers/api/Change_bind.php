@@ -195,7 +195,7 @@ class Change_bind extends API_Controller {
      *     "message": "密码错误"
      * }
      */
-    public function changByPassword()
+    public function changeByPassword()
     {
         $mobi = $this->input->get_post('phone');
         $password = $this->input->get_post('password');

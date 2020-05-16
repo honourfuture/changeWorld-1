@@ -181,7 +181,7 @@ class Crontab extends API_Controller {
                     throw new Exception("事务提交失败" . var_export($order, true));
                 }
             }catch (\Exception $e){
-                log($e->getMessage());
+                log_message('error', $e->getMessage());
             }
 
         }
