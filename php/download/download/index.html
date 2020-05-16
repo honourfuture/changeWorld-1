@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <meta
+            name="viewport"
+            content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
+        />
+        <title>下载改变世界APP</title>
+        <script>
+        var is_weixin = (function(){return navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1})();
+        function downapk() {
+	    var winHeight = typeof window.innerHeight != 'undefined' ? window.innerHeight : document.documentElement.clientHeight; //兼容IOS，不需要的可以去掉
+	    var btn = document.getElementById('J_weixin');
+	    var tip = document.getElementById('weixin-tip');
+	    var close = document.getElementById('close');
+            close.onclick = function() {
+                tip.style.display = 'none';
+            }
+	    if (is_weixin) {
+		tip.style.height = winHeight + 'px'; //兼容IOS弹窗整屏
+		tip.style.display = 'block';
+                return false;
+	    }
+            //window.location.href='../uploads/app-release_legu_aligned_signed.apk';
+            window.location.href='../uploads/app-gbsj_legu_aligned_signed.apk';
+        }
+        </script>
+    </head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 100vw;
+            height: 100vh;
+            background: url('https://static.haokur.com/yhq/bj_img@3x.png')
+                no-repeat;
+            background-size: 100% 100%;
+        }
+        .logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding-top: 80px;
+        }
+        .logo-icon {
+            width: 100px;
+            height: 100px;
+        }
+        .logo-title {
+            font-size: 16px;
+            font-weight: 400;
+        }
+        .actions {
+            margin-top: 60px;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+        }
+        .actions-item {
+            display: inline-block;
+            width: 190px;
+            height: auto;
+            margin-top: 20px;
+        }
+        .actions-item img {
+            width: 100%;
+        }
+        #weixin-tip{display:none;position:fixed;left:0;top:0;background:rgba(0,0,0,0.8);filter:alpha(opacity=80);width:100%;height:100%;z-index:100;}
+        #weixin-tip p{text-align:center;margin-top:10%;padding:0 5%;position:relative;}
+        #weixin-tip .close{color:#fff;padding:5px;font:bold 20px/24px simsun;text-shadow:0 1px 0 #ddd;position:absolute;top:0;left:5%;}
+    </style>
+    <body>
+        <div class="container">
+            <div class="logo">
+                <img
+                    src="./static/images/logo.png"
+                    class="logo-icon"
+                />
+                <h1 class="logo-title">改变世界</h1>
+            </div>
+            <div class="actions">
+                <a id="J_weixin" href="javascript:void(0);" onclick="downapk()" class="actions-item">
+                    <img
+                        src="../uploads/ad-download.png"
+                    />
+                </a>
+                <!--
+                <a href="#" class="actions-item">
+                    <img
+                        src="https://static.haokur.com/yhq/iphone_btn@3x.png"
+                    />
+                </a>
+                -->
+            </div>
+        </div>
+        <div id="weixin-tip"><p><img src="./static/images/live_weixin.png" alt="微信打开"/><span id="close" title="关闭" class="close">×</span></p></div>
+    </body>
+</html>
