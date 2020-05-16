@@ -118,7 +118,7 @@ class Bind extends API_Controller {
             $this->ajaxReturn($ret);
         }
         unset($arrAccountTypes[2], $arrAccountTypes[3]);
-        $ret['account_type'] = arrAccountTypes;
+        $ret['account_type'] = $arrAccountTypes;
         foreach($ret['list'] as $key=>$item){
             if( empty($item['unique_id']) ){
                 continue;
