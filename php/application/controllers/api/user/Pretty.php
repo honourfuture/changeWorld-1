@@ -11,6 +11,8 @@ use EasyWeChat\Payment\Order;
 use Yansongda\Pay\Pay;
 class Pretty extends API_Controller {
 
+	public $row;
+
 	public function __construct()
     {
         parent::__construct();
@@ -59,6 +61,9 @@ class Pretty extends API_Controller {
 
 		$ret['balance'] = $user['balance'];
 		$ret['point'] = $user['point'];
+		$this->load->model('Config_model');
+        $percent = $this->Config_model->get_by(['name' => 'point_to_price']);
+		$ret['price_point'] = round($this->row['price'] * $percent['value']);
 
 		$this->ajaxReturn($ret);
 	}
