@@ -39,10 +39,10 @@ class Platform extends API_Controller {
         }
         $sql = "SELECT SUM(ip.amount) AS total FROM `income_platform` ip LEFT JOIN `order` o ON ip.order_id = o.id WHERE " . implode(' AND ', $arrWhere);
         $arrTotal = $this->db->query($sql)->row_array();
-        $ret['total'] = intval($arrTotal['total']);
+        $ret['total'] = $arrTotal['total'];
         $sql = "SELECT COUNT(DISTINCT ip.order_id) AS cnt FROM `income_platform` ip LEFT JOIN `order` o ON ip.order_id = o.id WHERE " . implode(' AND ', $arrWhere);
         $record = $this->db->query($sql)->row_array();
-        $ret['count'] = $record['cnt'];
+        $ret['count'] = intval($record['cnt']);
         if($ret['count']){
             $fields = 'ip.id, o.id AS order_id, o.created_at, o.status, o.order_sn, o.seller_uid, o.total_amount, o.real_total_amount,
             o.buyer_uid, o.commission, o.commission_users, o.point, o.exp, o.seller_income, o.seller_exp, o.seller_point, o.freight_fee,
