@@ -1,16 +1,19 @@
 import React from "react";
 import { action } from "mobx";
 import { BaseComponent, Base, Global } from "../../common";
-import { Table, Input, Spin, Select, Form } from "antd";
+import { Table, Input, Spin, Select, DatePicker, LocaleProvider, Button } from "antd";
 import { OrderDetail } from "../../components/OrderDetail";
 import "./OrderManager.less";
+import zh_CN from 'antd/lib/locale-provider/zh_CN';
 const Search = Input.Search;
 const Option = Select.Option;
+const { RangePicker } = DatePicker;
 
 export default class PlatformTrade extends BaseComponent {
     store = {
         list: [],
-        status: -1
+        status: -1,
+        trade_total: 0
     };
     constructor(props) {
         super(props);
@@ -96,12 +99,16 @@ export default class PlatformTrade extends BaseComponent {
     }
     //搜索
     searchStr = "";
+    dateZoom = "";
     @action.bound
     onSearch(value) {
         this.current = 1;
         this.searchStr = value;
-        this.requestData();
     }
+    @action.bound
+    onChange(value, dateString) {
+    	this.dateZoom = dateString.join('/');
+	}
     @action.bound
     onDetail(id) {
         this.refs.orderDetail.show(id);
@@ -122,13 +129,15 @@ export default class PlatformTrade extends BaseComponent {
                 type: 3,
                 status: this.store.status,
                 order_sn: this.searchStr || "",
+                date_zoom: this.dateZoom || "",
                 cur_page: this.current || 1,
                 per_page: Global.PAGE_SIZE
             },
             res => {
-                const { list, count, status, user } = res.data;
+                const { list, count, total, status, user } = res.data;
                 this.store.list = list;
                 this.store.total = count;
+                this.store.trade_total = total;
                 this.status = status;
                 this.user = user;
                 this.cacheData = list.map(item => ({ ...item }));
@@ -150,14 +159,14 @@ export default class PlatformTrade extends BaseComponent {
         const showList = list.slice();
         const { status = [] } = this;
         return (
-            <Spin ref="spin" wrapperClassName="OrderManager" spinning={false}>
+            <Spin ref="spin" wrapperClassName="OrderManager" spinning={false}>                
                 <div className="pb10">
-                    <Search
-                        placeholder="搜索订单号"
-                        enterButton
-                        onSearch={this.onSearch}
-                        style={{ width: 200, marginRight: 10 }}
-                    />
+                    <LocaleProvider locale={zh_CN}><RangePicker onChange={this.onChange} onOk={this.onOk}/></LocaleProvider>
+                    <Input type="text" placeholder="订单号" onChange ={event => this.onSearch()} style={{ width: 160, marginLeft:5 }}/>
+                    <Button type="primary" style={{ marginLeft:5 }} onClick={() =>
+                        this.requestData()
+                    }>查询</Button>
+                    <span style={{ marginLeft:5 }}>平台总交易额：￥{this.store.trade_total}</span>
                 </div>
                 <Table
                     className="mt16"

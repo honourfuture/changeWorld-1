@@ -281,7 +281,7 @@ export class OrderDetail extends BaseComponent {
                 const dataSource = commission;
                 return (
                     <div className="goods-con">
-                        <Table dataSource={dataSource} columns={columns} />;
+                        <Table dataSource={dataSource} columns={columns} />
                     </div>
                 );
             };
