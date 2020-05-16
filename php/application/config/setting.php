@@ -4,6 +4,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 //是否生产环境
 define('IS_PROD', 1);
 
+//是否调试模式
+define('DEBUG_MODE', 1);
+
 /*
  * 项目配置
  */

@@ -180,9 +180,10 @@ class Common extends API_Controller
                 $this->ajaxReturn($ret, 1, '保存失败');
             }
         }else{
-            @file_put_contents('/tmp/base64upload.log', "POSTArgv：" . var_export($_POST, true) . "\n", FILE_APPEND | LOCK_EX);
-            @file_put_contents('/tmp/base64upload.log', "Based64Img：" . $base64_image_content . "\n", FILE_APPEND | LOCK_EX);
-            @file_put_contents('/tmp/base64upload.log', "PregResult：" . var_export($result, true) . "\n", FILE_APPEND | LOCK_EX);
+            $logType = 'base64upload';
+            logger($_POST, logType);
+            logger($base64_image_content, logType);
+            logger($result, logType);
             $this->ajaxReturn([], 2, '文件base64格式错误');
         }
     }
