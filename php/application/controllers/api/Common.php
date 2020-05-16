@@ -180,6 +180,7 @@ class Common extends API_Controller
                 $this->ajaxReturn($ret, 1, '保存失败');
             }
         }else{
+            $this->load->helper('logger');
             $logType = 'base64upload';
             logger($_POST, logType);
             logger($base64_image_content, logType);
