@@ -167,9 +167,9 @@ class Common extends API_Controller
         if (!preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64_image_content, $result)) {
             $this->load->library('Luoma');
             $logType = 'base64upload';
-            $this->Luoma->logger($_POST, $logType);
-            $this->Luoma->logger($base64_image_content, $logType);
-            $this->Luoma->logger($result, $logType);
+            $this->luoma->logger($_POST, $logType);
+            $this->luoma->logger($base64_image_content, $logType);
+            $this->luoma->logger($result, $logType);
             $this->ajaxReturn([], 2, '文件base64格式错误');
         }
 
