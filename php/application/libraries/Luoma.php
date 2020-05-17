@@ -17,9 +17,13 @@ class Luoma
         if( !is_string($msg) ){
             $msg = var_export($msg, true);
         }
-        $file = APPPATH . 'logs' . DIRECTORY_SEPARATOR . date('Ymd') . "-" . $type . ".log";
-        if( !file_exists($file) ){
-            mkdir($file, 0766, true);
+        $dir = APPPATH . 'logs';
+        if( !is_dir($dir) ){
+            mkdir($dir, 0766, true);
+        }
+        $file = $dir . DIRECTORY_SEPARATOR . date('Ymd') . "-" . $type . ".log";
+        if( !is_file ){
+            touch($file);
         }
         $_message = date('Y-m-d H:i:s') . '    ' . $msg . PHP_EOL;
         @file_put_contents($file, $_message, FILE_APPEND | LOCK_EX);
