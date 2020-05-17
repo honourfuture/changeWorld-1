@@ -224,7 +224,10 @@ class Order_payment extends API_Controller {
             }
         }
         catch (\Exception $e){
-            @file_put_contents('/tmp/payment.log', "JpushError\n" . var_export($e, true), FILE_APPEND | LOCK_EX);
+            $this->load->library('luoma');
+            $logType = 'order_payment';
+            $this->luoma->logger("JpushError", $logType);
+            $this->luoma->logger($e, $logType);
         }
         $this->ajaxReturn();
     }
@@ -328,6 +331,10 @@ class Order_payment extends API_Controller {
         if($result->return_code == 'SUCCESS' && $result->result_code == 'SUCCESS'){
             $this->ajaxReturn($app->payment->configForAppPayment($result['prepay_id']));
         }else{
+            $this->load->library('luoma');
+            $logType = 'order_payment';
+            $this->luoma->logger('Wechat Pay', $logType);
+            $this->luoma->logger($order, $logType);
             $this->ajaxReturn([], 2, $result->return_msg);
         }
     }
