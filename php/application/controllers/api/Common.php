@@ -165,11 +165,11 @@ class Common extends API_Controller
         $base64_image_content = $this->input->get_post('base64_image_content');
         //正则匹配出图片的格式
         if (!preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64_image_content, $result)) {
-            $this->load->helper('logger');
+            $this->load->library('Luoma');
             $logType = 'base64upload';
-            logger($_POST, $logType);
-            logger($base64_image_content, $logType);
-            logger($result, $logType);
+            $this->Luoma->logger($_POST, $logType);
+            $this->Luoma->logger($base64_image_content, $logType);
+            $this->Luoma->logger($result, $logType);
             $this->ajaxReturn([], 2, '文件base64格式错误');
         }
 
@@ -181,7 +181,7 @@ class Common extends API_Controller
         if ( !file_put_contents($new_file, base64_decode(str_replace($result[1], '', $base64_image_content))) ) {
             $this->ajaxReturn($ret, 1, '保存失败');
         }
-        
+
         $ret['file_url'] = '/'.substr($new_file, strpos($new_file, 'uploads'));
         $this->upload->set_image_properties($new_file);
         $ret['width'] = $this->upload->image_width;

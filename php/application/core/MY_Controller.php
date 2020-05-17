@@ -94,7 +94,8 @@ class MY_Controller extends CI_Controller
         $ret['data'] = is_null($data) ? [] : $data;
         $ret['status'] = $status;
         $ret['message'] = empty($message) ? '成功' : $message;
-        echo json_encode($ret, JSON_UNESCAPED_UNICODE);exit();
+        echo json_encode($ret, JSON_UNESCAPED_UNICODE);
+        exit();
     }
 
     //等级经验规则
@@ -103,10 +104,12 @@ class MY_Controller extends CI_Controller
         $config = array();
         $this->load->model('Grade_rule_model');
         $rows = $this->Grade_rule_model->get_all();
-        if($rows){
-            foreach($rows as $item){
-                $config[$item['name']] = $item['value'];
-            }
+        if( empty($rows) ){
+            return $config;
+        }
+
+        foreach($rows as $item){
+            $config[$item['name']] = $item['value'];
         }
 
         return $config;
@@ -118,10 +121,12 @@ class MY_Controller extends CI_Controller
         $config = array();
         $this->load->model('Points_rule_model');
         $rows = $this->Points_rule_model->get_all();
-        if($rows){
-            foreach($rows as $item){
-                $config[$item['name']] = $item['value'];
-            }
+        if( empty($rows) ){
+            return $config;
+        }
+        
+        foreach($rows as $item){
+            $config[$item['name']] = $item['value'];
         }
 
         return $config;
