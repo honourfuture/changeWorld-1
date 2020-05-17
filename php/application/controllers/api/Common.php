@@ -182,9 +182,9 @@ class Common extends API_Controller
         }else{
             $this->load->helper('logger');
             $logType = 'base64upload';
-            logger($_POST, logType);
-            logger($base64_image_content, logType);
-            logger($result, logType);
+            logger($_POST, $logType);
+            logger($base64_image_content, $logType);
+            logger($result, $logType);
             $this->ajaxReturn([], 2, '文件base64格式错误');
         }
     }
