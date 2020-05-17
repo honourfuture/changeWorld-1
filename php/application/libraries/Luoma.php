@@ -17,7 +17,7 @@ class Luoma
         if( !is_string($msg) ){
             $msg = var_export($msg, true);
         }
-        $file = APPPATH . 'logs' . date('Ymd') . "-" . $type . ".log";
+        $file = APPPATH . 'logs' . DIRECTORY_SEPARATOR . date('Ymd') . "-" . $type . ".log";
         if( !file_exists($file) ){
             mkdir($file, 0766, true);
         }
