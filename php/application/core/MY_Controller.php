@@ -36,6 +36,7 @@ class MY_Controller extends CI_Controller
         $this->load->model('Grade_rule_model');
         $this->load->model('Users_grade_model');
         $this->init_my();
+        $this->load->library('luoma');
     }
 
     protected function init_my()
@@ -290,7 +291,8 @@ class API_Controller extends MY_Controller
             }
         }else{
             $this->check_sign();
-        }
+        }        
+        $this->load->library('luoma');
     }
 
     protected function user_login_success($user_info)
