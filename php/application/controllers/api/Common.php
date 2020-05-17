@@ -164,22 +164,7 @@ class Common extends API_Controller
         $this->init_upload();
         $base64_image_content = $this->input->get_post('base64_image_content');
         //正则匹配出图片的格式
-        if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64_image_content, $result)) {
-            $this->upload->file_ext = '.'.strtolower($result[2]);//图片后缀
-            $filename = ''; //文件名
-            $filename = $this->upload->set_filename($this->upload->upload_path, $filename);
-            $new_file = $this->upload->upload_path.$filename;
-            //写入操作
-            if (file_put_contents($new_file, base64_decode(str_replace($result[1], '', $base64_image_content)))) {
-                $ret['file_url'] = '/'.substr($new_file, strpos($new_file, 'uploads'));
-                $this->upload->set_image_properties($new_file);
-                $ret['width'] = $this->upload->image_width;
-                $ret['height'] = $this->upload->image_height;
-                $this->ajaxReturn($ret);
-            } else {
-                $this->ajaxReturn($ret, 1, '保存失败');
-            }
-        }else{
+        if (!preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64_image_content, $result)) {
             $this->load->helper('logger');
             $logType = 'base64upload';
             logger($_POST, $logType);
@@ -187,6 +172,21 @@ class Common extends API_Controller
             logger($result, $logType);
             $this->ajaxReturn([], 2, '文件base64格式错误');
         }
+
+        $this->upload->file_ext = '.'.strtolower($result[2]);//图片后缀
+        $filename = ''; //文件名
+        $filename = $this->upload->set_filename($this->upload->upload_path, $filename);
+        $new_file = $this->upload->upload_path.$filename;
+        //写入操作
+        if ( !file_put_contents($new_file, base64_decode(str_replace($result[1], '', $base64_image_content))) ) {
+            $this->ajaxReturn($ret, 1, '保存失败');
+        }
+        
+        $ret['file_url'] = '/'.substr($new_file, strpos($new_file, 'uploads'));
+        $this->upload->set_image_properties($new_file);
+        $ret['width'] = $this->upload->image_width;
+        $ret['height'] = $this->upload->image_height;
+        $this->ajaxReturn($ret);
     }
 
     /**
