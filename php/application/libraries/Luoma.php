@@ -22,7 +22,7 @@ class Luoma
             mkdir($dir, 0766, true);
         }
         $file = $dir . DIRECTORY_SEPARATOR . date('Ymd') . "-" . $type . ".log";
-        if( !is_file ){
+        if( !is_file($file) ){
             touch($file);
         }
         $_message = date('Y-m-d H:i:s') . '    ' . $msg . PHP_EOL;
