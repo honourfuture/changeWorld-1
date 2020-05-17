@@ -35,7 +35,7 @@ const alert = Modal.alert;
 const showAlert = () => {
     const alertInstance = alert('恭喜您', '发布成功！', [
         { text: '继续发布', onPress: () => Base.push('ProductIssue'), style: 'default' },
-        { text: '我的产品', onPress: () => Base.push("MyProduct") },
+        { text: '我的产品', onPress: () => Base.push("MyProduct", {isPubProd:1}) },
     ]);
     setTimeout(() => {
         // 可以调用close方法以在外部close
