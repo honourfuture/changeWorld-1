@@ -193,8 +193,10 @@ export default class SharePage extends BaseComponent {
         address: [],
         sale_num: 0,
         goods_explain: "",
-        cardTotal: 0
+        cardTotal: 0,        
+        topDisplay: ""
     };
+    
     selectedNum = 1;
     page_title = '';
     tipsShow = '';
@@ -254,7 +256,7 @@ export default class SharePage extends BaseComponent {
     }
     @action.bound
     hiddenTips(){
-        this.tipsShow = 'display:"none"';
+        this.store.topDisplay = "none";
     }
     /*点击立即打开app*/
     handleClick(){
@@ -278,6 +280,7 @@ export default class SharePage extends BaseComponent {
             sale_num,
             goods_explain,
             rate,
+            topDisplay
         } = this.store;
         let {
             goods_image = "",
@@ -377,14 +380,14 @@ export default class SharePage extends BaseComponent {
                         {goodsImgs}                         
                     </Carousel>
                      
-                    <div className="mymodel">
+                    <div className="mymodel" style={{display: this.store.topDisplay}}>
                        <div className="mymodel-list left">
                           <div className="mymodel-list-colse" onClick={this.hiddenTips}>x</div>
                           <div className="mymodel-list-logo">
                             <img src={icon.logo}/>
                           </div>
                           <div className="mymodel-list-content">
-                            <p>打开罗马市场App</p>
+                            <p>打开罗马市场APP</p>
                             <p>享受更多权益</p>
                           </div>
                        </div>
@@ -398,23 +401,20 @@ export default class SharePage extends BaseComponent {
                             <div className="price">
                                 ￥{Base.getNumFormat(sale_price)}
                             </div>
-                            <Flex
-                                style={{
+                            <div>
+                                {parseInt(base_percent / 100 * sale_price) != 0 &&<div style={{
                                     fontSize: 13,
                                     color: "#999",
-                                    marginTop: 10
-                                }}
-                            >
-                                {parseInt(base_percent) && <div>返利{parseInt(base_percent / 100 * sale_price)}元</div>}
-                                <Flex style={{ marginRight: 20 }}>
-                                    <div>已售{sale_num}</div>
+                                    marginBottom: 4,
+                                    background: '#ED3379',
+                                    color: '#fff',
+                                    padding: '4px 10px',
+                                    borderRadius: 70,
+                                }}> <div>返利{parseInt(base_percent / 100 * sale_price)}元</div></div>}
+                                <Flex >
+                                    <div style={{ margin: '0 auto', color: "gray" }}>已售{sale_num}</div>
                                 </Flex>
-                                {seller_address ? (
-                                    <Flex>
-                                        <div>{seller_address}</div>
-                                    </Flex>
-                                ) : null}
-                            </Flex>
+                            </div>
                             {/* {parseInt(reward_point)?<div style={{ fontSize: 11, color: "red" }}>
                                 等价积分赠送
                             </div>:null} */}

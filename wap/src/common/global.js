@@ -15,6 +15,8 @@ export default {
     //Prod
     API_URL: "https://www.luomashichang.cn/api",
     RES_URL: "https://www.luomashichang.cn/",
+    IOS_DOWNLOWD_URL: "",
+    ANDROID_DOWNLOAD_URL: "https://www.luomashichang.cn/download/lmsc_android.apk",
     get UPLOAD_URL() {
         return `${this.API_URL}/common/fileUpload`;
     },

@@ -171,6 +171,16 @@ export default class MyProduct extends BaseComponent {
         );
     }
     @action.bound
+    goBack(){
+        const isPubProd = Base.getPageParams('isPubProd');
+        if( isPubProd ){//发布成功后点击返回,则直接返回我的商城
+            Base.push('UserCenter');
+        }
+        else{
+            Base.goBack();
+        }
+    }
+    @action.bound
     onRefresh() {
         this.store.refreshing = true;
         this.store.isLoading = false;
@@ -196,7 +206,7 @@ export default class MyProduct extends BaseComponent {
                     className="base-line"
                     mode="light"
                     icon={<img src={icon.back} alt="" />}
-                    onLeftClick={Base.goBack}
+                    onLeftClick={this.goBack}
                 >
                     我的产品
                 </NavBar>

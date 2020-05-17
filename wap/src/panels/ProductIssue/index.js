@@ -30,6 +30,21 @@ const getBase64 = (img, callback) => {
     reader.readAsDataURL(img);
 };
 
+//弹窗啊
+const alert = Modal.alert;
+const showAlert = () => {
+    const alertInstance = alert('恭喜您', '发布成功！', [
+        { text: '继续发布', onPress: () => Base.push('ProductIssue'), style: 'default' },
+        { text: '我的产品', onPress: () => Base.push("MyProduct") },
+    ]);
+    setTimeout(() => {
+        // 可以调用close方法以在外部close
+        console.log('auto close');
+        alertInstance.close();
+    }, 500000);
+};
+
+
 class ImgItem extends BaseComponent {
     store = { isShowTips: false };
     @action.bound
@@ -80,7 +95,7 @@ class ImgItem extends BaseComponent {
             "inputMultiple"
         );
     }
-   
+
     render() {
         const { title, fileName, isRequired } = this.props;
         const limit = isRequired;
@@ -134,14 +149,14 @@ class ImgItem extends BaseComponent {
                                 onClick={this.onAndroidUpload}
                             />
                         ) : (
-                            <input
-                                type="file"
-                                accept="image/*"
-                                multiple="multiple"
-                                onChange={this.onChange}
-                                className="image-select-input"
-                            />
-                        )}
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    multiple="multiple"
+                                    onChange={this.onChange}
+                                    className="image-select-input"
+                                />
+                            )}
                         <img src={icon.addImg} alt="" />
                     </div>
                 </Flex>
@@ -150,26 +165,26 @@ class ImgItem extends BaseComponent {
                     {limit}
                     张图片
                 </div>
-                        <div className="upImgTips">注：推荐尺寸为{widthLength}的图片</div>
+                <div className="upImgTips">注：推荐尺寸为{widthLength}的图片</div>
             </div>
         );
     }
 }
 
 class ProductIssue extends BaseComponent {
-    changeTopPercent(value){
+    changeTopPercent(value) {
         return true
     }
     store = {
-        poster_img : [],
+        poster_img: [],
         goods_image: [],
         goods_detail: [],
         send_mode: [],
         goods_attr: [],
         goods_class: [],
         point_rate: 0,
-        use_point_rate: 0, 
-        basePercent : 100,
+        use_point_rate: 0,
+        basePercent: 100,
     };
     @action.bound
     onChangeMainImg = files => {
@@ -194,7 +209,7 @@ class ProductIssue extends BaseComponent {
                     city_partner_rate,
                     rebate_percent,
                     base_percent,
-                    goods_class_id
+                    // goods_class_id
                 } = values;
                 const i_two_level_rate = parseFloat(two_level_rate) || 0;
                 const i_city_partner_rate = parseFloat(city_partner_rate) || 0;
@@ -206,22 +221,22 @@ class ProductIssue extends BaseComponent {
                 //         false
                 //     );
                 // }
-                if (!goods_class_id) {
-                     return Toast.fail("请选择产品分类", 2, null, false);
-                }
-                if(rebate_percent > 90){
+                // if (!goods_class_id) {
+                //     return Toast.fail("请选择产品分类", 2, null, false);
+                // }
+                if (rebate_percent > 90) {
                     return Toast.fail("最高让利率上限为90", 2, null, false);
                 }
                 let max = rebate_percent / 400 * 100;
                 max = Math.floor(max)
-                if(base_percent > max){
+                if (base_percent > max) {
                     return Toast.fail(`基础让利率最高为${max}%`, 2, null, false);
                 }
-                
-                if(base_percent > 100){
+
+                if (base_percent > 100) {
                     return Toast.fail("请填写正确的百分比基础让利率", 2, null, false);
                 }
-                
+
                 if (!send_mode) {
                     return Toast.fail("请选择发货模式", 2, null, false);
                 }
@@ -273,7 +288,7 @@ class ProductIssue extends BaseComponent {
                         use_point_rate,
                         e_invoice,
                         send_mode: send_mode[0],
-                        goods_class_id: goods_class_id[0],
+                        // goods_class_id: goods_class_id[0],
                         goods_ticket,
                         goods_image: JSON.stringify(goods_imageUrl),
                         poster_img: JSON.stringify(poster_imgUrl),
@@ -284,10 +299,10 @@ class ProductIssue extends BaseComponent {
                         const { id } = Base.getPageParams();
                         if (id) {
                             alert("恭喜您, 编辑成功！")
-                             Base.push("MyProduct")
-                        } else {
-                            alert("恭喜您, 发布成功！")
                             Base.push("MyProduct")
+                        } else {
+                            //调用弹窗方法
+                            showAlert();
                         }
                     }
                 );
@@ -419,31 +434,31 @@ class ProductIssue extends BaseComponent {
         });
     }
     changeRebatePercent = (value) => {
-        if(value > 90){
+        if (value > 90) {
             Toast.offline('最高让利率最大为90', 1);
             value = 90
         }
         let max = value / 400 * 100;
         max = Math.floor(max)
-        this.props.form.setFieldsValue({ rebate_percent: value, base_percent : max});
+        this.props.form.setFieldsValue({ rebate_percent: value, base_percent: max });
     }
 
     changeBasePercent = (value) => {
-        let  t = this.props.form.getFieldProps('rebate_percent');
-        if(t.value == undefined){
+        let t = this.props.form.getFieldProps('rebate_percent');
+        if (t.value == undefined) {
             Toast.offline('请先填写最高让利率', 1);
             value = 0
-        }else{
+        } else {
             let max = t.value / 400 * 100;
-            if(value > max){
+            if (value > max) {
                 Toast.offline('基础让利率超出', 1);
                 value = Math.floor(max)
             }
         }
 
-        this.props.form.setFieldsValue({ base_percent : value});
+        this.props.form.setFieldsValue({ base_percent: value });
     }
-    
+
     render() {
         const {
             goods_image,
@@ -455,7 +470,7 @@ class ProductIssue extends BaseComponent {
             use_point_rate,
             goods_class,
         } = this.store;
-        
+
         const { getFieldProps, getFieldError } = this.props.form;
         const goodsAttrItems = goods_attr.map((item, index) => {
             const { id, name, list } = item;
@@ -532,7 +547,7 @@ class ProductIssue extends BaseComponent {
                                 labelNumber={1}
                             />
                         </Flex>
-                        
+
                         <InputItem
                             error={!!getFieldError("stock")}
                             {...getFieldProps("stock", {
@@ -571,7 +586,6 @@ class ProductIssue extends BaseComponent {
                             产品价格
                             <em>*</em>
                         </InputItem>
-                        {/**
                         <Flex
                             justify="between"
                             className="textarea-con base-line"
@@ -610,8 +624,7 @@ class ProductIssue extends BaseComponent {
                                 labelNumber={1}
                             />
                         </Flex>
-                        */}
-                        <Picker
+                        {/* <Picker
                             data={goods_class}
                             cols={1}
                             {...getFieldProps("goods_class_id")}
@@ -620,7 +633,7 @@ class ProductIssue extends BaseComponent {
                                 产品分类
                                 <em>*</em>
                             </Item>
-                        </Picker>
+                        </Picker> */}
                     </List>
                     <WhiteSpace />
                     <List className="productBasic">
@@ -767,7 +780,7 @@ class ProductIssue extends BaseComponent {
                             moneyKeyboardAlign="right"
                             extra="%"
                             onChange={this.changeBasePercent}
-                            
+
                         >
                             基础让利率
                         </InputItem>
