@@ -165,7 +165,7 @@ class Common extends API_Controller
         $base64_image_content = $this->input->get_post('base64_image_content');
         //正则匹配出图片的格式
         if (!preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64_image_content, $result)) {
-            $this->load->library('Luoma');
+            $this->load->library('luoma');
             $logType = 'base64upload';
             $this->luoma->logger($_POST, $logType);
             $this->luoma->logger($base64_image_content, $logType);
