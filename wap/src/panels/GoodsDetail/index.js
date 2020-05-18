@@ -357,7 +357,7 @@ export default class GoodsDetail extends BaseComponent {
                 const shareData = {
                     switcher_income: switcher_income,
                     max_income: max_income, 
-                    min_income:min_income,
+                    min_income: min_income,
                     invite_code: res.data.invite_code,
                     title: share_title,
                     description: "",
@@ -366,7 +366,6 @@ export default class GoodsDetail extends BaseComponent {
                         Global.RES_URL
                         }/wap/index.html#/SharePage?id=` + goods_info.id + `&uid=${user_id}`
                 };
-                console.log(shareData);
                 Base.pushApp("openShareView", JSON.stringify(shareData));
             });
 
