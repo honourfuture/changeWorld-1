@@ -244,10 +244,7 @@ export default class WithdrawalMananger extends BaseComponent {
                     <Button type="primary" onClick={() =>
                         this.requestData()
                     }>查询</Button>
-                </div>
-
-                <div style={{width:200}}>
-                    合计已付汇款：{withdrawChecked}
+                    <span style={{ marginLeft:5 }}>合计已汇款：￥{withdrawChecked}</span>
                 </div>
                 <Table
                     size="small"
