@@ -285,25 +285,20 @@ class User extends API_Controller {
         $keyword = $this->input->get_post('keyword');
         try{
             $where = [];
-            // $where['1 >'] = 0;
-            $where['robot'] = 0;
+            $where[] = "u.robot=0";
             if( !empty($keyword) ){
-                $this->db->group_start();
-                $this->db->like('id', $keyword);
-                $this->db->or_like('nickname', $keyword);
-                $this->db->or_like('mobi', $keyword);
-                $this->db->group_end();
+                $where[] = "(u.`id` LIKE '%{$keyword}%' OR u.`nickname` LIKE '%{$keyword}%' OR u.`mobi` LIKE '%{$keyword}%')";
             }
-            $order_by = array('id' => 'desc');
-
-            $this->search();
-            $ret['count'] = $this->Users_model->count_by($where);
+            $sql = "SELECT COUNT(1) AS cnt FROM users u WHERE " . implode(' AND ', $where);
+            $record = $this->db->query($sql)->row_array();
+            $ret['count'] = $record['cnt'];
             if( empty($ret['count']) ){
                 $this->ajaxReturn($ret);
             }
-            $this->db->select('id, pid, created_at,updated_at,mobi,account,header,nickname,v,anchor,seller,exp,reg_ip,balance,point,gold,headhunter,reward_point,enable');
-            $this->search();
-            $list = $this->Users_model->order_by($order_by)->limit($this->per_page, $this->offset)->get_many_by($where);
+            $fields = "sum(i.amount) as amount, count(1) as cnt, u.id, pid, u.created_at, u.updated_at, u.mobi, u.account, u.header, u.nickname, 
+            u.v, u.anchor, u.seller, u.exp, u.reg_ip, u.balance, u.point, u.gold, u.headhunter, u.reward_point, u.enable";
+            $sql = "select {$fields} from users u INNER join income i on u.id = i.user_id where ". implode(' AND ', $where) ." group by u.id order by amount desc;";
+            $list = $this->db->query($sql)->result_array();
             $arrUserIds = [];
             foreach($list as $k=>$user){
                 $arrUserIds[] = $user['id'];
@@ -325,8 +320,6 @@ class User extends API_Controller {
                 $user['sons_count'] = count($user['sons']);
                 $ret['list'][] = $user;
             }
-            $this->load->model('Income_model');
-            $ret['incomes'] = $this->Income_model->getUserTotalIncome($arrUserIds);
             $ret['status'] = 0;
             $ret['message'] = 'success';
         }
