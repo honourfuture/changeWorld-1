@@ -343,7 +343,7 @@ export default class GoodsDetail extends BaseComponent {
         let { name = "", default_image = "" } = goods_info;
         Base.getAuthData(({ user_id }) => {
             Base.GET({ act: "info", op: "view", mod: "user", user_id: user_id }, res => {
-                var share_title = "来自" + res.data.nickname + "的分享" + (res.data.invite_code ? "\n邀请码：" + res.data.invite_code : "");
+                var share_title = "来自" + res.data.nickname + "的分享";// + (res.data.invite_code ? "\n邀请码：" + res.data.invite_code : "")
                 /**
                  const shareData = {
                     title: share_title,
