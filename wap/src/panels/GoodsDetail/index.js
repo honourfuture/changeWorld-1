@@ -182,7 +182,10 @@ export default class GoodsDetail extends BaseComponent {
         address: [],
         sale_num: 0,
         goods_explain: "",
-        cardTotal: 0
+        cardTotal: 0,
+        switcher_income: 0,
+        max_income: 0, 
+        min_income: 0
     };
     selectedNum = 1;
     componentDidMount() {
@@ -197,7 +200,10 @@ export default class GoodsDetail extends BaseComponent {
                 favorite,
                 sale_num,
                 goods_explain,
-                rate
+                rate,
+                switcher_income,
+                max_income, 
+                min_income
             } = res.data;
             this.store.evaluate = evaluate;
             this.store.goods = goods;
@@ -208,6 +214,9 @@ export default class GoodsDetail extends BaseComponent {
             this.store.sale_num = sale_num || "0";
             this.store.goods_explain = goods_explain;
             this.store.rate = rate;
+            this.store.switcher_income = switcher_income;
+            this.store.max_income = max_income;
+            this.store.min_income = min_income;
             Base.GET({ act: "cart", op: "count", mod: "user" }, res => {
                 const data = res.data;
                 this.store.cardTotal = data.count;
@@ -330,8 +339,7 @@ export default class GoodsDetail extends BaseComponent {
     }
     @action.bound
     onShare() {
-        const { goods_info = {} } = this.store;
-        console.log(goods_info);
+        const { goods_info = {}, switcher_income, max_income, min_income } = this.store;
         let { name = "", default_image = "" } = goods_info;
         Base.getAuthData(({ user_id }) => {
             Base.GET({ act: "info", op: "view", mod: "user", user_id: user_id }, res => {
@@ -347,6 +355,10 @@ export default class GoodsDetail extends BaseComponent {
                 };
                 */
                 const shareData = {
+                    switcher_income: switcher_income,
+                    max_income: max_income, 
+                    min_income:min_income,
+                    invite_code: res.data.invite_code,
                     title: share_title,
                     description: "",
                     imageUrl: Base.getImgUrl(default_image),
@@ -354,6 +366,7 @@ export default class GoodsDetail extends BaseComponent {
                         Global.RES_URL
                         }/wap/index.html#/SharePage?id=` + goods_info.id + `&uid=${user_id}`
                 };
+                console.log(shareData);
                 Base.pushApp("openShareView", JSON.stringify(shareData));
             });
 
