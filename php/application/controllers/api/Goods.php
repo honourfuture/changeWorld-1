@@ -357,6 +357,12 @@ class Goods extends API_Controller {
 		$order_items = $this->Record_goods_model->get_by(['goods_id' => $goods_id, 'created_at >' => date("Y-m-d H:i:s", strtotime('-30 days'))]);
 		$ret['sale_num'] = ($order_items && $order_items['total']) ? $order_items['total'] : 0;
 
+		/**
+		 * 获得收益情况(base_percent&rebate_percent)
+		 */
+		$ret['max_income'] = floor($info['sale_price'] * $info['rebate_percent'] / 100);
+		$ret['min_income'] = floor($info['sale_price'] * $info['base_percent'] / 100);
+
 		$this->ajaxReturn($ret);
 	}
 
