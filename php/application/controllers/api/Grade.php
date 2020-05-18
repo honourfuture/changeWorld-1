@@ -117,7 +117,7 @@ class Grade extends API_Controller {
          * isShowUp：0-不显示、1-审核中，显示按钮（文案：审核中），2-拒绝，显示按钮（文案：不通过，重新提交）
         */
            
-        if( isset($rankList["rank_{$nextRank}"]) && $rankList["rank_{$nextRank}"]['exp'] <= $exp){
+        if( ($thisRank+1) != 6 && isset($rankList["rank_{$nextRank}"]) && $rankList["rank_{$nextRank}"]['exp'] <= $exp){
             if( empty($verify) ){//未申请
                 $rankList["rank_{$thisRank}"]['isShowUp'] = 1;
                 $rankList["rank_{$thisRank}"]['statusUpgrade'] = 1;
