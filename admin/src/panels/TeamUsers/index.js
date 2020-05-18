@@ -93,12 +93,9 @@ export default class TeamUsers extends BaseComponent {
             },
             {
                 title: "累计收益",
+                dataIndex: "amount",
                 width: 80,
-                render: (text, record) =>
-                    this.renderText(
-                        this.store.incomes[record.id],
-                        record
-                    )
+                render: (text, record) => this.renderText(text, record, "amount")
             },
             {
                 title: "注册时间",
