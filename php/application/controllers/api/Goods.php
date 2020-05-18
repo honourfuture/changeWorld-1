@@ -360,6 +360,7 @@ class Goods extends API_Controller {
 		/**
 		 * 获得收益情况(base_percent&rebate_percent)
 		 */
+		$ret['switcher_income'] = empty($info['base_percent']) ? 0 : 1;
 		$ret['max_income'] = floor($info['sale_price'] * $info['rebate_percent'] / 100);
 		$ret['min_income'] = floor($info['sale_price'] * $info['base_percent'] / 100);
 
