@@ -105,13 +105,49 @@ class Grade extends API_Controller {
             $rank['icon'] = config_item('base_url') .$rank['icon'];
             $rank['isCheck'] = ($rank['id'] == $thisRank ? 1 : 0);
             $rank['isShowUp'] = 0;
+            $rank['showUpTitle'] = '';
+            $rank['statusUpgrade'] = 0;
             $rankList["rank_{$rank['id']}"] = $rank;
         }
         $verify = $this->Users_rank_rule_verify_model->order_by('id', 'desc')->get_by(['from' => $thisRank, 'user_id' => $this->user_id]);
 
-        //0 未审核 1 审核中 2 审核通过 3 拒绝
+        /**
+         * 前提：结构中统一会有isCheck、isShowUp字段
+         * isCheck：0-未选中、1-选择
+         * isShowUp：0-不显示、1-审核中，显示按钮（文案：审核中），2-拒绝，显示按钮（文案：不通过，重新提交）
+        */
+           
         if( isset($rankList["rank_{$nextRank}"]) && $rankList["rank_{$nextRank}"]['exp'] <= $exp){
-            $rankList["rank_{$thisRank}"]['isShowUp'] = (isset($verify['status']) && $verify['status'] == 3 ) ? 1 : 0; 
+            if( empty($verify) ){//未申请
+                $rankList["rank_{$thisRank}"]['isShowUp'] = 1;
+                $rankList["rank_{$thisRank}"]['statusUpgrade'] = 1;
+                $rankList["rank_{$thisRank}"]['showUpTitle'] = '升级';
+            }
+            else{
+                switch($verify['status']){
+                    case 0://0 未审核
+                        $rankList["rank_{$thisRank}"]['isShowUp'] = 1;
+                        $rankList["rank_{$thisRank}"]['statusUpgrade'] = 1;
+                        $rankList["rank_{$thisRank}"]['showUpTitle'] = '升级';
+                        break;
+                    case 1://1 审核中
+                        $rankList["rank_{$thisRank}"]['isShowUp'] = 1;
+                        $rankList["rank_{$thisRank}"]['statusUpgrade'] = 0;
+                        $rankList["rank_{$thisRank}"]['showUpTitle'] = '审核中';
+                        break;
+                    case 2://2 审核通过
+                        $rankList["rank_{$thisRank}"]['isShowUp'] = 0;
+                        $rankList["rank_{$thisRank}"]['statusUpgrade'] = 0;
+                        $rankList["rank_{$thisRank}"]['showUpTitle'] = '';
+                        break;
+                    case 3://3 拒绝
+                        $rankList["rank_{$thisRank}"]['isShowUp'] = 1;
+                        $rankList["rank_{$thisRank}"]['statusUpgrade'] = 1;
+                        $rankList["rank_{$thisRank}"]['showUpTitle'] = '不通过，重新提交';
+                        break;
+                }
+            }
+            
         }
         if( $thisRank<=2 ){
             unset($rankList["rank_3"], $rankList["rank_4"], $rankList["rank_5"]);
