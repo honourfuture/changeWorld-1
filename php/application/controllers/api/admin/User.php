@@ -317,7 +317,7 @@ class User extends API_Controller {
                 $user['point'] = floor($user['point']);
                 $user['gold'] = floor($user['gold']);
                 $sons = [];
-                $user['sons'] = array_values($this->Users_model->getSons($user['id']), $sons);
+                $user['sons'] = array_values($this->Users_model->getSons($user['id'], $sons));
                 $user['sons_count'] = count($user['sons']);
                 $ret['list'][] = $user;
             }
