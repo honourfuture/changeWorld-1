@@ -703,16 +703,18 @@ export default class GoodsDetail extends BaseComponent {
                     ) : null}
 
                     <WhiteSpace size="lg" />
-                    <div className="image-text-con">
+                    <div className="image-text-con"> 
                         <div className="title-con">价格说明</div>
                         <div
                             dangerouslySetInnerHTML={{ __html: goods_explain }}
                         />
                     </div>
                     {buy_notice && buy_notice != 'null' && (
-                        <div dangerouslySetInnerHTML={{
-                            __html: buy_notice
-                        }} />
+                        <div className="desc-con">
+                            <div dangerouslySetInnerHTML={{
+                                __html: buy_notice
+                            }} />
+                        </div>
                     )
                     }
                 </div>

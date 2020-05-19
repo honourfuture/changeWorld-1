@@ -156,6 +156,15 @@ export default class TeamUsers extends BaseComponent {
     }
     current = 1;
     @action.bound
+    exportExcel(){
+        let url = Global.API_URL;
+        let Aparam = [];
+        Aparam[0] = 'keyword=' + this.searchStr;
+        Aparam[1] = 'export=1';
+        Aparam[2] = 'type=1';
+        window.open(url + "/admin/user/export?" + Aparam.join("&"));
+    }
+    @action.bound
     requestData() {
         this.selectedRowKeys = [];
         Base.GET(
@@ -203,6 +212,9 @@ export default class TeamUsers extends BaseComponent {
                         onSearch={this.onSearch}
                         style={{ width: 200, marginLeft: 10 }}
                     />
+                    <Button type="primary" style={{ marginLeft:5 }} onClick={() =>
+                        this.exportExcel()
+                    }>导出</Button>
                     <span style={{ marginLeft: 20 }}>
                         总数：
                         {total}

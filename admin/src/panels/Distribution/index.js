@@ -197,6 +197,7 @@ export default class Distribution extends BaseComponent {
         Aparam[2] = 'user_name=' + (this.searchUserName || "");
         Aparam[3] = 'product_name=' + (this.searchProductName || "");
         Aparam[4] = 'date_zoom=' + (this.dateZoom || "");
+        Aparam[5] = 'type=2';
         window.open(url + "/admin/order/export?" + Aparam.join("&"));
     }
     @action.bound

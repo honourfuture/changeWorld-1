@@ -95,6 +95,16 @@ export default class PlatformIncome extends BaseComponent {
         this.searchStr = value;
     }
     @action.bound
+    exportExcel(){
+        let url = Global.API_URL;
+        let Aparam = [];
+        Aparam[0] = 'status=' + this.store.status;
+        Aparam[1] = 'date_zoom=' + (this.dateZoom || "");
+        Aparam[2] = 'export=1';
+        Aparam[3] = 'type=1';
+        window.open(url + "/admin/platform/export?" + Aparam.join("&"));
+    }
+    @action.bound
     onChange(value, dateString) {
         this.dateZoom = dateString.join('/');
     }
@@ -164,6 +174,9 @@ export default class PlatformIncome extends BaseComponent {
                     <Button type="primary" style={{ marginLeft:5 }} onClick={() =>
                         this.requestData()
                     }>查询</Button>
+                    <Button type="primary" style={{ marginLeft:5 }} onClick={() =>
+                        this.exportExcel()
+                    }>导出</Button>
                 <span style={{ marginLeft:5 }}>平台总收益：￥{this.store.income_total}</span>
                 </div>
                 <Table

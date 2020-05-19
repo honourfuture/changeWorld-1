@@ -120,6 +120,16 @@ export default class PlatformTrade extends BaseComponent {
     }
     current = 1;
     @action.bound
+    exportExcel(){
+        let url = Global.API_URL;
+        let Aparam = [];
+        Aparam[0] = 'status=' + this.store.status;
+        Aparam[1] = 'order_sn=' + (this.searchStr || "");
+        Aparam[2] = 'date_zoom=' + (this.dateZoom || "");
+        Aparam[3] = 'type=3';
+        window.open(url + "/admin/order/export?" + Aparam.join("&"));
+    }
+    @action.bound
     requestData() {
         Base.GET(
             {
@@ -166,6 +176,9 @@ export default class PlatformTrade extends BaseComponent {
                     <Button type="primary" style={{ marginLeft:5 }} onClick={() =>
                         this.requestData()
                     }>查询</Button>
+                    <Button type="primary" style={{ marginLeft:5 }} onClick={() =>
+                        this.exportExcel()
+                    }>导出</Button>
                     <span style={{ marginLeft:5 }}>平台总交易额：￥{this.store.trade_total}</span>
                 </div>
                 <Table
