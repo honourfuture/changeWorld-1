@@ -164,6 +164,37 @@ class Order extends API_Controller {
         if(empty($type)){
             $type = 1;
         }
+        switch($type){
+            case 2://分销数据
+                $arrHeaderTitle = [
+                    ['title'=>'订单编号', 'field'=>'order_sn'],
+                    ['title'=>'买家姓名', 'field'=>'buyer_uid'],
+                    ['title'=>'卖家姓名', 'field'=>'seller_uid'],
+                    ['title'=>'支付金额', 'field'=>'real_total_amount'],
+                    ['title'=>'总金额', 'field'=>'total_amount'],
+                    ['title'=>'运费', 'field'=>'freight_fee'],
+                    ['title'=>'商家收益', 'field'=>'seller_income'],
+                    ['title'=>'手续费', 'field'=>'commission'],
+                    ['title'=>'买家所得积分', 'field'=>'point'],
+                    ['title'=>'买家所得经验', 'field'=>'exp'],
+                    ['title'=>'用户返佣合计', 'field'=>'commission_users'],
+                    ['title'=>'下单时间', 'field'=>'created_at'],
+                    ['title'=>'完成时间', 'field'=>'updated_at']
+                ];
+                break;
+            case 3://平台交易流水
+                $arrHeaderTitle = [
+                    ['title'=>'订单编号', 'field'=>'order_sn'],
+                    ['title'=>'买家姓名', 'field'=>'buyer_uid'],
+                    ['title'=>'卖家姓名', 'field'=>'seller_uid'],
+                    ['title'=>'支付金额', 'field'=>'real_total_amount'],
+                    ['title'=>'总金额', 'field'=>'total_amount'],
+                    ['title'=>'订单状态', 'field'=>'status'],
+                    ['title'=>'下单时间', 'field'=>'created_at'],
+                    ['title'=>'完成时间', 'field'=>'updated_at']
+                ];
+                break;
+        }
         $arrOrders = $this->_getOrders($type, true);
         $this->load->library('PHPExcel');
         $this->load->library('PHPExcel/IOFactory');
@@ -178,26 +209,13 @@ class Order extends API_Controller {
         $objPHPExcel->getProperties()->setKeywords('');//设置关键词
         $objPHPExcel->getProperties()->setCategory('');//设置类型
         $objPHPExcel->setActiveSheetIndex(0);
-        $arrHeaderTitle = [
-            ['title'=>'订单编号', 'field'=>'order_sn'],
-            ['title'=>'买家姓名', 'field'=>'buyer_uid'],
-            ['title'=>'卖家姓名', 'field'=>'seller_uid'],
-            ['title'=>'支付金额', 'field'=>'real_total_amount'],
-            ['title'=>'总金额', 'field'=>'total_amount'],
-            ['title'=>'运费', 'field'=>'freight_fee'],
-            ['title'=>'商家收益', 'field'=>'seller_income'],
-            ['title'=>'手续费', 'field'=>'commission'],
-            ['title'=>'买家所得积分', 'field'=>'point'],
-            ['title'=>'买家所得经验', 'field'=>'exp'],
-            ['title'=>'用户返佣合计', 'field'=>'commission_users'],
-            ['title'=>'下单时间', 'field'=>'created_at'],
-            ['title'=>'完成时间', 'field'=>'updated_at']
-        ];
+        
         //处理表头
         foreach ($arrHeaderTitle as $k=>$item){
             $cell = chr(ord('A') + $k) . "1";
             $objPHPExcel->getActiveSheet()->setCellValue($cell, $item['title']);
         }
+        $arrStatus = $this->Order_model->status();
         //处理表数据（第n(n>=2, n∈N*)行数据）
         foreach ($arrOrders['list'] as $key => $item) {
             foreach ($arrHeaderTitle as $k=>$v) {
@@ -207,6 +225,9 @@ class Order extends API_Controller {
                     case 'buyer_uid':
                     case 'seller_uid':
                         $value = $arrOrders['user'][$item[$v['field']]]['nickname'];
+                        break;
+                    case 'status':
+                        $value =$arrStatus[$item[$v['field']]];
                         break;
                     default:
                         $value = $item[$v['field']];
