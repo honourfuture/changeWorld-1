@@ -164,8 +164,10 @@ class Order extends API_Controller {
         if(empty($type)){
             $type = 1;
         }
+        $typeName = '';
         switch($type){
             case 2://分销数据
+                $typeName = '分销数据';
                 $arrHeaderTitle = [
                     ['title'=>'订单编号', 'field'=>'order_sn'],
                     ['title'=>'买家姓名', 'field'=>'buyer_uid'],
@@ -183,6 +185,7 @@ class Order extends API_Controller {
                 ];
                 break;
             case 3://平台交易流水
+                $typeName = '平台交易流水';
                 $arrHeaderTitle = [
                     ['title'=>'订单编号', 'field'=>'order_sn'],
                     ['title'=>'买家姓名', 'field'=>'buyer_uid'],
@@ -200,7 +203,7 @@ class Order extends API_Controller {
         $this->load->library('PHPExcel/IOFactory');
         $objPHPExcel = new PHPExcel();
         // 以下内容是excel文件的信息描述信息
-        $file = '数据导出-' . date('YmdHi');
+        $file = $typeName . '数据导出-' . date('YmdHi');
         $objPHPExcel->getProperties()->setTitle($file);
         $objPHPExcel->getProperties()->setDescription("none");
         $objPHPExcel->getProperties()->setCreator(''); //设置创建者

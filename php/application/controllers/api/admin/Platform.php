@@ -75,7 +75,6 @@ class Platform extends API_Controller {
 
     private function _exportIncome($data)
     {
-        
         $arrHeaderTitle = [
             ['title'=>'订单编号', 'field'=>'order_sn'],
             ['title'=>'买家姓名', 'field'=>'buyer_uid'],
@@ -88,7 +87,7 @@ class Platform extends API_Controller {
         $this->load->library('PHPExcel/IOFactory');
         $objPHPExcel = new PHPExcel();
         // 以下内容是excel文件的信息描述信息
-        $file = '数据导出-' . date('YmdHi');
+        $file = '平台收益数据导出-' . date('YmdHi');
         $objPHPExcel->getProperties()->setTitle($file);
         $objPHPExcel->getProperties()->setDescription("none");
         $objPHPExcel->getProperties()->setCreator(''); //设置创建者
