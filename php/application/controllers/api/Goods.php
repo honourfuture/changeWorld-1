@@ -363,13 +363,18 @@ class Goods extends API_Controller {
 		$this->load->model('Income_model');
 		$this->load->model('Users_model');
 		$arrIncomeRate = $this->Income_model->getIncomeRate();
+		$ret['switcher_income'] = 0;
+		$ret['max_income'] = 0;
+		$ret['min_income'] = 0;
 		//自购比例
 		$underPercent = $arrIncomeRate['underPercent'];
-		$user = $this->Users_model->get($this->user_id);
-		$ret['switcher_income'] = empty($info['base_percent']) ? 0 : 1;
-		$ret['max_income'] = floor($info['sale_price'] * $underPercent[$user['rank_rule_id']] * $info['rebate_percent'] / 100);
-		$ret['min_income'] = floor($info['sale_price'] * $underPercent[$user['rank_rule_id']] * $info['base_percent'] / 100);
-
+		if( $this->user_id ){
+			$user = $this->Users_model->get($this->user_id);
+			$ret['switcher_income'] = empty($info['base_percent']) ? 0 : 1;
+			$ret['max_income'] = floor($info['sale_price'] * $underPercent[$user['rank_rule_id']] * $info['rebate_percent'] / 100);
+			$ret['min_income'] = floor($info['sale_price'] * $underPercent[$user['rank_rule_id']] * $info['base_percent'] / 100);
+	
+		}
 		$this->ajaxReturn($ret);
 	}
 
