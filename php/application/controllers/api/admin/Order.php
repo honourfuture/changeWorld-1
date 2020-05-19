@@ -229,6 +229,7 @@ class Order extends API_Controller {
                     case 'buyer_uid':
                     case 'seller_uid':
                         $value = $arrOrders['user'][$item[$v['field']]]['nickname'];
+                        $value = iconv('gb2312//ignore', 'utf-8', iconv('utf-8', 'gb2312//ignore', $value));
                         break;
                     case 'status':
                         $value =$arrStatus[$item[$v['field']]];
@@ -236,7 +237,7 @@ class Order extends API_Controller {
                     default:
                         $value = $item[$v['field']];
                 }
-                $objPHPExcel->getActiveSheet()->setCellValue($cell, $value, \PHPExcel_Cell_DataType::TYPE_STRING);//将其设置为文本格式
+                $objPHPExcel->getActiveSheet()->setCellValueExplicit($cell, $value, \PHPExcel_Cell_DataType::TYPE_STRING);//将其设置为文本格式
             }
         }
         $objWriter = IOFactory::createWriter($objPHPExcel, 'Excel5');

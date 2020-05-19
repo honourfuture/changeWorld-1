@@ -570,6 +570,12 @@ class User extends API_Controller {
             foreach ($arrHeaderTitle as $k=>$v) {
                 $cell = chr(ord('A') + $k) . ($key + 2);
                 $value = $item[$v['field']];
+                switch($v['field']){
+                    case 'nickname':
+                        $value = iconv('gb2312//ignore', 'utf-8', iconv('utf-8', 'gb2312//ignore', $value));
+                        break;
+                    default:                    
+                }
                 $objPHPExcel->getActiveSheet()->setCellValueExplicit($cell, $value, \PHPExcel_Cell_DataType::TYPE_STRING);//将其设置为文本格式
             }
         }
