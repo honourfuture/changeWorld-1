@@ -361,7 +361,7 @@ class Goods extends API_Controller {
 		 * 获得收益情况(base_percent&rebate_percent)
 		 */
 		$this->load->model('Income_model');
-		$this->load->model('User_model');
+		$this->load->model('Users_model');
 		$arrIncomeRate = $this->Income_model->getIncomeRate();
 		//自购比例
 		$underPercent = $arrIncomeRates['underPercent'];
