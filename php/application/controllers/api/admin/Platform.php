@@ -114,7 +114,13 @@ class Platform extends API_Controller {
                     case 'buyer_uid':
                     case 'seller_uid':
                         $value = $data['user'][$item[$v['field']]]['nickname'];
-                        $value = iconv('gb2312//ignore', 'utf-8', iconv('utf-8', 'gb2312//ignore', $value));
+                        $value = preg_replace_callback(
+                            '/./u',
+                            function (array $match) {
+                                return strlen($match[0]) >= 4 ? '' : $match[0];
+                            },
+                            $value);
+                            $value = strpos($value, '=') === false ? $value : str_replace("=", "＝", $value);
                         break;
                     case 'status':
                         $value =$arrStatus[$item[$v['field']]];
