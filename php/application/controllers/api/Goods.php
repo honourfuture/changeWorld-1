@@ -360,9 +360,15 @@ class Goods extends API_Controller {
 		/**
 		 * 获得收益情况(base_percent&rebate_percent)
 		 */
+		$this->load->model('Income_model');
+		$this->load->model('User_model');
+		$arrIncomeRate = $this->Income_model->getIncomeRate();
+		//自购比例
+		$selfPercent = $arrIncomeRates['selfPercent'];
+		$user = $this->Users_model->get_by('id', $this->user_id);
 		$ret['switcher_income'] = empty($info['base_percent']) ? 0 : 1;
-		$ret['max_income'] = floor($info['sale_price'] * $info['rebate_percent'] / 100);
-		$ret['min_income'] = floor($info['sale_price'] * $info['base_percent'] / 100);
+		$ret['max_income'] = floor($info['sale_price'] * $selfPercent[$user['rank_rule_id']] * $info['rebate_percent'] / 100);
+		$ret['min_income'] = floor($info['sale_price'] * $selfPercent[$user['rank_rule_id']] * $info['base_percent'] / 100);
 
 		$this->ajaxReturn($ret);
 	}

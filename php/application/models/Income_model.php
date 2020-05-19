@@ -454,6 +454,11 @@ class Income_model extends MY_Model
         $this->db->where('id', $uid);
         $this->db->update($this->Users_model->table());
     }
+
+    public function getIncomeRate()
+    {
+        return $this->_initIncomeRate();
+    }
     
     private function _initIncomeRate()
     {
