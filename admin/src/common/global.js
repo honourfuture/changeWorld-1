@@ -16,8 +16,9 @@ export default {
     //Prod
     API_URL: "https://www.luomashichang.cn/api",
     RES_URL: "https://www.luomashichang.cn/",
+    UPLOAD_HOST: "http://www.luomashichang.cn/api",
     get UPLOAD_URL() {
-        return `${this.API_URL}/common/fileUpload`;
+        return `${this.UPLOAD_HOST}/common/fileUpload`;
     },
     PAGE_SIZE: 10, //默认pagesize
     store: observable({

@@ -17,8 +17,9 @@ export default {
     RES_URL: "https://www.luomashichang.cn/",
     IOS_DOWNLOWD_URL: "https://apps.apple.com/cn/app/id1498561228?mt=8",
     ANDROID_DOWNLOAD_URL: "https://www.luomashichang.cn/download/lmsc_android.apk",
+    UPLOAD_HOST: "http://www.luomashichang.cn/api",
     get UPLOAD_URL() {
-        return `${this.API_URL}/common/fileUpload`;
+        return `${this.UPLOAD_HOST}/common/fileUpload`;
     },
     store: observable({
         isCollapsed: false // menu是否收起
