@@ -282,6 +282,7 @@ class User extends API_Controller {
     {
         $ret = ['list' => [], 'status'=>-100, 'message'=>'未知错误'];
         
+        $export = $this->input->get_post('export');
         $keyword = $this->input->get_post('keyword');
         try{
             $where = [];
@@ -329,7 +330,10 @@ class User extends API_Controller {
             $ret['incomes'] = [];
             $ret['status'] = $e->getCode();
             $ret['message'] = $e->getMessage();
-        }        
+        }       
+        if( $export ){
+            return $ret;
+        } 
         $this->ajaxReturn($ret);
     }
 
@@ -511,6 +515,69 @@ class User extends API_Controller {
     }
 
 
+    private function _exportTeam($data)
+    {
+        $arrHeaderTitle = [
+            ['title'=>'用户ID', 'field'=>'id'],
+            ['title'=>'昵称', 'field'=>'nickname'],
+            ['title'=>'手机号', 'field'=>'mobi'],
+            ['title'=>'积分', 'field'=>'point'],							
+            ['title'=>'余额', 'field'=>'balance'],
+            ['title'=>'经验值', 'field'=>'exp'],
+            ['title'=>'金币', 'field'=>'gold'],
+            ['title'=>'直属上级', 'field'=>'parent'],
+            ['title'=>'直属下级', 'field'=>'son'],
+            ['title'=>'团队成员', 'field'=>'sons_count'],
+            ['title'=>'累计收益', 'field'=>'amount'],
+            ['title'=>'注册时间', 'field'=>'created_at']
+        ];
+        $this->load->library('PHPExcel');
+        $this->load->library('PHPExcel/IOFactory');
+        $objPHPExcel = new PHPExcel();
+        // 以下内容是excel文件的信息描述信息
+        $file = '团队数据导出-' . date('YmdHi');
+        $objPHPExcel->getProperties()->setTitle($file);
+        $objPHPExcel->getProperties()->setDescription("none");
+        $objPHPExcel->getProperties()->setCreator(''); //设置创建者
+        $objPHPExcel->getProperties()->setLastModifiedBy(''); //设置修改者
+        $objPHPExcel->getProperties()->setSubject(''); //设置主题
+        $objPHPExcel->getProperties()->setDescription(''); //设置描述
+        $objPHPExcel->getProperties()->setKeywords('');//设置关键词
+        $objPHPExcel->getProperties()->setCategory('');//设置类型
+        $objPHPExcel->setActiveSheetIndex(0);
+        
+        //处理表头
+        foreach ($arrHeaderTitle as $k=>$item){
+            $cell = chr(ord('A') + $k) . "1";
+            $objPHPExcel->getActiveSheet()->setCellValue($cell, $item['title']);
+        }
+        //处理表数据（第n(n>=2, n∈N*)行数据）
+        foreach ($data['list'] as $key => $item) {
+            foreach ($arrHeaderTitle as $k=>$v) {
+                $cell = chr(ord('A') + $k) . ($key + 2);
+                $value = $item[$v['field']];
+                $objPHPExcel->getActiveSheet()->setCellValue($cell, $value, \PHPExcel_Cell_DataType::TYPE_STRING);//将其设置为文本格式
+            }
+        }
+        $objWriter = IOFactory::createWriter($objPHPExcel, 'Excel5');
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="'. $file .'.xls"');
+        header('Cache-Control: max-age=0');
+        $objWriter->save('php://output');
+    }
 
+    /**
+     * 导出
+     */
+    public function export()
+    {
+        $type = $this->input->get_post('type');
+        switch($type){
+            case 1:
+                $data = $this->team();
+                $this->_exportTeam($data);
+                break;
+        }
+    }
 
 }
