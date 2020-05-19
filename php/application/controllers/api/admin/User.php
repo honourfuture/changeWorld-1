@@ -284,6 +284,14 @@ class User extends API_Controller {
         
         $export = $this->input->get_post('export');
         $keyword = $this->input->get_post('keyword');
+        $cur_page = $this->input->get_post('cur_page');
+        if( empty($cur_page) ){
+            $cur_page = 1;
+        }
+        $per_page = $this->input->get_post('per_page');
+        if( empty($per_page) ){
+            $per_page = 10;
+        }
         try{
             $where = [];
             $where[] = "u.robot=0";
@@ -296,9 +304,13 @@ class User extends API_Controller {
             if( empty($ret['count']) ){
                 $this->ajaxReturn($ret);
             }
+            $start = ($cur_page - 1) * $per_page;
             $fields = "sum(i.amount) as amount, count(1) as cnt, u.id, pid, u.created_at, u.updated_at, u.mobi, u.account, u.header, u.nickname, 
             u.v, u.anchor, u.seller, u.exp, u.reg_ip, u.balance, u.point, u.gold, u.headhunter, u.reward_point, u.enable";
-            $sql = "select {$fields} from users u INNER join income i on u.id = i.user_id where ". implode(' AND ', $where) ." group by u.id order by amount desc;";
+            $sql = "select {$fields} from users u INNER join income i on u.id = i.user_id where ". implode(' AND ', $where) ." group by u.id order by amount desc";
+            if( !$export ){
+                $sql .= " LIMIT {$start}, {$per_page}";
+            }
             $list = $this->db->query($sql)->result_array();
             $arrUserIds = [];
             foreach($list as $k=>$user){

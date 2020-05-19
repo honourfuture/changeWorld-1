@@ -130,6 +130,7 @@ class Platform extends API_Controller {
         header('Cache-Control: max-age=0');
         $objWriter->save('php://output');
     }
+    
     /**
      * 平台流水导出
      */
