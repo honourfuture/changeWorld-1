@@ -364,7 +364,7 @@ class Goods extends API_Controller {
 		$this->load->model('Users_model');
 		$arrIncomeRate = $this->Income_model->getIncomeRate();
 		//自购比例
-		$underPercent = $arrIncomeRates['underPercent'];
+		$underPercent = $arrIncomeRate['underPercent'];
 		$user = $this->Users_model->get_by('id', $this->user_id);
 		$ret['switcher_income'] = empty($info['base_percent']) ? 0 : 1;
 		$ret['max_income'] = floor($info['sale_price'] * $underPercent[$user['rank_rule_id']] * $info['rebate_percent'] / 100);
