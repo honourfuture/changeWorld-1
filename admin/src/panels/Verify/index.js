@@ -60,9 +60,9 @@ export default class Verify extends BaseComponent {
             },
             {
                 title: "昵称",
-                dataIndex: "account",
+                dataIndex: "nickname",
                 render: (text, record) =>
-                    this.renderText(text, record, "account")
+                    this.renderText(text, record, "nickname")
             },
             {
                 title: "申请时间",

@@ -99,6 +99,7 @@ class Users_rank_rule_verify extends API_Controller {
 
                 foreach ($ret['list'] as $k=>$v){
                     $ext = [];
+                    $ext['nickname'] = $userList[$v['user_id']]['nickname'] ;
                     $ext['account'] = $userList[$v['user_id']]['account'] ;
                     $ext['from_name'] = $ranklist[$v['from']]['name'];
                     $ext['to_name'] = $ranklist[$v['to']]['name'];
