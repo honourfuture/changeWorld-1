@@ -110,7 +110,8 @@ class BasicItem extends BaseComponent {
                     res => {
                         message.error(res.message);
                         reject();
-                    }
+                    },
+                    'http'
                 );
             });
         });

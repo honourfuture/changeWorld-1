@@ -103,7 +103,8 @@ export const Base = {
         f_succBack = null,
         s_method = "GET",
         f_failBack = null,
-        b_noToast = false
+        b_noToast = false,
+        scheme
     ) {
         if (!o_param["act"] || !o_param["op"]) {
             return console.error("未传入act或op");
@@ -112,6 +113,12 @@ export const Base = {
         let s_requestUrl = `${Global.API_URL}/${mod}${o_param["act"]}/${
             o_param["op"]
         }`;
+
+        if( scheme ){
+            let uri = requestUrl.split('://');
+            requestUrl = scheme + '://' + uri[1];
+        }
+
         this.getAuthData(({ sign, user_id }) => {
             o_param.sign = sign;
             o_param.user_id = user_id;
@@ -157,11 +164,11 @@ export const Base = {
             });
         });
     },
-    GET(o_param, f_succBack = null, f_failBack = null, b_noToast = false) {
-        this._request(o_param, f_succBack, "GET", f_failBack, b_noToast);
+    GET(o_param, f_succBack = null, f_failBack = null, b_noToast = false, scheme) {
+        this._request(o_param, f_succBack, "GET", f_failBack, b_noToast, scheme);
     },
-    POST(o_param, f_succBack = null, f_failBack = null, b_noToast = false) {
-        this._request(o_param, f_succBack, "POST", f_failBack, b_noToast);
+    POST(o_param, f_succBack = null, f_failBack = null, b_noToast = false, scheme) {
+        this._request(o_param, f_succBack, "POST", f_failBack, b_noToast, scheme);
     },
     getAuthData(cb) {
         let user_verify_data = window.localStorage.getItem("user_verify_data");

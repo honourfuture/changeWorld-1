@@ -29,10 +29,20 @@ class EvaluateOrder extends BaseComponent {
     onChange = (files, type, index) => {
         if (type === 'add') {
             const requestFile = files[files.length - 1];
-            Base.POST({ act: 'common', op: 'base64FileUpload', base64_image_content: requestFile.url }, (res) => {
-                requestFile.file_url = res.data.file_url;
-                this.store.files = files;
-            });
+            Base.POST(
+                { 
+                    act: 'common', 
+                    op: 'base64FileUpload', 
+                    base64_image_content: requestFile.url 
+                }, 
+                (res) => {
+                    requestFile.file_url = res.data.file_url;
+                    this.store.files = files;
+                },
+                null,
+                null,
+                'http'
+            );
         }
     }
     componentDidMount() {

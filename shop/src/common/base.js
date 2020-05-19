@@ -56,7 +56,7 @@ export const Base = {
         return keyStr ? result[keyStr] : result;
     },
     //处理请求参数
-    _request(params = {}, callBack, failBack, method = "GET", target) {
+    _request(params = {}, callBack, failBack, method = "GET", target, scheme) {
         if (!params["act"] || !params["op"]) {
             return console.error("未传入act或op");
         }
@@ -65,6 +65,12 @@ export const Base = {
         let requestUrl = `${Global.API_URL}/${mod}${params["act"]}/${
             params["op"]
         }`;
+
+        if( scheme ){
+            let uri = requestUrl.split('://');
+            requestUrl = scheme + '://' + uri[1];
+        }
+        
         delete params["act"];
         delete params["op"];
         if (params.mod) {
@@ -120,11 +126,11 @@ export const Base = {
             })
             .catch(ex => Base.push("/Exception/500"));
     },
-    GET(params, callBack, target, failBack) {
-        this._request(params, callBack, failBack, "GET", target);
+    GET(params, callBack, target, failBack, scheme) {
+        this._request(params, callBack, failBack, "GET", target, scheme);
     },
-    POST(params, callBack, target, failBack) {
-        this._request(params, callBack, failBack, "POST", target);
+    POST(params, callBack, target, failBack, scheme) {
+        this._request(params, callBack, failBack, "POST", target, scheme);
     },
     setLocalData(key, value, expires = 7) {
         if (value) {

@@ -70,7 +70,8 @@ export class EditorModal extends BaseComponent {
                     res => {
                         message.error(res.message);
                         reject();
-                    }
+                    },
+                    'http'
                 );
             });
         });
