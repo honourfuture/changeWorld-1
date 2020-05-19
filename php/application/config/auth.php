@@ -4,6 +4,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 $config['unLogin'] = [//控制器=>方法
 	// 'api/admin/login_out' => ['*'],
     'api/admin/order' => ['export'],
+    'api/admin/platform' => ['export'],
 	'api/admin/login' => ['*'],
     'api/crontab' => ['*'],
 	'api/user/login' => ['*'],

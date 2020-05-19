@@ -68,16 +68,14 @@ class Platform extends API_Controller {
             }
         }
         if( $export ){
-            $this->_exportIncome();
+            return $ret;
         }
         $this->ajaxReturn($ret);
     }
 
-    /**
-     * 平台流水导出
-     */
-    private function _exportIncome()
+    private function _exportIncome($data)
     {
+        
         $arrHeaderTitle = [
             ['title'=>'订单编号', 'field'=>'order_sn'],
             ['title'=>'买家姓名', 'field'=>'buyer_uid'],
@@ -108,14 +106,14 @@ class Platform extends API_Controller {
         }
         $arrStatus = $this->Order_model->status();
         //处理表数据（第n(n>=2, n∈N*)行数据）
-        foreach ($arrOrders['list'] as $key => $item) {
+        foreach ($data as $key => $item) {
             foreach ($arrHeaderTitle as $k=>$v) {
                 $cell = chr(ord('A') + $k) . ($key + 2);
                 $value = "";
                 switch($v['field']){
                     case 'buyer_uid':
                     case 'seller_uid':
-                        $value = $arrOrders['user'][$item[$v['field']]]['nickname'];
+                        $value = $data['user'][$item[$v['field']]]['nickname'];
                         break;
                     case 'status':
                         $value =$arrStatus[$item[$v['field']]];
@@ -131,5 +129,18 @@ class Platform extends API_Controller {
         header('Content-Disposition: attachment;filename="'. $file .'"');
         header('Cache-Control: max-age=0');
         $objWriter->save('php://output');
+    }
+    /**
+     * 平台流水导出
+     */
+    private function export()
+    {
+        $type = $this->input->get_post('type');
+        switch($type){
+            case 1:
+                $data = $this->income();
+                $this->_exportIncome($data);
+                break;
+        }
     }
 }
