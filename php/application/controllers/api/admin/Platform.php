@@ -133,7 +133,7 @@ class Platform extends API_Controller {
     /**
      * 平台流水导出
      */
-    private function export()
+    public function export()
     {
         $type = $this->input->get_post('type');
         switch($type){
