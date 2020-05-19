@@ -570,7 +570,7 @@ class User extends API_Controller {
             foreach ($arrHeaderTitle as $k=>$v) {
                 $cell = chr(ord('A') + $k) . ($key + 2);
                 $value = $item[$v['field']];
-                $objPHPExcel->getActiveSheet()->setCellValue($cell, $value, \PHPExcel_Cell_DataType::TYPE_STRING);//将其设置为文本格式
+                $objPHPExcel->getActiveSheet()->setCellValueExplicit($cell, $value, \PHPExcel_Cell_DataType::TYPE_STRING);//将其设置为文本格式
             }
         }
         $objWriter = IOFactory::createWriter($objPHPExcel, 'Excel5');
