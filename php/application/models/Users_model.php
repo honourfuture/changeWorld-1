@@ -324,7 +324,7 @@ class Users_model extends MY_Model
      * 取得所有下级用户
      * @param int $user_id 
      */
-    public function getSons($user_id, $sons=[])
+    public function getSons($user_id, &$sons=[])
     {
         $users = $this->db->where('pid', $user_id)->get($this->table())->result_array();
         if( empty($users) ){
