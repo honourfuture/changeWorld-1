@@ -80,7 +80,7 @@ class Wallet extends API_Controller {
         $inclomeAvailable = $this->Income_model->getWithrawAvailable($this->user_id);
         $ret['withdraw'] = numformat($inclomeAvailable, 2);
 
-        $ret['balance'] = round($user['balance'] + $inclomeAvailable, 2);
+        $ret['balance'] = numformat($user['balance'] + $inclomeAvailable, 2);
         $ret['point'] = round($user['point'], 0);
         $ret['gold'] = $user['gold'];
 
