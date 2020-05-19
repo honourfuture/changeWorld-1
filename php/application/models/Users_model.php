@@ -326,12 +326,15 @@ class Users_model extends MY_Model
      */
     public function getSons($user_id, $sons=[])
     {
-        $user = $this->db->where('pid', $user_id)->get($this->table())->row_array();
-        if( empty($user) ){
+        $users = $this->db->where('pid', $user_id)->get($this->table())->result_array();
+        if( empty($users) ){
             return $sons;
         }
-        $sons[$user['id']] = $user;
-        return $this->getSons($user['id'], $sons);
+        foreach($users as $user){
+            $sons[$user['id']] = $user;
+            $this->getSons($user['id'], $sons);
+        }
+        return $sons;
     }
     
 }
