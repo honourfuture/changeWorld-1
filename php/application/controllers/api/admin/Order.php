@@ -76,7 +76,7 @@ class Order extends API_Controller {
         }
         if( $dateZoom ){
             list($dateStart, $dateEnd) = explode('/', $dateZoom);
-            $arrWhere[] = "o.created_at BETWEEN '" . $dateStart . ' 00:00:00' . "' AND '" . $dateStart . ' 23:59:59' . "'";
+            $arrWhere[] = "o.created_at BETWEEN '" . $dateStart . ' 00:00:00' . "' AND '" . $dateEnd . ' 23:59:59' . "'";
         }
         if( $type == 3 ){//平台流水,计算总和
             $sql = "SELECT SUM(o.real_total_amount) AS total FROM `order` o WHERE " . implode(' AND ', $arrWhere);

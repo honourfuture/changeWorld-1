@@ -35,7 +35,7 @@ class Platform extends API_Controller {
         $dateZoom = $this->input->get_post('date_zoom');
         if( $dateZoom ){
             list($dateStart, $dateEnd) = explode('/', $dateZoom);
-            $arrWhere[] = "o.created_at BETWEEN '" . $dateStart . ' 00:00:00' . "' AND '" . $dateStart . ' 23:59:59' . "'";
+            $arrWhere[] = "o.created_at BETWEEN '" . $dateStart . ' 00:00:00' . "' AND '" . $dateEnd . ' 23:59:59' . "'";
         }
         $sql = "SELECT SUM(ip.amount) AS total FROM `income_platform` ip LEFT JOIN `order` o ON ip.order_id = o.id WHERE " . implode(' AND ', $arrWhere);
         $arrTotal = $this->db->query($sql)->row_array();

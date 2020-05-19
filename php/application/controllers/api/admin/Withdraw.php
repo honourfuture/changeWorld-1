@@ -77,7 +77,7 @@ class Withdraw extends API_Controller {
         $dateZoom = $this->input->get_post('date_zoom');
         if( $dateZoom ){
             list($dateStart, $dateEnd) = explode('/', $dateZoom);
-            $arrWhere['updated_at'] = "updated_at BETWEEN '" . $dateStart . ' 00:00:00' . "' AND '" . $dateStart . ' 23:59:59' . "'";
+            $arrWhere['updated_at'] = "updated_at BETWEEN '" . $dateStart . ' 00:00:00' . "' AND '" . $dateEnd . ' 23:59:59' . "'";
         }
         $keyword = $this->input->get_post('keyword');
         if( !empty($keyword) ){
