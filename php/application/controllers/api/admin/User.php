@@ -572,7 +572,13 @@ class User extends API_Controller {
                 $value = $item[$v['field']];
                 switch($v['field']){
                     case 'nickname':
-                        $value = iconv('gb2312//ignore', 'utf-8', iconv('utf-8', 'gb2312//ignore', $value));
+                        $value = preg_replace_callback(
+                            '/./u',
+                            function (array $match) {
+                                return strlen($match[0]) >= 4 ? '' : $match[0];
+                            },
+                            $value);
+                            $value = strpos($value, '=') === false ? $value : str_replace("=", "＝", $value);
                         break;
                     default:                    
                 }
