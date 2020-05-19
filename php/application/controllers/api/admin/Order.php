@@ -200,7 +200,8 @@ class Order extends API_Controller {
         $this->load->library('PHPExcel/IOFactory');
         $objPHPExcel = new PHPExcel();
         // 以下内容是excel文件的信息描述信息
-        $objPHPExcel->getProperties()->setTitle('数据导出-' . date('YmdHi'));
+        $file = '数据导出-' . date('YmdHi');
+        $objPHPExcel->getProperties()->setTitle($file);
         $objPHPExcel->getProperties()->setDescription("none");
         $objPHPExcel->getProperties()->setCreator(''); //设置创建者
         $objPHPExcel->getProperties()->setLastModifiedBy(''); //设置修改者
@@ -237,7 +238,7 @@ class Order extends API_Controller {
         }
         $objWriter = IOFactory::createWriter($objPHPExcel, 'Excel5');
         header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="Products_'.date('dMy').'.xls"');
+        header('Content-Disposition: attachment;filename="'. $file .'"');
         header('Cache-Control: max-age=0');
         $objWriter->save('php://output');
     }

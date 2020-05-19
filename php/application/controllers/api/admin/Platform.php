@@ -68,7 +68,7 @@ class Platform extends API_Controller {
             }
         }
         if( $export ){
-            return $ret;
+            $this->_exportIncome();
         }
         $this->ajaxReturn($ret);
     }
@@ -76,8 +76,60 @@ class Platform extends API_Controller {
     /**
      * 平台流水导出
      */
-    public function export()
+    private function _exportIncome()
     {
-
+        $arrHeaderTitle = [
+            ['title'=>'订单编号', 'field'=>'order_sn'],
+            ['title'=>'买家姓名', 'field'=>'buyer_uid'],
+            ['title'=>'卖家姓名', 'field'=>'seller_uid'],
+            ['title'=>'支付金额', 'field'=>'real_total_amount'],
+            ['title'=>'平台收益', 'field'=>'amount'],
+            ['title'=>'时间', 'field'=>'updated_at']
+        ];
+        $this->load->library('PHPExcel');
+        $this->load->library('PHPExcel/IOFactory');
+        $objPHPExcel = new PHPExcel();
+        // 以下内容是excel文件的信息描述信息
+        $file = '数据导出-' . date('YmdHi');
+        $objPHPExcel->getProperties()->setTitle($file);
+        $objPHPExcel->getProperties()->setDescription("none");
+        $objPHPExcel->getProperties()->setCreator(''); //设置创建者
+        $objPHPExcel->getProperties()->setLastModifiedBy(''); //设置修改者
+        $objPHPExcel->getProperties()->setSubject(''); //设置主题
+        $objPHPExcel->getProperties()->setDescription(''); //设置描述
+        $objPHPExcel->getProperties()->setKeywords('');//设置关键词
+        $objPHPExcel->getProperties()->setCategory('');//设置类型
+        $objPHPExcel->setActiveSheetIndex(0);
+        
+        //处理表头
+        foreach ($arrHeaderTitle as $k=>$item){
+            $cell = chr(ord('A') + $k) . "1";
+            $objPHPExcel->getActiveSheet()->setCellValue($cell, $item['title']);
+        }
+        $arrStatus = $this->Order_model->status();
+        //处理表数据（第n(n>=2, n∈N*)行数据）
+        foreach ($arrOrders['list'] as $key => $item) {
+            foreach ($arrHeaderTitle as $k=>$v) {
+                $cell = chr(ord('A') + $k) . ($key + 2);
+                $value = "";
+                switch($v['field']){
+                    case 'buyer_uid':
+                    case 'seller_uid':
+                        $value = $arrOrders['user'][$item[$v['field']]]['nickname'];
+                        break;
+                    case 'status':
+                        $value =$arrStatus[$item[$v['field']]];
+                        break;
+                    default:
+                        $value = $item[$v['field']];
+                }
+                $objPHPExcel->getActiveSheet()->setCellValue($cell, $value, \PHPExcel_Cell_DataType::TYPE_STRING);//将其设置为文本格式
+            }
+        }
+        $objWriter = IOFactory::createWriter($objPHPExcel, 'Excel5');
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="'. $file .'"');
+        header('Cache-Control: max-age=0');
+        $objWriter->save('php://output');
     }
 }
