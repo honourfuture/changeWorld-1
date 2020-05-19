@@ -218,6 +218,7 @@ export default class AudioComment extends BaseComponent {
     renderUploadTxt(value) {
         return (
             <Upload
+                withCredentials={true}
                 name="field"
                 data={{ field: "field" }}
                 action={Global.UPLOAD_URL}

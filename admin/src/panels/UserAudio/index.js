@@ -220,6 +220,7 @@ export default class UserAudio extends BaseComponent {
         return (
             <div>
                 <Upload
+				    withCredentials={true}
                     name="field"
                     data={{
                         field: "field",
@@ -434,6 +435,7 @@ export default class UserAudio extends BaseComponent {
                         上传音频
                     </Button>
                     <Upload
+				        withCredentials={true}
                         name="field"
                         data={{ field: "field", audio: 1 }}
                         multiple={true}

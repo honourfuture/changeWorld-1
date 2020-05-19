@@ -101,6 +101,7 @@ export default class RobotNickNameManager extends BaseComponent {
             >
                 <div className="pb10">
                     <Upload
+				        withCredentials={true}
                         accept="txt"
                         name="field"
                         data={{ field: "field" }}

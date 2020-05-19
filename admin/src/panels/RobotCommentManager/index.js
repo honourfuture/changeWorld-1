@@ -253,6 +253,7 @@ export default class RobotCommentManager extends BaseComponent {
                         style={{ width: 200, marginRight: 10 }}
                     />
                     <Upload
+				        withCredentials={true}
                         accept="txt"
                         name="field"
                         data={{ field: "field" }}

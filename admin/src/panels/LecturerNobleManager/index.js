@@ -131,6 +131,7 @@ export default class LecturerNobleManager extends BaseComponent{
 		const {editable,icon,loading} = record;
 		return <div>
 			{editable?<Upload
+				withCredentials={true}
 				name="field"
 				data={{'field':'field'}}
 				listType="picture-card"

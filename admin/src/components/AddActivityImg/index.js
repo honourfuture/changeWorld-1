@@ -41,6 +41,7 @@ class AddActivityImg extends BaseComponent{
 		const {loading,uploadDis} = this.store;
 		return (
 			<Upload
+				withCredentials={true}
 				name="field"
 				data={{ field: "field" }}
 				listType="picture-card"

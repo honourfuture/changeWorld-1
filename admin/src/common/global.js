@@ -14,8 +14,8 @@ export default {
     RES_URL: "http://lvdeshui.xttejzc.cn/",
     */
     //Prod
-    API_URL: "https://www.luomashichang.cn/api",
-    RES_URL: "https://www.luomashichang.cn/",
+    API_URL: "http://www.luomashichang.cn/api",
+    RES_URL: "http://www.luomashichang.cn/",
     UPLOAD_HOST: "http://www.luomashichang.cn/api",
     get UPLOAD_URL() {
         return `${this.UPLOAD_HOST}/common/fileUpload`;

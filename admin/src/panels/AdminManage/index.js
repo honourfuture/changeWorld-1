@@ -130,6 +130,7 @@ export default class AdminManage extends BaseComponent {
             <div>
                 {editable ? (
                     <Upload
+                        withCredentials={true}
                         name="field"
                         data={{ field: "field" }}
                         listType="picture-card"

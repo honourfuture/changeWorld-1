@@ -91,9 +91,7 @@ export const Base = {
             method: method,
             headers: {
                 Accept: "application/json",
-                "Content-Type": get
-                    ? "application/json"
-                    : "application/x-www-form-urlencoded"
+                "Content-Type": get ? "application/json" : "application/x-www-form-urlencoded"
             },
             timeout: 10000,
             body: body

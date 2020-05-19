@@ -118,6 +118,7 @@ export default class DirectManager extends BaseComponent {
                     return (
                         <div className="editable-row-operations">
                             <Upload
+				                withCredentials={true}
                                 accept="txt"
                                 name="field"
                                 data={{ field: "field" }}

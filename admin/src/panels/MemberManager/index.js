@@ -246,6 +246,7 @@ export default class MemberManager extends BaseComponent {
             <div>
                 {editable ? (
                     <Upload
+                        withCredentials={true}
                         name="field"
                         data={{ field: "field" }}
                         listType="picture-card"

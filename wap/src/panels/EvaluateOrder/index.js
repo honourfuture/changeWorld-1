@@ -40,8 +40,7 @@ class EvaluateOrder extends BaseComponent {
                     this.store.files = files;
                 },
                 null,
-                null,
-                'http'
+                null
             );
         }
     }

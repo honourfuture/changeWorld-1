@@ -29,6 +29,7 @@ class ShopSetItem extends BaseComponent{
 		const {loading} = this.store;
 		return (
 			<Upload
+				withCredentials={true}
 				name="field"
 				data={{'field':'field'}}
 		        listType="picture-card"

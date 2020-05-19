@@ -93,6 +93,7 @@ export default class AppGuideManager extends BaseComponent {
             <div>
                 {editable ? (
                     <Upload
+                        withCredentials={true}
                         name="field"
                         data={{ field: "field" }}
                         listType="picture-card"

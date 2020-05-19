@@ -152,6 +152,7 @@ export default class AppVersion extends BaseComponent {
                     ) : (
                         <div>
                             <Upload
+				                withCredentials={true}
                                 name="field"
                                 data={{ field: "field" }}
                                 listType="picture-card"

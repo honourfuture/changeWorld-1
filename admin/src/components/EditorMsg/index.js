@@ -67,8 +67,7 @@ export class EditorMsg extends BaseComponent {
                     res => {
                         message.error(res.message);
                         reject();
-                    },
-                    'http'
+                    }
                 );
             });
         });

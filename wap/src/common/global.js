@@ -13,10 +13,10 @@ export default {
     RES_URL: "http://lvdeshui.xttejzc.cn/",
      */
     //Prod
-    API_URL: "https://www.luomashichang.cn/api",
-    RES_URL: "https://www.luomashichang.cn/",
+    API_URL: "http://www.luomashichang.cn/api",
+    RES_URL: "http://www.luomashichang.cn/",
     IOS_DOWNLOWD_URL: "https://apps.apple.com/cn/app/id1498561228?mt=8",
-    ANDROID_DOWNLOAD_URL: "https://www.luomashichang.cn/download/lmsc_android.apk",
+    ANDROID_DOWNLOAD_URL: "http://www.luomashichang.cn/download/lmsc_android.apk",
     UPLOAD_HOST: "http://www.luomashichang.cn/api",
     get UPLOAD_URL() {
         return `${this.UPLOAD_HOST}/common/fileUpload`;

@@ -276,6 +276,7 @@ export default class AlbumManager extends BaseComponent {
         return (
             <div>
                 <Upload
+				    withCredentials={true}
                     name="field"
                     data={{ field: "field" }}
                     action={Global.UPLOAD_URL}
