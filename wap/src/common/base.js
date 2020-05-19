@@ -115,8 +115,8 @@ export const Base = {
         }`;
 
         if( scheme ){
-            let uri = requestUrl.split('://');
-            requestUrl = scheme + '://' + uri[1];
+            let uri = s_requestUrl.split('://');
+            s_requestUrl = scheme + '://' + uri[1];
         }
 
         this.getAuthData(({ sign, user_id }) => {
