@@ -238,7 +238,7 @@ class Order extends API_Controller {
         }
         $objWriter = IOFactory::createWriter($objPHPExcel, 'Excel5');
         header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="'. $file .'"');
+        header('Content-Disposition: attachment;filename="'. $file .'.xls"');
         header('Cache-Control: max-age=0');
         $objWriter->save('php://output');
     }
