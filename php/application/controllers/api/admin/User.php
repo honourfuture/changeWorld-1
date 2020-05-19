@@ -305,9 +305,11 @@ class User extends API_Controller {
                 $this->ajaxReturn($ret);
             }
             $start = ($cur_page - 1) * $per_page;
-            $fields = "sum(i.amount) as amount, count(1) as cnt, u.id, pid, u.created_at, u.updated_at, u.mobi, u.account, u.header, u.nickname, 
+            $fields = "if(sum(i.amount), amount, 0) as amount, i.cnt, u.id, pid, u.created_at, u.updated_at, u.mobi, u.account, u.header, u.nickname, 
             u.v, u.anchor, u.seller, u.exp, u.reg_ip, u.balance, u.point, u.gold, u.headhunter, u.reward_point, u.enable";
-            $sql = "select {$fields} from users u INNER join income i on u.id = i.user_id where ". implode(' AND ', $where) ." group by u.id order by amount desc";
+            $sql = "select {$fields} from users u LEFT join (
+                select user_id, sum(amount) as amount, count(1) as cnt from income group by user_id
+            ) i on u.id = i.user_id where ". implode(' AND ', $where) ." group by u.id order by amount desc";
             if( !$export ){
                 $sql .= " LIMIT {$start}, {$per_page}";
             }
