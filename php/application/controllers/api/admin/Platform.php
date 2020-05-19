@@ -107,7 +107,7 @@ class Platform extends API_Controller {
         $this->load->model('Order_model');
         $arrStatus = $this->Order_model->status();
         //处理表数据（第n(n>=2, n∈N*)行数据）
-        foreach ($data as $key => $item) {
+        foreach ($data['list'] as $key => $item) {
             foreach ($arrHeaderTitle as $k=>$v) {
                 $cell = chr(ord('A') + $k) . ($key + 2);
                 $value = "";
