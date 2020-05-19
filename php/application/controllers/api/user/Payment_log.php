@@ -341,6 +341,7 @@ class Payment_log extends API_Controller {
     {
         $user = $this->get_user();
         $this->load->model('Income_model');
+        $this->load->model('Order_model');
         $inclomeAvailable = $this->Income_model->getWithrawAvailable($this->user_id);
         if( empty($user) || ($inclomeAvailable + $user['balance']) < $this->row['price']){
             $this->ajaxReturn([], 2, '账户余额不足');
