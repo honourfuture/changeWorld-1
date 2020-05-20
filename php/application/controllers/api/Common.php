@@ -47,7 +47,7 @@ class Common extends API_Controller
 
         $platform = $this->input->get_post('platform');
         $version_alias = $this->input->get_post('version_alias');
-        if($platform && $version_alias){
+        if($platform !== '' && $version_alias){
             $sql = "SELECT `version`,version_alias,`explain`,url,verify_status FROM app_version WHERE platform={$platform} AND version_alias='{$version_alias}' AND deleted=0 AND `enable`=1";
             $row = $this->db->query($sql)->row_array();
             if($row){
