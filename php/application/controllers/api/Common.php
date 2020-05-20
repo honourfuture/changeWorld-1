@@ -18,6 +18,29 @@ class Common extends API_Controller
         parent::__construct();
     }
 
+    /**
+     * @api {post} /api/common/version 应用版本
+     * @apiVersion 1.0.0
+     * @apiName common_version
+     * @apiGroup api
+     *
+     * @apiSampleRequest /api/common/version
+     *
+     * @apiParam {int} platform 应用平台(0-IOS/1-安卓)
+     * @apiParam {String} version_alias 版本编号(日期8+序号2)
+     *
+     * @apiSuccess {Number} status 接口状态 0成功 其他异常
+     * @apiSuccess {String} message 接口信息描述
+     * @apiSuccess {Object} data 接口数据集
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * {
+     *      "data": [],
+     *      "status": 0,
+     *      "message": "成功"
+     *  }
+     * 
+     */
     public function version()
     {
         $ret = [];
@@ -27,7 +50,6 @@ class Common extends API_Controller
         if($platform && $version_alias){
             $sql = "SELECT `version`,version_alias,`explain`,url,verify_status FROM app_version WHERE platform={$platform} AND version_alias='{$version_alias}' AND deleted=0 AND `enable`=1";
             $row = $this->db->query($sql)->row_array();
-            $this->db->select('version,version_alias,explain,url');
             if($row){
                 $ret = $row;
             }
