@@ -367,7 +367,8 @@ class Goods extends API_Controller {
 		$ret['good_income'] = 0;
 		$ret['max_income'] = 0;
 		$ret['min_income'] = 0;
-		//自购比例
+		//直属比例
+		//以下返利计算错误，但项目方要求要这么计算
 		$underPercent = $arrIncomeRate['underPercent'];
 		if( $this->user_id ){
 			$user = $this->Users_model->get($this->user_id);
