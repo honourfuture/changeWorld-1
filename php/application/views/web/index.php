@@ -37,8 +37,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 <div class="banner" id="section1" style="background:url(assets/<?php echo $tpl;?>/images/banner.jpg) center no-repeat;">
 	<span class="banner_text" style="background:url('');">
-		<em style="position: absolute;top: 0px;left: 25px;font-size: 48px;color: #FFFF;">让世界免费</em>
-		<em style="position: absolute;top: 64px;left: 25px;font-size: 34px;color: #FFFF;">Let the world free</em>
+		<em style="position: absolute;top: 0px;left: 25%;font-size: 48px;color: #FFFF;">让世界免费</em>
+		<em style="position: absolute;top: 64px;left: 25%;font-size: 34px;color: #FFFF;">Let the world free</em>
     	<a href="https://itunes.apple.com/cn/app/%E7%8C%AA%E4%B9%B0%E5%8D%95/id1365334362?mt=8" target="_blank">iPhone下载</a>
     	<a href="/uploads/2_1.0.1_20180905_legu_signed_zipalign.apk" target="_blank">Andrond下载</a>
     </span>
