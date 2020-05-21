@@ -95,27 +95,21 @@ class Rank_rule extends API_Controller {
         if($id){
             $params = elements(
                 array(
-                    'name', 'icon','exp','status','remark', 'grade_logo'
+                    'name', 'icon','exp','status','remark', 'icon'
                 ),
                 $this->input->post(),
                 UPDATE_VALID
             );
-            if( !empty($params['icon']) ) {
-                $params['icon'] = $params['icon'];
-            }
-            unset($params['icon']);
             $this->check_params('edit', $params);
             $flag = $this->Rank_rule_model->update($id, $params);
         }else{
             $params = elements(
                 array(
-                    'name', 'icon','exp','remark', 'grade_logo'
+                    'name', 'icon','exp','remark', 'icon'
                 ),
                 $this->input->post(),
                 UPDATE_VALID
             );
-            $params['icon'] = $params['grade_logo'];
-            unset($params['grade_logo']);
             $this->check_params('add', $params);
             if($flag = $this->Rank_rule_model->insert($params)){
                 $id = $flag;
