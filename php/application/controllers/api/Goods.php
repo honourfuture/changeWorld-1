@@ -364,6 +364,7 @@ class Goods extends API_Controller {
 		$this->load->model('Users_model');
 		$arrIncomeRate = $this->Income_model->getIncomeRate();
 		$ret['switcher_income'] = 0;
+		$ret['good_income'] = 0;
 		$ret['max_income'] = 0;
 		$ret['min_income'] = 0;
 		//自购比例
