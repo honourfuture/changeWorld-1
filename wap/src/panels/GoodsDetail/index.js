@@ -184,6 +184,7 @@ export default class GoodsDetail extends BaseComponent {
         goods_explain: "",
         cardTotal: 0,
         switcher_income: 0,
+        good_income: 0,
         max_income: 0, 
         min_income: 0
     };
@@ -202,6 +203,7 @@ export default class GoodsDetail extends BaseComponent {
                 goods_explain,
                 rate,
                 switcher_income,
+                good_income,
                 max_income, 
                 min_income
             } = res.data;
@@ -215,6 +217,7 @@ export default class GoodsDetail extends BaseComponent {
             this.store.goods_explain = goods_explain;
             this.store.rate = rate;
             this.store.switcher_income = switcher_income;
+            this.store.good_income = good_income;
             this.store.max_income = max_income;
             this.store.min_income = min_income;
             Base.GET({ act: "cart", op: "count", mod: "user" }, res => {
@@ -541,7 +544,7 @@ export default class GoodsDetail extends BaseComponent {
                                 }}
                             >
                                 <div>
-                                    {this.store.max_income != 0 &&<div style={{
+                                    {this.store.good_income != 0 &&<div style={{
                                         fontSize: 13,
                                         color: "#999",
                                         marginBottom: 4,
@@ -549,7 +552,7 @@ export default class GoodsDetail extends BaseComponent {
                                         color: '#fff',
                                         padding: '4px 10px',
                                         borderRadius: 70,
-                                    }}> <div>返利{this.store.max_income}元</div></div>}
+                                    }}> <div>返利{this.store.good_income}元</div></div>}
                                     <Flex >
                                         <div style={{ margin: '0 auto', color: "gray" }}>已售 {sale_num}</div>
                                     </Flex>
