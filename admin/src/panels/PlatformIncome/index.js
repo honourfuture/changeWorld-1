@@ -133,7 +133,7 @@ export default class PlatformIncome extends BaseComponent {
             res => {
                 const { list, count, total, status, user } = res.data;
                 this.store.list = list;
-                this.store.total = count;
+                this.store.total = parseInt(count);
                 this.store.income_total = total;
                 this.status = status;
                 this.user = user;

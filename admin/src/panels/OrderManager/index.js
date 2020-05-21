@@ -119,7 +119,7 @@ export default class OrderManager extends BaseComponent {
             res => {
                 const { list, count, status, user } = res.data;
                 this.store.list = list;
-                this.store.total = count;
+                this.store.total = parseInt(count);
                 this.status = status;
                 this.user = user;
                 this.cacheData = list.map(item => ({ ...item }));

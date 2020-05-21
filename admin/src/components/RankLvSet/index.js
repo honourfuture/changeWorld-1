@@ -119,6 +119,7 @@ export class RankLvSet extends BaseComponent {
                                 className="img-uploader"
                                 src={`${Global.RES_URL}${icon}`}
                                 alt=""
+                                width="48"
                             />
                         ) : (
                             <div>
@@ -178,7 +179,7 @@ export class RankLvSet extends BaseComponent {
         }
         if (info.file.status === "done") {
             itemData.loading = false;
-            itemData.grade_logo = info.file.response.data.file_url;
+            itemData.icon = info.file.response.data.file_url;
             return (this.store.list = list);
         }
     }

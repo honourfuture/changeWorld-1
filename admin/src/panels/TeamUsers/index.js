@@ -179,7 +179,7 @@ export default class TeamUsers extends BaseComponent {
             res => {
                 const { list, incomes, count, anchor_status, seller_status } = res.data;
                 this.store.list = list;
-                this.store.total = count;
+                this.store.total = parseInt(count);
                 this.store.incomes = incomes;
                 this.cacheData = list.map(item => ({ ...item }));
                 this.anchor_status = anchor_status;

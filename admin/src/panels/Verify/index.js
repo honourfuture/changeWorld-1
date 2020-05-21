@@ -92,7 +92,7 @@ export default class Verify extends BaseComponent {
             },
             {
                 title: "操作",
-                dataIndex: "status",
+                dataIndex: "operator",
                 width: 150,
                 render: (text, record) => {
                     const { id, status } = record;

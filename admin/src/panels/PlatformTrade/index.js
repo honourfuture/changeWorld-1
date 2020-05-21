@@ -146,7 +146,7 @@ export default class PlatformTrade extends BaseComponent {
             res => {
                 const { list, count, total, status, user } = res.data;
                 this.store.list = list;
-                this.store.total = count;
+                this.store.total = parseInt(count);
                 this.store.trade_total = total;
                 this.status = status;
                 this.user = user;

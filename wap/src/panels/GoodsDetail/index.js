@@ -541,7 +541,7 @@ export default class GoodsDetail extends BaseComponent {
                                 }}
                             >
                                 <div>
-                                    {parseInt(base_percent / 100 * sale_price) != 0 &&<div style={{
+                                    {this.store.max_income != 0 &&<div style={{
                                         fontSize: 13,
                                         color: "#999",
                                         marginBottom: 4,
@@ -549,9 +549,9 @@ export default class GoodsDetail extends BaseComponent {
                                         color: '#fff',
                                         padding: '4px 10px',
                                         borderRadius: 70,
-                                    }}> <div>返利{parseInt(base_percent / 100 * sale_price)}元</div></div>}
+                                    }}> <div>返利{this.store.max_income}元</div></div>}
                                     <Flex >
-                                        <div style={{ margin: '0 auto', color: "gray" }}>已售{sale_num}</div>
+                                        <div style={{ margin: '0 auto', color: "gray" }}>已售 {sale_num}</div>
                                     </Flex>
                                 </div>
                             </Flex>

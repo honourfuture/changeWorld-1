@@ -192,7 +192,7 @@ export default class WithdrawalMananger extends BaseComponent {
                 this.status = status;
                 this.user = user;
                 this.store.list = list;
-                this.store.total = count;
+                this.store.total = parseInt(count);
                 this.store.withdrawChecked = withdrawChecked;
             },
             this
