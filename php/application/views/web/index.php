@@ -37,8 +37,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 <div class="banner" id="section1" style="background:url(assets/<?php echo $tpl;?>/images/banner.jpg) center no-repeat;">
 	<span class="banner_text" style="background:url('');">
-		<em style="position: absolute;top: 0px;left: 25px;font-size: 48px;color: #FFFF;">活着就是为了改变世界</em>
-		<em style="position: absolute;top: 64px;left: 25px;font-size: 34px;color: #FFFF;">To live is to change the world</em>
+		<em style="position: absolute;top: 0px;left: 25px;font-size: 48px;color: #FFFF;">让世界免费</em>
+		<em style="position: absolute;top: 64px;left: 25px;font-size: 34px;color: #FFFF;">Let the world free</em>
     	<a href="https://itunes.apple.com/cn/app/%E7%8C%AA%E4%B9%B0%E5%8D%95/id1365334362?mt=8" target="_blank">iPhone下载</a>
     	<a href="/uploads/2_1.0.1_20180905_legu_signed_zipalign.apk" target="_blank">Andrond下载</a>
     </span>
@@ -106,14 +106,14 @@ defined('BASEPATH') or exit('No direct script access allowed');
 <div class="footer">
 	<div class="main">
     	<span class="temt">
-            <p>公司名称：深圳亿万富翁有限公司</p>
+            <p>公司名称：深圳万可为科学有限公司</p>
             <p>公司地址：深圳市前海深港合作区前湾一路1号A栋201室</p>
         </span>
         <span class="hone">
         	<i>联系我们</i>
-            <em>zhumaidan@qq.com</em>
+            <em>luomashichang@foxmail.com</em>
         </span>
-        <span class="wmau">Copyright ©<?php echo date("Y");?> 深圳亿万富翁有限公司 版权所有. All Rights reserved. 粤ICP备18098055号-1</span>
+        <span class="wmau">Copyright ©<?php echo date("Y");?> 深圳万可为科学有限公司 版权所有. All Rights reserved. 粤ICP备18098055号-1</span>
     </div>
 </div>
 
