@@ -215,7 +215,8 @@ class Pretty extends API_Controller {
             );
             $this->check_params('add', $params);
             $this->setPrettyInfo($params);
-            if($this->Pretty_model->get_by('pretty_id', $params['pretty_id'])){
+            $record = $this->Pretty_model->get_by('pretty_id', $params['pretty_id']);
+            if( !empty($record) && $record['deleted'] == 0){
                 $this->ajaxReturn([], 1, '靓号已存在请勿重复提交');
             }
             if($flag = $this->Pretty_model->insert($params)){
