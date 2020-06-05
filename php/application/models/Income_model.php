@@ -95,7 +95,7 @@ class Income_model extends MY_Model
         foreach ($arrFields as $field){
             $queryFields[] = (strstr($field, '.') === false ? 'income.' . $field : $field);
         }
-        array_push($queryFields, 'users.nickname, users.mobi as mobile');
+        array_push($queryFields, 'users.nickname, users.mobi as mobile, goods.id as goods_id, goods.name as goods_name, goods.default_image as goods_image');
         $fields = implode(',', $queryFields);
 
         $arrWhere = [];
@@ -111,7 +111,7 @@ class Income_model extends MY_Model
         }
         $orders = implode(',', $orderFields);
 
-        $sql = "SELECT {$fields} FROM {$this->table()} LEFT JOIN users ON income.from_id = users.id WHERE {$where} ORDER BY {$orders} LIMIT {$offset}, {$per_page} ";
+        $sql = "SELECT {$fields} FROM {$this->table()} LEFT JOIN users ON income.from_id = users.id LEFT JOIN goods ON goods.id = income.item_id WHERE {$where} ORDER BY {$orders} LIMIT {$offset}, {$per_page} ";
         $query=$this->db->query($sql);
         return $query->result_array();
     }
@@ -985,10 +985,10 @@ class Income_model extends MY_Model
         $where['user_id'] = $userId;
         if($topic == 2){
             $where['amount >'] = 0;
-            $field = 'id,updated_at,sub_topic,name,mobi,amount,gold,item,level,user_id,shop_id,from_id';
+            $field = 'id,updated_at,sub_topic,name,mobi,amount,gold,item,item_id, item_title, level,user_id,shop_id,from_id';
         }else{
             $where['service_amount >'] = 0;
-            $field = 'id,updated_at,sub_topic,name,mobi,service_amount as amount,gold,item,level,user_id,shop_id,from_id';
+            $field = 'id,updated_at,sub_topic,name,mobi,service_amount as amount,gold,item,item_id, item_title, level,user_id,shop_id,from_id';
         }
         if($startDate && $endDate){
             $startDate = date('Y-m-d 00:00:00', strtotime($startDate));
