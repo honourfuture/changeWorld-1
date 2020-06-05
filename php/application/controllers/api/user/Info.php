@@ -635,16 +635,16 @@ class Info extends API_Controller {
         if( empty($user) ) {
             $this->ajaxReturn($ret);
         }
-        $temps = $this->Users_model->under($user['id']);
+        $arrSons = [];
+        $this->Users_model->getSons($user['id'], $arrSons);
         if( empty($temps) ) {
             $ret['list'] = [];
             $ret['count'] = 0;
             $this->ajaxReturn($ret);
         }
 
-        $this->db->where_in('id', $temps);
-        $this->load->model('Users_model');
-        $ret['count'] = $this->db->count_all_results($this->Users_model->table(), false);
+        $temps = array_keys($arrSons);
+        $ret['count'] = count($temps);
         $cur_page = $this->input->get_post('cur_page');
         if( empty($cur_page) ){
             $cur_page = 1;
