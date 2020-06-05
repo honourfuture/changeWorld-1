@@ -178,6 +178,9 @@ class Pretty extends API_Controller {
     public function save()
     {
         $id = (int)$this->input->get_post('id');
+        
+        $this->load->model('Config_model');
+        $config = $this->db->select('*')->where('name', 'point_to_price')->get($this->Config_model->table())->row_array();
         if($id){
             $params = elements(
                 array(
@@ -191,8 +194,6 @@ class Pretty extends API_Controller {
                 $this->ajaxReturn([], 1, '已售卖靓号禁止编辑');
             }
             $this->check_params('edit', $params);
-            $this->load->model('Config_model');
-            $config = $this->db->select('*')->where('name', 'point_to_price')->get($this->Config_model->table())->row_array();
             $this->setPrettyInfo($params);
             if($params['deleted'] == 1){
                 $update = array('deleted' => 1, 'enable' => 0);
@@ -214,7 +215,8 @@ class Pretty extends API_Controller {
             );
             $this->check_params('add', $params);
             $this->setPrettyInfo($params);
-            if($this->Pretty_model->get_by('pretty_id', $params['pretty_id'])){
+            $record = $this->Pretty_model->get_by('pretty_id', $params['pretty_id']);
+            if( !empty($record) && $record['deleted'] == 0){
                 $this->ajaxReturn([], 1, '靓号已存在请勿重复提交');
             }
             if($flag = $this->Pretty_model->insert($params)){
