@@ -188,16 +188,16 @@ class Info extends API_Controller {
         $this->load->model('Users_model');
 
 
-        $a_uid = $this->input->get_post('invite_code');
+        $invite_code = $this->input->get_post('invite_code');
         if($a_uid){
             $this->db->select('id, nickname, header, summary, exp, pretty_id, address, created_at, pid, mobi, invite_code, rank_rule_id AS lv');
-            $item = $this->Users_model->get_by(array('invite_code'=>$a_uid));//邀请用户
+            $item = $this->Users_model->get_by(array('invite_code'=>$invite_code));//邀请用户
             $user = $this->Users_model->get_by(['id' => $this->user_id]);//当前用户
             if( $user['id'] == $item['id'] && $user['mobi'] == SUPER_USER_MOBILE ){
                 $this->ajaxReturn([], 3, '该用户原始用户，不允许绑定上级');
             }
 
-            if($user['invite_code'] == $a_uid){
+            if($user['invite_code'] == $invite_code){
                 $this->ajaxReturn([], 2, '自己不能绑定自己');
             }
 

@@ -95,7 +95,7 @@ class Income_model extends MY_Model
         foreach ($arrFields as $field){
             $queryFields[] = (strstr($field, '.') === false ? 'income.' . $field : $field);
         }
-        array_push($queryFields, 'users.nickname, users.mobi as mobile, goods.id as goods_id, goods.name as goods_name, goods.default_image as goods_image');
+        array_push($queryFields, 'users.nickname, users.header, users.mobi as mobile, goods.id as goods_id, goods.name as goods_name, goods.default_image as goods_image');
         $fields = implode(',', $queryFields);
 
         $arrWhere = [];
