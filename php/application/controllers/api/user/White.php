@@ -76,7 +76,7 @@ class White extends API_Controller {
 					$row = $this->White_model->get_by(['t_id' => $this->t_id, 'type' => $this->type, 'uid' => $item['id']]);
 					$item['white'] = $row ? 1 : 0;
 
-					$grade = $this->Grade_model->exp_to_grade($item['exp']);
+					$grade = $this->Grade_model->getExpRank($item['exp']);
 					$item['lv'] = $grade['grade_name'];
 
 					$ret[] = $item;

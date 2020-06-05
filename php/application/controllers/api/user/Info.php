@@ -124,7 +124,7 @@ class Info extends API_Controller {
             if($rows){
                 $this->load->model('Grade_model');
                 foreach($rows as $item){
-                    $grade = $this->Grade_model->exp_to_grade($item['exp']);
+                    $grade = $this->Grade_model->getExpRank($item['exp']);
                     $item['lv'] = $grade['grade_name'];
                     $ret[] = $item;
                 }
@@ -214,7 +214,7 @@ class Info extends API_Controller {
             /**
             if($item){
                 $this->load->model('Grade_model');
-                $grade = $this->Grade_model->exp_to_grade($item['exp']);
+                $grade = $this->Grade_model->getExpRank($item['exp']);
                 $item['lv'] = $grade['grade_name'];
                 $ret[] = $item;
             }

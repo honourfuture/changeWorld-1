@@ -101,7 +101,7 @@ class Collection extends API_Controller {
 							$ret['list'][$key]['music'] = isset($audio[$item['id']]) ? $audio[$item['id']] : 0;
 							$ret['list'][$key]['hasFans'] = $this->Users_collection_model->check_fans($t_user_id, $item['id']);
 
-							$grade = $this->Grade_model->exp_to_grade($item['exp']);
+							$grade = $this->Grade_model->getExpRank($item['exp']);
 							$ret['list'][$key]['lv'] = $grade['grade_name'];
 						}
 					}

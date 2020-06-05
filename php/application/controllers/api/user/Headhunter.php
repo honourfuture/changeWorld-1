@@ -78,7 +78,7 @@ class Headhunter extends API_Controller {
 				$item['exp'] = 0;
 				isset($user[$item['to_user_id']]) && $item = array_merge($item, $user[$item['to_user_id']]);
 
-				$grade = $this->Grade_model->exp_to_grade($item['exp']);
+				$grade = $this->Grade_model->getExpRank($item['exp']);
 				$item['lv'] = $grade['grade_name'];
 
 				$ret['list'][] = $item;

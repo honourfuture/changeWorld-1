@@ -57,7 +57,7 @@ class Order_items_model extends MY_Model
                 $this->load->model('Grade_model');
                 $result['user'] = $this->Users_model->get_many_user($a_user, 'id,nickname,header,mobi,pretty_id,exp');
                 foreach ($result['user'] as &$user){
-                    $grade = $this->Grade_model->exp_to_grade($user['exp']);
+                    $grade = $this->Grade_model->getExpRank($user['exp']);
                     $user['lv'] = $grade['grade_name'];
                 }
             }

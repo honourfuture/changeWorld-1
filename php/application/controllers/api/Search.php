@@ -145,7 +145,7 @@ class Search extends API_Controller {
         }
         $this->load->model('Grade_model');
         foreach($list as $item){
-            $grade = $this->Grade_model->exp_to_grade($item['exp']);
+            $grade = $this->Grade_model->getExpRank($item['exp']);
             $item['lv'] = $grade['grade_name'];
             $ret['list'][] = $item;
         }

@@ -288,7 +288,7 @@ class Partner extends API_Controller {
 				$k_users = [];
 				$this->load->model('Grade_model');
 				foreach($users as $item){
-					$grade = $this->Grade_model->exp_to_grade($item['exp']);
+					$grade = $this->Grade_model->getExpRank($item['exp']);
 					$item['lv'] = $grade['grade_name'];
 
 					$k_users[$item[$filed]] = $item;
@@ -375,7 +375,7 @@ class Partner extends API_Controller {
 			if($users){
 				$this->load->model('Grade_model');
 				foreach($users as $item){
-					$grade = $this->Grade_model->exp_to_grade($item['exp']);
+					$grade = $this->Grade_model->getExpRank($item['exp']);
 					$item['lv'] = $grade['grade_name'];
 
 					$ret['list'][] = $item;
@@ -402,7 +402,7 @@ class Partner extends API_Controller {
 						$k_users = [];
 						$this->load->model('Grade_model');
 						foreach($users as $item){
-							$grade = $this->Grade_model->exp_to_grade($item['exp']);
+							$grade = $this->Grade_model->getExpRank($item['exp']);
 							$item['lv'] = $grade['grade_name'];
 
 							$ret['list'][] = $item;

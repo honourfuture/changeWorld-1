@@ -118,7 +118,7 @@ class Room_control extends API_Controller {
 					$item['room_control'] = ($row && $row['user_id'] == $this->user_id) ? 1 : 0;
 					$item['room_control_id'] = $item['room_control'] ? $row['id'] : 0;
 
-					$grade = $this->Grade_model->exp_to_grade($item['exp']);
+					$grade = $this->Grade_model->getExpRank($item['exp']);
 					$item['lv'] = $grade['grade_name'];
 
 					$ret[] = $item;
@@ -200,7 +200,7 @@ class Room_control extends API_Controller {
 				$a_id = array();
 				$this->load->model('Grade_model');
 				foreach($users as $item){
-					$grade = $this->Grade_model->exp_to_grade($item['exp']);
+					$grade = $this->Grade_model->getExpRank($item['exp']);
 					$item['lv'] = $grade['grade_name'];
 
 					$k_users[$item['user_id']] = $item;
