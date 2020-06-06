@@ -189,7 +189,7 @@ class Info extends API_Controller {
 
 
         $invite_code = $this->input->get_post('invite_code');
-        if($a_uid){
+        if($invite_code){
             $this->db->select('id, nickname, header, summary, exp, pretty_id, address, created_at, pid, mobi, invite_code');
             $item = $this->Users_model->get_by(array('invite_code'=>$invite_code));//邀请用户
             $this->load->model('Grade_model');
