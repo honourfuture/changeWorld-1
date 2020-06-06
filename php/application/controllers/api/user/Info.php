@@ -192,6 +192,9 @@ class Info extends API_Controller {
         if($invite_code){
             $this->db->select('id, nickname, header, summary, exp, pretty_id, address, created_at, pid, mobi, invite_code');
             $item = $this->Users_model->get_by(array('invite_code'=>$invite_code));//邀请用户
+            if( empty($item) ){
+                $this->ajaxReturn([], 3, '邀请用户不存在，绑定失败');
+            }
             $this->load->model('Grade_model');
             $grade = $this->Grade_model->getExpRank($item['exp']);
             $item['lv'] = $grade['grade_name'];
