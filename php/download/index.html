@@ -11,18 +11,18 @@
         <script>
         var is_weixin = (function(){return navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1})();
         function downapk() {
-	    var winHeight = typeof window.innerHeight != 'undefined' ? window.innerHeight : document.documentElement.clientHeight; //兼容IOS，不需要的可以去掉
-	    var btn = document.getElementById('J_weixin');
-	    var tip = document.getElementById('weixin-tip');
-	    var close = document.getElementById('close');
+            var winHeight = typeof window.innerHeight != 'undefined' ? window.innerHeight : document.documentElement.clientHeight; //兼容IOS，不需要的可以去掉
+            var btn = document.getElementById('J_weixin');
+            var tip = document.getElementById('weixin-tip');
+            var close = document.getElementById('close');
             close.onclick = function() {
                 tip.style.display = 'none';
             }
-	    if (is_weixin) {
-		tip.style.height = winHeight + 'px'; //兼容IOS弹窗整屏
-		tip.style.display = 'block';
+            if (is_weixin) {
+                tip.style.height = winHeight + 'px'; //兼容IOS弹窗整屏
+                tip.style.display = 'block';
                 return false;
-	    }
+            }
             //window.location.href='../uploads/app-release_legu_aligned_signed.apk';
             window.location.href='../uploads/app-gbsj_legu_aligned_signed.apk';
         }
@@ -89,7 +89,7 @@
                         src="../uploads/ad-download.png"
                     />
                 </a>
-                <a href="#" class="actions-item">
+                <a href="http://d.firim.info/xpw1" class="actions-item">
                     <img
                         src="https://static.haokur.com/yhq/iphone_btn@3x.png"
                     />
