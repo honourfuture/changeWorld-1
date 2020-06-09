@@ -240,6 +240,21 @@ class Sign_in extends API_Controller
             return $this->ajaxReturn([], 3, '服务器出错');
         }
     }
+
+
+    /**
+     * 签到开关配置
+     *
+     * @return void
+     */
+    public function switcher() 
+    {
+        $status = $this->input->get_post('status');
+        $status = $status == 1 ? 1 : 0;
+        $datetime = date('Y-m-d H:i:s');
+        $this->db->select("UPDATE users SET signin_switcher={$status}, updated_at='{$datetime}' WHERE id={$this->user_id}");
+        return $this->ajaxReturn([], 0, '设置成功');
+    }
 }
 
 ?>
