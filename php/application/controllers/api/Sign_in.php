@@ -241,6 +241,16 @@ class Sign_in extends API_Controller
         }
     }
 
+    /**
+     * 签到开关查询
+     *
+     * @return void
+     */
+    public function switcher_status()
+    {
+        $user = $this->Users_model->get($this->user_id);
+        return $this->ajaxReturn(['status'=>$user['signin_switcher']], 0, 'SUCCESS');
+    }
 
     /**
      * 签到开关配置
