@@ -8,6 +8,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  * @date 2018-3-7
  */
 use RongCloud\RongCloud;
+use JPush\Client;
 
 class Queue extends MY_Controller
 {
@@ -16,6 +17,7 @@ class Queue extends MY_Controller
         parent::__construct();
 
         $this->load->model('Queue_model');
+        $this->load->model('Users_model');
         $this->load->driver('cache');
     }
 
@@ -873,6 +875,31 @@ class Queue extends MY_Controller
                 }
 
             }
+        }
+    }
+
+    /**
+     * 签到提醒
+     *
+     * @return void
+     */
+    public function signin_alarm()
+    {
+        @set_time_limit(0);
+        $rows = $this->Users_model->get_many_by(['signin_switcher' => 1]);
+        if( empty($rows) ){
+            return false;
+        }
+        
+        $setting = config_item('push');
+        $client = new Client($setting['app_key'], $setting['master_secret'], $setting['log_file']);
+        foreach($rows as $userInfo){
+            $cid = $userInfo['device_uuid'];
+            $result = $client->push()
+                        ->setPlatform('all')
+                        ->addRegistrationId($cid)
+                        ->setNotificationAlert('【签到提醒】继续签到可以获得更多权益哦！')
+                        ->send();
         }
     }
 }
