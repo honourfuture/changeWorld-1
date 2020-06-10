@@ -4,7 +4,7 @@
 #######     该脚本配置成每分钟执行一次
 #######     环境变量可选参数：development,production,demo,alpha,testing
 #####################################################
-PHP=/usr/local/php/bin/php
+PHP=/usr/bin/php
 
 #确定执行环境
 CI_ENV="production"
