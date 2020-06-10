@@ -12,8 +12,8 @@ export default class H5Audio extends BaseComponent {
         play_id: -1,
         play_list: [],
         commentList: null,
-        iosUrl: "",
-        andoridUrl: "",
+        iosUrl: `${Global.IOS_DOWNLOWD_URL}`,
+        andoridUrl: `${Global.ANDROID_DOWNLOAD_URL}`,
         pageIndex: 10,
         modal_name: "",
         isPay: true

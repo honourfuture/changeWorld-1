@@ -19,11 +19,16 @@ class Rank_rule_model extends MY_Model
     }
 
     public function getNextRankRule($exp, $current_rank_id){
+        $sql = "SELECT * FROM `rank_rule` where `exp`<={$exp} order by exp DESC LIMIT 1;";
+        $record = $this->db->query($sql)->row_array();
+        return $record;
+        /**
         $result = $this->get_by(['id'=>$current_rank_id+1]) ;
         if($exp > $result['exp']){
             return $result;
         }
         return [];
+        */
     }
 
 
