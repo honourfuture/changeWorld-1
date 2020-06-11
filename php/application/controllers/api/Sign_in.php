@@ -248,7 +248,8 @@ class Sign_in extends API_Controller
      */
     public function switcher_status()
     {
-        $user = $this->Users_model->get($this->user_id);
+        $user_id = $this->input->get_post('user_id');
+        $user = $this->Users_model->get($user_id);
         return $this->ajaxReturn(['status'=>$user['signin_switcher']], 1, 'SUCCESS');
     }
 
@@ -259,10 +260,11 @@ class Sign_in extends API_Controller
      */
     public function switcher() 
     {
+        $user_id = $this->input->get_post('user_id');
         $status = $this->input->get_post('status');
         $status = $status == 1 ? 1 : 0;
         $datetime = date('Y-m-d H:i:s');
-        $flag = $this->db->select("UPDATE users SET signin_switcher={$status}, updated_at='{$datetime}' WHERE id={$this->user_id}");
+        $flag = $this->db->select("UPDATE users SET signin_switcher={$status}, updated_at='{$datetime}' WHERE id={$user_id}");
         if( $flag ){
             return $this->ajaxReturn([], 1, '设置成功');
         }
