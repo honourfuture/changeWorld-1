@@ -886,12 +886,14 @@ class Queue extends MY_Controller
     public function signin_alarm()
     {
         @set_time_limit(0);
+        $logfile = filemtime(APPPATH.'signin_alarm/' . date('Y-m-d') . '.log');
         $rows = $this->Users_model->get_many_by(['signin_switcher' => 1]);
         if( empty($rows) ){
+            $content = "没有需要推送的用户";
+            @file_put_contents($logfile, $content, FILE_APPEND | LOCK_EX);
             return false;
         }
         
-        $logfile = filemtime(APPPATH.'signin_alarm/' . date('Y-m-d') . '.log');
         $setting = config_item('push');
         $client = new Client($setting['app_key'], $setting['master_secret'], $setting['log_file']);
         foreach($rows as $userInfo){
