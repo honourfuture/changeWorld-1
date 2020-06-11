@@ -889,7 +889,7 @@ class Queue extends MY_Controller
         $logfile = APPPATH . 'logs/signin_alarm/' . date('Y-m-d') . '.log';
         $rows = $this->Users_model->get_many_by(['signin_switcher' => 1]);
         if( empty($rows) ){
-            $content = "没有需要推送的用户\n\n";
+            $content = date('Y-m-d H:i:s') . " 没有需要推送的用户\n\n";
             @file_put_contents($logfile, $content, FILE_APPEND | LOCK_EX);
             return false;
         }
@@ -903,7 +903,7 @@ class Queue extends MY_Controller
                         ->addRegistrationId($cid)
                         ->setNotificationAlert('您今日还没有签到，点击立即签到吧！')
                         ->send();            
-            $content = "{$userInfo['nickname']} / {$userInfo['mobi']} / " . var_export($result, true) . "\n\n";
+            $content = date('Y-m-d H:i:s') . " {$userInfo['nickname']} / {$userInfo['mobi']} / " . var_export($result, true) . "\n\n";
             @file_put_contents($logfile, $content, FILE_APPEND | LOCK_EX);
         }
     }
