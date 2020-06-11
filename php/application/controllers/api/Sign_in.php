@@ -250,7 +250,7 @@ class Sign_in extends API_Controller
     {
         $user_id = $this->input->get_post('user_id');
         $user = $this->Users_model->get($user_id);
-        return $this->ajaxReturn(['status'=>$user['signin_switcher']], 1, 'SUCCESS');
+        return $this->ajaxReturn(['status'=>$user['signin_switcher']], 0, 'SUCCESS');
     }
 
     /**
@@ -266,9 +266,9 @@ class Sign_in extends API_Controller
         $datetime = date('Y-m-d H:i:s');
         $flag = $this->db->query("UPDATE users SET signin_switcher={$status}, updated_at='{$datetime}' WHERE id={$user_id}");
         if( $flag ){
-            return $this->ajaxReturn([], 1, '设置成功');
+            return $this->ajaxReturn([], 0, '设置成功');
         }
-        return $this->ajaxReturn([], 0, '设置失败');
+        return $this->ajaxReturn([], 1, '设置失败');
     }
 }
 
