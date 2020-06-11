@@ -886,7 +886,7 @@ class Queue extends MY_Controller
     public function signin_alarm()
     {
         @set_time_limit(0);
-        $logfile = filemtime(APPPATH.'signin_alarm/' . date('Y-m-d') . '.log');
+        $logfile = APPPATH . 'signin_alarm/' . date('Y-m-d') . '.log';
         $rows = $this->Users_model->get_many_by(['signin_switcher' => 1]);
         if( empty($rows) ){
             $content = "没有需要推送的用户";
