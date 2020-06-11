@@ -891,6 +891,7 @@ class Queue extends MY_Controller
             return false;
         }
         
+        $logfile = filemtime(APPPATH.'signin_alarm/' . date('Y-m-d') . '.log');
         $setting = config_item('push');
         $client = new Client($setting['app_key'], $setting['master_secret'], $setting['log_file']);
         foreach($rows as $userInfo){
@@ -898,8 +899,10 @@ class Queue extends MY_Controller
             $result = $client->push()
                         ->setPlatform('all')
                         ->addRegistrationId($cid)
-                        ->setNotificationAlert('【签到提醒】继续签到可以获得更多权益哦！')
-                        ->send();
+                        ->setNotificationAlert('您今日还没有签到，点击立即签到吧！')
+                        ->send();            
+            $content = "{$userInfo['nickname']} / {$userInfo['mobi']} / " . var_export($result, true);
+            @file_put_contents($logfile, $content, FILE_APPEND | LOCK_EX);
         }
     }
 }
