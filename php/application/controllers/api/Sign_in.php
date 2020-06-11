@@ -264,7 +264,7 @@ class Sign_in extends API_Controller
         $status = $this->input->get_post('status');
         $status = $status == 1 ? 1 : 0;
         $datetime = date('Y-m-d H:i:s');
-        $flag = $this->db->select("UPDATE users SET signin_switcher={$status}, updated_at='{$datetime}' WHERE id={$user_id}");
+        $flag = $this->db->query("UPDATE users SET signin_switcher={$status}, updated_at='{$datetime}' WHERE id={$user_id}");
         if( $flag ){
             return $this->ajaxReturn([], 1, '设置成功');
         }
