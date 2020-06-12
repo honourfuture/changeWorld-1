@@ -55,7 +55,7 @@ class Income_model extends MY_Model
         }
 
         $arrIncomes = $this->sum_income_topic_group($user_id, $type, $where);
-        return array_sum( array_values( $arrIncomes ) );
+        return number_format(array_sum( array_values( $arrIncomes ) ), 2, '.', '');
     }
 
     /**
