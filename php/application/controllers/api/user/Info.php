@@ -642,8 +642,8 @@ class Info extends API_Controller {
             $this->ajaxReturn($ret);
         }
         $arrSons = [];
-        $this->Users_model->getSons($user['id'], $arrSons);
-        if( empty($temps) ) {
+        $arrSons = $this->Users_model->getSons($user['id'], $arrSons);
+        if( empty($arrSons) ) {
             $ret['list'] = [];
             $ret['count'] = 0;
             $this->ajaxReturn($ret);
