@@ -95,7 +95,7 @@ class Wallet extends API_Controller {
         //今日
         $where['created_at >= '] = date('Y-m-d 00:00:00');
         $where['created_at <= '] = date('Y-m-d 23:59:59');
-        $ret['todayIncome'] = numformat($this->Income_model->sum_income_topic_group($this->user_id, 0, $where), 2);
+        $ret['todayIncome'] = $this->Income_model->sum_income_topic_group($this->user_id, 0, $where);
         foreach($ret['todayIncome'] as $key=>$value){
             $ret['todayIncome'][$key] = numformat($value, 2);
         }
