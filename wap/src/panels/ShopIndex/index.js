@@ -25,7 +25,7 @@ export default class ShopIndex extends BaseComponent {
                 component: <Hots is_hot={1} id={0} />
             });
             //临时关闭
-            //tabs.splice(1, 0, { key: 0, title: "靓号", component: <Vanity /> });
+            tabs.splice(1, 0, { key: 0, title: "靓号", component: <Vanity /> });
             this.store.tabs = tabs;
         });
         // Base.GET(

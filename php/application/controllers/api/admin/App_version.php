@@ -72,6 +72,7 @@ class App_version extends API_Controller {
 		$ret = [];
 
 		$ret['platform'] = $this->App_version_model->platform();
+		$ret['verifyStatus'] = $this->App_version_model->verifyStatus();
 		$ret['channel'] = $this->App_version_model->channel();
 
 		$deleted = (int)$this->input->get('deleted');

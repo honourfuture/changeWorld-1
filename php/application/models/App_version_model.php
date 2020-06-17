@@ -28,6 +28,15 @@ class App_version_model extends MY_Model
     	];
     }
 
+    public function verifyStatus()
+    {
+        return [
+            '未提审',
+            '审核中',
+            '审核通过'
+        ];
+    }
+
     //渠道
     public function channel()
     {
