@@ -55,6 +55,13 @@ export default class AppVersion extends BaseComponent {
                     this.renderSelect(text, record, "platform")
             },
             {
+                title: "审核状态",
+                dataIndex: "verify_status",
+                width: "10%",
+                render: (text, record) =>
+                    this.renderVerifyStatus(text, record, "verify_status")
+            },
+            {
                 title: "链接地址",
                 dataIndex: "url",
                 width: "25%",
@@ -214,6 +221,31 @@ export default class AppVersion extends BaseComponent {
             />
         );
     }
+    renderVerifyStatus(text, record, column) {
+        const value = parseInt(record[column], 10) || 0;
+        const { verifyStatus } = this;
+        return (
+            <div>
+                {record.editable ? (
+                    <Select
+                        defaultValue={value || 0}
+                        style={{ width: 120 }}
+                        onChange={value =>
+                            this.onEditChange(record.id, value, column)
+                        }
+                    >
+                        {verifyStatus.map((item, index) => (
+                            <Option key={index} value={index}>
+                                {item}
+                            </Option>
+                        ))}
+                    </Select>
+                ) : (
+                    verifyStatus[value]
+                )}
+            </div>
+        );
+    }
     renderSelect(text, record, column) {
         const value = parseInt(record[column], 10) || 0;
         const { platform } = this;
@@ -287,6 +319,7 @@ export default class AppVersion extends BaseComponent {
             enable: "1",
             explain: "",
             platform: 0,
+            verifyStatus: 0,
             url: "",
             version: "",
             version_alias: ""
@@ -334,8 +367,9 @@ export default class AppVersion extends BaseComponent {
                 mod: "admin"
             },
             res => {
-                const { list, platform } = res.data;
+                const { list, platform, verifyStatus } = res.data;
                 this.platform = platform;
+                this.verifyStatus = verifyStatus;
                 this.store.list = list;
                 this.cacheData = list.map(item => ({ ...item }));
             },
