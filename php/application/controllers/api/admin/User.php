@@ -155,6 +155,11 @@ class User extends API_Controller {
                         if(($to <= 2) || ($user['rank_rule_id']>=3)){
                             $update['rank_rule_id'] = $to;
                         }
+                        else{
+                            if( $to>2 ){
+                                $update['rank_rule_id'] = 2;
+                            }
+                        }
                     }
                     
                 }
