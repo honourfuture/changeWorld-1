@@ -132,7 +132,7 @@ class App_version extends API_Controller {
 		if($id){
 			$params = elements(
 				array(
-					'deleted', 'enable', 'version', 'version_alias', 'platform', 'explain', 'url', 'channel'
+					'deleted', 'enable', 'version', 'version_alias', 'platform', 'explain', 'url', 'channel', 'verify_status'
 				),
 				$this->input->post(),
 				UPDATE_VALID
@@ -151,7 +151,7 @@ class App_version extends API_Controller {
 		}else{
 			$params = elements(
 				array(
-					'version', 'version_alias', 'platform', 'explain', 'url', 'channel'
+					'version', 'version_alias', 'platform', 'explain', 'url', 'channel', 'verify_status'
 				),
 				$this->input->post(),
 				UPDATE_VALID
