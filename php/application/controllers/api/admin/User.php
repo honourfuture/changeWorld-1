@@ -151,9 +151,12 @@ class User extends API_Controller {
                     $nextRankRule = $this->Rank_rule_model->getNextRankRule($exp, $user['rank_rule_id']);
                     if($nextRankRule){
                         $to = $nextRankRule['id'];
+                        $update['rank_rule_id'] = $to;
+                        /**
                         if(($to <= 2) || ($user['rank_rule_id']>=3)){
                             $update['rank_rule_id'] = $to;
                         }
+                        */
                     }
                     
                 }
