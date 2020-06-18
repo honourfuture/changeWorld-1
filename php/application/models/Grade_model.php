@@ -89,7 +89,7 @@ class Grade_model extends MY_Model
             foreach ($arrLevels as $key => $level){
                 $level_pre = $level - 1;
                 $level_pre = $level_pre < 0 ? 0 : $level_pre;
-                if( $exp > $arrGrades["level_{$level_pre}"]['grade_demand'] && $exp <= $arrGrades["level_{$level}"]['grade_demand'] ){
+                if( $exp >= $arrGrades["level_{$level_pre}"]['grade_demand'] && $exp < $arrGrades["level_{$level}"]['grade_demand'] ){
                     $userLevel = $level - 1;
                     break;
                 }
