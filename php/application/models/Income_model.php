@@ -565,7 +565,7 @@ class Income_model extends MY_Model
             }
             if( !$user['pid'] ){//没有pid不参与分销
                 $this->Order_items_model->update($item['id'], ['is_income' => 3]);
-                continue;
+                //continue;
             }
         
             $levelIds = [];
