@@ -627,7 +627,7 @@ class Income_model extends MY_Model
                             ->setNotificationAlert($userInfo['nickname']."，您的佣金{$price}已经到到账，请注意查收")
                             ->send();
                 
-                $this->_setBalance($arrUsers[$userId]['id'], $price);
+                //$this->_setBalance($arrUsers[$userId]['id'], $price);
                 $insert[] = [
                     'topic' => 2,
                     'sub_topic' => 0,
@@ -728,6 +728,7 @@ class Income_model extends MY_Model
             'exp' => 0,//floor($amount * (empty($ruleIncomeToExp) ? 5 : $ruleIncomeToExp['value'])),
         ];
         $this->insert($item);
+        //$this->_setBalance($sellerInfo['id'], $amount);
         return ['amount'=>$amount, 'exp'=>$item['exp'], 'point'=>$item['point']];
     }
     
