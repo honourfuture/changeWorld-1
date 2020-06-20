@@ -637,7 +637,7 @@ class Income_model extends MY_Model
                     'amount' => $price,
                     'type' => 2,
                     'item_id' => isset($item['id']) ? $item['id'] : 0,
-                    'item_title' => isset($item['title']) ? $item['title'] : '',
+                    'item_title' => isset($item['name']) ? $item['name'] : '',
                     'item' => json_encode([$item], JSON_UNESCAPED_UNICODE),
                     'level' => count($levelIds),
                     'shop_id' => $item['seller_uid'],
