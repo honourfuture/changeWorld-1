@@ -75,13 +75,9 @@ class Order_items_model extends MY_Model
      */
     public function getOrderItems($order_id)
     {
-        $this->db->select("oi.id,o.real_total_amount,oi.base_percent,oi.rebate_percent,oi.buyer_uid,oi.seller_uid,oi.name,oi.goods_price, oi.num, oi.freight_fee, oi.total_price");
-        $this->db->from($this->_joinTable);
-        $this->db->join('order as o', 'o.id = oi.order_id');
-        $this->db->where('o.id', $order_id);
-        $this->db->order_by('oi.id', 'DESC');
-        $orders = $this->db->get();
-        $orders = $orders->result_array();
+        $order_id = intval($order_id);
+        $sql = "SELECT o.real_total_amount, oi.* FROM `order_Items` oi LEFT JOIN `order` o ON o.id = oi.order_id WHERE o.id={$order_id} ORDER BY oi.id DESC";
+        $orders = $this->db->query($sql)->result_array();
         return $orders;
     }
 
