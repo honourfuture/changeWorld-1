@@ -74,24 +74,20 @@ class Wallet extends API_Controller {
         ];
 
         $user = $this->get_user();
-
-        //计算可提现余额
         $this->load->model('Income_model');
-        $inclomeAvailable = $this->Income_model->getWithrawAvailable($this->user_id);
-        $ret['withdraw'] = numformat($inclomeAvailable, 2);
-
         $this->load->model('Withdraw_model');
     	$this->load->model('Users_model');
-    	$user = $this->Users_model->get($this->user_id);
-    	$valIncomeSum = $this->Income_model->getIncomeSum($user['id'], $user['created_at']);//累计收益
-    	$valWithrawed = $this->Withdraw_model->getWithdrawed($user['id']);//已提现金额
+
+        //计算可提现余额
+        $inclomeAvailable = $this->Income_model->getWithrawAvailable($this->user_id);
+        $ret['withdraw'] = numformat($inclomeAvailable, 2);
+        $user = $this->Users_model->get($this->user_id);
+        $valIncomeSum = $this->Income_model->getIncomeSumAll($user['id']);//累计收益
+        $valWithrawed = $this->Withdraw_model->getWithdrawed($user['id']);//已提现金额
 
         $ret['balance'] = numformat($user['balance'] + $valIncomeSum - $valWithrawed, 2);//钱包余额+总收益-已提现收益
         $ret['point'] = round($user['point'], 0);
         $ret['gold'] = $user['gold'];
-
-        $this->load->model('Income_model');
-        $this->load->model('Withdraw_model');
         
         $ret['income'] = $this->Income_model->sum_income_topic_group($this->user_id);
         foreach($ret['income'] as $key=>$value){

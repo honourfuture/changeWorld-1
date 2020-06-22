@@ -41,7 +41,18 @@ class Income_model extends MY_Model
     }
     
     /**
-     * 计算总收益
+     * 计算总收益（无时间限制）
+     */
+    public function getIncomeSumAll($user_id, $type=0, $where=[])
+    {
+        $created_at = empty($created_at) ? date('Y-m-d H:i:s', 0) : $created_at;
+        $where['created_at >= '] = $created_at;
+        $arrIncomes = $this->sum_income_topic_group($user_id, $type, $where);
+        return number_format(array_sum( array_values( $arrIncomes ) ), 2, '.', '');
+    }
+
+    /**
+     * 计算可提现余额计算时用的总收益（有时间限制）
      */
     public function getIncomeSum($user_id, $created_at, $type=0, $where=[])
     {
