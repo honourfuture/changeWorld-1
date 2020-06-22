@@ -80,7 +80,13 @@ class Wallet extends API_Controller {
         $inclomeAvailable = $this->Income_model->getWithrawAvailable($this->user_id);
         $ret['withdraw'] = numformat($inclomeAvailable, 2);
 
-        $ret['balance'] = numformat($user['balance'] + $inclomeAvailable, 2);
+        $this->load->model('Withdraw_model');
+    	$this->load->model('Users_model');
+    	$user = $this->Users_model->get($userId);
+    	$valIncomeSum = $this->getIncomeSum($user['id'], $user['created_at']);//累计收益
+    	$valWithrawed = $this->Withdraw_model->getWithdrawed($userId);//已提现金额
+
+        $ret['balance'] = numformat($user['balance'] + $valIncomeSum - $valWithrawed, 2);//钱包余额+总收益-已提现收益
         $ret['point'] = round($user['point'], 0);
         $ret['gold'] = $user['gold'];
 
