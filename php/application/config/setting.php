@@ -18,7 +18,7 @@ define('ACCESS_REQUEST', 500);//非法操作
 define('SUPER_USER_MOBILE', '18664589318');
 
 #测试支付配置
-define('TEST_PAYMENT', (IS_PROD ? 0 : 1) );
+define('TEST_PAYMENT', (DEBUG_MODE ? 1 : 0) );
 
 // QQ互联
 define('CONNECT_QQ_APPID', '101437563');

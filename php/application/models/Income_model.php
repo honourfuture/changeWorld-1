@@ -58,7 +58,7 @@ class Income_model extends MY_Model
     {
         $created_at = empty($created_at) ? date('Y-m-d H:i:s', 0) : $created_at;
         $where['created_at >= '] = $created_at;
-        if( IS_PROD ){
+        if( !DEBUG_MODE ){
             $where['created_at <= '] = date('Y-m-d 23:59:59', strtotime("-1 sunday"));
         }
         else{
