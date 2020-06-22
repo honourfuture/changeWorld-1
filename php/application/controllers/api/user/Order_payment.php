@@ -15,17 +15,25 @@ class Order_payment extends API_Controller {
 
     public $amount;
     public $order;
+    public $logType = 'order_payment';
     
     public function __construct()
     {
         parent::__construct();
         $this->load->model('Payment_log_model');
         $this->load->model('Order_model');
+        $this->load->library('luoma');            
+    }
+
+    private function _logPayment($message)
+    {
+        $this->luoma->logger($message, $this->logType);
     }
 
     protected function payment_format($trade_type, $trade_sn)
     {
         if(! $trade_sn){
+            $this->_logPayment('订单交易号必传');
             $this->ajaxReturn([], 2, '订单交易号必传');
         }
 
@@ -33,16 +41,19 @@ class Order_payment extends API_Controller {
             case 'pay_sn':
                 $result = $this->Order_model->get_order_by_pay_sn($trade_sn);
                 if(! $result){
+                    $this->_logPayment(['trade_sn'=>$trade_sn, 'msg'=>'订单交易号必传']);
                     $this->ajaxReturn([], 3, '订单存在非待付款状态');
                 }
                 break;
             case 'order_sn':
                 $result = $this->Order_model->get_order_by_order_sn($trade_sn);
                 if(! $result){
+                    $this->_logPayment(['trade_sn'=>$trade_sn, 'msg'=>'订单请勿重复付款']);
                     $this->ajaxReturn([], 3, '订单请勿重复付款');
                 }
                 break;
             default:
+                $this->_logPayment(['trade_type'=>$trade_type, 'msg'=>'订单交易类型错误']);
                 $this->ajaxReturn([], 1, '订单交易类型错误');
                 break;
         }
@@ -122,6 +133,7 @@ class Order_payment extends API_Controller {
         $this->load->model('Users_model');
         $inclomeAvailable = $this->Income_model->getWithrawAvailable($this->user_id);
         if( empty($user) || ($inclomeAvailable + $user['balance']) < $this->amount){
+            $this->_logPayment(['order_id'=>$order_id, 'msg'=>'账户余额不足']);
             $this->ajaxReturn([], 2, '账户余额不足');
         }
         
@@ -202,8 +214,10 @@ class Order_payment extends API_Controller {
         $this->Order_model->update(current($order_id), $update);
         $this->db->trans_complete();
         if($this->db->trans_status() === FALSE){
+            $this->_logPayment(['order_id'=>$order_id, 'msg'=>'网络服务异常']);
             $this->ajaxReturn([], 5, '网络服务异常');
         }
+        $this->_logPayment(['order_id'=>$order_id, 'msg'=>'支付成功，继续推送发货提醒']);
         try {
             //消息推送
             $order = $this->Order_model->get_many($order_id);
@@ -222,12 +236,11 @@ class Order_payment extends API_Controller {
                     }
                 }
             }
+            $this->_logPayment(['order_id'=>$order_id, 'msg'=>'发货提醒推送成功']);
         }
         catch (\Exception $e){
-            $this->load->library('luoma');
-            $logType = 'order_payment';
-            $this->luoma->logger("JpushError", $logType);
-            $this->luoma->logger($e, $logType);
+            $this->_logPayment("JpushError");
+            $this->_logPayment($e);
         }
         $this->ajaxReturn();
     }
@@ -283,15 +296,19 @@ class Order_payment extends API_Controller {
 
         switch($params['payment_type']){
             case 'balance':
+                $this->_logPayment(['order'=>$order, 'msg'=>'余额支付']);
                 $this->balance($order['id']);
                 break;
             case 'wechat':
+                $this->_logPayment(['order'=>$order, 'msg'=>'微信支付']);
                 $this->wechat($params['trade_type'], $params['trade_sn']);
                 break;
             case 'alipay':
+                $this->_logPayment(['order'=>$order, 'msg'=>'支付宝支付']);
                 $this->alipay($params['trade_type'], $params['trade_sn']);
                 break;
             default :
+                $this->_logPayment(['order'=>$order, 'msg'=>'订单支付类型错误']);
                 $this->ajaxReturn([], 1, '订单支付类型错误');
                 break;
         }
@@ -305,11 +322,13 @@ class Order_payment extends API_Controller {
             'total_amount' => TEST_PAYMENT ? TEST_PAYMENT * 0.01 : $this->amount,
             'passback_params' => $trade_type
         ];
+        $this->_logPayment(['order'=>$order, 'msg'=>'支付宝支付发起']);
 
         $this->setting = config_item('yansongda');
         $this->setting['alipay']['notify_url'] = site_url('/api/notify/alipay_order_payment');
         $app = new Pay($this->setting);
         $response = $app->driver('alipay')->gateway('app')->pay($order);
+        $this->_logPayment(['order'=>$order, 'response'=>$response, 'msg'=>'支付宝支付返回']);
 
         $this->ajaxReturn($response);
     }
@@ -324,17 +343,16 @@ class Order_payment extends API_Controller {
             'trade_type' => 'APP',
             'attach' => $trade_type
         ]);
+        $this->_logPayment(['order'=>$order, 'msg'=>'微信支付发起']);
 
         $this->setting = config_item('wechat');
         $app = new Application($this->setting);
         $result = $app->payment->prepare($order);
         if($result->return_code == 'SUCCESS' && $result->result_code == 'SUCCESS'){
+            $this->_logPayment(['order'=>$order, 'return_code'=>$result->return_code, 'result_code'=>$result->result_code, 'msg'=>'微信支付返回']);
             $this->ajaxReturn($app->payment->configForAppPayment($result['prepay_id']));
         }else{
-            $this->load->library('luoma');
-            $logType = 'order_payment';
-            $this->luoma->logger('Wechat Pay', $logType);
-            $this->luoma->logger($order, $logType);
+            $this->_logPayment(['order'=>$order, 'return_msg'=>$result->return_msg, 'msg'=>'微信支付返回']);
             $this->ajaxReturn([], 2, $result->return_msg);
         }
     }
